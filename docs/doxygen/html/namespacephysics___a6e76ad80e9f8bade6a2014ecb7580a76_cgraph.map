@@ -1,0 +1,9 @@
+<map id="physics_::Theta" name="physics_::Theta">
+<area shape="rect" id="Node000001" title="Computes the polar angle theta." alt="" coords="5,7,128,32"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="319,7,385,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,9,176,5,223,3,271,5,306,9,305,14,270,10,223,8,176,10,129,14"/>
+<area shape="rect" id="Node000003" href="$namespacephysics__.html#ac12a78b1943348345b940e510930f420" title="Computes the momentum magnitude." alt="" coords="176,44,271,69"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="121,30,163,40,162,45,120,35"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="267,42,305,30,306,35,268,47"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="201,45,197,36,199,26,208,20,223,17,241,21,249,29,245,33,238,26,223,23,210,25,204,29,202,35,206,43"/>
+</map>

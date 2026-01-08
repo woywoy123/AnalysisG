@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__transform__cuda" kind="group">
+    <compoundname>transform_cuda</compoundname>
+    <title>Transform CUDA Module</title>
+    <briefdescription>
+<para>GPU-accelerated coordinate transformations. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__transform__cuda_1transform_functions">
+<title>Available Functions</title>
+<para>The <computeroutput><ref refid="namespacetransform__" kindref="compound">transform_</ref></computeroutput> namespace provides coordinate transformations between Cartesian (px, py, pz, E) and polar (pT, η, φ, E) representations.</para>
+<sect2 id="group__transform__cuda_1transform_to_cartesian">
+<title>Polar → Cartesian</title>
+<para><table rows="6" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Px()</computeroutput>   </para>
+</entry><entry thead="no"><para>pt, phi   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>px = pT·cos(φ)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Py()</computeroutput>   </para>
+</entry><entry thead="no"><para>pt, phi   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>py = pT·sin(φ)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Pz()</computeroutput>   </para>
+</entry><entry thead="no"><para>pt, eta   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>pz = pT·sinh(η)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>PxPyPz()</computeroutput>   </para>
+</entry><entry thead="no"><para>pt, eta, phi   </para>
+</entry><entry thead="no"><para>Tensor[N,3]   </para>
+</entry><entry thead="no"><para>(px, py, pz)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>PxPyPzE()</computeroutput>   </para>
+</entry><entry thead="no"><para>pt, eta, phi, E   </para>
+</entry><entry thead="no"><para>Tensor[N,4]   </para>
+</entry><entry thead="no"><para>(px, py, pz, E)   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="group__transform__cuda_1transform_to_polar">
+<title>Cartesian → Polar</title>
+<para><table rows="6" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Pt()</computeroutput>   </para>
+</entry><entry thead="no"><para>px, py   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>pT = √(px² + py²)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Phi()</computeroutput>   </para>
+</entry><entry thead="no"><para>px, py   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>φ = atan2(py, px)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Eta()</computeroutput>   </para>
+</entry><entry thead="no"><para>px, py, pz OR pmc   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>η = arctanh(pz/p)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>PtEtaPhi()</computeroutput>   </para>
+</entry><entry thead="no"><para>pmc OR px, py, pz   </para>
+</entry><entry thead="no"><para>Tensor[N,3]   </para>
+</entry><entry thead="no"><para>(pT, η, φ)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>PtEtaPhiE()</computeroutput>   </para>
+</entry><entry thead="no"><para>pmc OR px, py, pz, E   </para>
+</entry><entry thead="no"><para>Tensor[N,4]   </para>
+</entry><entry thead="no"><para>(pT, η, φ, E)   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+</sect1>
+<sect1 id="group__transform__cuda_1transform_example">
+<title>Example</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="transform_8cuh" kindref="compound">transform/transform.cuh</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Convert<sp/>from<sp/>polar<sp/>to<sp/>Cartesian</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref><sp/>=<sp/>torch::randn({100}).cuda();</highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref><sp/>=<sp/>torch::randn({100}).cuda();</highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref><sp/>=<sp/>torch::randn({100}).cuda();</highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>E<sp/>=<sp/>torch::randn({100}).cuda();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref><sp/>=<sp/><ref refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" kindref="member">transform_::PxPyPzE</ref>(&amp;<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>&amp;<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref>,<sp/>&amp;<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>,<sp/>&amp;E);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Convert<sp/>back<sp/>to<sp/>polar</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ad949b87653e0e12c90d27f66d090f1c9" kindref="member">pmu</ref><sp/>=<sp/><ref refid="namespacetransform___1a59a9589e3d78c302e6f52b2fcd5ceedb" kindref="member">transform_::PtEtaPhiE</ref>(&amp;<ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+</programlisting> </para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,13 @@
+<map id="buildDict" name="buildDict">
+<area shape="rect" id="Node000001" title="Builds a dictionary for a specific data type." alt="" coords="441,29,521,55"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a1391073bb18c75cdad4132e90992fcd3" title="&lt; Public access specifier for the following members." alt="" coords="5,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="431,28,393,19,327,13,261,11,145,15,144,9,261,5,328,8,394,14,433,23"/>
+<area shape="rect" id="Node000003" href="$structs_2cxx_2base_8cxx.html#a96c2f5b7a58cb27671db52cf01b24c35" title="Builds a PCM file for the given type." alt="" coords="311,29,393,55"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="428,45,394,45,394,39,428,39"/>
+<area shape="rect" id="Node000005" href="$classio.html#a38cda1cf4b0ad6920e19780ad985d374" title="Triggers the generation of a ROOT PCM (Precompiled Module) if needed for dictionary generation." alt="" coords="15,55,135,80"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="430,61,394,69,324,75,255,78,135,74,135,69,254,72,324,70,393,63,429,56"/>
+<area shape="rect" id="Node000004" href="$structs_2cxx_2base_8cxx.html#aa67f17555eea254a2f080d4bfaa19262" title="Builds all required dictionaries." alt="" coords="192,29,263,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="297,45,263,45,263,39,297,39"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="178,37,144,32,145,26,179,32"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="179,53,136,60,135,55,178,47"/>
+</map>

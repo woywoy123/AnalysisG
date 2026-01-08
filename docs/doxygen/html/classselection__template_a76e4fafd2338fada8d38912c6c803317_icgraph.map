@@ -1,0 +1,16 @@
+<map id="selection_template::make_unique" name="selection_template::make_unique">
+<area shape="rect" id="Node000001" title="Removes duplicate particles based on hash." alt="" coords="496,99,643,139"/>
+<area shape="rect" id="Node000002" href="$classcombinatorial.html#a4f90aaf04154a0d1ca9d59e1ccb2c54e" title=" " alt="" coords="231,5,445,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="525,94,447,52,391,33,392,28,449,48,527,90"/>
+<area shape="rect" id="Node000004" href="$classparton.html#abf09df1e5e6008e9af478a2f540947f8" title="Alternative selection strategy method." alt="" coords="29,131,156,156"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="482,102,448,97,338,86,290,88,229,97,170,113,121,133,119,128,168,108,227,91,289,83,338,81,448,91,483,96"/>
+<area shape="rect" id="Node000005" href="$classtopjets.html#a72145e79c19febe5393d17220c980e2a" title="Alternative selection strategy method." alt="" coords="273,107,403,132"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="482,122,403,122,403,117,482,117"/>
+<area shape="rect" id="Node000006" href="$classtoptruthjets.html#a39c1afcec2800b351fc047fbfa4f009f" title="Alternative selection strategy method." alt="" coords="258,156,418,181"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="483,140,399,159,398,153,482,135"/>
+<area shape="rect" id="Node000007" href="$classparton.html#a4045341bd771afd7ac452fa1dc6aea8e" title=" " alt="" coords="228,205,448,231"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="532,150,493,175,449,196,414,208,412,203,447,192,490,170,529,145"/>
+<area shape="rect" id="Node000003" href="$classcombinatorial.html#a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" title="Alternative selection strategy method." alt="" coords="5,5,180,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="218,21,180,21,180,15,218,15"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="258,205,227,197,123,159,125,154,229,191,260,200"/>
+</map>

@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__operators__cuda" kind="group">
+    <compoundname>operators_cuda</compoundname>
+    <title>Operators CUDA Module</title>
+    <briefdescription>
+<para>GPU-accelerated mathematical operators. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__operators__cuda_1operators_functions">
+<title>Available Functions</title>
+<para>The <computeroutput><ref refid="namespaceoperators__" kindref="compound">operators_</ref></computeroutput> namespace provides mathematical operations commonly used in physics calculations.</para>
+<sect2 id="group__operators__cuda_1operators_vector">
+<title>Vector Operations</title>
+<para><table rows="5" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Dot()</computeroutput>   </para>
+</entry><entry thead="no"><para>v1, v2   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Dot product    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Cross()</computeroutput>   </para>
+</entry><entry thead="no"><para>v1, v2   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Cross product    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>CosTheta()</computeroutput>   </para>
+</entry><entry thead="no"><para>v1, v2   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Cosine of angle between vectors    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>SinTheta()</computeroutput>   </para>
+</entry><entry thead="no"><para>v1, v2   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Sine of angle between vectors   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="group__operators__cuda_1operators_rotation">
+<title>Rotation Matrices</title>
+<para><table rows="5" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Rx()</computeroutput>   </para>
+</entry><entry thead="no"><para>angle   </para>
+</entry><entry thead="no"><para>Tensor[3,3]   </para>
+</entry><entry thead="no"><para>Rotation matrix around X-axis    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Ry()</computeroutput>   </para>
+</entry><entry thead="no"><para>angle   </para>
+</entry><entry thead="no"><para>Tensor[3,3]   </para>
+</entry><entry thead="no"><para>Rotation matrix around Y-axis    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Rz()</computeroutput>   </para>
+</entry><entry thead="no"><para>angle   </para>
+</entry><entry thead="no"><para>Tensor[3,3]   </para>
+</entry><entry thead="no"><para>Rotation matrix around Z-axis    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>RT()</computeroutput>   </para>
+</entry><entry thead="no"><para>pmu, phi, theta   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Combined rotation/translation   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="group__operators__cuda_1operators_matrix">
+<title>Matrix Operations</title>
+<para><table rows="5" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>CoFactors()</computeroutput>   </para>
+</entry><entry thead="no"><para>matrix   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Cofactor matrix    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Determinant()</computeroutput>   </para>
+</entry><entry thead="no"><para>matrix   </para>
+</entry><entry thead="no"><para>Tensor   </para>
+</entry><entry thead="no"><para>Matrix determinant    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Inverse()</computeroutput>   </para>
+</entry><entry thead="no"><para>matrix   </para>
+</entry><entry thead="no"><para>(Tensor, Tensor)   </para>
+</entry><entry thead="no"><para>Matrix inverse    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Eigenvalue()</computeroutput>   </para>
+</entry><entry thead="no"><para>matrix   </para>
+</entry><entry thead="no"><para>(Tensor, Tensor)   </para>
+</entry><entry thead="no"><para>Eigenvalues   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

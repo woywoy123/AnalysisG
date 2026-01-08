@@ -1,0 +1,2747 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classlossfx" kind="class" language="C++" prot="public">
+    <compoundname>lossfx</compoundname>
+    <basecompoundref refid="classtools" prot="public" virt="non-virtual">tools</basecompoundref>
+    <includes refid="lossfx_8h" local="no">lossfx.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" prot="private" static="no" mutable="no">
+        <type>torch::optim::Adam *</type>
+        <definition>torch::optim::Adam* lossfx::m_adam</definition>
+        <argsstring></argsstring>
+        <name>m_adam</name>
+        <qualifiedname>lossfx::m_adam</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="59" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="59" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1aacba578f0f439b9346ac23d54dbbcf15" compoundref="optimizer__config_8cxx" startline="3" endline="11">build_adam</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a583a624ee84b31e8e1044f457db64656" prot="private" static="no" mutable="no">
+        <type>torch::optim::Adagrad *</type>
+        <definition>torch::optim::Adagrad* lossfx::m_adagrad</definition>
+        <argsstring></argsstring>
+        <name>m_adagrad</name>
+        <qualifiedname>lossfx::m_adagrad</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="60" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="60" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a07ff248174aba99522c667988ac6ea88" compoundref="optimizer__config_8cxx" startline="13" endline="21">build_adagrad</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" prot="private" static="no" mutable="no">
+        <type>torch::optim::AdamW *</type>
+        <definition>torch::optim::AdamW* lossfx::m_adamw</definition>
+        <argsstring></argsstring>
+        <name>m_adamw</name>
+        <qualifiedname>lossfx::m_adamw</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="61" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a325d4d01cb1010736fc2a21b781e192b" compoundref="optimizer__config_8cxx" startline="23" endline="31">build_adamw</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" prot="private" static="no" mutable="no">
+        <type>torch::optim::LBFGS *</type>
+        <definition>torch::optim::LBFGS* lossfx::m_lbfgs</definition>
+        <argsstring></argsstring>
+        <name>m_lbfgs</name>
+        <qualifiedname>lossfx::m_lbfgs</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="62" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="62" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a5a00feb19bbe247285eadfbd66f2dcb3" compoundref="optimizer__config_8cxx" startline="33" endline="43">build_lbfgs</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ac48de70702743e5373f286dc296c3fa3" prot="private" static="no" mutable="no">
+        <type>torch::optim::RMSprop *</type>
+        <definition>torch::optim::RMSprop* lossfx::m_rmsprop</definition>
+        <argsstring></argsstring>
+        <name>m_rmsprop</name>
+        <qualifiedname>lossfx::m_rmsprop</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="63" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="63" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+        <referencedby refid="classlossfx_1a14a8ead313c89c9f668fe6287edb0eed" compoundref="optimizer__config_8cxx" startline="45" endline="55">build_rmsprop</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a1998f85bb4b642111588ed3665f51d82" prot="private" static="no" mutable="no">
+        <type>torch::optim::SGD *</type>
+        <definition>torch::optim::SGD* lossfx::m_sgd</definition>
+        <argsstring></argsstring>
+        <name>m_sgd</name>
+        <qualifiedname>lossfx::m_sgd</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="64" column="32" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="64" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+        <referencedby refid="classlossfx_1af24d08de685c3bdb88029a9a2d30dc8b" compoundref="optimizer__config_8cxx" startline="57" endline="65">build_sgd</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" prot="private" static="no" mutable="no">
+        <type>torch::nn::BCELossImpl *</type>
+        <definition>torch::nn::BCELossImpl* lossfx::m_bce</definition>
+        <argsstring></argsstring>
+        <name>m_bce</name>
+        <qualifiedname>lossfx::m_bce</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="66" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="66" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" prot="private" static="no" mutable="no">
+        <type>torch::nn::BCEWithLogitsLossImpl *</type>
+        <definition>torch::nn::BCEWithLogitsLossImpl* lossfx::m_bce_with_logits</definition>
+        <argsstring></argsstring>
+        <name>m_bce_with_logits</name>
+        <qualifiedname>lossfx::m_bce_with_logits</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="67" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="67" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" prot="private" static="no" mutable="no">
+        <type>torch::nn::CosineEmbeddingLossImpl *</type>
+        <definition>torch::nn::CosineEmbeddingLossImpl* lossfx::m_cosine_embedding</definition>
+        <argsstring></argsstring>
+        <name>m_cosine_embedding</name>
+        <qualifiedname>lossfx::m_cosine_embedding</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="68" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="68" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" prot="private" static="no" mutable="no">
+        <type>torch::nn::CrossEntropyLossImpl *</type>
+        <definition>torch::nn::CrossEntropyLossImpl* lossfx::m_cross_entropy</definition>
+        <argsstring></argsstring>
+        <name>m_cross_entropy</name>
+        <qualifiedname>lossfx::m_cross_entropy</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="69" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="69" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ac6652f7172778a3a93986121eb5139b8" prot="private" static="no" mutable="no">
+        <type>torch::nn::CTCLossImpl *</type>
+        <definition>torch::nn::CTCLossImpl* lossfx::m_ctc</definition>
+        <argsstring></argsstring>
+        <name>m_ctc</name>
+        <qualifiedname>lossfx::m_ctc</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="70" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="70" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1af84f965aa88d89668acea7b64aa66681" prot="private" static="no" mutable="no">
+        <type>torch::nn::HingeEmbeddingLossImpl *</type>
+        <definition>torch::nn::HingeEmbeddingLossImpl* lossfx::m_hinge_embedding</definition>
+        <argsstring></argsstring>
+        <name>m_hinge_embedding</name>
+        <qualifiedname>lossfx::m_hinge_embedding</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="71" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="71" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" prot="private" static="no" mutable="no">
+        <type>torch::nn::HuberLossImpl *</type>
+        <definition>torch::nn::HuberLossImpl* lossfx::m_huber</definition>
+        <argsstring></argsstring>
+        <name>m_huber</name>
+        <qualifiedname>lossfx::m_huber</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="72" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="72" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1af8e01f1208c6461ade69efaac64578af" prot="private" static="no" mutable="no">
+        <type>torch::nn::KLDivLossImpl *</type>
+        <definition>torch::nn::KLDivLossImpl* lossfx::m_kl_div</definition>
+        <argsstring></argsstring>
+        <name>m_kl_div</name>
+        <qualifiedname>lossfx::m_kl_div</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="73" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="73" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a8371d45ba54447881621e72289ecaae1" prot="private" static="no" mutable="no">
+        <type>torch::nn::L1LossImpl *</type>
+        <definition>torch::nn::L1LossImpl* lossfx::m_l1</definition>
+        <argsstring></argsstring>
+        <name>m_l1</name>
+        <qualifiedname>lossfx::m_l1</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="74" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="74" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1aa8db0e5614312643942001da0ce715cd" prot="private" static="no" mutable="no">
+        <type>torch::nn::MarginRankingLossImpl *</type>
+        <definition>torch::nn::MarginRankingLossImpl* lossfx::m_margin_ranking</definition>
+        <argsstring></argsstring>
+        <name>m_margin_ranking</name>
+        <qualifiedname>lossfx::m_margin_ranking</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="75" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="75" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a68742fc97a5805acde39e4572644b39e" prot="private" static="no" mutable="no">
+        <type>torch::nn::MSELossImpl *</type>
+        <definition>torch::nn::MSELossImpl* lossfx::m_mse</definition>
+        <argsstring></argsstring>
+        <name>m_mse</name>
+        <qualifiedname>lossfx::m_mse</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="76" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="76" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" prot="private" static="no" mutable="no">
+        <type>torch::nn::MultiLabelMarginLossImpl *</type>
+        <definition>torch::nn::MultiLabelMarginLossImpl* lossfx::m_multi_label_margin</definition>
+        <argsstring></argsstring>
+        <name>m_multi_label_margin</name>
+        <qualifiedname>lossfx::m_multi_label_margin</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="77" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="77" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" prot="private" static="no" mutable="no">
+        <type>torch::nn::MultiLabelSoftMarginLossImpl *</type>
+        <definition>torch::nn::MultiLabelSoftMarginLossImpl* lossfx::m_multi_label_soft_margin</definition>
+        <argsstring></argsstring>
+        <name>m_multi_label_soft_margin</name>
+        <qualifiedname>lossfx::m_multi_label_soft_margin</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="78" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="78" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a26f160dc1711516c779839c79c6195a9" prot="private" static="no" mutable="no">
+        <type>torch::nn::MultiMarginLossImpl *</type>
+        <definition>torch::nn::MultiMarginLossImpl* lossfx::m_multi_margin</definition>
+        <argsstring></argsstring>
+        <name>m_multi_margin</name>
+        <qualifiedname>lossfx::m_multi_margin</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="79" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="79" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" prot="private" static="no" mutable="no">
+        <type>torch::nn::NLLLossImpl *</type>
+        <definition>torch::nn::NLLLossImpl* lossfx::m_nll</definition>
+        <argsstring></argsstring>
+        <name>m_nll</name>
+        <qualifiedname>lossfx::m_nll</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="80" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="80" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" prot="private" static="no" mutable="no">
+        <type>torch::nn::PoissonNLLLossImpl *</type>
+        <definition>torch::nn::PoissonNLLLossImpl* lossfx::m_poisson_nll</definition>
+        <argsstring></argsstring>
+        <name>m_poisson_nll</name>
+        <qualifiedname>lossfx::m_poisson_nll</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="81" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="81" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1afe5f56e596b8c661752faaa23951f604" prot="private" static="no" mutable="no">
+        <type>torch::nn::SmoothL1LossImpl *</type>
+        <definition>torch::nn::SmoothL1LossImpl* lossfx::m_smooth_l1</definition>
+        <argsstring></argsstring>
+        <name>m_smooth_l1</name>
+        <qualifiedname>lossfx::m_smooth_l1</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="82" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="82" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" prot="private" static="no" mutable="no">
+        <type>torch::nn::SoftMarginLossImpl *</type>
+        <definition>torch::nn::SoftMarginLossImpl* lossfx::m_soft_margin</definition>
+        <argsstring></argsstring>
+        <name>m_soft_margin</name>
+        <qualifiedname>lossfx::m_soft_margin</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="83" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="83" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" prot="private" static="no" mutable="no">
+        <type>torch::nn::TripletMarginLossImpl *</type>
+        <definition>torch::nn::TripletMarginLossImpl* lossfx::m_triplet_margin</definition>
+        <argsstring></argsstring>
+        <name>m_triplet_margin</name>
+        <qualifiedname>lossfx::m_triplet_margin</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="84" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="84" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classlossfx_1a2831c952f193c87cdf6d4091b8814119" prot="private" static="no" mutable="no">
+        <type>torch::nn::TripletMarginWithDistanceLossImpl *</type>
+        <definition>torch::nn::TripletMarginWithDistanceLossImpl* lossfx::m_triplet_margin_with_distance</definition>
+        <argsstring></argsstring>
+        <name>m_triplet_margin_with_distance</name>
+        <qualifiedname>lossfx::m_triplet_margin_with_distance</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="85" column="54" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="85" bodyend="-1"/>
+        <referencedby refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" compoundref="lossfx_8cxx" startline="4" endline="31">~lossfx</referencedby>
+        <referencedby refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" compoundref="lossfx_8cxx" startline="48" endline="74">build_loss_function</referencedby>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classlossfx_1a0dfb87cf32550ff80324405e91a4d683" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>lossfx::lossfx</definition>
+        <argsstring>()</argsstring>
+        <name>lossfx</name>
+        <qualifiedname>lossfx::lossfx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="15" column="9" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="3" bodyend="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>lossfx::~lossfx</definition>
+        <argsstring>()</argsstring>
+        <name>~lossfx</name>
+        <qualifiedname>lossfx::~lossfx</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="16" column="9" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="4" bodyend="31"/>
+        <references refid="classlossfx_1a583a624ee84b31e8e1044f457db64656" compoundref="lossfx_8h" startline="60">m_adagrad</references>
+        <references refid="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" compoundref="lossfx_8h" startline="59">m_adam</references>
+        <references refid="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" compoundref="lossfx_8h" startline="61">m_adamw</references>
+        <references refid="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" compoundref="lossfx_8h" startline="66">m_bce</references>
+        <references refid="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" compoundref="lossfx_8h" startline="67">m_bce_with_logits</references>
+        <references refid="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" compoundref="lossfx_8h" startline="68">m_cosine_embedding</references>
+        <references refid="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" compoundref="lossfx_8h" startline="69">m_cross_entropy</references>
+        <references refid="classlossfx_1ac6652f7172778a3a93986121eb5139b8" compoundref="lossfx_8h" startline="70">m_ctc</references>
+        <references refid="classlossfx_1af84f965aa88d89668acea7b64aa66681" compoundref="lossfx_8h" startline="71">m_hinge_embedding</references>
+        <references refid="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" compoundref="lossfx_8h" startline="72">m_huber</references>
+        <references refid="classlossfx_1af8e01f1208c6461ade69efaac64578af" compoundref="lossfx_8h" startline="73">m_kl_div</references>
+        <references refid="classlossfx_1a8371d45ba54447881621e72289ecaae1" compoundref="lossfx_8h" startline="74">m_l1</references>
+        <references refid="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" compoundref="lossfx_8h" startline="62">m_lbfgs</references>
+        <references refid="classlossfx_1aa8db0e5614312643942001da0ce715cd" compoundref="lossfx_8h" startline="75">m_margin_ranking</references>
+        <references refid="classlossfx_1a68742fc97a5805acde39e4572644b39e" compoundref="lossfx_8h" startline="76">m_mse</references>
+        <references refid="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" compoundref="lossfx_8h" startline="77">m_multi_label_margin</references>
+        <references refid="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" compoundref="lossfx_8h" startline="78">m_multi_label_soft_margin</references>
+        <references refid="classlossfx_1a26f160dc1711516c779839c79c6195a9" compoundref="lossfx_8h" startline="79">m_multi_margin</references>
+        <references refid="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" compoundref="lossfx_8h" startline="80">m_nll</references>
+        <references refid="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" compoundref="lossfx_8h" startline="81">m_poisson_nll</references>
+        <references refid="classlossfx_1ac48de70702743e5373f286dc296c3fa3" compoundref="lossfx_8h" startline="63">m_rmsprop</references>
+        <references refid="classlossfx_1a1998f85bb4b642111588ed3665f51d82" compoundref="lossfx_8h" startline="64">m_sgd</references>
+        <references refid="classlossfx_1afe5f56e596b8c661752faaa23951f604" compoundref="lossfx_8h" startline="82">m_smooth_l1</references>
+        <references refid="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" compoundref="lossfx_8h" startline="83">m_soft_margin</references>
+        <references refid="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" compoundref="lossfx_8h" startline="84">m_triplet_margin</references>
+        <references refid="classlossfx_1a2831c952f193c87cdf6d4091b8814119" compoundref="lossfx_8h" startline="85">m_triplet_margin_with_distance</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a1ff4ab72a5193a641f3184f2fa77daf9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref></type>
+        <definition>loss_enum lossfx::loss_string</definition>
+        <argsstring>(std::string name)</argsstring>
+        <name>loss_string</name>
+        <qualifiedname>lossfx::loss_string</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="18" column="19" bodyfile="modules/lossfx/cxx/switching.cxx" bodystart="3" bodyend="26"/>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268">bce</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54">bce_with_logits</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd">cosine_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd">cross_entropy</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f">ctc</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965">hinge_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028">huber</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a9200d0e1b2d19e36dcfe3d5c95adf0c0">invalid_loss</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae">kl_div</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a">l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b">margin_ranking</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409">mse</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6">multi_label_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776">multi_label_soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e">multi_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c">nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82">poisson_nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d">smooth_l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc">soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1">triplet_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76">triplet_margin_with_distance</references>
+        <referencedby refid="classmodel__template_1a977402549135f0f763157b1282b44173" compoundref="model__lossfx_8cxx" startline="3" endline="14">model_template::set_output_features</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a7c434ad6cf74c729de1fa85674e93e04" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65d" kindref="member">opt_enum</ref></type>
+        <definition>opt_enum lossfx::optim_string</definition>
+        <argsstring>(std::string name)</argsstring>
+        <name>optim_string</name>
+        <qualifiedname>lossfx::optim_string</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="19" column="18" bodyfile="modules/lossfx/cxx/switching.cxx" bodystart="28" bodyend="37"/>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65daa0f35e86dd5bb2b719f97ea019f94d11">adagrad</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da1d7c2923c1684726dc23d2901c4d8157">adam</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae07a255e00ea5c3cf8c1133216345d22">adamw</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da633e37fcfedfc73d71e9cd57dc6b265c">invalid_optimizer</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da4632d55006c23361062c3507792ee9a4">lbfgs</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae5fa12a38876eb9d9260de4f93cf9765">rmsprop</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da0f7e401c396b92d3864b22a970fa322a">sgd</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::loss</definition>
+        <argsstring>(torch::Tensor *pred, torch::Tensor *truth, loss_enum lss)</argsstring>
+        <name>loss</name>
+        <qualifiedname>lossfx::loss</qualifiedname>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <param>
+          <type><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref></type>
+          <declname>lss</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="20" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="3" bodyend="27"/>
+        <references refid="classlossfx_1a5a3c5b59645060ddbf22b4208c443da4" compoundref="loss__config_8cxx" startline="29" endline="31">_fx_loss</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268">bce</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54">bce_with_logits</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd">cosine_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd">cross_entropy</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f">ctc</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965">hinge_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028">huber</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae">kl_div</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a">l1</references>
+        <references refid="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" compoundref="lossfx_8h" startline="66">m_bce</references>
+        <references refid="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" compoundref="lossfx_8h" startline="67">m_bce_with_logits</references>
+        <references refid="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" compoundref="lossfx_8h" startline="68">m_cosine_embedding</references>
+        <references refid="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" compoundref="lossfx_8h" startline="69">m_cross_entropy</references>
+        <references refid="classlossfx_1ac6652f7172778a3a93986121eb5139b8" compoundref="lossfx_8h" startline="70">m_ctc</references>
+        <references refid="classlossfx_1af84f965aa88d89668acea7b64aa66681" compoundref="lossfx_8h" startline="71">m_hinge_embedding</references>
+        <references refid="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" compoundref="lossfx_8h" startline="72">m_huber</references>
+        <references refid="classlossfx_1af8e01f1208c6461ade69efaac64578af" compoundref="lossfx_8h" startline="73">m_kl_div</references>
+        <references refid="classlossfx_1a8371d45ba54447881621e72289ecaae1" compoundref="lossfx_8h" startline="74">m_l1</references>
+        <references refid="classlossfx_1aa8db0e5614312643942001da0ce715cd" compoundref="lossfx_8h" startline="75">m_margin_ranking</references>
+        <references refid="classlossfx_1a68742fc97a5805acde39e4572644b39e" compoundref="lossfx_8h" startline="76">m_mse</references>
+        <references refid="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" compoundref="lossfx_8h" startline="77">m_multi_label_margin</references>
+        <references refid="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" compoundref="lossfx_8h" startline="78">m_multi_label_soft_margin</references>
+        <references refid="classlossfx_1a26f160dc1711516c779839c79c6195a9" compoundref="lossfx_8h" startline="79">m_multi_margin</references>
+        <references refid="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" compoundref="lossfx_8h" startline="80">m_nll</references>
+        <references refid="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" compoundref="lossfx_8h" startline="81">m_poisson_nll</references>
+        <references refid="classlossfx_1afe5f56e596b8c661752faaa23951f604" compoundref="lossfx_8h" startline="82">m_smooth_l1</references>
+        <references refid="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" compoundref="lossfx_8h" startline="83">m_soft_margin</references>
+        <references refid="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" compoundref="lossfx_8h" startline="84">m_triplet_margin</references>
+        <references refid="classlossfx_1a2831c952f193c87cdf6d4091b8814119" compoundref="lossfx_8h" startline="85">m_triplet_margin_with_distance</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b">margin_ranking</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409">mse</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6">multi_label_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776">multi_label_soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e">multi_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c">nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82">poisson_nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d">smooth_l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc">soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1">triplet_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76">triplet_margin_with_distance</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::weight_init</definition>
+        <argsstring>(torch::nn::Sequential *data, mlp_init method)</argsstring>
+        <name>weight_init</name>
+        <qualifiedname>lossfx::weight_init</qualifiedname>
+        <param>
+          <type>torch::nn::Sequential *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type><ref refid="model__template_8h_1a04569a45296869bf184d4b79d10487dd" kindref="member">mlp_init</ref></type>
+          <declname>method</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="21" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="113" bodyend="123"/>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487ddab341df97cd35fa754dcf86e9bfec7158">kaiming_normal</references>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487ddaa3168d42f87e37f681a0319b5f2cff8a">kaiming_uniform</references>
+        <references refid="optimizer__config_8cxx_1a04ec0ccc2e5dd28ea3d164fa76f82b23" compoundref="optimizer__config_8cxx" startline="99" endline="104">m_kaiming_normal</references>
+        <references refid="optimizer__config_8cxx_1a7f53951aa8610af52f05dcc4082fa07d" compoundref="optimizer__config_8cxx" startline="106" endline="111">m_kaiming_uniform</references>
+        <references refid="optimizer__config_8cxx_1aa1218ff1d6ef4abd2077b40874aae4b8" compoundref="optimizer__config_8cxx" startline="84" endline="89">m_normal</references>
+        <references refid="optimizer__config_8cxx_1a43ccffce9ce22dfa1c982d01a58c8353" compoundref="optimizer__config_8cxx" startline="91" endline="96">m_uniform</references>
+        <references refid="optimizer__config_8cxx_1a8172f201c23694e958293582aaec3694" compoundref="optimizer__config_8cxx" startline="70" endline="75">m_xavier_normal</references>
+        <references refid="optimizer__config_8cxx_1ab57c9a33f48e0ba646534904feca4d4a" compoundref="optimizer__config_8cxx" startline="77" endline="82">m_xavier_uniform</references>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487ddaebc81705969b8c5ae986b0b2ec08d1d5" compoundref="model__template_8h" startline="33">normal</references>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487dda56013d9ac59a24fb94d9acb932a04b2f" compoundref="model__template_8h" startline="34">uniform</references>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487dda46569d558799d5521dee1b9492ae97d7">xavier_normal</references>
+        <references refid="model__template_8h_1a04569a45296869bf184d4b79d10487ddaca77cd02f782fb385e2cc451f3b2918a">xavier_uniform</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::optim::Optimizer *</type>
+        <definition>torch::optim::Optimizer * lossfx::build_optimizer</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_optimizer</name>
+        <qualifiedname>lossfx::build_optimizer</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="23" column="33" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="33" bodyend="46"/>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65daa0f35e86dd5bb2b719f97ea019f94d11">adagrad</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da1d7c2923c1684726dc23d2901c4d8157">adam</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae07a255e00ea5c3cf8c1133216345d22">adamw</references>
+        <references refid="classlossfx_1a07ff248174aba99522c667988ac6ea88" compoundref="optimizer__config_8cxx" startline="13" endline="21">build_adagrad</references>
+        <references refid="classlossfx_1aacba578f0f439b9346ac23d54dbbcf15" compoundref="optimizer__config_8cxx" startline="3" endline="11">build_adam</references>
+        <references refid="classlossfx_1a325d4d01cb1010736fc2a21b781e192b" compoundref="optimizer__config_8cxx" startline="23" endline="31">build_adamw</references>
+        <references refid="classlossfx_1a5a00feb19bbe247285eadfbd66f2dcb3" compoundref="optimizer__config_8cxx" startline="33" endline="43">build_lbfgs</references>
+        <references refid="classlossfx_1a14a8ead313c89c9f668fe6287edb0eed" compoundref="optimizer__config_8cxx" startline="45" endline="55">build_rmsprop</references>
+        <references refid="classlossfx_1af24d08de685c3bdb88029a9a2d30dc8b" compoundref="optimizer__config_8cxx" startline="57" endline="65">build_sgd</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da4632d55006c23361062c3507792ee9a4">lbfgs</references>
+        <references refid="classlossfx_1a583a624ee84b31e8e1044f457db64656" compoundref="lossfx_8h" startline="60">m_adagrad</references>
+        <references refid="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" compoundref="lossfx_8h" startline="59">m_adam</references>
+        <references refid="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" compoundref="lossfx_8h" startline="61">m_adamw</references>
+        <references refid="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" compoundref="lossfx_8h" startline="62">m_lbfgs</references>
+        <references refid="classlossfx_1ac48de70702743e5373f286dc296c3fa3" compoundref="lossfx_8h" startline="63">m_rmsprop</references>
+        <references refid="classlossfx_1a1998f85bb4b642111588ed3665f51d82" compoundref="lossfx_8h" startline="64">m_sgd</references>
+        <references refid="classlossfx_1a7c434ad6cf74c729de1fa85674e93e04" compoundref="switching_8cxx" startline="28" endline="37">optim_string</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65dae5fa12a38876eb9d9260de4f93cf9765">rmsprop</references>
+        <references refid="enums_8h_1a090b1946b276b3292ab70edc3bf1e65da0f7e401c396b92d3864b22a970fa322a">sgd</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool lossfx::build_loss_function</definition>
+        <argsstring>(loss_enum lss)</argsstring>
+        <name>build_loss_function</name>
+        <qualifiedname>lossfx::build_loss_function</qualifiedname>
+        <param>
+          <type><ref refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4" kindref="member">loss_enum</ref></type>
+          <declname>lss</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="24" column="14" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="48" bodyend="74"/>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a8460edce9cfd317d188e4094a829d268">bce</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a4b6eb4a6d3c80f0b45a6d2729d88bd54">bce_with_logits</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac0da5373194331377b9493c324577fcd">cosine_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a781976f30d9e46de27ab80d7d826f8cd">cross_entropy</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a07fe9417379102199a4905bba9447d9f">ctc</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a287e98c92c24cbd0faa1478b05267965">hinge_embedding</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3291aaac20f3d603d96744c1f0890028">huber</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ad0dca0c7cabb02ce1fb3ca60d7d33fae">kl_div</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a377fd569971eedeba8fbea28434a390a">l1</references>
+        <references refid="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" compoundref="lossfx_8h" startline="66">m_bce</references>
+        <references refid="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" compoundref="lossfx_8h" startline="67">m_bce_with_logits</references>
+        <references refid="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" compoundref="lossfx_8h" startline="68">m_cosine_embedding</references>
+        <references refid="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" compoundref="lossfx_8h" startline="69">m_cross_entropy</references>
+        <references refid="classlossfx_1ac6652f7172778a3a93986121eb5139b8" compoundref="lossfx_8h" startline="70">m_ctc</references>
+        <references refid="classlossfx_1af84f965aa88d89668acea7b64aa66681" compoundref="lossfx_8h" startline="71">m_hinge_embedding</references>
+        <references refid="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" compoundref="lossfx_8h" startline="72">m_huber</references>
+        <references refid="classlossfx_1af8e01f1208c6461ade69efaac64578af" compoundref="lossfx_8h" startline="73">m_kl_div</references>
+        <references refid="classlossfx_1a8371d45ba54447881621e72289ecaae1" compoundref="lossfx_8h" startline="74">m_l1</references>
+        <references refid="classlossfx_1aa8db0e5614312643942001da0ce715cd" compoundref="lossfx_8h" startline="75">m_margin_ranking</references>
+        <references refid="classlossfx_1a68742fc97a5805acde39e4572644b39e" compoundref="lossfx_8h" startline="76">m_mse</references>
+        <references refid="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" compoundref="lossfx_8h" startline="77">m_multi_label_margin</references>
+        <references refid="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" compoundref="lossfx_8h" startline="78">m_multi_label_soft_margin</references>
+        <references refid="classlossfx_1a26f160dc1711516c779839c79c6195a9" compoundref="lossfx_8h" startline="79">m_multi_margin</references>
+        <references refid="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" compoundref="lossfx_8h" startline="80">m_nll</references>
+        <references refid="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" compoundref="lossfx_8h" startline="81">m_poisson_nll</references>
+        <references refid="classlossfx_1afe5f56e596b8c661752faaa23951f604" compoundref="lossfx_8h" startline="82">m_smooth_l1</references>
+        <references refid="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" compoundref="lossfx_8h" startline="83">m_soft_margin</references>
+        <references refid="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" compoundref="lossfx_8h" startline="84">m_triplet_margin</references>
+        <references refid="classlossfx_1a2831c952f193c87cdf6d4091b8814119" compoundref="lossfx_8h" startline="85">m_triplet_margin_with_distance</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a5b4962920d8fac8709b19e3bdaa7fd2b">margin_ranking</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a7f04af006bdeba02616023b6e6c68409">mse</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a88fce617a00079ebdc676e7b1ca7d3e6">multi_label_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a3f7b800dc458e42692727f37e71e7776">multi_label_soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4abec3568ca5dc8bc57bfc38ea05c5546e">multi_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ac48f1775934ec894d2836d18cc34025c">nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4aafa5b2975d6d0d9b946a67ec56dadd82">poisson_nll</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4ab2f5e937ee27b943f474a71bef4bd68d">smooth_l1</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a1262c7917d237a7aaf50acc1d86ca6dc">soft_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a0c42fd404f3fb4389be2ca1b91be4fe1">triplet_margin</references>
+        <references refid="enums_8h_1a2a4ec8e1c0c344aaecca227c72c2eeb4a2aa70a3395f2f1604df452897e6d8b76">triplet_margin_with_distance</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::to</definition>
+        <argsstring>(torch::TensorOptions *)</argsstring>
+        <name>to</name>
+        <qualifiedname>lossfx::to</qualifiedname>
+        <param>
+          <type>torch::TensorOptions *</type>
+          <defname>op</defname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="25" column="14" bodyfile="modules/lossfx/cxx/lossfx.cxx" bodystart="76" bodyend="97"/>
+        <references refid="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" compoundref="lossfx_8h" startline="66">m_bce</references>
+        <references refid="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" compoundref="lossfx_8h" startline="67">m_bce_with_logits</references>
+        <references refid="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" compoundref="lossfx_8h" startline="68">m_cosine_embedding</references>
+        <references refid="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" compoundref="lossfx_8h" startline="69">m_cross_entropy</references>
+        <references refid="classlossfx_1ac6652f7172778a3a93986121eb5139b8" compoundref="lossfx_8h" startline="70">m_ctc</references>
+        <references refid="classlossfx_1af84f965aa88d89668acea7b64aa66681" compoundref="lossfx_8h" startline="71">m_hinge_embedding</references>
+        <references refid="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" compoundref="lossfx_8h" startline="72">m_huber</references>
+        <references refid="classlossfx_1af8e01f1208c6461ade69efaac64578af" compoundref="lossfx_8h" startline="73">m_kl_div</references>
+        <references refid="classlossfx_1a8371d45ba54447881621e72289ecaae1" compoundref="lossfx_8h" startline="74">m_l1</references>
+        <references refid="classlossfx_1aa8db0e5614312643942001da0ce715cd" compoundref="lossfx_8h" startline="75">m_margin_ranking</references>
+        <references refid="classlossfx_1a68742fc97a5805acde39e4572644b39e" compoundref="lossfx_8h" startline="76">m_mse</references>
+        <references refid="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" compoundref="lossfx_8h" startline="77">m_multi_label_margin</references>
+        <references refid="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" compoundref="lossfx_8h" startline="78">m_multi_label_soft_margin</references>
+        <references refid="classlossfx_1a26f160dc1711516c779839c79c6195a9" compoundref="lossfx_8h" startline="79">m_multi_margin</references>
+        <references refid="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" compoundref="lossfx_8h" startline="80">m_nll</references>
+        <references refid="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" compoundref="lossfx_8h" startline="81">m_poisson_nll</references>
+        <references refid="classlossfx_1afe5f56e596b8c661752faaa23951f604" compoundref="lossfx_8h" startline="82">m_smooth_l1</references>
+        <references refid="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" compoundref="lossfx_8h" startline="83">m_soft_margin</references>
+        <references refid="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" compoundref="lossfx_8h" startline="84">m_triplet_margin</references>
+        <references refid="classlossfx_1a2831c952f193c87cdf6d4091b8814119" compoundref="lossfx_8h" startline="85">m_triplet_margin_with_distance</references>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+        <referencedby refid="classlossfx_1a5a3c5b59645060ddbf22b4208c443da4" compoundref="loss__config_8cxx" startline="29" endline="31">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a69a625eb998a062525d5f1b64bb9abc4" compoundref="loss__config_8cxx" startline="33" endline="36">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1af687262ac7d99a1aed689fdc22ae92f6" compoundref="loss__config_8cxx" startline="43" endline="45">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1aa02bfeb76e2a68dd36a9d2925f2d32cc" compoundref="loss__config_8cxx" startline="52" endline="55">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a21af0ec515a7fbf427ddf981ade09423" compoundref="loss__config_8cxx" startline="57" endline="60">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a842c7af78750b162c6aa9360bade3470" compoundref="loss__config_8cxx" startline="62" endline="65">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1ab6d6edc04d81882e0ef68b1250b0d8e9" compoundref="loss__config_8cxx" startline="67" endline="70">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a650b2ac6d41d2c1b0f127cb10d512eee" compoundref="loss__config_8cxx" startline="77" endline="80">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1ad5e7aed7b55be27e4364db93cdbbe28f" compoundref="loss__config_8cxx" startline="82" endline="85">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1acad9701213595705f0eda32556daf4cc" compoundref="loss__config_8cxx" startline="87" endline="90">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a4aed2e4a95099472fe4f82b34058bde7" compoundref="loss__config_8cxx" startline="92" endline="94">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a37143dba84ab416ef2e2e78ae2fe3a29" compoundref="loss__config_8cxx" startline="96" endline="98">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1aebdfc428d88e1684ae2849c078f72d57" compoundref="loss__config_8cxx" startline="100" endline="102">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1acdc6ea18cbc56eb50054b9b1c072a645" compoundref="loss__config_8cxx" startline="104" endline="106">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a1d67ca12ba26d88cdd24c953eb44f64e" compoundref="loss__config_8cxx" startline="108" endline="110">_fx_loss</referencedby>
+        <referencedby refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::split</definition>
+        <argsstring>(std::string inpt, std::string del)</argsstring>
+        <name>split</name>
+        <qualifiedname>tools::split</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>del</declname>
+        </param>
+        <briefdescription>
+<para>Splits a string into a vector of substrings based on a delimiter. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input string to split. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>del</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The delimiter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of substrings. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="140" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="23" bodyend="36"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <referencedby refid="classanalysis_1a68b520bbdb4d591d7375f9ecd6532ce8" compoundref="event__build_8cxx" startline="4" endline="135">analysis::build_events</referencedby>
+        <referencedby refid="classanalysis_1a1c3e0d7bb80774d865586b18a1566704" compoundref="graph__build_8cxx" startline="3" endline="30">analysis::build_graphs</referencedby>
+        <referencedby refid="classanalysis_1a7b98125c72486407d782b2bc2ea67389" compoundref="inference__build_8cxx" startline="5" endline="139">analysis::build_inference</referencedby>
+        <referencedby refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" compoundref="event__template_8cxx" startline="78" endline="100">event_template::build_mapping</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classmeta_1aac47e377d2bbda2fac5a8cfc5ada7243" compoundref="meta_8cxx" startline="154" endline="198">meta::compiler</referencedby>
+        <referencedby refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" compoundref="tools_2cxx_2io_8cxx" startline="6" endline="16">tools::create_path</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classmeta_1a35d142708b4b66eeb857eb0c204e459b" compoundref="meta_8cxx" startline="274" endline="279">meta::hash</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" compoundref="struct__graph_8cxx" startline="235" endline="244">graph_t::meta_deserialize</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">dataloader::restore_graphs_</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+        <referencedby refid="classmetric__template_1a5209be08253548a7a56bd2f08db31a8c" compoundref="metric_2cxx_2properties_8cxx" startline="38" endline="76">metric_template::set_variables</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::trim</definition>
+        <argsstring>(std::string s)</argsstring>
+        <name>trim</name>
+        <qualifiedname>tools::trim</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Removes whitespace from the beginning and end of a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The trimmed string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="147" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string tools::type_name</definition>
+        <argsstring>()</argsstring>
+        <name>type_name</name>
+        <qualifiedname>tools::type_name</qualifiedname>
+        <briefdescription>
+<para>Gets the type name of a variable as a string (for debugging). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type to get the name of. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The name of the type as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Gets the type name via RTTI.</para>
+<para>&lt; Returns the type name.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="155" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="155" bodyend="158"/>
+        <referencedby refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" compoundref="event__template_8cxx" startline="78" endline="100">event_template::build_mapping</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>g</type>
+        <definition>g tools::sum</definition>
+        <argsstring>(std::vector&lt; g &gt; *inpt)</argsstring>
+        <name>sum</name>
+        <qualifiedname>tools::sum</qualifiedname>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Sums the elements of a vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of elements in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to sum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The sum of all elements. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Initialize the output variable.</para>
+<para>&lt; Return the sum.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="183" column="7" bodyfile="modules/tools/include/tools/tools.h" bodystart="183" bodyend="187"/>
+        <referencedby refid="classmetrics_1a15f20f34714224f09f44cf520ca6f271" compoundref="loss__plots_8cxx" startline="220" endline="226">metrics::add_th1f_accuracy</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classparticle__template_1a575d99bd23ac34125328e4d23518ff52" compoundref="modules_2particle_2cxx_2physics_8cxx" startline="3" endline="10">particle_template::DeltaR</referencedby>
+        <referencedby refid="classgraph__template_1aa2bef51e5e00b49425c8ac93bcd1f315" compoundref="graph__template_8cxx" startline="87" endline="146">graph_template::double_neutrino</referencedby>
+        <referencedby refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" compoundref="grift_8cxx" startline="112" endline="296">grift::forward</referencedby>
+        <referencedby refid="classrecursivegraphneuralnetwork_1a4b09bc8de8d9ecd0b4ff1ffa94deea98" compoundref="RecursiveGraphNeuralNetwork_8cxx" startline="143" endline="300">recursivegraphneuralnetwork::forward</referencedby>
+        <referencedby refid="classmatching_1a04995b471b7aed459aeec59b3ea9a81b" compoundref="matching_8cxx" startline="100" endline="143">matching::match_obj</referencedby>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">grift::message</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classlossfx_1aacba578f0f439b9346ac23d54dbbcf15" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_adam</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_adam</name>
+        <qualifiedname>lossfx::build_adam</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="28" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="3" bodyend="11"/>
+        <references refid="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" compoundref="lossfx_8h" startline="59">m_adam</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a07ff248174aba99522c667988ac6ea88" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_adagrad</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_adagrad</name>
+        <qualifiedname>lossfx::build_adagrad</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="29" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="13" bodyend="21"/>
+        <references refid="classlossfx_1a583a624ee84b31e8e1044f457db64656" compoundref="lossfx_8h" startline="60">m_adagrad</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a325d4d01cb1010736fc2a21b781e192b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_adamw</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_adamw</name>
+        <qualifiedname>lossfx::build_adamw</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="30" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="23" bodyend="31"/>
+        <references refid="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" compoundref="lossfx_8h" startline="61">m_adamw</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a5a00feb19bbe247285eadfbd66f2dcb3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_lbfgs</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_lbfgs</name>
+        <qualifiedname>lossfx::build_lbfgs</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="31" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="33" bodyend="43"/>
+        <references refid="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" compoundref="lossfx_8h" startline="62">m_lbfgs</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a14a8ead313c89c9f668fe6287edb0eed" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_rmsprop</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_rmsprop</name>
+        <qualifiedname>lossfx::build_rmsprop</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="32" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="45" bodyend="55"/>
+        <references refid="classlossfx_1ac48de70702743e5373f286dc296c3fa3" compoundref="lossfx_8h" startline="63">m_rmsprop</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1af24d08de685c3bdb88029a9a2d30dc8b" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lossfx::build_sgd</definition>
+        <argsstring>(optimizer_params_t *op, std::vector&lt; torch::Tensor &gt; *params)</argsstring>
+        <name>build_sgd</name>
+        <qualifiedname>lossfx::build_sgd</qualifiedname>
+        <param>
+          <type><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; torch::Tensor &gt; *</type>
+          <declname>params</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="33" column="14" bodyfile="modules/lossfx/cxx/optimizer_config.cxx" bodystart="57" bodyend="65"/>
+        <references refid="classlossfx_1a1998f85bb4b642111588ed3665f51d82" compoundref="lossfx_8h" startline="64">m_sgd</references>
+        <referencedby refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" compoundref="lossfx_8cxx" startline="33" endline="46">build_optimizer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a5a3c5b59645060ddbf22b4208c443da4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::BCELossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::BCELossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="36" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="29" bodyend="31"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+        <referencedby refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" compoundref="loss__config_8cxx" startline="3" endline="27">loss</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a69a625eb998a062525d5f1b64bb9abc4" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::BCEWithLogitsLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::BCEWithLogitsLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="37" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="33" bodyend="36"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a56935e03824196a34050727a8fb170da" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::CosineEmbeddingLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::CosineEmbeddingLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="38" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="38" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1af687262ac7d99a1aed689fdc22ae92f6" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::CrossEntropyLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::CrossEntropyLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="39" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="43" bodyend="45"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ad321d1e53a419104d6cae4be9dbce50d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::CTCLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::CTCLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="40" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="47" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1aa02bfeb76e2a68dd36a9d2925f2d32cc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::HingeEmbeddingLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::HingeEmbeddingLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="41" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="52" bodyend="55"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a21af0ec515a7fbf427ddf981ade09423" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::HuberLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::HuberLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="42" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="57" bodyend="60"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a842c7af78750b162c6aa9360bade3470" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::KLDivLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::KLDivLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="43" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="62" bodyend="65"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ab6d6edc04d81882e0ef68b1250b0d8e9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::L1LossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::L1LossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="44" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="67" bodyend="70"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1acba53b9019c7b8946d3ec17f0e10a084" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MarginRankingLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::MarginRankingLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="45" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="72" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a650b2ac6d41d2c1b0f127cb10d512eee" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MSELossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::MSELossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="46" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="77" bodyend="80"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ad5e7aed7b55be27e4364db93cdbbe28f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MultiLabelMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::MultiLabelMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="47" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="82" bodyend="85"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1acad9701213595705f0eda32556daf4cc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MultiLabelSoftMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::MultiLabelSoftMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="48" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="87" bodyend="90"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a4aed2e4a95099472fe4f82b34058bde7" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::MultiMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::MultiMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="49" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="92" bodyend="94"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a37143dba84ab416ef2e2e78ae2fe3a29" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::NLLLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::NLLLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="50" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="96" bodyend="98"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1aebdfc428d88e1684ae2849c078f72d57" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::PoissonNLLLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::PoissonNLLLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="51" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="100" bodyend="102"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1acdc6ea18cbc56eb50054b9b1c072a645" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::SmoothL1LossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::SmoothL1LossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="52" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="104" bodyend="106"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1a1d67ca12ba26d88cdd24c953eb44f64e" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::SoftMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::SoftMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="53" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="108" bodyend="110"/>
+        <references refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" compoundref="lossfx_8cxx" startline="76" endline="97">to</references>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1aa5b79ec835066824f34f559f624449a3" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::TripletMarginLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::TripletMarginLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="54" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="112" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classlossfx_1ae2d7f58b30de13327ad0fbcf8ec8975c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor lossfx::_fx_loss</definition>
+        <argsstring>(torch::nn::TripletMarginWithDistanceLossImpl *lossfx_, torch::Tensor *pred, torch::Tensor *truth)</argsstring>
+        <name>_fx_loss</name>
+        <qualifiedname>lossfx::_fx_loss</qualifiedname>
+        <param>
+          <type>torch::nn::TripletMarginWithDistanceLossImpl *</type>
+          <declname>lossfx_</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>pred</declname>
+        </param>
+        <param>
+          <type>torch::Tensor *</type>
+          <declname>truth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/lossfx/include/templates/lossfx.h" line="55" column="23" bodyfile="modules/lossfx/cxx/loss_config.cxx" bodystart="116" bodyend="118"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::create_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>create_path</name>
+        <qualifiedname>tools::create_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Creates a directory path, including parent directories if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to create. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="49" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="6" bodyend="16"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a7b98125c72486407d782b2bc2ea67389" compoundref="inference__build_8cxx" startline="5" endline="139">analysis::build_inference</referencedby>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="classanalysis_1ab1e46d4a55389c9159584cc1c4f217a0" compoundref="analysis_8cxx" startline="81" endline="95">analysis::build_project</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classmetrics_1a60ff488f6951bae8d98bc7a03bc6e464" compoundref="mass__plots_8cxx" startline="13" endline="115">metrics::dump_mass_plots</referencedby>
+        <referencedby refid="classmetric__template_1a422951eb9279ed05c885795ebeed0e5b" compoundref="metric_2cxx_2base_8cxx" startline="125" endline="163">metric_template::execute</referencedby>
+        <referencedby refid="classmetrics_1a160fdefa51ba1fd2135307d3722acc1d" compoundref="loss__plots_8cxx" startline="3" endline="43">metrics::generic_painter</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+        <referencedby refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::delete_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>delete_path</name>
+        <qualifiedname>tools::delete_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Deletes a directory path and its contents. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to delete. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="55" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="22" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::is_file</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>is_file</name>
+        <qualifiedname>tools::is_file</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a path refers to an existing file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the path is a file and exists, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="62" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="30" bodyend="33"/>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classanalysis_1a1c8b808d255b490be4ea86df4d29cdf1" compoundref="methods_8cxx" startline="7" endline="49">analysis::initialize_loop</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+        <referencedby refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::rename</definition>
+        <argsstring>(std::string start, std::string target)</argsstring>
+        <name>rename</name>
+        <qualifiedname>tools::rename</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+<para>Renames a file or directory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>start</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The original path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new path. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="69" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="18" bodyend="20"/>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::absolute_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>absolute_path</name>
+        <qualifiedname>tools::absolute_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Converts a relative path to an absolute path. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The absolute version of the path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="76" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="49" bodyend="51"/>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a68b520bbdb4d591d7375f9ecd6532ce8" compoundref="event__build_8cxx" startline="4" endline="135">analysis::build_events</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::ls</definition>
+        <argsstring>(std::string path, std::string ext=&quot;&quot;)</argsstring>
+        <name>ls</name>
+        <qualifiedname>tools::ls</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>ext</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+<para>Lists files in a directory, optionally filtered by extension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File extension filter. If empty, all files are listed. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of filenames in the directory. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="84" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="35" bodyend="47"/>
+        <references refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" compoundref="strings_8cxx" startline="71" endline="75">tools::ends_with</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1ae3bba702555507d8b6e5567c34d19142" compoundref="cache_8cxx" startline="334" endline="337">dataloader::restore_graphs</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val)</argsstring>
+        <name>to_string</name>
+        <qualifiedname>tools::to_string</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with standard precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="92" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="59" bodyend="63"/>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">dataloader::generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">dataloader::generate_test_set</referencedby>
+        <referencedby refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" compoundref="interfaces_8cxx" startline="152" endline="163">particle_template::get_hash</referencedby>
+        <referencedby refid="classtopefficiency_1aae4a7f46ed0d168dd12f6ab5e9074a76" compoundref="topefficiency_8cxx" startline="57" endline="79">topefficiency::region</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">dataloader::restore_dataset</referencedby>
+        <referencedby refid="classevent__template_1a9f5661b7516b43801913ab6fc897a80e" compoundref="event_2cxx_2properties_8cxx" startline="92" endline="97">event_template::set_hash</referencedby>
+        <referencedby refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" compoundref="selection_2cxx_2properties_8cxx" startline="11" endline="16">selection_template::set_hash</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classtopjets_1a72145e79c19febe5393d17220c980e2a" compoundref="topjets_8cxx" startline="22" endline="163">topjets::strategy</referencedby>
+        <referencedby refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" compoundref="toptruthjets_8cxx" startline="22" endline="163">toptruthjets::strategy</referencedby>
+        <referencedby refid="classparton_1a4045341bd771afd7ac452fa1dc6aea8e" compoundref="parton_8h" startline="22" endline="68">parton::top_mass_contribution</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val, int prec)</argsstring>
+        <name>to_string</name>
+        <qualifiedname>tools::to_string</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prec</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with specified precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of decimal places to consider. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="100" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="91" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::replace</definition>
+        <argsstring>(std::string *in, std::string repl_str, std::string repl_with)</argsstring>
+        <name>replace</name>
+        <qualifiedname>tools::replace</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_str</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_with</declname>
+        </param>
+        <briefdescription>
+<para>Replaces all occurrences of a substring in a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_with</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The replacement string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="108" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="5" bodyend="21"/>
+        <referencedby refid="classanalysis_1a1c3e0d7bb80774d865586b18a1566704" compoundref="graph__build_8cxx" startline="3" endline="30">analysis::build_graphs</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classmeta_1aa38115a3aaa4c30e30800d3f52c1a750" compoundref="meta_8cxx" startline="314" endline="317">meta::get_campaign</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_string</definition>
+        <argsstring>(std::string *inpt, std::string trg)</argsstring>
+        <name>has_string</name>
+        <qualifiedname>tools::has_string</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string contains a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the substring is found, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="116" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="65" bodyend="69"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classmeta_1aac47e377d2bbda2fac5a8cfc5ada7243" compoundref="meta_8cxx" startline="154" endline="198">meta::compiler</referencedby>
+        <referencedby refid="classmetrics_1a160fdefa51ba1fd2135307d3722acc1d" compoundref="loss__plots_8cxx" startline="3" endline="43">metrics::generic_painter</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">dataloader::restore_graphs_</referencedby>
+        <referencedby refid="classmeta_1a24d8657dbb9d0d8903725ee01fe22c14" compoundref="meta_8cxx" startline="226" endline="272">meta::scan_sow</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::ends_with</definition>
+        <argsstring>(std::string *inpt, std::string val)</argsstring>
+        <name>ends_with</name>
+        <qualifiedname>tools::ends_with</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string ends with a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to check for at the end. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string ends with the substring, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="124" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="71" bodyend="75"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_value</definition>
+        <argsstring>(std::vector&lt; std::string &gt; *data, std::string trg)</argsstring>
+        <name>has_value</name>
+        <qualifiedname>tools::has_value</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a vector of strings contains a specific string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string is found in the vector, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="132" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="77" bodyend="83"/>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::flush</definition>
+        <argsstring>(std::vector&lt; T * &gt; *inpt)</argsstring>
+        <name>flush</name>
+        <qualifiedname>tools::flush</qualifiedname>
+        <param>
+          <type>std::vector&lt; T * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Empties a vector and all objects it points to. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of pointers in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Loop through all elements in the vector.</para>
+<para>&lt; Delete the object the pointer points to.</para>
+<para>&lt; Set the pointer to nullptr to avoid dangling pointers.</para>
+<para>&lt; Clear the vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="167" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="167" bodyend="174"/>
+        <referencedby refid="classanalysis_1af5938086aabb68bf478a72b0593e4bb8" compoundref="analysis_8cxx" startline="36" endline="46">analysis::~analysis</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">dataloader::~dataloader</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classio_1a1c994985d2405202c19fb391cc43a5de" compoundref="io_2cxx_2root_8cxx" startline="358" endline="373">io::root_end</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::put</definition>
+        <argsstring>(std::vector&lt; g * &gt; *out, std::vector&lt; g * &gt; *src, std::vector&lt; int &gt; *trg)</argsstring>
+        <name>put</name>
+        <qualifiedname>tools::put</qualifiedname>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Fills a vector with pointers from another vector based on a selection index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects being pointed to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector to select from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a vector of indices for selection. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the output vector.</para>
+<para>&lt; Reserve space for the output elements.</para>
+<para>&lt; Loop through each selected index.</para>
+<para>&lt; Get the object at the selected index.</para>
+<para>&lt; Add it to the output vector.</para>
+<para>&lt; Mark the object as in use.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="197" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="197" bodyend="205"/>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">dataloader::get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">dataloader::get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">dataloader::get_test_set</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename C</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::extract</definition>
+        <argsstring>(std::vector&lt; T &gt; *prop, std::vector&lt; C * &gt; *src, void(*get_prop)(T *, C *))</argsstring>
+        <name>extract</name>
+        <qualifiedname>tools::extract</qualifiedname>
+        <param>
+          <type>std::vector&lt; T &gt; *</type>
+          <declname>prop</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; C * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>void(*)(T *, C *)</type>
+          <declname>get_prop</declname>
+        </param>
+        <briefdescription>
+<para>Extracts a specific property from a vector of objects into a new vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects in the source vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of the property to extract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill with property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector of objects. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>get_prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function pointer to extract the property from an object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the properties vector.</para>
+<para>&lt; Reserve space for the property values.</para>
+<para>&lt; Loop through each object in the source vector.</para>
+<para>&lt; Create a default-initialized property variable.</para>
+<para>&lt; Call the provided function to extract the property.</para>
+<para>&lt; Add the property value to the output vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="216" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="216" bodyend="224"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>lossfx</label>
+        <link refid="classlossfx"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>lossfx</label>
+        <link refid="classlossfx"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>-m_adam</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>-m_adagrad</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>-m_adamw</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>-m_lbfgs</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>-m_rmsprop</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>-m_sgd</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>-m_bce</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>-m_bce_with_logits</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>-m_cosine_embedding</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>-m_cross_entropy</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>-m_ctc</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>-m_hinge_embedding</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>-m_huber</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>-m_kl_div</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>-m_l1</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>-m_margin_ranking</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>-m_mse</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>-m_multi_label_margin</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>-m_multi_label_soft_margin</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>-m_multi_margin</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>-m_nll</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>-m_poisson_nll</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>-m_smooth_l1</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>-m_soft_margin</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>-m_triplet_margin</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>-m_triplet_margin_with_distance</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="9">
+        <label>BCELossImpl *</label>
+      </node>
+      <node id="10">
+        <label>BCEWithLogitsLossImpl *</label>
+      </node>
+      <node id="13">
+        <label>CTCLossImpl *</label>
+      </node>
+      <node id="11">
+        <label>CosineEmbeddingLossImpl *</label>
+      </node>
+      <node id="12">
+        <label>CrossEntropyLossImpl *</label>
+      </node>
+      <node id="14">
+        <label>HingeEmbeddingLossImpl *</label>
+      </node>
+      <node id="15">
+        <label>HuberLossImpl *</label>
+      </node>
+      <node id="16">
+        <label>KLDivLossImpl *</label>
+      </node>
+      <node id="17">
+        <label>L1LossImpl *</label>
+      </node>
+      <node id="19">
+        <label>MSELossImpl *</label>
+      </node>
+      <node id="18">
+        <label>MarginRankingLossImpl *</label>
+      </node>
+      <node id="20">
+        <label>MultiLabelMarginLossImpl *</label>
+      </node>
+      <node id="21">
+        <label>MultiLabelSoftMarginLossImpl *</label>
+      </node>
+      <node id="22">
+        <label>MultiMarginLossImpl *</label>
+      </node>
+      <node id="23">
+        <label>NLLLossImpl *</label>
+      </node>
+      <node id="24">
+        <label>PoissonNLLLossImpl *</label>
+      </node>
+      <node id="25">
+        <label>SmoothL1LossImpl *</label>
+      </node>
+      <node id="26">
+        <label>SoftMarginLossImpl *</label>
+      </node>
+      <node id="27">
+        <label>TripletMarginLossImpl *</label>
+      </node>
+      <node id="28">
+        <label>TripletMarginWithDistanceLossImpl *</label>
+      </node>
+      <node id="4">
+        <label>Adagrad *</label>
+      </node>
+      <node id="3">
+        <label>Adam *</label>
+      </node>
+      <node id="5">
+        <label>AdamW *</label>
+      </node>
+      <node id="6">
+        <label>LBFGS *</label>
+      </node>
+      <node id="7">
+        <label>RMSprop *</label>
+      </node>
+      <node id="8">
+        <label>SGD *</label>
+      </node>
+    </collaborationgraph>
+    <location file="modules/lossfx/include/templates/lossfx.h" line="12" column="1" bodyfile="modules/lossfx/include/templates/lossfx.h" bodystart="13" bodyend="87"/>
+    <listofallmembers>
+      <member refid="classlossfx_1a5a3c5b59645060ddbf22b4208c443da4" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a69a625eb998a062525d5f1b64bb9abc4" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a56935e03824196a34050727a8fb170da" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1af687262ac7d99a1aed689fdc22ae92f6" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ad321d1e53a419104d6cae4be9dbce50d" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1aa02bfeb76e2a68dd36a9d2925f2d32cc" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a21af0ec515a7fbf427ddf981ade09423" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a842c7af78750b162c6aa9360bade3470" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ab6d6edc04d81882e0ef68b1250b0d8e9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1acba53b9019c7b8946d3ec17f0e10a084" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a650b2ac6d41d2c1b0f127cb10d512eee" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ad5e7aed7b55be27e4364db93cdbbe28f" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1acad9701213595705f0eda32556daf4cc" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a4aed2e4a95099472fe4f82b34058bde7" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a37143dba84ab416ef2e2e78ae2fe3a29" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1aebdfc428d88e1684ae2849c078f72d57" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1acdc6ea18cbc56eb50054b9b1c072a645" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1a1d67ca12ba26d88cdd24c953eb44f64e" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1aa5b79ec835066824f34f559f624449a3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classlossfx_1ae2d7f58b30de13327ad0fbcf8ec8975c" prot="private" virt="non-virtual"><scope>lossfx</scope><name>_fx_loss</name></member>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>lossfx</scope><name>absolute_path</name></member>
+      <member refid="classlossfx_1a07ff248174aba99522c667988ac6ea88" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_adagrad</name></member>
+      <member refid="classlossfx_1aacba578f0f439b9346ac23d54dbbcf15" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_adam</name></member>
+      <member refid="classlossfx_1a325d4d01cb1010736fc2a21b781e192b" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_adamw</name></member>
+      <member refid="classlossfx_1a5a00feb19bbe247285eadfbd66f2dcb3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_lbfgs</name></member>
+      <member refid="classlossfx_1a04cb8aa2c016ad09ba210bce9b629c69" prot="public" virt="non-virtual"><scope>lossfx</scope><name>build_loss_function</name></member>
+      <member refid="classlossfx_1a88bfc205a07cf9057bfd9f71dbd25638" prot="public" virt="non-virtual"><scope>lossfx</scope><name>build_optimizer</name></member>
+      <member refid="classlossfx_1a14a8ead313c89c9f668fe6287edb0eed" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_rmsprop</name></member>
+      <member refid="classlossfx_1af24d08de685c3bdb88029a9a2d30dc8b" prot="private" virt="non-virtual"><scope>lossfx</scope><name>build_sgd</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>lossfx</scope><name>create_path</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>lossfx</scope><name>delete_path</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>lossfx</scope><name>ends_with</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>lossfx</scope><name>extract</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>lossfx</scope><name>flush</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>lossfx</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>lossfx</scope><name>has_value</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>lossfx</scope><name>is_file</name></member>
+      <member refid="classlossfx_1a56f4dbeac9098b7dbcb8dbc25851b025" prot="public" virt="non-virtual"><scope>lossfx</scope><name>loss</name></member>
+      <member refid="classlossfx_1a1ff4ab72a5193a641f3184f2fa77daf9" prot="public" virt="non-virtual"><scope>lossfx</scope><name>loss_string</name></member>
+      <member refid="classlossfx_1a0dfb87cf32550ff80324405e91a4d683" prot="public" virt="non-virtual"><scope>lossfx</scope><name>lossfx</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>lossfx</scope><name>ls</name></member>
+      <member refid="classlossfx_1a583a624ee84b31e8e1044f457db64656" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_adagrad</name></member>
+      <member refid="classlossfx_1a9fc57ac3a9e6e99c529f8d7aaf0cf1c2" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_adam</name></member>
+      <member refid="classlossfx_1abb45f1e051f02f58ea6b76524a4a81cb" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_adamw</name></member>
+      <member refid="classlossfx_1a66d148486c9f9c1d3cbf5f2009a0c09a" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_bce</name></member>
+      <member refid="classlossfx_1a6e3bbc1b202bd998bdbe0e78ee837772" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_bce_with_logits</name></member>
+      <member refid="classlossfx_1a4980df50afbdd5ca7fc9ec0fa19c9de9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_cosine_embedding</name></member>
+      <member refid="classlossfx_1a19e28bac398e2eb81efa1d542473fde9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_cross_entropy</name></member>
+      <member refid="classlossfx_1ac6652f7172778a3a93986121eb5139b8" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_ctc</name></member>
+      <member refid="classlossfx_1af84f965aa88d89668acea7b64aa66681" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_hinge_embedding</name></member>
+      <member refid="classlossfx_1ae4eda3dc8f2e63be8fb8edf5e3ffc9d3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_huber</name></member>
+      <member refid="classlossfx_1af8e01f1208c6461ade69efaac64578af" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_kl_div</name></member>
+      <member refid="classlossfx_1a8371d45ba54447881621e72289ecaae1" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_l1</name></member>
+      <member refid="classlossfx_1a854adb1493c8086c32ec061095aa5a1a" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_lbfgs</name></member>
+      <member refid="classlossfx_1aa8db0e5614312643942001da0ce715cd" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_margin_ranking</name></member>
+      <member refid="classlossfx_1a68742fc97a5805acde39e4572644b39e" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_mse</name></member>
+      <member refid="classlossfx_1aa1b0e0152977a99faf724a2b62e6a0aa" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_multi_label_margin</name></member>
+      <member refid="classlossfx_1a7ce5648f5dcfa9e72a4ec26a3dad2877" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_multi_label_soft_margin</name></member>
+      <member refid="classlossfx_1a26f160dc1711516c779839c79c6195a9" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_multi_margin</name></member>
+      <member refid="classlossfx_1a68d9a688e7bbc95e5276f9bf635c06d0" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_nll</name></member>
+      <member refid="classlossfx_1a07352b83c400aa82d4089c0e6a3b6f36" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_poisson_nll</name></member>
+      <member refid="classlossfx_1ac48de70702743e5373f286dc296c3fa3" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_rmsprop</name></member>
+      <member refid="classlossfx_1a1998f85bb4b642111588ed3665f51d82" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_sgd</name></member>
+      <member refid="classlossfx_1afe5f56e596b8c661752faaa23951f604" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_smooth_l1</name></member>
+      <member refid="classlossfx_1ad986c830b3c08cbb46dfd3d2289d945e" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_soft_margin</name></member>
+      <member refid="classlossfx_1ac42a9f3dfa37d2309047a54b59108322" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_triplet_margin</name></member>
+      <member refid="classlossfx_1a2831c952f193c87cdf6d4091b8814119" prot="private" virt="non-virtual"><scope>lossfx</scope><name>m_triplet_margin_with_distance</name></member>
+      <member refid="classlossfx_1a7c434ad6cf74c729de1fa85674e93e04" prot="public" virt="non-virtual"><scope>lossfx</scope><name>optim_string</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>lossfx</scope><name>put</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>lossfx</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>lossfx</scope><name>replace</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>lossfx</scope><name>split</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>lossfx</scope><name>sum</name></member>
+      <member refid="classlossfx_1a14679b5f9d19ef11d23b39b38d519b71" prot="public" virt="non-virtual"><scope>lossfx</scope><name>to</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>lossfx</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>lossfx</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>lossfx</scope><name>tools</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>lossfx</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>lossfx</scope><name>type_name</name></member>
+      <member refid="classlossfx_1a8afc0d1aa169bcebb072b8b4278b2e88" prot="public" virt="non-virtual"><scope>lossfx</scope><name>weight_init</name></member>
+      <member refid="classlossfx_1a5a23ad796c36b71e6a87150d467a2b76" prot="public" virt="non-virtual"><scope>lossfx</scope><name>~lossfx</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>lossfx</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

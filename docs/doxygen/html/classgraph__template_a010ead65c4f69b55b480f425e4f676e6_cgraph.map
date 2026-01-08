@@ -1,0 +1,25 @@
+<map id="graph_template::clone" name="graph_template::clone">
+<area shape="rect" id="Node000001" title="Creates a clone of this graph template." alt="" coords="5,271,173,296"/>
+<area shape="rect" id="Node000002" href="$classgraph__template.html#ad496a2818827b70a95f491889b71663a" title="Default constructor." alt="" coords="221,263,392,303"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,281,207,281,207,286,174,286"/>
+<area shape="rect" id="Node000003" href="$classgraph__template.html#a5558df2fc4026ed00b1575ded3f38c94" title=" " alt="" coords="443,5,635,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="311,262,325,216,351,157,388,94,411,66,438,41,448,35,451,39,442,45,415,70,392,97,356,159,330,218,316,264"/>
+<area shape="rect" id="Node000004" href="$classgraph__template.html#a8bef9120a542dd7187b2b498a1333652" title=" " alt="" coords="461,55,616,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="315,262,334,228,361,186,397,143,438,105,447,99,450,104,442,109,400,146,366,189,339,231,320,265"/>
+<area shape="rect" id="Node000005" href="$classgraph__template.html#a21b4c1706652c47441205a8a8efaabff" title=" " alt="" coords="461,119,616,159"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="325,261,374,215,405,191,439,169,452,162,454,167,441,174,408,195,377,219,329,265"/>
+<area shape="rect" id="Node000006" href="$classgraph__template.html#af706847aa067a98ec2b898c8b19c89e2" title=" " alt="" coords="445,184,632,209"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="345,261,439,220,467,210,469,216,441,224,348,266"/>
+<area shape="rect" id="Node000007" href="$classgraph__template.html#a7a28839f9617ae34d6d7e96b47db7a8b" title=" " alt="" coords="461,234,616,274"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="392,270,447,263,448,268,392,275"/>
+<area shape="rect" id="Node000008" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="460,299,617,324"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="392,291,447,298,446,303,392,296"/>
+<area shape="rect" id="Node000009" href="$classgraph__template.html#a888c196cb8d6e4ac92c0c9e53395240a" title=" " alt="" coords="440,348,637,373"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="356,301,441,333,471,342,470,347,439,338,354,306"/>
+<area shape="rect" id="Node000010" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="459,397,618,423"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="330,301,379,343,409,364,441,382,461,391,459,396,439,387,406,368,376,347,327,306"/>
+<area shape="rect" id="Node000011" href="$classgraph__template.html#aa961704bb21f31da4e132a96e8b7fe32" title=" " alt="" coords="462,447,615,487"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="323,302,370,366,404,401,442,432,454,439,451,444,438,436,400,405,366,369,318,305"/>
+<area shape="rect" id="Node000012" href="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7" title="Sets the setter callback function." alt="" coords="461,512,617,537"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="317,303,333,344,359,397,395,451,417,476,442,497,453,504,450,509,438,501,413,480,391,455,354,399,328,346,312,305"/>
+</map>

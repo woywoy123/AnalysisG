@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="meta_8pxd" kind="file" language="C++">
+    <compoundname>meta.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp<sp/>cimport<sp/>bool</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.map<sp/>cimport<sp/>map</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.vector<sp/>cimport<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.structs<sp/>cimport<sp/>meta_t</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.notification<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;&lt;meta/meta.h&gt;&quot;<sp/>nogil:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>meta:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>meta()<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>hash(string)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>meta_t<sp/>meta_data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>metacache_path</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Meta:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>meta*<sp/>ptr</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>__meta__(self,<sp/>meta*<sp/>met)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>loaded</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>MetaLookup:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>Meta<sp/>meta</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>matched</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>metadata</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>float<sp/>luminosity</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>Meta<sp/>__find__(self,<sp/>str<sp/>inpt)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Data:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>MetaLookup<sp/>_meta</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>map[string,<sp/>vector[float]]<sp/>_data</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>map[string,<sp/>vector[float]]<sp/>_weights</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>map[string,<sp/>map[string,<sp/>float]]<sp/>sumofweights</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>map[string,<sp/>float]<sp/>expected_events</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>__populate__(self,<sp/>dict<sp/>inpt,<sp/>map[string,<sp/>vector[float]]*<sp/>ptx)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>__rescale__(self,<sp/>vector[float]*<sp/>ptx)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>ami_client:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>client</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>file_cache</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>notification*<sp/>nf</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>str<sp/>type_</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>list<sp/>dsids</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>dict<sp/>datas</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>dict<sp/>infos</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>bool<sp/>loadcache(self,<sp/>Meta<sp/>obj)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>savecache(self,<sp/>Meta<sp/>obj)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>dressmeta(self,<sp/>Meta<sp/>obj,<sp/>str<sp/>dset_name)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>list_datasets(self,<sp/>Meta<sp/>obj)</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="core/meta.pxd"/>
+  </compounddef>
+</doxygen>

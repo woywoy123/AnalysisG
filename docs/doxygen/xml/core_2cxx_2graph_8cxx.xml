@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="core_2cxx_2graph_8cxx" kind="file" language="C++">
+    <compoundname>core/cxx/graph.cxx</compoundname>
+    <briefdescription>
+<para>Implementation of the <ref refid="classGraph" kindref="compound">Graph</ref> class. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the implementation of the <ref refid="classGraph" kindref="compound">Graph</ref> class, which represents a graph structure with nodes and edges for analysis purposes. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Dummy<sp/>implementation<sp/>for<sp/>documentation<sp/>only.</highlight></codeline>
+    </programlisting>
+    <location file="core/cxx/graph.cxx"/>
+  </compounddef>
+</doxygen>

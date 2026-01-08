@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="nusol_2include_2nusol_2base_8cuh" kind="file" language="C++">
+    <compoundname>nusol/include/nusol/base.cuh</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>base.cuh</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Provides<sp/>base<sp/>definitions<sp/>for<sp/>the<sp/>nusol<sp/>module.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>CU_NUSOL_BASE_H</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>CU_NUSOL_BASE_H</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;map&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;string&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;torch/torch.h&gt;<sp/>///&lt;<sp/>Includes<sp/>PyTorch<sp/>C++<sp/>headers<sp/>for<sp/>tensor<sp/>operations.</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/atomic.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;<sp/>///&lt;<sp/>Includes<sp/>utility<sp/>functions<sp/>for<sp/>CUDA<sp/>operations.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Namespace<sp/>for<sp/>neutrino<sp/>solution<sp/>(nusol)<sp/>operations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">namespace<sp/>nusol_<sp/>{</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Provides<sp/>debugging<sp/>information<sp/>for<sp/>the<sp/>base<sp/>module.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>b-quark<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>muon<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>masses<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>debugging<sp/>information.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>BaseDebug(torch::Tensor*<sp/>pmc_b,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>masses);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>base<sp/>matrix<sp/>for<sp/>the<sp/>nusol<sp/>module.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>b-quark<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>muon<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>masses<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>base<sp/>matrix.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>BaseMatrix(torch::Tensor*<sp/>pmc_b,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>masses);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>base<sp/>matrix<sp/>for<sp/>the<sp/>nusol<sp/>module<sp/>with<sp/>specific<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>b-quark<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>muon<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mT<sp/>Top<sp/>quark<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mW<sp/>W<sp/>boson<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mN<sp/>Neutrino<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>base<sp/>matrix.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>BaseMatrix(torch::Tensor*<sp/>pmc_b,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>double<sp/>mT,<sp/>double<sp/>mW,<sp/>double<sp/>mN);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Finds<sp/>the<sp/>intersection<sp/>of<sp/>two<sp/>tensors.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>A<sp/>Pointer<sp/>to<sp/>the<sp/>first<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>B<sp/>Pointer<sp/>to<sp/>the<sp/>second<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>nulls<sp/>Null<sp/>value<sp/>to<sp/>use<sp/>for<sp/>intersection.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>intersection<sp/>results.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>Intersection(torch::Tensor*<sp/>A,<sp/>torch::Tensor*<sp/>B,<sp/>double<sp/>nulls);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Solves<sp/>for<sp/>neutrino<sp/>momentum.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>H<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>event<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>sigma<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>uncertainties.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>met_xy<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>MET<sp/>x<sp/>and<sp/>y<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>null<sp/>Null<sp/>value<sp/>for<sp/>the<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>neutrino<sp/>momentum<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>Nu(torch::Tensor*<sp/>H,<sp/>torch::Tensor*<sp/>sigma,<sp/>torch::Tensor*<sp/>met_xy,<sp/>double<sp/>null);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Solves<sp/>for<sp/>neutrino<sp/>momenta<sp/>in<sp/>a<sp/>two-neutrino<sp/>system.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>H1_<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>neutrino&apos;s<sp/>event<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>H1_perp<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>neutrino&apos;s<sp/>perpendicular<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>H2_<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>neutrino&apos;s<sp/>event<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>H2_perp<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>neutrino&apos;s<sp/>perpendicular<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>met_xy<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>MET<sp/>x<sp/>and<sp/>y<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>null<sp/>Null<sp/>value<sp/>for<sp/>the<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>step<sp/>Step<sp/>size<sp/>for<sp/>the<sp/>iterative<sp/>solution.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>tolerance<sp/>Tolerance<sp/>for<sp/>the<sp/>solution.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>timeout<sp/>Maximum<sp/>number<sp/>of<sp/>iterations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>neutrino<sp/>momenta<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>NuNu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>H1_,<sp/>torch::Tensor*<sp/>H1_perp,<sp/>torch::Tensor*<sp/>H2_,<sp/>torch::Tensor*<sp/>H2_perp,<sp/>torch::Tensor*<sp/>met_xy,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>null<sp/>=<sp/>10e-10,<sp/>const<sp/>double<sp/>step<sp/>=<sp/>1e-9,<sp/>const<sp/>double<sp/>tolerance<sp/>=<sp/>1e-6,<sp/>const<sp/>unsigned<sp/>int<sp/>timeout<sp/>=<sp/>1000</highlight></codeline>
+<codeline><highlight class="normal">);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Solves<sp/>for<sp/>neutrino<sp/>momentum<sp/>with<sp/>additional<sp/>mass<sp/>and<sp/>sigma<sp/>information.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>b-quark<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>muon<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>met_xy<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>MET<sp/>x<sp/>and<sp/>y<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>masses<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>sigma<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>uncertainties.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>null<sp/>Null<sp/>value<sp/>for<sp/>the<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>neutrino<sp/>momentum<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>Nu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b<sp/>,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>met_xy,<sp/>torch::Tensor*<sp/>masses,<sp/>torch::Tensor*<sp/>sigma<sp/>,<sp/>double<sp/>null</highlight></codeline>
+<codeline><highlight class="normal">);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Solves<sp/>for<sp/>neutrino<sp/>momentum<sp/>with<sp/>specific<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>b-quark<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>muon<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>met_xy<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>MET<sp/>x<sp/>and<sp/>y<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>sigma<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>uncertainties.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>null<sp/>Null<sp/>value<sp/>for<sp/>the<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>massT<sp/>Top<sp/>quark<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>massW<sp/>W<sp/>boson<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>neutrino<sp/>momentum<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>Nu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b<sp/>,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>met_xy,<sp/>torch::Tensor*<sp/>sigma<sp/>,<sp/>double<sp/>null,<sp/>double<sp/>massT,<sp/>double<sp/>massW</highlight></codeline>
+<codeline><highlight class="normal">);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Solves<sp/>for<sp/>neutrino<sp/>momenta<sp/>in<sp/>a<sp/>two-neutrino<sp/>system<sp/>with<sp/>mass<sp/>tensors.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b1<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>b-quark&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b2<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>b-quark&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu1<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>muon&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu2<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>muon&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>met_xy<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>MET<sp/>x<sp/>and<sp/>y<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>null<sp/>Null<sp/>value<sp/>for<sp/>the<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>m1<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>m2<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>mass<sp/>values<sp/>(optional).</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>step<sp/>Step<sp/>size<sp/>for<sp/>the<sp/>iterative<sp/>solution.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>tolerance<sp/>Tolerance<sp/>for<sp/>the<sp/>solution.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>timeout<sp/>Maximum<sp/>number<sp/>of<sp/>iterations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>neutrino<sp/>momenta<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>NuNu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b1,<sp/>torch::Tensor*<sp/>pmc_b2,<sp/>torch::Tensor*<sp/>pmc_mu1,<sp/>torch::Tensor*<sp/>pmc_mu2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>met_xy,<sp/>double<sp/>null,<sp/>torch::Tensor*<sp/>m1,<sp/>torch::Tensor*<sp/>m2<sp/>=<sp/>nullptr,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>double<sp/>step<sp/>=<sp/>1e-9,<sp/>const<sp/>double<sp/>tolerance<sp/>=<sp/>1e-6,<sp/>const<sp/>unsigned<sp/>int<sp/>timeout<sp/>=<sp/>1000</highlight></codeline>
+<codeline><highlight class="normal">);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Solves<sp/>for<sp/>neutrino<sp/>momenta<sp/>in<sp/>a<sp/>two-neutrino<sp/>system<sp/>with<sp/>specific<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b1<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>b-quark&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_b2<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>b-quark&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu1<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>first<sp/>muon&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pmc_mu2<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>the<sp/>second<sp/>muon&apos;s<sp/>momenta.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>met_xy<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>containing<sp/>MET<sp/>x<sp/>and<sp/>y<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>null<sp/>Null<sp/>value<sp/>for<sp/>the<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>massT1<sp/>Top<sp/>quark<sp/>mass<sp/>for<sp/>the<sp/>first<sp/>neutrino.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>massW1<sp/>W<sp/>boson<sp/>mass<sp/>for<sp/>the<sp/>first<sp/>neutrino.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>massT2<sp/>Top<sp/>quark<sp/>mass<sp/>for<sp/>the<sp/>second<sp/>neutrino.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>massW2<sp/>W<sp/>boson<sp/>mass<sp/>for<sp/>the<sp/>second<sp/>neutrino.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>tensors<sp/>containing<sp/>the<sp/>neutrino<sp/>momenta<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>NuNu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b1,<sp/>torch::Tensor*<sp/>pmc_b2,<sp/>torch::Tensor*<sp/>pmc_mu1,<sp/>torch::Tensor*<sp/>pmc_mu2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>met_xy,<sp/>double<sp/>null,<sp/>double<sp/>massT1,<sp/>double<sp/>massW1,<sp/>double<sp/>massT2,<sp/>double<sp/>massW2</highlight></codeline>
+<codeline><highlight class="normal">);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">}<sp/>//<sp/>namespace<sp/>nusol_</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#endif<sp/>//<sp/>CU_NUSOL_BASE_H</highlight></codeline>
+    </programlisting>
+    <location file="pyc/nusol/include/nusol/base.cuh"/>
+  </compounddef>
+</doxygen>

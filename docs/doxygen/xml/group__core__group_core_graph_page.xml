@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__core__group_core_graph_page" kind="page">
+    <compoundname>core_graph_page</compoundname>
+    <title>Graph Implementation</title>
+    <briefdescription>
+<para>Documentation for the core graph implementation. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__core__group_1graph_intro">
+<title>Introduction</title>
+<para>The graph implementation in the core module provides the fundamental data structure for representing physics events as graphs. Each event can be converted into a graph where particles become nodes and their relationships become edges.</para>
+</sect1>
+<sect1 id="group__core__group_1graph_structure">
+<title>Structure</title>
+<para>A graph in AnalysisG consists of:</para>
+<para><itemizedlist>
+<listitem><para><bold>Nodes</bold>: Represent particles or physics objects</para>
+</listitem><listitem><para><bold>Edges</bold>: Represent relationships or connections between particles</para>
+</listitem><listitem><para><bold>Features</bold>: Tensors attached to nodes, edges, or the graph itself</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="group__core__group_1graph_features">
+<title>Feature Types</title>
+<para>The framework supports three levels of features:</para>
+<para><orderedlist>
+<listitem><para><bold>Graph-level features</bold>: Properties of the entire event (e.g., missing ET)</para>
+</listitem><listitem><para><bold>Node-level features</bold>: Properties of individual particles (e.g., pT, eta, phi)</para>
+</listitem><listitem><para><bold>Edge-level features</bold>: Properties of particle pairs (e.g., deltaR, invariant mass)</para>
+</listitem></orderedlist>
+</para>
+<para>Each feature level is further divided into:<itemizedlist>
+<listitem><para><bold>Data features</bold> (D-prefix): Input features for the model</para>
+</listitem><listitem><para><bold>Truth features</bold> (T-prefix): Target labels for training </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/core.dox"/>
+  </compounddef>
+</doxygen>

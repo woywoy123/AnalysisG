@@ -1,0 +1,15 @@
+<map id="pyc::transform::combined::PxPyPzE" name="pyc::transform::combined::PxPyPzE">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,195,63"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="274,5,367,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,30,260,22,261,28,195,35"/>
+<area shape="rect" id="Node000003" href="$namespacetransform__.html#a87dc88421ea78ec3b9c73c86cc5ade19" title="Computes the 4&#45;momentum (Px, Py, Pz, E)." alt="" coords="243,55,399,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,51,229,55,229,60,195,56"/>
+<area shape="rect" id="Node000004" href="$namespacetransform__.html#aa38819d479d31edd3f79b4f8e96ef8be" title="Computes the 3&#45;momentum (Px, Py, Pz)." alt="" coords="447,55,595,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="399,65,433,65,433,70,399,70"/>
+<area shape="rect" id="Node000005" href="$namespacetransform__.html#a4573dda96168ebbd38a408e64cc3d5ff" title="Computes the x&#45;component of momentum (Px)." alt="" coords="643,5,760,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="567,52,639,32,641,37,569,57"/>
+<area shape="rect" id="Node000006" href="$namespacetransform__.html#a51363ab29a6390a86a8ea75573a7a196" title="Computes the y&#45;component of momentum (Py)." alt="" coords="643,55,760,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="595,65,629,65,629,70,595,70"/>
+<area shape="rect" id="Node000007" href="$namespacetransform__.html#a28be39b0041a97b1667ccd1ff301f784" title="Computes the z&#45;component of momentum (Pz)." alt="" coords="643,104,759,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="569,77,641,98,639,103,567,83"/>
+</map>

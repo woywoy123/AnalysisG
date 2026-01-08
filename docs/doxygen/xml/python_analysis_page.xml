@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="python_analysis_page" kind="page">
+    <compoundname>python_analysis_page</compoundname>
+    <title>Python Analysis Class</title>
+    <briefdescription>
+<para>Documentation for using AnalysisG from Python. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="python_analysis_page_1python_import">
+<title>Importing</title>
+<para><programlisting filename=".py"><codeline><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Analysis</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>EventTemplate,<sp/>GraphTemplate</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>ModelTemplate,<sp/>SelectionTemplate</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>OptimizerConfig</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="python_analysis_page_1python_basic">
+<title>Basic Usage</title>
+<para><programlisting filename=".py"><codeline><highlight class="keyword">from</highlight><highlight class="normal"><sp/>AnalysisG.core<sp/></highlight><highlight class="keyword">import</highlight><highlight class="normal"><sp/>Analysis</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">#<sp/>Create<sp/>analysis<sp/>instance</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana<sp/>=<sp/>Analysis()</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">#<sp/>Configure<sp/>settings</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.OutputPath<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;results/&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.Threads<sp/>=<sp/>8</highlight></codeline>
+<codeline><highlight class="normal">ana.Epochs<sp/>=<sp/>100</highlight></codeline>
+<codeline><highlight class="normal">ana.kFolds<sp/>=<sp/>5</highlight></codeline>
+<codeline><highlight class="normal">ana.BatchSize<sp/>=<sp/>64</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">#<sp/>Add<sp/>data<sp/>samples</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.AddSamples(</highlight><highlight class="stringliteral">&quot;/path/to/data/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;sample_label&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">#<sp/>Add<sp/>templates</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.AddEvent(MyEvent(),<sp/></highlight><highlight class="stringliteral">&quot;sample_label&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline><highlight class="normal">ana.AddGraph(MyGraph(),<sp/></highlight><highlight class="stringliteral">&quot;sample_label&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline><highlight class="normal">ana.AddSelection(MySelection())</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">#<sp/>Add<sp/>model<sp/>for<sp/>training</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">opt<sp/>=<sp/>OptimizerConfig()</highlight></codeline>
+<codeline><highlight class="normal">opt.lr<sp/>=<sp/>0.001</highlight></codeline>
+<codeline><highlight class="normal">ana.AddModel(MyModel(),<sp/>opt,<sp/></highlight><highlight class="stringliteral">&quot;training_run&quot;</highlight><highlight class="normal">)</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">#<sp/>Start<sp/>analysis</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.Start()</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="python_analysis_page_1python_properties">
+<title>Analysis Properties</title>
+<sect2 id="python_analysis_page_1python_path_props">
+<title>Path Properties</title>
+<para><table rows="4" cols="3"><row>
+<entry thead="yes"><para>Property   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>OutputPath</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para>Output directory path    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>GraphCache</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref> cache location    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>TrainingDataset</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para>Pre-built dataset path   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="python_analysis_page_1python_ml_props">
+<title>Machine Learning Properties</title>
+<para><table rows="10" cols="4"><row>
+<entry thead="yes"><para>Property   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Default   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Epochs</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Number of training epochs    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>kFolds</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Number of cross-validation folds    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>kFold</computeroutput>   </para>
+</entry><entry thead="no"><para>int/list   </para>
+</entry><entry thead="no"><para>[]   </para>
+</entry><entry thead="no"><para>Specific fold(s) to run    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>BatchSize</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>1   </para>
+</entry><entry thead="no"><para>Training batch size    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>TrainSize</computeroutput>   </para>
+</entry><entry thead="no"><para>float   </para>
+</entry><entry thead="no"><para>50   </para>
+</entry><entry thead="no"><para>Training/test split %    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Training</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>True   </para>
+</entry><entry thead="no"><para>Enable training    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Validation</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>True   </para>
+</entry><entry thead="no"><para>Enable validation    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Evaluation</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>True   </para>
+</entry><entry thead="no"><para>Enable evaluation    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>ContinueTraining</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>True   </para>
+</entry><entry thead="no"><para>Resume from checkpoint   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="python_analysis_page_1python_runtime_props">
+<title>Runtime Properties</title>
+<para><table rows="5" cols="4"><row>
+<entry thead="yes"><para>Property   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Default   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Threads</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Processing threads    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>DebugMode</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>False   </para>
+</entry><entry thead="no"><para>Enable debug output    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>BuildCache</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>False   </para>
+</entry><entry thead="no"><para>Build intermediate cache    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>FetchMeta</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>False   </para>
+</entry><entry thead="no"><para>Fetch metadata (AMI)   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="python_analysis_page_1python_plot_props">
+<title>Plotting Properties</title>
+<para><table rows="8" cols="4"><row>
+<entry thead="yes"><para>Property   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Default   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>nBins</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>400   </para>
+</entry><entry thead="no"><para>Histogram bins    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>MaxRange</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>400   </para>
+</entry><entry thead="no"><para>Max histogram range    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Refresh</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Progress refresh rate    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>VarPt</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para>&quot;pt&quot;   </para>
+</entry><entry thead="no"><para>pT variable name    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>VarEta</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para>&quot;eta&quot;   </para>
+</entry><entry thead="no"><para>η variable name    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>VarPhi</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para>&quot;phi&quot;   </para>
+</entry><entry thead="no"><para>φ variable name    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>VarEnergy</computeroutput>   </para>
+</entry><entry thead="no"><para>str   </para>
+</entry><entry thead="no"><para>&quot;energy&quot;   </para>
+</entry><entry thead="no"><para>Energy variable name   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+</sect1>
+<sect1 id="python_analysis_page_1python_methods">
+<title>Analysis Methods</title>
+<para><table rows="9" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddSamples()</computeroutput>   </para>
+</entry><entry thead="no"><para>path, label   </para>
+</entry><entry thead="no"><para>Add data files    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddEvent()</computeroutput>   </para>
+</entry><entry thead="no"><para>EventTemplate, label   </para>
+</entry><entry thead="no"><para>Add event template    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddGraph()</computeroutput>   </para>
+</entry><entry thead="no"><para>GraphTemplate, label   </para>
+</entry><entry thead="no"><para>Add graph template    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddSelection()</computeroutput>   </para>
+</entry><entry thead="no"><para>SelectionTemplate   </para>
+</entry><entry thead="no"><para>Add selection    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddModel()</computeroutput>   </para>
+</entry><entry thead="no"><para>ModelTemplate, OptimizerConfig, name   </para>
+</entry><entry thead="no"><para>Add model for training    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddModelInference()</computeroutput>   </para>
+</entry><entry thead="no"><para>ModelTemplate, name   </para>
+</entry><entry thead="no"><para>Add model for inference    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>AddMetric()</computeroutput>   </para>
+</entry><entry thead="no"><para>MetricTemplate, ModelTemplate   </para>
+</entry><entry thead="no"><para>Add metric    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Start()</computeroutput>   </para>
+</entry><entry thead="no"><para>-   </para>
+</entry><entry thead="no"><para>Begin analysis   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/cython.dox"/>
+  </compounddef>
+</doxygen>

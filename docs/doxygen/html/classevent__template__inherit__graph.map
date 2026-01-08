@@ -1,0 +1,13 @@
+<map id="event_template" name="event_template">
+<area shape="rect" id="Node000001" title="Base template class for event data representation and manipulation." alt="" coords="240,519,395,1204"/>
+<area shape="rect" id="Node000003" href="$classbsm__4tops.html" title=" " alt="" coords="5,1272,144,1817"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,1050,159,1253,147,1289,142,1287,153,1251,232,1048"/>
+<area shape="rect" id="Node000004" href="$classexp__mc20.html" title=" " alt="" coords="168,1272,301,1817"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="277,1219,270,1272,265,1271,272,1218"/>
+<area shape="rect" id="Node000005" href="$classgnn__event.html" title=" " alt="" coords="325,1252,475,1837"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="363,1217,367,1251,362,1252,358,1218"/>
+<area shape="rect" id="Node000006" href="$classssml__mc20.html" title=" " alt="" coords="499,1262,653,1827"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="403,1041,447,1145,489,1251,502,1286,497,1288,484,1253,442,1147,398,1043"/>
+<area shape="rect" id="Node000002" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="252,5,383,471"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="320,485,320,519,315,519,315,485"/>
+</map>

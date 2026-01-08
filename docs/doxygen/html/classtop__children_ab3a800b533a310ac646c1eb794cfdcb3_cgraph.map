@@ -1,0 +1,15 @@
+<map id="top_children::build" name="top_children::build">
+<area shape="rect" id="Node000001" title="Builds the particle from event data." alt="" coords="5,134,148,159"/>
+<area shape="rect" id="Node000002" href="$classtop__children.html#a0479039c51f146cc0886e1dec06c48d7" title=" " alt="" coords="196,134,387,159"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,144,182,144,182,149,148,149"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="460,5,605,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="308,132,363,95,433,55,450,48,452,53,436,60,365,99,311,136"/>
+<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="460,69,605,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="345,131,446,107,447,112,346,137"/>
+<area shape="rect" id="Node000005" href="$classtop__children.html#aa7e6d839a6df11052aae8869468c12e0" title=" " alt="" coords="435,134,631,159"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="387,144,421,144,421,149,387,149"/>
+<area shape="rect" id="Node000006" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="454,183,611,209"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="355,157,457,178,456,183,354,162"/>
+<area shape="rect" id="Node000007" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="453,233,612,258"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="315,157,369,187,436,218,462,226,460,231,434,222,366,192,312,162"/>
+</map>

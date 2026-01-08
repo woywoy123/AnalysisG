@@ -1,0 +1,18 @@
+<map id="physics_::DeltaR" name="physics_::DeltaR">
+<area shape="rect" id="Node000001" title="Computes the delta R separation between two particles." alt="" coords="747,109,877,134"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="847,99,837,90,812,87,791,89,780,94,778,100,784,107,779,110,773,100,776,90,790,84,812,82,839,86,850,94"/>
+<area shape="rect" id="Node000002" href="$namespacepyc_1_1physics_1_1polar_1_1separate.html#a126d69d61b586628696defeedc82f79c" title=" " alt="" coords="542,5,685,45"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="777,104,697,60,670,48,672,43,700,55,780,99"/>
+<area shape="rect" id="Node000003" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#ada89277d3b7f28e15501e5c943516fe0" title=" " alt="" coords="528,69,699,109"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="733,111,699,106,699,100,733,106"/>
+<area shape="rect" id="Node000006" href="$namespacepyc_1_1physics_1_1polar_1_1combined.html#ae7398e6dca3f3b6fea2d769cc8d5d4de" title=" " alt="" coords="540,133,687,173"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="734,137,687,144,686,139,733,131"/>
+<area shape="rect" id="Node000007" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#adbd2ec240755f1bf46b2c157f0325669" title=" " alt="" coords="528,197,699,237"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="780,144,700,188,672,200,670,195,697,183,777,139"/>
+<area shape="rect" id="Node000004" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="267,69,480,109"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="514,92,480,92,480,87,514,87"/>
+<area shape="rect" id="Node000005" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="5,69,219,109"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="253,101,219,101,219,96,253,96"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="233,78,266,78,266,83,233,83"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="157,58,141,51,112,48,87,50,71,55,66,61,69,68,64,70,61,60,68,50,86,45,112,43,142,46,159,53"/>
+</map>

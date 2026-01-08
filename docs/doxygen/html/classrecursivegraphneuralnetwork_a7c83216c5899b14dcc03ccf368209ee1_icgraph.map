@@ -1,0 +1,7 @@
+<map id="recursivegraphneuralnetwork::message" name="recursivegraphneuralnetwork::message">
+<area shape="rect" id="Node000001" title=" " alt="" coords="267,29,480,69"/>
+<area shape="rect" id="Node000002" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="5,29,219,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,61,219,61,219,56,253,56"/>
+<area shape="poly" id="edge3_Node000002_Node000001" title=" " alt="" coords="233,38,266,38,266,43,233,43"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="157,18,141,11,112,8,87,10,71,15,66,21,69,28,64,30,61,20,68,10,86,5,112,3,142,6,159,13"/>
+</map>

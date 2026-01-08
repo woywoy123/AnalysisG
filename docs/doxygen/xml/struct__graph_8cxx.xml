@@ -1,0 +1,637 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="struct__graph_8cxx" kind="file" language="C++">
+    <compoundname>struct_graph.cxx</compoundname>
+    <includes refid="graph__template_8h" local="no">templates/graph_template.h</includes>
+    <includes refid="tools_8h" local="no">tools/tools.h</includes>
+    <incdepgraph>
+      <node id="29">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>struct_graph.cxx</label>
+        <link refid="struct__graph_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>templates/graph_template.h</label>
+        <link refid="graph__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+        <childnode refid="36" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="37" relation="include">
+        </childnode>
+        <childnode refid="38" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="35" relation="include">
+        </childnode>
+      </node>
+      <node id="34">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="30">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="32">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="36">
+        <label>tools/tensor_cast.h</label>
+        <link refid="tensor__cast_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="38">
+        <label>pyc/pyc.h</label>
+        <link refid="pyc_8h"/>
+        <childnode refid="39" relation="include">
+        </childnode>
+        <childnode refid="40" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TBranch.h</label>
+      </node>
+      <node id="11">
+        <label>TFile.h</label>
+      </node>
+      <node id="35">
+        <label>TH1F.h</label>
+      </node>
+      <node id="14">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="12">
+        <label>TTree.h</label>
+      </node>
+      <node id="16">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="15">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="18">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="28">
+        <label>cmath</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
+      </node>
+      <node id="27">
+        <label>cstdlib</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="7">
+        <label>map</label>
+      </node>
+      <node id="37">
+        <label>mutex</label>
+      </node>
+      <node id="33">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="26">
+        <label>sstream</label>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="40">
+        <label>torch/all.h</label>
+      </node>
+      <node id="23">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="39">
+        <label>tuple</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#include<sp/>&lt;<ref refid="graph__template_8h" kindref="compound">templates/graph_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="tools_8h" kindref="compound">tools/tools.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4" refid="structgraph__t_1a240e5e6342673e9436f7e02606e051a9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a240e5e6342673e9436f7e02606e051a9" kindref="member">graph_t::add_truth_graph</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>data,<sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>maps){</highlight></codeline>
+<codeline lineno="5"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">add_content</ref>(data);<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref><sp/>=<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10" refid="structgraph__t_1a8b35caee94522d24ccf73316cf42d6fa" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a8b35caee94522d24ccf73316cf42d6fa" kindref="member">graph_t::add_truth_node</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>data,<sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>maps){</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">add_content</ref>(data);</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/>=<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="16" refid="structgraph__t_1ab2957c1a4e2e35dcec6d85b9c5cd289f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1ab2957c1a4e2e35dcec6d85b9c5cd289f" kindref="member">graph_t::add_truth_edge</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>data,<sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>maps){</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">add_content</ref>(data);</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/>=<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22" refid="structgraph__t_1ab96d9f7d4e64882fb6527ffb5a12a80f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1ab96d9f7d4e64882fb6527ffb5a12a80f" kindref="member">graph_t::add_data_graph</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>data,<sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>maps){</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">add_content</ref>(data);<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/>=<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="structgraph__t_1ada25cd27a1b91c458f6994b7369f5b3c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1ada25cd27a1b91c458f6994b7369f5b3c" kindref="member">graph_t::add_data_node</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>data,<sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>maps){</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">add_content</ref>(data);</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/>=<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34" refid="structgraph__t_1a3bd07dc62caec3b38fef61bc198c16e7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a3bd07dc62caec3b38fef61bc198c16e7" kindref="member">graph_t::add_data_edge</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>data,<sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>maps){</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">add_content</ref>(data);</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/>=<sp/>maps;<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40" refid="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1ad3a4eb80d85daea2502643917b6e775d" kindref="member">graph_t::_purge_all</ref>(){</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref>);<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref>);<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref>);<sp/></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>);<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref>);<sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref>);<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref>;<sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref>;<sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}<sp/></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref>;<sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>;<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref>;<sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref>;<sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref><sp/>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref>;<sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ade6528a9765e57b3e97e8b592b7eea01" kindref="member">dev_data_graph</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7a6970a53271836b9cdaadc119f858bd" kindref="member">dev_data_node</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa44f093bc29e1b93cd455c869bb243ca" kindref="member">dev_data_edge</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af6a637275ec81b124419c9eaacffe16d" kindref="member">dev_truth_graph</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aac8c9a8b7a087ce800fb75177f3cc61f" kindref="member">dev_truth_node</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a275356d1457af6ebe051007deaf89356" kindref="member">dev_truth_edge</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a28d3d754f3db1eb988994404317ba75a" kindref="member">dev_edge_index</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a9fa436e9337aa7d1ef36e8ffe9d69a9f" kindref="member">dev_event_weight</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ae0f8545bd9771bd73ad4ad82860487c0" kindref="member">dev_batch_index</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" kindref="member">hash</ref>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" kindref="member">hash</ref>;}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a6438be190c714f65ec0c07030c40fcd3" kindref="member">graph_name</ref>){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a6438be190c714f65ec0c07030c40fcd3" kindref="member">graph_name</ref>;}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ae27dcf0ec2f328c398371a8ed2eaf457" kindref="member">is_owner</ref>){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" kindref="member">filename</ref>;<sp/></highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="structgraph__t_1a1e282caadefc079e39a6c29a8092325f" refkind="member"><highlight class="normal">torch::Tensor*<sp/><ref refid="structgraph__t_1a1e282caadefc079e39a6c29a8092325f" kindref="member">graph_t::return_any</ref>(</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>loc,<sp/>std::map&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/></highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;torch::Tensor&gt;&gt;*<sp/><ref refid="classcontainer" kindref="compound">container</ref>,<sp/></highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="namespacename" kindref="compound">name</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dev_</highlight></codeline>
+<codeline lineno="80"><highlight class="normal">){</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!loc<sp/>-&gt;<sp/><ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(<ref refid="namespacename" kindref="compound">name</ref>)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>idx_<sp/>=<sp/>(*loc)[<ref refid="namespacename" kindref="compound">name</ref>];</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!<ref refid="classcontainer" kindref="compound">container</ref><sp/>-&gt;<sp/><ref refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" kindref="member">count</ref>(dev_)){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>&amp;(*container)[dev_][idx_];</highlight></codeline>
+<codeline lineno="85"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" refkind="member"><highlight class="normal">torch::Tensor*<sp/><ref refid="structgraph__t_1a9a07fbb8428e15bedd7fa89c8e1a1dc7" kindref="member">graph_t::has_feature</ref>(<ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9" kindref="member">graph_enum</ref><sp/>tp,<sp/>std::string<sp/><ref refid="namespacename" kindref="compound">name</ref>,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dev){</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;*<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::vector&lt;torch::Tensor&gt;&gt;*<sp/>dev_mp<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">switch</highlight><highlight class="normal">(tp){</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9af14d031091d837e57007a1fdea58e5fe" kindref="member">graph_enum::data_edge</ref><sp/><sp/><sp/>:<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/><sp/>;<sp/>dev_mp<sp/>=<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa44f093bc29e1b93cd455c869bb243ca" kindref="member">dev_data_edge</ref><sp/><sp/>;<sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;D-&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacename" kindref="compound">name</ref>;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a552cd5bfd507d39d3351ee8b6bc95445" kindref="member">graph_enum::data_node</ref><sp/><sp/><sp/>:<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/><sp/>;<sp/>dev_mp<sp/>=<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7a6970a53271836b9cdaadc119f858bd" kindref="member">dev_data_node</ref><sp/><sp/>;<sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;D-&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacename" kindref="compound">name</ref>;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a05e49555101f3239adff74b7ab84b12b" kindref="member">graph_enum::data_graph</ref><sp/><sp/>:<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/>;<sp/>dev_mp<sp/>=<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ade6528a9765e57b3e97e8b592b7eea01" kindref="member">dev_data_graph</ref><sp/>;<sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;D-&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacename" kindref="compound">name</ref>;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9afc5bd8c8855a5bb98c0a2ffcf7d83a00" kindref="member">graph_enum::truth_edge</ref><sp/><sp/>:<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/>;<sp/>dev_mp<sp/>=<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a275356d1457af6ebe051007deaf89356" kindref="member">dev_truth_edge</ref><sp/>;<sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;T-&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacename" kindref="compound">name</ref>;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ae895cb1e23c56f371dafbef2634572f5" kindref="member">graph_enum::truth_node</ref><sp/><sp/>:<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/>;<sp/>dev_mp<sp/>=<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aac8c9a8b7a087ce800fb75177f3cc61f" kindref="member">dev_truth_node</ref><sp/>;<sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;T-&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacename" kindref="compound">name</ref>;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a1d41882240fd339ed7bacd69ea90f587" kindref="member">graph_enum::truth_graph</ref><sp/>:<sp/>pos_<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref>;<sp/>dev_mp<sp/>=<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af6a637275ec81b124419c9eaacffe16d" kindref="member">dev_truth_graph</ref>;<sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;T-&quot;</highlight><highlight class="normal"><sp/>+<sp/><ref refid="namespacename" kindref="compound">name</ref>;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/><sp/></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">graph_enum::edge_index</ref><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a28d3d754f3db1eb988994404317ba75a" kindref="member">dev_edge_index</ref>.count(dev))<sp/>?<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a28d3d754f3db1eb988994404317ba75a" kindref="member">dev_edge_index</ref>[dev]<sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f" kindref="member">graph_enum::weight</ref><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a9fa436e9337aa7d1ef36e8ffe9d69a9f" kindref="member">dev_event_weight</ref>.count(dev))<sp/>?<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a9fa436e9337aa7d1ef36e8ffe9d69a9f" kindref="member">dev_event_weight</ref>[dev]<sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a056d3cfa6a17e1cb57fb271ce3e605a8" kindref="member">graph_enum::batch_index</ref><sp/>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ae0f8545bd9771bd73ad4ad82860487c0" kindref="member">dev_batch_index</ref>.count(dev))<sp/>?<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ae0f8545bd9771bd73ad4ad82860487c0" kindref="member">dev_batch_index</ref>[dev]<sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">case</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ab889a33c698ac4a15cb9a4f6fab7d1e2" kindref="member">graph_enum::batch_events</ref>:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a13c522dd8bb343cc210d5961e2a234d1" kindref="member">dev_batched_events</ref>.count(dev))<sp/>?<sp/>&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a13c522dd8bb343cc210d5961e2a234d1" kindref="member">dev_batched_events</ref>[dev]<sp/>:<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">:<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a1e282caadefc079e39a6c29a8092325f" kindref="member">return_any</ref>(pos_,<sp/>dev_mp,<sp/><ref refid="namespacename" kindref="compound">name</ref>,<sp/>dev);<sp/></highlight></codeline>
+<codeline lineno="106"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"></highlight></codeline>
+<codeline lineno="108" refid="structgraph__t_1ab8e93af4431e56b00000fbb4fa939af9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">graph_t::_purge_data</ref>(std::map&lt;int,<sp/>torch::Tensor*&gt;*<sp/>data){</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!data){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="110"><highlight class="normal">std::map&lt;int,<sp/>torch::Tensor*&gt;::iterator<sp/>itr<sp/>=<sp/>data<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>data<sp/>-&gt;<sp/>end();<sp/>++itr){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>itr<sp/>-&gt;<sp/>second;}</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>data<sp/>-&gt;<sp/>clear();<sp/></highlight></codeline>
+<codeline lineno="113"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">graph_t::_purge_data</ref>(std::vector&lt;torch::Tensor*&gt;*<sp/>data){</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!data){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>data<sp/>-&gt;<sp/>size();<sp/>++x){</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!(*data)[x]){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>(*data)[x];<sp/>(*data)[x]<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="123" refid="structgraph__t_1a15938dd60e01582b3e2ac9c5585397fb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">graph_t::_purge_data</ref>(std::map&lt;</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">,<sp/>std::vector&lt;torch::Tensor*&gt;*&gt;*<sp/>data){</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!data){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;int,<sp/>std::vector&lt;torch::Tensor*&gt;*&gt;::iterator<sp/>itr<sp/>=<sp/>data<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/>data<sp/>-&gt;<sp/>end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!itr<sp/>-&gt;<sp/>second){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a56e85043c369ce37c0d78f3221a9d5c8" kindref="member">_purge_data</ref>(itr<sp/>-&gt;<sp/>second);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>itr<sp/>-&gt;<sp/>second;<sp/>itr<sp/>-&gt;<sp/>second<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>data<sp/>-&gt;<sp/>clear();<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" refkind="member"><highlight class="normal">std::vector&lt;torch::Tensor*&gt;*<sp/><ref refid="structgraph__t_1ac74016cadba28de168c1d78bb8c1536d" kindref="member">graph_t::add_content</ref>(std::map&lt;std::string,<sp/>torch::Tensor*&gt;*<sp/>inpt){</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;torch::Tensor*&gt;*<sp/>out<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;(inpt<sp/>-&gt;<sp/>size(),<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor*&gt;::iterator<sp/>itr<sp/>=<sp/>inpt<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>t(0);<sp/>t<sp/>&lt;<sp/>inpt<sp/>-&gt;<sp/>size();<sp/>++t,<sp/>++itr){(*out)[t]<sp/>=<sp/>itr<sp/>-&gt;<sp/>second;}</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>out;<sp/></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a77606e05956ba39041023a3a36f53967" kindref="member">graph_t::transfer_to_device</ref>(torch::TensorOptions*<sp/>dev){</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/>c10::DeviceType<sp/>dev_in<sp/>=<sp/>dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>().type();<sp/></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(dev_in<sp/>==<sp/>c10::kCPU){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dev_<sp/>=<sp/>(int)dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>().index();<sp/></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>sm<sp/>=<sp/>(dev_in<sp/>==<sp/>c10::kCUDA<sp/>&amp;&amp;<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref><sp/>==<sp/>c10::kCUDA);<sp/></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/>sm<sp/>=<sp/>sm<sp/>&amp;&amp;<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7750c4f68a7a55075e4a6be06a712432" kindref="member">device_index</ref>[dev_];<sp/></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(sm){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7750c4f68a7a55075e4a6be06a712432" kindref="member">device_index</ref>[dev_]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_lock&lt;std::mutex&gt;<sp/>lk(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1acb3118d240b9b0379875a6b0d369338f" kindref="member">mut</ref>);<sp/></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">_transfer_to_device</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ade6528a9765e57b3e97e8b592b7eea01" kindref="member">dev_data_graph</ref>[dev_]<sp/>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>,<sp/>dev);<sp/><sp/></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">_transfer_to_device</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7a6970a53271836b9cdaadc119f858bd" kindref="member">dev_data_node</ref>[dev_]<sp/><sp/>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/>,<sp/>dev);<sp/></highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">_transfer_to_device</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa44f093bc29e1b93cd455c869bb243ca" kindref="member">dev_data_edge</ref>[dev_]<sp/><sp/>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/>,<sp/>dev);<sp/></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">_transfer_to_device</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af6a637275ec81b124419c9eaacffe16d" kindref="member">dev_truth_graph</ref>[dev_],<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>,<sp/>dev);<sp/></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">_transfer_to_device</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aac8c9a8b7a087ce800fb75177f3cc61f" kindref="member">dev_truth_node</ref>[dev_]<sp/>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>,<sp/>dev);<sp/></highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">_transfer_to_device</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a275356d1457af6ebe051007deaf89356" kindref="member">dev_truth_edge</ref>[dev_]<sp/>,<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>,<sp/>dev);<sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aae57bfddbd780dd7d1d31b5e7801f054" kindref="member">batched_events</ref><sp/>=<sp/>std::vector&lt;long&gt;({0});<sp/></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;long&gt;<sp/>bc(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" kindref="member">num_nodes</ref>,<sp/>0);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;double&gt;<sp/>evw<sp/>=<sp/>{</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" kindref="member">event_weight</ref>};<sp/></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::TensorOptions<sp/>op<sp/>=<sp/>torch::TensorOptions(torch::kCPU);<sp/></highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>dt<sp/>=<sp/><ref refid="tensor__cast_8h_1a27121e7e5aeb77bda0453dd6214cf7fb" kindref="member">build_tensor</ref>(&amp;evw,<sp/>torch::kDouble,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">(),<sp/>&amp;op);</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>bx<sp/>=<sp/><ref refid="tensor__cast_8h_1a27121e7e5aeb77bda0453dd6214cf7fb" kindref="member">build_tensor</ref>(&amp;bc<sp/>,<sp/>torch::kLong,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(),<sp/>&amp;op);<sp/></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>bi<sp/>=<sp/><ref refid="tensor__cast_8h_1a27121e7e5aeb77bda0453dd6214cf7fb" kindref="member">build_tensor</ref>(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aae57bfddbd780dd7d1d31b5e7801f054" kindref="member">batched_events</ref>,<sp/>torch::kLong,<sp/></highlight><highlight class="keywordtype">long</highlight><highlight class="normal">(),<sp/>&amp;op);<sp/></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a9fa436e9337aa7d1ef36e8ffe9d69a9f" kindref="member">dev_event_weight</ref>[dev_]<sp/><sp/><sp/>=<sp/>dt.clone().to(dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>());<sp/></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ae0f8545bd9771bd73ad4ad82860487c0" kindref="member">dev_batch_index</ref>[dev_]<sp/><sp/><sp/><sp/>=<sp/>bx.clone().to(dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>());<sp/></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a13c522dd8bb343cc210d5961e2a234d1" kindref="member">dev_batched_events</ref>[dev_]<sp/>=<sp/>bi.clone().to(dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>());</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a28d3d754f3db1eb988994404317ba75a" kindref="member">dev_edge_index</ref>[dev_]<sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref><sp/>-&gt;<sp/>to(dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>());<sp/></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>torch::cuda::synchronize();<sp/></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref><sp/>=<sp/>dev_in;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/>lk.unlock();<sp/></highlight></codeline>
+<codeline lineno="173"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175" refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a4dadfed7cebfedd7f9f4acd4ca2e79e9" kindref="member">graph_t::_transfer_to_device</ref>(std::vector&lt;torch::Tensor&gt;*<sp/>trgt,<sp/>std::vector&lt;torch::Tensor*&gt;*<sp/>src,<sp/>torch::TensorOptions*<sp/>dev){</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!src<sp/>||<sp/>trgt<sp/>-&gt;<sp/>size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/>trgt<sp/>-&gt;<sp/>reserve(src<sp/>-&gt;<sp/>size());<sp/></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>src<sp/>-&gt;<sp/>size();<sp/>++x){trgt<sp/>-&gt;<sp/>push_back((*src)[x]<sp/>-&gt;<sp/>to(dev<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa67dffe651350434d32397c44fd6348d" kindref="member">device</ref>()));}</highlight></codeline>
+<codeline lineno="179"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181" refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">graph_t::meta_serialize</ref>(std::map&lt;std::string,<sp/>int&gt;*<sp/>data,<sp/>std::string*<sp/>out){</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!data<sp/>-&gt;<sp/>size()){*out<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;NULL&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>int&gt;::iterator<sp/>it<sp/>=<sp/>data<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>it<sp/>!=<sp/>data<sp/>-&gt;<sp/>end();<sp/>++it){*out<sp/>+=<sp/>it<sp/>-&gt;<sp/>first<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;|&quot;</highlight><highlight class="normal"><sp/>+<sp/>std::to_string(it<sp/>-&gt;<sp/>second)<sp/>+<sp/></highlight><highlight class="stringliteral">&quot;%&quot;</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="185"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187" refid="structgraph__t_1a8ea6c151c23bf198c9545ff6fcac2cc0" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">graph_t::meta_serialize</ref>(std::vector&lt;torch::Tensor*&gt;*<sp/>data,<sp/>std::string*<sp/>out){</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!data<sp/>-&gt;<sp/>size()){*out<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;NULL&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;torch::Tensor&gt;<sp/>data_;<sp/></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>data_.reserve(data<sp/>-&gt;<sp/>size());<sp/></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(torch::Tensor*<sp/>t<sp/>:<sp/>*data){data_.push_back(*t);}</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;char&gt;<sp/>chars<sp/>=<sp/>torch::pickle_save(data_);<sp/></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/>tl<sp/>=<sp/><ref refid="classtools" kindref="compound">tools</ref>();<sp/></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/>*out<sp/>=<sp/>std::string(chars.begin(),<sp/>chars.end());<sp/></highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/>*out<sp/>=<sp/>tl.encode64((</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*)out<sp/>-&gt;<sp/>c_str(),<sp/>out<sp/>-&gt;<sp/>size());<sp/></highlight></codeline>
+<codeline lineno="197"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"></highlight></codeline>
+<codeline lineno="199" refid="structgraph__t_1aaeeca5594501e477e71ed4ef9d6ca6c9" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">graph_t::meta_serialize</ref>(torch::Tensor*<sp/>data,<sp/>std::string*<sp/>out){</highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;char&gt;<sp/>chars<sp/>=<sp/>torch::pickle_save(*data);<sp/></highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!chars.size()){*out<sp/>=<sp/></highlight><highlight class="stringliteral">&quot;NULL&quot;</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/>tl<sp/>=<sp/><ref refid="classtools" kindref="compound">tools</ref>();</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/>*out<sp/>=<sp/>std::string(chars.begin(),<sp/>chars.end());<sp/></highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/>*out<sp/>=<sp/>tl.encode64((</highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">unsigned</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">char</highlight><highlight class="normal">*)out<sp/>-&gt;<sp/>c_str(),<sp/>out<sp/>-&gt;<sp/>size());<sp/></highlight></codeline>
+<codeline lineno="206"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="208" refid="structgraph__t_1a7903f37a8f508f24fe014a0f990e5a80" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a7903f37a8f508f24fe014a0f990e5a80" kindref="member">graph_t::serialize</ref>(<ref refid="structgraph__hdf5" kindref="compound">graph_hdf5</ref>*<sp/>m_hdf5){</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" kindref="member">hash</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" kindref="member">hash</ref><sp/>-&gt;<sp/>c_str();</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" kindref="member">filename</ref><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" kindref="member">filename</ref><sp/>-&gt;<sp/>c_str();</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" kindref="member">num_nodes</ref><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" kindref="member">num_nodes</ref>;</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1af5c8af15275269308e0ed7876ddb7979" kindref="member">event_index</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af5c8af15275269308e0ed7876ddb7979" kindref="member">event_index</ref>;</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" kindref="member">event_weight</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" kindref="member">event_weight</ref>;<sp/></highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref>);<sp/></highlight></codeline>
+<codeline lineno="216"><highlight class="normal"></highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/>);</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/><sp/>);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/><sp/>);</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref>);</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/>);</highlight></codeline>
+<codeline lineno="223"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/>);</highlight></codeline>
+<codeline lineno="224"><highlight class="normal"></highlight></codeline>
+<codeline lineno="225"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>);</highlight></codeline>
+<codeline lineno="226"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/>);</highlight></codeline>
+<codeline lineno="227"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/>);</highlight></codeline>
+<codeline lineno="228"><highlight class="normal"></highlight></codeline>
+<codeline lineno="229"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>);</highlight></codeline>
+<codeline lineno="230"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>);</highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a54ebabc0083e33bb93113e1fad2a045a" kindref="member">meta_serialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>);</highlight></codeline>
+<codeline lineno="232"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"></highlight></codeline>
+<codeline lineno="234"><highlight class="normal"></highlight></codeline>
+<codeline lineno="235" refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">graph_t::meta_deserialize</ref>(std::map&lt;std::string,<sp/>int&gt;*<sp/>data,<sp/>std::string*<sp/>out){</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((*out)<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;NULL&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/>t<sp/>=<sp/><ref refid="classtools" kindref="compound">tools</ref>();<sp/></highlight></codeline>
+<codeline lineno="239"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>line<sp/>=<sp/>t.<ref refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" kindref="member">split</ref>(*out,<sp/></highlight><highlight class="stringliteral">&quot;%&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="240"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>line.size()-1;<sp/>++x){</highlight></codeline>
+<codeline lineno="241"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33" kindref="member">c</ref><sp/>=<sp/>t.<ref refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" kindref="member">split</ref>(line[x],<sp/></highlight><highlight class="stringliteral">&quot;|&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="242"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*data)[<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33" kindref="member">c</ref>[0]]<sp/>=<sp/>std::stoi(<ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33" kindref="member">c</ref>[1]);<sp/></highlight></codeline>
+<codeline lineno="243"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="244"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="245"><highlight class="normal"></highlight></codeline>
+<codeline lineno="246" refid="structgraph__t_1a737563f80880f63df627e2828d0033a3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">graph_t::meta_deserialize</ref>(std::vector&lt;torch::Tensor*&gt;*<sp/>data,<sp/>std::string*<sp/>out){</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((*out)<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;NULL&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"></highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/>tl<sp/>=<sp/><ref refid="classtools" kindref="compound">tools</ref>();</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>tmp<sp/>=<sp/>tl.decode64(out);<sp/></highlight></codeline>
+<codeline lineno="251"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;char&gt;<sp/>pkl(tmp.begin(),<sp/>tmp.end());<sp/></highlight></codeline>
+<codeline lineno="252"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;torch::Tensor&gt;<sp/>datav<sp/>=<sp/>torch::pickle_load(pkl).toTensorVector();<sp/><sp/></highlight></codeline>
+<codeline lineno="253"><highlight class="normal"><sp/><sp/><sp/><sp/>data<sp/>-&gt;<sp/>assign(datav.size(),<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="254"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>datav.size();<sp/>++x){(*data)[x]<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::Tensor(datav[x]);}</highlight></codeline>
+<codeline lineno="255"><highlight class="normal"><sp/><sp/><sp/><sp/>datav.clear();<sp/></highlight></codeline>
+<codeline lineno="256"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="257"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258" refid="structgraph__t_1af4f580dd0ff85a787cc326bc01184b83" refkind="member"><highlight class="normal">torch::Tensor*<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">graph_t::meta_deserialize</ref>(std::string*<sp/>out){</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>((*out)<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;NULL&quot;</highlight><highlight class="normal">){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"></highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classtools" kindref="compound">tools</ref><sp/>tl<sp/>=<sp/><ref refid="classtools" kindref="compound">tools</ref>();</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>tmp<sp/>=<sp/>tl.decode64(out);<sp/><sp/></highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;char&gt;<sp/>pkl(tmp.begin(),<sp/>tmp.end());<sp/></highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>torch::Tensor(torch::pickle_load(pkl).toTensor());<sp/><sp/></highlight></codeline>
+<codeline lineno="265"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"></highlight></codeline>
+<codeline lineno="267" refid="structgraph__t_1a0882983ec9ceb5c309e4c64b38105214" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="structgraph__t_1a0882983ec9ceb5c309e4c64b38105214" kindref="member">graph_t::deserialize</ref>(<ref refid="structgraph__hdf5" kindref="compound">graph_hdf5</ref>*<sp/>m_hdf5){</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" kindref="member">hash</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::string(m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1aa328c3ea8390a298f03825e6da2b35c6" kindref="member">hash</ref>);</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" kindref="member">filename</ref><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::string(m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a098e26b54baf5d08f2b8e097b18fe103" kindref="member">filename</ref>);</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" kindref="member">num_nodes</ref><sp/><sp/><sp/><sp/>=<sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a45783311aac5e6f50f23246f0cf407d1" kindref="member">num_nodes</ref>;</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af5c8af15275269308e0ed7876ddb7979" kindref="member">event_index</ref><sp/><sp/>=<sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1af5c8af15275269308e0ed7876ddb7979" kindref="member">event_index</ref>;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" kindref="member">event_weight</ref><sp/>=<sp/>m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a07320e7cdf65b625be449ac9ca4515a6" kindref="member">event_weight</ref>;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1aba19616dcf7797d5e448c0102ee3f523" kindref="member">data_map_graph</ref><sp/>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a040856b8d872b3e376dba1b198593dcb" kindref="member">data_map_node</ref><sp/><sp/>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a3b453e69fd01149ef51fe19553333765" kindref="member">data_map_edge</ref><sp/><sp/>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>int&gt;();<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight></codeline>
+<codeline lineno="286"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a7180f4ed02a74de898b8bf1d9a69cb21" kindref="member">truth_map_graph</ref>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a504df9445cff6941b7400018196853ec" kindref="member">truth_map_node</ref><sp/>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="288"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a8d420f4c95eaa2cb48495b8580db72c5" kindref="member">truth_map_edge</ref><sp/>);<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"></highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a94d2c88d95027f99ced5a277a7b3ede1" kindref="member">edge_index</ref>);<sp/></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a01667c92da47321d226224ef8ad308f9" kindref="member">data_graph</ref><sp/>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1abd9b5887b38af39d6476cf8d3c2e7c76" kindref="member">data_node</ref><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a87ad1d868e07e663d7041dea21cd6a0a" kindref="member">data_edge</ref><sp/><sp/>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="298"><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="301"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/><sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::vector&lt;torch::Tensor*&gt;();<sp/><sp/></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1af8b00ae9942eefe0de4c6200d529f297" kindref="member">truth_graph</ref>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a8bdb01494cc1c3f7ed7f61a47617b36b" kindref="member">truth_node</ref><sp/>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" kindref="member">meta_deserialize</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>,<sp/>&amp;m_hdf5<sp/>-&gt;<sp/><ref refid="structgraph__t_1a4c92a83f25e63a178d7b5e88b134eaaf" kindref="member">truth_edge</ref><sp/>);<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="structgraph__t_1ae27dcf0ec2f328c398371a8ed2eaf457" kindref="member">is_owner</ref><sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="307"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/graph/cxx/struct_graph.cxx"/>
+  </compounddef>
+</doxygen>

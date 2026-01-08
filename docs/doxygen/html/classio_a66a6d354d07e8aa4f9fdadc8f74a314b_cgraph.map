@@ -1,0 +1,14 @@
+<map id="io::root_size" name="io::root_size">
+<area shape="rect" id="Node000001" title="Retrieves the sizes (number of entries) of TTrees in the open ROOT files." alt="" coords="5,104,107,129"/>
+<area shape="rect" id="Node000002" href="$classio.html#aacb050c4cb6c10038d6bf8edb7244a28" title="Scans for keys (e.g., TTree names, TBranch names) in the open ROOT files." alt="" coords="155,104,264,129"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,114,141,114,141,119,107,119"/>
+<area shape="rect" id="Node000003" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="347,29,405,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="233,102,311,64,333,55,335,60,313,68,236,106"/>
+<area shape="rect" id="Node000004" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="343,79,409,104"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="264,106,329,96,330,101,265,111"/>
+<area shape="rect" id="Node000005" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="312,128,440,153"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="265,122,299,127,298,132,264,127"/>
+<area shape="rect" id="Node000006" href="$classtools.html#a13633d4d63c55bcf537ff141e7605f13" title="Checks if a vector of strings contains a specific string." alt="" coords="312,177,440,203"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="238,127,313,162,330,170,328,175,311,167,236,132"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="348,31,342,21,346,11,357,5,376,3,399,6,408,15,405,19,396,11,376,8,359,10,350,15,348,20,353,28"/>
+</map>

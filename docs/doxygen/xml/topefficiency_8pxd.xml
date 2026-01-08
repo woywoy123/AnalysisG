@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="topefficiency_8pxd" kind="file" language="C++">
+    <compoundname>topefficiency.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distuils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.map<sp/>cimport<sp/>map</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.vector<sp/>cimport<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;topefficiency.h&quot;:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>topefficiency(selection_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>topefficiency()<sp/>except<sp/>+</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>p_topmass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>t_topmass</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>p_zmass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>t_zmass</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>prob_tops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>prob_zprime</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>t_decay_region</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>vector[float]]]<sp/>p_decay_region</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[float,<sp/>int]]<sp/>t_nodes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[float,<sp/>int]]<sp/>p_nodes</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>int]<sp/>n_tru_tops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[float,<sp/>int]]<sp/>n_pred_tops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[float,<sp/>int]]<sp/>n_perfect_tops</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[int]<sp/>truth_res_edge</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[int]<sp/>truth_top_edge</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[int]<sp/>truth_ntops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[int]<sp/>truth_signal</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[vector[float]]<sp/>pred_res_edge_score</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[vector[float]]<sp/>pred_top_edge_score</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[vector[float]]<sp/>pred_ntops_score</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[vector[float]]<sp/>pred_signal_score</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>TopEfficiency(SelectionTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>topefficiency*<sp/>tt</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>p_topmass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>t_topmass</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>p_zmass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>t_zmass</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>prob_tops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>prob_zprime</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>t_decay_region</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>p_decay_region</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>t_nodes</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>p_nodes</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_tru_tops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_pred_tops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_perfect_tops</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>truth_res_edge</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>truth_top_edge</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>truth_ntops</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>truth_signal</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>pred_res_edge_score</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>pred_top_edge_score</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>pred_ntops_score</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>pred_signal_score</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="selections/performance/topefficiency/topefficiency.pxd"/>
+  </compounddef>
+</doxygen>

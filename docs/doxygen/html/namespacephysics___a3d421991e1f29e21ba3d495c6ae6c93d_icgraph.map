@@ -1,0 +1,23 @@
+<map id="physics_::Mt2" name="physics_::Mt2">
+<area shape="rect" id="Node000001" title="Computes the square of the transverse mass." alt="" coords="443,198,553,223"/>
+<area shape="rect" id="Node000002" href="$namespacephysics__.html#a82a8f3ce685f324e52dfea55d33fff03" title="Computes the transverse mass from a momentum tensor." alt="" coords="258,59,361,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="479,188,443,142,420,118,393,98,360,84,362,79,396,94,423,114,447,138,483,185"/>
+<area shape="rect" id="Node000003" href="$namespacephysics__.html#af5fecf9c76889e0e996dc44793e67153" title="Computes the transverse mass." alt="" coords="258,109,361,134"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="467,192,432,170,394,149,360,137,362,132,396,144,435,165,470,188"/>
+<area shape="rect" id="Node000008" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#a111f70a5f3166ef67f2a6f41a19377b2" title=" " alt="" coords="224,159,395,199"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="429,202,394,196,395,191,430,196"/>
+<area shape="rect" id="Node000009" href="$namespacepyc_1_1physics_1_1polar_1_1combined.html#acc5e59b1f7549ce950cab57976edfd79" title=" " alt="" coords="238,223,381,263"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="429,225,381,233,381,228,429,220"/>
+<area shape="rect" id="Node000010" href="$namespacepyc_1_1physics_1_1polar_1_1separate.html#ae3fb2671574519706f3c764499ce3164" title=" " alt="" coords="238,287,381,327"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="469,233,396,277,369,289,367,284,393,272,466,229"/>
+<area shape="rect" id="Node000011" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#a732d6bb76e4a60ee810b312e27235974" title=" " alt="" coords="224,351,395,391"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="485,237,449,289,424,316,396,341,376,353,373,348,393,337,420,313,445,285,481,234"/>
+<area shape="rect" id="Node000004" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#aaf8cf1904c15a733221a1b44039989ce" title=" " alt="" coords="5,5,176,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="244,108,223,98,198,79,175,60,151,48,153,43,177,55,201,75,225,94,246,103"/>
+<area shape="rect" id="Node000005" href="$namespacepyc_1_1physics_1_1polar_1_1combined.html#acbeb9c6012612bd77cab7fe7871f0ccf" title=" " alt="" coords="19,69,162,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="244,115,162,102,163,97,245,109"/>
+<area shape="rect" id="Node000006" href="$namespacepyc_1_1physics_1_1polar_1_1separate.html#ab979af5143b4e4c7ad9abacf21ef9544" title=" " alt="" coords="19,133,162,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="245,133,163,146,162,140,244,128"/>
+<area shape="rect" id="Node000007" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#a28a5bc1982da9a36e87ce2e3e979a464" title=" " alt="" coords="5,197,176,237"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="246,140,225,149,201,168,177,188,153,200,151,195,175,183,198,164,223,144,244,135"/>
+</map>

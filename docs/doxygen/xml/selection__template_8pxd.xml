@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="selection__template_8pxd" kind="file" language="C++">
+    <compoundname>selection_template.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>selection_template.pxd</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Provides<sp/>type<sp/>definitions<sp/>and<sp/>class<sp/>declarations<sp/>for<sp/>selection<sp/>templates<sp/>in<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>This<sp/>file<sp/>defines<sp/>the<sp/>structure<sp/>and<sp/>behavior<sp/>of<sp/>selection<sp/>templates,<sp/>including<sp/>methods<sp/>for<sp/>managing</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>selection<sp/>criteria,<sp/>applying<sp/>filters,<sp/>and<sp/>retrieving<sp/>selected<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level<sp/>=<sp/>3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp<sp/>cimport<sp/>bool</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.map<sp/>cimport<sp/>map</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.vector<sp/>cimport<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.structs<sp/>cimport<sp/>meta_t</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.event_template<sp/>cimport<sp/>event_template</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;&lt;templates/selection_template.h&gt;&quot;<sp/>nogil:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>selection_template:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>selection_template()<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>name</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>hash</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>tree</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>index</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>selection_template*<sp/>build(event_template*)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>selection(event_template*)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>strategy(event_template*)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>void<sp/>merge(selection_template*)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>vector[map[string,<sp/>float]]<sp/>reverse_hash(vector[string]*<sp/>hashes)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>CompileEvent()<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>operator<sp/>==<sp/>(selection_template&amp;<sp/>p)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>map[string,<sp/>float]]<sp/>passed_weights</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>map[string,<sp/>meta_t]<sp/>matched_meta</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@namespace<sp/>SelectionTemplate</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Contains<sp/>the<sp/>SelectionTemplate<sp/>class<sp/>and<sp/>related<sp/>utilities<sp/>for<sp/>managing<sp/>selection<sp/>criteria.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@class<sp/>SelectionTemplate</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Represents<sp/>a<sp/>selection<sp/>criterion<sp/>used<sp/>for<sp/>filtering<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>This<sp/>class<sp/>provides<sp/>methods<sp/>for<sp/>setting<sp/>selection<sp/>parameters,<sp/>applying<sp/>filters,<sp/>and<sp/>retrieving<sp/>results.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>SelectionTemplate:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>selection_template*<sp/>ptr</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>void<sp/>transform_dict_keys(self)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>root_leaves</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>dict<sp/>parameters_<sp/>///&lt;<sp/>Dictionary<sp/>of<sp/>parameters<sp/>associated<sp/>with<sp/>the<sp/>selection.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>list<sp/>filters_<sp/>///&lt;<sp/>List<sp/>of<sp/>filters<sp/>applied<sp/>to<sp/>the<sp/>data.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Sets<sp/>a<sp/>parameter<sp/>for<sp/>the<sp/>selection.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>The<sp/>key<sp/>of<sp/>the<sp/>parameter.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>value<sp/>The<sp/>value<sp/>of<sp/>the<sp/>parameter.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>set_parameter(string<sp/>key,<sp/>string<sp/>value)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>a<sp/>parameter<sp/>from<sp/>the<sp/>selection.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>The<sp/>key<sp/>of<sp/>the<sp/>parameter.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>value<sp/>of<sp/>the<sp/>parameter.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>string<sp/>get_parameter(string<sp/>key)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Applies<sp/>the<sp/>selection<sp/>criteria<sp/>to<sp/>the<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>data<sp/>The<sp/>data<sp/>to<sp/>which<sp/>the<sp/>selection<sp/>criteria<sp/>are<sp/>applied.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>apply_selection(dict<sp/>data)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>results<sp/>of<sp/>the<sp/>selection.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>A<sp/>list<sp/>containing<sp/>the<sp/>selected<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>list<sp/>get_results()</highlight></codeline>
+    </programlisting>
+    <location file="core/selection_template.pxd"/>
+  </compounddef>
+</doxygen>

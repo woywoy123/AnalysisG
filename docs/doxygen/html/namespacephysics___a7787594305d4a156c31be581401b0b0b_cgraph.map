@@ -1,0 +1,6 @@
+<map id="physics_::M2" name="physics_::M2">
+<area shape="rect" id="Node000001" title="Computes the square of the invariant mass." alt="" coords="5,29,112,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="36,30,31,21,34,11,43,5,59,3,77,6,85,14,81,18,74,11,59,8,45,10,38,14,36,20,40,28"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="160,29,227,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,39,147,39,147,45,112,45"/>
+</map>

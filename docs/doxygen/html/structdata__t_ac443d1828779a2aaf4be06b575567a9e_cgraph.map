@@ -1,0 +1,18 @@
+<map id="data_t::next" name="data_t::next">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,103,105,128"/>
+<area shape="rect" id="Node000002" href="$structdata__t.html#a1e32c6e18a54f7e31f6491ec52deaeff" title=" " alt="" coords="153,103,280,128"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,113,139,113,139,118,106,118"/>
+<area shape="rect" id="Node000003" href="$structdata__t.html#aa6c840c74575c1d154b3e17ef67511cc" title=" " alt="" coords="328,29,477,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="243,100,327,64,346,57,348,62,329,68,245,105"/>
+<area shape="rect" id="Node000004" href="$classbsc__t.html#a953a8bb68bdd6acd9c97d4c0eb965319" title="Clears the internal buffer." alt="" coords="333,103,473,128"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="280,113,319,113,319,118,280,118"/>
+<area shape="rect" id="Node000005" href="$structdata__t.html#a34a71707a145e9bccadd9844f79701ad" title=" " alt="" coords="331,152,475,177"/>
+<area shape="poly" id="edge6_Node000002_Node000005" title=" " alt="" coords="266,125,341,146,340,151,265,131"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="372,31,366,21,369,11,382,5,403,3,428,6,439,15,435,19,426,11,403,8,383,10,373,15,371,20,376,28"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="372,104,366,94,369,85,382,78,403,76,428,80,439,88,435,92,426,84,403,81,383,83,373,88,371,94,376,101"/>
+<area shape="rect" id="Node000006" href="$classbsc__t.html#a39907da14ea4fb20f71b47d0724bf1f2" title="Translates a ROOT type string to an internal data enumeration." alt="" coords="525,152,716,177"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="475,162,512,162,512,167,475,167"/>
+<area shape="rect" id="Node000007" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring within a string." alt="" coords="764,152,823,177"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="716,162,750,162,750,167,716,167"/>
+<area shape="poly" id="edge9_Node000007_Node000007" title=" " alt="" coords="765,153,759,144,762,134,774,128,793,125,817,129,827,137,823,141,814,134,793,131,775,133,766,137,764,143,769,150"/>
+</map>

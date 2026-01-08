@@ -91,7 +91,7 @@
  * };
  * ```
  *
- * @section structs_property Property System
+ * @section structs_property_doc Property System
  *
  * The `cproperty` template provides a property system:
  *

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="pyc_2nusol_2include_2nusol_2base_8h" kind="file" language="C++">
+    <compoundname>pyc/nusol/include/nusol/base.h</compoundname>
+    <includes local="no">torch/torch.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>base.h</label>
+        <link refid="pyc_2nusol_2include_2nusol_2base_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+    </incdepgraph>
+    <innernamespace refid="namespacenusol">nusol</innernamespace>
+    <briefdescription>
+<para>Provides base definitions for the nusol module in C++. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NUSOL_BASE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NUSOL_BASE_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacenusol" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacenusol" kindref="compound">nusol</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24" refid="namespacenusol_1a1dd98a265423f0702ed0d5de55b2ad59" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacenusol_1a1dd98a265423f0702ed0d5de55b2ad59" kindref="member">compute_base_matrix</ref>(torch::Tensor<sp/>pmc_b,<sp/>torch::Tensor<sp/>pmc_mu,<sp/>torch::Tensor<sp/>masses);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33" refid="namespacenusol_1aeba74006f5553165965b9121ed19d70e" refkind="member"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacenusol_1aeba74006f5553165965b9121ed19d70e" kindref="member">solve_neutrino_momentum</ref>(torch::Tensor<sp/>base_matrix,<sp/>torch::Tensor<sp/><ref refid="classmet" kindref="compound">met</ref>);</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>nusol</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>NUSOL_BASE_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/nusol/include/nusol/base.h"/>
+  </compounddef>
+</doxygen>

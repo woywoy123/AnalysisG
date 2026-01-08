@@ -1,0 +1,7 @@
+<map id="matching" name="matching">
+<area shape="rect" id="Node000001" title=" " alt="" coords="20,1352,165,1637"/>
+<area shape="rect" id="Node000002" href="$classselection__template.html" title="Base class for implementing event selection criteria." alt="" coords="5,519,180,1304"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,1317,95,1352,90,1352,90,1317"/>
+<area shape="rect" id="Node000003" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="27,5,158,471"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,485,95,518,90,518,90,485"/>
+</map>

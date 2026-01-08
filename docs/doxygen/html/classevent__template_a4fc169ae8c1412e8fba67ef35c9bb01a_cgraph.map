@@ -1,0 +1,23 @@
+<map id="event_template::event_template" name="event_template::event_template">
+<area shape="rect" id="Node000001" title="Default constructor for event_template." alt="" coords="5,219,176,259"/>
+<area shape="rect" id="Node000002" href="$classevent__template.html#aedd843db4af78c774316cda822821f66" title="Static getter for the leaves property." alt="" coords="245,5,400,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,217,117,183,145,139,180,94,222,55,231,49,234,54,226,59,184,98,149,142,122,185,104,220"/>
+<area shape="rect" id="Node000003" href="$classevent__template.html#a73a5b08c0f438f12e1c19326e863923e" title="Static getter for the tree property." alt="" coords="229,70,416,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="105,217,153,160,186,130,223,104,236,98,239,103,225,109,189,134,156,164,109,220"/>
+<area shape="rect" id="Node000004" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="244,119,401,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="117,216,165,184,223,154,243,146,245,151,225,158,168,189,120,221"/>
+<area shape="rect" id="Node000005" href="$classevent__template.html#a9f5661b7516b43801913ab6fc897a80e" title="Static setter for the hash property." alt="" coords="227,169,418,194"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,216,257,195,258,200,173,221"/>
+<area shape="rect" id="Node000007" href="$classevent__template.html#aa5e222a8244571e0b00fccc82c09ba8f" title="Static setter for the index property." alt="" coords="246,219,399,259"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="176,236,233,236,233,241,176,241"/>
+<area shape="rect" id="Node000008" href="$classevent__template.html#a73c3667c07093f1dabb388735370c34d" title="Static setter for the name property." alt="" coords="224,283,421,309"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="173,256,258,277,257,283,172,261"/>
+<area shape="rect" id="Node000009" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="243,333,402,358"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="121,257,168,288,225,318,249,326,247,331,223,322,166,293,118,261"/>
+<area shape="rect" id="Node000010" href="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7" title="Sets the setter callback function." alt="" coords="245,382,401,407"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="109,257,157,312,189,342,225,367,242,375,240,380,223,372,186,346,153,316,105,261"/>
+<area shape="rect" id="Node000011" href="$classevent__template.html#a71028d2c6f0b8eb23c84ff2fecf0132b" title="Static setter for the weight property." alt="" coords="246,432,399,472"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="104,258,123,292,150,335,184,379,226,417,236,423,233,428,222,421,180,382,145,338,118,295,99,260"/>
+<area shape="rect" id="Node000006" href="$classtools.html#afd037c109d75a9f119ec042e1ba922d9" title="Converts a double value to a string with standard precision." alt="" coords="469,169,588,194"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="419,179,455,179,455,184,419,184"/>
+</map>

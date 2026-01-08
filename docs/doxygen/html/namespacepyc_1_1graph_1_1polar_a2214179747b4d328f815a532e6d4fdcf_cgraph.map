@@ -1,0 +1,23 @@
+<map id="pyc::graph::polar::node_aggregation" name="pyc::graph::polar::node_aggregation">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,73,144,113"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="241,5,334,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,70,191,39,227,29,228,34,193,45,119,75"/>
+<area shape="rect" id="Node000003" href="$namespacegraph__.html#af76bc3bdcf60cb8a46bdd978e5097376" title=" " alt="" coords="192,55,383,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="144,82,178,78,179,83,145,87"/>
+<area shape="rect" id="Node000006" href="$namespacetransform__.html#a87dc88421ea78ec3b9c73c86cc5ade19" title="Computes the 4&#45;momentum (Px, Py, Pz, E)." alt="" coords="209,104,365,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="144,98,196,104,195,109,144,103"/>
+<area shape="rect" id="Node000011" href="$namespacepyc.html#ab174cc51f6efef06bdb0ba47ec3fe3bf" title=" " alt="" coords="225,153,349,179"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="122,110,193,138,222,147,220,152,191,143,120,115"/>
+<area shape="rect" id="Node000004" href="$namespacegraph__.html#a7249186f32a05a8ff1601bff5deabdef" title=" " alt="" coords="431,49,621,75"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="383,63,417,62,417,67,383,68"/>
+<area shape="rect" id="Node000005" href="$utils_8cxx.html#a1652e53abd2299dd0f10e093948e4fa3" title=" " alt="" coords="691,36,765,61"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="622,53,677,49,677,55,622,58"/>
+<area shape="rect" id="Node000007" href="$namespacetransform__.html#aa38819d479d31edd3f79b4f8e96ef8be" title="Computes the 3&#45;momentum (Px, Py, Pz)." alt="" coords="452,111,600,136"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="366,116,438,118,438,124,366,122"/>
+<area shape="rect" id="Node000008" href="$namespacetransform__.html#a4573dda96168ebbd38a408e64cc3d5ff" title="Computes the x&#45;component of momentum (Px)." alt="" coords="669,85,787,111"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="600,111,655,104,656,110,601,117"/>
+<area shape="rect" id="Node000009" href="$namespacetransform__.html#a51363ab29a6390a86a8ea75573a7a196" title="Computes the y&#45;component of momentum (Py)." alt="" coords="669,135,787,160"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="601,129,656,136,655,141,600,135"/>
+<area shape="rect" id="Node000010" href="$namespacetransform__.html#a28be39b0041a97b1667ccd1ff301f784" title="Computes the z&#45;component of momentum (Pz)." alt="" coords="670,184,786,209"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="563,134,680,177,678,182,561,139"/>
+</map>

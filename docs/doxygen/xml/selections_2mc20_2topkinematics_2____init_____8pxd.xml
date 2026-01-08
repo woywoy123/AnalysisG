@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="selections_2mc20_2topkinematics_2____init_____8pxd" kind="file" language="C++">
+    <compoundname>selections/mc20/topkinematics/__init__.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+    </programlisting>
+    <location file="selections/mc20/topkinematics/__init__.pxd"/>
+  </compounddef>
+</doxygen>

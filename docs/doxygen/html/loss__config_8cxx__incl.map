@@ -1,0 +1,32 @@
+<map id="loss_config.cxx" name="loss_config.cxx">
+<area shape="rect" id="Node000001" title=" " alt="" coords="366,5,487,31"/>
+<area shape="rect" id="Node000002" href="$lossfx_8h.html" title=" " alt="" coords="355,79,498,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,31,429,65,424,65,424,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,56,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="356,106,267,124,172,154,109,186,58,220,55,215,107,182,170,150,265,119,355,100"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="81,225,143,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="356,107,284,125,212,154,168,184,134,217,130,213,165,180,209,150,283,120,354,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="423,299,481,324"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="431,104,452,284,446,285,425,105"/>
+<area shape="rect" id="Node000006" href="$tools_8h.html" title="Defines the tools class that provides general utility functions for the AnalysisG framework." alt="" coords="223,152,326,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="403,106,313,149,311,144,401,102"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="632,152,736,177"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="469,101,630,146,629,151,467,107"/>
+<area shape="rect" id="Node000010" href="$enums_8h.html" title=" " alt="" coords="761,152,887,177"/>
+<area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="491,101,747,147,746,152,490,107"/>
+<area shape="rect" id="Node000011" href="$structs_2include_2structs_2optimizer_8h.html" title="Defines the optimizer_params_t structure for configuring model optimizers." alt="" coords="465,152,607,177"/>
+<area shape="poly" id="edge13_Node000002_Node000011" title=" " alt="" coords="446,102,508,142,505,147,443,106"/>
+<area shape="poly" id="edge10_Node000006_Node000003" title=" " alt="" coords="235,180,70,228,69,222,233,175"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="250,180,152,222,150,217,247,175"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="292,176,352,223,430,288,426,292,349,227,288,180"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="259,225,339,251"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="281,177,293,211,288,213,276,179"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="168,225,235,251"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="264,180,225,218,221,214,261,176"/>
+<area shape="poly" id="edge14_Node000011_Node000005" title=" " alt="" coords="531,179,468,288,463,285,527,176"/>
+<area shape="rect" id="Node000012" href="$property_8h.html" title="Defines the cproperty template class for property&#45;based access patterns." alt="" coords="515,225,650,251"/>
+<area shape="poly" id="edge15_Node000011_Node000012" title=" " alt="" coords="546,176,570,212,565,215,541,179"/>
+<area shape="poly" id="edge17_Node000012_Node000005" title=" " alt="" coords="563,253,486,294,484,290,560,248"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="539,299,626,324"/>
+<area shape="poly" id="edge16_Node000012_Node000013" title=" " alt="" coords="585,251,585,285,580,285,580,251"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="physics.h" name="physics.h">
+<area shape="rect" id="Node000001" title="Provides physics&#45;related functions for C++ operations." alt="" coords="191,5,274,31"/>
+<area shape="rect" id="Node000002" href="$nusol_2tensor_2nusol_8cxx.html" title=" " alt="" coords="5,79,89,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,38,79,81,77,76,189,33"/>
+<area shape="rect" id="Node000003" href="$interface_2operators_8cxx.html" title=" " alt="" coords="113,79,224,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="215,43,181,80,177,77,211,39"/>
+<area shape="rect" id="Node000004" href="$pyc_2interface_2physics_8cxx.html" title=" " alt="" coords="249,79,347,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="255,39,289,77,285,80,251,43"/>
+<area shape="rect" id="Node000005" href="$pyc_2physics_2physics_8cxx.html" title=" " alt="" coords="371,79,470,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="276,33,391,76,389,81,275,38"/>
+</map>

@@ -1,0 +1,25 @@
+<map id="io::get_data" name="io::get_data">
+<area shape="rect" id="Node000001" title="Retrieves the data read from ROOT files, likely structured as a map of data_t objects." alt="" coords="5,165,104,191"/>
+<area shape="rect" id="Node000002" href="$classio.html#a65c36380ef79524e8235f792abe9625c" title="Initializes ROOT file processing, potentially opening files specified in settings." alt="" coords="152,165,263,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,175,138,175,138,181,104,181"/>
+<area shape="rect" id="Node000003" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="503,29,561,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="221,163,259,131,309,100,356,80,404,65,489,46,490,51,406,70,358,85,312,104,262,136,224,167"/>
+<area shape="rect" id="Node000004" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="499,177,565,203"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="263,177,485,186,485,191,263,183"/>
+<area shape="rect" id="Node000005" href="$classio.html#a1c994985d2405202c19fb391cc43a5de" title="Finalizes ROOT file processing, closing any ROOT files opened by root_begin." alt="" coords="316,216,415,241"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="249,188,312,209,311,214,247,193"/>
+<area shape="rect" id="Node000007" href="$classio.html#aacb050c4cb6c10038d6bf8edb7244a28" title="Scans for keys (e.g., TTree names, TBranch names) in the open ROOT files." alt="" coords="311,115,420,140"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="247,163,311,142,312,147,249,168"/>
+<area shape="rect" id="Node000010" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="320,265,411,291"/>
+<area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="225,189,264,219,312,252,322,257,319,262,309,256,260,223,222,193"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="504,31,498,21,502,11,513,5,532,3,555,6,564,15,561,19,552,11,532,8,515,10,506,15,504,20,509,28"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="414,215,484,198,485,203,416,220"/>
+<area shape="rect" id="Node000006" href="$classtools.html#abce97603aeadeaa04fa6c6ff6c721eda" title="Empties a vector and all objects it points to." alt="" coords="485,227,579,252"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="415,229,471,233,471,238,415,234"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="384,112,467,64,488,54,491,59,469,68,387,117"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="401,138,487,170,485,175,399,143"/>
+<area shape="rect" id="Node000008" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="468,79,596,104"/>
+<area shape="poly" id="edge11_Node000007_Node000008" title=" " alt="" coords="420,113,459,104,460,109,421,118"/>
+<area shape="rect" id="Node000009" href="$classtools.html#a13633d4d63c55bcf537ff141e7605f13" title="Checks if a vector of strings contains a specific string." alt="" coords="468,128,596,153"/>
+<area shape="poly" id="edge12_Node000007_Node000009" title=" " alt="" coords="421,129,455,132,454,137,420,134"/>
+</map>

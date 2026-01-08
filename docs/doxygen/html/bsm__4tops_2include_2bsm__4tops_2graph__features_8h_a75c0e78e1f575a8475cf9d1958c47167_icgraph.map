@@ -1,0 +1,23 @@
+<map id="num_leps" name="num_leps">
+<area shape="rect" id="Node000001" title=" " alt="" coords="533,185,619,210"/>
+<area shape="rect" id="Node000002" href="$classgraph__jets__detector__lep.html#a8da8c93bcdece302cb06b34e6b9db801" title="Compiles the event into a graph." alt="" coords="301,5,451,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="563,173,533,115,511,85,484,59,450,42,453,37,487,55,515,82,537,113,567,171"/>
+<area shape="rect" id="Node000003" href="$classgraph__detector.html#a9524462481e7c9e42df5cf73f999737e" title="Compiles the event into a graph." alt="" coords="267,70,485,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="556,175,525,140,484,109,458,98,460,93,487,104,528,136,560,172"/>
+<area shape="rect" id="Node000004" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="323,143,429,169"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="519,188,429,170,430,164,521,183"/>
+<area shape="rect" id="Node000006" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="269,217,483,257"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="521,211,477,220,476,215,520,206"/>
+<area shape="rect" id="Node000008" href="$classcombinatorial.html#a6d222547e0dce9eea6ca128cdba5a01f" title="The main selection method to override." alt="" coords="287,282,465,307"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="554,222,524,248,487,272,452,284,451,279,484,267,521,244,551,218"/>
+<area shape="rect" id="Node000009" href="$classvalidation.html#a0b29bd038e3900496cc2de454fc52615" title="The main selection method to override." alt="" coords="299,331,453,357"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="566,224,535,274,513,300,487,322,454,337,452,332,484,318,509,297,531,271,561,221"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="412,134,402,125,376,122,355,124,344,129,341,134,347,142,343,145,336,135,340,125,353,119,376,117,404,120,415,130"/>
+<area shape="rect" id="Node000005" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="55,143,169,169"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="309,167,170,166,170,161,309,161"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="183,145,322,146,322,151,183,151"/>
+<area shape="poly" id="edge8_Node000006_Node000006" title=" " alt="" coords="410,206,398,199,376,196,357,198,345,203,341,209,343,216,338,218,336,208,342,199,356,193,376,191,400,194,412,201"/>
+<area shape="rect" id="Node000007" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="5,217,219,257"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="255,249,219,249,219,244,255,244"/>
+<area shape="poly" id="edge10_Node000007_Node000006" title=" " alt="" coords="233,226,269,226,269,231,233,231"/>
+</map>

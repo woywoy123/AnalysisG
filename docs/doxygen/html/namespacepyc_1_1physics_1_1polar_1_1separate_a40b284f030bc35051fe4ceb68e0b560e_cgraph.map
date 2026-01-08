@@ -1,0 +1,20 @@
+<map id="pyc::physics::polar::separate::Theta" name="pyc::physics::polar::separate::Theta">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,73,148,113"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="223,31,317,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,72,209,56,210,61,149,77"/>
+<area shape="rect" id="Node000003" href="$namespacetransform__.html#aa38819d479d31edd3f79b4f8e96ef8be" title="Computes the 3&#45;momentum (Px, Py, Pz)." alt="" coords="196,80,344,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,90,182,90,182,95,148,95"/>
+<area shape="rect" id="Node000007" href="$namespacephysics__.html#a6d323b672a05eb19edce0b4d818bdb7f" title="Computes the polar angle theta." alt="" coords="209,141,331,167"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="141,110,217,134,215,139,140,115"/>
+<area shape="rect" id="Node000004" href="$namespacetransform__.html#a4573dda96168ebbd38a408e64cc3d5ff" title="Computes the x&#45;component of momentum (Px)." alt="" coords="392,5,509,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="310,77,343,65,391,40,404,34,406,38,393,44,345,70,312,82"/>
+<area shape="rect" id="Node000005" href="$namespacetransform__.html#a51363ab29a6390a86a8ea75573a7a196" title="Computes the y&#45;component of momentum (Py)." alt="" coords="392,55,509,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="344,80,378,75,379,80,345,85"/>
+<area shape="rect" id="Node000006" href="$namespacetransform__.html#a28be39b0041a97b1667ccd1ff301f784" title="Computes the z&#45;component of momentum (Pz)." alt="" coords="393,104,509,129"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="345,100,380,105,379,110,344,105"/>
+<area shape="rect" id="Node000008" href="$namespacephysics__.html#ac12a78b1943348345b940e510930f420" title="Computes the momentum magnitude." alt="" coords="403,177,498,203"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="332,164,390,175,389,181,331,169"/>
+<area shape="poly" id="edge9_Node000008_Node000008" title=" " alt="" coords="427,178,422,169,425,159,435,153,451,151,470,154,478,163,474,166,467,159,451,156,436,158,429,163,427,168,432,176"/>
+<area shape="rect" id="Node000009" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="557,177,624,203"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="498,187,544,187,544,193,498,193"/>
+</map>

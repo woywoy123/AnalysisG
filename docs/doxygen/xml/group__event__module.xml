@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__event__module" kind="group">
+    <compoundname>event_module</compoundname>
+    <title>Event Module</title>
+    <briefdescription>
+<para>Event data structures and processing. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__event__module_1event_overview">
+<title>Overview</title>
+<para>The Event module provides the <ref refid="classevent__template" kindref="compound">event_template</ref> class, which serves as the base class for defining event data structures in physics analyses.</para>
+</sect1>
+<sect1 id="group__event__module_1event_structure">
+<title>Structure</title>
+<para>An event template defines:</para>
+<para><itemizedlist>
+<listitem><para><bold>Trees</bold>: ROOT TTree names to read</para>
+</listitem><listitem><para><bold>Branches</bold>: Branch names within trees</para>
+</listitem><listitem><para><bold>Leaves</bold>: Individual variables to extract</para>
+</listitem><listitem><para><bold>Particles</bold>: Particle collections to construct</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="group__event__module_1event_subclassing">
+<title>Creating Custom Events</title>
+<para>To define a custom event type:</para>
+<para><orderedlist>
+<listitem><para>Subclass <ref refid="classevent__template" kindref="compound">event_template</ref></para>
+</listitem><listitem><para>In the constructor, call <computeroutput>add_tree()</computeroutput>, <computeroutput>add_branch()</computeroutput>, <computeroutput>add_leaf()</computeroutput></para>
+</listitem><listitem><para>Register particle types with <computeroutput>register_particle()</computeroutput></para>
+</listitem><listitem><para>Override <computeroutput>build(element_t*)</computeroutput> to process raw data</para>
+</listitem></orderedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classevent__template" kindref="compound">event_template</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__sampletracer__module" kind="group">
+    <compoundname>sampletracer_module</compoundname>
+    <title>SampleTracer Module</title>
+    <briefdescription>
+<para>Sample tracking and provenance. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__sampletracer__module_1sampletracer_overview">
+<title>Overview</title>
+<para>The SampleTracer module tracks which samples have been processed and maintains provenance information for reproducibility.</para>
+</sect1>
+<sect1 id="group__sampletracer__module_1sampletracer_features">
+<title>Features</title>
+<para><itemizedlist>
+<listitem><para>Sample state tracking</para>
+</listitem><listitem><para>Processing history</para>
+</listitem><listitem><para>Cache management</para>
+</listitem><listitem><para>File associations</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classsampletracer" kindref="compound">sampletracer</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

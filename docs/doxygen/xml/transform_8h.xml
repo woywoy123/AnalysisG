@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="transform_8h" kind="file" language="C++">
+    <compoundname>transform.h</compoundname>
+    <includes local="no">torch/torch.h</includes>
+    <includedby refid="pyc_2interface_2graph_8cxx" local="no">graph.cxx</includedby>
+    <includedby refid="nusol_2tensor_2nusol_8cxx" local="no">nusol.cxx</includedby>
+    <includedby refid="pyc_2interface_2physics_8cxx" local="no">physics.cxx</includedby>
+    <includedby refid="interface_2transform_8cxx" local="no">transform.cxx</includedby>
+    <includedby refid="transform_2transform_8cxx" local="no">transform.cxx</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>transform.h</label>
+        <link refid="transform_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>graph.cxx</label>
+        <link refid="pyc_2interface_2graph_8cxx"/>
+      </node>
+      <node id="4">
+        <label>physics.cxx</label>
+        <link refid="pyc_2interface_2physics_8cxx"/>
+      </node>
+      <node id="5">
+        <label>transform.cxx</label>
+        <link refid="interface_2transform_8cxx"/>
+      </node>
+      <node id="3">
+        <label>nusol.cxx</label>
+        <link refid="nusol_2tensor_2nusol_8cxx"/>
+      </node>
+      <node id="1">
+        <label>transform.h</label>
+        <link refid="transform_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>transform.cxx</label>
+        <link refid="transform_2transform_8cxx"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacetransform__">transform_</innernamespace>
+    <briefdescription>
+<para>Provides transformation functions for momentum calculations in C++. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>TRANSFORM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>TRANSFORM_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacetransform__" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacetransform__" kindref="compound">transform_</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a4573dda96168ebbd38a408e64cc3d5ff" kindref="member">Px</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a51363ab29a6390a86a8ea75573a7a196" kindref="member">Py</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a28be39b0041a97b1667ccd1ff301f784" kindref="member">Pz</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref>);</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">PxPyPz</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>);</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" kindref="member">PxPyPzE</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a05e7d19a6d002118deef70d21ff4226e" kindref="member">energy</ref>);</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa38819d479d31edd3f79b4f8e96ef8be" kindref="member">PxPyPz</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ad949b87653e0e12c90d27f66d090f1c9" kindref="member">pmu</ref>);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a87dc88421ea78ec3b9c73c86cc5ade19" kindref="member">PxPyPzE</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ad949b87653e0e12c90d27f66d090f1c9" kindref="member">pmu</ref>);</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a7e398b6292d5d34c81497445060ec752" kindref="member">Pt</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>);</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a86e364c3bd4a1a8785a3cdfb0a1e1573" kindref="member">PtEta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" kindref="member">Phi</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1aa90019603231f23c1e857b5f5832b587" kindref="member">Phi</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>);</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a82aaa223736b57490a8639752180e5ec" kindref="member">Eta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="131"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a82aaa223736b57490a8639752180e5ec" kindref="member">Eta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">PtEtaPhi</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a59a9589e3d78c302e6f52b2fcd5ceedb" kindref="member">PtEtaPhiE</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1adf008ef1e94217cd7a7dae8c53a127a6" kindref="member">PtEtaPhi</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacetransform___1a59a9589e3d78c302e6f52b2fcd5ceedb" kindref="member">PtEtaPhiE</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>transform_</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/></highlight><highlight class="comment">//<sp/>TRANSFORM_H</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/transform/include/transform/transform.h"/>
+  </compounddef>
+</doxygen>

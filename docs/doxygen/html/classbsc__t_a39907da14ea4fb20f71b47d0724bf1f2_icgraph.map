@@ -1,0 +1,9 @@
+<map id="bsc_t::root_type_translate" name="bsc_t::root_type_translate">
+<area shape="rect" id="Node000001" title="Translates a ROOT type string to an internal data enumeration." alt="" coords="520,5,711,31"/>
+<area shape="rect" id="Node000002" href="$structdata__t.html#a34a71707a145e9bccadd9844f79701ad" title=" " alt="" coords="328,5,472,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="506,21,473,21,473,15,506,15"/>
+<area shape="rect" id="Node000003" href="$structdata__t.html#a1e32c6e18a54f7e31f6491ec52deaeff" title=" " alt="" coords="153,5,280,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="314,21,280,21,280,15,314,15"/>
+<area shape="rect" id="Node000004" href="$structdata__t.html#ac443d1828779a2aaf4be06b575567a9e" title=" " alt="" coords="5,5,105,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="140,21,106,21,106,15,140,15"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="exp_mc20::exp_mc20" name="exp_mc20::exp_mc20">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,169,60"/>
+<area shape="rect" id="Node000002" href="$classevent__template.html#af57dbc73f9bf6e8ba5126a07e4a327c4" title="Adds a leaf (variable) to the event structure." alt="" coords="217,5,407,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,34,203,29,204,35,170,39"/>
+<area shape="rect" id="Node000003" href="$classevent__template.html#a29bff91e130f4b01eefab555eb5fe9bb" title="Registers a particle for tracking in this event." alt="" coords="221,55,403,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,55,207,60,207,65,169,60"/>
+</map>

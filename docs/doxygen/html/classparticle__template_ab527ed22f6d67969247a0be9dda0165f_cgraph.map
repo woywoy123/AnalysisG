@@ -1,0 +1,104 @@
+<map id="particle_template::particle_template" name="particle_template::particle_template">
+<area shape="rect" id="Node000001" title="Default constructor." alt="" coords="5,1221,151,1261"/>
+<area shape="rect" id="Node000002" href="$classparticle__template.html#a92866b3a31350f8d7ae5e15c8a551b33" title="Getter for charge." alt="" coords="205,5,351,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,1221,88,990,112,620,128,429,148,259,170,129,183,84,196,56,199,53,203,56,201,59,188,86,176,130,153,260,133,430,117,620,94,991,83,1221"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#a0d6f5cadd815776a58be4d47e99c750d" title="Getter for children." alt="" coords="205,69,351,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="78,1221,89,1001,114,651,130,471,149,311,172,188,184,146,196,120,199,117,203,120,201,123,189,148,177,190,155,312,135,472,119,652,95,1001,83,1221"/>
+<area shape="rect" id="Node000005" href="$classparticle__template.html#ab0927b6be583340a0b8c4d12a5ff3ebf" title="Getter for energy." alt="" coords="205,197,351,237"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="76,1221,77,1038,82,900,90,747,104,593,126,450,140,387,156,331,175,284,196,248,199,245,203,248,201,251,180,286,161,333,145,388,131,451,110,594,95,748,87,900,83,1038,82,1221"/>
+<area shape="rect" id="Node000006" href="$classparticle__template.html#a51448fc89f42a176decd7047e503cfd4" title="Getter for η." alt="" coords="205,261,351,301"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="77,1221,79,1049,84,920,93,777,108,634,129,500,158,389,176,346,196,312,199,309,203,312,201,315,181,348,163,391,134,501,113,634,99,778,90,920,84,1049,82,1221"/>
+<area shape="rect" id="Node000008" href="$classparticle__template.html#a9c586cc0ac38cad5ccacf1bb4985e25b" title="Getter for hash." alt="" coords="205,453,351,493"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="77,1221,85,1080,104,866,119,754,139,650,165,564,180,530,197,504,199,501,203,504,201,507,185,533,170,566,145,652,124,755,109,867,90,1081,83,1221"/>
+<area shape="rect" id="Node000011" href="$classparticle__template.html#abb9421346892401cfc1d75142b46baf7" title="Getter for index." alt="" coords="205,709,351,749"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="79,1221,93,1124,118,987,153,851,174,797,197,760,200,756,204,760,201,763,179,799,158,853,124,988,99,1125,85,1221"/>
+<area shape="rect" id="Node000012" href="$classparticle__template.html#a58373d0f47618e85ab649a28ebe2b79a" title="Getter for is_add." alt="" coords="205,773,351,813"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="77,1221,81,1148,96,1043,111,985,132,927,161,873,197,824,200,820,204,823,201,827,165,875,137,930,117,987,102,1044,86,1149,82,1221"/>
+<area shape="rect" id="Node000013" href="$classparticle__template.html#a2a3735ec76637317bb78cafb8759b258" title="Getter for is_b." alt="" coords="205,837,351,877"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="78,1221,85,1158,104,1070,119,1021,139,974,165,928,197,888,201,884,204,888,201,891,169,931,144,976,124,1023,109,1071,90,1159,83,1222"/>
+<area shape="rect" id="Node000015" href="$classparticle__template.html#a2d99515f664dbf8dab14061682e5bc6b" title="Getter for is_lep." alt="" coords="205,901,351,941"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="80,1221,90,1168,112,1097,146,1020,169,984,197,951,201,947,205,951,201,955,174,987,151,1022,117,1098,96,1169,85,1222"/>
+<area shape="rect" id="Node000016" href="$classparticle__template.html#a418dff4e2ee3f17d7a85a1e37c76b29f" title="Getter for is_nu." alt="" coords="205,965,351,1005"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="82,1220,97,1178,120,1124,153,1066,174,1039,197,1015,202,1011,206,1015,200,1019,178,1043,158,1069,125,1126,102,1180,87,1222"/>
+<area shape="rect" id="Node000017" href="$classparticle__template.html#ad101584e82d80dc3c560c2309867b8a7" title="Getter for lep_decay." alt="" coords="205,1029,351,1069"/>
+<area shape="poly" id="edge19_Node000001_Node000017" title=" " alt="" coords="88,1219,130,1152,161,1113,197,1079,204,1074,208,1078,200,1083,165,1117,134,1155,92,1222"/>
+<area shape="rect" id="Node000018" href="$classparticle__template.html#af5837057bd00b72689117beb704839bb" title="Getter for mass." alt="" coords="205,1093,351,1133"/>
+<area shape="poly" id="edge20_Node000001_Node000018" title=" " alt="" coords="99,1219,142,1182,197,1143,208,1137,211,1142,200,1148,146,1186,102,1223"/>
+<area shape="rect" id="Node000019" href="$classparticle__template.html#a0b63a8ae07f178fa8f30044683c615ad" title="Getter for parents." alt="" coords="205,133,351,173"/>
+<area shape="poly" id="edge21_Node000001_Node000019" title=" " alt="" coords="78,1221,90,1013,115,683,132,514,151,364,173,248,184,209,196,184,199,181,203,184,201,187,189,211,178,249,156,364,137,515,121,684,95,1013,83,1221"/>
+<area shape="rect" id="Node000020" href="$classparticle__template.html#a1dd91fb218aee680bd4920044133828d" title="Getter for PDG ID." alt="" coords="205,1157,351,1197"/>
+<area shape="poly" id="edge23_Node000001_Node000020" title=" " alt="" coords="140,1219,201,1199,203,1204,142,1224"/>
+<area shape="rect" id="Node000021" href="$classparticle__template.html#a79d8204190d8215481f6db43a69c8ab0" title="Getter for φ." alt="" coords="205,325,351,365"/>
+<area shape="poly" id="edge24_Node000001_Node000021" title=" " alt="" coords="77,1221,81,1059,97,807,112,674,133,550,160,447,177,407,197,376,199,373,203,376,201,379,182,409,165,449,138,551,117,674,102,807,86,1059,82,1221"/>
+<area shape="rect" id="Node000022" href="$classparticle__template.html#a53f247991911f661cddf7372776d4967" title="Getter for pT." alt="" coords="205,389,351,429"/>
+<area shape="poly" id="edge26_Node000001_Node000022" title=" " alt="" coords="77,1221,83,1070,100,837,115,714,136,600,163,506,179,469,197,440,199,437,203,440,201,443,183,471,168,508,141,602,121,715,106,837,88,1070,82,1221"/>
+<area shape="rect" id="Node000023" href="$classparticle__template.html#a2c580f15b494fcbdc17c2339c1ae91e1" title="Getter for px." alt="" coords="205,517,351,557"/>
+<area shape="poly" id="edge28_Node000001_Node000023" title=" " alt="" coords="78,1221,87,1091,107,896,123,794,143,700,167,622,181,591,197,568,199,565,203,568,201,571,186,594,172,624,148,702,128,795,113,897,92,1091,83,1221"/>
+<area shape="rect" id="Node000024" href="$classparticle__template.html#a4825c3c7d011c6c5fbc5b3c734799a7f" title="Getter for py." alt="" coords="205,581,351,621"/>
+<area shape="poly" id="edge30_Node000001_Node000024" title=" " alt="" coords="78,1221,89,1102,111,926,127,835,146,750,169,681,182,653,197,632,199,629,203,632,201,635,187,656,174,683,151,752,132,836,116,927,94,1102,83,1221"/>
+<area shape="rect" id="Node000025" href="$classparticle__template.html#ab78f0f9f18d3d13c26fdd549e1027e44" title="Getter for pz." alt="" coords="205,645,351,685"/>
+<area shape="poly" id="edge32_Node000001_Node000025" title=" " alt="" coords="79,1221,91,1113,115,957,131,876,150,801,172,739,197,696,200,692,204,696,201,699,176,741,155,802,136,877,120,958,96,1114,84,1222"/>
+<area shape="rect" id="Node000026" href="$classparticle__template.html#afa3165c6eb75d44985e3a679c05f2f35" title="Getter for symbol." alt="" coords="205,1221,351,1261"/>
+<area shape="poly" id="edge34_Node000001_Node000026" title=" " alt="" coords="151,1239,192,1239,192,1244,151,1244"/>
+<area shape="rect" id="Node000027" href="$classparticle__template.html#ab021726ef6c07bffdccecb7bda38ca86" title="Getter for type." alt="" coords="205,1285,351,1325"/>
+<area shape="poly" id="edge35_Node000001_Node000027" title=" " alt="" coords="142,1259,203,1279,201,1284,140,1264"/>
+<area shape="rect" id="Node000028" href="$classparticle__template.html#af21be977ccd925410e90221d8fadef32" title="Setter for charge." alt="" coords="205,1349,351,1389"/>
+<area shape="poly" id="edge36_Node000001_Node000028" title=" " alt="" coords="102,1259,146,1297,200,1335,211,1341,208,1346,197,1340,142,1301,99,1263"/>
+<area shape="rect" id="Node000029" href="$classparticle__template.html#af4814257c6e584f51eaefee09d5d9300" title="Setter for children." alt="" coords="205,1413,351,1453"/>
+<area shape="poly" id="edge37_Node000001_Node000029" title=" " alt="" coords="92,1260,134,1328,165,1366,200,1399,208,1404,204,1409,197,1403,161,1369,130,1331,88,1263"/>
+<area shape="rect" id="Node000031" href="$classparticle__template.html#afd797e25024bf1203b7524dc6aae703f" title="Setter for energy." alt="" coords="205,1477,351,1517"/>
+<area shape="poly" id="edge39_Node000001_Node000031" title=" " alt="" coords="87,1261,102,1302,125,1357,158,1413,178,1440,200,1463,206,1468,202,1472,197,1467,174,1443,153,1416,120,1359,97,1304,82,1262"/>
+<area shape="rect" id="Node000032" href="$classparticle__template.html#a7f3069ef3b9d7f2f4b9bccd7cf87d955" title="Setter for η." alt="" coords="205,1541,351,1581"/>
+<area shape="poly" id="edge40_Node000001_Node000032" title=" " alt="" coords="85,1261,96,1313,117,1384,151,1460,174,1496,201,1527,205,1531,201,1535,197,1531,169,1499,146,1463,112,1386,90,1315,80,1262"/>
+<area shape="rect" id="Node000033" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="199,1606,357,1631"/>
+<area shape="poly" id="edge41_Node000001_Node000033" title=" " alt="" coords="83,1261,89,1325,107,1413,122,1461,142,1508,168,1553,201,1591,207,1597,204,1601,197,1595,164,1556,137,1511,117,1463,102,1415,84,1326,77,1262"/>
+<area shape="rect" id="Node000034" href="$classparticle__template.html#a3ba07b65a181071a7c8c11e8ccdf3e91" title="Setter for index." alt="" coords="205,1656,351,1696"/>
+<area shape="poly" id="edge42_Node000001_Node000034" title=" " alt="" coords="82,1262,87,1332,104,1432,119,1487,139,1542,166,1594,201,1641,206,1646,202,1650,197,1644,162,1597,134,1545,114,1489,99,1434,82,1332,77,1262"/>
+<area shape="rect" id="Node000035" href="$classparticle__template.html#a0900578e2e9c96bddada2963b4a1b141" title="Setter for mass." alt="" coords="205,1720,351,1760"/>
+<area shape="poly" id="edge43_Node000001_Node000035" title=" " alt="" coords="81,1261,82,1342,87,1397,96,1460,111,1525,132,1590,162,1651,201,1706,204,1709,200,1713,197,1710,157,1654,127,1592,105,1526,91,1460,82,1398,77,1342,76,1262"/>
+<area shape="rect" id="Node000036" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="199,1785,357,1810"/>
+<area shape="poly" id="edge44_Node000001_Node000036" title=" " alt="" coords="84,1261,96,1367,119,1520,135,1599,154,1671,176,1730,201,1770,206,1775,202,1779,197,1774,171,1732,149,1673,130,1600,114,1521,91,1368,79,1262"/>
+<area shape="rect" id="Node000037" href="$classparticle__template.html#a9550be5b7d6267872dfce8d92e9b09f2" title="Setter for parents." alt="" coords="205,1835,351,1875"/>
+<area shape="poly" id="edge45_Node000001_Node000037" title=" " alt="" coords="84,1261,95,1375,118,1543,134,1630,153,1710,175,1776,201,1821,204,1824,200,1828,197,1824,170,1778,148,1711,128,1631,112,1544,90,1376,78,1262"/>
+<area shape="rect" id="Node000039" href="$classparticle__template.html#ad9cf4aed3240fa987b364230a9929787" title="Setter for PDG ID." alt="" coords="205,1899,351,1939"/>
+<area shape="poly" id="edge47_Node000001_Node000039" title=" " alt="" coords="83,1262,93,1387,114,1573,130,1671,149,1760,173,1834,186,1863,201,1885,203,1888,199,1891,197,1888,182,1866,168,1836,144,1761,125,1672,109,1574,87,1387,78,1262"/>
+<area shape="rect" id="Node000040" href="$classparticle__template.html#a2ca47638ce890b9aa5d16c1184034fee" title="Setter for φ." alt="" coords="205,1963,351,2003"/>
+<area shape="poly" id="edge48_Node000001_Node000040" title=" " alt="" coords="83,1261,91,1397,111,1603,126,1711,146,1810,171,1893,185,1925,201,1949,203,1952,199,1955,197,1952,180,1927,166,1894,141,1811,121,1712,105,1604,85,1398,77,1262"/>
+<area shape="rect" id="Node000041" href="$classparticle__template.html#a9176a4d5e1117cd5cabf048b8c595649" title="Setter for pT." alt="" coords="205,2027,351,2067"/>
+<area shape="poly" id="edge49_Node000001_Node000041" title=" " alt="" coords="82,1261,89,1408,107,1633,122,1751,143,1860,169,1951,184,1986,201,2013,203,2016,199,2019,197,2016,179,1989,164,1953,137,1862,117,1752,102,1634,84,1409,77,1262"/>
+<area shape="rect" id="Node000042" href="$classparticle__template.html#a2dbc599127cbb7252c4edbb440b5bd71" title="Setter for px." alt="" coords="205,2091,351,2131"/>
+<area shape="poly" id="edge50_Node000001_Node000042" title=" " alt="" coords="82,1261,87,1418,104,1663,118,1791,139,1910,166,2009,183,2048,201,2077,203,2080,199,2083,197,2080,178,2050,161,2011,134,1911,113,1792,98,1663,82,1419,77,1261"/>
+<area shape="rect" id="Node000043" href="$classparticle__template.html#a0b2715c3ababedf9fb023578db3fb9e1" title="Setter for py." alt="" coords="205,2155,351,2195"/>
+<area shape="poly" id="edge51_Node000001_Node000043" title=" " alt="" coords="82,1262,85,1430,100,1693,115,1832,136,1961,164,2067,181,2109,201,2141,203,2144,199,2147,196,2144,177,2112,159,2069,131,1962,110,1833,95,1693,80,1430,77,1262"/>
+<area shape="rect" id="Node000044" href="$classparticle__template.html#af5770e8c231b36d403b3f155d0a63c96" title="Setter for pz." alt="" coords="205,2219,351,2259"/>
+<area shape="poly" id="edge52_Node000001_Node000044" title=" " alt="" coords="82,1261,83,1440,88,1574,97,1722,111,1872,132,2010,146,2072,162,2126,180,2171,201,2205,203,2208,199,2211,196,2208,175,2173,157,2127,141,2073,127,2011,106,1872,91,1723,83,1574,78,1440,76,1262"/>
+<area shape="rect" id="Node000045" href="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7" title="Sets the setter callback function." alt="" coords="200,2283,356,2309"/>
+<area shape="poly" id="edge53_Node000001_Node000045" title=" " alt="" coords="83,1261,95,1465,120,1787,137,1951,156,2097,177,2209,189,2246,201,2269,205,2273,201,2277,196,2272,184,2248,172,2210,150,2098,131,1952,115,1787,90,1466,78,1262"/>
+<area shape="rect" id="Node000046" href="$classparticle__template.html#a3341f187b6b2699bfc65aa7b272d2424" title="Setter for symbol." alt="" coords="205,2333,351,2373"/>
+<area shape="poly" id="edge54_Node000001_Node000046" title=" " alt="" coords="83,1261,95,1474,120,1811,137,1984,156,2138,177,2256,189,2295,201,2320,203,2323,199,2326,196,2323,184,2297,172,2257,150,2139,131,1985,115,1811,90,1474,78,1262"/>
+<area shape="rect" id="Node000047" href="$classparticle__template.html#af7ffbf0f94819ca168cbb33e65e1c29e" title="Setter for type." alt="" coords="205,2397,351,2437"/>
+<area shape="poly" id="edge55_Node000001_Node000047" title=" " alt="" coords="83,1262,94,1486,118,1843,135,2027,154,2190,176,2316,188,2358,201,2384,203,2387,199,2390,196,2387,183,2360,171,2317,149,2191,129,2027,113,1843,89,1486,78,1262"/>
+<area shape="rect" id="Node000004" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="454,109,513,134"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="351,98,441,112,440,117,350,103"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="452,112,443,102,445,91,459,84,483,82,514,87,523,93,524,99,519,101,518,96,512,92,483,87,461,90,449,95,448,100,456,108"/>
+<area shape="rect" id="Node000007" href="$classparticle__template.html#a79ef4e926f54b39c0648b9e7aedd57db" title="Converts internal representation to polar coordinates." alt="" coords="411,325,556,365"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="344,299,406,319,405,324,342,304"/>
+<area shape="rect" id="Node000009" href="$classparticle__template.html#a9d76454c51212c82aaa61b6328bb6545" title="Converts internal representation to Cartesian coordinates." alt="" coords="411,549,556,589"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="331,491,358,503,434,540,431,545,356,508,329,496"/>
+<area shape="rect" id="Node000010" href="$classtools.html#afd037c109d75a9f119ec042e1ba922d9" title="Converts a double value to a string with standard precision." alt="" coords="424,461,543,486"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="351,471,410,471,410,476,351,476"/>
+<area shape="rect" id="Node000014" href="$classparticle__template.html#a0f07f2b1587b5b72e50f9da36f079a24" title="Checks if particle matches any of the given PDG IDs." alt="" coords="405,909,561,934"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="344,875,430,902,428,907,342,880"/>
+<area shape="poly" id="edge16_Node000015_Node000014" title=" " alt="" coords="351,919,391,919,391,924,351,924"/>
+<area shape="poly" id="edge18_Node000016_Node000014" title=" " alt="" coords="342,963,428,936,430,941,344,968"/>
+<area shape="poly" id="edge22_Node000019_Node000004" title=" " alt="" coords="350,139,440,125,441,131,351,145"/>
+<area shape="poly" id="edge25_Node000021_Node000007" title=" " alt="" coords="351,343,397,343,397,348,351,348"/>
+<area shape="poly" id="edge27_Node000022_Node000007" title=" " alt="" coords="342,387,405,367,406,372,344,392"/>
+<area shape="poly" id="edge29_Node000023_Node000009" title=" " alt="" coords="351,546,398,553,397,559,350,551"/>
+<area shape="poly" id="edge31_Node000024_Node000009" title=" " alt="" coords="350,587,397,580,398,585,351,593"/>
+<area shape="poly" id="edge33_Node000025_Node000009" title=" " alt="" coords="329,643,356,631,431,593,434,598,358,636,331,648"/>
+<area shape="rect" id="Node000030" href="$classparticle__template.html#aa8af18b783e4bd8647620ffa62a321d7" title="Registers a child particle." alt="" coords="411,1413,556,1453"/>
+<area shape="poly" id="edge38_Node000029_Node000030" title=" " alt="" coords="351,1431,397,1431,397,1436,351,1436"/>
+<area shape="rect" id="Node000038" href="$classparticle__template.html#a1136fb07def4cd0385bd6d37b9ad68ff" title="Registers a parent particle." alt="" coords="411,1835,556,1875"/>
+<area shape="poly" id="edge46_Node000037_Node000038" title=" " alt="" coords="351,1852,397,1852,397,1857,351,1857"/>
+</map>

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="dir_703aba85e66e9dd1d4fa0d9a68f179bd" kind="dir">
+    <compoundname>childrenkinematics</compoundname>
+    <innerfile refid="selections_2mc16_2childrenkinematics_2____init_____8pxd">selections/mc16/childrenkinematics/__init__.pxd</innerfile>
+    <innerfile refid="childrenkinematics_8cxx">childrenkinematics.cxx</innerfile>
+    <innerfile refid="childrenkinematics_8h">childrenkinematics.h</innerfile>
+    <innerfile refid="childrenkinematics_8pxd">childrenkinematics.pxd</innerfile>
+    <innerfile refid="childrenkinematics_8pyx">childrenkinematics.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc16/childrenkinematics/"/>
+  </compounddef>
+</doxygen>

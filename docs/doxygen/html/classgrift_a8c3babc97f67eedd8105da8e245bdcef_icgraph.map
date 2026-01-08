@@ -1,0 +1,11 @@
+<map id="grift::grift" name="grift::grift">
+<area shape="rect" id="Node000001" title=" " alt="" coords="461,29,544,55"/>
+<area shape="rect" id="Node000002" href="$classgrift.html#aaa79c30c964e2edac2d6d49f2f95b9a3" title="Creates a clone of the model template." alt="" coords="323,29,413,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="448,45,414,45,414,39,448,39"/>
+<area shape="rect" id="Node000003" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="168,29,275,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="309,45,275,45,275,39,309,39"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="247,18,239,11,221,8,206,10,198,15,197,20,201,28,196,31,191,21,194,11,204,5,221,3,242,6,250,15"/>
+<area shape="rect" id="Node000004" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="5,29,120,55"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="154,54,120,53,120,48,154,48"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="134,30,168,31,168,36,134,36"/>
+</map>

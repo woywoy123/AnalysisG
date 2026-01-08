@@ -1,0 +1,24 @@
+<map id="tools::replace" name="tools::replace">
+<area shape="rect" id="Node000001" title="Replaces all occurrences of a substring in a string." alt="" coords="613,132,724,157"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a1c3e0d7bb80774d865586b18a1566704" title="Builds graph representations of the event data based on the added graph templates." alt="" coords="388,5,555,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="646,124,610,87,564,52,521,33,523,28,567,48,613,83,650,120"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="207,56,321,81"/>
+<area shape="poly" id="edge12_Node000001_Node000003" title=" " alt="" coords="634,127,601,110,565,97,501,83,435,75,322,70,322,65,436,69,501,77,566,91,603,105,637,122"/>
+<area shape="rect" id="Node000005" href="$classanalysis.html#a0cbe44c90dab45066bfe074e506c5d8d" title="&lt; Private access specifier for the following members." alt="" coords="388,107,555,132"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="599,139,555,133,555,127,600,133"/>
+<area shape="rect" id="Node000006" href="$classdataloader.html#a04c94d9be735c32b80b6599c6bd993b4" title=" " alt="" coords="377,156,565,181"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="600,156,566,160,565,155,600,150"/>
+<area shape="rect" id="Node000007" href="$classmeta.html#aa38115a3aaa4c30e30800d3f52c1a750" title="Static getter for the campaign property." alt="" coords="393,205,549,231"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="632,166,566,195,526,208,525,203,564,190,630,161"/>
+<area shape="rect" id="Node000009" href="$classmeta.html#aaed15ab5be8f7a86c79373f24abfc952" title="Parses a JSON string to extract metadata." alt="" coords="404,255,539,280"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="651,170,615,209,592,229,567,246,540,257,538,252,564,241,589,225,611,205,647,166"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="406,37,317,59,316,53,405,31"/>
+<area shape="rect" id="Node000004" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="5,56,151,81"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="193,80,151,80,151,75,193,75"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="165,57,207,58,207,63,165,62"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="405,106,316,84,317,79,406,101"/>
+<area shape="rect" id="Node000008" href="$classmeta.html#a63ad3379066eb6b7c8bf7a7ea9ee0783" title="&lt; Public access specifier for the following members." alt="" coords="215,205,313,231"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="380,221,313,221,313,215,380,215"/>
+<area shape="rect" id="Node000010" href="$classmeta.html#ac20aa6b655d77e02eb08aabe78b6af7e" title="Scans data from a generic ROOT object (e.g., TTree, TH1)." alt="" coords="199,255,329,280"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="390,270,329,270,329,265,390,265"/>
+</map>

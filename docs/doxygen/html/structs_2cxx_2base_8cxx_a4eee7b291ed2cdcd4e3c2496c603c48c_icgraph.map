@@ -1,0 +1,90 @@
+<map id="count" name="count">
+<area shape="rect" id="Node000001" title="Counts occurrences of a substring in a string." alt="" coords="913,389,972,415"/>
+<area shape="poly" id="edge13_Node000001_Node000001" title=" " alt="" coords="973,379,964,371,943,368,924,370,915,375,913,380,918,388,914,391,908,381,911,371,923,365,943,363,967,366,977,375"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#ad1bf7fde8eafef15d4dcedcba5ce51f7" title="Builds or calculates metrics for evaluating model performance." alt="" coords="687,104,852,129"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="939,376,936,326,925,264,902,199,885,170,864,144,846,132,849,127,867,140,890,167,907,197,930,262,941,326,944,375"/>
+<area shape="rect" id="Node000005" href="$classplotting.html#ab59fd114ad68f713daa6f3865c3a3a93" title="Builds a Receiver Operating Characteristic (ROC) curve from classification results." alt="" coords="696,55,843,80"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="936,376,927,309,911,224,890,144,877,114,863,93,841,79,844,74,867,89,882,111,895,143,917,223,932,308,941,375"/>
+<area shape="rect" id="Node000006" href="$classanalysis.html#a0cbe44c90dab45066bfe074e506c5d8d" title="&lt; Private access specifier for the following members." alt="" coords="686,5,853,31"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="937,376,929,299,915,199,893,105,879,68,863,44,849,33,852,29,867,40,884,66,898,103,920,198,934,298,942,375"/>
+<area shape="rect" id="Node000007" href="$classdataloader.html#a60ede9b5c2cacf28b6fd28524f21501f" title=" " alt="" coords="684,154,855,194"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="936,376,928,339,915,293,894,248,863,208,848,196,851,192,867,204,899,245,920,292,934,337,941,375"/>
+<area shape="rect" id="Node000011" href="$classgnn__event.html#ab87f90ab398273aeaa604b56b86274ad" title=" " alt="" coords="675,219,864,244"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="933,377,909,316,889,284,864,257,845,246,848,242,867,253,894,281,914,314,937,375"/>
+<area shape="rect" id="Node000012" href="$classdataloader.html#a04c94d9be735c32b80b6599c6bd993b4" title=" " alt="" coords="675,268,863,293"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="926,379,900,342,883,324,864,308,838,296,841,291,867,304,887,320,904,339,930,376"/>
+<area shape="rect" id="Node000013" href="$classparticle__template.html#a0d6f5cadd815776a58be4d47e99c750d" title="Getter for children." alt="" coords="697,382,842,422"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="900,405,842,405,842,399,900,399"/>
+<area shape="rect" id="Node000017" href="$classparticle__template.html#a0b63a8ae07f178fa8f30044683c615ad" title="Getter for parents." alt="" coords="697,318,842,358"/>
+<area shape="poly" id="edge19_Node000001_Node000017" title=" " alt="" coords="900,387,864,372,831,361,833,356,866,368,902,382"/>
+<area shape="rect" id="Node000018" href="$classssml__mc20.html#a895929ee61eda66accfedcaf9c7fa7a7" title=" " alt="" coords="673,447,865,472"/>
+<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="902,423,866,437,824,449,822,444,864,431,900,418"/>
+<area shape="rect" id="Node000020" href="$structwrite__t.html#a0904b9e3b70f290625bf18d376f65023" title=" " alt="" coords="707,496,832,521"/>
+<area shape="poly" id="edge23_Node000001_Node000020" title=" " alt="" coords="927,428,901,458,867,486,833,500,831,495,864,481,897,454,923,424"/>
+<area shape="rect" id="Node000021" href="$structgraph__t.html#a1e282caadefc079e39a6c29a8092325f" title=" " alt="" coords="695,545,844,571"/>
+<area shape="poly" id="edge24_Node000001_Node000021" title=" " alt="" coords="935,429,911,483,891,511,867,535,844,548,841,543,864,531,887,507,906,480,931,427"/>
+<area shape="rect" id="Node000033" href="$classio.html#a65c36380ef79524e8235f792abe9625c" title="Initializes ROOT file processing, potentially opening files specified in settings." alt="" coords="473,647,583,672"/>
+<area shape="poly" id="edge36_Node000001_Node000033" title=" " alt="" coords="944,429,940,475,929,531,906,587,889,612,867,633,834,654,798,669,760,678,721,683,647,682,583,674,584,669,647,677,721,677,759,673,797,664,832,650,864,629,885,609,901,584,924,529,935,474,939,429"/>
+<area shape="rect" id="Node000035" href="$classbsc__t.html#a39907da14ea4fb20f71b47d0724bf1f2" title="Translates a ROOT type string to an internal data enumeration." alt="" coords="674,595,865,620"/>
+<area shape="poly" id="edge38_Node000001_Node000035" title=" " alt="" coords="940,429,932,464,919,506,897,548,867,584,847,597,844,592,864,580,893,545,914,504,927,463,935,428"/>
+<area shape="rect" id="Node000039" href="$classanalysis.html#a3cd3d6b2539ad3d5778cffabda174228" title="Templated helper method to safely clone objects (e.g., event or graph templates)." alt="" coords="692,749,847,775"/>
+<area shape="poly" id="edge42_Node000001_Node000039" title=" " alt="" coords="941,428,933,500,918,591,896,678,883,712,867,736,846,751,843,747,863,732,878,710,891,676,912,590,927,499,936,428"/>
+<area shape="rect" id="Node000041" href="$classio.html#aacb050c4cb6c10038d6bf8edb7244a28" title="Scans for keys (e.g., TTree names, TBranch names) in the open ROOT files." alt="" coords="715,696,824,721"/>
+<area shape="poly" id="edge44_Node000001_Node000041" title=" " alt="" coords="944,429,942,480,931,547,921,582,908,617,890,649,867,679,848,693,825,703,823,698,845,689,863,675,886,647,903,615,916,581,926,546,936,480,939,428"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="471,44,585,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="703,103,579,72,581,67,705,98"/>
+<area shape="rect" id="Node000004" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="219,44,364,69"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="457,68,364,68,364,62,457,62"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="378,45,471,46,471,52,378,51"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="676,36,586,50,585,45,675,30"/>
+<area shape="rect" id="Node000008" href="$classdataloader.html#a281bac1652b78652581bad461b1cc966" title=" " alt="" coords="437,151,619,176"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="670,172,619,170,620,165,671,167"/>
+<area shape="rect" id="Node000009" href="$classdataloader.html#aed6ec872879a44ecfa9ae1c2188690a8" title=" " alt="" coords="218,133,365,173"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="423,161,365,159,365,153,423,156"/>
+<area shape="rect" id="Node000010" href="$classdataloader.html#ae3bba702555507d8b6e5567c34d19142" title=" " alt="" coords="5,133,152,173"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="204,155,152,155,152,150,204,150"/>
+<area shape="rect" id="Node000014" href="$classparticle__template.html#ab527ed22f6d67969247a0be9dda0165f" title="Default constructor." alt="" coords="455,290,601,330"/>
+<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="693,380,672,372,575,333,577,328,674,368,695,375"/>
+<area shape="rect" id="Node000015" href="$classparticle__template.html#adf7b55df06b7621b0a6bc509f74d22ff" title="Serializes particle data for storage." alt="" coords="219,197,364,237"/>
+<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="468,287,382,251,350,239,352,234,384,246,470,282"/>
+<area shape="rect" id="Node000016" href="$classparticle__template.html#a6c492ed991c27a61acad61064fa89b3c" title="Creates a clone of this particle." alt="" coords="219,261,364,301"/>
+<area shape="poly" id="edge18_Node000014_Node000016" title=" " alt="" coords="441,302,364,292,364,287,442,297"/>
+<area shape="poly" id="edge20_Node000017_Node000014" title=" " alt="" coords="683,331,601,321,601,316,683,325"/>
+<area shape="rect" id="Node000019" href="$classssml__mc20.html#a0a01f1899566c4787d47ce29c2e8983e" title=" " alt="" coords="431,447,625,472"/>
+<area shape="poly" id="edge22_Node000018_Node000019" title=" " alt="" coords="660,462,625,462,625,457,660,457"/>
+<area shape="rect" id="Node000022" href="$structgraph__t.html#a9a07fbb8428e15bedd7fa89c8e1a1dc7" title="Check if a feature exists and get its tensor." alt="" coords="450,547,606,572"/>
+<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="681,561,606,562,606,556,681,556"/>
+<area shape="rect" id="Node000023" href="$structgraph__t.html#a9b384f9d76843d534c642b926c4df564" title="Get batch index tensor." alt="" coords="220,654,363,694"/>
+<area shape="poly" id="edge26_Node000022_Node000023" title=" " alt="" coords="443,580,432,586,417,599,409,613,400,628,384,643,360,656,358,652,381,639,396,624,404,610,413,595,429,581,440,575"/>
+<area shape="rect" id="Node000024" href="$structgraph__t.html#abe1781d70e55bbfe8ab6b8e0822838f4" title="Get tensor of batched event indices." alt="" coords="212,718,371,758"/>
+<area shape="poly" id="edge27_Node000022_Node000024" title=" " alt="" coords="440,580,432,585,420,600,413,614,409,644,404,676,397,692,385,708,368,720,365,716,381,704,393,689,399,674,403,644,408,612,415,597,429,581,436,576"/>
+<area shape="rect" id="Node000025" href="$structgraph__t.html#abaf966dadf0b69eedee0b7b3ca12f35f" title="Get data features for edges." alt="" coords="204,783,379,808"/>
+<area shape="poly" id="edge28_Node000022_Node000025" title=" " alt="" coords="440,579,433,585,416,607,409,630,407,653,409,676,411,700,410,724,402,748,385,772,367,785,364,780,381,768,397,746,404,723,405,700,404,677,402,653,403,629,411,605,429,582,436,575"/>
+<area shape="rect" id="Node000026" href="$structgraph__t.html#aff4d59b1f531a9c2a52db5b6031786a4" title="Get data features for the entire graph." alt="" coords="201,832,381,857"/>
+<area shape="poly" id="edge29_Node000022_Node000026" title=" " alt="" coords="440,579,433,585,413,614,405,643,405,672,409,701,413,731,413,762,405,792,385,822,370,834,367,830,381,819,400,790,408,761,408,732,404,702,400,672,400,642,408,612,429,582,436,575"/>
+<area shape="rect" id="Node000027" href="$structgraph__t.html#ae55e7c4ea7a4563757d939a96afb52a3" title="Get data features for nodes." alt="" coords="204,325,379,351"/>
+<area shape="poly" id="edge30_Node000022_Node000027" title=" " alt="" coords="492,541,459,517,429,485,418,467,412,451,407,420,401,392,394,378,381,364,364,353,367,349,384,360,398,375,406,390,413,419,417,450,423,465,433,482,462,513,495,537"/>
+<area shape="rect" id="Node000028" href="$structgraph__t.html#abac5c01cde57a746f44b24eac9a34fa0" title="Get edge index tensor." alt="" coords="200,375,383,400"/>
+<area shape="poly" id="edge31_Node000022_Node000028" title=" " alt="" coords="495,541,462,516,429,485,414,465,406,447,397,431,381,415,357,402,360,398,384,411,402,428,411,445,419,462,433,482,465,512,498,537"/>
+<area shape="rect" id="Node000029" href="$structgraph__t.html#a93a3b22777951e7e9237cd5bf4eca6b9" title="Get event weight tensor." alt="" coords="219,425,363,465"/>
+<area shape="poly" id="edge32_Node000022_Node000029" title=" " alt="" coords="494,541,442,510,382,479,353,467,355,462,384,474,445,506,496,537"/>
+<area shape="rect" id="Node000030" href="$structgraph__t.html#af1b623e3198464189dbab71222c3f3ac" title="Get truth features for edges." alt="" coords="203,489,380,515"/>
+<area shape="poly" id="edge33_Node000022_Node000030" title=" " alt="" coords="461,546,344,517,345,512,462,541"/>
+<area shape="rect" id="Node000031" href="$structgraph__t.html#abb0d4875f7295f1db37a97f6671a6a52" title="Get truth features for the entire graph." alt="" coords="222,539,361,579"/>
+<area shape="poly" id="edge34_Node000022_Node000031" title=" " alt="" coords="436,562,361,562,361,557,436,557"/>
+<area shape="rect" id="Node000032" href="$structgraph__t.html#acfe6c582dfe47bafa5cde3f4d87059a0" title="Get truth features for nodes." alt="" coords="203,604,380,629"/>
+<area shape="poly" id="edge35_Node000022_Node000032" title=" " alt="" coords="462,578,345,607,344,601,461,573"/>
+<area shape="rect" id="Node000034" href="$classio.html#ae346e23a45d73c24f844827495912941" title="Retrieves the data read from ROOT files, likely structured as a map of data_t objects." alt="" coords="242,931,341,956"/>
+<area shape="poly" id="edge37_Node000033_Node000034" title=" " alt="" coords="461,668,445,675,433,685,413,714,405,742,405,771,409,801,413,831,413,861,405,891,385,921,365,935,342,943,340,938,362,931,381,917,400,889,408,860,408,831,404,801,400,772,400,742,408,711,429,682,443,671,458,663"/>
+<area shape="rect" id="Node000036" href="$structdata__t.html#a34a71707a145e9bccadd9844f79701ad" title=" " alt="" coords="456,596,600,621"/>
+<area shape="poly" id="edge39_Node000035_Node000036" title=" " alt="" coords="660,611,600,611,600,606,660,605"/>
+<area shape="rect" id="Node000037" href="$structdata__t.html#a1e32c6e18a54f7e31f6491ec52deaeff" title=" " alt="" coords="228,881,355,907"/>
+<area shape="poly" id="edge40_Node000036_Node000037" title=" " alt="" coords="445,626,433,636,413,664,405,693,405,722,409,752,413,781,413,812,405,842,385,872,371,882,356,890,354,885,368,878,381,868,400,840,408,811,408,782,404,752,400,723,400,692,408,662,429,632,442,622"/>
+<area shape="rect" id="Node000038" href="$structdata__t.html#ac443d1828779a2aaf4be06b575567a9e" title=" " alt="" coords="29,881,129,907"/>
+<area shape="poly" id="edge41_Node000037_Node000038" title=" " alt="" coords="214,897,129,897,129,891,214,891"/>
+<area shape="rect" id="Node000040" href="$classanalysis.html#a33de64cfd2bc244ff02feb0cc9b2db58" title="Adds a metric template to the analysis, associating it with a model." alt="" coords="449,746,607,786"/>
+<area shape="poly" id="edge43_Node000039_Node000040" title=" " alt="" coords="678,766,607,767,607,762,678,761"/>
+<area shape="poly" id="edge45_Node000041_Node000033" title=" " alt="" coords="701,697,583,673,584,668,702,692"/>
+<area shape="rect" id="Node000042" href="$classio.html#a66a6d354d07e8aa4f9fdadc8f74a314b" title="Retrieves the sizes (number of entries) of TTrees in the open ROOT files." alt="" coords="477,696,579,721"/>
+<area shape="poly" id="edge46_Node000041_Node000042" title=" " alt="" coords="701,711,579,711,579,706,701,706"/>
+</map>

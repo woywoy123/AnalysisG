@@ -1,0 +1,13 @@
+<map id="matching::dump" name="matching::dump">
+<area shape="rect" id="Node000001" title=" " alt="" coords="425,55,553,80"/>
+<area shape="rect" id="Node000002" href="$classmatching.html#a6a20dfdb8f6fa5a23a6859d869040417" title=" " alt="" coords="219,5,357,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="423,54,340,33,341,28,424,49"/>
+<area shape="rect" id="Node000004" href="$classmatching.html#a6925aacb40ca0e99f178d44959956fdb" title=" " alt="" coords="199,55,377,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="412,70,378,70,378,65,412,65"/>
+<area shape="rect" id="Node000005" href="$classmatching.html#a7c3eb589ac6ae85490aa698d73fe8b88" title=" " alt="" coords="211,104,365,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="424,86,341,107,340,101,423,81"/>
+<area shape="rect" id="Node000003" href="$classmatching.html#afbde71106947fe0f714151794c7f6259" title="Alternative selection strategy method." alt="" coords="5,55,151,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="221,36,134,57,132,52,220,31"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="185,70,151,70,151,65,185,65"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="220,103,132,83,134,77,221,98"/>
+</map>

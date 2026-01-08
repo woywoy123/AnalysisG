@@ -1,0 +1,8 @@
+<map id="meta::parse_string" name="meta::parse_string">
+<area shape="rect" id="Node000001" title="Parses a string value from a TTree based on a key." alt="" coords="359,5,503,31"/>
+<area shape="rect" id="Node000002" href="$classmeta.html#ac20aa6b655d77e02eb08aabe78b6af7e" title="Scans data from a generic ROOT object (e.g., TTree, TH1)." alt="" coords="5,5,136,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="345,21,136,21,136,15,345,15"/>
+<area shape="rect" id="Node000003" href="$classmeta.html#a24d8657dbb9d0d8903725ee01fe22c14" title="Scans sum of weights (SoW) information from a ROOT object." alt="" coords="184,31,311,56"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="345,32,312,37,311,32,345,27"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="170,35,136,30,137,25,171,30"/>
+</map>

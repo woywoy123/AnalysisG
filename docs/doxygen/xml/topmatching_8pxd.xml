@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="topmatching_8pxd" kind="file" language="C++">
+    <compoundname>topmatching.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.map<sp/>cimport<sp/>map</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.vector<sp/>cimport<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;topmatching.h&quot;:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>topmatching(selection_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>topmatching()<sp/>except<sp/>+</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>TopMatching(SelectionTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>topmatching*<sp/>tt</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[float]<sp/>top_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[float]<sp/>topchildren_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[float]<sp/>toptruthjets_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[float]<sp/>topjets_children_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[float]<sp/>topjets_leptons_mass</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[bool]<sp/><sp/>topchildren_islep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[bool]<sp/><sp/>toptruthjets_islep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[bool]<sp/><sp/>topjets_children_islep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[bool]<sp/><sp/>topjets_leptons_islep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[int]<sp/><sp/><sp/>toptruthjets_njets</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[int]<sp/><sp/><sp/>topjets_leptons_pdgid</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>vector[int]<sp/><sp/><sp/>topjets_leptons_njets</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>truth_top</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>list<sp/>no_children</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>truth_children</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>truth_jets</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_truth_jets_lep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_truth_jets_had</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>jets_truth_leps</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>jet_leps</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_jets_lep</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>dict<sp/>n_jets_had</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="selections/mc16/topmatching/topmatching.pxd"/>
+  </compounddef>
+</doxygen>

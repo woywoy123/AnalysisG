@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="device_8cuh" kind="file" language="C++">
+    <compoundname>device.cuh</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#ifndef<sp/>CU_NUSOL_DEVICE_H</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>CU_NUSOL_DEVICE_H</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/atomic.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">struct<sp/>nusol<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>cos,<sp/>sin;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>x0,<sp/>x0p;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>sx,<sp/>sy;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>w,<sp/>w_;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>x1,<sp/>y1;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>z,<sp/>o2,<sp/>eps2;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>index:<sp/>0<sp/>-&gt;<sp/>lepton,<sp/>1<sp/>-&gt;<sp/>b-quark</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>pmass[2]<sp/><sp/>=<sp/>{0x0};</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>betas[2]<sp/><sp/>=<sp/>{0x0};</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>pmu_b[4]<sp/><sp/>=<sp/>{0x0};</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>pmu_l[4]<sp/><sp/>=<sp/>{0x0};</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>masses[3]<sp/>=<sp/>{0x0};<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>passed<sp/>=<sp/>true;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nusol()<sp/>=<sp/>default;<sp/></highlight></codeline>
+<codeline><highlight class="normal">};<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>void<sp/>_makeNuSol(nusol*<sp/>sl){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>b2l<sp/>=<sp/>sl<sp/>-&gt;<sp/>betas[0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>passed<sp/>*=<sp/>(sl<sp/>-&gt;<sp/>pmass[0]<sp/>&gt;=<sp/>0)<sp/>*<sp/>(sl<sp/>-&gt;<sp/>pmass[1]<sp/>&gt;=<sp/>0);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>3;<sp/>++x){sl<sp/>-&gt;<sp/>masses[x]<sp/>=<sp/>pow(sl<sp/>-&gt;<sp/>masses[x],<sp/>2);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>2;<sp/>++x){sl<sp/>-&gt;<sp/>betas[x]<sp/>=<sp/>_sqrt(&amp;sl<sp/>-&gt;<sp/>betas[x]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>eps2<sp/>=<sp/>(sl<sp/>-&gt;<sp/>masses[1]<sp/>-<sp/>sl<sp/>-&gt;<sp/>masses[2])*(1<sp/>-<sp/>b2l);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>sin<sp/>=<sp/>1<sp/>-<sp/>pow(sl<sp/>-&gt;<sp/>cos,<sp/>2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>sin<sp/>=<sp/>_sqrt(&amp;sl<sp/>-&gt;<sp/>sin);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>div_sin<sp/>=<sp/>_div(&amp;sl<sp/>-&gt;<sp/>sin);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>r<sp/>=<sp/>sl<sp/>-&gt;<sp/>betas[0]<sp/>*<sp/>_div(&amp;sl<sp/>-&gt;<sp/>betas[1]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>w<sp/><sp/><sp/><sp/>=<sp/>(<sp/>r<sp/>-<sp/>sl<sp/>-&gt;<sp/>cos)<sp/>*<sp/>div_sin;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>w_<sp/><sp/><sp/>=<sp/>(-r<sp/>-<sp/>sl<sp/>-&gt;<sp/>cos)<sp/>*<sp/>div_sin;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>o2<sp/><sp/><sp/>=<sp/>pow(sl<sp/>-&gt;<sp/>w,<sp/>2)<sp/>+<sp/>1<sp/>-<sp/>b2l;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>x0<sp/><sp/>=<sp/>-<sp/>(sl<sp/>-&gt;<sp/>masses[1]<sp/>-<sp/>sl<sp/>-&gt;<sp/>masses[2]<sp/>-<sp/>sl<sp/>-&gt;<sp/>pmass[0])<sp/>*<sp/>_div(&amp;sl<sp/>-&gt;<sp/>pmu_l[3])<sp/>*<sp/>0.5;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>x0p<sp/>=<sp/>-<sp/>(sl<sp/>-&gt;<sp/>masses[0]<sp/>-<sp/>sl<sp/>-&gt;<sp/>masses[1]<sp/>-<sp/>sl<sp/>-&gt;<sp/>pmass[1])<sp/>*<sp/>_div(&amp;sl<sp/>-&gt;<sp/>pmu_b[3])<sp/>*<sp/>0.5;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>sx<sp/>=<sp/>(sl<sp/>-&gt;<sp/>x0<sp/>*<sp/>sl<sp/>-&gt;<sp/>betas[0]<sp/>-<sp/>sl<sp/>-&gt;<sp/>betas[0]<sp/>*<sp/>sl<sp/>-&gt;<sp/>pmu_l[3]<sp/>*<sp/>(1<sp/>-<sp/>b2l))<sp/>*<sp/>_div(&amp;b2l);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>sy<sp/>=<sp/>(sl<sp/>-&gt;<sp/>x0p<sp/>*<sp/>_div(&amp;sl<sp/>-&gt;<sp/>betas[1])<sp/>-<sp/>sl<sp/>-&gt;<sp/>cos<sp/>*<sp/>sl<sp/>-&gt;<sp/>sx)<sp/>*<sp/>div_sin;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>_div_o2<sp/>=<sp/>_div(&amp;sl<sp/>-&gt;<sp/>o2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>x1<sp/>=<sp/>sl<sp/>-&gt;<sp/>sx<sp/>-<sp/>(sl<sp/>-&gt;<sp/>sx<sp/>+<sp/>sl<sp/>-&gt;<sp/>w<sp/>*<sp/>sl<sp/>-&gt;<sp/>sy)<sp/>*<sp/>_div_o2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>y1<sp/>=<sp/>sl<sp/>-&gt;<sp/>sy<sp/>-<sp/>(sl<sp/>-&gt;<sp/>sx<sp/>+<sp/>sl<sp/>-&gt;<sp/>w<sp/>*<sp/>sl<sp/>-&gt;<sp/>sy)<sp/>*<sp/>sl<sp/>-&gt;<sp/>w<sp/>*<sp/>_div_o2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>passed<sp/>*=<sp/>(_div_o2<sp/>!=<sp/>0)<sp/>*<sp/>(r<sp/>&gt;<sp/>0)<sp/>*<sp/>(div_sin<sp/>!=<sp/>0);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>z2<sp/>=<sp/>pow(sl<sp/>-&gt;<sp/>x1,<sp/>2)*sl<sp/>-&gt;<sp/>o2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>z2<sp/>-=<sp/>pow(sl<sp/>-&gt;<sp/>sy<sp/>-<sp/>sl<sp/>-&gt;<sp/>w<sp/>*<sp/>sl<sp/>-&gt;<sp/>sx,<sp/>2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>z2<sp/>-=<sp/>(sl<sp/>-&gt;<sp/>masses[1]<sp/>-<sp/>pow(sl<sp/>-&gt;<sp/>x0,<sp/>2)<sp/>-<sp/>sl<sp/>-&gt;<sp/>eps2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl<sp/>-&gt;<sp/>z<sp/>=<sp/>(z2<sp/>&lt;=<sp/>0)<sp/>?<sp/>0<sp/>:<sp/>_sqrt(&amp;z2);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_krot(nusol*<sp/>sl,<sp/>const<sp/>unsigned<sp/>int<sp/>_iky,<sp/>const<sp/>unsigned<sp/>int<sp/>_ikz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>r<sp/>=<sp/>((_ikz<sp/>&lt;<sp/>2)*(_iky<sp/>&lt;<sp/>2)<sp/>+<sp/>(_ikz<sp/>==<sp/>_iky))<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>r<sp/>*=<sp/>(_ikz<sp/>==<sp/>_iky)*sl<sp/>-&gt;<sp/>cos<sp/>+<sp/>(_iky<sp/>-<sp/>_ikz)*sl<sp/>-&gt;<sp/>sin;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>r;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_amu(nusol*<sp/>sl,<sp/>const<sp/>unsigned<sp/>int<sp/>_iky,<sp/>const<sp/>unsigned<sp/>int<sp/>_ikz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>ii<sp/>=<sp/>(_ikz<sp/>==<sp/>_iky);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>b2<sp/>=<sp/>pow(sl<sp/>-&gt;<sp/>betas[0],<sp/>2);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>val<sp/>=<sp/>ii*(_iky<sp/>==<sp/>0)*(1<sp/>-<sp/>b2);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>ii*(_iky<sp/>==<sp/>3)*(sl<sp/>-&gt;<sp/>masses[1]<sp/>-<sp/>pow(sl<sp/>-&gt;<sp/>x0,<sp/>2)<sp/>-<sp/>sl<sp/>-&gt;<sp/>eps2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>ii*(_ikz<sp/>==<sp/>2<sp/>+<sp/>_ikz<sp/>==<sp/>1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>((_ikz<sp/>==<sp/>3)*(_iky<sp/>==<sp/>0)<sp/>+<sp/>(_ikz<sp/>==<sp/>0)*(_iky<sp/>==<sp/>3))*(sl<sp/>-&gt;<sp/>sx<sp/>*<sp/>b2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>val;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_abq(nusol*<sp/>sl,<sp/>const<sp/>unsigned<sp/>int<sp/>_iky,<sp/>const<sp/>unsigned<sp/>int<sp/>_ikz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>ii<sp/>=<sp/>(_ikz<sp/>==<sp/>_iky);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>val<sp/>=<sp/>ii*(_iky<sp/>==<sp/>0)*(1<sp/>-<sp/>pow(sl<sp/>-&gt;<sp/>betas[1],<sp/>2));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>ii*(_iky<sp/>==<sp/>3)*(sl<sp/>-&gt;<sp/>masses[1]<sp/>-<sp/>pow(sl<sp/>-&gt;<sp/>x0p,<sp/>2));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>ii*(_ikz<sp/>==<sp/>2<sp/>+<sp/>_ikz<sp/>==<sp/>1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>((_ikz<sp/>==<sp/>3)*(_iky<sp/>==<sp/>0)<sp/>+<sp/>(_ikz<sp/>==<sp/>0)*(_iky<sp/>==<sp/>3))*(sl<sp/>-&gt;<sp/>betas[1]<sp/>*<sp/>sl<sp/>-&gt;<sp/>x0p);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>val;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>----<sp/>Htilde<sp/>-----</highlight></codeline>
+<codeline><highlight class="normal">//<sp/>[Z/o,<sp/>0,<sp/>x1<sp/>-<sp/>P_l],<sp/>[w<sp/>*<sp/>Z<sp/>/<sp/>o,<sp/>0,<sp/>y1],<sp/>[0,<sp/>Z,<sp/>0]</highlight></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_htilde(nusol*<sp/>sl,<sp/>const<sp/>unsigned<sp/>int<sp/>_iky,<sp/>const<sp/>unsigned<sp/>int<sp/>_ikz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>z_div_o<sp/>=<sp/>_sqrt(<sp/>&amp;sl<sp/>-&gt;<sp/>o2<sp/>);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>z_div_o<sp/>=<sp/>(sl<sp/>-&gt;<sp/>z)<sp/>*<sp/>_div(&amp;z_div_o);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>val<sp/>=<sp/>(_ikz<sp/>==<sp/>_iky)<sp/>*<sp/>(_ikz<sp/>==<sp/>0)<sp/>*<sp/>z_div_o;<sp/><sp/>//<sp/>Z<sp/>/<sp/>o</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>(_iky<sp/>==<sp/>1)<sp/>*<sp/>(_ikz<sp/>==<sp/>0)<sp/>*<sp/>z_div_o<sp/>*<sp/>sl<sp/>-&gt;<sp/>w;<sp/>//<sp/>w<sp/>*<sp/>Z<sp/>/<sp/>o</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>(_iky<sp/>==<sp/>2)<sp/>*<sp/>(_ikz<sp/>==<sp/>1)<sp/>*<sp/>sl<sp/>-&gt;<sp/>z;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Z</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>(_iky<sp/>==<sp/>0)<sp/>*<sp/>(_ikz<sp/>==<sp/>2)<sp/>*<sp/>(sl<sp/>-&gt;<sp/>x1<sp/>-<sp/>sl<sp/>-&gt;<sp/>betas[0]<sp/>*<sp/>sl<sp/>-&gt;<sp/>pmu_l[3]);<sp/>//<sp/>x1<sp/>-<sp/>P_l</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>val<sp/>+=<sp/>(_iky<sp/>==<sp/>1)<sp/>*<sp/>(_ikz<sp/>==<sp/>2)<sp/>*<sp/>(sl<sp/>-&gt;<sp/>y1);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>val;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_case1(double<sp/>G[3][3],<sp/>const<sp/>unsigned<sp/>int<sp/>_idy,<sp/>const<sp/>unsigned<sp/>int<sp/>_idz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/>G[0][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>G[1][2];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/>G[0][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>G[0][2]<sp/>-<sp/>G[1][2];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_case2(double<sp/>G[3][3],<sp/>const<sp/>unsigned<sp/>int<sp/>_idy,<sp/>const<sp/>unsigned<sp/>int<sp/>_idz,<sp/>bool<sp/>swpXY){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!swpXY){return<sp/>G[_idy][_idz];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/>G[1][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/>G[1][0];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>G[1][2];}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/>G[0][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/>G[0][0];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>G[0][2];}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/>G[2][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/>G[2][0];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>G[2][2];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_leqnulls(double<sp/>coF[3][3],<sp/>double<sp/>Q[3][3],<sp/>const<sp/>unsigned<sp/>int<sp/>_idy,<sp/>const<sp/>unsigned<sp/>int<sp/>_idz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>&gt;=<sp/>2){return<sp/>0;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>q00<sp/>=<sp/>-coF[0][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(q00<sp/>&lt;<sp/>0){return<sp/>0;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/>Q[0][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/>Q[1][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>Q[1][2]<sp/>-<sp/>_sqrt(&amp;q00);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(q00<sp/>==<sp/>0){return<sp/>0;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/>Q[0][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/>Q[1][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>Q[1][2]<sp/>+<sp/>_sqrt(&amp;q00);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">__device__<sp/>__forceinline__<sp/>double<sp/>_gnulls(double<sp/>coF[3][3],<sp/>double<sp/>Q[3][3],<sp/>const<sp/>unsigned<sp/>int<sp/>_idy,<sp/>const<sp/>unsigned<sp/>int<sp/>_idz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>&gt;=<sp/>2){return<sp/>0;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>s22<sp/>=<sp/>_sqrt(-coF[2][2]);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>q22<sp/>=<sp/>_div(coF[2][2]);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/><sp/>Q[0][1]<sp/>-<sp/>s22;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/><sp/>Q[1][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>0<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>-Q[1][1]<sp/>*<sp/>coF[1][2]<sp/>*<sp/>q22<sp/>-<sp/>(Q[0][1]<sp/>-<sp/>s22)<sp/>*<sp/>coF[0][2]<sp/>*<sp/>q22;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>0){return<sp/><sp/>Q[0][1]<sp/>+<sp/>s22;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>1){return<sp/><sp/>Q[1][1];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idy<sp/>==<sp/>1<sp/>&amp;&amp;<sp/>_idz<sp/>==<sp/>2){return<sp/>-Q[1][1]<sp/>*<sp/>coF[1][2]<sp/>*<sp/>q22<sp/>-<sp/>(Q[0][1]<sp/>+<sp/>s22)<sp/>*<sp/>coF[0][2]<sp/>*<sp/>q22;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#endif</highlight></codeline>
+    </programlisting>
+    <location file="pyc/nusol/include/nusol/device.cuh"/>
+  </compounddef>
+</doxygen>

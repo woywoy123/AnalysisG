@@ -1,0 +1,7 @@
+<map id="particle_gnn::particle_gnn" name="particle_gnn::particle_gnn">
+<area shape="rect" id="Node000001" title=" " alt="" coords="199,31,389,56"/>
+<area shape="rect" id="Node000002" href="$classparticle__gnn.html#ab93f3ba7e85a44342fcf7ed6a8ec39f9" title="Builds the particle from event data." alt="" coords="7,5,149,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,33,150,29,150,24,185,28"/>
+<area shape="rect" id="Node000003" href="$classparticle__gnn.html#a6a9ae072c21b1a1379047accc90e87bb" title="Creates a clone of this particle." alt="" coords="5,55,151,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,58,152,62,151,57,185,53"/>
+</map>

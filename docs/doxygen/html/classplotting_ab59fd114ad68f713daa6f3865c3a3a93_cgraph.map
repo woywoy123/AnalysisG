@@ -1,0 +1,6 @@
+<map id="plotting::build_ROC" name="plotting::build_ROC">
+<area shape="rect" id="Node000001" title="Builds a Receiver Operating Characteristic (ROC) curve from classification results." alt="" coords="5,29,152,55"/>
+<area shape="rect" id="Node000002" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="200,29,259,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,39,186,39,186,45,152,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="204,31,199,21,202,11,212,5,229,3,250,6,259,15,255,19,247,11,229,8,214,10,206,15,204,20,209,28"/>
+</map>

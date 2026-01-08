@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="templates_page" kind="page">
+    <compoundname>templates_page</compoundname>
+    <title>Template Classes</title>
+    <briefdescription>
+<para>Documentation for the core template classes in AnalysisG. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="templates_page_1templates_intro">
+<title>Introduction</title>
+<para>AnalysisG uses a template-based design pattern where base template classes define the interface and common functionality, while user-defined subclasses implement analysis-specific logic.</para>
+</sect1>
+<sect1 id="templates_page_1templates_inheritance">
+<title>Inheritance Hierarchy</title>
+<sect2 id="templates_page_1templates_event">
+<title>Event Templates</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classtools" kindref="compound">tools</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>└──<sp/><ref refid="classevent__template" kindref="compound">event_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/>UserDefinedEvent</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="templates_page_1templates_graph">
+<title>Graph Templates</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classtools" kindref="compound">tools</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>└──<sp/><ref refid="classgraph__template" kindref="compound">graph_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/>UserDefinedGraph</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="templates_page_1templates_particle">
+<title>Particle Templates</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classtools" kindref="compound">tools</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>└──<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/>UserDefinedParticle</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="templates_page_1templates_selection">
+<title>Selection Templates</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classtools" kindref="compound">tools</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>└──<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/>UserDefinedSelection</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="templates_page_1templates_model">
+<title>Model Templates</title>
+<para><programlisting><codeline><highlight class="normal">torch::nn::Module</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>└──<sp/><ref refid="classmodel__template" kindref="compound">model_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/>UserDefinedModel</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="templates_page_1templates_metric">
+<title>Metric Templates</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classtools" kindref="compound">tools</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>└──<sp/><ref refid="classmetric__template" kindref="compound">metric_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/>UserDefinedMetric</highlight></codeline>
+</programlisting></para>
+</sect2>
+</sect1>
+<sect1 id="templates_page_1templates_tools">
+<title>Tools Base Class</title>
+<para>The <computeroutput>tools</computeroutput> class provides common utility functions inherited by most templates:</para>
+<para><itemizedlist>
+<listitem><para>String manipulation</para>
+</listitem><listitem><para>File path handling</para>
+</listitem><listitem><para>Hash computation</para>
+</listitem><listitem><para>Timing utilities</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="templates_page_1templates_notification">
+<title>Notification Base Class</title>
+<para>The <computeroutput>notification</computeroutput> class provides logging functionality:</para>
+<para><itemizedlist>
+<listitem><para>Message logging at various levels</para>
+</listitem><listitem><para>Progress reporting</para>
+</listitem><listitem><para>Warning and error tracking </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/templates.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,8 @@
+<map id="physics_::Beta2" name="physics_::Beta2">
+<area shape="rect" id="Node000001" title="Computes the square of the beta factor from a momentum tensor." alt="" coords="5,29,129,55"/>
+<area shape="rect" id="Node000002" href="$namespacephysics__.html#ae22e22a969315629a6ae7549f7344805" title="Computes the square of the momentum magnitude." alt="" coords="177,29,280,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,39,164,39,164,45,130,45"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="206,30,202,21,204,11,213,5,229,3,247,6,255,14,251,18,244,11,229,8,215,10,208,14,207,20,211,28"/>
+<area shape="rect" id="Node000003" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="328,29,395,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="280,39,314,39,314,45,280,45"/>
+</map>

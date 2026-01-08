@@ -86,7 +86,7 @@
  * | @ref tools_module | Utility functions |
  * | @ref typecasting_module | Type conversion utilities |
  *
- * @section cuda_overview CUDA Acceleration
+ * @section cuda_overview_main CUDA Acceleration
  *
  * AnalysisG provides GPU-accelerated operations for performance-critical computations:
  *

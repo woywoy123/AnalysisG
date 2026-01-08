@@ -1,0 +1,30 @@
+<map id="physics_::M" name="physics_::M">
+<area shape="rect" id="Node000001" title="Computes the invariant mass." alt="" coords="747,225,845,251"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="828,215,819,207,796,204,777,206,767,211,765,216,770,224,766,227,760,217,763,207,775,201,796,199,821,202,831,211"/>
+<area shape="rect" id="Node000002" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#adc80247c6622f7cb166a81fa45b7b51d" title=" " alt="" coords="528,122,699,162"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="765,219,697,176,671,164,673,160,700,172,768,215"/>
+<area shape="rect" id="Node000009" href="$namespacepyc_1_1physics_1_1polar_1_1combined.html#a03ec955a2641ce4f53ade06bff9ebaae" title=" " alt="" coords="542,186,685,226"/>
+<area shape="poly" id="edge15_Node000001_Node000009" title=" " alt="" coords="733,230,684,221,685,216,734,224"/>
+<area shape="rect" id="Node000010" href="$namespacepyc_1_1physics_1_1polar_1_1separate.html#aaab901d4c62535312b57336a324c3461" title=" " alt="" coords="542,250,685,290"/>
+<area shape="poly" id="edge16_Node000001_Node000010" title=" " alt="" coords="734,252,685,260,684,255,733,246"/>
+<area shape="rect" id="Node000011" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#adb6b95ef1d9eb19796bda77aa1d5caf6" title=" " alt="" coords="528,314,699,354"/>
+<area shape="poly" id="edge17_Node000001_Node000011" title=" " alt="" coords="768,261,700,304,673,316,671,312,697,300,765,257"/>
+<area shape="rect" id="Node000003" href="$classmetrics.html#adb34703cb499689522741aa2ceed61e3" title=" " alt="" coords="284,5,463,31"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="580,115,534,78,479,44,448,33,450,28,481,40,537,73,583,111"/>
+<area shape="rect" id="Node000005" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="320,79,427,104"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="514,124,426,105,427,100,515,119"/>
+<area shape="rect" id="Node000006" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="55,79,169,104"/>
+<area shape="poly" id="edge13_Node000002_Node000006" title=" " alt="" coords="514,139,266,118,169,104,170,99,267,113,514,134"/>
+<area shape="rect" id="Node000007" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="267,203,480,243"/>
+<area shape="poly" id="edge9_Node000002_Node000007" title=" " alt="" coords="541,169,434,206,432,201,540,164"/>
+<area shape="rect" id="Node000008" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="5,203,219,243"/>
+<area shape="poly" id="edge14_Node000002_Node000008" title=" " alt="" coords="536,171,530,176,514,196,508,218,501,239,481,258,441,275,398,285,353,287,309,284,226,268,159,246,161,241,227,263,309,279,353,282,397,279,439,270,479,253,496,236,503,216,510,194,526,172,533,167"/>
+<area shape="rect" id="Node000004" href="$classmetrics.html#a24531660bf7917f489a6b67ceed12cdd" title="Captures metrics from the current epoch." alt="" coords="48,5,176,31"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="270,21,176,21,176,15,270,15"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="417,70,405,61,373,57,348,59,334,64,331,70,338,77,334,80,326,70,330,60,346,54,373,52,407,56,420,65"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="306,102,170,102,170,96,306,97"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="183,81,320,81,320,87,183,86"/>
+<area shape="poly" id="edge10_Node000007_Node000007" title=" " alt="" coords="414,192,400,185,373,182,350,184,336,189,331,195,334,202,329,204,326,194,333,184,349,179,373,177,401,180,416,187"/>
+<area shape="poly" id="edge11_Node000007_Node000008" title=" " alt="" coords="253,235,219,235,219,230,253,230"/>
+<area shape="poly" id="edge12_Node000008_Node000007" title=" " alt="" coords="233,212,266,212,266,217,233,217"/>
+</map>

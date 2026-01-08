@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="matrix_8cu" kind="file" language="C++">
+    <compoundname>matrix.cu</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#include<sp/>&lt;nusol/base.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;nusol/device.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;physics/physics.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;operators/operators.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;transform/transform.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_hmatrix_debug(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>masses,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>cosine,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>rt,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc_l,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>m2l,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>b2l,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc_b,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>m2b,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>b2b,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>Hmatrix,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H_perp<sp/>,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>passed,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>x0p,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/>x0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/>Sx,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/>Sy,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/><sp/>w,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>om2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>eps2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/>x1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/>y1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/><sp/>z</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>rotT[3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>Htil[4][4];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idy<sp/>=<sp/>blockIdx.y<sp/>*<sp/>blockDim.y<sp/>+<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idz<sp/>=<sp/>blockIdx.z<sp/>*<sp/>blockDim.z<sp/>+<sp/>threadIdx.z;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_iky<sp/>=<sp/>(_idy<sp/>*<sp/>4<sp/>+<sp/>_idz)/4;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_ikz<sp/>=<sp/>(_idy<sp/>*<sp/>4<sp/>+<sp/>_idz)%4;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nusol<sp/>sl<sp/>=<sp/>nusol();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.cos<sp/>=<sp/>cosine[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.betas[0]<sp/>=<sp/>b2l[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.pmass[0]<sp/>=<sp/>m2l[_idx][0];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.betas[1]<sp/>=<sp/>b2b[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.pmass[1]<sp/>=<sp/>m2b[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>4;<sp/>++x){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.pmu_b[x]<sp/>=<sp/>pmc_b[_idx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.pmu_l[x]<sp/>=<sp/>pmc_l[_idx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(x<sp/>&gt;<sp/>2){continue;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.masses[x]<sp/>=<sp/>masses[_idx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_makeNuSol(&amp;sl);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_iky<sp/>&lt;<sp/>3<sp/>&amp;&amp;<sp/>_ikz<sp/>&lt;<sp/>3){rotT[_iky][_ikz]<sp/>=<sp/>rt[_idx][_iky][_ikz];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Htil[_iky][_ikz]<sp/>=<sp/>_htilde(&amp;sl,<sp/>_iky,<sp/>_ikz);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_iky<sp/>&lt;<sp/>3<sp/>&amp;&amp;<sp/>_ikz<sp/>&lt;<sp/>3){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>hx<sp/>=<sp/>_dot(rotT,<sp/>Htil,<sp/>_iky,<sp/>_ikz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Hmatrix[_idx][_iky][_ikz]<sp/>=<sp/>hx;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H_perp[_idx][_iky][_ikz]<sp/>=<sp/>(_iky<sp/>&lt;<sp/>2)<sp/>?<sp/>hx<sp/>:<sp/>_ikz<sp/>==<sp/>2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>||<sp/>threadIdx.z){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>passed[_idx]<sp/>=<sp/>sl.passed;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>x0p[_idx]<sp/><sp/><sp/><sp/>=<sp/>sl.x0p;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>x0[_idx]<sp/><sp/><sp/><sp/><sp/>=<sp/>sl.x0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Sx[_idx]<sp/><sp/><sp/><sp/><sp/>=<sp/>sl.sx;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Sy[_idx]<sp/><sp/><sp/><sp/><sp/>=<sp/>sl.sy;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>w[_idx]<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>sl.w;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>om2[_idx]<sp/><sp/><sp/><sp/>=<sp/>sl.o2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>eps2[_idx]<sp/><sp/><sp/>=<sp/>sl.eps2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>x1[_idx]<sp/><sp/><sp/><sp/><sp/>=<sp/>sl.x1;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>y1[_idx]<sp/><sp/><sp/><sp/><sp/>=<sp/>sl.y1;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>z[_idx]<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>sl.z;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::BaseDebug(torch::Tensor*<sp/>pmc_b,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>masses){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2_b<sp/><sp/>=<sp/>physics_::Beta2(pmc_b);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2_l<sp/><sp/>=<sp/>physics_::Beta2(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2_b<sp/><sp/>=<sp/>physics_::M2(pmc_b);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2_l<sp/><sp/>=<sp/>physics_::M2(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>theta<sp/>=<sp/>physics_::Theta(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>cthe<sp/><sp/>=<sp/>operators_::CosTheta(pmc_b,<sp/>pmc_mu,<sp/>3);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px<sp/><sp/><sp/><sp/>=<sp/>pmc_mu<sp/>-&gt;<sp/>index({torch::indexing::Slice(),<sp/>0});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py<sp/><sp/><sp/><sp/>=<sp/>pmc_mu<sp/>-&gt;<sp/>index({torch::indexing::Slice(),<sp/>1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi<sp/><sp/><sp/>=<sp/>transform_::Phi(&amp;px,<sp/>&amp;py);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>rt<sp/><sp/><sp/><sp/>=<sp/>operators_::RT(pmc_b,<sp/>&amp;phi,<sp/>&amp;theta);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc_b<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>4,<sp/>4);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>4,<sp/>4,<sp/>4,<sp/>4);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>HMatrix<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H_perp<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>passed<sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>x0p<sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>x0<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Sx<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Sy<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>w<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>om2<sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>eps2<sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>x1<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>y1<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>z<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(pmc_b<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;BaseMatrix&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hmatrix_debug&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>masses<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cthe.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rt.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc_mu<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m2_l.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b2_l.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc_b<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m2_b.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b2_b.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>----------<sp/>outputs<sp/>----------<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>HMatrix.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H_perp.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>passed.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x0p.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x0.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Sx.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Sy.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>w.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>om2.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eps2.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x1.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>y1.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>z.packed_accessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;H&quot;]<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>HMatrix;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;H_perp&quot;]<sp/>=<sp/>H_perp;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;passed&quot;]<sp/>=<sp/>passed;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;x0p&quot;]<sp/><sp/>=<sp/><sp/>x0p;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;x0&quot;]<sp/><sp/><sp/>=<sp/><sp/><sp/>x0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;Sx&quot;]<sp/><sp/><sp/>=<sp/><sp/><sp/>Sx;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;Sy&quot;]<sp/><sp/><sp/>=<sp/><sp/><sp/>Sy;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;w&quot;]<sp/><sp/><sp/><sp/>=<sp/><sp/><sp/><sp/>w;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;om2&quot;]<sp/><sp/>=<sp/><sp/>om2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;eps2&quot;]<sp/>=<sp/>eps2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;x1&quot;]<sp/><sp/><sp/>=<sp/><sp/><sp/>x1;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;y1&quot;]<sp/><sp/><sp/>=<sp/><sp/><sp/>y1;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;z&quot;]<sp/><sp/><sp/><sp/>=<sp/><sp/><sp/><sp/>z;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;rt&quot;]<sp/><sp/><sp/>=<sp/><sp/><sp/>rt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_hmatrix(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>masses,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>cosine,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>rt,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc_l,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>m2l,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>b2l,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc_b,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>m2b,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>b2b,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>Hmatrix,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H_perp,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>passed,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy,<sp/>const<sp/>unsigned<sp/>int<sp/>dx,<sp/>const<sp/>bool<sp/>sm</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>rotT[size_x][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>Htil[size_x][3][3];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/><sp/>=<sp/>threadIdx.x;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idy<sp/><sp/>=<sp/>threadIdx.y;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idz<sp/><sp/>=<sp/>threadIdx.z;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_lim<sp/>=<sp/>(dy*dx)*(!sm)<sp/>+<sp/>sm*dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_ikx<sp/>=<sp/>_idx<sp/>/<sp/>((!sm)*dy<sp/>+<sp/>sm);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_ikm<sp/>=<sp/>_idx<sp/>%<sp/>dy;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>_lim){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nusol<sp/>sl<sp/>=<sp/>nusol();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.cos<sp/>=<sp/>cosine[_ikx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.betas[0]<sp/>=<sp/>b2l[_ikx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.pmass[0]<sp/>=<sp/>m2l[_ikx][0];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.betas[1]<sp/>=<sp/>b2b[_ikx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.pmass[1]<sp/>=<sp/>m2b[_ikx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>4;<sp/>++x){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.pmu_b[x]<sp/>=<sp/>pmc_b[_ikx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.pmu_l[x]<sp/>=<sp/>pmc_l[_ikx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.masses[0]<sp/>=<sp/>masses[_ikm][0];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.masses[1]<sp/>=<sp/>masses[_ikm][1];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.masses[2]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_makeNuSol(&amp;sl);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>rotT[idx][idy][idz]<sp/>=<sp/>rt[_ikx][idy][idz];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Htil[idx][idy][idz]<sp/>=<sp/>_htilde(&amp;sl,<sp/>idy,<sp/>idz);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>hx<sp/>=<sp/>_dot(rotT[idx],<sp/>Htil[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Hmatrix[_idx][idy][idz]<sp/>=<sp/>sl.passed*hx;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>H_perp[_idx][idy][idz]<sp/>=<sp/>sl.passed*((idy<sp/>&lt;<sp/>2)<sp/>?<sp/>hx<sp/>:<sp/>idz<sp/>==<sp/>2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idy<sp/>||<sp/>idz){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>passed[_idx]<sp/>=<sp/>sl.passed;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::BaseMatrix(torch::Tensor*<sp/>pmc_b,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>masses){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2_b<sp/><sp/>=<sp/>physics_::Beta2(pmc_b);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2_l<sp/><sp/>=<sp/>physics_::Beta2(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2_b<sp/><sp/>=<sp/>physics_::M2(pmc_b);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2_l<sp/><sp/>=<sp/>physics_::M2(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>theta<sp/>=<sp/>physics_::Theta(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>cthe<sp/><sp/>=<sp/>operators_::CosTheta(pmc_b,<sp/>pmc_mu,<sp/>3);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px<sp/><sp/><sp/><sp/>=<sp/>pmc_mu<sp/>-&gt;<sp/>index({torch::indexing::Slice(),<sp/>0});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py<sp/><sp/><sp/><sp/>=<sp/>pmc_mu<sp/>-&gt;<sp/>index({torch::indexing::Slice(),<sp/>1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi<sp/><sp/><sp/>=<sp/>transform_::Phi(&amp;px,<sp/>&amp;py);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>rt<sp/><sp/><sp/><sp/>=<sp/>operators_::RT(pmc_b,<sp/>&amp;phi,<sp/>&amp;theta);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>masses<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc_b<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>px_<sp/>=<sp/>(dy<sp/>==<sp/>dx)<sp/>?<sp/>dx<sp/>:<sp/>dx<sp/>*<sp/>dy;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(64,<sp/>3,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(px_,<sp/>64,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>HMatrix<sp/>=<sp/>torch::zeros({px_,<sp/>3,<sp/>3},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H_perp<sp/><sp/>=<sp/>torch::zeros({px_,<sp/>3,<sp/>3},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>passed<sp/><sp/>=<sp/>torch::zeros({px_},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(pmc_b<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;BaseMatrix&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hmatrix&lt;64&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>masses<sp/>-&gt;<sp/>packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cthe.packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rt.packed_accessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc_mu<sp/>-&gt;<sp/>packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m2_l.packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b2_l.packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc_b<sp/>-&gt;<sp/>packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m2_b.packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b2_b.packed_accessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>----------<sp/>outputs<sp/>----------<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>HMatrix.packed_accessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H_perp.packed_accessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>passed.packed_accessor64&lt;double,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dy,<sp/>dx,<sp/>dy<sp/>==<sp/>dx);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;H&quot;]<sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>HMatrix;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;H_perp&quot;]<sp/>=<sp/>H_perp;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;passed&quot;]<sp/>=<sp/>passed;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_hmatrix(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>cosine,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>rt,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc_l,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>m2l,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>b2l,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc_b,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>m2b,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>b2b,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>Hmatrix,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H_perp,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>passed,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>mass_T,<sp/>double<sp/>mass_W,<sp/>double<sp/>mass_nu<sp/>=<sp/>0</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>rotT[3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>Htil[4][4];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idy<sp/>=<sp/>blockIdx.y<sp/>*<sp/>blockDim.y<sp/>+<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idz<sp/>=<sp/>blockIdx.z<sp/>*<sp/>blockDim.z<sp/>+<sp/>threadIdx.z;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_iky<sp/>=<sp/>(_idy<sp/>*<sp/>4<sp/>+<sp/>_idz)/4;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_ikz<sp/>=<sp/>(_idy<sp/>*<sp/>4<sp/>+<sp/>_idz)%4;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nusol<sp/>sl<sp/>=<sp/>nusol();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.cos<sp/>=<sp/>cosine[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.betas[0]<sp/>=<sp/>b2l[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.pmass[0]<sp/>=<sp/>m2l[_idx][0];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.betas[1]<sp/>=<sp/>b2b[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.pmass[1]<sp/>=<sp/>m2b[_idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.masses[0]<sp/>=<sp/>mass_T;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.masses[1]<sp/>=<sp/>mass_W;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>sl.masses[2]<sp/>=<sp/>mass_nu;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>4;<sp/>++x){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.pmu_b[x]<sp/>=<sp/>pmc_b[_idx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sl.pmu_l[x]<sp/>=<sp/>pmc_l[_idx][x];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_makeNuSol(&amp;sl);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_iky<sp/>&lt;<sp/>3<sp/>&amp;&amp;<sp/>_ikz<sp/>&lt;<sp/>3){rotT[_iky][_ikz]<sp/>=<sp/>rt[_idx][_iky][_ikz];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Htil[_iky][_ikz]<sp/>=<sp/>_htilde(&amp;sl,<sp/>_iky,<sp/>_ikz);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_iky<sp/>&lt;<sp/>3<sp/>&amp;&amp;<sp/>_ikz<sp/>&lt;<sp/>3){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>hx<sp/>=<sp/>_dot(rotT,<sp/>Htil,<sp/>_iky,<sp/>_ikz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Hmatrix[_idx][_iky][_ikz]<sp/>=<sp/>sl.passed*hx;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H_perp[_idx][_iky][_ikz]<sp/>=<sp/>sl.passed*((_iky<sp/>&lt;<sp/>2)<sp/>?<sp/>hx<sp/>:<sp/>_ikz<sp/>==<sp/>2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>||<sp/>threadIdx.z){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>passed[_idx]<sp/>=<sp/>sl.passed;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::BaseMatrix(torch::Tensor*<sp/>pmc_b,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>double<sp/>mT,<sp/>double<sp/>mW,<sp/>double<sp/>mN){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2_b<sp/><sp/>=<sp/>physics_::Beta2(pmc_b);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>b2_l<sp/><sp/>=<sp/>physics_::Beta2(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2_b<sp/><sp/>=<sp/>physics_::M2(pmc_b);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>m2_l<sp/><sp/>=<sp/>physics_::M2(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>theta<sp/>=<sp/>physics_::Theta(pmc_mu);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>cthe<sp/><sp/>=<sp/>operators_::CosTheta(pmc_b,<sp/>pmc_mu,<sp/>3);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px<sp/><sp/><sp/><sp/>=<sp/>pmc_mu<sp/>-&gt;<sp/>index({torch::indexing::Slice(),<sp/>0});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py<sp/><sp/><sp/><sp/>=<sp/>pmc_mu<sp/>-&gt;<sp/>index({torch::indexing::Slice(),<sp/>1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi<sp/><sp/><sp/>=<sp/>transform_::Phi(&amp;px,<sp/>&amp;py);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>rt<sp/><sp/><sp/><sp/>=<sp/>operators_::RT(pmc_b,<sp/>&amp;phi,<sp/>&amp;theta);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc_b<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>4,<sp/>4);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>4,<sp/>4,<sp/>4,<sp/>4);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>HMatrix<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H_perp<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>KMatrix<sp/>=<sp/>torch::zeros({dx,<sp/>4,<sp/>4},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>A_leps<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>4,<sp/>4},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>A_bqrk<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>4,<sp/>4},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>passed<sp/><sp/>=<sp/>torch::zeros({dx},<sp/>MakeOp(pmc_mu));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(pmc_b<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;BaseMatrix&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_hmatrix&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>cthe.packed_accessor64&lt;scalar_t<sp/><sp/><sp/><sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rt.packed_accessor64&lt;scalar_t<sp/><sp/><sp/><sp/><sp/><sp/><sp/>,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc_mu<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m2_l.packed_accessor64&lt;scalar_t<sp/><sp/><sp/><sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b2_l.packed_accessor64&lt;scalar_t<sp/><sp/><sp/><sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc_b<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m2_b.packed_accessor64&lt;scalar_t<sp/><sp/><sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>b2_b.packed_accessor64&lt;scalar_t<sp/><sp/><sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>----------<sp/>outputs<sp/>----------<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>HMatrix.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H_perp.packed_accessor64&lt;scalar_t<sp/>,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>passed.packed_accessor64&lt;scalar_t<sp/>,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>mT,<sp/>mW,<sp/>mN);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;H&quot;]<sp/>=<sp/>HMatrix;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;H_perp&quot;]<sp/>=<sp/>H_perp;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;passed&quot;]<sp/>=<sp/>passed;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/nusol/cuda/matrix.cu"/>
+  </compounddef>
+</doxygen>

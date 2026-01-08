@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="sampletracer_page" kind="page">
+    <compoundname>sampletracer_page</compoundname>
+    <title>SampleTracer Reference</title>
+    <briefdescription>
+<para>Documentation for sample tracking. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="sampletracer_page_1sampletracer_intro">
+<title>Introduction</title>
+<para>The <ref refid="classsampletracer" kindref="compound">sampletracer</ref> class tracks multiple samples (files/directories) and their associated containers. It serves as the top-level organizer for multi-sample analyses.</para>
+</sect1>
+<sect1 id="sampletracer_page_1sampletracer_methods">
+<title>Methods</title>
+<para><table rows="8" cols="2"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_meta_data()</computeroutput>   </para>
+</entry><entry thead="no"><para>Add metadata for a file    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>get_meta_data()</computeroutput>   </para>
+</entry><entry thead="no"><para>Retrieve metadata    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_event()</computeroutput>   </para>
+</entry><entry thead="no"><para>Register event template for sample    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_graph()</computeroutput>   </para>
+</entry><entry thead="no"><para>Register graph template for sample    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_selection()</computeroutput>   </para>
+</entry><entry thead="no"><para>Register selection    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>compile_objects()</computeroutput>   </para>
+</entry><entry thead="no"><para>Process all containers    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>populate_dataloader()</computeroutput>   </para>
+</entry><entry thead="no"><para>Transfer all graphs   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="sampletracer_page_1sampletracer_hierarchy">
+<title>Hierarchy</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classsampletracer" kindref="compound">sampletracer</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>└──<sp/><ref refid="classcontainer" kindref="compound">container</ref><sp/>(per<sp/>ROOT<sp/>file)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/><ref refid="structentry__t" kindref="compound">entry_t</ref><sp/>(per<sp/><ref refid="classevent" kindref="compound">event</ref>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>├──<sp/><ref refid="classevent__template" kindref="compound">event_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>├──<sp/><ref refid="classgraph__template" kindref="compound">graph_template</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>├──<sp/><ref refid="structgraph__t" kindref="compound">graph_t</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>└──<sp/><ref refid="classselection__template" kindref="compound">selection_template</ref></highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ref refid="classcontainer" kindref="compound">container</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="classmeta" kindref="compound">meta</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/generators.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,520 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structwriter" kind="struct" language="C++" prot="public">
+    <compoundname>writer</compoundname>
+    <includes refid="element_8h" local="no">element.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="structwriter_1ab14cf2986fa6015ae7c6129a97ccae4f" prot="private" static="no" mutable="no">
+        <type><ref refid="structwrite__t" kindref="compound">write_t</ref> *</type>
+        <definition>write_t* writer::head</definition>
+        <argsstring></argsstring>
+        <name>head</name>
+        <qualifiedname>writer::head</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="115" column="17" bodyfile="modules/structs/include/structs/element.h" bodystart="115" bodyend="-1"/>
+        <referencedby refid="structwriter_1a2e9207812670a5cf9b515e24723dc6da" compoundref="structs_2cxx_2variable_8cxx" startline="59" endline="69">~writer</referencedby>
+        <referencedby refid="structwriter_1a97f5456963ec43ebee4ecfd823ed0202" compoundref="structs_2cxx_2variable_8cxx" startline="71" endline="75">create</referencedby>
+        <referencedby refid="structwriter_1a8e19fb59909427835ef022d835950c9c" compoundref="structs_2cxx_2variable_8cxx" startline="77" endline="84">process</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structwriter_1aa77e6a6f63540a2665eb9fd5a8607e56" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, <ref refid="structwrite__t" kindref="compound">write_t</ref> * &gt;</type>
+        <definition>std::map&lt;std::string, write_t*&gt; writer::handle</definition>
+        <argsstring></argsstring>
+        <name>handle</name>
+        <qualifiedname>writer::handle</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="116" column="18" bodyfile="modules/structs/include/structs/element.h" bodystart="116" bodyend="116"/>
+        <referencedby refid="structwriter_1a2e9207812670a5cf9b515e24723dc6da" compoundref="structs_2cxx_2variable_8cxx" startline="59" endline="69">~writer</referencedby>
+        <referencedby refid="structwriter_1a8e19fb59909427835ef022d835950c9c" compoundref="structs_2cxx_2variable_8cxx" startline="77" endline="84">process</referencedby>
+        <referencedby refid="structwriter_1a5b6e08a06c4e563a35520694615f78a3" compoundref="structs_2cxx_2variable_8cxx" startline="86" endline="89">write</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structwriter_1a311f0257da943ab6e9094edb47afa371" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>writer::writer</definition>
+        <argsstring>()</argsstring>
+        <name>writer</name>
+        <qualifiedname>writer::writer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="104" column="9" bodyfile="modules/structs/cxx/variable.cxx" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="structwriter_1a2e9207812670a5cf9b515e24723dc6da" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>writer::~writer</definition>
+        <argsstring>()</argsstring>
+        <name>~writer</name>
+        <qualifiedname>writer::~writer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="105" column="9" bodyfile="modules/structs/cxx/variable.cxx" bodystart="59" bodyend="69"/>
+        <references refid="structwriter_1aa77e6a6f63540a2665eb9fd5a8607e56" compoundref="element_8h" startline="116" endline="116">handle</references>
+        <references refid="structwriter_1ab14cf2986fa6015ae7c6129a97ccae4f" compoundref="element_8h" startline="115">head</references>
+      </memberdef>
+      <memberdef kind="function" id="structwriter_1a97f5456963ec43ebee4ecfd823ed0202" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void writer::create</definition>
+        <argsstring>(std::string *pth)</argsstring>
+        <name>create</name>
+        <qualifiedname>writer::create</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>pth</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="106" column="14" bodyfile="modules/structs/cxx/variable.cxx" bodystart="71" bodyend="75"/>
+        <references refid="structwriter_1ab14cf2986fa6015ae7c6129a97ccae4f" compoundref="element_8h" startline="115">head</references>
+        <referencedby refid="structwriter_1a8e19fb59909427835ef022d835950c9c" compoundref="structs_2cxx_2variable_8cxx" startline="77" endline="84">process</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structwriter_1a5b6e08a06c4e563a35520694615f78a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void writer::write</definition>
+        <argsstring>(std::string *tree)</argsstring>
+        <name>write</name>
+        <qualifiedname>writer::write</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>tree</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="107" column="14" bodyfile="modules/structs/cxx/variable.cxx" bodystart="86" bodyend="89"/>
+        <references refid="structwriter_1aa77e6a6f63540a2665eb9fd5a8607e56" compoundref="element_8h" startline="116" endline="116">handle</references>
+        <references refid="structwriter_1a5b6e08a06c4e563a35520694615f78a3" compoundref="structs_2cxx_2variable_8cxx" startline="86" endline="89">write</references>
+        <referencedby refid="structwriter_1a5b6e08a06c4e563a35520694615f78a3" compoundref="structs_2cxx_2variable_8cxx" startline="86" endline="89">write</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structwriter_1a01b953b19804473dcd5009c80ea47a29" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void writer::process</definition>
+        <argsstring>(std::string *tree, std::string *name, g *t)</argsstring>
+        <name>process</name>
+        <qualifiedname>writer::process</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>tree</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>g *</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="110" column="14" bodyfile="modules/structs/include/structs/element.h" bodystart="110" bodyend="112"/>
+        <references refid="structwriter_1a01b953b19804473dcd5009c80ea47a29" compoundref="element_8h" startline="110" endline="112">process</references>
+        <referencedby refid="structwriter_1a8e19fb59909427835ef022d835950c9c" compoundref="structs_2cxx_2variable_8cxx" startline="77" endline="84">process</referencedby>
+        <referencedby refid="structwriter_1a01b953b19804473dcd5009c80ea47a29" compoundref="element_8h" startline="110" endline="112">process</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="structwriter_1a8e19fb59909427835ef022d835950c9c" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="structvariable__t" kindref="compound">variable_t</ref> *</type>
+        <definition>variable_t * writer::process</definition>
+        <argsstring>(std::string *tree, std::string *name)</argsstring>
+        <name>process</name>
+        <qualifiedname>writer::process</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>tree</declname>
+        </param>
+        <param>
+          <type>std::string *</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="117" column="20" bodyfile="modules/structs/cxx/variable.cxx" bodystart="77" bodyend="84"/>
+        <references refid="structwriter_1a97f5456963ec43ebee4ecfd823ed0202" compoundref="structs_2cxx_2variable_8cxx" startline="71" endline="75">create</references>
+        <references refid="structwriter_1aa77e6a6f63540a2665eb9fd5a8607e56" compoundref="element_8h" startline="116" endline="116">handle</references>
+        <references refid="structwriter_1ab14cf2986fa6015ae7c6129a97ccae4f" compoundref="element_8h" startline="115">head</references>
+        <references refid="structwriter_1a01b953b19804473dcd5009c80ea47a29" compoundref="element_8h" startline="110" endline="112">process</references>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="12">
+        <label>K</label>
+      </node>
+      <node id="13">
+        <label>T</label>
+      </node>
+      <node id="30">
+        <label>TBranch *</label>
+      </node>
+      <node id="3">
+        <label>TFile *</label>
+      </node>
+      <node id="4">
+        <label>TTree *</label>
+      </node>
+      <node id="7">
+        <label>bool</label>
+      </node>
+      <node id="28">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+buffer</edgelabel>
+        </childnode>
+      </node>
+      <node id="16">
+        <label>double</label>
+      </node>
+      <node id="24">
+        <label>float</label>
+      </node>
+      <node id="29">
+        <label>friend</label>
+      </node>
+      <node id="6">
+        <label>int</label>
+      </node>
+      <node id="15">
+        <label>std::map&lt; int, int &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+elements</edgelabel>
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; int, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>std::map&lt; int, std::string &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; int, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>std::map&lt; std::string, float &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="21">
+        <label>std::map&lt; std::string, int &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>std::map&lt; std::string, std::string &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+elements</edgelabel>
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="26">
+        <label>std::map&lt; std::string, variable_t * &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="27" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, variable_t * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="22">
+        <label>std::map&lt; std::string, weights_t &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, weights_t &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="31">
+        <label>std::map&lt; std::string, write_t * &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="2" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string, write_t * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>meta_t</label>
+        <link refid="structmeta__t"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+datasetNumber</edgelabel>
+          <edgelabel>+dsid</edgelabel>
+          <edgelabel>+nFiles</edgelabel>
+          <edgelabel>+totalEvents</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+found</edgelabel>
+          <edgelabel>+isMC</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+AMITag</edgelabel>
+          <edgelabel>+AtlasRelease</edgelabel>
+          <edgelabel>+DatasetName</edgelabel>
+          <edgelabel>+PDF</edgelabel>
+          <edgelabel>+amiStatus</edgelabel>
+          <edgelabel>+beamType</edgelabel>
+          <edgelabel>+campaign</edgelabel>
+          <edgelabel>+conditionsTag</edgelabel>
+          <edgelabel>+dataType</edgelabel>
+          <edgelabel>+derivationFormat</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>+inputfiles</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>+config</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>+inputrange</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>+beam_energy</edgelabel>
+          <edgelabel>+campaign_luminosity</edgelabel>
+          <edgelabel>+completion</edgelabel>
+          <edgelabel>+crossSection</edgelabel>
+          <edgelabel>+crossSection_mean</edgelabel>
+          <edgelabel>+ecmEnergy</edgelabel>
+          <edgelabel>+eventNumber</edgelabel>
+          <edgelabel>+event_index</edgelabel>
+          <edgelabel>+genFiltEff</edgelabel>
+          <edgelabel>+kfactor</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>+fileGUID</edgelabel>
+          <edgelabel>+keyword</edgelabel>
+          <edgelabel>+keywords</edgelabel>
+          <edgelabel>+weights</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>+events</edgelabel>
+          <edgelabel>+run_number</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>+fileSize</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>+LFN</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>+misc</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>std::basic_string&lt; Char &gt;</label>
+      </node>
+      <node id="11">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="12" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>std::string</label>
+        <childnode refid="9" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="13" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="27">
+        <label>variable_t</label>
+        <link refid="structvariable__t"/>
+        <childnode refid="28" relation="public-inheritance">
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+variable_name</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+failed_branch</edgelabel>
+          <edgelabel>-is_triggered</edgelabel>
+          <edgelabel>-use_external</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>-write_t</edgelabel>
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>-tb</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>-tt</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>-mtx</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::vector&lt; double &gt;</label>
+        <childnode refid="16" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="template-instance">
+          <edgelabel>&lt; double &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>weights_t</label>
+        <link refid="structweights__t"/>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+dsid</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+isAFII</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+ami_tag</edgelabel>
+          <edgelabel>+generator</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>+processed_events</edgelabel>
+          <edgelabel>+processed_events_weighted</edgelabel>
+          <edgelabel>+processed_events_weighted_squared</edgelabel>
+          <edgelabel>+total_events</edgelabel>
+          <edgelabel>+total_events_weighted</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>+hist_data</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>write_t</label>
+        <link refid="structwrite__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+file</edgelabel>
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+tree</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>+mtx</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="usage">
+          <edgelabel>+data</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>writer</label>
+        <link refid="structwriter"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>-head</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>-handle</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/element.h" line="102" column="1" bodyfile="modules/structs/include/structs/element.h" bodystart="102" bodyend="119"/>
+    <listofallmembers>
+      <member refid="structwriter_1a97f5456963ec43ebee4ecfd823ed0202" prot="public" virt="non-virtual"><scope>writer</scope><name>create</name></member>
+      <member refid="structwriter_1aa77e6a6f63540a2665eb9fd5a8607e56" prot="private" virt="non-virtual"><scope>writer</scope><name>handle</name></member>
+      <member refid="structwriter_1ab14cf2986fa6015ae7c6129a97ccae4f" prot="private" virt="non-virtual"><scope>writer</scope><name>head</name></member>
+      <member refid="structwriter_1a01b953b19804473dcd5009c80ea47a29" prot="public" virt="non-virtual"><scope>writer</scope><name>process</name></member>
+      <member refid="structwriter_1a8e19fb59909427835ef022d835950c9c" prot="private" virt="non-virtual"><scope>writer</scope><name>process</name></member>
+      <member refid="structwriter_1a5b6e08a06c4e563a35520694615f78a3" prot="public" virt="non-virtual"><scope>writer</scope><name>write</name></member>
+      <member refid="structwriter_1a311f0257da943ab6e9094edb47afa371" prot="public" virt="non-virtual"><scope>writer</scope><name>writer</name></member>
+      <member refid="structwriter_1a2e9207812670a5cf9b515e24723dc6da" prot="public" virt="non-virtual"><scope>writer</scope><name>~writer</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

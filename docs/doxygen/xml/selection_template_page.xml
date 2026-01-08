@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="selection_template_page" kind="page">
+    <compoundname>selection_template_page</compoundname>
+    <title>Selection Template Guide</title>
+    <briefdescription>
+<para>Detailed guide for using and extending <ref refid="classselection__template" kindref="compound">selection_template</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="selection_template_page_1selection_template_intro">
+<title>Introduction</title>
+<para>The <ref refid="classselection__template" kindref="compound">selection_template</ref> class defines event selection criteria. Selections filter events based on physics requirements.</para>
+</sect1>
+<sect1 id="selection_template_page_1selection_template_example">
+<title>Example</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">class<sp/></highlight><highlight class="normal">DileptonSelection<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classselection__template" kindref="compound">selection_template</ref><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>DileptonSelection()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespacename" kindref="compound">name</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;dilepton&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classselection__template_1a906e3f695a675e5a545fa4eab867cfd7" kindref="member">selection</ref>(<ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/>ev)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MyEvent*<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>=<sp/>(MyEvent*)ev;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Require<sp/>at<sp/>least<sp/>2<sp/>leptons</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nLeptons<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;electrons.size()<sp/>+<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal">-&gt;muons.size();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>nLeptons<sp/>&gt;=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="selection_template_page_1selection_template_chaining">
+<title>Chaining Selections</title>
+<para>Multiple selections can be added to an analysis:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal"><ref refid="classanalysis" kindref="compound">analysis</ref><sp/>ana;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a4ef9fa88fc930b37691ed93602c4b24c" kindref="member">add_selection_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>TriggerSelection());</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a4ef9fa88fc930b37691ed93602c4b24c" kindref="member">add_selection_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DileptonSelection());</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a4ef9fa88fc930b37691ed93602c4b24c" kindref="member">add_selection_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>JetSelection());</highlight></codeline>
+</programlisting></para>
+<para>Events must pass all selections to be processed. </para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/templates.dox"/>
+  </compounddef>
+</doxygen>

@@ -185,7 +185,7 @@
  * | `tolerance_change` | double | Change tolerance |
  * | `history_size` | int | History size for L-BFGS |
  *
- * @section optimizer_example Example
+ * @section optimizer_example_gen Example
  *
  * ```cpp
  * optimizer_params_t params;

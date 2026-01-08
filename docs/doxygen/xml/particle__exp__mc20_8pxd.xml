@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="particle__exp__mc20_8pxd" kind="file" language="C++">
+    <compoundname>particle_exp_mc20.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp<sp/>cimport<sp/>bool</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.map<sp/>cimport<sp/>map</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.vector<sp/>cimport<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.particle_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;&lt;exp_mc20/particles.h&gt;&quot;:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>top(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>top()<sp/>except+</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>barcode</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>status</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>child(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>child()<sp/>except+</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>barcode</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>status</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>physics_detector(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>physics_detector()<sp/>except+</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>parton_label</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>cone_label</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_jet</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_lepton</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_photon</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>physics_truth(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>physics_truth()<sp/>except+</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>parton_label</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>cone_label</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_jet</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_lepton</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_photon</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>electron(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>electron()<sp/>except+</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>float<sp/>d0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>true_type</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>float<sp/>delta_z0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>true_origin</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_tight</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>muon(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>muon()<sp/>except+</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>float<sp/>d0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>true_type</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>float<sp/>delta_z0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>true_origin</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>is_tight</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>jet(particle_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>jet()<sp/>except+</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>btag_65</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>btag_70</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>btag_77</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>btag_85</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>btag_90</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>flav</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>int<sp/>label</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Top(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>top*<sp/>p</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>barcode</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>status</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Child(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>child*<sp/>p</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>barcode</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>status</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>PhysicsDetector(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>physics_detector*<sp/>p</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>parton_label</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>cone_label</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_jet</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_lepton</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_photon</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>PhysicsTruth(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>physics_truth*<sp/>p</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>parton_label</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>cone_label</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_jet</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_lepton</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_photon</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Electron(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>electron*<sp/>p</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>float<sp/>d0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>true_type</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>float<sp/>delta_z0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>true_origin</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_tight</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Muon(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>muon*<sp/>p</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>float<sp/>d0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>true_type</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>float<sp/>delta_z0</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>true_origin</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>is_tight</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>Jet(ParticleTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>jet*<sp/>p</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>btag_65</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>btag_70</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>btag_77</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>btag_85</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>bool<sp/>btag_90</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>flav</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>public<sp/>int<sp/>label</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="events/exp_mc20/particle_exp_mc20.pxd"/>
+  </compounddef>
+</doxygen>

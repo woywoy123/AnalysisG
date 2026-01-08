@@ -1,0 +1,5 @@
+<map id="physics_truth::physics_truth" name="physics_truth::physics_truth">
+<area shape="rect" id="Node000001" title=" " alt="" coords="205,5,372,45"/>
+<area shape="rect" id="Node000002" href="$classphysics__truth.html#a33b88922348b82e1e3143d7bc56ccd63" title="Creates a clone of this particle." alt="" coords="5,13,157,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,28,157,28,157,23,192,23"/>
+</map>

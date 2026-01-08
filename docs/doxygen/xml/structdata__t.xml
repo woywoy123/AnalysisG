@@ -1,0 +1,840 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structdata__t" kind="struct" language="C++" prot="public">
+    <compoundname>data_t</compoundname>
+    <basecompoundref refid="classbsc__t" prot="public" virt="non-virtual">bsc_t</basecompoundref>
+    <includes refid="element_8h" local="no">element.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structdata__t_1a5ad8be09f2fc2aeb7f3c65a55c09d12e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string data_t::leaf_name</definition>
+        <argsstring></argsstring>
+        <name>leaf_name</name>
+        <qualifiedname>data_t::leaf_name</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="26" column="23" bodyfile="modules/structs/include/structs/element.h" bodystart="26" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1a4b918fba55d959bb4df124ebc38d239b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string data_t::branch_name</definition>
+        <argsstring></argsstring>
+        <name>branch_name</name>
+        <qualifiedname>data_t::branch_name</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="27" column="21" bodyfile="modules/structs/include/structs/element.h" bodystart="27" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a0ad7d44039cd279885df6686f22f024c" compoundref="element_8h" startline="53" endline="60">fetch_buffer</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1a7af39038d5a4864580cd068ff1fd4e58" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string data_t::tree_name</definition>
+        <argsstring></argsstring>
+        <name>tree_name</name>
+        <qualifiedname>data_t::tree_name</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="28" column="23" bodyfile="modules/structs/include/structs/element.h" bodystart="28" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1acaf087cc1ddf0bc4f39f4d4f108433ba" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string data_t::leaf_type</definition>
+        <argsstring></argsstring>
+        <name>leaf_type</name>
+        <qualifiedname>data_t::leaf_type</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="29" column="23" bodyfile="modules/structs/include/structs/element.h" bodystart="29" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a34a71707a145e9bccadd9844f79701ad" compoundref="structs_8cxx" startline="42" endline="48">string_type</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1a3b7a66c2647a778fddb934d05853a81e" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string data_t::path</definition>
+        <argsstring></argsstring>
+        <name>path</name>
+        <qualifiedname>data_t::path</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="30" column="28" bodyfile="modules/structs/include/structs/element.h" bodystart="30" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a34a71707a145e9bccadd9844f79701ad" compoundref="structs_8cxx" startline="42" endline="48">string_type</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1a0bf9bd56b40024b3096ba86a47aa62b9" prot="public" static="no" mutable="no">
+        <type>std::string *</type>
+        <definition>std::string* data_t::fname</definition>
+        <argsstring></argsstring>
+        <name>fname</name>
+        <qualifiedname>data_t::fname</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="31" column="26" bodyfile="modules/structs/include/structs/element.h" bodystart="31" bodyend="-1"/>
+        <referencedby refid="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" compoundref="element_8cxx" startline="88" endline="98">next</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1aebb9c111374bb90173cc8eb443235bc4" prot="public" static="no" mutable="no">
+        <type>TLeaf *</type>
+        <definition>TLeaf* data_t::leaf</definition>
+        <argsstring></argsstring>
+        <name>leaf</name>
+        <qualifiedname>data_t::leaf</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="33" column="19" bodyfile="modules/structs/include/structs/element.h" bodystart="33" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1a3135e3fa29715f095121d654c142546f" prot="public" static="no" mutable="no">
+        <type>TBranch *</type>
+        <definition>TBranch* data_t::branch</definition>
+        <argsstring></argsstring>
+        <name>branch</name>
+        <qualifiedname>data_t::branch</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="34" column="17" bodyfile="modules/structs/include/structs/element.h" bodystart="34" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1aed310e0e6d2caa8fc1273da24daabfe3" prot="public" static="no" mutable="no">
+        <type>TTree *</type>
+        <definition>TTree* data_t::tree</definition>
+        <argsstring></argsstring>
+        <name>tree</name>
+        <qualifiedname>data_t::tree</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="35" column="19" bodyfile="modules/structs/include/structs/element.h" bodystart="35" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a0ad7d44039cd279885df6686f22f024c" compoundref="element_8h" startline="53" endline="60">fetch_buffer</referencedby>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1aa7bda4587a909bd10ad7c1bdfb33a6a6" prot="public" static="no" mutable="no">
+        <type>TFile *</type>
+        <definition>TFile* data_t::file</definition>
+        <argsstring></argsstring>
+        <name>file</name>
+        <qualifiedname>data_t::file</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="36" column="19" bodyfile="modules/structs/include/structs/element.h" bodystart="36" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1ac5b9cf6e316150a96c8024b9ca0e418c" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int data_t::file_index</definition>
+        <argsstring></argsstring>
+        <name>file_index</name>
+        <qualifiedname>data_t::file_index</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="38" column="13" bodyfile="modules/structs/include/structs/element.h" bodystart="38" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+        <referencedby refid="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" compoundref="element_8cxx" startline="88" endline="98">next</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1a70f176a992662f4a8cf254e4712829fa" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt; *</type>
+        <definition>std::vector&lt;std::string&gt;* data_t::files_s</definition>
+        <argsstring></argsstring>
+        <name>files_s</name>
+        <qualifiedname>data_t::files_s</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="40" column="21" bodyfile="modules/structs/include/structs/element.h" bodystart="40" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" compoundref="element_8cxx" startline="88" endline="98">next</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1ade8219bbefdd57018556ab22b3069fa7" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; long &gt; *</type>
+        <definition>std::vector&lt;long&gt;* data_t::files_i</definition>
+        <argsstring></argsstring>
+        <name>files_i</name>
+        <qualifiedname>data_t::files_i</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="41" column="28" bodyfile="modules/structs/include/structs/element.h" bodystart="41" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" compoundref="element_8cxx" startline="88" endline="98">next</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="structdata__t_1af293cc2ef245a67e6f1d0a8df60140c2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; TFile * &gt; *</type>
+        <definition>std::vector&lt;TFile*&gt;* data_t::files_t</definition>
+        <argsstring></argsstring>
+        <name>files_t</name>
+        <qualifiedname>data_t::files_t</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="42" column="26" bodyfile="modules/structs/include/structs/element.h" bodystart="42" bodyend="-1"/>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string bsc_t::buffer</definition>
+        <argsstring></argsstring>
+        <name>buffer</name>
+        <qualifiedname>bsc_t::buffer</qualifiedname>
+        <briefdescription>
+<para>Internal buffer for accumulating textual data. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="126" column="17" bodyfile="modules/structs/include/structs/base.h" bodystart="126" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="structdata__t_1aa2690d3e5d711b4baf3c8f8b9095faf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>data_t::data_t</definition>
+        <argsstring>()</argsstring>
+        <name>data_t</name>
+        <qualifiedname>data_t::data_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="23" column="9" bodyfile="modules/structs/cxx/element.cxx" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="structdata__t_1af32e86059434e10bdac3be4d4a4ad01a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>data_t::~data_t</definition>
+        <argsstring>() override</argsstring>
+        <name>~data_t</name>
+        <qualifiedname>data_t::~data_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="24" column="9" bodyfile="modules/structs/cxx/element.cxx" bodystart="29" bodyend="33"/>
+        <references refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="238" endline="320">bsc_t::flush_buffer</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+      </memberdef>
+      <memberdef kind="function" id="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void data_t::initialize</definition>
+        <argsstring>()</argsstring>
+        <name>initialize</name>
+        <qualifiedname>data_t::initialize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="44" column="14" bodyfile="modules/structs/cxx/element.cxx" bodystart="53" bodyend="86"/>
+        <references refid="structdata__t_1a3135e3fa29715f095121d654c142546f" compoundref="element_8h" startline="34">branch</references>
+        <references refid="structdata__t_1a4b918fba55d959bb4df124ebc38d239b" compoundref="element_8h" startline="27">branch_name</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="structdata__t_1aa6c840c74575c1d154b3e17ef67511cc" compoundref="structs_8cxx" startline="8" endline="40">fetch_buffer</references>
+        <references refid="structdata__t_1aa7bda4587a909bd10ad7c1bdfb33a6a6" compoundref="element_8h" startline="36">file</references>
+        <references refid="structdata__t_1ac5b9cf6e316150a96c8024b9ca0e418c" compoundref="element_8h" startline="38">file_index</references>
+        <references refid="structdata__t_1af293cc2ef245a67e6f1d0a8df60140c2" compoundref="element_8h" startline="42">files_t</references>
+        <references refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="238" endline="320">bsc_t::flush_buffer</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="structdata__t_1aebb9c111374bb90173cc8eb443235bc4" compoundref="element_8h" startline="33">leaf</references>
+        <references refid="structdata__t_1a5ad8be09f2fc2aeb7f3c65a55c09d12e" compoundref="element_8h" startline="26">leaf_name</references>
+        <references refid="structdata__t_1a34a71707a145e9bccadd9844f79701ad" compoundref="structs_8cxx" startline="42" endline="48">string_type</references>
+        <references refid="structdata__t_1aed310e0e6d2caa8fc1273da24daabfe3" compoundref="element_8h" startline="35">tree</references>
+        <references refid="structdata__t_1a7af39038d5a4864580cd068ff1fd4e58" compoundref="element_8h" startline="28">tree_name</references>
+        <referencedby refid="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" compoundref="element_8cxx" startline="88" endline="98">next</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void data_t::flush</definition>
+        <argsstring>()</argsstring>
+        <name>flush</name>
+        <qualifiedname>data_t::flush</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="45" column="14" bodyfile="modules/structs/cxx/element.cxx" bodystart="35" bodyend="51"/>
+        <references refid="structdata__t_1a3135e3fa29715f095121d654c142546f" compoundref="element_8h" startline="34">branch</references>
+        <references refid="structdata__t_1aa7bda4587a909bd10ad7c1bdfb33a6a6" compoundref="element_8h" startline="36">file</references>
+        <references refid="structdata__t_1ade8219bbefdd57018556ab22b3069fa7" compoundref="element_8h" startline="41">files_i</references>
+        <references refid="structdata__t_1a70f176a992662f4a8cf254e4712829fa" compoundref="element_8h" startline="40">files_s</references>
+        <references refid="structdata__t_1af293cc2ef245a67e6f1d0a8df60140c2" compoundref="element_8h" startline="42">files_t</references>
+        <references refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="238" endline="320">bsc_t::flush_buffer</references>
+        <references refid="structdata__t_1aebb9c111374bb90173cc8eb443235bc4" compoundref="element_8h" startline="33">leaf</references>
+        <references refid="structdata__t_1aed310e0e6d2caa8fc1273da24daabfe3" compoundref="element_8h" startline="35">tree</references>
+      </memberdef>
+      <memberdef kind="function" id="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool data_t::next</definition>
+        <argsstring>()</argsstring>
+        <name>next</name>
+        <qualifiedname>data_t::next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="46" column="14" bodyfile="modules/structs/cxx/element.cxx" bodystart="88" bodyend="98"/>
+        <references refid="structdata__t_1ac5b9cf6e316150a96c8024b9ca0e418c" compoundref="element_8h" startline="38">file_index</references>
+        <references refid="structdata__t_1ade8219bbefdd57018556ab22b3069fa7" compoundref="element_8h" startline="41">files_i</references>
+        <references refid="structdata__t_1a70f176a992662f4a8cf254e4712829fa" compoundref="element_8h" startline="40">files_s</references>
+        <references refid="structdata__t_1a0bf9bd56b40024b3096ba86a47aa62b9" compoundref="element_8h" startline="31">fname</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</references>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3" kindref="member">data_enum</ref></type>
+        <definition>data_enum bsc_t::root_type_translate</definition>
+        <argsstring>(std::string *root_str)</argsstring>
+        <name>root_type_translate</name>
+        <qualifiedname>bsc_t::root_type_translate</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>root_str</declname>
+        </param>
+        <briefdescription>
+<para>Translates a ROOT type string to an internal data enumeration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Translates a ROOT type string to a data_enum value.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>root_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string containing the ROOT type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The corresponding data_enum value.</para>
+</simplesect>
+This method parses a ROOT type string (e.g., &quot;vector&lt;float&gt;&quot;) and returns the corresponding internal data_enum value for type-safe operations.</para>
+<para>This function analyzes a ROOT type string and determines the corresponding data_enum value based on the type (float, double, int, etc.) and dimensionality (scalar, vector, vector of vectors).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>root_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the ROOT type string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Corresponding data_enum value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="98" column="15" bodyfile="modules/structs/cxx/base.cxx" bodystart="115" bodyend="147"/>
+        <references refid="modules_2structs_2include_2structs_2base_8h_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="98" endline="103">count</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af31ee5e3824f1f5e5d206bdf3029f22b">undef</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <referencedby refid="structdata__t_1a34a71707a145e9bccadd9844f79701ad" compoundref="structs_8cxx" startline="42" endline="48">string_type</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a7bf3182a49cfb5375bc556171d7e5598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string bsc_t::as_string</definition>
+        <argsstring>()</argsstring>
+        <name>as_string</name>
+        <qualifiedname>bsc_t::as_string</qualifiedname>
+        <briefdescription>
+<para>Represents the object&apos;s state as a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Converts the current data type to a string representation.</para>
+<para><simplesect kind="return"><para>A string representation of the object.</para>
+</simplesect>
+This method returns a human-readable string representation of the object&apos;s current state, useful for debugging or logging.</para>
+<para><simplesect kind="return"><para>String representation of the data type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="107" column="17" bodyfile="modules/structs/cxx/base.cxx" bodystart="154" bodyend="191"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7d5c009e4eb8bbc78647caeca308e61b">ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad99863941edbd182b31e49c7653852d8">ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a29da8e58b1fff7d00b9535a4ba027898" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string bsc_t::scan_buffer</definition>
+        <argsstring>()</argsstring>
+        <name>scan_buffer</name>
+        <qualifiedname>bsc_t::scan_buffer</qualifiedname>
+        <briefdescription>
+<para>Scans and returns the current buffer content. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Scans the buffer and returns a string representation of all set types.</para>
+<para><simplesect kind="return"><para>A string containing the current buffer content.</para>
+</simplesect>
+This method returns the current content of the internal buffer, which is used for accumulating textual data during operations.</para>
+<para><simplesect kind="return"><para>String representation of the buffer contents. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="116" column="17" bodyfile="modules/structs/cxx/base.cxx" bodystart="198" bodyend="233"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7d5c009e4eb8bbc78647caeca308e61b">ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad99863941edbd182b31e49c7653852d8">ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+      </memberdef>
+      <memberdef kind="function" id="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void bsc_t::flush_buffer</definition>
+        <argsstring>()</argsstring>
+        <name>flush_buffer</name>
+        <qualifiedname>bsc_t::flush_buffer</qualifiedname>
+        <briefdescription>
+<para>Clears the internal buffer. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Flushes the buffer based on the current type.</para>
+<para>This method resets the internal buffer to an empty state, typically called after processing the buffer content. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/base.h" line="124" column="10" bodyfile="modules/structs/cxx/base.cxx" bodystart="238" bodyend="320"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a92eb5ffee6ae2fec3ad71c777531578f">b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a4a8a08f09d37b73795649038408b5f33">c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="238" endline="320">bsc_t::flush_buffer</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7d5c009e4eb8bbc78647caeca308e61b">ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad99863941edbd182b31e49c7653852d8">ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af31ee5e3824f1f5e5d206bdf3029f22b">undef</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae2181b5014a67159cc230c8fe0d6c5b6">unset</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+        <referencedby refid="structdata__t_1af32e86059434e10bdac3be4d4a4ad01a" compoundref="element_8cxx" startline="29" endline="33">~data_t</referencedby>
+        <referencedby refid="structvariable__t_1a3ae26cbb367f83db713ce8cb8b99b7a4" compoundref="typecasting_8cxx" startline="12" endline="16">variable_t::~variable_t</referencedby>
+        <referencedby refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" compoundref="element_8cxx" startline="35" endline="51">flush</referencedby>
+        <referencedby refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" compoundref="structs_2cxx_2base_8cxx" startline="238" endline="320">bsc_t::flush_buffer</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+        <referencedby refid="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831" compoundref="typecasting_8cxx" startline="67" endline="97">variable_t::process</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="structdata__t_1aa6c840c74575c1d154b3e17ef67511cc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void data_t::fetch_buffer</definition>
+        <argsstring>()</argsstring>
+        <name>fetch_buffer</name>
+        <qualifiedname>data_t::fetch_buffer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="49" column="14" bodyfile="modules/structs/cxx/structs.cxx" bodystart="8" bodyend="40"/>
+        <references refid="structdata__t_1aa6c840c74575c1d154b3e17ef67511cc" compoundref="structs_8cxx" startline="8" endline="40">fetch_buffer</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a4a175ba15731da1d56cd0661080d25">v_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a7a98e177892ec59e08a8f69884cf483a">v_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae9dcbfc39e25f58c5cb2d56a73628c83">v_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3adc0a3ef1c0a22d00f983ff8888e99539">v_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a1df181eaa1bb40a0067c06ead197170d">v_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af2ba29a39b59f9dada29228faf1d9162">v_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a77211341d9470798b40e862fe11b7529">v_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aba90189bf02f6a38af85abba48078a15">v_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3abc9d5ec2de60eb49e81bec2c9b23cfd9">vv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aad825f9200bda0020b0a0297014fdc32">vv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a53968916bfe73b9242b620faed3467d9">vv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab87401c18021d145be4a8817f174288b">vv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a671456455a0bd7f2c76e1802522bb1a0">vv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab82f4562f542972869578de73b3d76a9">vv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ad755fb257268c67072cf994d928af76d">vv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3aa3169623c889a9e9d75e451cc3c6b4d4">vv_ull</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ab2f1d7511d0bdb20e01eec35292cd074">vvv_b</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a600c1c4daf3ac45ac15b8e6ca1d60dc1">vvv_c</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a65d8432bf82050f6ba7d4cac129ef16b">vvv_d</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a364a51462a906de978b6efdd6c85759f">vvv_f</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2684cd9cda915142be58c31c5d92cd63">vvv_i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a115dd8071340ac2aeffb33c29e929571">vvv_l</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a91c372e91277817fdbe758459856cceb">vvv_ui</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3ae74e3ccabe3db235c56992c86812c959">vvv_ull</references>
+        <referencedby refid="structdata__t_1aa6c840c74575c1d154b3e17ef67511cc" compoundref="structs_8cxx" startline="8" endline="40">fetch_buffer</referencedby>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structdata__t_1a34a71707a145e9bccadd9844f79701ad" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void data_t::string_type</definition>
+        <argsstring>()</argsstring>
+        <name>string_type</name>
+        <qualifiedname>data_t::string_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="50" column="14" bodyfile="modules/structs/cxx/structs.cxx" bodystart="42" bodyend="48"/>
+        <references refid="structdata__t_1acaf087cc1ddf0bc4f39f4d4f108433ba" compoundref="element_8h" startline="29">leaf_type</references>
+        <references refid="structdata__t_1a3b7a66c2647a778fddb934d05853a81e" compoundref="element_8h" startline="30">path</references>
+        <references refid="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" compoundref="structs_2cxx_2base_8cxx" startline="115" endline="147">bsc_t::root_type_translate</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3af31ee5e3824f1f5e5d206bdf3029f22b">undef</references>
+        <referencedby refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" compoundref="element_8cxx" startline="53" endline="86">initialize</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="structdata__t_1a0ad7d44039cd279885df6686f22f024c" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void data_t::fetch_buffer</definition>
+        <argsstring>(std::vector&lt; T &gt; **data)</argsstring>
+        <name>fetch_buffer</name>
+        <qualifiedname>data_t::fetch_buffer</qualifiedname>
+        <param>
+          <type>std::vector&lt; T &gt; **</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/structs/include/structs/element.h" line="53" column="14" bodyfile="modules/structs/include/structs/element.h" bodystart="53" bodyend="60"/>
+        <references refid="structdata__t_1a4b918fba55d959bb4df124ebc38d239b" compoundref="element_8h" startline="27">branch_name</references>
+        <references refid="structdata__t_1aed310e0e6d2caa8fc1273da24daabfe3" compoundref="element_8h" startline="35">tree</references>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+      </node>
+      <node id="1">
+        <label>data_t</label>
+        <link refid="structdata__t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="12">
+        <label>T</label>
+      </node>
+      <node id="6">
+        <label>TBranch *</label>
+      </node>
+      <node id="8">
+        <label>TFile *</label>
+      </node>
+      <node id="5">
+        <label>TLeaf *</label>
+      </node>
+      <node id="7">
+        <label>TTree *</label>
+      </node>
+      <node id="2">
+        <label>bsc_t</label>
+        <link refid="classbsc__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+buffer</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>data_t</label>
+        <link refid="structdata__t"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+branch_name</edgelabel>
+          <edgelabel>+fname</edgelabel>
+          <edgelabel>+leaf_name</edgelabel>
+          <edgelabel>+leaf_type</edgelabel>
+          <edgelabel>+path</edgelabel>
+          <edgelabel>+tree_name</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>+leaf</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+branch</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+tree</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+file</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>+file_index</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="usage">
+          <edgelabel>+files_s</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>+files_i</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>+files_t</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>int</label>
+      </node>
+      <node id="14">
+        <label>long</label>
+      </node>
+      <node id="4">
+        <label>std::basic_string&lt; Char &gt;</label>
+      </node>
+      <node id="3">
+        <label>std::string</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="11">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="12" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>std::vector&lt; TFile * &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; TFile * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>std::vector&lt; long &gt;</label>
+        <childnode refid="14" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; long &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/structs/include/structs/element.h" line="20" column="1" bodyfile="modules/structs/include/structs/element.h" bodystart="21" bodyend="61"/>
+    <listofallmembers>
+      <member refid="classbsc__t_1a7bf3182a49cfb5375bc556171d7e5598" prot="public" virt="non-virtual"><scope>data_t</scope><name>as_string</name></member>
+      <member refid="structdata__t_1a3135e3fa29715f095121d654c142546f" prot="public" virt="non-virtual"><scope>data_t</scope><name>branch</name></member>
+      <member refid="structdata__t_1a4b918fba55d959bb4df124ebc38d239b" prot="public" virt="non-virtual"><scope>data_t</scope><name>branch_name</name></member>
+      <member refid="classbsc__t_1a83f5611247dc2631d5f736a363d30e56" prot="public" virt="non-virtual"><scope>data_t</scope><name>bsc_t</name></member>
+      <member refid="classbsc__t_1a69bf0e1aff0cd282e59ac3593af43360" prot="public" virt="non-virtual"><scope>data_t</scope><name>buffer</name></member>
+      <member refid="structdata__t_1aa2690d3e5d711b4baf3c8f8b9095faf7" prot="public" virt="non-virtual"><scope>data_t</scope><name>data_t</name></member>
+      <member refid="structdata__t_1aa6c840c74575c1d154b3e17ef67511cc" prot="private" virt="non-virtual"><scope>data_t</scope><name>fetch_buffer</name></member>
+      <member refid="structdata__t_1a0ad7d44039cd279885df6686f22f024c" prot="private" virt="non-virtual"><scope>data_t</scope><name>fetch_buffer</name></member>
+      <member refid="structdata__t_1aa7bda4587a909bd10ad7c1bdfb33a6a6" prot="public" virt="non-virtual"><scope>data_t</scope><name>file</name></member>
+      <member refid="structdata__t_1ac5b9cf6e316150a96c8024b9ca0e418c" prot="public" virt="non-virtual"><scope>data_t</scope><name>file_index</name></member>
+      <member refid="structdata__t_1ade8219bbefdd57018556ab22b3069fa7" prot="public" virt="non-virtual"><scope>data_t</scope><name>files_i</name></member>
+      <member refid="structdata__t_1a70f176a992662f4a8cf254e4712829fa" prot="public" virt="non-virtual"><scope>data_t</scope><name>files_s</name></member>
+      <member refid="structdata__t_1af293cc2ef245a67e6f1d0a8df60140c2" prot="public" virt="non-virtual"><scope>data_t</scope><name>files_t</name></member>
+      <member refid="structdata__t_1a477bcdc3c7a3d316af645c419b4cae8f" prot="public" virt="non-virtual"><scope>data_t</scope><name>flush</name></member>
+      <member refid="classbsc__t_1a953a8bb68bdd6acd9c97d4c0eb965319" prot="public" virt="non-virtual"><scope>data_t</scope><name>flush_buffer</name></member>
+      <member refid="structdata__t_1a0bf9bd56b40024b3096ba86a47aa62b9" prot="public" virt="non-virtual"><scope>data_t</scope><name>fname</name></member>
+      <member refid="structdata__t_1a1e32c6e18a54f7e31f6491ec52deaeff" prot="public" virt="non-virtual"><scope>data_t</scope><name>initialize</name></member>
+      <member refid="structdata__t_1aebb9c111374bb90173cc8eb443235bc4" prot="public" virt="non-virtual"><scope>data_t</scope><name>leaf</name></member>
+      <member refid="structdata__t_1a5ad8be09f2fc2aeb7f3c65a55c09d12e" prot="public" virt="non-virtual"><scope>data_t</scope><name>leaf_name</name></member>
+      <member refid="structdata__t_1acaf087cc1ddf0bc4f39f4d4f108433ba" prot="public" virt="non-virtual"><scope>data_t</scope><name>leaf_type</name></member>
+      <member refid="structdata__t_1ac443d1828779a2aaf4be06b575567a9e" prot="public" virt="non-virtual"><scope>data_t</scope><name>next</name></member>
+      <member refid="structdata__t_1a3b7a66c2647a778fddb934d05853a81e" prot="public" virt="non-virtual"><scope>data_t</scope><name>path</name></member>
+      <member refid="classbsc__t_1a39907da14ea4fb20f71b47d0724bf1f2" prot="public" virt="non-virtual"><scope>data_t</scope><name>root_type_translate</name></member>
+      <member refid="classbsc__t_1a29da8e58b1fff7d00b9535a4ba027898" prot="public" virt="non-virtual"><scope>data_t</scope><name>scan_buffer</name></member>
+      <member refid="structdata__t_1a34a71707a145e9bccadd9844f79701ad" prot="private" virt="non-virtual"><scope>data_t</scope><name>string_type</name></member>
+      <member refid="structdata__t_1aed310e0e6d2caa8fc1273da24daabfe3" prot="public" virt="non-virtual"><scope>data_t</scope><name>tree</name></member>
+      <member refid="structdata__t_1a7af39038d5a4864580cd068ff1fd4e58" prot="public" virt="non-virtual"><scope>data_t</scope><name>tree_name</name></member>
+      <member refid="classbsc__t_1a3fb1b96a0088b257842970eaca2e1233" prot="public" virt="non-virtual"><scope>data_t</scope><name>~bsc_t</name></member>
+      <member refid="structdata__t_1af32e86059434e10bdac3be4d4a4ad01a" prot="public" virt="non-virtual"><scope>data_t</scope><name>~data_t</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

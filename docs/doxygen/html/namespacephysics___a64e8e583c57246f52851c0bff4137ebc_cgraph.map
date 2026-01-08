@@ -1,0 +1,6 @@
+<map id="physics_::M" name="physics_::M">
+<area shape="rect" id="Node000001" title="Computes the invariant mass." alt="" coords="5,29,104,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="32,30,28,21,30,11,39,5,55,3,73,6,81,14,77,18,70,11,55,8,41,10,34,14,33,20,37,28"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="152,29,219,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,39,138,39,138,45,104,45"/>
+</map>

@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="md_modules_2README" kind="page">
+    <compoundname>md_modules_2README</compoundname>
+    <title>AnalysisG Modules Documentation</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><anchor id="md_modules_2README_1autotoc_md42"/> This directory contains the core modules of the AnalysisG framework, a toolkit for data analysis that appears to be focused on graph-based models, possibly for particle physics data analysis.</para>
+<sect1 id="md_modules_2README_1autotoc_md43">
+<title>Module Structure</title>
+<para>The repository is organized into multiple specialized modules:</para>
+<para><itemizedlist>
+<listitem><para><bold>typecasting</bold>: Handles type conversion between different data representations</para>
+</listitem><listitem><para><bold>notification</bold>: Provides notification mechanisms in the framework</para>
+</listitem><listitem><para><bold>structs</bold>: Contains data structure definitions used throughout the framework</para>
+</listitem><listitem><para><bold>tools</bold>: General utility functions and tools</para>
+</listitem><listitem><para><bold>particle</bold>: Classes and functions for particle physics data representation</para>
+</listitem><listitem><para><bold>event</bold>: Event-based data handling</para>
+</listitem><listitem><para><bold>selection</bold>: Data selection and filtering functionality</para>
+</listitem><listitem><para><bold>graph</bold>: <ref refid="classGraph" kindref="compound">Graph</ref> construction and manipulation</para>
+</listitem><listitem><para><bold>model</bold>: Model definition and training functionality</para>
+</listitem><listitem><para><bold>metrics/metric</bold>: Evaluation metrics for model performance</para>
+</listitem><listitem><para><bold>meta</bold>: Metadata handling</para>
+</listitem><listitem><para><bold>io</bold>: Input/output operations</para>
+</listitem><listitem><para><bold>plotting</bold>: Data visualization capabilities</para>
+</listitem><listitem><para><bold>lossfx</bold>: Loss functions for model training</para>
+</listitem><listitem><para><bold>container</bold>: Data container implementations</para>
+</listitem><listitem><para><bold>sampletracer</bold>: Sample tracking functionality</para>
+</listitem><listitem><para><bold>analysis</bold>: Analysis workflows</para>
+</listitem><listitem><para><bold>dataloader</bold>: Data loading and preprocessing</para>
+</listitem><listitem><para><bold>optimizer</bold>: Optimization algorithms for model training</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="md_modules_2README_1autotoc_md44">
+<title>Key Components</title>
+<sect2 id="md_modules_2README_1autotoc_md45">
+<title>Model Module</title>
+<para>The model module provides templates and implementations for machine learning models. The <computeroutput><ref refid="classmodel__template" kindref="compound">model_template</ref></computeroutput> class serves as a base class for implementing different models, with capabilities for:</para>
+<para><itemizedlist>
+<listitem><para>Registering modules within the model architecture</para>
+</listitem><listitem><para>Handling forward passes with graph-based data</para>
+</listitem><listitem><para>Managing input and output features</para>
+</listitem><listitem><para>Device management (CPU/GPU)</para>
+</listitem><listitem><para>Weight initialization</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md_modules_2README_1autotoc_md46">
+<title>IO Module</title>
+<para>The IO module handles all input/output operations within the framework, including:</para>
+<para><itemizedlist>
+<listitem><para>File reading/writing</para>
+</listitem><listitem><para>Configuration import/export</para>
+</listitem><listitem><para>Settings management</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md_modules_2README_1autotoc_md47">
+<title>Structs Module</title>
+<para>This module defines fundamental data structures used throughout the framework:</para>
+<para><itemizedlist>
+<listitem><para>Base structures (<computeroutput><ref refid="classbsc__t" kindref="compound">bsc_t</ref></computeroutput>)</para>
+</listitem><listitem><para>Enumerations for data types (<computeroutput>data_enum</computeroutput>)</para>
+</listitem><listitem><para>Model settings (<computeroutput><ref refid="structmodel__settings__t" kindref="compound">model_settings_t</ref></computeroutput>)</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="md_modules_2README_1autotoc_md48">
+<title>Integration</title>
+<para>The modules are integrated through CMake build system, with interdependencies managed through header inclusions. The main <computeroutput>CMakeLists.txt</computeroutput> configures paths and builds all submodules in the correct order of dependencies.</para>
+</sect1>
+<sect1 id="md_modules_2README_1autotoc_md49">
+<title>Key Classes</title>
+<sect2 id="md_modules_2README_1autotoc_md50">
+<title>model_template</title>
+<para>Base class for model implementations with the following key methods:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>register_module()</computeroutput>: Adds neural network components to the model</para>
+</listitem><listitem><para><computeroutput>forward()</computeroutput>: Performs the forward pass for inference</para>
+</listitem><listitem><para><computeroutput>assign_features()</computeroutput>: Maps input data to appropriate tensors</para>
+</listitem><listitem><para><computeroutput>set_input_features()</computeroutput>: Configures input feature handlers</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md_modules_2README_1autotoc_md51">
+<title>io</title>
+<para>Handles file operations and settings management:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>import_settings()</computeroutput>: Loads configuration from external sources</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="md_modules_2README_1autotoc_md52">
+<title>model_settings_t</title>
+<para>Configuration structure for models containing:</para>
+<para><itemizedlist>
+<listitem><para>Optimizer settings</para>
+</listitem><listitem><para>Model naming and device configuration</para>
+</listitem><listitem><para>Input/output feature mappings</para>
+</listitem><listitem><para>Inference mode settings</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="md_modules_2README_1autotoc_md53">
+<title>Development Guidelines</title>
+<para>When extending the framework:<orderedlist>
+<listitem><para>Add new module directories to <computeroutput>CMakeLists.txt</computeroutput></para>
+</listitem><listitem><para>Ensure proper header inclusion</para>
+</listitem><listitem><para>Maintain consistent naming conventions</para>
+</listitem><listitem><para>Document public interfaces</para>
+</listitem><listitem><para>Follow the existing patterns for object lifecycle management </para>
+</listitem></orderedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/README.md"/>
+  </compounddef>
+</doxygen>

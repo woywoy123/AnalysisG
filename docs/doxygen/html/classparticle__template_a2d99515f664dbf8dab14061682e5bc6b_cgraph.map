@@ -1,0 +1,5 @@
+<map id="particle_template::get_islep" name="particle_template::get_islep">
+<area shape="rect" id="Node000001" title="Getter for is_lep." alt="" coords="5,5,151,45"/>
+<area shape="rect" id="Node000002" href="$classparticle__template.html#a0f07f2b1587b5b72e50f9da36f079a24" title="Checks if particle matches any of the given PDG IDs." alt="" coords="199,13,355,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,23,185,23,185,28,151,28"/>
+</map>

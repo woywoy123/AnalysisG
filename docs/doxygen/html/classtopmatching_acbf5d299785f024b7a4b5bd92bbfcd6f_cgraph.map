@@ -1,0 +1,13 @@
+<map id="topmatching::strategy" name="topmatching::strategy">
+<area shape="rect" id="Node000001" title="Alternative selection strategy method." alt="" coords="5,104,172,129"/>
+<area shape="rect" id="Node000002" href="$classtopmatching.html#adc8b7e10df18fb613997f1a96634b687" title=" " alt="" coords="224,5,399,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,102,156,71,219,40,239,32,241,37,221,44,159,76,110,106"/>
+<area shape="rect" id="Node000003" href="$bsm__4tops_2include_2bsm__4tops_2node__features_8h.html#a05898150cc9167a4de297df624e6c15a" title=" " alt="" coords="271,55,352,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,101,257,77,258,82,147,107"/>
+<area shape="rect" id="Node000004" href="$merge__cast_8h.html#a205af11d07be8d10770e7392817fc5c3" title=" " alt="" coords="261,104,361,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="173,114,247,114,247,119,173,119"/>
+<area shape="rect" id="Node000005" href="$classselection__template.html#a84df199f6022f2a5d27979d43de51547" title="Sums particles into a combined particle." alt="" coords="220,153,403,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="147,127,241,148,240,153,146,132"/>
+<area shape="rect" id="Node000006" href="$classtopmatching.html#a62979480ffe4c19b3ddfb38c9704f260" title=" " alt="" coords="225,203,397,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="110,127,160,157,221,188,244,196,242,201,219,192,157,162,108,132"/>
+</map>

@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="modules__documentation_8md" kind="file" language="Markdown">
+    <compoundname>modules_documentation.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>AnalysisG<sp/>Modules<sp/>Documentation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>documentation<sp/>provides<sp/>an<sp/>overview<sp/>of<sp/>the<sp/>modules<sp/>directory<sp/>structure<sp/>in<sp/>the<sp/>AnalysisG<sp/>project.<sp/>Each<sp/>module<sp/>is<sp/>designed<sp/>with<sp/>specific<sp/>functionality<sp/>and<sp/>interacts<sp/>with<sp/>other<sp/>modules<sp/>to<sp/>form<sp/>the<sp/>complete<sp/>system.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Directory<sp/>Structure</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>modules<sp/>directory<sp/>contains<sp/>several<sp/>subdirectories,<sp/>each<sp/>implementing<sp/>a<sp/>specific<sp/>aspect<sp/>of<sp/>the<sp/>system:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline><highlight class="normal">modules/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>analysis/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>container/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>dataloader/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>event/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>graph/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>io/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>lossfx/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>meta/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>metric/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>metrics/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>model/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>notification/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>optimizer/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>particle/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>plotting/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>sampletracer/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>selection/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>structs/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>tools/</highlight></codeline>
+<codeline><highlight class="normal">├──<sp/>typecasting/</highlight></codeline>
+<codeline><highlight class="normal">└──<sp/>CMakeLists.txt</highlight></codeline>
+<codeline><highlight class="normal">```</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Modules<sp/>Overview</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>structs</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`structs`<sp/>module<sp/>provides<sp/>fundamental<sp/>data<sp/>structures<sp/>and<sp/>type<sp/>definitions<sp/>used<sp/>throughout<sp/>the<sp/>codebase.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Key<sp/>Files:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`base.cxx`:<sp/>Implements<sp/>basic<sp/>type<sp/>management,<sp/>translation<sp/>between<sp/>ROOT<sp/>types<sp/>and<sp/>internal<sp/>data<sp/>enums</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`include/structs/model.h`:<sp/>Defines<sp/>model-related<sp/>structures<sp/>like<sp/>`model_settings_t`</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`include/structs/enums.h`:<sp/>Contains<sp/>enum<sp/>definitions<sp/>for<sp/>the<sp/>project</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Notable<sp/>Components:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`data_enum`:<sp/>Enumeration<sp/>for<sp/>different<sp/>data<sp/>types<sp/>used<sp/>in<sp/>the<sp/>system</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`bsc_t`:<sp/>Base<sp/>class<sp/>for<sp/>type<sp/>management<sp/>with<sp/>methods<sp/>like:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`root_type_translate`:<sp/>Translates<sp/>ROOT<sp/>string<sp/>types<sp/>to<sp/>internal<sp/>enum<sp/>types</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`as_string`:<sp/>Converts<sp/>internal<sp/>types<sp/>to<sp/>string<sp/>representation</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`flush_buffer`:<sp/>Cleans<sp/>up<sp/>temporary<sp/>buffers</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`model_settings_t`:<sp/>Structure<sp/>holding<sp/>model<sp/>configuration<sp/>including:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Optimizer<sp/>settings</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Model<sp/>name,<sp/>device,<sp/>checkpoint<sp/>path</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Input/output<sp/>features<sp/>for<sp/>graph,<sp/>node,<sp/>and<sp/>edge<sp/>components</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>model</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`model`<sp/>module<sp/>implements<sp/>the<sp/>neural<sp/>network<sp/>models<sp/>and<sp/>related<sp/>functionality.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Key<sp/>Files:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`model_template.cxx`:<sp/>Implements<sp/>the<sp/>base<sp/>template<sp/>for<sp/>models<sp/>in<sp/>the<sp/>system</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Notable<sp/>Components:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`model_template`<sp/>class:<sp/>Base<sp/>class<sp/>for<sp/>all<sp/>models<sp/>with<sp/>methods<sp/>like:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Constructor:<sp/>Sets<sp/>up<sp/>input/output<sp/>features<sp/>and<sp/>device<sp/>properties</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`clone()`:<sp/>Creates<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>model</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`register_module()`:<sp/>Registers<sp/>torch<sp/>modules<sp/>with<sp/>the<sp/>model</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`forward()`:<sp/>Processes<sp/>input<sp/>graphs<sp/>(different<sp/>overloads<sp/>for<sp/>single/multiple<sp/>graphs)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`assign_features()`:<sp/>Maps<sp/>input<sp/>features<sp/>to<sp/>tensors</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`set_input_features()`:<sp/>Configures<sp/>input<sp/>feature<sp/>mappings</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>event</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`event`<sp/>module<sp/>handles<sp/>event<sp/>data<sp/>management<sp/>and<sp/>processing.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Key<sp/>Files:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`event_template.cxx`:<sp/>Implements<sp/>base<sp/>template<sp/>for<sp/>event<sp/>handling</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Notable<sp/>Components:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`event_template`<sp/>class:<sp/>Base<sp/>class<sp/>for<sp/>event<sp/>handling<sp/>with<sp/>properties:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`trees`:<sp/>Tree<sp/>collection<sp/>management</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`branches`:<sp/>Branch<sp/>management<sp/>within<sp/>trees</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`leaves`:<sp/>Access<sp/>to<sp/>leaf<sp/>values</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`name`:<sp/>Event<sp/>name<sp/>handling</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`hash`:<sp/>Event<sp/>hash<sp/>identification</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`tree`:<sp/>Current<sp/>tree<sp/>accessor</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`weight`:<sp/>Event<sp/>weight<sp/>handling</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`index`:<sp/>Event<sp/>indexing</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>io</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`io`<sp/>module<sp/>handles<sp/>input/output<sp/>operations<sp/>across<sp/>the<sp/>system.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Key<sp/>Files:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`io.cxx`:<sp/>Implements<sp/>core<sp/>IO<sp/>functionality</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Notable<sp/>Components:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`io`<sp/>class:<sp/>Handles<sp/>file<sp/>operations<sp/>with<sp/>methods<sp/>like:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Constructor/Destructor:<sp/>Setup<sp/>and<sp/>cleanup<sp/>of<sp/>IO<sp/>resources</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`import_settings()`:<sp/>Imports<sp/>configuration<sp/>settings</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>sampletracer</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>`sampletracer`<sp/>module<sp/>tracks<sp/>and<sp/>manages<sp/>samples<sp/>throughout<sp/>processing.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Key<sp/>Files:</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`sampletracer.cxx`:<sp/>Implements<sp/>sample<sp/>tracking<sp/>functionality</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">####<sp/>Notable<sp/>Components:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`sampletracer`<sp/>class:<sp/>Manages<sp/>sample<sp/>processing<sp/>with<sp/>methods<sp/>like:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>`compile_objects()`:<sp/>Organizes<sp/>and<sp/>processes<sp/>objects<sp/>with<sp/>multi-threading<sp/>support</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Support<sp/>for<sp/>progress<sp/>tracking<sp/>and<sp/>visualization</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>-<sp/>Thread<sp/>management<sp/>for<sp/>parallel<sp/>processing</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Module<sp/>Interactions</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>modules<sp/>interact<sp/>in<sp/>a<sp/>structured<sp/>manner:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1.<sp/>**structs**<sp/>provides<sp/>base<sp/>data<sp/>types<sp/>used<sp/>by<sp/>all<sp/>other<sp/>modules</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>**io**<sp/>handles<sp/>data<sp/>input/output<sp/>used<sp/>by<sp/>most<sp/>processing<sp/>modules</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>**event**<sp/>manages<sp/>event<sp/>data<sp/>that<sp/>flows<sp/>into<sp/>models</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>**model**<sp/>implements<sp/>neural<sp/>network<sp/>functionality<sp/>using<sp/>data<sp/>from<sp/>events</highlight></codeline>
+<codeline><highlight class="normal">5.<sp/>**sampletracer**<sp/>coordinates<sp/>the<sp/>processing<sp/>of<sp/>multiple<sp/>samples</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Build<sp/>System</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>build<sp/>system<sp/>is<sp/>managed<sp/>through<sp/>CMake<sp/>with<sp/>the<sp/>main<sp/>configuration<sp/>in<sp/>`CMakeLists.txt`.<sp/>The<sp/>modules<sp/>are<sp/>compiled<sp/>in<sp/>a<sp/>specific<sp/>order<sp/>to<sp/>respect<sp/>dependencies:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">1.<sp/>Core<sp/>utilities<sp/>(typecasting,<sp/>notification,<sp/>structs,<sp/>tools)</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>Physics<sp/>objects<sp/>(particle,<sp/>event,<sp/>selection)</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>ML<sp/>components<sp/>(graph,<sp/>model,<sp/>metrics,<sp/>metric)</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>Infrastructure<sp/>(meta,<sp/>io,<sp/>plotting,<sp/>lossfx)</highlight></codeline>
+<codeline><highlight class="normal">5.<sp/>Application<sp/>level<sp/>(container,<sp/>sampletracer,<sp/>analysis,<sp/>dataloader,<sp/>optimizer)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Type<sp/>System</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>codebase<sp/>implements<sp/>a<sp/>custom<sp/>type<sp/>system<sp/>that<sp/>bridges<sp/>between<sp/>ROOT<sp/>data<sp/>types<sp/>and<sp/>internal<sp/>representations:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>ROOT<sp/>types<sp/>like<sp/>`Float_t`,<sp/>`Double_t`,<sp/>`Int_t`<sp/>are<sp/>mapped<sp/>to<sp/>internal<sp/>enum<sp/>values</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Vector<sp/>types<sp/>are<sp/>detected<sp/>and<sp/>handled<sp/>separately</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Custom<sp/>string<sp/>representation<sp/>for<sp/>debugging<sp/>and<sp/>serialization</highlight></codeline>
+    </programlisting>
+    <location file="core/modules_documentation.md"/>
+  </compounddef>
+</doxygen>

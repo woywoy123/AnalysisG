@@ -1,0 +1,17 @@
+<map id="lossfx::build_optimizer" name="lossfx::build_optimizer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,153,176,179"/>
+<area shape="rect" id="Node000002" href="$classlossfx.html#a07ff248174aba99522c667988ac6ea88" title=" " alt="" coords="225,5,386,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,151,149,98,184,67,223,40,235,33,238,38,225,44,187,71,153,101,104,155"/>
+<area shape="rect" id="Node000003" href="$classlossfx.html#aacba578f0f439b9346ac23d54dbbcf15" title=" " alt="" coords="233,55,378,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,151,160,121,223,89,241,82,243,87,225,94,163,125,113,155"/>
+<area shape="rect" id="Node000004" href="$classlossfx.html#a325d4d01cb1010736fc2a21b781e192b" title=" " alt="" coords="227,104,383,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,151,235,130,236,135,147,156"/>
+<area shape="rect" id="Node000005" href="$classlossfx.html#a5a00feb19bbe247285eadfbd66f2dcb3" title=" " alt="" coords="235,153,375,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="176,163,221,163,221,169,176,169"/>
+<area shape="rect" id="Node000006" href="$classlossfx.html#a14a8ead313c89c9f668fe6287edb0eed" title=" " alt="" coords="224,203,387,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="147,176,236,197,235,202,146,181"/>
+<area shape="rect" id="Node000007" href="$classlossfx.html#af24d08de685c3bdb88029a9a2d30dc8b" title=" " alt="" coords="240,252,371,277"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="113,176,163,206,225,237,246,245,244,250,223,242,161,211,111,181"/>
+<area shape="rect" id="Node000008" href="$classlossfx.html#a7c434ad6cf74c729de1fa85674e93e04" title=" " alt="" coords="230,301,381,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="104,177,153,230,187,260,225,286,241,294,238,299,223,291,184,264,149,233,100,181"/>
+</map>

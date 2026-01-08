@@ -1,0 +1,30 @@
+<map id="io::member" name="io::member">
+<area shape="rect" id="Node000001" title="&lt; Private access specifier for the following members." alt="" coords="580,105,677,131"/>
+<area shape="rect" id="Node000002" href="$classio.html#a85958081a1bfdd553a3799657a553986" title="Generic HDF5 read operation for a single object." alt="" coords="438,5,531,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="601,98,531,44,511,33,514,29,533,40,604,94"/>
+<area shape="rect" id="Node000003" href="$classio.html#a9c5e08cc995a18eff996b3cfcda641eb" title="Generic HDF5 read operation for a vector of objects." alt="" coords="438,55,531,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="578,103,521,83,523,78,580,98"/>
+<area shape="rect" id="Node000008" href="$classio.html#a4744173c6cc8c89a6145fbfb11c3831e" title="Reads graph data in HDF5 format specifically for graph_hdf5_w struct." alt="" coords="5,80,76,105"/>
+<area shape="poly" id="edge14_Node000001_Node000008" title=" " alt="" coords="566,118,76,97,76,91,567,113"/>
+<area shape="rect" id="Node000009" href="$classio.html#aa8eb654ca32652fde83cdd0d3ef83968" title="Generic HDF5 write operation for a single object." alt="" coords="437,156,532,181"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="580,138,523,158,521,153,578,133"/>
+<area shape="rect" id="Node000010" href="$classio.html#a6fdc4311aa9426644ffffc6fa45a2bf3" title="Generic HDF5 write operation for a vector of objects." alt="" coords="437,205,532,231"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="604,142,533,196,514,207,511,203,531,192,601,138"/>
+<area shape="rect" id="Node000004" href="$classio.html#a169a51324caf1e4a293a8f3df9741593" title="Templated method to read single event data object from HDF5." alt="" coords="249,5,387,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="427,53,361,33,363,28,429,48"/>
+<area shape="rect" id="Node000005" href="$classio.html#a4cdbdd389d60e2ba4759269123381e25" title="Templated method to read event data (vector of objects) from HDF5." alt="" coords="249,55,387,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="424,70,387,70,387,65,424,65"/>
+<area shape="rect" id="Node000006" href="$classio.html#ae9363859101b007dedf420f10e437014" title="Templated method to read a single object from a dataset." alt="" coords="126,5,197,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="263,53,196,32,198,26,265,48"/>
+<area shape="rect" id="Node000007" href="$classio.html#a2a0214e493a7a2ef5e9507c0e6aa4e70" title="Templated method to read a vector of objects from a dataset." alt="" coords="126,55,197,80"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="235,70,197,70,197,65,235,65"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="113,80,77,88,75,83,112,75"/>
+<area shape="rect" id="Node000011" href="$classio.html#a6dadf1033346f6025a4047a17ddf0227" title="Templated method to write single event data object to HDF5." alt="" coords="247,156,389,181"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="427,204,361,184,363,179,429,199"/>
+<area shape="rect" id="Node000012" href="$classio.html#a9ceaef5ce2a5f32905f1409a8c14ca20" title="Templated method to write event data (vector of objects) to HDF5." alt="" coords="247,205,389,231"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="424,221,390,221,390,215,424,215"/>
+<area shape="rect" id="Node000013" href="$classio.html#acbb361e3301373cce246acf6208b60ea" title="Templated method to write a single object to a dataset." alt="" coords="124,180,199,205"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="233,207,198,201,199,196,234,202"/>
+<area shape="rect" id="Node000014" href="$classio.html#a39a32d23eeb4ae8f422bb416256fd9cd" title="Templated method to write a vector of objects to a dataset." alt="" coords="124,229,199,255"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="234,234,199,239,198,234,233,228"/>
+</map>

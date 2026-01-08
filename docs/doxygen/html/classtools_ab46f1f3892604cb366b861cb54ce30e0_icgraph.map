@@ -1,0 +1,5 @@
+<map id="tools::type_name" name="tools::type_name">
+<area shape="rect" id="Node000001" title="Gets the type name of a variable as a string (for debugging)." alt="" coords="219,13,353,38"/>
+<area shape="rect" id="Node000002" href="$classevent__template.html#a3228b318a371b81f2f046247d4fe84bc" title="Builds a mapping between event data structures and handlers." alt="" coords="5,5,171,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,28,171,28,171,23,205,23"/>
+</map>

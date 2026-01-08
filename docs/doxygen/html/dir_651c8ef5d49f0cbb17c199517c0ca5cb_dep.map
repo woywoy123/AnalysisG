@@ -1,0 +1,20 @@
+<map id="metrics" name="metrics">
+<area shape="rect" id="node1" href="dir_639930e6546076602fdb99daad4d48b4.html" title="structs" alt="" coords="27,209,93,235"/>
+<area shape="rect" id="node2" href="dir_9fd58bbf403f6bebb995a0271eeae5cc.html" title="model" alt="" coords="118,209,181,235"/>
+<area shape="rect" id="node3" href="dir_7acf8b7ae8c4ffea2c3526657d8aa9e1.html" title="notification" alt="" coords="205,209,299,235"/>
+<area shape="rect" id="node5" href="dir_24a060a37f703b52590f216abffbbdea.html" title="cxx" alt="" coords="131,63,176,88"/>
+<area shape="rect" id="node6" href="dir_ef6710c4b5e9833ed53cc4607df67c64.html" title="include" alt="" coords="131,136,200,161"/>
+<area shape="poly" id="edge1" href="dir_000035_000089.html" alt="" coords="158,88,164,122,158,123,153,89"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000035_000089.html" title="3" alt="" coords="164,109,173,124"/>
+<area shape="poly" id="edge3" href="dir_000089_000157.html" alt="" coords="150,164,90,204,87,199,147,159"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000089_000157.html" title="2" alt="" coords="92,199,102,213"/>
+<area shape="poly" id="edge4" href="dir_000089_000124.html" alt="" coords="165,162,157,197,152,196,160,161"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000089_000124.html" title="1" alt="" coords="160,186,169,201"/>
+<area shape="poly" id="edge5" href="dir_000089_000130.html" alt="" coords="181,159,229,198,226,203,178,163"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000089_000130.html" title="1" alt="" coords="224,184,234,198"/>
+<area shape="rect" id="node7" href="dir_ec4844e93998863f4e611fcf0d12b86b.html" title="pyc" alt="" coords="324,209,369,235"/>
+<area shape="poly" id="edge2" href="dir_000089_000146.html" alt="" coords="195,159,312,204,310,209,193,164"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000089_000146.html" title="1" alt="" coords="305,190,315,205"/>
+<area shape="rect" id="clust2" href="dir_651c8ef5d49f0cbb17c199517c0ca5cb.html" alt="" coords="120,52,283,172"/>
+<area shape="rect" id="clust1" href="dir_ee3c23494b4011e6a628e4900ef262df.html" title="modules" alt="" coords="16,16,311,245"/>
+</map>

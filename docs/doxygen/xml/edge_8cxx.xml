@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="edge_8cxx" kind="file" language="C++">
+    <compoundname>edge.cxx</compoundname>
+    <briefdescription>
+<para>Implementation of the <ref refid="classEdge" kindref="compound">Edge</ref> class. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains the implementation of the <ref refid="classEdge" kindref="compound">Edge</ref> class, which represents a connection between nodes in a graph structure. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Dummy<sp/>implementation<sp/>for<sp/>documentation<sp/>only.</highlight></codeline>
+    </programlisting>
+    <location file="core/cxx/edge.cxx"/>
+  </compounddef>
+</doxygen>

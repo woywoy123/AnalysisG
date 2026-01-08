@@ -1,0 +1,5 @@
+<map id="model_template::set_device" name="model_template::set_device">
+<area shape="rect" id="Node000001" title="Static setter for the device property." alt="" coords="232,5,389,45"/>
+<area shape="rect" id="Node000002" href="$classmodel__template.html#af47db8a6a8514fda6e3b714813c07f6d" title="Constructor for the model_template class." alt="" coords="5,5,184,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,28,184,28,184,23,218,23"/>
+</map>

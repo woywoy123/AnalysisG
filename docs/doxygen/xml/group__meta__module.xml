@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__meta__module" kind="group">
+    <compoundname>meta_module</compoundname>
+    <title>Meta Module</title>
+    <briefdescription>
+<para>Metadata handling and management. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__meta__module_1meta_overview">
+<title>Overview</title>
+<para>The Meta module handles metadata associated with samples, events, and analysis configurations.</para>
+</sect1>
+<sect1 id="group__meta__module_1meta_information">
+<title>Stored Information</title>
+<para>Metadata includes:</para>
+<para><itemizedlist>
+<listitem><para>Sample identification</para>
+</listitem><listitem><para>Cross-section weights</para>
+</listitem><listitem><para>Processing history</para>
+</listitem><listitem><para>Configuration snapshots</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classmeta" kindref="compound">meta</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

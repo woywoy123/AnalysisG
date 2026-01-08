@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="README_8md" kind="file" language="Markdown">
+    <compoundname>README.md</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>AnalysisG<sp/>Modules<sp/>Documentation</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>directory<sp/>contains<sp/>the<sp/>core<sp/>modules<sp/>of<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>a<sp/>toolkit<sp/>for<sp/>data<sp/>analysis<sp/>that<sp/>appears<sp/>to<sp/>be<sp/>focused<sp/>on<sp/>graph-based<sp/>models,<sp/>possibly<sp/>for<sp/>particle<sp/>physics<sp/>data<sp/>analysis.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Module<sp/>Structure</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>repository<sp/>is<sp/>organized<sp/>into<sp/>multiple<sp/>specialized<sp/>modules:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>**typecasting**:<sp/>Handles<sp/>type<sp/>conversion<sp/>between<sp/>different<sp/>data<sp/>representations</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**notification**:<sp/>Provides<sp/>notification<sp/>mechanisms<sp/>in<sp/>the<sp/>framework</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**structs**:<sp/>Contains<sp/>data<sp/>structure<sp/>definitions<sp/>used<sp/>throughout<sp/>the<sp/>framework</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**tools**:<sp/>General<sp/>utility<sp/>functions<sp/>and<sp/>tools</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**particle**:<sp/>Classes<sp/>and<sp/>functions<sp/>for<sp/>particle<sp/>physics<sp/>data<sp/>representation</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**event**:<sp/>Event-based<sp/>data<sp/>handling</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**selection**:<sp/>Data<sp/>selection<sp/>and<sp/>filtering<sp/>functionality</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**graph**:<sp/>Graph<sp/>construction<sp/>and<sp/>manipulation</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**model**:<sp/>Model<sp/>definition<sp/>and<sp/>training<sp/>functionality</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**metrics/metric**:<sp/>Evaluation<sp/>metrics<sp/>for<sp/>model<sp/>performance</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**meta**:<sp/>Metadata<sp/>handling</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**io**:<sp/>Input/output<sp/>operations</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**plotting**:<sp/>Data<sp/>visualization<sp/>capabilities</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**lossfx**:<sp/>Loss<sp/>functions<sp/>for<sp/>model<sp/>training</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**container**:<sp/>Data<sp/>container<sp/>implementations</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**sampletracer**:<sp/>Sample<sp/>tracking<sp/>functionality</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**analysis**:<sp/>Analysis<sp/>workflows</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**dataloader**:<sp/>Data<sp/>loading<sp/>and<sp/>preprocessing</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>**optimizer**:<sp/>Optimization<sp/>algorithms<sp/>for<sp/>model<sp/>training</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Key<sp/>Components</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Model<sp/>Module</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>model<sp/>module<sp/>provides<sp/>templates<sp/>and<sp/>implementations<sp/>for<sp/>machine<sp/>learning<sp/>models.<sp/>The<sp/>`model_template`<sp/>class<sp/>serves<sp/>as<sp/>a<sp/>base<sp/>class<sp/>for<sp/>implementing<sp/>different<sp/>models,<sp/>with<sp/>capabilities<sp/>for:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Registering<sp/>modules<sp/>within<sp/>the<sp/>model<sp/>architecture</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Handling<sp/>forward<sp/>passes<sp/>with<sp/>graph-based<sp/>data</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Managing<sp/>input<sp/>and<sp/>output<sp/>features</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Device<sp/>management<sp/>(CPU/GPU)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Weight<sp/>initialization</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>IO<sp/>Module</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>IO<sp/>module<sp/>handles<sp/>all<sp/>input/output<sp/>operations<sp/>within<sp/>the<sp/>framework,<sp/>including:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>File<sp/>reading/writing</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Configuration<sp/>import/export</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Settings<sp/>management</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>Structs<sp/>Module</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">This<sp/>module<sp/>defines<sp/>fundamental<sp/>data<sp/>structures<sp/>used<sp/>throughout<sp/>the<sp/>framework:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Base<sp/>structures<sp/>(`bsc_t`)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Enumerations<sp/>for<sp/>data<sp/>types<sp/>(`data_enum`)</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Model<sp/>settings<sp/>(`model_settings_t`)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Integration</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">The<sp/>modules<sp/>are<sp/>integrated<sp/>through<sp/>CMake<sp/>build<sp/>system,<sp/>with<sp/>interdependencies<sp/>managed<sp/>through<sp/>header<sp/>inclusions.<sp/>The<sp/>main<sp/>`CMakeLists.txt`<sp/>configures<sp/>paths<sp/>and<sp/>builds<sp/>all<sp/>submodules<sp/>in<sp/>the<sp/>correct<sp/>order<sp/>of<sp/>dependencies.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Key<sp/>Classes</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>model_template</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Base<sp/>class<sp/>for<sp/>model<sp/>implementations<sp/>with<sp/>the<sp/>following<sp/>key<sp/>methods:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`register_module()`:<sp/>Adds<sp/>neural<sp/>network<sp/>components<sp/>to<sp/>the<sp/>model</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`forward()`:<sp/>Performs<sp/>the<sp/>forward<sp/>pass<sp/>for<sp/>inference</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`assign_features()`:<sp/>Maps<sp/>input<sp/>data<sp/>to<sp/>appropriate<sp/>tensors</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>`set_input_features()`:<sp/>Configures<sp/>input<sp/>feature<sp/>handlers</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>io</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Handles<sp/>file<sp/>operations<sp/>and<sp/>settings<sp/>management:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>`import_settings()`:<sp/>Loads<sp/>configuration<sp/>from<sp/>external<sp/>sources</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">###<sp/>model_settings_t</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">Configuration<sp/>structure<sp/>for<sp/>models<sp/>containing:</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">-<sp/>Optimizer<sp/>settings</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Model<sp/>naming<sp/>and<sp/>device<sp/>configuration</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Input/output<sp/>feature<sp/>mappings</highlight></codeline>
+<codeline><highlight class="normal">-<sp/>Inference<sp/>mode<sp/>settings</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">##<sp/>Development<sp/>Guidelines</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">When<sp/>extending<sp/>the<sp/>framework:</highlight></codeline>
+<codeline><highlight class="normal">1.<sp/>Add<sp/>new<sp/>module<sp/>directories<sp/>to<sp/>`CMakeLists.txt`</highlight></codeline>
+<codeline><highlight class="normal">2.<sp/>Ensure<sp/>proper<sp/>header<sp/>inclusion</highlight></codeline>
+<codeline><highlight class="normal">3.<sp/>Maintain<sp/>consistent<sp/>naming<sp/>conventions</highlight></codeline>
+<codeline><highlight class="normal">4.<sp/>Document<sp/>public<sp/>interfaces</highlight></codeline>
+<codeline><highlight class="normal">5.<sp/>Follow<sp/>the<sp/>existing<sp/>patterns<sp/>for<sp/>object<sp/>lifecycle<sp/>management</highlight></codeline>
+    </programlisting>
+    <location file="modules/README.md"/>
+  </compounddef>
+</doxygen>

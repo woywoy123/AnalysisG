@@ -1,0 +1,23 @@
+<map id="meta::scan_data" name="meta::scan_data">
+<area shape="rect" id="Node000001" title="Scans data from a generic ROOT object (e.g., TTree, TH1)." alt="" coords="5,153,136,179"/>
+<area shape="rect" id="Node000002" href="$classmeta.html#aaed15ab5be8f7a86c79373f24abfc952" title="Parses a JSON string to extract metadata." alt="" coords="184,79,319,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,151,206,107,208,112,104,156"/>
+<area shape="rect" id="Node000008" href="$classmeta.html#a4edf9b754591ddfde876090af1014dd4" title="Parses a string value from a TTree based on a key." alt="" coords="367,153,511,179"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="136,163,353,163,353,169,136,169"/>
+<area shape="rect" id="Node000009" href="$classmeta.html#a24d8657dbb9d0d8903725ee01fe22c14" title="Scans sum of weights (SoW) information from a ROOT object." alt="" coords="188,204,315,229"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="118,176,193,198,191,203,116,181"/>
+<area shape="rect" id="Node000003" href="$classmeta.html#aac47e377d2bbda2fac5a8cfc5ada7243" title="Internal method to compile or process metadata after parsing." alt="" coords="378,5,499,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="279,76,366,40,384,33,386,38,368,44,282,81"/>
+<area shape="rect" id="Node000006" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="375,55,503,80"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="318,80,360,75,361,80,319,85"/>
+<area shape="rect" id="Node000007" href="$classtools.html#aeae88ebd7116d59008600f0723716dba" title="Replaces all occurrences of a substring in a string." alt="" coords="383,104,494,129"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="319,98,370,105,369,110,318,103"/>
+<area shape="rect" id="Node000004" href="$classtools.html#ad7229c72cee65da3605c4be82f9b42d4" title="Checks if a string contains a specific substring." alt="" coords="559,129,688,155"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="488,28,512,40,564,78,604,117,600,121,560,82,509,44,485,33"/>
+<area shape="rect" id="Node000005" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="578,5,669,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="500,15,564,15,564,21,500,21"/>
+<area shape="poly" id="edge9_Node000009_Node000004" title=" " alt="" coords="315,213,408,206,510,187,549,174,585,158,587,163,551,179,511,193,409,211,315,218"/>
+<area shape="poly" id="edge11_Node000009_Node000008" title=" " alt="" coords="299,201,377,180,379,185,300,206"/>
+<area shape="rect" id="Node000010" href="$classmeta.html#a6b915820e9720f8050c908857e2783c8" title="Parses a float value from a TTree based on a key." alt="" coords="371,255,507,280"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="300,227,379,248,377,254,299,232"/>
+</map>

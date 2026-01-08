@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="graph__template_8pxd" kind="file" language="C++">
+    <compoundname>graph_template.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>graph_template.pxd</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Provides<sp/>type<sp/>definitions<sp/>and<sp/>class<sp/>declarations<sp/>for<sp/>graph<sp/>templates<sp/>in<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>This<sp/>file<sp/>defines<sp/>the<sp/>structure<sp/>and<sp/>behavior<sp/>of<sp/>graph<sp/>templates,<sp/>including<sp/>methods<sp/>for<sp/>managing</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>graph<sp/>data,<sp/>edges,<sp/>and<sp/>nodes.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>distutils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level<sp/>=<sp/>3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp<sp/>cimport<sp/>bool</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.event_template<sp/>cimport<sp/>event_template</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;&lt;templates/graph_template.h&gt;&quot;<sp/>nogil:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>graph_template:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>graph_template()<sp/>except<sp/>+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>tree</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>name</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>string<sp/>hash</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>weight</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>long<sp/>index</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>preselection</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>graph_template*<sp/>build(event_template*)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>operator<sp/>==<sp/>(graph_template&amp;<sp/>p)<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>void<sp/>CompileEvent()<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>void<sp/>PreSelection()<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@namespace<sp/>GraphTemplate</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Contains<sp/>the<sp/>GraphTemplate<sp/>class<sp/>and<sp/>related<sp/>utilities<sp/>for<sp/>managing<sp/>graph<sp/>data.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@class<sp/>GraphTemplate</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Represents<sp/>a<sp/>graph<sp/>structure<sp/>with<sp/>nodes<sp/>and<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>This<sp/>class<sp/>provides<sp/>methods<sp/>for<sp/>adding<sp/>nodes,<sp/>edges,<sp/>and<sp/>attributes,<sp/>as<sp/>well<sp/>as<sp/>for</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>retrieving<sp/>graph<sp/>properties<sp/>and<sp/>performing<sp/>graph-related<sp/>computations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>GraphTemplate:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>graph_template*<sp/>ptr</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>list<sp/>nodes_<sp/>///&lt;<sp/>List<sp/>of<sp/>nodes<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>list<sp/>edges_<sp/>///&lt;<sp/>List<sp/>of<sp/>edges<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>dict<sp/>attributes_<sp/>///&lt;<sp/>Dictionary<sp/>of<sp/>attributes<sp/>associated<sp/>with<sp/>the<sp/>graph.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>node<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>node<sp/>The<sp/>node<sp/>to<sp/>add.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>add_node(int<sp/>node)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Adds<sp/>an<sp/>edge<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>source<sp/>The<sp/>source<sp/>node<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>target<sp/>The<sp/>target<sp/>node<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>add_edge(int<sp/>source,<sp/>int<sp/>target)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Sets<sp/>an<sp/>attribute<sp/>for<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>The<sp/>key<sp/>of<sp/>the<sp/>attribute.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>value<sp/>The<sp/>value<sp/>of<sp/>the<sp/>attribute.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>void<sp/>set_attribute(string<sp/>key,<sp/>string<sp/>value)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>an<sp/>attribute<sp/>from<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@param<sp/>key<sp/>The<sp/>key<sp/>of<sp/>the<sp/>attribute.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>value<sp/>of<sp/>the<sp/>attribute.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>string<sp/>get_attribute(string<sp/>key)</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>number<sp/>of<sp/>nodes<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>number<sp/>of<sp/>nodes.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>num_nodes()</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@brief<sp/>Retrieves<sp/>the<sp/>number<sp/>of<sp/>edges<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*<sp/>@return<sp/>The<sp/>number<sp/>of<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>num_edges()</highlight></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="core/graph_template.pxd"/>
+  </compounddef>
+</doxygen>

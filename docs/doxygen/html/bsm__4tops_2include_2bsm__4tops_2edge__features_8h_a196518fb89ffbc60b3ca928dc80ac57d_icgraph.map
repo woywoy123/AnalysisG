@@ -1,0 +1,31 @@
+<map id="res_edge" name="res_edge">
+<area shape="rect" id="Node000001" title=" " alt="" coords="533,263,615,288"/>
+<area shape="rect" id="Node000002" href="$classgraph__tops.html#aeeb26c4ab2ef88d0b3799205efc90efc" title="Compiles the event into a graph." alt="" coords="279,5,473,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="568,249,561,204,547,148,522,92,505,66,484,44,467,33,470,29,487,40,509,63,527,89,552,146,567,203,573,248"/>
+<area shape="rect" id="Node000003" href="$classgraph__children.html#af069fe630b6bbf6ffacca8243761e829" title="Compiles the event into a graph." alt="" coords="267,55,485,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="565,250,555,214,539,172,516,130,484,95,463,83,466,78,487,91,520,127,544,170,560,212,570,248"/>
+<area shape="rect" id="Node000004" href="$classgraph__truthjets.html#ad64c5a15f0406d8a6c9705d50934b81f" title="Compiles the event into a graph." alt="" coords="285,105,467,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="558,252,528,204,508,180,484,159,463,147,465,142,487,154,512,176,533,201,563,249"/>
+<area shape="rect" id="Node000005" href="$classgraph__truthjets__nonu.html#add03a6d564186c150f7c907737b77eeb" title="Compiles the event into a graph." alt="" coords="296,169,456,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="543,257,484,223,453,211,455,206,486,218,546,253"/>
+<area shape="rect" id="Node000006" href="$classgraph__jets.html#a568114127973b28c968493e79ca67cd7" title="Compiles the event into a graph." alt="" coords="281,233,471,259"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="519,270,462,261,462,256,520,265"/>
+<area shape="rect" id="Node000007" href="$classgraph__jets__nonu.html#a3d76d9b5885af9d1ef9c2a150acc1300" title="Compiles the event into a graph." alt="" coords="281,283,471,323"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="520,286,472,292,471,287,519,280"/>
+<area shape="rect" id="Node000008" href="$classgraph__jets__detector__lep.html#a8da8c93bcdece302cb06b34e6b9db801" title="Compiles the event into a graph." alt="" coords="301,347,451,387"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="548,299,519,319,486,338,453,351,451,346,484,333,516,315,545,295"/>
+<area shape="rect" id="Node000009" href="$classgraph__detector.html#a9524462481e7c9e42df5cf73f999737e" title="Compiles the event into a graph." alt="" coords="267,412,485,437"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="564,302,534,353,513,379,487,402,461,414,459,410,484,397,509,376,530,350,559,299"/>
+<area shape="rect" id="Node000010" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="323,485,429,511"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="568,302,540,374,517,415,487,451,457,473,423,488,421,483,454,468,484,447,512,412,535,372,563,300"/>
+<area shape="rect" id="Node000012" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="269,559,483,599"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="572,302,564,348,549,407,524,468,507,497,487,524,463,545,435,562,432,557,460,541,483,520,503,494,519,466,544,405,559,347,567,302"/>
+<area shape="poly" id="edge10_Node000010_Node000010" title=" " alt="" coords="411,475,401,467,376,464,355,466,344,471,342,476,348,484,343,487,337,477,340,467,354,461,376,459,403,462,414,471"/>
+<area shape="rect" id="Node000011" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="55,485,169,511"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="309,509,170,508,170,503,309,503"/>
+<area shape="poly" id="edge12_Node000011_Node000010" title=" " alt="" coords="183,487,322,488,322,493,183,493"/>
+<area shape="poly" id="edge14_Node000012_Node000012" title=" " alt="" coords="409,548,398,541,376,538,357,540,346,545,342,551,344,558,339,560,337,550,342,541,356,535,376,533,399,536,412,543"/>
+<area shape="rect" id="Node000013" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="5,559,219,599"/>
+<area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="255,591,219,591,219,586,255,586"/>
+<area shape="poly" id="edge16_Node000013_Node000012" title=" " alt="" coords="233,568,269,568,269,573,233,573"/>
+</map>

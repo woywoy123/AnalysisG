@@ -1,0 +1,18 @@
+<map id="tools::ls" name="tools::ls">
+<area shape="rect" id="Node000001" title="Lists files in a directory, optionally filtered by extension." alt="" coords="576,112,649,137"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a1391073bb18c75cdad4132e90992fcd3" title="&lt; Public access specifier for the following members." alt="" coords="375,5,514,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="591,103,563,72,527,44,502,33,504,28,529,40,566,68,595,99"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a0cbe44c90dab45066bfe074e506c5d8d" title="&lt; Private access specifier for the following members." alt="" coords="361,55,528,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="566,109,527,95,488,83,490,78,529,90,568,104"/>
+<area shape="rect" id="Node000006" href="$classio.html#ad9ed4dbed35a168511c44b38f8e8269b" title="Checks the validity or accessibility of ROOT file paths defined in settings or configurations." alt="" coords="375,105,515,145"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="562,127,515,127,515,122,562,122"/>
+<area shape="rect" id="Node000007" href="$classdataloader.html#ae3bba702555507d8b6e5567c34d19142" title=" " alt="" coords="371,169,518,209"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="567,145,499,171,497,166,565,140"/>
+<area shape="rect" id="Node000008" href="$classio.html#a38cda1cf4b0ad6920e19780ad985d374" title="Triggers the generation of a ROOT PCM (Precompiled Module) if needed for dictionary generation." alt="" coords="385,233,505,259"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="598,151,569,188,529,223,503,236,501,231,527,218,565,184,594,148"/>
+<area shape="rect" id="Node000004" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="199,55,313,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="348,70,313,70,313,65,348,65"/>
+<area shape="rect" id="Node000005" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="5,55,151,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="185,79,151,79,151,74,185,74"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="164,56,198,56,198,62,164,61"/>
+</map>

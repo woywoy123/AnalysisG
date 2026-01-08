@@ -1,0 +1,388 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="nunu_8cu" kind="file" language="C++">
+    <compoundname>nunu.cu</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#include<sp/>&lt;nusol/base.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;physics/physics.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;operators/operators.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;transform/transform.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t,<sp/>size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_nunu_init_(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>met_xy,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H1_inv,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H2_inv,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H1,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H2,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>n<sp/>,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>n_,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>N<sp/>,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>K<sp/>,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>K_,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>S</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H1[size_x][3][3];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H2[size_x][3][3];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H1inv[size_x][3][3];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H2inv[size_x][3][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H1invT[size_x][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H2invT[size_x][3][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_N1[size_x][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_N2[size_x][3][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_S_[size_x][3][3];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_ST[size_x][3][3];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_T0[size_x][3][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idy<sp/>=<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idz<sp/>=<sp/>threadIdx.z;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>S.size({0})){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>h1_i<sp/><sp/>=<sp/>H1_inv[_idx][idy][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>h2_i<sp/><sp/>=<sp/>H2_inv[_idx][idy][idz];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>circ<sp/>=<sp/>(idy<sp/>==<sp/>idz)*(2*(idy<sp/>&lt;<sp/>2)<sp/>-<sp/>1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dmet<sp/>=<sp/>met_xy[_idx][idy]<sp/>*<sp/>(idz<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>idy<sp/>&lt;<sp/>2)<sp/>-<sp/>circ;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>S[_idx][idy][idz]<sp/><sp/>=<sp/>dmet;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_T0[idx][idy][idz]<sp/>=<sp/>circ;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H1inv[idx][idy][idz]<sp/><sp/>=<sp/>h1_i;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H2inv[idx][idy][idz]<sp/><sp/>=<sp/>h2_i;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H1invT[idx][idz][idy]<sp/>=<sp/>h1_i;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H2invT[idx][idz][idy]<sp/>=<sp/>h2_i;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>h1_i<sp/>=<sp/>H1[_idx][idy][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>h2_i<sp/>=<sp/>H2[_idx][idy][idz];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H1[idx][idy][idz]<sp/>=<sp/>_dot(_H1invT[idx],<sp/>_T0[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H2[idx][idy][idz]<sp/>=<sp/>_dot(_H2invT[idx],<sp/>_T0[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_N1[idx][idy][idz]<sp/>=<sp/>_dot(_H1[idx],<sp/>_H1inv[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_N2[idx][idy][idz]<sp/>=<sp/>_dot(_H2[idx],<sp/>_H2inv[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>N[_idx][idy][idz]<sp/><sp/>=<sp/>_N1[idx][idy][idz];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_S_[idx][idy][idz]<sp/>=<sp/>dmet;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_ST[idx][idz][idy]<sp/>=<sp/>dmet;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H1[idx][idy][idz]<sp/>=<sp/>h1_i;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H2[idx][idy][idz]<sp/>=<sp/>h2_i;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H1invT[idx][idy][idz]<sp/>=<sp/>_dot(_ST[idx],<sp/>_N1[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_H2invT[idx][idy][idz]<sp/>=<sp/>_dot(_ST[idx],<sp/>_N2[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>n<sp/>[_idx][idy][idz]<sp/>=<sp/>_dot(_H1invT[idx],<sp/>_S_[idx],<sp/>idy,<sp/>idz,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>n_[_idx][idy][idz]<sp/>=<sp/>_dot(_H2invT[idx],<sp/>_S_[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>K<sp/>[_idx][idy][idz]<sp/>=<sp/>_dot(_H1[idx],<sp/>_H1inv[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>K_[_idx][idy][idz]<sp/>=<sp/>_dot(_H2[idx],<sp/>_H2inv[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t,<sp/>size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_nunu_vp_(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>S,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>K,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>K_,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>n,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>n_,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>v,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>v_,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>ds,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu0,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu1</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_S_[size_x][12][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_K0[size_x][6][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_K1[size_x][6][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_v0[size_x][6][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_v1[size_x][6][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idy<sp/>=<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idz<sp/>=<sp/>threadIdx.z;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>jdz<sp/>=<sp/>threadIdx.y%3;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>S.size({0})){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_S_[idx][jdz][idz]<sp/>=<sp/>S[_idx][jdz][idz];<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_v0[idx][idy][idz]<sp/>=<sp/>v[_idx][idy][idz];</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_K0[idx][jdz<sp/><sp/>][idz]<sp/>=<sp/>K[_idx][jdz][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_K0[idx][jdz+3][idz]<sp/>=<sp/>n[_idx][jdz][idz];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_K1[idx][jdz<sp/><sp/>][idz]<sp/>=<sp/>K_[_idx][jdz][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_K1[idx][jdz+3][idz]<sp/>=<sp/>n_[_idx][jdz][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ds[_idx][idy]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>v[_idx][idy][idz]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_v1[idx][idy][idz]<sp/>=<sp/>_dot(_S_[idx][idz],<sp/>_v0[idx][idy],<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>nu0_<sp/>=<sp/>_dot(_K0[idx][idz],<sp/>_v0[idx][idy],<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>nu1_<sp/>=<sp/>_dot(_K1[idx][idz],<sp/>_v1[idx][idy],<sp/>3);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_S_[idx][idy<sp/><sp/>][idz]<sp/>=<sp/>_dot(_K1[idx][idz+3],<sp/>_v0[idx][idy],<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_S_[idx][idy+6][idz]<sp/>=<sp/>_dot(_K0[idx][idz+3],<sp/>_v1[idx][idy],<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dq<sp/>=<sp/>_dot(_S_[idx][idy],<sp/>_v0[idx][idy],<sp/>3)<sp/>-<sp/>_dot(_S_[idx][idy+6],<sp/>_v1[idx][idy],<sp/>3);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>dq<sp/>=<sp/>log10(dq*dq<sp/>+<sp/>(dq<sp/>==<sp/>0));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_K0[idx][idy][idz]<sp/>=<sp/>dq;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>pos<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>y(0);<sp/>y<sp/>&lt;<sp/>6;<sp/>++y){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!_K0[idx][y][idz]){continue;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>bool<sp/>kl<sp/>=<sp/>(dq<sp/>&gt;<sp/>_K0[idx][y][idz]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pos<sp/>+=<sp/>kl;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!dq){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>v<sp/>[_idx][pos][idz]<sp/>=<sp/>_v0[idx][idy][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>v_[_idx][pos][idz]<sp/>=<sp/>_v1[idx][idy][idz];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nu0[_idx][pos][idz]<sp/>=<sp/>nu0_;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nu1[_idx][pos][idz]<sp/>=<sp/>nu1_;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ds[_idx][pos]<sp/>=<sp/>dq;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t,<sp/>size_t<sp/>size_x,<sp/>size_t<sp/>size_y&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_residual_(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>metxy,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H_perp,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H_perp_,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu1,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu2,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dst,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>double<sp/>tol,<sp/>const<sp/>double<sp/>step,<sp/>const<sp/>unsigned<sp/>int<sp/>timeout</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_metxy_[size_x][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H_perp[size_x][6][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_res_[size_x][8][8][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_Jxb_[size_x][size_y][3];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_params[size_x][size_y][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_buffer[size_x][size_y][2][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idy<sp/>=<sp/>threadIdx.y;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idz<sp/>=<sp/>threadIdx.z;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>metxy.size({0})){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idy<sp/>&lt;<sp/>6){_H_perp[idx][idy][idz]<sp/>=<sp/>(idy<sp/>&lt;=<sp/>2)*H_perp<sp/>[_idx][idy%3][idz]<sp/>+<sp/>(idy<sp/>&lt;=<sp/>5<sp/>&amp;&amp;<sp/>idy<sp/>&gt;=<sp/>3)*H_perp_[_idx][(idy-3)%3][idz];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_metxy_[idx][idz]<sp/>=<sp/>metxy[_idx][idz*(idz<sp/>&lt;<sp/>2)]*(idz<sp/>&lt;<sp/>2)<sp/>+<sp/>1*(idz<sp/>==<sp/>2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>ix<sp/>=<sp/>idy<sp/>%<sp/>8;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>iy<sp/>=<sp/>idy<sp/>/<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dt0<sp/>=<sp/>double(4<sp/>-<sp/>ix)*step;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dt1<sp/>=<sp/>double(4<sp/>-<sp/>iy)*step;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>v1(0),<sp/>v2(0),<sp/>r2c(0);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_params[idx][idy][idz]<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_res_[idx][ix][iy][idz]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_buffer[idx][idy][0][idz]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_buffer[idx][idy][1][idz]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(unsigned<sp/>int<sp/>t(0);<sp/>t<sp/>&lt;<sp/>timeout;<sp/>++t){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buffer[idx][idy][0][idz]<sp/>=<sp/>foptim(_params[idx][idy][0]<sp/>+<sp/>dt0,<sp/>idz);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buffer[idx][idy][1][idz]<sp/>=<sp/>foptim(_params[idx][idy][1]<sp/>+<sp/>dt1,<sp/>idz);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v1<sp/>=<sp/>_dot(_H_perp[idx][idz<sp/><sp/>],<sp/>_buffer[idx][idy][0],<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>=<sp/>_dot(_H_perp[idx][idz+3],<sp/>_buffer[idx][idy][1],<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>r2c<sp/>=<sp/>_params[idx][idy][2];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(<sp/>(r2c<sp/>&lt;<sp/>tol<sp/>||<sp/>t<sp/>&gt;=<sp/>timeout<sp/>-<sp/>1)<sp/>&amp;&amp;<sp/>t<sp/>){break;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_res_[idx][iy][ix][idz]<sp/>=<sp/>pow(v1<sp/>+<sp/>v2<sp/>-<sp/>_metxy_[idx][idz],<sp/>2);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>r2_t<sp/><sp/>=<sp/>_sum(_res_[idx][4<sp/>][4<sp/>],<sp/>2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>r2_dx<sp/>=<sp/>_sum(_res_[idx][iy][ix],<sp/>2);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>r2_dy<sp/>=<sp/>_sum(_res_[idx][iy][ix],<sp/>2);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>gr_t0<sp/>=<sp/>(r2_dx<sp/>-<sp/>r2_t)*_div(dt0);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>gr_t1<sp/>=<sp/>(r2_dy<sp/>-<sp/>r2_t)*_div(dt1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>dotx<sp/><sp/>=<sp/>gr_t0*gr_t0<sp/>+<sp/>gr_t1*gr_t1;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dotx<sp/>=<sp/>dotx<sp/>-<sp/>_cmp(abs(dt0),<sp/>abs(dt1),<sp/>(r2_dx<sp/>-<sp/>r2_t)*(r2_dy<sp/>-<sp/>r2_t));</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buffer[idx][idy][0][idz]<sp/>=<sp/>trigger(idz<sp/>&lt;<sp/>2,<sp/>_params[idx][idy][idz],<sp/>r2_t);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_buffer[idx][idy][1][idz]<sp/>=<sp/>trigger(idz,<sp/>r2_dx,<sp/>r2_dy,<sp/>r2_t);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_Jxb_[idx][idy][idz]<sp/>=<sp/>trigger(idz,<sp/>gr_t0,<sp/>gr_t1,<sp/>dotx);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>unsigned<sp/>int<sp/>py(0),<sp/>pz(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>(unsigned<sp/>int<sp/>y(0);<sp/>y<sp/>&lt;<sp/>size_y;<sp/>++y){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>(unsigned<sp/>int<sp/>z(0);<sp/>z<sp/>&lt;<sp/>3;<sp/>++z){pz<sp/>=<sp/>trigger(_buffer[idx][py][1][pz]<sp/>&lt;<sp/>_buffer[idx][y][1][z],<sp/>pz,<sp/>z);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>py<sp/>=<sp/>trigger(_buffer[idx][py][1][pz]<sp/>&lt;<sp/>_buffer[idx][y][1][pz],<sp/>py,<sp/>y);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_params[idx][idy][idz]<sp/>=<sp/>_buffer[idx][idy][0][idz]<sp/>-<sp/>_div(_Jxb_[idx][py][2])<sp/>*<sp/>_Jxb_[idx][py][idz]<sp/>*<sp/>r2_t<sp/>*<sp/>(idz<sp/>&lt;<sp/>2);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idy<sp/>==<sp/>36<sp/>&amp;&amp;<sp/>r2c<sp/>&lt;<sp/>tol){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nu1[_idx][5][idz]<sp/>=<sp/>v1;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nu2[_idx][5][idz]<sp/>=<sp/>v2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dst[_idx][5]<sp/>=<sp/>log10(r2c);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::NuNu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>H1_,<sp/>torch::Tensor*<sp/>H1_perp,<sp/>torch::Tensor*<sp/>H2_,<sp/>torch::Tensor*<sp/>H2_perp,<sp/>torch::Tensor*<sp/>met_xy,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>null,<sp/>const<sp/>double<sp/>step,<sp/>const<sp/>double<sp/>tolerance,<sp/>const<sp/>unsigned<sp/>int<sp/>timeout</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>H1_<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>thx<sp/>=<sp/>(dx<sp/>&gt;=<sp/>48)<sp/>?<sp/>48<sp/>:<sp/>dx;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thr<sp/>=<sp/>dim3(4,<sp/>64,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(thx,<sp/>3,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thN<sp/>=<sp/>dim3(thx,<sp/>6,<sp/>3);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blr<sp/>=<sp/>blk_(dx,<sp/>4,<sp/>64,<sp/>64,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>thx,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blN<sp/>=<sp/>blk_(dx,<sp/>thx,<sp/>6,<sp/>6,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H1_inv<sp/>=<sp/>std::get&lt;0&gt;(operators_::Inverse(H1_perp));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H2_inv<sp/>=<sp/>std::get&lt;0&gt;(operators_::Inverse(H2_perp));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>S<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(H1_));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>N<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(H1_));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>n<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(H1_));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>n_<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(H1_));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>K<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(H1_));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>K_<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(H1_));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(H1_<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;NuNu&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_nunu_init_&lt;scalar_t,<sp/>48&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>met_xy<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H1_inv.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H2_inv.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H1_<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H2_<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n_.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>N.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>K.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>K_.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>S.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out<sp/>=<sp/>nusol_::Intersection(&amp;N,<sp/>&amp;n_,<sp/>null);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu1<sp/>=<sp/>torch::zeros_like(out[&quot;solutions&quot;]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu2<sp/>=<sp/>torch::zeros_like(out[&quot;solutions&quot;]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>v_<sp/><sp/>=<sp/>torch::zeros_like(out[&quot;solutions&quot;]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>v<sp/><sp/><sp/>=<sp/>out[&quot;solutions&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>ds<sp/><sp/>=<sp/>out[&quot;distances&quot;];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(H1_<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;NuNu&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(timeout){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_residual_&lt;scalar_t,<sp/>4,<sp/>64&gt;&lt;&lt;&lt;blr,<sp/>thr&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>met_xy<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H1_perp<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H2_perp<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v_.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ds.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tolerance,<sp/>step,<sp/>timeout</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_nunu_vp_&lt;scalar_t,<sp/>48&gt;&lt;&lt;&lt;blN,<sp/>thN&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>S.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>K.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>K_.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n_.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v_.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ds.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nu1.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nu2.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;nu1&quot;]<sp/>=<sp/>nu1;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;K&quot;]<sp/>=<sp/>K;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;n&quot;]<sp/>=<sp/>n;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;nu2&quot;]<sp/>=<sp/>nu2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;K_&quot;]<sp/>=<sp/>K_;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;n_&quot;]<sp/>=<sp/>n_;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::NuNu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b1,<sp/><sp/>torch::Tensor*<sp/>pmc_b2,<sp/>torch::Tensor*<sp/>pmc_mu1,<sp/>torch::Tensor*<sp/>pmc_mu2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>met_xy,<sp/><sp/>double<sp/>null,<sp/>torch::Tensor*<sp/>m1,<sp/>torch::Tensor*<sp/>m2,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>double<sp/>step,<sp/>const<sp/>double<sp/>tolerance,<sp/>unsigned<sp/>int<sp/>timeout</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!m2){m2<sp/>=<sp/>m1;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>met_xy<sp/>-&gt;<sp/>size(0);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>H1_m<sp/>=<sp/>nusol_::BaseMatrix(pmc_b1,<sp/>pmc_mu1,<sp/>m1);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>H2_m<sp/>=<sp/>nusol_::BaseMatrix(pmc_b2,<sp/>pmc_mu2,<sp/>m2);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H1_<sp/>=<sp/>H1_m[&quot;H&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H2_<sp/>=<sp/>H2_m[&quot;H&quot;];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H1p<sp/>=<sp/>H1_m[&quot;H_perp&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H2p<sp/>=<sp/>H2_m[&quot;H_perp&quot;];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out<sp/>=<sp/>nusol_::NuNu(&amp;H1_,<sp/>&amp;H1p,<sp/>&amp;H2_,<sp/>&amp;H2p,<sp/>met_xy,<sp/>null,<sp/>step,<sp/>tolerance,<sp/>timeout);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;nu1&quot;]<sp/>=<sp/>out[&quot;nu1&quot;].view({dx,<sp/>-1,<sp/>3});<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;nu2&quot;]<sp/>=<sp/>out[&quot;nu2&quot;].view({dx,<sp/>-1,<sp/>3});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;distances&quot;]<sp/>=<sp/>out[&quot;distances&quot;].view({dx,<sp/>-1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;passed&quot;]<sp/>=<sp/>H1_m[&quot;passed&quot;]<sp/>*<sp/>H2_m[&quot;passed&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::NuNu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b1,<sp/><sp/>torch::Tensor*<sp/>pmc_b2,<sp/>torch::Tensor*<sp/>pmc_mu1,<sp/>torch::Tensor*<sp/>pmc_mu2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>met_xy,<sp/>double<sp/>null,<sp/>double<sp/>massT1,<sp/>double<sp/>massW1,<sp/>double<sp/>massT2,<sp/>double<sp/>massW2</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>H1_m<sp/>=<sp/>nusol_::BaseMatrix(pmc_b1,<sp/>pmc_mu1,<sp/>massT1,<sp/>massW1,<sp/>0);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>H2_m<sp/>=<sp/>nusol_::BaseMatrix(pmc_b2,<sp/>pmc_mu2,<sp/>massT2,<sp/>massW2,<sp/>0);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H1_<sp/>=<sp/>H1_m[&quot;H&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H1p<sp/>=<sp/>H1_m[&quot;H_perp&quot;];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H2_<sp/>=<sp/>H2_m[&quot;H&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H2p<sp/>=<sp/>H2_m[&quot;H_perp&quot;];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out<sp/>=<sp/>nusol_::NuNu(&amp;H1_,<sp/>&amp;H1p,<sp/>&amp;H2_,<sp/>&amp;H2p,<sp/>met_xy,<sp/>null);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;passed&quot;]<sp/>=<sp/>H1_m[&quot;passed&quot;]<sp/>*<sp/>H2_m[&quot;passed&quot;];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/nusol/cuda/nunu.cu"/>
+  </compounddef>
+</doxygen>

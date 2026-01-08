@@ -1,0 +1,31 @@
+<map id="selection_template::build" name="selection_template::build">
+<area shape="rect" id="Node000001" title="Builds the selection from an event." alt="" coords="5,312,152,352"/>
+<area shape="rect" id="Node000002" href="$classselection__template.html#a094ce1eb2b6463f88a8ad5f7dfd8e4b6" title="Creates a clone of this selection." alt="" coords="200,312,347,352"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,329,186,329,186,335,152,335"/>
+<area shape="rect" id="Node000003" href="$classselection__template.html#a4562a7ab32d93b5f2ca8a232a244041c" title="Default constructor." alt="" coords="395,312,549,352"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="347,329,381,329,381,335,347,335"/>
+<area shape="rect" id="Node000004" href="$classselection__template.html#a2f6cd45079e1fab94a163a38fbe005cd" title="Getter for hash." alt="" coords="603,5,750,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="475,311,487,261,510,193,545,120,568,86,595,55,600,51,604,55,599,59,573,89,550,123,515,195,492,262,480,312"/>
+<area shape="rect" id="Node000005" href="$classselection__template.html#ad0d6fa60bf0da8796a718532c0288d04" title="Getter for name." alt="" coords="603,69,750,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="478,311,494,271,518,220,552,167,596,119,601,115,605,119,599,123,557,170,523,223,498,273,483,313"/>
+<area shape="rect" id="Node000006" href="$classselection__template.html#a4e61c1d63afdff7a6428fbf4c6297166" title="Getter for tree." alt="" coords="603,133,750,173"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="484,310,529,249,560,214,596,183,604,178,607,182,599,187,564,218,533,252,488,313"/>
+<area shape="rect" id="Node000007" href="$classselection__template.html#ae04fb8767d15273f80c5343e2f73384b" title="Getter for weight." alt="" coords="603,197,750,237"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="498,310,543,279,596,247,609,241,611,245,599,252,546,283,501,314"/>
+<area shape="rect" id="Node000008" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="598,262,755,287"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="543,309,617,289,618,294,545,315"/>
+<area shape="rect" id="Node000009" href="$classselection__template.html#acd31f17488bcf97dd8a5f1b3a7da1cdd" title="Setter for hash." alt="" coords="603,312,750,352"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="550,329,589,329,589,335,550,335"/>
+<area shape="rect" id="Node000011" href="$classselection__template.html#a8951c34758d3410f9d931b6011c3cca2" title="Setter for index." alt="" coords="603,376,750,416"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="537,350,600,369,598,374,536,355"/>
+<area shape="rect" id="Node000012" href="$classselection__template.html#a19244d585754db14326c126a98000899" title="Setter for name." alt="" coords="603,440,750,480"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="497,350,542,387,599,426,610,432,608,437,596,430,539,392,494,354"/>
+<area shape="rect" id="Node000013" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="597,505,756,530"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="486,351,529,419,561,457,599,490,611,497,608,501,596,494,558,461,525,422,482,354"/>
+<area shape="rect" id="Node000014" href="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7" title="Sets the setter callback function." alt="" coords="599,554,755,579"/>
+<area shape="poly" id="edge13_Node000003_Node000014" title=" " alt="" coords="482,352,498,391,522,442,556,494,576,518,599,539,609,546,606,550,596,543,572,522,552,497,517,445,493,393,477,354"/>
+<area shape="rect" id="Node000015" href="$classselection__template.html#aa95e812106c1a933f1b65e82557939d3" title="Setter for weight." alt="" coords="603,604,750,644"/>
+<area shape="poly" id="edge14_Node000003_Node000015" title=" " alt="" coords="480,351,494,399,517,462,552,529,574,561,599,589,606,594,602,599,595,593,570,564,547,532,512,464,489,400,475,353"/>
+<area shape="rect" id="Node000010" href="$classtools.html#afd037c109d75a9f119ec042e1ba922d9" title="Converts a double value to a string with standard precision." alt="" coords="804,319,923,345"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="750,329,790,329,790,335,750,335"/>
+</map>

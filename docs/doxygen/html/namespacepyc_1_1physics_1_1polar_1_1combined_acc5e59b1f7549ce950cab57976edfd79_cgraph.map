@@ -1,0 +1,17 @@
+<map id="pyc::physics::polar::combined::Mt2" name="pyc::physics::polar::combined::Mt2">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,148,87"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="227,5,321,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,47,213,30,214,36,149,52"/>
+<area shape="rect" id="Node000003" href="$namespacephysics__.html#a3d421991e1f29e21ba3d495c6ae6c93d" title="Computes the square of the transverse mass." alt="" coords="219,55,329,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="148,65,205,65,205,70,148,70"/>
+<area shape="rect" id="Node000004" href="$namespacetransform__.html#a87dc88421ea78ec3b9c73c86cc5ade19" title="Computes the 4&#45;momentum (Px, Py, Pz, E)." alt="" coords="196,104,352,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,83,210,98,209,103,148,88"/>
+<area shape="rect" id="Node000005" href="$namespacetransform__.html#aa38819d479d31edd3f79b4f8e96ef8be" title="Computes the 3&#45;momentum (Px, Py, Pz)." alt="" coords="400,104,548,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="352,114,386,114,386,119,352,119"/>
+<area shape="rect" id="Node000006" href="$namespacetransform__.html#a4573dda96168ebbd38a408e64cc3d5ff" title="Computes the x&#45;component of momentum (Px)." alt="" coords="596,55,713,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="520,101,593,81,594,86,522,107"/>
+<area shape="rect" id="Node000007" href="$namespacetransform__.html#a51363ab29a6390a86a8ea75573a7a196" title="Computes the y&#45;component of momentum (Py)." alt="" coords="596,104,713,129"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="548,114,582,114,582,119,548,119"/>
+<area shape="rect" id="Node000008" href="$namespacetransform__.html#a28be39b0041a97b1667ccd1ff301f784" title="Computes the z&#45;component of momentum (Pz)." alt="" coords="597,153,713,179"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="522,127,594,147,593,152,520,132"/>
+</map>

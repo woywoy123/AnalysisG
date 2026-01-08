@@ -1,0 +1,12 @@
+<map id="transform_::PtEtaPhi" name="transform_::PtEtaPhi">
+<area shape="rect" id="Node000001" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), and azimuthal angle (Phi) from x,..." alt="" coords="5,79,160,104"/>
+<area shape="rect" id="Node000002" href="$namespacetransform__.html#aa90019603231f23c1e857b5f5832b587" title="Computes the azimuthal angle (Phi) from a momentum tensor." alt="" coords="215,29,336,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,76,211,56,212,61,134,81"/>
+<area shape="rect" id="Node000004" href="$namespacetransform__.html#a7e398b6292d5d34c81497445060ec752" title="Computes the transverse momentum (Pt)." alt="" coords="218,79,333,104"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="160,89,204,89,204,94,160,94"/>
+<area shape="rect" id="Node000005" href="$namespacetransform__.html#a86e364c3bd4a1a8785a3cdfb0a1e1573" title="Computes the transverse momentum (Pt) and pseudorapidity (Eta)." alt="" coords="208,128,343,153"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="134,101,212,122,211,127,132,107"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="252,30,247,21,250,11,259,5,275,3,294,6,302,14,298,18,291,11,275,8,261,10,254,15,253,20,257,28"/>
+<area shape="rect" id="Node000003" href="$utils_8cxx.html#aaec9ca2d20716add3c686abd989934d0" title=" " alt="" coords="391,29,436,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="336,39,377,39,377,45,336,45"/>
+</map>

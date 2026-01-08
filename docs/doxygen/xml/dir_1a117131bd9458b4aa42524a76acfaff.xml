@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="dir_1a117131bd9458b4aa42524a76acfaff" kind="dir">
+    <compoundname>cuda</compoundname>
+    <innerfile refid="base_8cu">base.cu</innerfile>
+    <innerfile refid="intersection_8cu">intersection.cu</innerfile>
+    <innerfile refid="matrix_8cu">matrix.cu</innerfile>
+    <innerfile refid="nu_8cu">nu.cu</innerfile>
+    <innerfile refid="nunu_8cu">nunu.cu</innerfile>
+    <innerfile refid="nusol_8cu">nusol.cu</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/nusol/cuda/"/>
+  </compounddef>
+</doxygen>

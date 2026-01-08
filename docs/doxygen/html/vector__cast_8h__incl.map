@@ -1,0 +1,27 @@
+<map id="vector_cast.h" name="vector_cast.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="387,5,496,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,173,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="387,33,160,79,159,73,386,28"/>
+<area shape="rect" id="Node000003" href="$structs_2include_2structs_2meta_8h.html" title="Defines metadata structures for physics analysis datasets." alt="" coords="198,79,314,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="413,33,300,76,298,71,411,28"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="389,152,451,177"/>
+<area shape="poly" id="edge14_Node000001_Node000006" title=" " alt="" coords="451,30,466,63,469,84,467,105,456,126,443,143,439,140,452,123,461,103,464,84,461,65,446,32"/>
+<area shape="rect" id="Node000008" href="$modules_2structs_2include_2structs_2base_8h.html" title="Defines fundamental data structures and type handling for the AnalysisG framework." alt="" coords="338,79,451,104"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="436,32,412,69,408,66,431,30"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="527,79,631,104"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="465,28,545,70,543,75,462,33"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="655,79,724,104"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="482,28,642,74,641,79,480,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="127,152,207,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="243,106,194,145,190,141,240,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="305,152,364,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="270,102,314,141,310,145,267,106"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="283,102,382,144,380,149,281,106"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="231,152,281,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="259,104,259,138,253,138,253,104"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="387,106,355,143,351,140,383,103"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="401,103,414,138,409,140,396,105"/>
+<area shape="poly" id="edge10_Node000008_Node000007" title=" " alt="" coords="374,106,292,148,290,143,371,102"/>
+<area shape="rect" id="Node000009" href="$enums_8h.html" title=" " alt="" coords="475,152,602,177"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="419,102,504,143,502,148,417,106"/>
+</map>

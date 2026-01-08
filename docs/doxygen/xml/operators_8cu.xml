@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="operators_8cu" kind="file" language="C++">
+    <compoundname>operators.cu</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#include<sp/>&lt;operators/operators.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;operators/base.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::Dot(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({1});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(32,<sp/>dy,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>32,<sp/>dy,<sp/>dy,<sp/>dy,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>dy,<sp/>dy},<sp/>MakeOp(v1));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>unsigned<sp/>int<sp/>sx<sp/>=<sp/>sizeof(double)*dy*dy*2*32;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(v1<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;dot&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_dot&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd,<sp/>sx&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v1<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dx,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::Cross(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({-2});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dz<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({-1});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>dy*dy,<sp/>dz);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>dy*dy,<sp/>dy*dy,<sp/>dz,<sp/>dz);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>dy,<sp/>dz,<sp/>dz},<sp/>MakeOp(v1));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(v1<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;cross&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cross&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v1<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>4,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t<sp/><sp/>,<sp/>4,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dy,<sp/>dz);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::CosTheta(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2,<sp/>unsigned<sp/>int<sp/>lm){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>(lm)<sp/>?<sp/>lm<sp/>:<sp/>v1<sp/>-&gt;<sp/>size({1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({0});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(dy<sp/>&lt;<sp/>3){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>xx<sp/>=<sp/>((*v1)*(*v1)).sum(-1,<sp/>true);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>xy<sp/>=<sp/>((*v1)*(*v2)).sum(-1,<sp/>true);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>yy<sp/>=<sp/>((*v2)*(*v2)).sum(-1,<sp/>true);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>xy/torch::sqrt(xx*yy);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>dy);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>dy,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(v1));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>unsigned<sp/>int<sp/>sx<sp/>=<sp/>sizeof(double)*dy*2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(v1<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;costheta&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_costheta&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd,<sp/>sx&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v1<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dx,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::SinTheta(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2,<sp/>unsigned<sp/>int<sp/>lm){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>(lm)<sp/>?<sp/>lm<sp/>:<sp/>v1<sp/>-&gt;<sp/>size({1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>v1<sp/>-&gt;<sp/>size({0});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(dy<sp/>&lt;<sp/>3){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>xx<sp/>=<sp/>((*v1)*(*v1)).sum(-1,<sp/>true);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>xy<sp/>=<sp/>((*v1)*(*v2)).sum(-1,<sp/>true);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>yy<sp/>=<sp/>((*v2)*(*v2)).sum(-1,<sp/>true);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>torch::sqrt(1<sp/>-<sp/>torch::pow(xy/torch::sqrt(xx*yy),<sp/>2));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>dy);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>dy,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(v1));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>unsigned<sp/>int<sp/>sx<sp/>=<sp/>sizeof(double)*dy*2;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(v1<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;costheta&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_costheta&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd,<sp/>sx&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v1<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>v2<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dx,<sp/>dy,<sp/>true);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::Rx(torch::Tensor*<sp/>angle){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>angle<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(64,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>64,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(angle));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(angle<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Rx&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_rx&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dx);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::Ry(torch::Tensor*<sp/>angle){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>angle<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(64,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>64,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(angle));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(angle<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Ry&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_ry&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dx);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::Rz(torch::Tensor*<sp/>angle){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>angle<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(64,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>64,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(angle));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(angle<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Rz&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_rz&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>angle<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dx);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::RT(torch::Tensor*<sp/>pmc,<sp/>torch::Tensor*<sp/>phi,<sp/>torch::Tensor*<sp/>theta){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(theta));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(theta<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;RT&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_rt&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>phi<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>theta<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::CoFactors(torch::Tensor*<sp/>matrix){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>matrix<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>thx<sp/>=<sp/>(dx<sp/>&gt;=<sp/>64)<sp/>?<sp/>64<sp/>:<sp/>dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(thx,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>thx,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(matrix));</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(matrix<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;CoFactors&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cofactor&lt;scalar_t,<sp/>64&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>matrix<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>operators_::Determinant(torch::Tensor*<sp/>matrix){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>matrix<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>thx<sp/>=<sp/>(dx<sp/>&gt;=<sp/>64)<sp/>?<sp/>64<sp/>:<sp/>dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(thx,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>thx,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>out<sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(matrix));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(matrix<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Determinant&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_determinant&lt;scalar_t,<sp/>64&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>matrix<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::tuple&lt;torch::Tensor,<sp/>torch::Tensor&gt;<sp/>operators_::Inverse(torch::Tensor*<sp/>matrix){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>matrix<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>thx<sp/>=<sp/>(dx<sp/>&gt;=<sp/>64)<sp/>?<sp/>64<sp/>:<sp/>dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(thx,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>thx,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>det<sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(matrix));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>inv<sp/>=<sp/>torch::zeros({dx,<sp/>3,<sp/>3},<sp/>MakeOp(matrix));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(matrix<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Inverse&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_inverse&lt;scalar_t,<sp/>64&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>matrix<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inv.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>det.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>{inv,<sp/>det};</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::tuple&lt;torch::Tensor,<sp/>torch::Tensor&gt;<sp/>operators_::Eigenvalue(torch::Tensor*<sp/>matrix){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>matrix<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>thr<sp/>=<sp/>(dx<sp/>&gt;=<sp/>64)<sp/>?<sp/>64<sp/>:<sp/>dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(thr,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>thr,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>eig<sp/>=<sp/>torch::zeros({dx,<sp/>3},<sp/>MakeOp(matrix));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>img<sp/>=<sp/>torch::zeros({dx,<sp/>3},<sp/>MakeOp(matrix));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(matrix<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Eigenvalue&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_eigenvalue&lt;scalar_t,<sp/>64&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>matrix<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eig.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>img.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>{eig,<sp/>img};</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/operators/operators.cu"/>
+  </compounddef>
+</doxygen>

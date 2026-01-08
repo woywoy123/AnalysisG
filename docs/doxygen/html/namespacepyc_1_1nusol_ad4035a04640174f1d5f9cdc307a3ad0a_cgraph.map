@@ -1,0 +1,32 @@
+<map id="pyc::nusol::combinatorial" name="pyc::nusol::combinatorial">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,156,192,181"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="513,56,607,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,154,170,121,204,105,239,91,308,76,378,67,500,64,500,69,379,73,309,81,241,97,206,109,172,126,119,158"/>
+<area shape="rect" id="Node000003" href="$namespacepyc_1_1nusol.html#a0b618f866aa33e16c704d828744335e1" title=" " alt="" coords="250,5,437,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,154,163,103,199,73,239,48,274,32,276,37,241,52,202,78,166,107,114,158"/>
+<area shape="rect" id="Node000005" href="$interface_8cxx.html#a60ca392438931d5a5ec65ee6f882d6c6" title=" " alt="" coords="274,205,413,231"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="163,179,267,200,265,205,162,184"/>
+<area shape="rect" id="Node000007" href="$vector__cast_8h.html#a9888ed684385b240692f6cb6e4c6b82e" title=" " alt="" coords="495,255,625,280"/>
+<area shape="poly" id="edge15_Node000001_Node000007" title=" " alt="" coords="119,179,172,211,206,228,241,241,303,255,366,263,481,268,481,273,366,268,302,260,239,246,204,233,170,216,117,184"/>
+<area shape="rect" id="Node000009" href="$namespacepyc_1_1transform_1_1separate.html#a8707538e9073094f20ba7f80bf98757b" title=" " alt="" coords="240,107,447,132"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="162,153,265,132,267,137,163,159"/>
+<area shape="rect" id="Node000011" href="$namespacepyc_1_1transform_1_1separate.html#a213b45f87684e873b719a628675b3382" title=" " alt="" coords="240,156,447,181"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="192,166,227,166,227,171,192,171"/>
+<area shape="rect" id="Node000013" href="$namespacepyc.html#a78a6e4f2cbb1ffc7ceb42ce358f0fa3e" title=" " alt="" coords="287,331,400,356"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="115,179,169,228,241,285,304,322,302,327,239,290,165,232,111,183"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="399,28,501,52,499,57,398,33"/>
+<area shape="rect" id="Node000004" href="$namespacepyc.html#ab174cc51f6efef06bdb0ba47ec3fe3bf" title=" " alt="" coords="498,5,622,31"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="437,15,484,15,484,21,437,21"/>
+<area shape="rect" id="Node000006" href="$typecasting_8cxx.html#af402b36c82dfb4b1a34d90e26494da67" title=" " alt="" coords="512,205,608,231"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="413,215,499,215,499,221,413,221"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="400,228,491,249,490,254,399,233"/>
+<area shape="rect" id="Node000008" href="$vector__cast_8h.html#adc5ffd895fb49094059fd9dc0af67de9" title=" " alt="" coords="673,255,784,280"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="626,265,660,265,660,270,626,270"/>
+<area shape="poly" id="edge10_Node000009_Node000002" title=" " alt="" coords="398,104,499,80,501,85,399,109"/>
+<area shape="rect" id="Node000010" href="$namespacetransform__.html#a4573dda96168ebbd38a408e64cc3d5ff" title="Computes the x&#45;component of momentum (Px)." alt="" coords="501,107,619,132"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="447,117,487,117,487,122,447,122"/>
+<area shape="poly" id="edge13_Node000011_Node000002" title=" " alt="" coords="416,153,445,141,460,130,469,118,478,105,493,92,505,85,508,89,496,96,482,109,473,121,464,133,448,146,418,158"/>
+<area shape="rect" id="Node000012" href="$namespacetransform__.html#a51363ab29a6390a86a8ea75573a7a196" title="Computes the y&#45;component of momentum (Py)." alt="" coords="501,156,619,181"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="447,166,487,166,487,171,447,171"/>
+<area shape="poly" id="edge17_Node000013_Node000013" title=" " alt="" coords="308,332,300,322,304,312,319,306,343,304,373,308,385,317,382,321,371,313,343,309,320,311,308,316,306,322,312,329"/>
+</map>

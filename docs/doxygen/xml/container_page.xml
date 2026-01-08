@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="container_page" kind="page">
+    <compoundname>container_page</compoundname>
+    <title>Container Reference</title>
+    <briefdescription>
+<para>Documentation for the container class. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="container_page_1container_intro">
+<title>Introduction</title>
+<para>The <ref refid="classcontainer" kindref="compound">container</ref> class manages collections of events, graphs, and selections associated with a single input file or sample.</para>
+</sect1>
+<sect1 id="container_page_1container_structure">
+<title>Structure</title>
+<para>Each container holds:</para>
+<para><itemizedlist>
+<listitem><para><bold>Metadata</bold>: Sample information (cross-section, etc.)</para>
+</listitem><listitem><para><bold>Events</bold>: Processed <ref refid="classevent__template" kindref="compound">event_template</ref> instances</para>
+</listitem><listitem><para><bold>Graphs</bold>: Constructed <ref refid="classgraph__template" kindref="compound">graph_template</ref> instances</para>
+</listitem><listitem><para><bold>Selections</bold>: Applied <ref refid="classselection__template" kindref="compound">selection_template</ref> results</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="container_page_1container_entry">
+<title>Entry Structure</title>
+<para>The <computeroutput><ref refid="structentry__t" kindref="compound">entry_t</ref></computeroutput> structure groups related objects:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="structentry__t" kindref="compound">entry_t</ref><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/><ref refid="structentry__t_1a18b538911b3605d930eae31cc72487cb" kindref="member">hash</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Event<sp/>hash</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;graph_t*&gt;<sp/><ref refid="structentry__t_1a45608e1c64eb289c8a31038f2542bfa1" kindref="member">m_data</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Graph<sp/>data</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;graph_template*&gt;<sp/><ref refid="structentry__t_1aea3e204d6a88be5bd693df01d2f175dd" kindref="member">m_graph</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Graph<sp/>templates</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;event_template*&gt;<sp/><ref refid="structentry__t_1a040f8566aed6af378fc855bfcff690a7" kindref="member">m_event</ref>;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Events</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;selection_template*&gt;<sp/><ref refid="structentry__t_1a347cc881994371e2ae5f5a61dcccde3c" kindref="member">m_selection</ref>;<sp/></highlight><highlight class="comment">//<sp/>Selections</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="container_page_1container_methods">
+<title>Methods</title>
+<para><table rows="6" cols="2"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_event_template()</computeroutput>   </para>
+</entry><entry thead="no"><para>Register event template    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_graph_template()</computeroutput>   </para>
+</entry><entry thead="no"><para>Register graph template    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_selection_template()</computeroutput>   </para>
+</entry><entry thead="no"><para>Register selection    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>compile()</computeroutput>   </para>
+</entry><entry thead="no"><para>Process all entries    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>populate_dataloader()</computeroutput>   </para>
+</entry><entry thead="no"><para>Transfer graphs to dataloader   </para>
+</entry></row>
+</table>
+</para>
+<para><simplesect kind="see"><para><ref refid="classsampletracer" kindref="compound">sampletracer</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="structentry__t" kindref="compound">entry_t</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/generators.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,7 @@
+<map id="tools::ls" name="tools::ls">
+<area shape="rect" id="Node000001" title="Lists files in a directory, optionally filtered by extension." alt="" coords="5,31,79,56"/>
+<area shape="rect" id="Node000002" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="127,5,255,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,35,112,29,113,34,79,40"/>
+<area shape="rect" id="Node000003" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="145,55,236,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="79,47,132,55,131,60,78,52"/>
+</map>

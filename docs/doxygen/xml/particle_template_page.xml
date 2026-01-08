@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="particle_template_page" kind="page">
+    <compoundname>particle_template_page</compoundname>
+    <title>Particle Template Guide</title>
+    <briefdescription>
+<para>Detailed guide for using and extending <ref refid="classparticle__template" kindref="compound">particle_template</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="particle_template_page_1particle_template_intro">
+<title>Introduction</title>
+<para>The <ref refid="classparticle__template" kindref="compound">particle_template</ref> class represents physics particles (objects) within events. It provides the base interface for particle properties and operations.</para>
+</sect1>
+<sect1 id="particle_template_page_1particle_template_properties">
+<title>Standard Properties</title>
+<para>Particles typically have:</para>
+<para><itemizedlist>
+<listitem><para>Kinematic properties (pT, eta, phi, E, m)</para>
+</listitem><listitem><para>Identification (type, charge)</para>
+</listitem><listitem><para>Quality flags</para>
+</listitem><listitem><para>Truth information</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="particle_template_page_1particle_template_example">
+<title>Example</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">class<sp/></highlight><highlight class="normal">Electron<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>isolation;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>passID;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>truthType;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Electron()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Initialize<sp/>properties</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>Electron*<sp/>create()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Electron();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="particle_template_page_1particle_template_operations">
+<title>Operations</title>
+<para>Common particle operations:</para>
+<para><itemizedlist>
+<listitem><para>Four-vector arithmetic</para>
+</listitem><listitem><para>DeltaR calculations</para>
+</listitem><listitem><para>Invariant mass computation </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/templates.dox"/>
+  </compounddef>
+</doxygen>

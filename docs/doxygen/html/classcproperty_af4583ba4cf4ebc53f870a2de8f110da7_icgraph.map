@@ -1,0 +1,37 @@
+<map id="cproperty::set_setter" name="cproperty::set_setter">
+<area shape="rect" id="Node000001" title="Sets the setter callback function." alt="" coords="692,205,848,230"/>
+<area shape="rect" id="Node000002" href="$classevent__template.html#a4fc169ae8c1412e8fba67ef35c9bb01a" title="Default constructor for event_template." alt="" coords="469,5,639,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="753,194,709,127,678,91,642,59,622,48,625,43,646,55,682,87,714,124,758,191"/>
+<area shape="rect" id="Node000004" href="$classgraph__template.html#ad496a2818827b70a95f491889b71663a" title="Default constructor." alt="" coords="469,69,639,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="743,197,698,160,643,124,617,112,620,107,645,119,701,156,746,193"/>
+<area shape="rect" id="Node000007" href="$classmetric__template.html#a4f076b39d712cc1ed944d25328bcc271" title=" " alt="" coords="464,133,644,173"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="712,203,622,176,623,171,714,198"/>
+<area shape="rect" id="Node000011" href="$classmodel__template.html#af47db8a6a8514fda6e3b714813c07f6d" title="Constructor for the model_template class." alt="" coords="465,197,643,237"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="678,220,643,220,643,215,678,215"/>
+<area shape="rect" id="Node000012" href="$classparticle__template.html#ab527ed22f6d67969247a0be9dda0165f" title="Default constructor." alt="" coords="481,261,627,301"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="714,237,623,264,622,259,712,232"/>
+<area shape="rect" id="Node000015" href="$classselection__template.html#a4562a7ab32d93b5f2ca8a232a244041c" title="Default constructor." alt="" coords="477,325,631,365"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="746,242,701,279,645,316,620,328,617,323,643,311,698,275,743,238"/>
+<area shape="rect" id="Node000018" href="$structoptimizer__params__t.html#a0fb4c5916140e25724ec9e083c60a439" title="Initializes property callbacks." alt="" coords="478,389,630,429"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="758,243,714,310,682,347,646,379,625,392,622,387,642,375,678,344,709,307,753,240"/>
+<area shape="rect" id="Node000003" href="$classevent__template.html#a683c5ec2ccfa48483996ba3128b6a07a" title="Creates a new event template instance." alt="" coords="245,13,413,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,28,414,28,414,23,455,23"/>
+<area shape="rect" id="Node000005" href="$classgraph__template.html#a010ead65c4f69b55b480f425e4f676e6" title="Creates a clone of this graph template." alt="" coords="245,77,413,102"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="455,92,414,92,414,87,455,87"/>
+<area shape="rect" id="Node000006" href="$classgraph__template.html#a9b26bf6100bf257849c43563d1b1bd70" title=" " alt="" coords="17,77,183,102"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="231,92,183,92,183,87,231,87"/>
+<area shape="rect" id="Node000008" href="$classmetric__template.html#ad4020c5c29a7944e9cadd244fd11e952" title=" " alt="" coords="243,141,416,166"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="450,156,416,156,416,151,450,151"/>
+<area shape="rect" id="Node000009" href="$classmetric__template.html#a6df640366841f67134f080372ee9a0c5" title=" " alt="" coords="13,134,187,159"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="229,153,187,152,187,147,229,148"/>
+<area shape="rect" id="Node000010" href="$classmetric__template.html#a422951eb9279ed05c885795ebeed0e5b" title=" " alt="" coords="5,183,195,209"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="248,171,169,186,168,181,247,166"/>
+<area shape="rect" id="Node000013" href="$classparticle__template.html#adf7b55df06b7621b0a6bc509f74d22ff" title="Serializes particle data for storage." alt="" coords="257,197,402,237"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="469,260,399,240,401,235,470,255"/>
+<area shape="rect" id="Node000014" href="$classparticle__template.html#a6c492ed991c27a61acad61064fa89b3c" title="Creates a clone of this particle." alt="" coords="257,261,402,301"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="467,284,402,284,402,279,467,279"/>
+<area shape="rect" id="Node000016" href="$classselection__template.html#a094ce1eb2b6463f88a8ad5f7dfd8e4b6" title="Creates a clone of this selection." alt="" coords="256,325,403,365"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="463,348,403,348,403,343,463,343"/>
+<area shape="rect" id="Node000017" href="$classselection__template.html#ae24cee9f302d7509a7009daea0bf0616" title="Builds the selection from an event." alt="" coords="27,325,173,365"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="242,348,173,348,173,343,242,343"/>
+</map>

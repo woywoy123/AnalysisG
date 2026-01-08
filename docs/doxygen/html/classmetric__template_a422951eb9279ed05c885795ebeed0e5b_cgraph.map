@@ -1,0 +1,52 @@
+<map id="metric_template::execute" name="metric_template::execute">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,604,195,629"/>
+<area shape="rect" id="Node000002" href="$classmetric__template.html#ad4020c5c29a7944e9cadd244fd11e952" title=" " alt="" coords="245,393,419,419"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,602,305,426,308,430,117,606"/>
+<area shape="rect" id="Node000007" href="$classmetric__template.html#abdaf01c257c4d00b3861432f34d10939" title=" " alt="" coords="949,419,1111,444"/>
+<area shape="poly" id="edge27_Node000001_Node000007" title=" " alt="" coords="193,601,242,595,388,588,575,582,671,577,760,569,838,556,899,538,932,521,961,498,1008,453,1011,456,965,502,935,525,901,543,839,561,761,574,671,582,575,587,388,593,243,601,193,607"/>
+<area shape="rect" id="Node000017" href="$classmetric__template.html#a335a5dd4a86a24fd17e981a633cd4df3" title=" " alt="" coords="948,604,1112,629"/>
+<area shape="poly" id="edge28_Node000001_Node000017" title=" " alt="" coords="195,614,934,614,934,619,195,619"/>
+<area shape="rect" id="Node000018" href="$classmetric__template.html#afa5cc34040676184af823bca74f316f8" title=" " alt="" coords="699,655,898,680"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="190,627,243,633,480,650,686,661,685,666,479,656,242,638,190,632"/>
+<area shape="rect" id="Node000020" href="$classtools.html#aed9f3247b474a8fb1840860d51cde7ca" title="Creates a directory path, including parent directories if needed." alt="" coords="490,112,629,137"/>
+<area shape="poly" id="edge23_Node000001_Node000020" title=" " alt="" coords="105,603,154,506,194,442,241,380,314,305,394,238,468,182,525,143,528,147,471,186,397,242,318,309,245,384,198,445,159,509,109,605"/>
+<area shape="rect" id="Node000021" href="$classmetric__template.html#a7c79f8e90e0acfe7797ce8a6cc778f63" title=" " alt="" coords="243,705,421,745"/>
+<area shape="poly" id="edge25_Node000001_Node000021" title=" " alt="" coords="128,627,244,684,272,696,270,701,242,688,126,632"/>
+<area shape="rect" id="Node000022" href="$classmetric__template.html#a0d9eaa5a83704589041d08b921c8d680" title=" " alt="" coords="243,769,421,809"/>
+<area shape="poly" id="edge26_Node000001_Node000022" title=" " alt="" coords="113,628,165,688,202,723,244,754,254,760,252,765,241,759,199,727,161,691,109,631"/>
+<area shape="rect" id="Node000003" href="$classmetric__template.html#a4f076b39d712cc1ed944d25328bcc271" title=" " alt="" coords="469,305,649,345"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="368,391,489,347,491,352,369,396"/>
+<area shape="rect" id="Node000004" href="$classmetric__template.html#a0c0752bec56d2ed585edb6292f77487f" title=" " alt="" coords="697,161,900,187"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="575,303,625,250,659,221,696,197,714,189,716,194,699,202,662,225,629,254,579,306"/>
+<area shape="rect" id="Node000005" href="$classmetric__template.html#a8dd368a685f0ab138ae020ed9ef1b214" title=" " alt="" coords="719,211,878,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="601,302,696,261,717,253,719,258,698,266,603,307"/>
+<area shape="rect" id="Node000006" href="$classmetric__template.html#a955eb7a68c413fdcff1d6c5bdba4c5ac" title=" " alt="" coords="719,275,878,315"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="649,311,706,304,706,309,650,316"/>
+<area shape="rect" id="Node000008" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="720,340,877,365"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="650,333,707,339,706,345,649,338"/>
+<area shape="rect" id="Node000009" href="$classmetric__template.html#a85d83f331257a2bcbaca37f1eb4b5d5c" title=" " alt="" coords="697,389,900,415"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="608,342,698,375,725,383,724,388,697,381,607,347"/>
+<area shape="rect" id="Node000010" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="719,439,878,464"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="583,343,634,385,665,406,698,425,716,432,714,437,696,430,662,411,630,389,580,347"/>
+<area shape="rect" id="Node000011" href="$classmetric__template.html#ad34828d0d75d5b0a656ef881620fbc7c" title=" " alt="" coords="719,47,878,87"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="565,304,582,261,609,205,647,147,670,121,696,97,706,90,709,95,699,101,674,124,651,151,614,208,587,263,570,305"/>
+<area shape="rect" id="Node000015" href="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7" title="Sets the setter callback function." alt="" coords="721,112,877,137"/>
+<area shape="poly" id="edge15_Node000003_Node000015" title=" " alt="" coords="568,303,587,268,616,226,652,183,696,146,706,140,709,145,699,151,656,187,620,229,592,271,573,305"/>
+<area shape="rect" id="Node000016" href="$classmetric__template.html#a5209be08253548a7a56bd2f08db31a8c" title=" " alt="" coords="719,489,878,529"/>
+<area shape="poly" id="edge16_Node000003_Node000016" title=" " alt="" coords="576,343,625,408,660,444,699,474,709,481,707,485,696,479,656,448,621,411,572,347"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="872,313,901,326,961,366,1008,407,1004,411,957,371,899,331,870,318"/>
+<area shape="poly" id="edge11_Node000011_Node000007" title=" " alt="" coords="880,82,902,97,933,133,959,173,980,216,997,260,1019,342,1029,405,1023,405,1013,344,992,262,975,218,955,176,929,136,898,101,877,87"/>
+<area shape="rect" id="Node000012" href="$classtools.html#ad7229c72cee65da3605c4be82f9b42d4" title="Checks if a string contains a specific substring." alt="" coords="965,104,1095,129"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="879,82,957,99,956,104,877,87"/>
+<area shape="rect" id="Node000013" href="$classtools.html#a47d3d261edcb898daab56721e18d1e67" title="Checks if a path refers to an existing file." alt="" coords="980,55,1080,80"/>
+<area shape="poly" id="edge13_Node000011_Node000013" title=" " alt="" coords="878,65,967,65,967,70,878,70"/>
+<area shape="rect" id="Node000014" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="985,5,1075,31"/>
+<area shape="poly" id="edge14_Node000011_Node000014" title=" " alt="" coords="877,48,970,28,972,33,879,53"/>
+<area shape="poly" id="edge18_Node000016_Node000014" title=" " alt="" coords="877,492,898,475,917,447,930,420,937,393,939,366,934,313,921,259,908,206,903,152,905,124,913,96,926,68,946,40,970,24,973,28,950,44,931,71,918,98,910,125,908,152,913,205,926,258,939,312,945,366,942,394,935,422,922,450,902,478,880,496"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="844,526,990,596,988,600,841,531"/>
+<area shape="poly" id="edge20_Node000018_Node000007" title=" " alt="" coords="816,652,855,622,898,583,961,514,1009,453,1013,457,965,517,902,587,858,626,819,657"/>
+<area shape="poly" id="edge22_Node000018_Node000017" title=" " alt="" coords="857,652,957,630,959,635,858,657"/>
+<area shape="rect" id="Node000019" href="$metric_2cxx_2base_8cxx.html#a9d5b281373d6c58d7eca2aec10ca074c" title=" " alt="" coords="965,655,1095,680"/>
+<area shape="poly" id="edge21_Node000018_Node000019" title=" " alt="" coords="898,665,950,665,950,670,898,670"/>
+<area shape="poly" id="edge24_Node000020_Node000014" title=" " alt="" coords="573,110,624,70,659,49,696,33,769,16,843,8,913,7,971,9,971,15,913,12,843,13,770,21,698,38,661,54,627,74,576,114"/>
+</map>

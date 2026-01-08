@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__graph__module" kind="group">
+    <compoundname>graph_module</compoundname>
+    <title>Graph Module</title>
+    <briefdescription>
+<para><ref refid="classGraph" kindref="compound">Graph</ref> construction and manipulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__graph__module_1graph_overview">
+<title>Overview</title>
+<para>The <ref refid="classGraph" kindref="compound">Graph</ref> module provides the <ref refid="classgraph__template" kindref="compound">graph_template</ref> class for constructing graph representations from physics events.</para>
+</sect1>
+<sect1 id="group__graph__module_1graph_construction">
+<title>Graph Construction</title>
+<para>To create a graph:</para>
+<para><orderedlist>
+<listitem><para>Subclass <ref refid="classgraph__template" kindref="compound">graph_template</ref></para>
+</listitem><listitem><para>In <computeroutput>CompileEvent()</computeroutput>, define which particles become nodes</para>
+</listitem><listitem><para>Define the edge topology using <computeroutput>define_topology()</computeroutput></para>
+</listitem><listitem><para>Add features using <computeroutput>add_node_data_feature()</computeroutput>, <computeroutput>add_edge_data_feature()</computeroutput>, etc.</para>
+</listitem></orderedlist>
+</para>
+</sect1>
+<sect1 id="group__graph__module_1graph_features_mod">
+<title>Feature Types</title>
+<para>The graph template supports:</para>
+<para><itemizedlist>
+<listitem><para><bold><ref refid="classNode" kindref="compound">Node</ref> Data Features</bold> (D-*): Input features for nodes</para>
+</listitem><listitem><para><bold><ref refid="classNode" kindref="compound">Node</ref> Truth Features</bold> (T-*): Target labels for nodes</para>
+</listitem><listitem><para><bold><ref refid="classEdge" kindref="compound">Edge</ref> Data Features</bold> (D-*): Input features for edges</para>
+</listitem><listitem><para><bold><ref refid="classEdge" kindref="compound">Edge</ref> Truth Features</bold> (T-*): Target labels for edges</para>
+</listitem><listitem><para><bold><ref refid="classGraph" kindref="compound">Graph</ref> Data Features</bold> (D-*): Input features for entire graph</para>
+</listitem><listitem><para><bold><ref refid="classGraph" kindref="compound">Graph</ref> Truth Features</bold> (T-*): Target labels for graph</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classgraph__template" kindref="compound">graph_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="structgraph__t" kindref="compound">graph_t</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,18 @@
+<map id="read" name="read">
+<area shape="rect" id="Node000001" title=" " alt="" coords="631,63,681,88"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="437,5,582,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="617,61,582,46,548,33,550,28,584,41,619,56"/>
+<area shape="rect" id="Node000004" href="$classdataloader.html#a5fddffa25c532953896e2d1646ca1dc4" title=" " alt="" coords="436,55,583,95"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="617,78,583,78,583,73,617,73"/>
+<area shape="rect" id="Node000005" href="$classdataloader.html#a52b546c96dec81d3860fb7e6268b097a" title=" " alt="" coords="436,119,583,159"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="619,94,557,122,555,117,617,89"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="237,5,351,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="423,30,351,29,351,23,423,24"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="365,7,437,7,437,12,365,12"/>
+<area shape="rect" id="Node000006" href="$classdataloader.html#a04c94d9be735c32b80b6599c6bd993b4" title=" " alt="" coords="200,97,388,123"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="422,130,387,125,388,120,423,125"/>
+<area shape="rect" id="Node000007" href="$classdataloader.html#aed6ec872879a44ecfa9ae1c2188690a8" title=" " alt="" coords="221,147,367,187"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="422,153,368,160,367,155,421,148"/>
+<area shape="rect" id="Node000008" href="$classdataloader.html#ae3bba702555507d8b6e5567c34d19142" title=" " alt="" coords="5,147,152,187"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="207,170,152,170,152,165,207,165"/>
+</map>

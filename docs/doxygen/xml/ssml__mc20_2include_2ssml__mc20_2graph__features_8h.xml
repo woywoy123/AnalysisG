@@ -1,0 +1,354 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h" kind="file" language="C++">
+    <compoundname>ssml_mc20/include/ssml_mc20/graph_features.h</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ac7093b73206ca32d125fb44d4d46f255" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void signal_event</definition>
+        <argsstring>(bool *o, ssml_mc20 *event)</argsstring>
+        <name>signal_event</name>
+        <param>
+          <type>bool *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="11" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="11" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1acdbb020ffd6dbd363e6100b37898fc10" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_tops</definition>
+        <argsstring>(int *o, ssml_mc20 *event)</argsstring>
+        <name>num_tops</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="23" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="23" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1af9ea6c08be874ee2d3ea9e637dc9bfe7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_neutrino</definition>
+        <argsstring>(int *o, ssml_mc20 *event)</argsstring>
+        <name>num_neutrino</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="28" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="28" bodyend="36"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a577fe5f279f4aaab0261a9a099ec85a5" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_lepton</definition>
+        <argsstring>(int *o, ssml_mc20 *event)</argsstring>
+        <name>num_lepton</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="38" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="38" bodyend="47"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ac6c1e5ff4cf959a9b47ddba1a5b6a7f7" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void missing_et</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>missing_et</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="50" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="50" bodyend="50"/>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a4c4e77f80fe73e4d7bd3731cd593f623" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void missing_phi</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>missing_phi</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="51" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="51" bodyend="51"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7">phi</references>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ace52376685672f8444d6f816d7252b82" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_children_leps</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>num_children_leps</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="53" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="53" bodyend="60"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a9a8a6c2ce8e75007f7143e673cf93ab2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_leps</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>num_leps</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="62" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="62" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a17e0f4b9f9352a11df8f3920b9d9108d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_quark</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>num_quark</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="66" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="66" bodyend="73"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a72c830e456ebc99d0068560eb18781c6" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void num_jets</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>num_jets</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="75" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="75" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1aff42e082512c4735b81d3e16a45963e3" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void event_number</definition>
+        <argsstring>(long *o, ssml_mc20 *event)</argsstring>
+        <name>event_number</name>
+        <param>
+          <type>long *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="77" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="77" bodyend="77"/>
+      </memberdef>
+      <memberdef kind="function" id="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a4810275ba8ba1f1ebad1b239b7267e46" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void event_weight</definition>
+        <argsstring>(double *o, ssml_mc20 *event)</argsstring>
+        <name>event_weight</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> *</type>
+          <declname>event</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" line="78" column="13" bodyfile="graphs/ssml_mc20/include/ssml_mc20/graph_features.h" bodystart="78" bodyend="78"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f">weight</references>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="classGraph" kindref="compound">Graph</ref> feature definitions for <ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> graphs. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file contains static functions to compute various graph features for the <ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref> graphs. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>GRAPH_FEATURES_SSML_MC20_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>GRAPH_FEATURES_SSML_MC20_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//<sp/>------------------<sp/>Truth<sp/>Graph<sp/>Features<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ac7093b73206ca32d125fb44d4d46f255" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ac7093b73206ca32d125fb44d4d46f255" kindref="member">signal_event</ref>(</highlight><highlight class="keywordtype">bool</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<ref refid="classevent" kindref="compound">event</ref><sp/>-&gt;<sp/>Tops.size()<sp/>!=<sp/>4){*o<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>t<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Tops;</highlight></codeline>
+<codeline lineno="14"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>t.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtop" kindref="compound">top</ref>*<sp/>t_<sp/>=<sp/>(<ref refid="classtop" kindref="compound">top</ref>*)t[x];<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!t_<sp/>-&gt;<sp/>from_res){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="21"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight></codeline>
+<codeline lineno="23" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1acdbb020ffd6dbd363e6100b37898fc10" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1acdbb020ffd6dbd363e6100b37898fc10" kindref="member">num_tops</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Tops.size();</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(*o<sp/>&gt;<sp/>4){*o<sp/>=<sp/>4;}</highlight></codeline>
+<codeline lineno="26"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1af9ea6c08be874ee2d3ea9e637dc9bfe7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1af9ea6c08be874ee2d3ea9e637dc9bfe7" kindref="member">num_neutrino</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>neutrinos<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>TruthChildren;<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>ch.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>neutrinos++;<sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>neutrinos;<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a577fe5f279f4aaab0261a9a099ec85a5" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a577fe5f279f4aaab0261a9a099ec85a5" kindref="member">num_lepton</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>leptons<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>TruthChildren;<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>ch.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>leptons++;<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>leptons;<sp/></highlight></codeline>
+<codeline lineno="47"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="comment">//<sp/>---------------------<sp/>Graph<sp/>Observables<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ac6c1e5ff4cf959a9b47ddba1a5b6a7f7" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ac6c1e5ff4cf959a9b47ddba1a5b6a7f7" kindref="member">missing_et</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classmet" kindref="compound">met</ref>;};<sp/></highlight></codeline>
+<codeline lineno="51" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a4c4e77f80fe73e4d7bd3731cd593f623" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a4c4e77f80fe73e4d7bd3731cd593f623" kindref="member">missing_phi</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>;};<sp/></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ace52376685672f8444d6f816d7252b82" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1ace52376685672f8444d6f816d7252b82" kindref="member">num_children_leps</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>TruthChildren;<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>ch.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref><sp/>||<sp/>!ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(*o)+=1;<sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="60"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a9a8a6c2ce8e75007f7143e673cf93ab2" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a9a8a6c2ce8e75007f7143e673cf93ab2" kindref="member">num_leps</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>int(<ref refid="classevent" kindref="compound">event</ref><sp/>-&gt;<sp/>Leptons.size());<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a17e0f4b9f9352a11df8f3920b9d9108d" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a17e0f4b9f9352a11df8f3920b9d9108d" kindref="member">num_quark</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;particle_template*&gt;<sp/>ch<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>TruthChildren;<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>ch.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref><sp/>||<sp/>ch[x]<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>+=<sp/>1;<sp/></highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="73"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a72c830e456ebc99d0068560eb18781c6" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a72c830e456ebc99d0068560eb18781c6" kindref="member">num_jets</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>Jets.size();}</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1aff42e082512c4735b81d3e16a45963e3" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1aff42e082512c4735b81d3e16a45963e3" kindref="member">event_number</ref>(</highlight><highlight class="keywordtype">long</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/>eventNumber;}</highlight></codeline>
+<codeline lineno="78" refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a4810275ba8ba1f1ebad1b239b7267e46" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="ssml__mc20_2include_2ssml__mc20_2graph__features_8h_1a4810275ba8ba1f1ebad1b239b7267e46" kindref="member">event_weight</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref>*<sp/><ref refid="classevent" kindref="compound">event</ref>){*o<sp/>=<sp/></highlight><highlight class="keyword">event</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a7edabf994b76a00cbc60c95af337db8f" kindref="member">weight</ref>;}</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="graphs/ssml_mc20/include/ssml_mc20/graph_features.h"/>
+  </compounddef>
+</doxygen>

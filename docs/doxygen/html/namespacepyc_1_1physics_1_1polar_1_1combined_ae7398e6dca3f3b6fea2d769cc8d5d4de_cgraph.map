@@ -1,0 +1,8 @@
+<map id="pyc::physics::polar::combined::DeltaR" name="pyc::physics::polar::combined::DeltaR">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,152,75"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="219,5,312,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,38,205,27,206,33,153,43"/>
+<area shape="rect" id="Node000003" href="$namespacephysics__.html#a5f66fa5ca30082509e1284fbcb4b25be" title="Computes the delta R separation between two particles." alt="" coords="200,79,331,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,67,187,74,186,79,152,72"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="234,80,228,70,231,60,244,54,265,52,291,56,302,64,298,68,289,60,265,57,246,59,235,64,233,70,239,77"/>
+</map>

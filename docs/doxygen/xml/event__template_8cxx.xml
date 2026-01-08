@@ -1,0 +1,409 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="event__template_8cxx" kind="file" language="C++">
+    <compoundname>event_template.cxx</compoundname>
+    <includes refid="event__template_8h" local="no">templates/event_template.h</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>event_template.cxx</label>
+        <link refid="event__template_8cxx"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>templates/event_template.h</label>
+        <link refid="event__template_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="29" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="30" relation="include">
+        </childnode>
+      </node>
+      <node id="30">
+        <label>meta/meta.h</label>
+        <link refid="meta_2include_2meta_2meta_8h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="31" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="32" relation="include">
+        </childnode>
+        <childnode refid="33" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="34" relation="include">
+        </childnode>
+      </node>
+      <node id="33">
+        <label>notification/notification.h</label>
+        <link refid="notification_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>templates/particle_template.h</label>
+        <link refid="particle__template_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="24" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="26" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="27" relation="include">
+        </childnode>
+        <childnode refid="28" relation="include">
+        </childnode>
+      </node>
+      <node id="21">
+        <label>structs/base.h</label>
+        <link refid="modules_2structs_2include_2structs_2base_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="22" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>structs/element.h</label>
+        <link refid="element_8h"/>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="22">
+        <label>structs/enums.h</label>
+        <link refid="enums_8h"/>
+      </node>
+      <node id="29">
+        <label>structs/event.h</label>
+        <link refid="modules_2structs_2include_2structs_2event_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="31">
+        <label>structs/folds.h</label>
+        <link refid="folds_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="19">
+        <label>structs/meta.h</label>
+        <link refid="structs_2include_2structs_2meta_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>structs/particles.h</label>
+        <link refid="modules_2structs_2include_2structs_2particles_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>structs/property.h</label>
+        <link refid="property_8h"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="24">
+        <label>tools/tools.h</label>
+        <link refid="tools_8h"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="25" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>tools/vector_cast.h</label>
+        <link refid="vector__cast_8h"/>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+        <childnode refid="23" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="13">
+        <label>TBranch.h</label>
+      </node>
+      <node id="11">
+        <label>TFile.h</label>
+      </node>
+      <node id="34">
+        <label>TH1F.h</label>
+      </node>
+      <node id="14">
+        <label>TLeaf.h</label>
+      </node>
+      <node id="12">
+        <label>TTree.h</label>
+      </node>
+      <node id="16">
+        <label>TTreeReader.h</label>
+      </node>
+      <node id="15">
+        <label>TTreeReaderArray.h</label>
+      </node>
+      <node id="18">
+        <label>c10/core/DeviceType.h</label>
+      </node>
+      <node id="28">
+        <label>cmath</label>
+      </node>
+      <node id="25">
+        <label>cstdint</label>
+      </node>
+      <node id="27">
+        <label>cstdlib</label>
+      </node>
+      <node id="9">
+        <label>functional</label>
+      </node>
+      <node id="20">
+        <label>iostream</label>
+      </node>
+      <node id="7">
+        <label>map</label>
+      </node>
+      <node id="32">
+        <label>rapidjson/document.h</label>
+      </node>
+      <node id="26">
+        <label>sstream</label>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+      <node id="23">
+        <label>torch/torch.h</label>
+      </node>
+      <node id="6">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <briefdescription>
+<para>Implementation of <ref refid="classevent__template" kindref="compound">event_template</ref> class methods for physics event data handling. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file implements the methods declared in the <ref refid="event__template_8h" kindref="compound">event_template.h</ref> header file. It provides functionality for managing event data, including registration and manipulation of particles, trees, branches, and leaves within the event structure. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="event__template_8h" kindref="compound">templates/event_template.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="20" refid="classevent__template_1a4fc169ae8c1412e8fba67ef35c9bb01a" refkind="member"><highlight class="normal"><ref refid="classevent__template_1a4fc169ae8c1412e8fba67ef35c9bb01a" kindref="member">event_template::event_template</ref>(){</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>trees.set_setter(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>set_trees);<sp/></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>trees.set_object(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>branches.set_setter(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>set_branches);<sp/></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>branches.set_object(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ad5292da56343fbe2016e1d7afa555448" kindref="member">leaves</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1aedd843db4af78c774316cda822821f66" kindref="member">get_leaves</ref>);<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ad5292da56343fbe2016e1d7afa555448" kindref="member">leaves</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespacename" kindref="compound">name</ref>.set_setter(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a73c3667c07093f1dabb388735370c34d" kindref="member">set_name</ref>);<sp/></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="namespacename" kindref="compound">name</ref>.set_object(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ab7ff7626a9ca8a46474f94ba8c3dc215" kindref="member">hash</ref>.<ref refid="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7" kindref="member">set_setter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9f5661b7516b43801913ab6fc897a80e" kindref="member">set_hash</ref>);<sp/></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ab7ff7626a9ca8a46474f94ba8c3dc215" kindref="member">hash</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>get_hash);<sp/></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ab7ff7626a9ca8a46474f94ba8c3dc215" kindref="member">hash</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a5ed7a0ab0b5d5d615e733c76d8e254d2" kindref="member">tree</ref>.<ref refid="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7" kindref="member">set_setter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>set_tree);<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a5ed7a0ab0b5d5d615e733c76d8e254d2" kindref="member">tree</ref>.<ref refid="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819" kindref="member">set_getter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a73a5b08c0f438f12e1c19326e863923e" kindref="member">get_tree</ref>);<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a5ed7a0ab0b5d5d615e733c76d8e254d2" kindref="member">tree</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a69d85c70e9c4486a67f148cfaadee028" kindref="member">weight</ref>.<ref refid="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7" kindref="member">set_setter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a71028d2c6f0b8eb23c84ff2fecf0132b" kindref="member">set_weight</ref>);<sp/></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a69d85c70e9c4486a67f148cfaadee028" kindref="member">weight</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ad18544f3ca9cd814e42af7d3b654b73a" kindref="member">index</ref>.<ref refid="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7" kindref="member">set_setter</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1aa5e222a8244571e0b00fccc82c09ba8f" kindref="member">set_index</ref>);<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ad18544f3ca9cd814e42af7d3b654b73a" kindref="member">index</ref>.<ref refid="classcproperty_1a41a70e8e01c9b1a20b94d2dbf1a6b214" kindref="member">set_object</ref>(</highlight><highlight class="keyword">this</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55" refid="classevent__template_1a4ca71c76eb242454443d18bae4589d61" refkind="member"><highlight class="normal"><ref refid="classevent__template_1a4ca71c76eb242454443d18bae4589d61" kindref="member">event_template::~event_template</ref>(){</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a372490cd0c53208ca871ba120da17bcd" kindref="member">filename</ref>.size()){</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>flush_particles();}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>deregister_particle(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a8db0585ee666caf67713c68e67e6de7c" kindref="member">particle_generators</ref>);<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>event_template::operator<sp/>==<sp/>(<ref refid="classevent__template" kindref="compound">event_template</ref>&amp;<sp/>p){</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1ab7ff7626a9ca8a46474f94ba8c3dc215" kindref="member">hash</ref><sp/>==<sp/>p.<ref refid="classevent__template_1ab7ff7626a9ca8a46474f94ba8c3dc215" kindref="member">hash</ref>;<sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="78" refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" kindref="member">event_template::build_mapping</ref>(std::map&lt;std::string,<sp/>data_t*&gt;*<sp/>evnt){</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link.size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>data_t*&gt;::iterator<sp/>ite;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::string&gt;::iterator<sp/>itl;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/>tr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>trees;<sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>x(0);<sp/>x<sp/>&lt;<sp/>tr.size();<sp/>++x){</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>next_[tr[x]]<sp/>=<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(ite<sp/>=<sp/>evnt<sp/>-&gt;<sp/>begin();<sp/>ite<sp/>!=<sp/>evnt<sp/>-&gt;<sp/>end();<sp/>++ite){</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>s<sp/>=<sp/>tr[x]<sp/>==<sp/>ite<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>tree_name;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!s){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itl<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a30f19b213d54e6931840b91ef1f76f66" kindref="member">m_leaves</ref>.begin();<sp/>itl<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a30f19b213d54e6931840b91ef1f76f66" kindref="member">m_leaves</ref>.end();<sp/>++itl){</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(ite<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/>leaf_name<sp/>!=<sp/>itl<sp/>-&gt;<sp/>second){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;std::string&gt;<sp/><ref refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" kindref="member">type_name</ref><sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" kindref="member">split</ref>(itl<sp/>-&gt;<sp/>first,<sp/></highlight><highlight class="stringliteral">&quot;/&quot;</highlight><highlight class="normal">);<sp/></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link[tr[x]][<ref refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" kindref="member">type_name</ref>[0]].tree<sp/>=<sp/>tr[x];<sp/></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link[tr[x]][<ref refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" kindref="member">type_name</ref>[0]].handle[<ref refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" kindref="member">type_name</ref>[1]]<sp/>=<sp/>ite<sp/>-&gt;<sp/>second;<sp/></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>.clear();<sp/></highlight></codeline>
+<codeline lineno="100"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal">std::map&lt;std::string,<sp/>event_template*&gt;<sp/>event_template::build_event(std::map&lt;std::string,<sp/>data_t*&gt;*<sp/>evnt){</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" kindref="member">build_mapping</ref>(evnt);<sp/></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>event_template*&gt;<sp/>output<sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>element_t&gt;&gt;::iterator<sp/>itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link.begin();</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itr<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>next_[itr<sp/>-&gt;<sp/>first]){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/>ev<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a683c5ec2ccfa48483996ba3128b6a07a" kindref="member">clone</ref>();<sp/></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1a5ed7a0ab0b5d5d615e733c76d8e254d2" kindref="member">tree</ref><sp/>=<sp/>itr<sp/>-&gt;<sp/>first;<sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>element_t&gt;::iterator<sp/>itrx<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link[itr<sp/>-&gt;<sp/>first].begin();<sp/></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itrx<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link[itr<sp/>-&gt;<sp/>first].end();<sp/>++itrx){</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!itrx<sp/>-&gt;<sp/>second.boundary()){</highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>ev;<sp/>ev<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight><highlight class="keywordflow">break</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>itrx<sp/>-&gt;<sp/>second.set_meta();<sp/></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(itrx<sp/>-&gt;<sp/>first<sp/>==<sp/>std::string(ev<sp/>-&gt;<sp/><ref refid="namespacename" kindref="compound">name</ref>)){</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1a9fc686c62ad905b01dcd674498030b95" kindref="member">build</ref>(&amp;itrx<sp/>-&gt;<sp/>second);</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1ad18544f3ca9cd814e42af7d3b654b73a" kindref="member">index</ref><sp/>=<sp/>itrx<sp/>-&gt;<sp/>second.event_index;<sp/></highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1ab7ff7626a9ca8a46474f94ba8c3dc215" kindref="member">hash</ref><sp/>=<sp/>itrx<sp/>-&gt;<sp/>second.filename;<sp/></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1a372490cd0c53208ca871ba120da17bcd" kindref="member">filename</ref><sp/>=<sp/>itrx<sp/>-&gt;<sp/>second.<ref refid="classevent__template_1a372490cd0c53208ca871ba120da17bcd" kindref="member">filename</ref>;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>builder<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;();<sp/></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1a8db0585ee666caf67713c68e67e6de7c" kindref="member">particle_generators</ref>[itrx<sp/>-&gt;<sp/>first]<sp/>-&gt;<sp/><ref refid="classevent__template_1a9fc686c62ad905b01dcd674498030b95" kindref="member">build</ref>(builder,<sp/>&amp;itrx<sp/>-&gt;<sp/>second);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>m_link<sp/>=<sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>[itrx<sp/>-&gt;<sp/>first];<sp/></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>m_link<sp/>-&gt;<sp/>insert(builder<sp/>-&gt;<sp/>begin(),<sp/>builder<sp/>-&gt;<sp/>end());<sp/></highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>[itrx<sp/>-&gt;<sp/>first]<sp/>=<sp/>builder;<sp/></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>next_[itr<sp/>-&gt;<sp/>first]<sp/>*=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>tree_variable_link[itr<sp/>-&gt;<sp/>first][itrx<sp/>-&gt;<sp/>first].next();<sp/></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!ev){</highlight><highlight class="keywordflow">continue</highlight><highlight class="normal">;}<sp/></highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ev<sp/>-&gt;<sp/>flush_leaf_string();<sp/></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output[itr<sp/>-&gt;<sp/>first]<sp/>=<sp/>ev;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>output;<sp/></highlight></codeline>
+<codeline lineno="145"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="154" refid="classevent__template_1a708aa28cc12580cabcad762b21bc7ffb" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classevent__template_1a9fc686c62ad905b01dcd674498030b95" kindref="member">event_template::build</ref>(<ref refid="structelement__t" kindref="compound">element_t</ref>*){</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="156"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>event_template::flush_leaf_string(){</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a2215cfadb8c9c83e7568b56083fb7517" kindref="member">m_trees</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a8426b18536ed0a12ef51ac13e3c2e306" kindref="member">m_branches</ref><sp/>=<sp/>{};</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a30f19b213d54e6931840b91ef1f76f66" kindref="member">m_leaves</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>particle_template*&gt;*&gt;::iterator<sp/>itr;<sp/></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>.begin();<sp/>itr<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>pmap<sp/>=<sp/>itr<sp/>-&gt;<sp/>second;<sp/></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>particle_template*&gt;::iterator<sp/>itx<sp/>=<sp/>pmap<sp/>-&gt;<sp/>begin();</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(;<sp/>itx<sp/>!=<sp/>pmap<sp/>-&gt;<sp/>end();<sp/>++itx){itx<sp/>-&gt;<sp/>second<sp/>-&gt;<sp/><ref refid="classevent__template_1ad5292da56343fbe2016e1d7afa555448" kindref="member">leaves</ref><sp/>=<sp/>{};}</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>deregister_particle(&amp;</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a8db0585ee666caf67713c68e67e6de7c" kindref="member">particle_generators</ref>);<sp/></highlight></codeline>
+<codeline lineno="177"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>event_template::flush_particles(){</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>next_.size()){</highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;}</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>particle_template*&gt;*&gt;::iterator<sp/>itr;<sp/></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(itr<sp/>=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>.begin();<sp/>itr<sp/>!=<sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref>.end();<sp/>++itr){</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/>deregister_particle(itr<sp/>-&gt;<sp/>second);<sp/></highlight><highlight class="keyword">delete</highlight><highlight class="normal"><sp/>itr<sp/>-&gt;<sp/>second;<sp/><sp/>itr<sp/>-&gt;<sp/>second<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">this</highlight><highlight class="normal"><sp/>-&gt;<sp/><ref refid="classevent__template_1a9d8bebb18b72e8551cc06a0e3a54f65b" kindref="member">particle_link</ref><sp/>=<sp/>{};<sp/></highlight></codeline>
+<codeline lineno="192"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>event_template::CompileEvent(){</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal">;<sp/></highlight></codeline>
+<codeline lineno="202"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight></codeline>
+<codeline lineno="211" refid="classevent__template_1a683c5ec2ccfa48483996ba3128b6a07a" refkind="member"><highlight class="normal"><ref refid="classevent__template" kindref="compound">event_template</ref>*<sp/><ref refid="classevent__template_1a683c5ec2ccfa48483996ba3128b6a07a" kindref="member">event_template::clone</ref>(){</highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classevent__template_1a4fc169ae8c1412e8fba67ef35c9bb01a" kindref="member">event_template</ref>();<sp/></highlight></codeline>
+<codeline lineno="213"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/event/cxx/event_template.cxx"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,37 @@
+<map id="physics_::Theta" name="physics_::Theta">
+<area shape="rect" id="Node000001" title="Computes the polar angle theta." alt="" coords="996,193,1119,219"/>
+<area shape="rect" id="Node000002" href="$nusol_2tensor_2nusol_8cxx.html#a28531a30b80ecbd780392279d8a8adf3" title=" " alt="" coords="824,55,901,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1038,184,999,138,974,114,947,94,924,83,901,76,902,71,926,78,949,89,978,110,1003,134,1042,180"/>
+<area shape="rect" id="Node000014" href="$namespacepyc_1_1operators.html#a5c947d6968337f95f86e6925acc63dfa" title=" " alt="" coords="793,104,932,129"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1025,188,988,166,947,144,913,132,914,127,949,140,991,161,1028,183"/>
+<area shape="rect" id="Node000015" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#aefe1c7cb2cb523ab1118a6d1cabbfe69" title=" " alt="" coords="777,154,948,194"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="982,196,948,191,949,185,983,191"/>
+<area shape="rect" id="Node000016" href="$namespacepyc_1_1physics_1_1polar_1_1combined.html#a6169c98dd89c2571d2871582b3fb1279" title=" " alt="" coords="791,218,934,258"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="983,221,935,229,934,224,982,216"/>
+<area shape="rect" id="Node000017" href="$namespacepyc_1_1physics_1_1polar_1_1separate.html#a40b284f030bc35051fe4ceb68e0b560e" title=" " alt="" coords="791,282,934,322"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1026,229,949,272,922,284,920,280,947,268,1024,224"/>
+<area shape="rect" id="Node000018" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#a82aecb485f9b6534ebcf8921b03c1bbc" title=" " alt="" coords="777,346,948,386"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="1043,232,1005,284,979,312,950,336,929,348,926,344,946,332,975,308,1001,280,1039,228"/>
+<area shape="rect" id="Node000003" href="$nusol_2tensor_2nusol_8cxx.html#ab477f38adf15df486af1a3311204aa26" title=" " alt="" coords="647,5,701,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="810,56,701,28,702,22,811,51"/>
+<area shape="rect" id="Node000006" href="$namespacenusol__.html#a3aacd3a83799d6a470d6188008fd069a" title=" " alt="" coords="619,55,729,80"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="810,70,729,70,729,65,810,65"/>
+<area shape="rect" id="Node000007" href="$namespacenusol__.html#ac849ef3564c5ac968727dce36494fd0a" title=" " alt="" coords="620,104,728,129"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="811,83,724,107,723,101,810,78"/>
+<area shape="rect" id="Node000004" href="$namespacenusol__.html#a6f05175e14627bd3c34ffa61686b7da4" title=" " alt="" coords="459,5,550,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="633,21,550,21,550,15,633,15"/>
+<area shape="rect" id="Node000005" href="$namespacepyc_1_1nusol.html#a991cfa801400211ccf412bd1a85b7b69" title=" " alt="" coords="239,5,354,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="446,21,354,21,354,15,446,15"/>
+<area shape="rect" id="Node000008" href="$namespacepyc_1_1nusol.html#af7bb509b120cb3314695cecd70bc5c11" title=" " alt="" coords="439,79,571,104"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="606,109,570,104,571,99,607,104"/>
+<area shape="rect" id="Node000009" href="$namespacepyc_1_1nusol.html#a9650527ae538fa27121bedfb79a1fbe6" title=" " alt="" coords="439,128,571,153"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="607,129,571,134,570,129,606,124"/>
+<area shape="rect" id="Node000010" href="$namespacepyc_1_1nusol.html#aaaf252028ed63bf2d561dffcd76916e2" title=" " alt="" coords="231,79,363,104"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="437,127,350,107,352,101,438,122"/>
+<area shape="rect" id="Node000011" href="$namespacepyc_1_1nusol.html#af88804c21a54435a41be99cbc03faf30" title=" " alt="" coords="231,128,363,153"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="425,143,363,143,363,138,425,138"/>
+<area shape="rect" id="Node000012" href="$classvalidation.html#aa436b348c281a3d676910cf7b7d575eb" title=" " alt="" coords="203,177,391,203"/>
+<area shape="poly" id="edge11_Node000009_Node000012" title=" " alt="" coords="438,159,352,180,350,175,437,154"/>
+<area shape="rect" id="Node000013" href="$classvalidation.html#af388ba0e867008a75602581fdc2ed0f3" title="Alternative selection strategy method." alt="" coords="5,177,155,203"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="189,193,155,193,155,187,189,187"/>
+</map>

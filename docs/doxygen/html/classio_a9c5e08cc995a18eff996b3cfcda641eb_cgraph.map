@@ -1,0 +1,5 @@
+<map id="io::H5Read" name="io::H5Read">
+<area shape="rect" id="Node000001" title="Generic HDF5 read operation for a vector of objects." alt="" coords="5,5,99,31"/>
+<area shape="rect" id="Node000002" href="$classio.html#a1b1fcdf426ced67387cc9579f8f0f3e2" title="&lt; Private access specifier for the following members." alt="" coords="147,5,244,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,15,133,15,133,21,99,21"/>
+</map>

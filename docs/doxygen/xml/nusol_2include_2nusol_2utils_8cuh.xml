@@ -1,0 +1,368 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="nusol_2include_2nusol_2utils_8cuh" kind="file" language="C++">
+    <compoundname>nusol/include/nusol/utils.cuh</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>nusol_utils.cuh</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Provides<sp/>utility<sp/>functions<sp/>for<sp/>the<sp/>nusol<sp/>module<sp/>in<sp/>CUDA.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>CU_NUSOL_UTILS_H</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>CU_NUSOL_UTILS_H</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/atomic.cuh&gt;<sp/>///&lt;<sp/>Includes<sp/>atomic<sp/>utility<sp/>functions<sp/>for<sp/>CUDA.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Counts<sp/>the<sp/>number<sp/>of<sp/>events<sp/>and<sp/>particle<sp/>IDs<sp/>in<sp/>a<sp/>batch.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>batch<sp/>Tensor<sp/>containing<sp/>batch<sp/>indices.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pid<sp/>Tensor<sp/>containing<sp/>particle<sp/>IDs.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>num_events<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>number<sp/>of<sp/>events.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>num_pid<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>number<sp/>of<sp/>particle<sp/>IDs.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dx<sp/>The<sp/>size<sp/>of<sp/>the<sp/>batch.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_count(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>batch,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pid,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>num_events,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>num_pid,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>extern<sp/>__shared__<sp/>long<sp/>_batch_idx[];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_batch_idx[threadIdx.x]<sp/>=<sp/>batch[threadIdx.x];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_batch_idx[threadIdx.x<sp/>+<sp/><sp/><sp/>dx]<sp/>=<sp/>pid[threadIdx.x][0];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_batch_idx[threadIdx.x<sp/>+<sp/>2*dx]<sp/>=<sp/>pid[threadIdx.x][1];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>id<sp/>=<sp/>_batch_idx[threadIdx.x];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>ev<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>sx<sp/>=<sp/>-1;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>num_lep<sp/>=<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>num_bqk<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>dx;<sp/>++x){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(!(_batch_idx[x]<sp/>==<sp/>id)){continue;}<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>num_lep<sp/>+=<sp/>(_batch_idx[x<sp/>+<sp/>dx<sp/><sp/>]<sp/>==<sp/>1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>num_bqk<sp/>+=<sp/>(_batch_idx[x<sp/>+<sp/>dx*2]<sp/>==<sp/>1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sx<sp/>=<sp/>(sx<sp/>&lt;<sp/>0)<sp/>?<sp/>x<sp/>:<sp/>sx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++ev;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.x<sp/>!=<sp/>sx){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>num_events[id]<sp/>=<sp/>ev;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>num_pid[id][0]<sp/>=<sp/>num_lep;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>num_pid[id][1]<sp/>=<sp/>num_bqk;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Generates<sp/>combinations<sp/>of<sp/>leptons<sp/>and<sp/>b-quarks<sp/>for<sp/>events.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pid<sp/>Tensor<sp/>containing<sp/>particle<sp/>IDs.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>batch<sp/>Tensor<sp/>containing<sp/>batch<sp/>indices.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>num_edges<sp/>Tensor<sp/>containing<sp/>the<sp/>number<sp/>of<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>edge_idx<sp/>Tensor<sp/>containing<sp/>edge<sp/>indices.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>num_pid<sp/>Tensor<sp/>containing<sp/>the<sp/>number<sp/>of<sp/>particle<sp/>IDs.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>llbb<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>combinations<sp/>of<sp/>leptons<sp/>and<sp/>b-quarks.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>msk<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>mask<sp/>for<sp/>valid<sp/>combinations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>n_edges<sp/>The<sp/>number<sp/>of<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mx<sp/>The<sp/>maximum<sp/>number<sp/>of<sp/>combinations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_combination(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pid,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>batch,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>num_edges,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>edge_idx,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>num_pid,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>llbb,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>msk,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>n_edges,<sp/>const<sp/>unsigned<sp/>mx</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>__idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>__idx<sp/>/<sp/>mx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>src_i<sp/>=<sp/>edge_idx[0][_idx];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>dst_i<sp/>=<sp/>edge_idx[1][_idx];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>ev_dx<sp/>=<sp/>batch[src_i];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idy<sp/>=<sp/>num_edges[ev_dx]<sp/>+<sp/>__idx<sp/>%<sp/>mx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(n_edges<sp/>&lt;=<sp/>_idy){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>src_j<sp/>=<sp/>edge_idx[0][_idy];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>dst_j<sp/>=<sp/>edge_idx[1][_idy];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>ev_dy<sp/>=<sp/>batch[src_j];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(ev_dx<sp/>!=<sp/>ev_dy){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>num_l<sp/>=<sp/>num_pid[ev_dx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>long<sp/>num_b<sp/>=<sp/>num_pid[ev_dx][1];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(num_l<sp/>&gt;<sp/>2<sp/>||<sp/>num_b<sp/>&lt;<sp/>1<sp/>||<sp/>num_l<sp/>==<sp/>0){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>l_src_i<sp/>=<sp/>pid[src_i][0]<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>l_dst_i<sp/>=<sp/>pid[dst_i][0]<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>l_src_j<sp/>=<sp/>pid[src_j][0]<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>l_dst_j<sp/>=<sp/>pid[dst_j][0]<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>b_src_i<sp/>=<sp/>pid[src_i][1]<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>b_dst_i<sp/>=<sp/>pid[dst_i][1]<sp/>&gt;<sp/>0;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>b_src_j<sp/>=<sp/>pid[src_j][1]<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>b_dst_j<sp/>=<sp/>pid[dst_j][1]<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>both<sp/>source<sp/>and<sp/>dest<sp/>are<sp/>leptons<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>ll<sp/><sp/>=<sp/>(src_i<sp/>!=<sp/>src_j)*(l_src_i<sp/>*<sp/>l_src_j);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>both<sp/>source<sp/>and<sp/>dest<sp/>are<sp/>b-quarks</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>bb<sp/><sp/>=<sp/>(dst_i<sp/>!=<sp/>dst_j)*(b_dst_i<sp/>*<sp/>b_dst_j);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>source<sp/>is<sp/>lep<sp/>and<sp/>dest<sp/>is<sp/>b-quark</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>lb<sp/><sp/>=<sp/>(src_i<sp/>!=<sp/>dst_i)*(l_src_i<sp/>*<sp/>b_dst_i)*(dst_i<sp/>!=<sp/>dst_j);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>source<sp/>is<sp/>lep<sp/>and<sp/>dest<sp/>is<sp/>b-quark</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>lb_<sp/>=<sp/>(src_j<sp/>!=<sp/>dst_j)*(l_src_j<sp/>*<sp/>b_dst_j)*(src_i<sp/>!=<sp/>src_j);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>lx<sp/>=<sp/>((ll<sp/>+<sp/>bb)<sp/>==<sp/>2)<sp/>+<sp/>((lb<sp/>+<sp/>lb_)<sp/>==<sp/>num_l);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!lx){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(((dst_i<sp/>!=<sp/>dst_j)<sp/>+<sp/>(l_src_i)<sp/>+<sp/>(src_i<sp/>!=<sp/>dst_i))<sp/>*<sp/>(num_l<sp/>==<sp/>1)){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>llbb[__idx][0]<sp/>=<sp/>(l_src_i)*src_i<sp/>-<sp/>1<sp/>*<sp/>(!l_src_i);<sp/>//<sp/>l1</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>llbb[__idx][1]<sp/>=<sp/>(l_src_j)*src_j<sp/>-<sp/>1<sp/>*<sp/>(!l_src_j);<sp/>//<sp/>l2</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>llbb[__idx][2]<sp/>=<sp/>(b_dst_i)*dst_i<sp/>-<sp/>1<sp/>*<sp/>(!b_dst_i);<sp/>//<sp/>b1</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>llbb[__idx][3]<sp/>=<sp/>(b_dst_j)*dst_j<sp/>-<sp/>1<sp/>*<sp/>(!b_dst_j);<sp/>//<sp/>b2</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>llbb[__idx][4]<sp/>=<sp/>ev_dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>msk[__idx]<sp/>=<sp/>lx*num_l;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>mass<sp/>matrix<sp/>for<sp/>given<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mass_<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>mass<sp/>matrix.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mTl<sp/>Top<sp/>mass<sp/>for<sp/>leptons.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mTs<sp/>Top<sp/>mass<sp/>for<sp/>b-quarks.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mWl<sp/>W<sp/>mass<sp/>for<sp/>leptons.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mWs<sp/>W<sp/>mass<sp/>for<sp/>b-quarks.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>steps<sp/>The<sp/>number<sp/>of<sp/>steps<sp/>for<sp/>computation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_mass_matrix(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>mass_,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>mTl,<sp/>double<sp/>mTs,<sp/>double<sp/>mWl,<sp/>double<sp/>mWs,<sp/>unsigned<sp/>int<sp/>steps</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(steps<sp/>&lt;=<sp/>_idx){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>lw<sp/>=<sp/>mWl*threadIdx.y<sp/>+<sp/>mTl*(1<sp/>-<sp/>threadIdx.y);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dx<sp/>=<sp/>mWs*threadIdx.y<sp/>+<sp/>mTs*(1<sp/>-<sp/>threadIdx.y);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mass_[_idx][threadIdx.y]<sp/>=<sp/>lw<sp/>+<sp/>mass_[_idx][threadIdx.y]*dx*_idx;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Applies<sp/>perturbation<sp/>to<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>size_x<sp/>The<sp/>size<sp/>of<sp/>the<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_tw1<sp/>Tensor<sp/>containing<sp/>the<sp/>first<sp/>set<sp/>of<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_tw2<sp/>Tensor<sp/>containing<sp/>the<sp/>second<sp/>set<sp/>of<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_met<sp/>Tensor<sp/>containing<sp/>the<sp/>MET<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_res<sp/>Tensor<sp/>containing<sp/>the<sp/>result<sp/>of<sp/>the<sp/>perturbation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>perturb<sp/>The<sp/>perturbation<sp/>value.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>top_mass<sp/>The<sp/>top<sp/>quark<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>w_mass<sp/>The<sp/>W<sp/>boson<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>start<sp/>Whether<sp/>to<sp/>start<sp/>the<sp/>perturbation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_perturbation(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_tw1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_tw2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_met,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_res,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>double<sp/>perturb,<sp/>const<sp/>double<sp/>top_mass,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>double<sp/>w_mass,<sp/>const<sp/>bool<sp/>start</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_dnu_res[size_x][36][6];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_dnu_par[size_x][36][6];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/><sp/>=<sp/>threadIdx.x;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idy<sp/><sp/>=<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idz<sp/><sp/>=<sp/>threadIdx.z;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>(blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x)*36<sp/>+<sp/>idy;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>dnu_res.size({0})){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idz<sp/>&lt;<sp/>2){<sp/><sp/><sp/><sp/><sp/>_dnu_par[idx][idy][idz]<sp/>=<sp/>dnu_tw1[_idx][idz]<sp/>*<sp/>top_mass;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>if<sp/>(idz<sp/>&lt;<sp/>4){_dnu_par[idx][idy][idz]<sp/>=<sp/>dnu_tw2[_idx][idz]<sp/>*<sp/>w_mass;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>if<sp/>(idz<sp/>&lt;<sp/>6){_dnu_par[idx][idy][idz]<sp/>=<sp/>dnu_met[_idx][idz];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_dnu_res[idx][idy][idz]<sp/>=<sp/>dnu_res[_idx][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Assigns<sp/>mass<sp/>values<sp/>to<sp/>top<sp/>and<sp/>W<sp/>bosons.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mass_tw<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>mass<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mass_t<sp/>The<sp/>top<sp/>quark<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>mass_w<sp/>The<sp/>W<sp/>boson<sp/>mass.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>lenx<sp/>The<sp/>length<sp/>of<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_assign_mass(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>mass_tw,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>double<sp/>mass_t,<sp/>const<sp/>double<sp/>mass_w,<sp/>const<sp/>long<sp/>lenx</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>bool<sp/>_idy<sp/>=<sp/>threadIdx.y<sp/>&gt;<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>lenx){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>mass_tw[_idx][threadIdx.y]<sp/>=<sp/>mass_t<sp/>*<sp/>(1<sp/>-<sp/>_idy)<sp/>+<sp/>mass_w*_idy;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Perturbs<sp/>neutrino<sp/>parameters<sp/>for<sp/>optimization.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>size_x<sp/>The<sp/>size<sp/>of<sp/>the<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>nu_params<sp/>Tensor<sp/>containing<sp/>the<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_met<sp/>Tensor<sp/>containing<sp/>the<sp/>MET<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_tw1<sp/>Tensor<sp/>containing<sp/>the<sp/>first<sp/>set<sp/>of<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_tw2<sp/>Tensor<sp/>containing<sp/>the<sp/>second<sp/>set<sp/>of<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>lnx<sp/>The<sp/>length<sp/>of<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dt<sp/>The<sp/>perturbation<sp/>step<sp/>size.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>ofs<sp/>The<sp/>offset<sp/>for<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_perturb(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu_params,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_met,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_tw1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_tw2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>long<sp/>lnx,<sp/>const<sp/>double<sp/>dt,<sp/>const<sp/>unsigned<sp/>int<sp/>ofs</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_params_[size_x][6];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idy<sp/>=<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idz<sp/>=<sp/>threadIdx.z;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/><sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>_idx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idt<sp/>=<sp/>idx<sp/>*<sp/>ofs<sp/>+<sp/>_idy;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idx<sp/>&gt;=<sp/>lnx){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!_idy){_params_[_idx][_idz]<sp/>=<sp/>nu_params[idx][_idz];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dx_<sp/>=<sp/>_params_[_idx][_idz]<sp/>+<sp/>(_idy<sp/>==<sp/>_idz)<sp/>*<sp/>dt;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idz<sp/>&lt;<sp/>2){dnu_met[_idt][_idz<sp/><sp/>]<sp/>=<sp/>dx_;<sp/>return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idz<sp/>&lt;<sp/>4){dnu_tw1[_idt][_idz-2]<sp/>=<sp/>dx_;<sp/>return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idz<sp/>&lt;<sp/>6){dnu_tw2[_idt][_idz-4]<sp/>=<sp/>dx_;<sp/>return;}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>Jacobian<sp/>matrix<sp/>for<sp/>optimization.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>size_x<sp/>The<sp/>size<sp/>of<sp/>the<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>nu_params<sp/>Tensor<sp/>containing<sp/>the<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dnu_res<sp/>Tensor<sp/>containing<sp/>the<sp/>result<sp/>of<sp/>the<sp/>perturbation.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>lnx<sp/>The<sp/>length<sp/>of<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>dt<sp/>The<sp/>perturbation<sp/>step<sp/>size.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>ofs<sp/>The<sp/>offset<sp/>for<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_jacobi(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu_params,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>dnu_res,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>long<sp/>lnx,<sp/>const<sp/>double<sp/>dt,<sp/>unsigned<sp/>int<sp/>ofs</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_param_[size_x][6];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/><sp/><sp/>_Jxt_[size_x][6];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idy<sp/>=<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idp<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>_idx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/><sp/>=<sp/>_idp*ofs<sp/>+<sp/>_idy;<sp/>//<sp/>compute<sp/>the<sp/>offset<sp/>(0<sp/>-&gt;<sp/>5)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_udp<sp/>=<sp/>(_idp<sp/>+<sp/>1)*ofs-1;<sp/>//<sp/>unperturbed<sp/>index<sp/>((n+1)*6)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idx<sp/>&gt;=<sp/>lnx*ofs){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>-----<sp/>Get<sp/>the<sp/>(un)perturbed<sp/>values<sp/>-----<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>v<sp/><sp/>=<sp/>dnu_res[_udp][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>dv<sp/>=<sp/>dnu_res[idx][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_param_[_idx][_idy]<sp/>=<sp/>nu_params[_idp][_idy];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>-----<sp/>(compute<sp/>derivative)<sp/>-----<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>dv<sp/>=<sp/>(dv<sp/>-<sp/>v)<sp/>/<sp/>dt;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_Jxt_[_idx][_idy]<sp/>=<sp/>dv*dv;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>-----<sp/>update<sp/>state<sp/>-------<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>dv<sp/>=<sp/>_div(_sum(_Jxt_[_idx],<sp/>6))<sp/>*<sp/>dv<sp/>*<sp/>v;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nu_params[_idp][_idy]<sp/>=<sp/>_param_[_idx][_idy]<sp/>-<sp/>dv;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Compares<sp/>solutions<sp/>and<sp/>selects<sp/>the<sp/>best<sp/>one.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>size_x<sp/>The<sp/>size<sp/>of<sp/>the<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>cmx_dx<sp/>Tensor<sp/>containing<sp/>combination<sp/>indices.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>evnt_dx<sp/>Tensor<sp/>containing<sp/>event<sp/>indices.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>o_sol<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>best<sp/>solution.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>o_cmb<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>best<sp/>combination.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>o_nu1<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>first<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>o_nu2<sp/>Tensor<sp/>to<sp/>store<sp/>the<sp/>second<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>i_cmb<sp/>Tensor<sp/>containing<sp/>input<sp/>combinations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>i_sol<sp/>Tensor<sp/>containing<sp/>input<sp/>solutions.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>i_nu1<sp/>Tensor<sp/>containing<sp/>input<sp/>first<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>i_nu2<sp/>Tensor<sp/>containing<sp/>input<sp/>second<sp/>neutrino<sp/>parameters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>lx<sp/>The<sp/>length<sp/>of<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>evnts<sp/>The<sp/>number<sp/>of<sp/>events.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_compare_solx(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;long<sp/><sp/>,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>cmx_dx,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;long<sp/><sp/>,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>evnt_dx,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>o_sol,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;long<sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>o_cmb,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>o_nu1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>o_nu2,</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;long<sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>i_cmb,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>i_sol,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>i_nu1,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;double,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>i_nu2,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>lx,<sp/>const<sp/>unsigned<sp/>int<sp/>evnts</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_nu1[size_x][4];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_nu2[size_x][4];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>long<sp/><sp/><sp/>_cmx[size_x][4];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_score[size_x][4];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_nu1[threadIdx.x][threadIdx.y]<sp/><sp/><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_nu2[threadIdx.x][threadIdx.y]<sp/><sp/><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_cmx[threadIdx.x][threadIdx.y]<sp/><sp/><sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_score[threadIdx.x][threadIdx.y]<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>evnts){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>lx;<sp/>++x){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>long<sp/>cmx_id<sp/>=<sp/>cmx_dx[x];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>long<sp/>evn_id<sp/>=<sp/>evnt_dx[cmx_id];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(evn_id<sp/>!=<sp/>_idx){continue;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>y(0);<sp/>y<sp/>&lt;<sp/>6;<sp/>++y){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>sol<sp/>=<sp/>i_sol[x][y];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(_score[threadIdx.x][threadIdx.y]<sp/>&lt;<sp/>sol){continue;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_score[threadIdx.x][threadIdx.y]<sp/>=<sp/>sol;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_cmx[threadIdx.x][threadIdx.y]<sp/>=<sp/>i_cmb[cmx_id][threadIdx.y];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_nu1[threadIdx.x][threadIdx.y]<sp/>=<sp/>(threadIdx.y<sp/>&lt;<sp/>3)<sp/>?<sp/>i_nu1[x][y][threadIdx.y]<sp/>:<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_nu2[threadIdx.x][threadIdx.y]<sp/>=<sp/>(threadIdx.y<sp/>&lt;<sp/>3)<sp/>?<sp/>i_nu2[x][y][threadIdx.y]<sp/>:<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>o_sol[_idx]<sp/>=<sp/>_score[threadIdx.x][threadIdx.y];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>o_cmb[_idx][threadIdx.y]<sp/>=<sp/>_cmx[threadIdx.x][threadIdx.y];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>o_nu1[_idx][threadIdx.y]<sp/>=<sp/>(threadIdx.y<sp/>&lt;<sp/>3)<sp/>?<sp/>_nu1[threadIdx.x][threadIdx.y]<sp/>:<sp/>_sqrt(_dot(_nu1[threadIdx.x],<sp/>_nu1[threadIdx.x],<sp/>3));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>o_nu2[_idx][threadIdx.y]<sp/>=<sp/>(threadIdx.y<sp/>&lt;<sp/>3)<sp/>?<sp/>_nu2[threadIdx.x][threadIdx.y]<sp/>:<sp/>_sqrt(_dot(_nu2[threadIdx.x],<sp/>_nu2[threadIdx.x],<sp/>3));<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#endif</highlight></codeline>
+    </programlisting>
+    <location file="pyc/nusol/include/nusol/utils.cuh"/>
+  </compounddef>
+</doxygen>

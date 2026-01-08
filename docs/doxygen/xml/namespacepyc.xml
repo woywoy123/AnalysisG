@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacepyc" kind="namespace" language="C++">
+    <compoundname>pyc</compoundname>
+    <innernamespace refid="namespacepyc_1_1graph">pyc::graph</innernamespace>
+    <innernamespace refid="namespacepyc_1_1nusol">pyc::nusol</innernamespace>
+    <innernamespace refid="namespacepyc_1_1operators">pyc::operators</innernamespace>
+    <innernamespace refid="namespacepyc_1_1physics">pyc::physics</innernamespace>
+    <innernamespace refid="namespacepyc_1_1transform">pyc::transform</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Dict&lt; std::string, torch::Tensor &gt;</type>
+        <definition>torch::Dict&lt; std::string, torch::Tensor &gt; pyc::std_to_dict</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor &gt; *inpt)</argsstring>
+        <name>std_to_dict</name>
+        <qualifiedname>pyc::std_to_dict</qualifiedname>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="23" column="17" bodyfile="pyc/interface/interface.cxx" bodystart="20" bodyend="25" declfile="pyc/interface/include/pyc/pyc.h" declline="23" declcolumn="17"/>
+        <referencedby refid="namespacepyc_1_1nusol_1a66ad18c125df47cd81fd3043ab4cc2f3" compoundref="interface_2nusol_8cxx" startline="11" endline="14">pyc::nusol::BaseMatrix</referencedby>
+        <referencedby refid="namespacepyc_1_1nusol_1a0b618f866aa33e16c704d828744335e1" compoundref="interface_2nusol_8cxx" startline="47" endline="55">pyc::nusol::combinatorial</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1aa28a4253050413ec67a3313635a699ad" compoundref="pyc_2interface_2graph_8cxx" startline="75" endline="82">pyc::graph::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1cartesian_1a0c4efe06c06429b730d408323dcaf302" compoundref="pyc_2interface_2graph_8cxx" startline="144" endline="151">pyc::graph::cartesian::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1ab00a9b5d4070afc2aac6fd639d82c46b" compoundref="pyc_2interface_2graph_8cxx" startline="102" endline="110">pyc::graph::polar::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1a4892c3989bd8b62a5f02688d030e92d5" compoundref="pyc_2interface_2graph_8cxx" startline="122" endline="131">pyc::graph::polar::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1cartesian_1a84c64361a1b6ab23b56915ab7f7290a0" compoundref="pyc_2interface_2graph_8cxx" startline="162" endline="171">pyc::graph::cartesian::edge_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1a122f7af31a0d3d53790f3389ffef5073" compoundref="pyc_2interface_2graph_8cxx" startline="84" endline="91">pyc::graph::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1cartesian_1a876b2614216840138fb428e66f4938b8" compoundref="pyc_2interface_2graph_8cxx" startline="153" endline="160">pyc::graph::cartesian::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1a4b8251423b7ede00df4fbda3ab664485" compoundref="pyc_2interface_2graph_8cxx" startline="112" endline="120">pyc::graph::polar::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1polar_1a2214179747b4d328f815a532e6d4fdcf" compoundref="pyc_2interface_2graph_8cxx" startline="133" endline="142">pyc::graph::polar::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1_1cartesian_1a6a2ffe369ee9d484a004f40351db4215" compoundref="pyc_2interface_2graph_8cxx" startline="173" endline="182">pyc::graph::cartesian::node_aggregation</referencedby>
+        <referencedby refid="namespacepyc_1_1nusol_1a991cfa801400211ccf412bd1a85b7b69" compoundref="interface_2nusol_8cxx" startline="16" endline="23">pyc::nusol::Nu</referencedby>
+        <referencedby refid="namespacepyc_1_1nusol_1af7bb509b120cb3314695cecd70bc5c11" compoundref="interface_2nusol_8cxx" startline="36" endline="45">pyc::nusol::NuNu</referencedby>
+        <referencedby refid="namespacepyc_1_1nusol_1a9650527ae538fa27121bedfb79a1fbe6" compoundref="interface_2nusol_8cxx" startline="25" endline="34">pyc::nusol::NuNu</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1a2f6c4c8a0a97cb02e98e17a22345ba95" compoundref="pyc_2interface_2graph_8cxx" startline="14" endline="32">pyc::graph::PageRank</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1a509b4a1583be203ff16f22594194655b" compoundref="pyc_2interface_2graph_8cxx" startline="35" endline="56">pyc::graph::PageRankReconstruction</referencedby>
+        <referencedby refid="namespacepyc_1a28f5ffe47cca2a3cbaffaf73dbd0993c" compoundref="interface_8cxx" startline="27" endline="29">std_to_dict</referencedby>
+        <referencedby refid="namespacepyc_1_1graph_1a6b142e7f996e314f3c8a971e471d6d95" compoundref="pyc_2interface_2graph_8cxx" startline="93" endline="100">pyc::graph::unique_aggregation</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1a28f5ffe47cca2a3cbaffaf73dbd0993c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Dict&lt; std::string, torch::Tensor &gt;</type>
+        <definition>torch::Dict&lt; std::string, torch::Tensor &gt; pyc::std_to_dict</definition>
+        <argsstring>(std::map&lt; std::string, torch::Tensor &gt; inpt)</argsstring>
+        <name>std_to_dict</name>
+        <qualifiedname>pyc::std_to_dict</qualifiedname>
+        <param>
+          <type>std::map&lt; std::string, torch::Tensor &gt;</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="24" column="17" bodyfile="pyc/interface/interface.cxx" bodystart="27" bodyend="29" declfile="pyc/interface/include/pyc/pyc.h" declline="24" declcolumn="17"/>
+        <references refid="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf" compoundref="interface_8cxx" startline="20" endline="25">std_to_dict</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1a78a6e4f2cbb1ffc7ceb42ce358f0fa3e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::tensorize</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; double &gt; &gt; *inpt)</argsstring>
+        <name>tensorize</name>
+        <qualifiedname>pyc::tensorize</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::vector&lt; double &gt; &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="25" column="19" bodyfile="pyc/interface/interface.cxx" bodystart="41" bodyend="45" declfile="pyc/interface/include/pyc/pyc.h" declline="25" declcolumn="19"/>
+        <references refid="namespacepyc_1a78a6e4f2cbb1ffc7ceb42ce358f0fa3e" compoundref="interface_8cxx" startline="41" endline="45">tensorize</references>
+        <referencedby refid="namespacepyc_1_1nusol_1ad4035a04640174f1d5f9cdc307a3ad0a" compoundref="interface_8cxx" startline="123" endline="177">pyc::nusol::combinatorial</referencedby>
+        <referencedby refid="namespacepyc_1_1nusol_1af88804c21a54435a41be99cbc03faf30" compoundref="interface_8cxx" startline="82" endline="121">pyc::nusol::NuNu</referencedby>
+        <referencedby refid="namespacepyc_1a78a6e4f2cbb1ffc7ceb42ce358f0fa3e" compoundref="interface_8cxx" startline="41" endline="45">tensorize</referencedby>
+        <referencedby refid="namespacepyc_1af640a8048180edf5ac96d488475da838" compoundref="interface_8cxx" startline="47" endline="51">tensorize</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1af640a8048180edf5ac96d488475da838" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::tensorize</definition>
+        <argsstring>(std::vector&lt; std::vector&lt; long &gt; &gt; *inpt)</argsstring>
+        <name>tensorize</name>
+        <qualifiedname>pyc::tensorize</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::vector&lt; long &gt; &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="26" column="19" bodyfile="pyc/interface/interface.cxx" bodystart="47" bodyend="51" declfile="pyc/interface/include/pyc/pyc.h" declline="26" declcolumn="19"/>
+        <references refid="namespacepyc_1a78a6e4f2cbb1ffc7ceb42ce358f0fa3e" compoundref="interface_8cxx" startline="41" endline="45">tensorize</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1a805d5f639681452081ee6778d6f7a1ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::tensorize</definition>
+        <argsstring>(std::vector&lt; double &gt; *inpt)</argsstring>
+        <name>tensorize</name>
+        <qualifiedname>pyc::tensorize</qualifiedname>
+        <param>
+          <type>std::vector&lt; double &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="27" column="19" bodyfile="pyc/interface/interface.cxx" bodystart="31" bodyend="34" declfile="pyc/interface/include/pyc/pyc.h" declline="27" declcolumn="19"/>
+        <references refid="tensor__cast_8h_1a27121e7e5aeb77bda0453dd6214cf7fb" compoundref="tensor__cast_8h" startline="62" endline="78">build_tensor</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1a28e3b0ea1f06859dbe8416d54214f973" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor pyc::tensorize</definition>
+        <argsstring>(std::vector&lt; long &gt; *inpt)</argsstring>
+        <name>tensorize</name>
+        <qualifiedname>pyc::tensorize</qualifiedname>
+        <param>
+          <type>std::vector&lt; long &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="28" column="19" bodyfile="pyc/interface/interface.cxx" bodystart="36" bodyend="39" declfile="pyc/interface/include/pyc/pyc.h" declline="28" declcolumn="19"/>
+        <references refid="tensor__cast_8h_1a27121e7e5aeb77bda0453dd6214cf7fb" compoundref="tensor__cast_8h" startline="62" endline="78">build_tensor</references>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1ad6781dc5753b7540e035175db11bb0e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; pyc::as_pmc</definition>
+        <argsstring>(g *p)</argsstring>
+        <name>as_pmc</name>
+        <qualifiedname>pyc::as_pmc</qualifiedname>
+        <param>
+          <type>g *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="31" column="17" bodyfile="pyc/interface/include/pyc/pyc.h" bodystart="31" bodyend="31"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9">px</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6">py</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec">pz</references>
+        <referencedby refid="namespacepyc_1_1nusol_1a40d24df283b4dac4dcc8c52ec45d0008" compoundref="interface_2nusol_8cxx" startline="57" endline="113">pyc::nusol::combinatorial</referencedby>
+        <referencedby refid="namespacepyc_1a4f5d1f0a2f00b40eb63b5d3592cc4d46" compoundref="pyc_8h" startline="34" endline="38">to_pmc</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="namespacepyc_1a4f5d1f0a2f00b40eb63b5d3592cc4d46" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; double &gt; &gt; pyc::to_pmc</definition>
+        <argsstring>(std::vector&lt; g * &gt; *p)</argsstring>
+        <name>to_pmc</name>
+        <qualifiedname>pyc::to_pmc</qualifiedname>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/interface/include/pyc/pyc.h" line="34" column="17" bodyfile="pyc/interface/include/pyc/pyc.h" bodystart="34" bodyend="38"/>
+        <references refid="namespacepyc_1ad6781dc5753b7540e035175db11bb0e2" compoundref="pyc_8h" startline="31" endline="31">as_pmc</references>
+        <referencedby refid="namespacepyc_1_1nusol_1aaaf252028ed63bf2d561dffcd76916e2" compoundref="pyc_8h" startline="170" endline="196">pyc::nusol::NuNu</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="pyc/interface/include/pyc/pyc.h" line="22" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,592 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="analysis_class_page" kind="page">
+    <compoundname>analysis_class_page</compoundname>
+    <title>Analysis Class Reference</title>
+    <tableofcontents>
+      <tocsect>
+        <name>Introduction</name>
+        <reference>analysis_class_page_1analysis_intro</reference>
+    </tocsect>
+      <tocsect>
+        <name>Inheritance</name>
+        <reference>analysis_class_page_1analysis_inheritance</reference>
+    </tocsect>
+      <tocsect>
+        <name>Lifecycle</name>
+        <reference>analysis_class_page_1analysis_lifecycle</reference>
+    <tableofcontents>
+      <tocsect>
+        <name>Construction</name>
+        <reference>analysis_class_page_1analysis_construction</reference>
+    </tocsect>
+      <tocsect>
+        <name>Configuration Phase</name>
+        <reference>analysis_class_page_1analysis_configuration</reference>
+    </tocsect>
+      <tocsect>
+        <name>Setup Phase</name>
+        <reference>analysis_class_page_1analysis_setup</reference>
+    </tocsect>
+      <tocsect>
+        <name>Execution Phase</name>
+        <reference>analysis_class_page_1analysis_execution</reference>
+    </tocsect>
+      <tocsect>
+        <name>Monitoring</name>
+        <reference>analysis_class_page_1analysis_monitoring</reference>
+    </tocsect>
+    </tableofcontents>
+    </tocsect>
+      <tocsect>
+        <name>Public API Reference</name>
+        <reference>analysis_class_page_1analysis_public_api</reference>
+    <tableofcontents>
+      <tocsect>
+        <name>Constructors &amp; Destructor</name>
+        <reference>analysis_class_page_1analysis_constructors</reference>
+    </tocsect>
+      <tocsect>
+        <name>Sample Management</name>
+        <reference>analysis_class_page_1analysis_sample_methods</reference>
+    </tocsect>
+      <tocsect>
+        <name>Template Registration</name>
+        <reference>analysis_class_page_1analysis_template_methods</reference>
+    </tocsect>
+      <tocsect>
+        <name>Model Management</name>
+        <reference>analysis_class_page_1analysis_model_methods</reference>
+    </tocsect>
+      <tocsect>
+        <name>Execution Control</name>
+        <reference>analysis_class_page_1analysis_execution_methods</reference>
+    </tocsect>
+      <tocsect>
+        <name>Progress Monitoring</name>
+        <reference>analysis_class_page_1analysis_progress_methods</reference>
+    </tocsect>
+    </tableofcontents>
+    </tocsect>
+      <tocsect>
+        <name>Settings Reference</name>
+        <reference>analysis_class_page_1analysis_settings</reference>
+    <tableofcontents>
+      <tocsect>
+        <name>Path Settings</name>
+        <reference>analysis_class_page_1analysis_settings_paths</reference>
+    </tocsect>
+      <tocsect>
+        <name>Machine Learning Settings</name>
+        <reference>analysis_class_page_1analysis_settings_ml</reference>
+    </tocsect>
+      <tocsect>
+        <name>Runtime Settings</name>
+        <reference>analysis_class_page_1analysis_settings_runtime</reference>
+    </tocsect>
+    </tableofcontents>
+    </tocsect>
+      <tocsect>
+        <name>Internal Architecture</name>
+        <reference>analysis_class_page_1analysis_internal</reference>
+    <tableofcontents>
+      <tocsect>
+        <name>Internal Workflow</name>
+        <reference>analysis_class_page_1analysis_workflow</reference>
+    </tocsect>
+      <tocsect>
+        <name>Threading Model</name>
+        <reference>analysis_class_page_1analysis_threading</reference>
+    </tocsect>
+    </tableofcontents>
+    </tocsect>
+      <tocsect>
+        <name>Examples</name>
+        <reference>analysis_class_page_1analysis_examples</reference>
+    <tableofcontents>
+      <tocsect>
+        <name>Basic Analysis</name>
+        <reference>analysis_class_page_1analysis_example_basic</reference>
+    </tocsect>
+      <tocsect>
+        <name>Training Example</name>
+        <reference>analysis_class_page_1analysis_example_training</reference>
+    </tocsect>
+    </tableofcontents>
+    </tocsect>
+    </tableofcontents>
+    <briefdescription>
+<para>Comprehensive documentation for the analysis class. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="analysis_class_page_1analysis_intro">
+<title>Introduction</title>
+<para>The <ref refid="classanalysis" kindref="compound">analysis</ref> class is the central orchestrator for all physics analysis tasks in AnalysisG. It manages the complete workflow from data loading through model training to result evaluation.</para>
+</sect1>
+<sect1 id="analysis_class_page_1analysis_inheritance">
+<title>Inheritance</title>
+<para><programlisting><codeline><highlight class="normal"><ref refid="classnotification" kindref="compound">notification</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>└──┐</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>├──<sp/><ref refid="classanalysis" kindref="compound">analysis</ref></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/>│</highlight></codeline>
+<codeline><highlight class="normal"><ref refid="classtools" kindref="compound">tools</ref><sp/>─┘</highlight></codeline>
+</programlisting></para>
+<para>The analysis class inherits from:<itemizedlist>
+<listitem><para>notification: For logging and progress reporting</para>
+</listitem><listitem><para>tools: For utility functions</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="analysis_class_page_1analysis_lifecycle">
+<title>Lifecycle</title>
+<sect2 id="analysis_class_page_1analysis_construction">
+<title>Construction</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal"><ref refid="classanalysis" kindref="compound">analysis</ref><sp/>ana;</highlight></codeline>
+</programlisting></para>
+<para>The constructor initializes all internal maps and prepares the analysis for configuration.</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_configuration">
+<title>Configuration Phase</title>
+<para>Configure the analysis through <computeroutput>m_settings</computeroutput>:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal">ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" kindref="member">output_path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;results/&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" kindref="member">threads</ref><sp/>=<sp/>8;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1ab1ea0b6cb2fcc7c77af0424e55c39e1e" kindref="member">epochs</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a7e4a89f57124d740aee08c1dff380320" kindref="member">kfolds</ref><sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" kindref="member">batch_size</ref><sp/>=<sp/>64;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1af8bf8b05ab282c3e253234cbc4fbca6a" kindref="member">train_size</ref><sp/>=<sp/>80;<sp/><sp/></highlight><highlight class="comment">//<sp/>80%<sp/>training,<sp/>20%<sp/>testing</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_setup">
+<title>Setup Phase</title>
+<para>Add samples and templates:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="comment">//<sp/>Add<sp/>data<sp/>samples</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" kindref="member">add_samples</ref>(</highlight><highlight class="stringliteral">&quot;/data/ttbar/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;ttbar&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" kindref="member">add_samples</ref>(</highlight><highlight class="stringliteral">&quot;/data/background/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;bkg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>event<sp/>templates</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a6d71bcd8dfe9deb47acba686df1e0058" kindref="member">add_event_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyEvent(),<sp/></highlight><highlight class="stringliteral">&quot;ttbar&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a6d71bcd8dfe9deb47acba686df1e0058" kindref="member">add_event_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyEvent(),<sp/></highlight><highlight class="stringliteral">&quot;bkg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>graph<sp/>templates</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a03e15b76f9271d2c98f094cd7cdb3863" kindref="member">add_graph_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyGraph(),<sp/></highlight><highlight class="stringliteral">&quot;ttbar&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a03e15b76f9271d2c98f094cd7cdb3863" kindref="member">add_graph_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyGraph(),<sp/></highlight><highlight class="stringliteral">&quot;bkg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>selection<sp/>templates</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a4ef9fa88fc930b37691ed93602c4b24c" kindref="member">add_selection_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DileptonSelection());</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>model<sp/>for<sp/>training</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref><sp/>params;</highlight></codeline>
+<codeline><highlight class="normal">params.<ref refid="structoptimizer__params__t_1aeb08bcbf67a3e24d81ee691020d99a21" kindref="member">lr</ref><sp/>=<sp/>0.001;</highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a51e47012fc4522964dbfba5baa89090c" kindref="member">add_model</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyModel(),<sp/>&amp;params,<sp/></highlight><highlight class="stringliteral">&quot;model_v1&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>metrics</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">ana.<ref refid="classanalysis_1a33de64cfd2bc244ff02feb0cc9b2db58" kindref="member">add_metric_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>AccuracyMetric(),<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyModel());</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_execution">
+<title>Execution Phase</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal">ana.<ref refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" kindref="member">start</ref>();</highlight></codeline>
+</programlisting></para>
+<para>The <computeroutput>start()</computeroutput> method triggers the complete analysis pipeline:<orderedlist>
+<listitem><para>Cache checking</para>
+</listitem><listitem><para>Project structure building</para>
+</listitem><listitem><para>Event processing</para>
+</listitem><listitem><para>Selection application</para>
+</listitem><listitem><para><ref refid="classGraph" kindref="compound">Graph</ref> construction</para>
+</listitem><listitem><para>Model training/inference</para>
+</listitem><listitem><para>Metric evaluation</para>
+</listitem></orderedlist>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_monitoring">
+<title>Monitoring</title>
+<para>Monitor progress during execution:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(!ana.<ref refid="classanalysis_1aa9288840e05af08f88af73f6ceca8f29" kindref="member">is_complete</ref>()[</highlight><highlight class="stringliteral">&quot;model_v1&quot;</highlight><highlight class="normal">])<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>prog<sp/>=<sp/>ana.<ref refid="classanalysis_1ab550330c7c309f24423fa3d48481ea64" kindref="member">progress</ref>();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>mode<sp/>=<sp/>ana.<ref refid="classanalysis_1a14ff6c25448d59d0c6296c45ba180485" kindref="member">progress_mode</ref>();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>report<sp/>=<sp/>ana.<ref refid="classanalysis_1a6b719e04f433468bc84c45aa31abb400" kindref="member">progress_report</ref>();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;Model:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>mode[</highlight><highlight class="stringliteral">&quot;model_v1&quot;</highlight><highlight class="normal">]<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>Progress:<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>prog[</highlight><highlight class="stringliteral">&quot;model_v1&quot;</highlight><highlight class="normal">][0]<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::this_thread::sleep_for(std::chrono::seconds(5));</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+</sect2>
+</sect1>
+<sect1 id="analysis_class_page_1analysis_public_api">
+<title>Public API Reference</title>
+<sect2 id="analysis_class_page_1analysis_constructors">
+<title>Constructors &amp; Destructor</title>
+<para><table rows="3" cols="2"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput><ref refid="classanalysis" kindref="compound">analysis()</ref></computeroutput>   </para>
+</entry><entry thead="no"><para>Default constructor, initializes the analysis    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>~analysis()</computeroutput>   </para>
+</entry><entry thead="no"><para>Destructor, cleans up resources   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_sample_methods">
+<title>Sample Management</title>
+<para><table rows="2" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_samples()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>path</computeroutput>, <computeroutput>label</computeroutput>   </para>
+</entry><entry thead="no"><para>Add data files/directories with a label   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_template_methods">
+<title>Template Registration</title>
+<para><table rows="5" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_event_template()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>event_template*</computeroutput>, <computeroutput>label</computeroutput>   </para>
+</entry><entry thead="no"><para>Register event template for a sample    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_graph_template()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>graph_template*</computeroutput>, <computeroutput>label</computeroutput>   </para>
+</entry><entry thead="no"><para>Register graph template for a sample    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_selection_template()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>selection_template*</computeroutput>   </para>
+</entry><entry thead="no"><para>Register selection (applies to all samples)    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_metric_template()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>metric_template*</computeroutput>, <computeroutput>model_template*</computeroutput>   </para>
+</entry><entry thead="no"><para>Register metric for a model   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_model_methods">
+<title>Model Management</title>
+<para><table rows="3" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_model()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>model_template*</computeroutput>, <computeroutput>optimizer_params_t*</computeroutput>, <computeroutput>run_name</computeroutput>   </para>
+</entry><entry thead="no"><para>Add model for training    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>add_model()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>model_template*</computeroutput>, <computeroutput>run_name</computeroutput>   </para>
+</entry><entry thead="no"><para>Add model for inference only   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_execution_methods">
+<title>Execution Control</title>
+<para><table rows="3" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Return Type   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>start()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>void</computeroutput>   </para>
+</entry><entry thead="no"><para>Begin analysis execution    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>attach_threads()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>void</computeroutput>   </para>
+</entry><entry thead="no"><para>Attach processing threads   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_progress_methods">
+<title>Progress Monitoring</title>
+<para><table rows="5" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Return Type   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>progress()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>map&lt;string, vector&lt;float&gt;&gt;</computeroutput>   </para>
+</entry><entry thead="no"><para>Get numerical progress per model    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>progress_mode()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>map&lt;string, string&gt;</computeroutput>   </para>
+</entry><entry thead="no"><para>Get current mode per model    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>progress_report()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>map&lt;string, string&gt;</computeroutput>   </para>
+</entry><entry thead="no"><para>Get text reports per model    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>is_complete()</computeroutput>   </para>
+</entry><entry thead="no"><para><computeroutput>map&lt;string, bool&gt;</computeroutput>   </para>
+</entry><entry thead="no"><para>Check completion status per model   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+</sect1>
+<sect1 id="analysis_class_page_1analysis_settings">
+<title>Settings Reference</title>
+<para>The <computeroutput>m_settings</computeroutput> member is of type <ref refid="structsettings__t" kindref="compound">settings_t</ref> and controls:</para>
+<sect2 id="analysis_class_page_1analysis_settings_paths">
+<title>Path Settings</title>
+<para><table rows="6" cols="4"><row>
+<entry thead="yes"><para>Setting   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Default   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>output_path</computeroutput>   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>&quot;./ProjectName&quot;   </para>
+</entry><entry thead="no"><para>Output directory    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>run_name</computeroutput>   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>&quot;&quot;   </para>
+</entry><entry thead="no"><para>Name for this run    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>metacache_path</computeroutput>   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>&quot;./&quot;   </para>
+</entry><entry thead="no"><para>Metadata cache location    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>graph_cache</computeroutput>   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>&quot;&quot;   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref> cache location    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>training_dataset</computeroutput>   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>&quot;&quot;   </para>
+</entry><entry thead="no"><para>Pre-built training dataset path   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_settings_ml">
+<title>Machine Learning Settings</title>
+<para><table rows="9" cols="4"><row>
+<entry thead="yes"><para>Setting   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Default   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>epochs</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Number of training epochs    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>kfolds</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Number of cross-validation folds    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>batch_size</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>1   </para>
+</entry><entry thead="no"><para>Training batch size    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>train_size</computeroutput>   </para>
+</entry><entry thead="no"><para>float   </para>
+</entry><entry thead="no"><para>50   </para>
+</entry><entry thead="no"><para>Training/test split percentage    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>training</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>true   </para>
+</entry><entry thead="no"><para>Enable training    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>validation</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>true   </para>
+</entry><entry thead="no"><para>Enable validation    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>evaluation</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>true   </para>
+</entry><entry thead="no"><para>Enable evaluation    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>continue_training</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>true   </para>
+</entry><entry thead="no"><para>Resume from checkpoints   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_settings_runtime">
+<title>Runtime Settings</title>
+<para><table rows="4" cols="4"><row>
+<entry thead="yes"><para>Setting   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Default   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>threads</computeroutput>   </para>
+</entry><entry thead="no"><para>int   </para>
+</entry><entry thead="no"><para>10   </para>
+</entry><entry thead="no"><para>Number of processing threads    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>debug_mode</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>false   </para>
+</entry><entry thead="no"><para>Enable debug output    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>build_cache</computeroutput>   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>false   </para>
+</entry><entry thead="no"><para>Build cache for intermediate results   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+</sect1>
+<sect1 id="analysis_class_page_1analysis_internal">
+<title>Internal Architecture</title>
+<sect2 id="analysis_class_page_1analysis_workflow">
+<title>Internal Workflow</title>
+<para>When <computeroutput>start()</computeroutput> is called, the following private methods execute:</para>
+<para><orderedlist>
+<listitem><para><bold>check_cache()</bold>: Look for cached data to skip reprocessing</para>
+</listitem><listitem><para><bold>build_project()</bold>: Create output directory structure</para>
+</listitem><listitem><para><bold>build_events()</bold>: Process raw data into event objects</para>
+</listitem><listitem><para><bold>build_selections()</bold>: Apply selection criteria</para>
+</listitem><listitem><para><bold>build_graphs()</bold>: Convert events to graph representations</para>
+</listitem><listitem><para><bold>build_dataloader()</bold>: Prepare data for training</para>
+</listitem><listitem><para><bold>build_model_session()</bold>: Configure model training sessions</para>
+</listitem><listitem><para><bold>build_inference()</bold>: Set up inference pipeline (if applicable)</para>
+</listitem><listitem><para><bold>build_metric()</bold>: Calculate performance metrics</para>
+</listitem></orderedlist>
+</para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_threading">
+<title>Threading Model</title>
+<para>The analysis uses a multi-threaded approach:<itemizedlist>
+<listitem><para>Event processing runs in parallel across files</para>
+</listitem><listitem><para><ref refid="classGraph" kindref="compound">Graph</ref> construction is parallelized per event</para>
+</listitem><listitem><para>Model training uses batched parallel operations</para>
+</listitem><listitem><para>Metric calculation can run concurrently with training</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="analysis_class_page_1analysis_examples">
+<title>Examples</title>
+<sect2 id="analysis_class_page_1analysis_example_basic">
+<title>Basic Analysis</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="analysis_8h" kindref="compound">AnalysisG/analysis.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>main()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classanalysis" kindref="compound">analysis</ref><sp/>ana;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Configure</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1adfb471fcc454bdfb97309137a9c75d9e" kindref="member">output_path</ref><sp/>=<sp/></highlight><highlight class="stringliteral">&quot;results/&quot;</highlight><highlight class="normal">;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a383cb4d94ff68571dc4cd2e8a9f4d00f" kindref="member">threads</ref><sp/>=<sp/>4;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>data</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" kindref="member">add_samples</ref>(</highlight><highlight class="stringliteral">&quot;/data/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;sample&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a6d71bcd8dfe9deb47acba686df1e0058" kindref="member">add_event_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyEvent(),<sp/></highlight><highlight class="stringliteral">&quot;sample&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a03e15b76f9271d2c98f094cd7cdb3863" kindref="member">add_graph_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyGraph(),<sp/></highlight><highlight class="stringliteral">&quot;sample&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Run</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" kindref="member">start</ref>();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+</sect2>
+<sect2 id="analysis_class_page_1analysis_example_training">
+<title>Training Example</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="analysis_8h" kindref="compound">AnalysisG/analysis.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>main()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="classanalysis" kindref="compound">analysis</ref><sp/>ana;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ML<sp/>configuration</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1ab1ea0b6cb2fcc7c77af0424e55c39e1e" kindref="member">epochs</ref><sp/>=<sp/>100;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a7e4a89f57124d740aee08c1dff380320" kindref="member">kfolds</ref><sp/>=<sp/>5;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a7142e8c027e12fc8b46e0045f733e107" kindref="member">m_settings</ref>.<ref refid="structsettings__t_1a574cb98d49f69c527eed1fe1c64e22a5" kindref="member">batch_size</ref><sp/>=<sp/>64;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Setup</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" kindref="member">add_samples</ref>(</highlight><highlight class="stringliteral">&quot;/data/signal/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;signal&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1ad49ba744577bd6d17f83efa48909f767" kindref="member">add_samples</ref>(</highlight><highlight class="stringliteral">&quot;/data/background/&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;bkg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a6d71bcd8dfe9deb47acba686df1e0058" kindref="member">add_event_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyEvent(),<sp/></highlight><highlight class="stringliteral">&quot;signal&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a6d71bcd8dfe9deb47acba686df1e0058" kindref="member">add_event_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyEvent(),<sp/></highlight><highlight class="stringliteral">&quot;bkg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a03e15b76f9271d2c98f094cd7cdb3863" kindref="member">add_graph_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyGraph(),<sp/></highlight><highlight class="stringliteral">&quot;signal&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a03e15b76f9271d2c98f094cd7cdb3863" kindref="member">add_graph_template</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyGraph(),<sp/></highlight><highlight class="stringliteral">&quot;bkg&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Training<sp/>configuration</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref><sp/>params;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>params.<ref refid="structoptimizer__params__t_1aeb08bcbf67a3e24d81ee691020d99a21" kindref="member">lr</ref><sp/>=<sp/>0.001;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>params.<ref refid="structoptimizer__params__t_1a29ad0b1e0709871fc6e9a6ef636a2931" kindref="member">weight_decay</ref><sp/>=<sp/>1e-5;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a51e47012fc4522964dbfba5baa89090c" kindref="member">add_model</ref>(</highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>MyModel(),<sp/>&amp;params,<sp/></highlight><highlight class="stringliteral">&quot;classifier&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Run</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>ana.<ref refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" kindref="member">start</ref>();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>0;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+</programlisting></para>
+<para><simplesect kind="see"><para><ref refid="structsettings__t" kindref="compound">settings_t</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="classevent__template" kindref="compound">event_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="classgraph__template" kindref="compound">graph_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="classmodel__template" kindref="compound">model_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="classselection__template" kindref="compound">selection_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="classmetric__template" kindref="compound">metric_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> </para>
+</simplesect>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/analysis.dox"/>
+  </compounddef>
+</doxygen>

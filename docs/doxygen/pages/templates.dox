@@ -140,7 +140,7 @@
  * | index | long | Event index in source |
  * | leaves | vector<string> | List of leaf names |
  *
- * @section event_template_particles Particle Management
+ * @section event_template_particles_tpl Particle Management
  *
  * Particles are managed through:
  *

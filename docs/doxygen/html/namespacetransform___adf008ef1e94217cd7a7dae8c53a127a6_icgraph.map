@@ -1,0 +1,26 @@
+<map id="transform_::PtEtaPhi" name="transform_::PtEtaPhi">
+<area shape="rect" id="Node000001" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), and azimuthal angle (Phi) from a momentu..." alt="" coords="765,197,920,222"/>
+<area shape="poly" id="edge7_Node000001_Node000001" title=" " alt="" coords="882,187,871,179,843,175,819,177,807,182,804,188,811,195,807,198,799,188,803,178,818,172,843,170,873,174,885,183"/>
+<area shape="rect" id="Node000002" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#ada89277d3b7f28e15501e5c943516fe0" title=" " alt="" coords="537,29,708,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="822,187,777,135,748,108,716,84,693,72,696,67,719,79,751,104,781,132,826,184"/>
+<area shape="rect" id="Node000005" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#adbd2ec240755f1bf46b2c157f0325669" title=" " alt="" coords="537,93,708,133"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="806,192,716,148,686,136,688,131,718,143,808,188"/>
+<area shape="rect" id="Node000006" href="$namespacepyc_1_1transform_1_1combined.html#aef62cf52a35f4aef17136491672c9caa" title=" " alt="" coords="528,157,717,197"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="752,199,717,194,718,188,752,194"/>
+<area shape="rect" id="Node000007" href="$namespacepyc_1_1transform_1_1separate.html#ad60db4e9ce774257d24304aa205418a8" title=" " alt="" coords="531,221,714,261"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="752,225,715,231,714,225,752,220"/>
+<area shape="rect" id="Node000008" href="$namespacetransform__.html#a59a9589e3d78c302e6f52b2fcd5ceedb" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), azimuthal angle (Phi),..." alt="" coords="541,286,704,311"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="809,231,767,254,718,276,679,289,678,283,716,271,764,249,807,227"/>
+<area shape="rect" id="Node000011" href="$namespacetransform__.html#a0564930def9a67318624f21aa822860e" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), azimuthal angle (Phi),..." alt="" coords="541,335,704,361"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="824,235,779,281,750,305,719,325,688,338,686,333,716,320,747,300,775,277,820,231"/>
+<area shape="rect" id="Node000003" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="267,29,480,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="524,52,480,52,480,47,524,47"/>
+<area shape="rect" id="Node000004" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="5,29,219,69"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="253,61,219,61,219,56,253,56"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="233,38,266,38,266,43,233,43"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="157,18,141,11,112,8,87,10,71,15,66,21,69,28,64,30,61,20,68,10,86,5,112,3,142,6,159,13"/>
+<area shape="rect" id="Node000009" href="$namespacepyc_1_1transform_1_1combined.html#a540024e0d49fe477d984815f6844ea5a" title=" " alt="" coords="279,247,468,287"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="528,289,468,281,468,276,528,284"/>
+<area shape="rect" id="Node000010" href="$namespacepyc_1_1transform_1_1separate.html#aa89702a61f7eecf64504a32f99b2f9af" title=" " alt="" coords="282,311,465,351"/>
+<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="528,313,465,322,465,316,528,308"/>
+</map>

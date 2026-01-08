@@ -1,0 +1,72 @@
+<map id="analysis::start" name="analysis::start">
+<area shape="rect" id="Node000001" title="Starts the analysis execution." alt="" coords="5,623,120,648"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a929d006d8c02d16b6472d7625578aa21" title="Builds or configures the data loader for training or evaluation." alt="" coords="405,344,599,369"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="62,622,69,576,85,511,99,476,116,443,139,412,166,387,195,369,226,356,291,340,357,336,417,340,416,345,357,342,292,346,227,361,197,374,170,391,143,416,121,446,104,479,91,513,74,577,68,623"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a68b520bbdb4d591d7375f9ecd6532ce8" title="Builds or processes event data based on the added event templates and samples." alt="" coords="179,168,346,193"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="61,622,65,558,78,458,91,401,110,343,134,288,166,236,188,214,215,197,217,202,192,218,170,240,139,290,115,345,97,402,84,458,70,558,67,623"/>
+<area shape="rect" id="Node000006" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="878,533,969,559"/>
+<area shape="poly" id="edge43_Node000001_Node000006" title=" " alt="" coords="83,620,121,600,167,582,265,561,365,547,465,537,563,533,737,532,864,539,864,544,737,538,563,538,466,543,366,552,266,566,169,587,123,604,85,625"/>
+<area shape="rect" id="Node000007" href="$classanalysis.html#a1c3e0d7bb80774d865586b18a1566704" title="Builds graph representations of the event data based on the added graph templates." alt="" coords="179,749,346,775"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="77,646,115,686,141,708,169,728,201,742,198,747,167,732,138,712,112,690,73,650"/>
+<area shape="rect" id="Node000008" href="$classtools.html#aeae88ebd7116d59008600f0723716dba" title="Replaces all occurrences of a substring in a string." alt="" coords="447,733,557,759"/>
+<area shape="poly" id="edge42_Node000001_Node000008" title=" " alt="" coords="121,638,232,655,296,670,358,690,383,704,406,718,434,728,433,733,404,723,380,709,356,695,295,675,231,661,120,643"/>
+<area shape="rect" id="Node000009" href="$classanalysis.html#a7b98125c72486407d782b2bc2ea67389" title="Sets up the environment for model inference (prediction)." alt="" coords="410,44,594,69"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="62,622,72,530,92,389,106,316,123,248,143,192,166,154,190,131,216,113,275,85,337,67,396,58,396,63,338,72,277,90,219,117,193,135,170,157,147,194,128,250,111,317,97,390,77,531,68,623"/>
+<area shape="rect" id="Node000011" href="$classtools.html#aed9f3247b474a8fb1840860d51cde7ca" title="Creates a directory path, including parent directories if needed." alt="" coords="651,269,789,295"/>
+<area shape="poly" id="edge37_Node000001_Node000011" title=" " alt="" coords="61,623,62,563,73,474,86,425,105,378,131,335,166,299,195,278,226,262,292,239,362,227,433,225,501,230,565,239,667,263,666,268,564,244,501,235,432,230,363,233,294,244,228,267,198,283,170,303,135,338,110,380,91,427,78,475,67,563,66,623"/>
+<area shape="rect" id="Node000013" href="$classanalysis.html#ad1bf7fde8eafef15d4dcedcba5ce51f7" title="Builds or calculates metrics for evaluating model performance." alt="" coords="180,401,345,427"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="74,620,239,436,243,439,78,624"/>
+<area shape="rect" id="Node000014" href="$classanalysis.html#ab1e46d4a55389c9159584cc1c4f217a0" title="Builds the project structure, possibly setting up directories or initial configurations." alt="" coords="418,295,586,320"/>
+<area shape="poly" id="edge27_Node000001_Node000014" title=" " alt="" coords="62,622,66,569,80,493,93,452,111,412,135,375,166,344,193,326,222,312,285,295,348,289,407,291,407,296,349,295,286,300,224,317,196,331,170,348,140,378,116,414,98,454,85,494,71,570,67,622"/>
+<area shape="rect" id="Node000017" href="$classanalysis.html#ac4b2760bd5a08f9bd2b5553856dcbfff" title="Builds or calculates metrics across different data folds (e.g., for k&#45;fold cross&#45;validation)." alt="" coords="180,799,345,839"/>
+<area shape="poly" id="edge23_Node000001_Node000017" title=" " alt="" coords="72,647,107,712,135,750,170,784,180,791,177,795,166,788,131,754,102,715,67,650"/>
+<area shape="rect" id="Node000018" href="$classanalysis.html#a9e329f763a57c75ca47bec379fab102e" title="Sets up and configures machine learning model sessions for training or inference." alt="" coords="181,863,345,903"/>
+<area shape="poly" id="edge24_Node000001_Node000018" title=" " alt="" coords="69,647,79,687,98,741,128,799,147,826,170,849,175,854,172,858,166,853,143,829,123,802,93,743,74,688,64,649"/>
+<area shape="rect" id="Node000021" href="$classanalysis.html#a12ac50912be5864fb354b7e0bd3341a3" title="Builds or applies event selections based on the added selection templates." alt="" coords="168,928,357,953"/>
+<area shape="poly" id="edge28_Node000001_Node000021" title=" " alt="" coords="67,648,73,698,89,769,102,808,120,847,142,882,170,913,177,919,174,923,166,917,138,886,115,849,97,810,84,771,68,698,62,648"/>
+<area shape="rect" id="Node000022" href="$classanalysis.html#a0cbe44c90dab45066bfe074e506c5d8d" title="&lt; Private access specifier for the following members." alt="" coords="179,597,346,623"/>
+<area shape="poly" id="edge29_Node000001_Node000022" title=" " alt="" coords="120,625,165,620,166,625,120,631"/>
+<area shape="rect" id="Node000025" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="656,759,784,784"/>
+<area shape="poly" id="edge38_Node000001_Node000025" title=" " alt="" coords="85,646,123,668,169,690,221,705,264,710,306,717,358,734,373,743,383,752,392,761,406,767,467,781,529,786,589,785,642,781,643,786,589,791,529,791,466,786,404,773,389,765,379,756,370,747,356,739,305,722,263,716,220,710,167,695,120,673,82,650"/>
+<area shape="rect" id="Node000026" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="190,977,335,1003"/>
+<area shape="poly" id="edge39_Node000001_Node000026" title=" " alt="" coords="67,648,69,708,82,797,94,845,113,893,137,938,170,976,179,983,176,987,166,980,133,941,108,895,89,847,76,798,64,708,61,648"/>
+<area shape="rect" id="Node000004" href="$classtools.html#a408b66ad73b7b4bb962634c14a55b619" title="Converts a relative path to an absolute path." alt="" coords="425,93,579,119"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="296,165,405,127,432,120,434,125,406,133,298,170"/>
+<area shape="rect" id="Node000005" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="469,143,535,168"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="346,169,455,158,456,163,346,175"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="346,180,462,186,594,199,714,221,761,236,795,255,825,283,850,316,871,353,888,391,910,463,921,519,916,520,905,464,883,392,866,355,846,319,821,287,792,259,759,241,712,226,593,204,462,192,346,185"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="307,772,354,784,406,793,466,802,518,814,609,834,651,837,694,833,740,819,792,793,820,772,844,745,863,716,880,684,903,622,915,572,920,573,908,624,885,686,868,718,848,749,823,776,795,798,742,824,695,839,651,843,608,839,517,819,465,807,405,798,353,789,306,777"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="346,754,433,748,433,753,346,759"/>
+<area shape="poly" id="edge15_Node000009_Node000006" title=" " alt="" coords="570,67,625,83,686,107,745,140,772,162,795,186,826,227,851,272,872,320,888,367,911,455,922,520,916,520,906,456,883,369,867,322,846,275,821,230,791,189,768,166,742,145,683,111,624,88,569,72"/>
+<area shape="rect" id="Node000010" href="$classanalysis.html#a25047bd23730c36cde68661179257c9b" title="Static helper method to add content (features) to a data map from various sources." alt="" coords="841,31,1005,56"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="594,51,828,44,828,49,594,56"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="580,67,600,79,620,105,650,153,708,256,703,258,645,155,616,108,597,83,577,72"/>
+<area shape="rect" id="Node000012" href="$classanalysis.html#a8a8e07da99928e764601ff8c56edc1df" title="Static method to execute a model (training or inference) on a set of data." alt="" coords="647,5,793,31"/>
+<area shape="poly" id="edge13_Node000009_Node000012" title=" " alt="" coords="574,41,634,30,635,36,575,47"/>
+<area shape="poly" id="edge12_Node000011_Node000006" title=" " alt="" coords="733,293,906,520,902,524,729,296"/>
+<area shape="poly" id="edge14_Node000012_Node000010" title=" " alt="" coords="794,25,828,29,827,34,793,30"/>
+<area shape="poly" id="edge17_Node000013_Node000002" title=" " alt="" coords="316,399,434,370,436,375,317,404"/>
+<area shape="poly" id="edge18_Node000013_Node000014" title=" " alt="" coords="280,399,334,364,404,329,425,321,427,326,406,334,337,369,283,404"/>
+<area shape="rect" id="Node000015" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="473,483,531,508"/>
+<area shape="poly" id="edge20_Node000013_Node000015" title=" " alt="" coords="302,424,460,479,459,484,300,429"/>
+<area shape="rect" id="Node000016" href="$classanalysis.html#acf4137dd2ceda151a94d68b2ed199da8" title="Static method to execute metric calculation." alt="" coords="429,394,575,434"/>
+<area shape="poly" id="edge22_Node000013_Node000016" title=" " alt="" coords="345,411,415,411,415,417,345,417"/>
+<area shape="poly" id="edge19_Node000014_Node000011" title=" " alt="" coords="586,295,637,289,637,294,587,300"/>
+<area shape="poly" id="edge21_Node000015_Node000015" title=" " alt="" coords="470,487,460,476,462,466,476,458,502,456,536,461,544,468,544,476,539,476,539,470,534,466,502,461,478,464,466,469,465,475,474,483"/>
+<area shape="rect" id="Node000019" href="$classanalysis.html#a1c8b808d255b490be4ea86df4d29cdf1" title="Static method to initialize a training loop for an optimizer." alt="" coords="415,885,589,911"/>
+<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="345,886,401,889,401,894,345,891"/>
+<area shape="rect" id="Node000020" href="$classtools.html#a47d3d261edcb898daab56721e18d1e67" title="Checks if a path refers to an existing file." alt="" coords="670,885,770,911"/>
+<area shape="poly" id="edge26_Node000019_Node000020" title=" " alt="" coords="590,895,656,895,656,901,590,901"/>
+<area shape="poly" id="edge36_Node000022_Node000006" title=" " alt="" coords="346,602,549,586,793,562,864,552,864,558,794,567,550,591,346,607"/>
+<area shape="poly" id="edge35_Node000022_Node000008" title=" " alt="" coords="323,620,359,640,376,660,384,681,391,700,407,719,435,733,432,738,404,723,386,703,379,683,371,663,356,644,320,625"/>
+<area shape="poly" id="edge30_Node000022_Node000015" title=" " alt="" coords="289,595,461,512,463,516,291,600"/>
+<area shape="rect" id="Node000023" href="$classtools.html#ad7229c72cee65da3605c4be82f9b42d4" title="Checks if a string contains a specific substring." alt="" coords="437,635,567,660"/>
+<area shape="poly" id="edge31_Node000022_Node000023" title=" " alt="" coords="345,620,424,633,423,638,344,625"/>
+<area shape="rect" id="Node000024" href="$classtools.html#a5ab0f2cc351dd97951358ebe19e9c18d" title="Lists files in a directory, optionally filtered by extension." alt="" coords="465,684,539,709"/>
+<area shape="poly" id="edge32_Node000022_Node000024" title=" " alt="" coords="308,620,359,640,383,655,406,669,452,684,451,689,404,674,380,659,356,644,307,625"/>
+<area shape="poly" id="edge34_Node000024_Node000006" title=" " alt="" coords="538,685,598,669,697,644,739,633,792,613,844,589,889,563,892,568,846,593,794,618,741,638,698,650,599,674,539,690"/>
+<area shape="poly" id="edge33_Node000024_Node000025" title=" " alt="" coords="540,702,600,718,680,750,678,755,598,723,538,707"/>
+<area shape="poly" id="edge41_Node000026_Node000001" title=" " alt="" coords="220,980,192,972,166,956,137,922,114,884,96,843,83,801,67,722,62,662,67,662,72,722,88,800,101,841,119,882,141,919,170,952,194,967,221,975"/>
+<area shape="rect" id="Node000027" href="$gnn-particles_8h.html#a726f7868ebf1c63190c267427081d370" title=" " alt="" coords="477,977,527,1003"/>
+<area shape="poly" id="edge40_Node000026_Node000027" title=" " alt="" coords="336,987,463,987,463,993,336,993"/>
+</map>

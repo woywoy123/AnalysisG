@@ -1,0 +1,11 @@
+<map id="chi2" name="chi2">
+<area shape="rect" id="Node000001" title=" " alt="" coords="489,31,539,56"/>
+<area shape="rect" id="Node000002" href="$namespacenusol__.html#a6f05175e14627bd3c34ffa61686b7da4" title=" " alt="" coords="289,5,380,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="475,41,380,27,381,22,476,35"/>
+<area shape="rect" id="Node000004" href="$classcombinatorial.html#a4f90aaf04154a0d1ca9d59e1ccb2c54e" title=" " alt="" coords="228,55,441,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="476,51,430,57,429,52,476,46"/>
+<area shape="rect" id="Node000003" href="$namespacepyc_1_1nusol.html#a991cfa801400211ccf412bd1a85b7b69" title=" " alt="" coords="35,5,150,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="275,21,150,21,150,15,275,15"/>
+<area shape="rect" id="Node000005" href="$classcombinatorial.html#a5cd8d199d3f8fe6c9f0b8e1c2e2f7bfd" title="Alternative selection strategy method." alt="" coords="5,55,180,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="214,70,180,70,180,65,214,65"/>
+</map>

@@ -1,0 +1,44 @@
+<map id="tools::to_string" name="tools::to_string">
+<area shape="rect" id="Node000001" title="Converts a double value to a string with standard precision." alt="" coords="903,313,1021,338"/>
+<area shape="rect" id="Node000002" href="$classdataloader.html#ac35a068b2e42d77b1fe986c65e3c2d24" title=" " alt="" coords="665,5,824,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="955,300,946,249,928,184,898,117,878,86,853,59,823,41,826,37,856,55,882,83,903,114,933,182,952,247,960,299"/>
+<area shape="rect" id="Node000003" href="$classdataloader.html#a086338e3e9670d253041f54888995611" title=" " alt="" coords="665,69,824,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="952,300,939,261,919,213,891,165,853,123,823,106,825,102,856,119,895,161,924,211,944,259,957,298"/>
+<area shape="rect" id="Node000004" href="$classparticle__template.html#a9c586cc0ac38cad5ccacf1bb4985e25b" title="Getter for hash." alt="" coords="672,133,817,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="946,302,909,244,883,213,853,188,816,170,819,165,856,183,887,210,914,241,950,299"/>
+<area shape="rect" id="Node000008" href="$classtopefficiency.html#aae4a7f46ed0d168dd12f6ab5e9074a76" title=" " alt="" coords="667,198,822,223"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="938,304,901,270,853,238,821,226,823,221,856,234,904,266,942,300"/>
+<area shape="rect" id="Node000010" href="$classdataloader.html#a5fddffa25c532953896e2d1646ca1dc4" title=" " alt="" coords="671,248,818,288"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="899,312,818,290,819,285,901,307"/>
+<area shape="rect" id="Node000011" href="$classevent__template.html#a9f5661b7516b43801913ab6fc897a80e" title="Static setter for the hash property." alt="" coords="649,313,840,338"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="889,328,840,328,840,323,889,323"/>
+<area shape="rect" id="Node000014" href="$classselection__template.html#acd31f17488bcf97dd8a5f1b3a7da1cdd" title="Setter for hash." alt="" coords="671,363,818,403"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="901,344,819,366,818,361,899,339"/>
+<area shape="rect" id="Node000018" href="$classparton.html#abf09df1e5e6008e9af478a2f540947f8" title="Alternative selection strategy method." alt="" coords="438,502,565,527"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="942,350,904,385,856,417,797,440,747,449,697,454,635,468,534,504,532,499,634,463,697,449,747,443,795,435,853,412,901,381,938,346"/>
+<area shape="rect" id="Node000019" href="$classtopjets.html#a72145e79c19febe5393d17220c980e2a" title="Alternative selection strategy method." alt="" coords="680,478,809,503"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="950,352,912,407,886,436,856,461,834,473,811,481,809,476,832,468,853,456,883,432,908,403,945,349"/>
+<area shape="rect" id="Node000020" href="$classtoptruthjets.html#a39c1afcec2800b351fc047fbfa4f009f" title="Alternative selection strategy method." alt="" coords="665,527,825,553"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="956,352,943,389,923,434,894,479,856,517,826,532,824,528,853,513,890,476,918,431,938,387,951,350"/>
+<area shape="rect" id="Node000021" href="$classparton.html#a4045341bd771afd7ac452fa1dc6aea8e" title=" " alt="" coords="635,577,855,602"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="960,352,949,399,931,457,900,517,880,544,856,567,838,579,835,574,853,563,876,540,896,514,926,455,944,398,954,351"/>
+<area shape="rect" id="Node000005" href="$classparticle__template.html#ab527ed22f6d67969247a0be9dda0165f" title="Default constructor." alt="" coords="429,133,574,173"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="658,156,574,156,574,151,658,151"/>
+<area shape="rect" id="Node000006" href="$classparticle__template.html#adf7b55df06b7621b0a6bc509f74d22ff" title="Serializes particle data for storage." alt="" coords="211,101,357,141"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="415,143,356,135,357,129,416,138"/>
+<area shape="rect" id="Node000007" href="$classparticle__template.html#a6c492ed991c27a61acad61064fa89b3c" title="Creates a clone of this particle." alt="" coords="211,165,357,205"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="416,169,357,177,356,172,415,163"/>
+<area shape="rect" id="Node000009" href="$classtopefficiency.html#a208f0c2ad333886e46bf67c3f3732d63" title="Alternative selection strategy method." alt="" coords="418,198,585,223"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="653,213,585,213,585,208,653,208"/>
+<area shape="rect" id="Node000012" href="$classevent__template.html#a4fc169ae8c1412e8fba67ef35c9bb01a" title="Default constructor for event_template." alt="" coords="416,303,587,343"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="636,327,587,326,587,321,636,321"/>
+<area shape="rect" id="Node000013" href="$classevent__template.html#a683c5ec2ccfa48483996ba3128b6a07a" title="Creates a new event template instance." alt="" coords="200,310,368,335"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="402,325,368,325,368,320,402,320"/>
+<area shape="rect" id="Node000015" href="$classselection__template.html#a4562a7ab32d93b5f2ca8a232a244041c" title="Default constructor." alt="" coords="424,367,579,407"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="658,387,579,388,579,383,658,381"/>
+<area shape="rect" id="Node000016" href="$classselection__template.html#a094ce1eb2b6463f88a8ad5f7dfd8e4b6" title="Creates a clone of this selection." alt="" coords="211,367,357,407"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="410,389,357,389,357,384,410,384"/>
+<area shape="rect" id="Node000017" href="$classselection__template.html#ae24cee9f302d7509a7009daea0bf0616" title="Builds the selection from an event." alt="" coords="5,367,152,407"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="197,389,152,389,152,384,197,384"/>
+<area shape="poly" id="edge21_Node000021_Node000018" title=" " alt="" coords="664,576,634,568,531,530,533,525,635,563,665,571"/>
+</map>

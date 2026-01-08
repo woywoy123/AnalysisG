@@ -1,0 +1,9 @@
+<map id="plotting::build_path" name="plotting::build_path">
+<area shape="rect" id="Node000001" title="Builds a complete path for output files based on configured settings." alt="" coords="5,31,153,56"/>
+<area shape="rect" id="Node000002" href="$classtools.html#aed9f3247b474a8fb1840860d51cde7ca" title="Creates a directory path, including parent directories if needed." alt="" coords="201,5,340,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,31,187,26,188,32,154,36"/>
+<area shape="rect" id="Node000004" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="207,55,335,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="154,50,193,55,193,60,153,55"/>
+<area shape="rect" id="Node000003" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="388,5,479,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="340,15,374,15,374,21,340,21"/>
+</map>

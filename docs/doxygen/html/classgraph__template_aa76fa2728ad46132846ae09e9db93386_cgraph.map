@@ -1,0 +1,19 @@
+<map id="graph_template::add_graph_truth_feature" name="graph_template::add_graph_truth_feature">
+<area shape="rect" id="Node000001" title="Adds a graph&#45;level truth feature." alt="" coords="5,105,164,145"/>
+<area shape="rect" id="Node000002" href="$classgraph__template.html#a185c7464be35c70cf3a51df81b744713" title=" " alt="" coords="213,47,370,87"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,102,205,89,206,94,158,107"/>
+<area shape="rect" id="Node000008" href="$classcproperty.html#a31b26b5ffb20bbf8d8ee38e0755a9819" title="Sets the getter callback function." alt="" coords="213,112,370,137"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="164,122,199,122,199,127,164,127"/>
+<area shape="rect" id="Node000009" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="212,161,371,187"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="165,141,225,155,223,161,164,146"/>
+<area shape="rect" id="Node000003" href="$classgraph__template.html#a255ec8fcf27b7352445397e5245cc9ef" title=" " alt="" coords="419,47,565,87"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,65,405,65,405,70,370,70"/>
+<area shape="rect" id="Node000004" href="$tensor__cast_8h.html#a27121e7e5aeb77bda0453dd6214cf7fb" title=" " alt="" coords="613,55,716,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="565,65,600,65,600,70,565,70"/>
+<area shape="rect" id="Node000005" href="$tensor__cast_8h.html#a49d70dbad1cfb3e27ebb8960cff818bb" title=" " alt="" coords="764,5,867,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="703,52,762,33,763,38,705,57"/>
+<area shape="rect" id="Node000006" href="$tensor__cast_8h.html#af735bf7b89e3864dbde7fe5def867d4d" title=" " alt="" coords="771,55,860,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="716,65,757,65,757,70,716,70"/>
+<area shape="rect" id="Node000007" href="$tensor__cast_8h.html#af14120999422d60b3d0aef376398fca6" title=" " alt="" coords="776,104,855,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="705,78,763,97,762,102,703,83"/>
+</map>

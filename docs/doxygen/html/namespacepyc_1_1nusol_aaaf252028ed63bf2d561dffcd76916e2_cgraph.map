@@ -1,0 +1,91 @@
+<map id="pyc::nusol::NuNu" name="pyc::nusol::NuNu">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,281,137,307"/>
+<area shape="rect" id="Node000002" href="$namespacepyc_1_1nusol.html#a9650527ae538fa27121bedfb79a1fbe6" title=" " alt="" coords="185,256,317,281"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,282,171,277,172,282,138,287"/>
+<area shape="rect" id="Node000036" href="$namespacepyc.html#a4f5d1f0a2f00b40eb63b5d3592cc4d46" title=" " alt="" coords="201,305,302,331"/>
+<area shape="poly" id="edge51_Node000001_Node000036" title=" " alt="" coords="138,300,187,307,187,312,137,305"/>
+<area shape="rect" id="Node000003" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="381,280,474,305"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="318,275,367,282,367,287,317,280"/>
+<area shape="rect" id="Node000004" href="$namespacenusol__.html#ac849ef3564c5ac968727dce36494fd0a" title=" " alt="" coords="373,181,481,207"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="280,254,364,217,382,210,384,214,366,222,282,258"/>
+<area shape="rect" id="Node000035" href="$namespacepyc.html#ab174cc51f6efef06bdb0ba47ec3fe3bf" title=" " alt="" coords="365,231,489,256"/>
+<area shape="poly" id="edge50_Node000002_Node000035" title=" " alt="" coords="317,257,352,252,352,257,318,262"/>
+<area shape="rect" id="Node000005" href="$nusol_2tensor_2nusol_8cxx.html#a8bbfd6699dae11189c40dfc0035fd99c" title=" " alt="" coords="575,5,649,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="432,180,469,114,499,75,536,41,561,28,563,32,539,45,503,79,474,117,437,182"/>
+<area shape="rect" id="Node000006" href="$nusol_2tensor_2nusol_8cxx.html#aa2f3034bed6ef5a865741a89972d44d8" title=" " alt="" coords="585,55,639,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="439,179,480,140,536,97,571,79,573,84,539,102,484,144,443,183"/>
+<area shape="rect" id="Node000007" href="$nusol_2tensor_2nusol_8cxx.html#a154959ee15ff2420eef7a772682767b7" title=" " alt="" coords="593,207,631,232"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="482,199,579,212,579,218,481,204"/>
+<area shape="rect" id="Node000009" href="$nusol_2tensor_2nusol_8cxx.html#a695a1b065a09564a65159bac242c506c" title=" " alt="" coords="794,156,857,181"/>
+<area shape="poly" id="edge49_Node000004_Node000009" title=" " alt="" coords="481,188,780,169,780,174,482,193"/>
+<area shape="rect" id="Node000010" href="$utils_8cxx.html#a1652e53abd2299dd0f10e093948e4fa3" title=" " alt="" coords="989,431,1063,456"/>
+<area shape="poly" id="edge37_Node000004_Node000010" title=" " alt="" coords="452,179,536,143,594,123,657,107,725,98,792,99,858,112,888,125,918,143,949,170,973,204,992,242,1006,281,1022,357,1027,416,1022,417,1017,358,1001,283,987,244,969,207,945,174,914,147,886,130,856,117,792,104,725,103,658,113,595,128,538,147,454,184"/>
+<area shape="rect" id="Node000011" href="$namespacenusol__.html#a526c0e4a558a1201624ea0b639bc747c" title=" " alt="" coords="539,729,685,755"/>
+<area shape="poly" id="edge10_Node000004_Node000011" title=" " alt="" coords="475,205,491,218,506,247,522,299,556,444,609,715,603,716,551,445,516,300,501,249,487,221,472,209"/>
+<area shape="rect" id="Node000021" href="$namespacenusol__.html#a2cdd92aeb32c05137ebc7ef96c47a3da" title=" " alt="" coords="537,331,687,356"/>
+<area shape="poly" id="edge29_Node000004_Node000021" title=" " alt="" coords="467,204,491,217,522,241,551,268,595,318,591,322,547,272,518,245,488,222,465,209"/>
+<area shape="rect" id="Node000027" href="$nusol_2tensor_2nusol_8cxx.html#a28531a30b80ecbd780392279d8a8adf3" title=" " alt="" coords="573,1107,651,1132"/>
+<area shape="poly" id="edge38_Node000004_Node000027" title=" " alt="" coords="477,205,491,218,504,239,514,266,527,329,534,404,536,485,535,645,536,713,540,767,575,954,607,1093,602,1094,570,956,535,768,530,713,530,645,531,485,529,404,522,330,509,267,499,242,487,221,473,209"/>
+<area shape="rect" id="Node000008" href="$namespaceoperators__.html#aaf20282e41ff4961e01d222feb86bc47" title="Computes the inverse of a matrix." alt="" coords="752,205,899,231"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="632,217,738,216,738,221,632,222"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="631,212,780,177,781,182,632,218"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="857,168,888,176,918,192,942,217,962,245,993,308,1013,368,1023,416,1018,417,1008,369,988,310,958,248,938,220,914,196,886,180,856,173"/>
+<area shape="poly" id="edge24_Node000011_Node000010" title=" " alt="" coords="624,727,669,685,700,661,733,641,760,629,784,623,827,618,868,612,890,603,914,589,946,561,973,529,1011,467,1015,470,978,532,950,565,918,593,893,608,870,617,828,623,785,628,762,634,736,646,703,666,673,689,627,731"/>
+<area shape="rect" id="Node000012" href="$nusol_2tensor_2nusol_8cxx.html#ac73ce1484f270adbb1791bd876e80dfa" title=" " alt="" coords="803,655,848,680"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="641,727,734,690,789,674,790,679,736,695,643,732"/>
+<area shape="rect" id="Node000013" href="$namespacephysics__.html#a3123f743b9c22850e7346d5f56a4441b" title="Computes the beta factor." alt="" coords="968,956,1084,981"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="620,754,634,788,658,835,692,882,713,903,736,921,789,946,846,961,903,969,954,970,954,976,902,974,845,967,787,951,733,926,709,907,688,886,654,837,629,791,615,756"/>
+<area shape="rect" id="Node000015" href="$namespacephysics__.html#aace12d6d7317cd102e5059781d724151" title="Computes the square of the beta factor." alt="" coords="964,781,1088,807"/>
+<area shape="poly" id="edge15_Node000011_Node000015" title=" " alt="" coords="686,748,950,782,949,787,685,754"/>
+<area shape="rect" id="Node000016" href="$namespaceoperators__.html#af012532b8e034b7d6cb733360e14f8d7" title="Computes the cosine of the angle between two vectors." alt="" coords="745,805,905,831"/>
+<area shape="poly" id="edge18_Node000011_Node000016" title=" " alt="" coords="649,752,736,783,776,798,775,803,734,789,647,757"/>
+<area shape="rect" id="Node000017" href="$nusol_2tensor_2nusol_8cxx.html#a2df29a032d35ff73a0646b3c6f522ff1" title=" " alt="" coords="778,704,873,729"/>
+<area shape="poly" id="edge19_Node000011_Node000017" title=" " alt="" coords="686,731,764,721,765,726,686,736"/>
+<area shape="rect" id="Node000018" href="$namespacephysics__.html#a7787594305d4a156c31be581401b0b0b" title="Computes the square of the invariant mass." alt="" coords="973,883,1079,908"/>
+<area shape="poly" id="edge21_Node000011_Node000018" title=" " alt="" coords="621,754,637,784,661,823,695,861,714,877,736,890,792,909,851,915,908,914,959,907,959,913,908,919,850,921,790,914,734,895,711,882,691,865,657,826,632,787,617,756"/>
+<area shape="rect" id="Node000019" href="$namespacephysics__.html#ac12a78b1943348345b940e510930f420" title="Computes the momentum magnitude." alt="" coords="979,1029,1073,1055"/>
+<area shape="poly" id="edge25_Node000011_Node000019" title=" " alt="" coords="619,754,630,798,652,858,687,921,710,950,736,975,762,992,791,1006,852,1026,912,1036,965,1040,965,1045,911,1041,850,1031,789,1011,760,997,733,979,706,954,683,924,647,860,625,799,613,756"/>
+<area shape="rect" id="Node000020" href="$namespaceoperators__.html#a0335a4a853f7cff5faa4bc7bc68e3a8a" title="Computes the sine of the angle between two vectors." alt="" coords="747,553,903,579"/>
+<area shape="poly" id="edge28_Node000011_Node000020" title=" " alt="" coords="619,728,662,666,695,628,733,596,760,581,763,586,736,600,699,632,666,669,623,731"/>
+<area shape="poly" id="edge13_Node000013_Node000013" title=" " alt="" coords="1002,957,997,948,1000,938,1010,932,1026,929,1046,933,1054,941,1050,945,1043,938,1026,935,1011,937,1004,941,1002,947,1007,955"/>
+<area shape="rect" id="Node000014" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="1136,920,1203,945"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1076,953,1122,942,1124,947,1078,959"/>
+<area shape="poly" id="edge17_Node000015_Node000014" title=" " alt="" coords="1044,805,1090,845,1149,907,1145,911,1086,849,1041,809"/>
+<area shape="poly" id="edge16_Node000015_Node000015" title=" " alt="" coords="1002,782,997,773,1000,763,1010,757,1026,755,1046,758,1054,767,1050,770,1043,763,1026,760,1011,762,1004,767,1002,772,1007,780"/>
+<area shape="poly" id="edge20_Node000017_Node000010" title=" " alt="" coords="872,710,895,703,914,691,938,666,958,638,989,577,1008,517,1018,469,1023,470,1013,518,994,579,963,641,942,670,918,695,897,707,874,715"/>
+<area shape="poly" id="edge22_Node000018_Node000014" title=" " alt="" coords="1076,905,1123,918,1122,923,1075,911"/>
+<area shape="poly" id="edge23_Node000018_Node000018" title=" " alt="" coords="1002,884,997,874,1000,865,1010,858,1026,856,1046,860,1054,868,1050,872,1043,864,1026,861,1011,863,1004,868,1002,874,1007,881"/>
+<area shape="poly" id="edge26_Node000019_Node000014" title=" " alt="" coords="1042,1027,1139,952,1142,956,1046,1031"/>
+<area shape="poly" id="edge27_Node000019_Node000019" title=" " alt="" coords="1002,1030,997,1021,1000,1011,1010,1005,1026,1003,1046,1006,1054,1015,1050,1018,1043,1011,1026,1008,1011,1010,1004,1015,1002,1020,1007,1028"/>
+<area shape="poly" id="edge34_Node000021_Node000008" title=" " alt="" coords="625,329,671,290,733,248,766,233,768,238,736,252,674,294,629,333"/>
+<area shape="poly" id="edge35_Node000021_Node000010" title=" " alt="" coords="636,328,688,304,760,282,800,276,840,274,880,279,917,293,952,318,981,351,1002,386,1017,417,1012,419,998,389,977,355,949,322,915,298,878,285,840,279,800,281,761,287,690,309,638,333"/>
+<area shape="rect" id="Node000022" href="$namespaceoperators__.html#a3d017da3c5169dfb4e1ca5da7cae0703" title="Computes the cofactor matrix of a given matrix." alt="" coords="744,307,907,332"/>
+<area shape="poly" id="edge30_Node000021_Node000022" title=" " alt="" coords="687,332,730,327,731,333,687,338"/>
+<area shape="rect" id="Node000023" href="$namespaceoperators__.html#a123a2d44cfea06825875800ebf21ae0d" title="Computes the determinant of a matrix." alt="" coords="735,356,916,381"/>
+<area shape="poly" id="edge31_Node000021_Node000023" title=" " alt="" coords="687,350,721,354,721,359,687,355"/>
+<area shape="rect" id="Node000024" href="$nusol_2tensor_2nusol_8cxx.html#aae1454f2383ba884c21b646a772061b0" title=" " alt="" coords="756,405,895,431"/>
+<area shape="poly" id="edge32_Node000021_Node000024" title=" " alt="" coords="642,354,736,391,760,399,758,404,734,397,640,359"/>
+<area shape="rect" id="Node000025" href="$nusol_2tensor_2nusol_8cxx.html#acf51fdc50b75894636c847810af38706" title=" " alt="" coords="776,455,875,480"/>
+<area shape="poly" id="edge33_Node000021_Node000025" title=" " alt="" coords="627,354,672,397,703,421,736,441,764,452,762,457,733,446,700,425,669,401,623,358"/>
+<area shape="rect" id="Node000026" href="$nusol_2tensor_2nusol_8cxx.html#af09f8e81392582428eefa4b074f3f098" title=" " alt="" coords="790,504,861,529"/>
+<area shape="poly" id="edge36_Node000021_Node000026" title=" " alt="" coords="622,355,665,420,697,458,736,490,756,500,777,507,776,512,754,505,733,495,694,462,660,423,618,358"/>
+<area shape="rect" id="Node000028" href="$namespacetransform__.html#aa90019603231f23c1e857b5f5832b587" title="Computes the azimuthal angle (Phi) from a momentum tensor." alt="" coords="765,1229,886,1255"/>
+<area shape="poly" id="edge39_Node000027_Node000028" title=" " alt="" coords="635,1130,736,1192,788,1220,786,1225,733,1196,632,1134"/>
+<area shape="rect" id="Node000030" href="$nusol_2tensor_2nusol_8cxx.html#acf38ad4d8eeaff43568c7ef70cf2b815" title=" " alt="" coords="801,855,850,880"/>
+<area shape="poly" id="edge42_Node000027_Node000030" title=" " alt="" coords="622,1105,802,889,806,893,626,1108"/>
+<area shape="rect" id="Node000031" href="$namespaceoperators__.html#a7ce1f1b4f84306a157386ac5fd54ea1a" title="Computes the rotation matrix around the X&#45;axis." alt="" coords="767,1279,883,1304"/>
+<area shape="poly" id="edge44_Node000027_Node000031" title=" " alt="" coords="622,1131,665,1196,697,1233,736,1265,756,1275,753,1280,733,1270,694,1237,660,1199,618,1134"/>
+<area shape="rect" id="Node000032" href="$namespaceoperators__.html#a7f4dbc7ab056202b3b43d621f6c8df50" title="Computes the rotation matrix around the Y&#45;axis." alt="" coords="767,1107,883,1132"/>
+<area shape="poly" id="edge45_Node000027_Node000032" title=" " alt="" coords="651,1117,754,1117,754,1122,651,1122"/>
+<area shape="rect" id="Node000033" href="$namespaceoperators__.html#a38a28124e97111d3a1f2809ce2039769" title="Computes the rotation matrix around the Z&#45;axis." alt="" coords="768,1156,883,1181"/>
+<area shape="poly" id="edge46_Node000027_Node000033" title=" " alt="" coords="652,1126,757,1150,756,1155,650,1131"/>
+<area shape="rect" id="Node000034" href="$namespacephysics__.html#a6d323b672a05eb19edce0b4d818bdb7f" title="Computes the polar angle theta." alt="" coords="764,1057,887,1083"/>
+<area shape="poly" id="edge47_Node000027_Node000034" title=" " alt="" coords="650,1108,756,1083,757,1088,652,1113"/>
+<area shape="poly" id="edge41_Node000028_Node000028" title=" " alt="" coords="792,1231,785,1221,789,1211,803,1205,825,1203,853,1206,864,1216,861,1220,851,1211,825,1208,804,1210,793,1215,791,1220,797,1228"/>
+<area shape="rect" id="Node000029" href="$utils_8cxx.html#aaec9ca2d20716add3c686abd989934d0" title=" " alt="" coords="1003,1229,1049,1255"/>
+<area shape="poly" id="edge40_Node000028_Node000029" title=" " alt="" coords="886,1239,990,1239,990,1245,886,1245"/>
+<area shape="poly" id="edge43_Node000030_Node000010" title=" " alt="" coords="850,865,883,859,900,852,914,841,933,814,951,773,982,666,1005,554,1018,469,1024,470,1010,555,987,667,956,774,938,816,918,845,903,856,885,864,851,870"/>
+<area shape="poly" id="edge48_Node000034_Node000019" title=" " alt="" coords="887,1059,965,1048,966,1053,888,1064"/>
+<area shape="rect" id="Node000037" href="$namespacepyc.html#ad6781dc5753b7540e035175db11bb0e2" title=" " alt="" coords="376,329,479,355"/>
+<area shape="poly" id="edge52_Node000036_Node000037" title=" " alt="" coords="303,322,363,331,362,336,302,328"/>
+</map>

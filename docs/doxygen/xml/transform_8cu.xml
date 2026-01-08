@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="transform_8cu" kind="file" language="C++">
+    <compoundname>transform.cu</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>transform.cu</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Implements<sp/>transformation<sp/>functions<sp/>for<sp/>momentum<sp/>calculations<sp/>in<sp/>CUDA.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;transform/transform.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;transform/base.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>the<sp/>x-component<sp/>of<sp/>momentum<sp/>(Px).</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements<sp/>(e.g.,<sp/>float,<sp/>double).</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pt<sp/>Input<sp/>tensor<sp/>of<sp/>transverse<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>phi<sp/>Input<sp/>tensor<sp/>of<sp/>azimuthal<sp/>angle<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>px<sp/>Output<sp/>tensor<sp/>for<sp/>Px<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>Px_kernel(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>pt,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>phi,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>px</highlight></codeline>
+<codeline><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/>///&lt;<sp/>Calculate<sp/>unique<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idx<sp/>&gt;=<sp/>pt.size(0))<sp/>return;<sp/>///&lt;<sp/>Boundary<sp/>check:<sp/>if<sp/>index<sp/>is<sp/>out<sp/>of<sp/>bounds,<sp/>return.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>px[idx]<sp/>=<sp/>pt[idx]<sp/>*<sp/>cos(phi[idx]);<sp/>///&lt;<sp/>Compute<sp/>Px<sp/>using<sp/>pt<sp/>and<sp/>phi.</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>the<sp/>y-component<sp/>of<sp/>momentum<sp/>(Py).</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>pt<sp/>Input<sp/>tensor<sp/>of<sp/>transverse<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>phi<sp/>Input<sp/>tensor<sp/>of<sp/>azimuthal<sp/>angle<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>py<sp/>Output<sp/>tensor<sp/>for<sp/>Py<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>Py_kernel(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>pt,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>phi,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;<sp/>py</highlight></codeline>
+<codeline><highlight class="normal">)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/>///&lt;<sp/>Calculate<sp/>unique<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(idx<sp/>&gt;=<sp/>pt.size(0))<sp/>return;<sp/>///&lt;<sp/>Boundary<sp/>check:<sp/>if<sp/>index<sp/>is<sp/>out<sp/>of<sp/>bounds,<sp/>return.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>py[idx]<sp/>=<sp/>pt[idx]<sp/>*<sp/>sin(phi[idx]);<sp/>///&lt;<sp/>Compute<sp/>Py<sp/>using<sp/>pt<sp/>and<sp/>phi.</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Px(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>phi){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pt<sp/>-&gt;<sp/>size(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px_<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(pt));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt_<sp/><sp/>=<sp/><sp/>pt<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi_<sp/>=<sp/>phi<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pt<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;px&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PxK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pt_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>phi_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>px_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>px_;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Py(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>phi){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pt<sp/>-&gt;<sp/>size(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py_<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(pt));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt_<sp/><sp/>=<sp/><sp/>pt<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi_<sp/>=<sp/>phi<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pt<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;py&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PyK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pt_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>phi_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>py_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>py_;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Pz(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pt<sp/>-&gt;<sp/>size(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pz_<sp/><sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(pt));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt_<sp/><sp/>=<sp/><sp/>pt<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>eta_<sp/>=<sp/>eta<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pt<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;pz&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PzK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pt_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eta_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pz_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>pz_;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PxPyPz(torch::Tensor*<sp/>pmu){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmu<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>pmu<sp/>-&gt;<sp/>size({-1});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>s<sp/>=<sp/>sizeof(double)*dy;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmc<sp/>=<sp/>torch::zeros({dx,<sp/>dy},<sp/>MakeOp(pmu));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>dy,<sp/>dy);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pmu<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;pxpypz&quot;,<sp/>[&amp;]{<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PxPyPzK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd,<sp/>s&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmu<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>pmc;<sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PxPyPzE(torch::Tensor*<sp/>pmu){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>pmu<sp/>-&gt;<sp/>size({-1});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(dy<sp/>&gt;=<sp/>4){return<sp/>transform_::PxPyPz(pmu);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmu<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmc<sp/>=<sp/>torch::zeros({dx,<sp/>4},<sp/>MakeOp(pmu));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>4);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>4,<sp/>4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pmu<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;pxpypze&quot;,<sp/>[&amp;]{<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PxPyPzEK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmu<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>pmc;<sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Pt(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px_<sp/>=<sp/>px<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py_<sp/>=<sp/>py<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>px<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pt_<sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(px));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pt_.scalar_type(),<sp/>&quot;pt&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PtK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>px_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>py_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pt_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>pt_;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Phi(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>px_<sp/>=<sp/>px<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>py_<sp/>=<sp/>py<sp/>-&gt;<sp/>reshape({-1,<sp/>1});<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>phi_<sp/>=<sp/>torch::zeros_like(py_);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>px_.size(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(phi_.scalar_type(),<sp/>&quot;phi&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PhiK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>px_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>py_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>phi_.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;()</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>phi_;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Eta(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc<sp/>-&gt;<sp/>size(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>eta<sp/>=<sp/>torch::zeros({dx,<sp/>1},<sp/>MakeOp(pmc));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pmc<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;eta&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>EtaK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>eta.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>eta;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PtEtaPhi(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>pmc<sp/>-&gt;<sp/>size({-1});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmu<sp/>=<sp/>torch::zeros({dx,<sp/>dy},<sp/>MakeOp(pmc));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>dy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>dy,<sp/>dy);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>s<sp/>=<sp/>sizeof(double)*dy;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pmc<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;ptetaphi&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PtEtaPhiK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd,<sp/>s&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmu.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>pmu;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PtEtaPhiE(torch::Tensor*<sp/>pmc){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>pmc<sp/>-&gt;<sp/>size({-1});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(dy<sp/>&gt;=<sp/>4){return<sp/>transform_::PtEtaPhi(pmc);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>pmc<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmu<sp/>=<sp/>torch::zeros({dx,<sp/>4},<sp/>MakeOp(pmc));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(1,<sp/>4);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>4,<sp/>4);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_FLOATING_TYPES(pmc<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;ptetaphie&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>PtEtaPhiEK&lt;scalar_t&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmc<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pmu.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>pmu;<sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::Eta(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmc<sp/>=<sp/>format({*px,<sp/>*py,<sp/>*pz});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>transform_::Eta(&amp;pmc);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PtEtaPhi(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmc<sp/>=<sp/>format({*px,<sp/>*py,<sp/>*pz});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>transform_::PtEtaPhi(&amp;pmc);<sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PtEtaPhiE(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz,<sp/>torch::Tensor*<sp/>e){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmc<sp/>=<sp/>format({*px,<sp/>*py,<sp/>*pz,<sp/>*e});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>transform_::PtEtaPhi(&amp;pmc);<sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PxPyPz(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta,<sp/>torch::Tensor*<sp/>phi){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmu<sp/>=<sp/>format({*pt,<sp/>*eta,<sp/>*phi});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>transform_::PxPyPz(&amp;pmu);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>transform_::PxPyPzE(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta,<sp/>torch::Tensor*<sp/>phi,<sp/>torch::Tensor*<sp/>energy){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pmu<sp/>=<sp/>format({*pt,<sp/>*eta,<sp/>*phi,<sp/>*energy});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>transform_::PxPyPz(&amp;pmu);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/transform/transform.cu"/>
+  </compounddef>
+</doxygen>

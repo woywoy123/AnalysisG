@@ -1,0 +1,5 @@
+<map id="recursivegraphneuralnetwork::recursivegraphneuralnetwork" name="recursivegraphneuralnetwork::recursivegraphneuralnetwork">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,227,45"/>
+<area shape="rect" id="Node000002" href="$classmodel__template.html#a456e96f75278fed9c8d6f4dbff885e39" title="Registers a PyTorch sequential module with the model." alt="" coords="275,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,23,261,23,261,28,227,28"/>
+</map>

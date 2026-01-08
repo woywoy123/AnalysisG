@@ -1,0 +1,8 @@
+<map id="lossfx::loss" name="lossfx::loss">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,100,55"/>
+<area shape="rect" id="Node000002" href="$classlossfx.html#a5a3c5b59645060ddbf22b4208c443da4" title=" " alt="" coords="148,29,271,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,39,134,39,134,45,100,45"/>
+<area shape="rect" id="Node000003" href="$classlossfx.html#a14679b5f9d19ef11d23b39b38d519b71" title=" " alt="" coords="319,29,401,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,39,305,39,305,45,271,45"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="335,31,329,21,332,11,343,5,360,3,381,6,390,15,386,19,378,11,360,8,345,10,336,15,335,20,339,28"/>
+</map>

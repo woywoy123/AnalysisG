@@ -1,0 +1,7 @@
+<map id="child::child" name="child::child">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,97,70"/>
+<area shape="rect" id="Node000002" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="145,5,291,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,46,131,39,132,45,98,51"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="145,69,291,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="98,63,132,70,131,75,97,69"/>
+</map>

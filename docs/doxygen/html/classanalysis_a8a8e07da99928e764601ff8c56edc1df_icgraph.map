@@ -1,0 +1,10 @@
+<map id="analysis::execution" name="analysis::execution">
+<area shape="rect" id="Node000001" title="Static method to execute a model (training or inference) on a set of data." alt="" coords="593,5,740,31"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a7b98125c72486407d782b2bc2ea67389" title="Sets up the environment for model inference (prediction)." alt="" coords="361,5,545,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="579,21,546,21,546,15,579,15"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="199,5,313,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="347,21,313,21,313,15,347,15"/>
+<area shape="rect" id="Node000004" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="5,5,151,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,30,151,30,151,24,185,24"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="164,6,198,7,198,12,164,12"/>
+</map>

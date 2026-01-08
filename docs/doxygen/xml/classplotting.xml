@@ -1,0 +1,2961 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classplotting" kind="class" language="C++" prot="public">
+    <compoundname>plotting</compoundname>
+    <basecompoundref refid="classtools" prot="public" virt="non-virtual">tools</basecompoundref>
+    <basecompoundref refid="classnotification" prot="public" virt="non-virtual">notification</basecompoundref>
+    <includes refid="plotting_8h" local="no">plotting.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classplotting_1ad7e6f80b340a86dd287b0e5baa2599cf" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::extension</definition>
+        <argsstring></argsstring>
+        <name>extension</name>
+        <qualifiedname>plotting::extension</qualifiedname>
+        <initializer>= &quot;.pdf&quot;</initializer>
+        <briefdescription>
+<para>File extension for output files (e.g., &quot;.pdf&quot;, &quot;.png&quot;). Default is &quot;.pdf&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="111" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="111" bodyend="-1"/>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">build_path</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a65010c1d42e3e2f36390ed00e52070f2" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::filename</definition>
+        <argsstring></argsstring>
+        <name>filename</name>
+        <qualifiedname>plotting::filename</qualifiedname>
+        <initializer>= &quot;untitled&quot;</initializer>
+        <briefdescription>
+<para>Base filename for output files. Default is &quot;untitled&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="112" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="112" bodyend="-1"/>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">build_path</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a66c02c3630a2ddb7ed8a865912821668" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::output_path</definition>
+        <argsstring></argsstring>
+        <name>output_path</name>
+        <qualifiedname>plotting::output_path</qualifiedname>
+        <initializer>= &quot;./Figures&quot;</initializer>
+        <briefdescription>
+<para>Directory path for output files. Default is &quot;./Figures&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="113" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="113" bodyend="-1"/>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">build_path</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aa59536b9ab6ba50c062621743ebf6296" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::x_min</definition>
+        <argsstring></argsstring>
+        <name>x_min</name>
+        <qualifiedname>plotting::x_min</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Minimum value for x-axis. Default is 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="116" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aa54586a44abc1cbd55e5fda52edef0bd" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::y_min</definition>
+        <argsstring></argsstring>
+        <name>y_min</name>
+        <qualifiedname>plotting::y_min</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Minimum value for y-axis. Default is 0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="117" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a4b428deaf7f9ec7de3bc7aca25809bbe" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::x_max</definition>
+        <argsstring></argsstring>
+        <name>x_max</name>
+        <qualifiedname>plotting::x_max</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Maximum value for x-axis. Default is 0 (auto-determined if not set). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="119" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ab72aac911d98ff5f5edd0495168dde02" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::y_max</definition>
+        <argsstring></argsstring>
+        <name>y_max</name>
+        <qualifiedname>plotting::y_max</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Maximum value for y-axis. Default is 0 (auto-determined if not set). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="120" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1adbe97e0079e069818ffb8ba8772514ab" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int plotting::x_bins</definition>
+        <argsstring></argsstring>
+        <name>x_bins</name>
+        <qualifiedname>plotting::x_bins</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+<para>Number of bins for x-axis. Default is 100. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="122" column="13" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ac135e0fed226096fd752328ac152af49" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int plotting::y_bins</definition>
+        <argsstring></argsstring>
+        <name>y_bins</name>
+        <qualifiedname>plotting::y_bins</qualifiedname>
+        <initializer>= 100</initializer>
+        <briefdescription>
+<para>Number of bins for y-axis. Default is 100. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="123" column="13" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aaffe8117627cbabd1dd1bf8df010998e" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::errors</definition>
+        <argsstring></argsstring>
+        <name>errors</name>
+        <qualifiedname>plotting::errors</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag to enable/disable error bars. Default is false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="124" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aaa7d4ffe76a535f0a3b3ca69db170407" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::counts</definition>
+        <argsstring></argsstring>
+        <name>counts</name>
+        <qualifiedname>plotting::counts</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag to enable/disable counts display. Default is false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="125" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ab18dbe3a39565e2158fb0cf7ffd00f5d" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::style</definition>
+        <argsstring></argsstring>
+        <name>style</name>
+        <qualifiedname>plotting::style</qualifiedname>
+        <initializer>= &quot;ROOT&quot;</initializer>
+        <briefdescription>
+<para>Plot style. Default is &quot;ROOT&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="128" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a46f193ca6bbc718e2365b530a7bcb913" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::title</definition>
+        <argsstring></argsstring>
+        <name>title</name>
+        <qualifiedname>plotting::title</qualifiedname>
+        <initializer>= &quot;untitled&quot;</initializer>
+        <briefdescription>
+<para>Plot title. Default is &quot;untitled&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="129" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a2937dba273668f146338ec74a8b4323b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::ytitle</definition>
+        <argsstring></argsstring>
+        <name>ytitle</name>
+        <qualifiedname>plotting::ytitle</qualifiedname>
+        <initializer>= &quot;y-axis&quot;</initializer>
+        <briefdescription>
+<para>Y-axis title. Default is &quot;y-axis&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="130" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a0278b7b53b5c2c695b55e9292ba3594b" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::xtitle</definition>
+        <argsstring></argsstring>
+        <name>xtitle</name>
+        <qualifiedname>plotting::xtitle</qualifiedname>
+        <initializer>= &quot;x-axis&quot;</initializer>
+        <briefdescription>
+<para>X-axis title. Default is &quot;x-axis&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="131" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aa8e08dbb56fb878b9e6382532d2709f2" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::histfill</definition>
+        <argsstring></argsstring>
+        <name>histfill</name>
+        <qualifiedname>plotting::histfill</qualifiedname>
+        <initializer>= &quot;fill&quot;</initializer>
+        <briefdescription>
+<para>Histogram fill style. Default is &quot;fill&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="132" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a86d36942b02834e5dd2089b3a7b1f508" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::overflow</definition>
+        <argsstring></argsstring>
+        <name>overflow</name>
+        <qualifiedname>plotting::overflow</qualifiedname>
+        <initializer>= &quot;sum&quot;</initializer>
+        <briefdescription>
+<para>Overflow handling. Default is &quot;sum&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="133" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a565fa6acaa397d0a76188aa79d15422f" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::marker</definition>
+        <argsstring></argsstring>
+        <name>marker</name>
+        <qualifiedname>plotting::marker</qualifiedname>
+        <initializer>= &quot;.&quot;</initializer>
+        <briefdescription>
+<para>Marker style. Default is &quot;.&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="134" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="134" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a3a783845eae7aafd82091f6be5292eae" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::hatch</definition>
+        <argsstring></argsstring>
+        <name>hatch</name>
+        <qualifiedname>plotting::hatch</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Hatch style. Default is empty. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="135" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a6ae1942c27e21424f306a19384ecb263" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::linestyle</definition>
+        <argsstring></argsstring>
+        <name>linestyle</name>
+        <qualifiedname>plotting::linestyle</qualifiedname>
+        <initializer>= &quot;-&quot;</initializer>
+        <briefdescription>
+<para>Line style. Default is &quot;-&quot;. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="136" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="136" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a47fc7cceaa57c5fda8d4dbf87240e121" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string plotting::color</definition>
+        <argsstring></argsstring>
+        <name>color</name>
+        <qualifiedname>plotting::color</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Default color for plots. Default is empty. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="138" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1afef4131ac14c8dcdce86fa0dfdfa77e2" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt;std::string&gt; plotting::colors</definition>
+        <argsstring></argsstring>
+        <name>colors</name>
+        <qualifiedname>plotting::colors</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>List of colors for multi-series plots. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="139" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="139" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ad49b38ef4a3979820b13f5b8e1d88671" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::stack</definition>
+        <argsstring></argsstring>
+        <name>stack</name>
+        <qualifiedname>plotting::stack</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag to enable/disable stacking. Default is false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="141" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a7f1ae0d9fc4bee2173c8a33b684ea209" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::density</definition>
+        <argsstring></argsstring>
+        <name>density</name>
+        <qualifiedname>plotting::density</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag to enable/disable density normalization. Default is false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="142" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a3746d7dcdabdecf1d1192711f7c205f9" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::x_logarithmic</definition>
+        <argsstring></argsstring>
+        <name>x_logarithmic</name>
+        <qualifiedname>plotting::x_logarithmic</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag to enable/disable logarithmic x-axis. Default is false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="144" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a2fe01bc531df64ecf8f89559aa659f90" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::y_logarithmic</definition>
+        <argsstring></argsstring>
+        <name>y_logarithmic</name>
+        <qualifiedname>plotting::y_logarithmic</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag to enable/disable logarithmic y-axis. Default is false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="145" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a7384cc7ca67315f85455bf66e8ba3432" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::line_width</definition>
+        <argsstring></argsstring>
+        <name>line_width</name>
+        <qualifiedname>plotting::line_width</qualifiedname>
+        <initializer>= 0.1</initializer>
+        <briefdescription>
+<para>Line width for plots. Default is 0.1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="147" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a6d7721d2c1ab7238e331cddec9d4c107" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::cap_size</definition>
+        <argsstring></argsstring>
+        <name>cap_size</name>
+        <qualifiedname>plotting::cap_size</qualifiedname>
+        <initializer>= 1.0</initializer>
+        <briefdescription>
+<para>Cap size for error bars. Default is 1.0. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="148" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ac86c00ccc1a745c057dd2298cb8df7e2" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::alpha</definition>
+        <argsstring></argsstring>
+        <name>alpha</name>
+        <qualifiedname>plotting::alpha</qualifiedname>
+        <initializer>= 0.4</initializer>
+        <briefdescription>
+<para>Transparency level for plots. Default is 0.4. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="149" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a8dcedbc730e7b22dbe0ecebc52fd6832" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::x_step</definition>
+        <argsstring></argsstring>
+        <name>x_step</name>
+        <qualifiedname>plotting::x_step</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Step size for x-axis. Default is -1 (auto-determined). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="150" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ac9c9ac3ffbd1facfdac8b95b35e799a8" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::y_step</definition>
+        <argsstring></argsstring>
+        <name>y_step</name>
+        <qualifiedname>plotting::y_step</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Step size for y-axis. Default is -1 (auto-determined). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="151" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ab34a2d30b876bdd96257a2e0388ed1f5" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::font_size</definition>
+        <argsstring></argsstring>
+        <name>font_size</name>
+        <qualifiedname>plotting::font_size</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Font size for text. Default is 10. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="154" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aa7978ce5eddf9e761419586c7e5cbedf" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::axis_size</definition>
+        <argsstring></argsstring>
+        <name>axis_size</name>
+        <qualifiedname>plotting::axis_size</qualifiedname>
+        <initializer>= 12.5</initializer>
+        <briefdescription>
+<para>Font size for axis labels. Default is 12.5. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="155" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a72d5c3dad1478a260ccbbcd9cbd59ddf" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::legend_size</definition>
+        <argsstring></argsstring>
+        <name>legend_size</name>
+        <qualifiedname>plotting::legend_size</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Font size for legend. Default is 10. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="156" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a5d3ba0acefb44fa8728811a8ab18a48f" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::title_size</definition>
+        <argsstring></argsstring>
+        <name>title_size</name>
+        <qualifiedname>plotting::title_size</qualifiedname>
+        <initializer>= 10</initializer>
+        <briefdescription>
+<para>Font size for title. Default is 10. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="157" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a599e64432757dc2c2b1eabb7454740f6" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::use_latex</definition>
+        <argsstring></argsstring>
+        <name>use_latex</name>
+        <qualifiedname>plotting::use_latex</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>Flag to enable/disable LaTeX rendering. Default is true. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="158" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1add2c87c991f85f63dab2e2d39612e36d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int plotting::dpi</definition>
+        <argsstring></argsstring>
+        <name>dpi</name>
+        <qualifiedname>plotting::dpi</qualifiedname>
+        <initializer>= 400</initializer>
+        <briefdescription>
+<para>Dots per inch for output resolution. Default is 400. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="161" column="13" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="161" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a1e29db482f10d59f4fa2fae03ebd77f3" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::xscaling</definition>
+        <argsstring></argsstring>
+        <name>xscaling</name>
+        <qualifiedname>plotting::xscaling</qualifiedname>
+        <initializer>= 1.25*6.4</initializer>
+        <briefdescription>
+<para>Scaling factor for x-axis. Default is 1.25*6.4. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="162" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a046412496e33aeb8d9198dd660fa88aa" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::yscaling</definition>
+        <argsstring></argsstring>
+        <name>yscaling</name>
+        <qualifiedname>plotting::yscaling</qualifiedname>
+        <initializer>= 1.25*4.8</initializer>
+        <briefdescription>
+<para>Scaling factor for y-axis. Default is 1.25*4.8. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="163" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1ae4bf6eb91a346551c99ed74143c7a941" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool plotting::auto_scale</definition>
+        <argsstring></argsstring>
+        <name>auto_scale</name>
+        <qualifiedname>plotting::auto_scale</qualifiedname>
+        <initializer>= true</initializer>
+        <briefdescription>
+<para>Flag to enable/disable auto-scaling. Default is true. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="164" column="14" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::x_data</definition>
+        <argsstring></argsstring>
+        <name>x_data</name>
+        <qualifiedname>plotting::x_data</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Data for x-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="167" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="167" bodyend="167"/>
+        <referencedby refid="classplotting_1a291087451228246d77c25588f05d0a0e" compoundref="plotting_8cxx" startline="65" endline="88">build_error</referencedby>
+        <referencedby refid="classplotting_1a5a598f64f38a5c6fe9cd06a58983ea25" compoundref="plotting_8cxx" startline="32" endline="36">get_max</referencedby>
+        <referencedby refid="classplotting_1ae5b9ced73a9b2c8e5e9570d7e719755f" compoundref="plotting_8cxx" startline="38" endline="42">get_min</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::y_data</definition>
+        <argsstring></argsstring>
+        <name>y_data</name>
+        <qualifiedname>plotting::y_data</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Data for y-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="168" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="168" bodyend="168"/>
+        <referencedby refid="classplotting_1a291087451228246d77c25588f05d0a0e" compoundref="plotting_8cxx" startline="65" endline="88">build_error</referencedby>
+        <referencedby refid="classplotting_1a5a598f64f38a5c6fe9cd06a58983ea25" compoundref="plotting_8cxx" startline="32" endline="36">get_max</referencedby>
+        <referencedby refid="classplotting_1ae5b9ced73a9b2c8e5e9570d7e719755f" compoundref="plotting_8cxx" startline="38" endline="42">get_min</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::map&lt; int, std::vector&lt; std::vector&lt; double &gt; &gt; * &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::map&lt;int, std::vector&lt;std::vector&lt;double&gt; &gt;*&gt; &gt; plotting::roc_data</definition>
+        <argsstring></argsstring>
+        <name>roc_data</name>
+        <qualifiedname>plotting::roc_data</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>ROC data storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="170" column="18" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="170" bodyend="170"/>
+        <referencedby refid="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" compoundref="plotting_8cxx" startline="11" endline="20">~plotting</referencedby>
+        <referencedby refid="classplotting_1ab59fd114ad68f713daa6f3865c3a3a93" compoundref="plotting_8cxx" startline="90" endline="122">build_ROC</referencedby>
+        <referencedby refid="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" compoundref="plotting_8cxx" startline="124" endline="140">get_ROC</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a70975d4616ff707c72737b042b7336b5" prot="public" static="no" mutable="no">
+        <type>std::map&lt; std::string, std::map&lt; int, std::vector&lt; std::vector&lt; int &gt; &gt; * &gt; &gt;</type>
+        <definition>std::map&lt;std::string, std::map&lt;int, std::vector&lt;std::vector&lt;int&gt; &gt;*&gt; &gt; plotting::labels</definition>
+        <argsstring></argsstring>
+        <name>labels</name>
+        <qualifiedname>plotting::labels</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Labels storage. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="171" column="23" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="171" bodyend="171"/>
+        <referencedby refid="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" compoundref="plotting_8cxx" startline="11" endline="20">~plotting</referencedby>
+        <referencedby refid="classplotting_1ab59fd114ad68f713daa6f3865c3a3a93" compoundref="plotting_8cxx" startline="90" endline="122">build_ROC</referencedby>
+        <referencedby refid="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" compoundref="plotting_8cxx" startline="124" endline="140">get_ROC</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a253404a5e3aa9207f6f014e1ebc9f94d" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::y_error_up</definition>
+        <argsstring></argsstring>
+        <name>y_error_up</name>
+        <qualifiedname>plotting::y_error_up</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Upper error values for y-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="173" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="173" bodyend="173"/>
+        <referencedby refid="classplotting_1a291087451228246d77c25588f05d0a0e" compoundref="plotting_8cxx" startline="65" endline="88">build_error</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a39e4f4e50b9e8d727e34a8247707116b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::y_error_down</definition>
+        <argsstring></argsstring>
+        <name>y_error_down</name>
+        <qualifiedname>plotting::y_error_down</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Lower error values for y-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="174" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="174" bodyend="174"/>
+        <referencedby refid="classplotting_1a291087451228246d77c25588f05d0a0e" compoundref="plotting_8cxx" startline="65" endline="88">build_error</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1aaeed582f1f659ddef252aaf69d8bfc08" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, float &gt;</type>
+        <definition>std::unordered_map&lt;std::string, float&gt; plotting::x_labels</definition>
+        <argsstring></argsstring>
+        <name>x_labels</name>
+        <qualifiedname>plotting::x_labels</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Labels for x-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="176" column="28" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="176" bodyend="176"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a2c74fafbe5758b6290428fe33598ed9a" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, float &gt;</type>
+        <definition>std::unordered_map&lt;std::string, float&gt; plotting::y_labels</definition>
+        <argsstring></argsstring>
+        <name>y_labels</name>
+        <qualifiedname>plotting::y_labels</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Labels for y-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="177" column="28" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="177" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a290cb622b19a72575b8beca8ccb9aa5f" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::variable_x_bins</definition>
+        <argsstring></argsstring>
+        <name>variable_x_bins</name>
+        <qualifiedname>plotting::variable_x_bins</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Variable binning for x-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="179" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="179" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a55af05cfc87f87d7404866464756942a" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::variable_y_bins</definition>
+        <argsstring></argsstring>
+        <name>variable_y_bins</name>
+        <qualifiedname>plotting::variable_y_bins</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Variable binning for y-axis. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="180" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="180" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a3242285ecbd4cd026d47b2d62b293f85" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; float &gt;</type>
+        <definition>std::vector&lt;float&gt; plotting::weights</definition>
+        <argsstring></argsstring>
+        <name>weights</name>
+        <qualifiedname>plotting::weights</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+<para>Weights for data points. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="182" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="182" bodyend="182"/>
+        <referencedby refid="classplotting_1a1760124c718705cf9edcfb2789abbe9e" compoundref="plotting_8cxx" startline="44" endline="51">sum_of_weights</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1a00b3c39c9038fa324c26db790c2c648a" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::cross_section</definition>
+        <argsstring></argsstring>
+        <name>cross_section</name>
+        <qualifiedname>plotting::cross_section</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+<para>Cross-section value. Default is -1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="183" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="183" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplotting_1afd227651c30aca3d999480d78fc68813" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float plotting::integrated_luminosity</definition>
+        <argsstring></argsstring>
+        <name>integrated_luminosity</name>
+        <qualifiedname>plotting::integrated_luminosity</qualifiedname>
+        <initializer>= 140.1</initializer>
+        <briefdescription>
+<para>Integrated luminosity in fb-1. Default is 140.1. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="184" column="15" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="184" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classplotting_1a2b975fd0d4c29b75a23f4f397ce9240c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>plotting::plotting</definition>
+        <argsstring>()</argsstring>
+        <name>plotting</name>
+        <qualifiedname>plotting::plotting</qualifiedname>
+        <briefdescription>
+<para>Constructor for the <computeroutput>plotting</computeroutput> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Initializes a new plotting instance with default settings. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="56" column="9" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="10" bodyend="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>plotting::~plotting</definition>
+        <argsstring>()</argsstring>
+        <name>~plotting</name>
+        <qualifiedname>plotting::~plotting</qualifiedname>
+        <briefdescription>
+<para>Destructor for the <computeroutput>plotting</computeroutput> class. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Cleans up any resources used by the plotting system. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="61" column="9" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="11" bodyend="20"/>
+        <references refid="classplotting_1a70975d4616ff707c72737b042b7336b5" compoundref="plotting_8h" startline="171" endline="171">labels</references>
+        <references refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" compoundref="plotting_8h" startline="170" endline="170">roc_data</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1ae528701faff0a6f14e970d3a920f6081" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string plotting::build_path</definition>
+        <argsstring>()</argsstring>
+        <name>build_path</name>
+        <qualifiedname>plotting::build_path</qualifiedname>
+        <briefdescription>
+<para>Builds a complete path for output files based on configured settings. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The constructed path as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="67" column="21" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="22" bodyend="30"/>
+        <references refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" compoundref="tools_2cxx_2io_8cxx" startline="6" endline="16">tools::create_path</references>
+        <references refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" compoundref="strings_8cxx" startline="71" endline="75">tools::ends_with</references>
+        <references refid="classplotting_1ad7e6f80b340a86dd287b0e5baa2599cf" compoundref="plotting_8h" startline="111">extension</references>
+        <references refid="classplotting_1a65010c1d42e3e2f36390ed00e52070f2" compoundref="plotting_8h" startline="112">filename</references>
+        <references refid="classplotting_1a66c02c3630a2ddb7ed8a865912821668" compoundref="plotting_8h" startline="113">output_path</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1a5a598f64f38a5c6fe9cd06a58983ea25" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float plotting::get_max</definition>
+        <argsstring>(std::string dim)</argsstring>
+        <name>get_max</name>
+        <qualifiedname>plotting::get_max</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>dim</declname>
+        </param>
+        <briefdescription>
+<para>Gets the maximum value for a specified dimension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimension to find the maximum for (e.g., &quot;x&quot;, &quot;y&quot;, &quot;pt&quot;). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The maximum value as a float. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="73" column="15" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="32" bodyend="36"/>
+        <references refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" compoundref="plotting_8h" startline="167" endline="167">x_data</references>
+        <references refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" compoundref="plotting_8h" startline="168" endline="168">y_data</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1ae5b9ced73a9b2c8e5e9570d7e719755f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float plotting::get_min</definition>
+        <argsstring>(std::string dim)</argsstring>
+        <name>get_min</name>
+        <qualifiedname>plotting::get_min</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>dim</declname>
+        </param>
+        <briefdescription>
+<para>Gets the minimum value for a specified dimension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimension to find the minimum for (e.g., &quot;x&quot;, &quot;y&quot;, &quot;pt&quot;). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The minimum value as a float. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="79" column="15" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="38" bodyend="42"/>
+        <references refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" compoundref="plotting_8h" startline="167" endline="167">x_data</references>
+        <references refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" compoundref="plotting_8h" startline="168" endline="168">y_data</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1a1760124c718705cf9edcfb2789abbe9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float plotting::sum_of_weights</definition>
+        <argsstring>()</argsstring>
+        <name>sum_of_weights</name>
+        <qualifiedname>plotting::sum_of_weights</qualifiedname>
+        <briefdescription>
+<para>Calculates the sum of weights for normalization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The sum of weights as a float. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="84" column="15" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="44" bodyend="51"/>
+        <references refid="classplotting_1a3242285ecbd4cd026d47b2d62b293f85" compoundref="plotting_8h" startline="182" endline="182">weights</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1a291087451228246d77c25588f05d0a0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void plotting::build_error</definition>
+        <argsstring>()</argsstring>
+        <name>build_error</name>
+        <qualifiedname>plotting::build_error</qualifiedname>
+        <briefdescription>
+<para>Builds error bars or uncertainty bands for plots. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="88" column="14" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="65" bodyend="88"/>
+        <references refid="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" compoundref="plotting_8cxx" startline="53" endline="63">mean_stdev</references>
+        <references refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" compoundref="plotting_8h" startline="167" endline="167">x_data</references>
+        <references refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" compoundref="plotting_8h" startline="168" endline="168">y_data</references>
+        <references refid="classplotting_1a39e4f4e50b9e8d727e34a8247707116b" compoundref="plotting_8h" startline="174" endline="174">y_error_down</references>
+        <references refid="classplotting_1a253404a5e3aa9207f6f014e1ebc9f94d" compoundref="plotting_8h" startline="173" endline="173">y_error_up</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; float, float &gt;</type>
+        <definition>std::tuple&lt; float, float &gt; plotting::mean_stdev</definition>
+        <argsstring>(std::vector&lt; float &gt; *data)</argsstring>
+        <name>mean_stdev</name>
+        <qualifiedname>plotting::mean_stdev</qualifiedname>
+        <param>
+          <type>std::vector&lt; float &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+<para>Calculates the mean and standard deviation of a data vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector of data values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the mean and standard deviation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="94" column="20" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="53" bodyend="63"/>
+        <referencedby refid="classplotting_1a291087451228246d77c25588f05d0a0e" compoundref="plotting_8cxx" startline="65" endline="88">build_error</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1ab59fd114ad68f713daa6f3865c3a3a93" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void plotting::build_ROC</definition>
+        <argsstring>(std::string name, int kfold, std::vector&lt; int &gt; *labels, std::vector&lt; std::vector&lt; double &gt; &gt; *scores)</argsstring>
+        <name>build_ROC</name>
+        <qualifiedname>plotting::build_ROC</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>kfold</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>labels</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; std::vector&lt; double &gt; &gt; *</type>
+          <declname>scores</declname>
+        </param>
+        <briefdescription>
+<para>Builds a Receiver Operating Characteristic (ROC) curve from classification results. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the ROC curve (for identification and labeling). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>kfold</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The k-fold cross-validation index, if applicable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>labels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a vector of true labels (0 or 1). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scores</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a vector of classifier scores/probabilities. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="103" column="14" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="90" bodyend="122"/>
+        <references refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="98" endline="103">count</references>
+        <references refid="classplotting_1a70975d4616ff707c72737b042b7336b5" compoundref="plotting_8h" startline="171" endline="171">labels</references>
+        <references refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" compoundref="plotting_8h" startline="170" endline="170">roc_data</references>
+      </memberdef>
+      <memberdef kind="function" id="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structroc__t" kindref="compound">roc_t</ref> &gt;</type>
+        <definition>std::vector&lt; roc_t &gt; plotting::get_ROC</definition>
+        <argsstring>()</argsstring>
+        <name>get_ROC</name>
+        <qualifiedname>plotting::get_ROC</qualifiedname>
+        <briefdescription>
+<para>Gets the computed ROC curve data. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of <ref refid="structroc__t" kindref="compound">roc_t</ref> structures containing the ROC curve information. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="108" column="21" bodyfile="modules/plotting/cxx/plotting.cxx" bodystart="124" bodyend="140"/>
+        <references refid="structroc__t_1a12327f6d3cdaeb7789a70cd0f68477ff" compoundref="plotting_8h" startline="31">roc_t::cls</references>
+        <references refid="structroc__t_1aa13b64491cd08e0ac619e8fc9ed10441" compoundref="plotting_8h" startline="32">roc_t::kfold</references>
+        <references refid="classplotting_1a70975d4616ff707c72737b042b7336b5" compoundref="plotting_8h" startline="171" endline="171">labels</references>
+        <references refid="structroc__t_1a2ec8bddabc2505f75a393fef20ec743f" compoundref="plotting_8h" startline="33">roc_t::model</references>
+        <references refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" compoundref="plotting_8h" startline="170" endline="170">roc_data</references>
+        <references refid="structroc__t_1a232f98b2aac1f99ac58569891f85f901" compoundref="plotting_8h" startline="35">roc_t::scores</references>
+        <references refid="structroc__t_1aa6bdb298cbd76d552e10b168e0d6f9b3" compoundref="plotting_8h" startline="34">roc_t::truth</references>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::split</definition>
+        <argsstring>(std::string inpt, std::string del)</argsstring>
+        <name>split</name>
+        <qualifiedname>tools::split</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>del</declname>
+        </param>
+        <briefdescription>
+<para>Splits a string into a vector of substrings based on a delimiter. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input string to split. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>del</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The delimiter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of substrings. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="140" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="23" bodyend="36"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <referencedby refid="classanalysis_1a68b520bbdb4d591d7375f9ecd6532ce8" compoundref="event__build_8cxx" startline="4" endline="135">analysis::build_events</referencedby>
+        <referencedby refid="classanalysis_1a1c3e0d7bb80774d865586b18a1566704" compoundref="graph__build_8cxx" startline="3" endline="30">analysis::build_graphs</referencedby>
+        <referencedby refid="classanalysis_1a7b98125c72486407d782b2bc2ea67389" compoundref="inference__build_8cxx" startline="5" endline="139">analysis::build_inference</referencedby>
+        <referencedby refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" compoundref="event__template_8cxx" startline="78" endline="100">event_template::build_mapping</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classmeta_1aac47e377d2bbda2fac5a8cfc5ada7243" compoundref="meta_8cxx" startline="154" endline="198">meta::compiler</referencedby>
+        <referencedby refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" compoundref="tools_2cxx_2io_8cxx" startline="6" endline="16">tools::create_path</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classmeta_1a35d142708b4b66eeb857eb0c204e459b" compoundref="meta_8cxx" startline="274" endline="279">meta::hash</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" compoundref="struct__graph_8cxx" startline="235" endline="244">graph_t::meta_deserialize</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">dataloader::restore_graphs_</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+        <referencedby refid="classmetric__template_1a5209be08253548a7a56bd2f08db31a8c" compoundref="metric_2cxx_2properties_8cxx" startline="38" endline="76">metric_template::set_variables</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::trim</definition>
+        <argsstring>(std::string s)</argsstring>
+        <name>trim</name>
+        <qualifiedname>tools::trim</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Removes whitespace from the beginning and end of a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The trimmed string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="147" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string tools::type_name</definition>
+        <argsstring>()</argsstring>
+        <name>type_name</name>
+        <qualifiedname>tools::type_name</qualifiedname>
+        <briefdescription>
+<para>Gets the type name of a variable as a string (for debugging). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type to get the name of. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The name of the type as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Gets the type name via RTTI.</para>
+<para>&lt; Returns the type name.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="155" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="155" bodyend="158"/>
+        <referencedby refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" compoundref="event__template_8cxx" startline="78" endline="100">event_template::build_mapping</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>g</type>
+        <definition>g tools::sum</definition>
+        <argsstring>(std::vector&lt; g &gt; *inpt)</argsstring>
+        <name>sum</name>
+        <qualifiedname>tools::sum</qualifiedname>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Sums the elements of a vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of elements in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to sum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The sum of all elements. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Initialize the output variable.</para>
+<para>&lt; Return the sum.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="183" column="7" bodyfile="modules/tools/include/tools/tools.h" bodystart="183" bodyend="187"/>
+        <referencedby refid="classmetrics_1a15f20f34714224f09f44cf520ca6f271" compoundref="loss__plots_8cxx" startline="220" endline="226">metrics::add_th1f_accuracy</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classparticle__template_1a575d99bd23ac34125328e4d23518ff52" compoundref="modules_2particle_2cxx_2physics_8cxx" startline="3" endline="10">particle_template::DeltaR</referencedby>
+        <referencedby refid="classgraph__template_1aa2bef51e5e00b49425c8ac93bcd1f315" compoundref="graph__template_8cxx" startline="87" endline="146">graph_template::double_neutrino</referencedby>
+        <referencedby refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" compoundref="grift_8cxx" startline="112" endline="296">grift::forward</referencedby>
+        <referencedby refid="classrecursivegraphneuralnetwork_1a4b09bc8de8d9ecd0b4ff1ffa94deea98" compoundref="RecursiveGraphNeuralNetwork_8cxx" startline="143" endline="300">recursivegraphneuralnetwork::forward</referencedby>
+        <referencedby refid="classmatching_1a04995b471b7aed459aeec59b3ea9a81b" compoundref="matching_8cxx" startline="100" endline="143">matching::match_obj</referencedby>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">grift::message</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a575db6b2e3b67a7d679205600d83b576" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_prefix</definition>
+        <argsstring>(std::string prefix)</argsstring>
+        <name>set_prefix</name>
+        <qualifiedname>notification::set_prefix</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>prefix</declname>
+        </param>
+        <briefdescription>
+<para>Sets the prefix used in log messages from this instance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to use as a prefix for log messages. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="45" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1aa0aad214cf167691e516ecc343306244" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string notification::get_prefix</definition>
+        <argsstring>()</argsstring>
+        <name>get_prefix</name>
+        <qualifiedname>notification::get_prefix</qualifiedname>
+        <briefdescription>
+<para>Returns the prefix currently used in log messages. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The current prefix string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="51" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a2ea9e0828e3d323b5bb5cdecc8f018a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Info</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Info</name>
+        <qualifiedname>notification::Info</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs an info message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="58" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Warning</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Warning</name>
+        <qualifiedname>notification::Warning</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs a warning message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The warning message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="65" column="10"/>
+        <referencedby refid="classio_1ae9363859101b007dedf420f10e437014" compoundref="io_8h" startline="108" endline="112">io::read</referencedby>
+        <referencedby refid="classio_1a2a0214e493a7a2ef5e9507c0e6aa4e70" compoundref="io_8h" startline="95" endline="99">io::read</referencedby>
+        <referencedby refid="classio_1acbb361e3301373cce246acf6208b60ea" compoundref="io_8h" startline="80" endline="86">io::write</referencedby>
+        <referencedby refid="classio_1a39a32d23eeb4ae8f422bb416256fd9cd" compoundref="io_8h" startline="65" endline="71">io::write</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ab0c3843575c157d799e532a9ea5acbd0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Error</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Error</name>
+        <qualifiedname>notification::Error</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs an error message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The error message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="72" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a8dd1ebb578269118b18bf7f0e176bf14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Debug</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Debug</name>
+        <qualifiedname>notification::Debug</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs a debug message (only in debug mode). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The debug message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="79" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a47e2d300e33c44a24b0c51d9e9a83914" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Message</definition>
+        <argsstring>(std::string msg, std::string tag=&quot;&quot;, bool newline=true)</argsstring>
+        <name>Message</name>
+        <qualifiedname>notification::Message</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>tag</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs a message with custom formatting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A custom tag to prepend to the message. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="87" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a5a69a50032f5dcf38bed2bb27dc048fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_debug_mode</definition>
+        <argsstring>(bool dbg)</argsstring>
+        <name>set_debug_mode</name>
+        <qualifiedname>notification::set_debug_mode</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>dbg</declname>
+        </param>
+        <briefdescription>
+<para>Enables or disables debug mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dbg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Boolean flag, set to true to enable debug messages, false to disable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="93" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ae25782afd10b3cb5fffe17afaf4fffc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool notification::get_debug_mode</definition>
+        <argsstring>()</argsstring>
+        <name>get_debug_mode</name>
+        <qualifiedname>notification::get_debug_mode</qualifiedname>
+        <briefdescription>
+<para>Returns the current status of debug mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Boolean indicating whether debug mode is enabled (true) or disabled (false). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="99" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a9bb77ba73a5f25af292e9eea8a8de970" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_suppress_warning</definition>
+        <argsstring>(bool sw)</argsstring>
+        <name>set_suppress_warning</name>
+        <qualifiedname>notification::set_suppress_warning</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>sw</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether warnings should be suppressed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Boolean flag, set to true to suppress warnings, false to show them. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="105" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ab53313e9343e9ef6deaefa2bdd3a837a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool notification::get_suppress_warning</definition>
+        <argsstring>()</argsstring>
+        <name>get_suppress_warning</name>
+        <qualifiedname>notification::get_suppress_warning</qualifiedname>
+        <briefdescription>
+<para>Returns the current warning suppression status. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Boolean indicating whether warnings are suppressed (true) or shown (false). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="111" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a58eec7023935cff9332ce21e58fc3f5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_suppress_info</definition>
+        <argsstring>(bool si)</argsstring>
+        <name>set_suppress_info</name>
+        <qualifiedname>notification::set_suppress_info</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>si</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether info messages should be suppressed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>si</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Boolean flag, set to true to suppress info messages, false to show them. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="117" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a3a12e8eaf363a320abee5393436123f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool notification::get_suppress_info</definition>
+        <argsstring>()</argsstring>
+        <name>get_suppress_info</name>
+        <qualifiedname>notification::get_suppress_info</qualifiedname>
+        <briefdescription>
+<para>Returns the current info message suppression status. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Boolean indicating whether info messages are suppressed (true) or shown (false). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="123" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classplotting_1ad01922fe7c8fe016e0f73b62fe5386a6" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; std::vector&lt; g &gt; &gt; *</type>
+        <definition>std::vector&lt; std::vector&lt; g &gt; &gt; * plotting::generate</definition>
+        <argsstring>(size_t x, size_t y)</argsstring>
+        <name>generate</name>
+        <qualifiedname>plotting::generate</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>y</declname>
+        </param>
+        <briefdescription>
+<para>Generates a 2D vector of specified dimensions and initializes it with zeros. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The data type of the elements in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of rows. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of columns. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pointer to the generated 2D vector. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/plotting/include/plotting/plotting.h" line="195" column="21" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="195" bodyend="198"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::create_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>create_path</name>
+        <qualifiedname>tools::create_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Creates a directory path, including parent directories if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to create. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="49" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="6" bodyend="16"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a7b98125c72486407d782b2bc2ea67389" compoundref="inference__build_8cxx" startline="5" endline="139">analysis::build_inference</referencedby>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">build_path</referencedby>
+        <referencedby refid="classanalysis_1ab1e46d4a55389c9159584cc1c4f217a0" compoundref="analysis_8cxx" startline="81" endline="95">analysis::build_project</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classmetrics_1a60ff488f6951bae8d98bc7a03bc6e464" compoundref="mass__plots_8cxx" startline="13" endline="115">metrics::dump_mass_plots</referencedby>
+        <referencedby refid="classmetric__template_1a422951eb9279ed05c885795ebeed0e5b" compoundref="metric_2cxx_2base_8cxx" startline="125" endline="163">metric_template::execute</referencedby>
+        <referencedby refid="classmetrics_1a160fdefa51ba1fd2135307d3722acc1d" compoundref="loss__plots_8cxx" startline="3" endline="43">metrics::generic_painter</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+        <referencedby refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::delete_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>delete_path</name>
+        <qualifiedname>tools::delete_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Deletes a directory path and its contents. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to delete. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="55" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="22" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::is_file</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>is_file</name>
+        <qualifiedname>tools::is_file</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a path refers to an existing file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the path is a file and exists, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="62" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="30" bodyend="33"/>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classanalysis_1a1c8b808d255b490be4ea86df4d29cdf1" compoundref="methods_8cxx" startline="7" endline="49">analysis::initialize_loop</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+        <referencedby refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::rename</definition>
+        <argsstring>(std::string start, std::string target)</argsstring>
+        <name>rename</name>
+        <qualifiedname>tools::rename</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+<para>Renames a file or directory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>start</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The original path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new path. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="69" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="18" bodyend="20"/>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::absolute_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>absolute_path</name>
+        <qualifiedname>tools::absolute_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Converts a relative path to an absolute path. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The absolute version of the path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="76" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="49" bodyend="51"/>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a68b520bbdb4d591d7375f9ecd6532ce8" compoundref="event__build_8cxx" startline="4" endline="135">analysis::build_events</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::ls</definition>
+        <argsstring>(std::string path, std::string ext=&quot;&quot;)</argsstring>
+        <name>ls</name>
+        <qualifiedname>tools::ls</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>ext</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+<para>Lists files in a directory, optionally filtered by extension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File extension filter. If empty, all files are listed. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of filenames in the directory. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="84" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="35" bodyend="47"/>
+        <references refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" compoundref="strings_8cxx" startline="71" endline="75">tools::ends_with</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1ae3bba702555507d8b6e5567c34d19142" compoundref="cache_8cxx" startline="334" endline="337">dataloader::restore_graphs</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val)</argsstring>
+        <name>to_string</name>
+        <qualifiedname>tools::to_string</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with standard precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="92" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="59" bodyend="63"/>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">dataloader::generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">dataloader::generate_test_set</referencedby>
+        <referencedby refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" compoundref="interfaces_8cxx" startline="152" endline="163">particle_template::get_hash</referencedby>
+        <referencedby refid="classtopefficiency_1aae4a7f46ed0d168dd12f6ab5e9074a76" compoundref="topefficiency_8cxx" startline="57" endline="79">topefficiency::region</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">dataloader::restore_dataset</referencedby>
+        <referencedby refid="classevent__template_1a9f5661b7516b43801913ab6fc897a80e" compoundref="event_2cxx_2properties_8cxx" startline="92" endline="97">event_template::set_hash</referencedby>
+        <referencedby refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" compoundref="selection_2cxx_2properties_8cxx" startline="11" endline="16">selection_template::set_hash</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classtopjets_1a72145e79c19febe5393d17220c980e2a" compoundref="topjets_8cxx" startline="22" endline="163">topjets::strategy</referencedby>
+        <referencedby refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" compoundref="toptruthjets_8cxx" startline="22" endline="163">toptruthjets::strategy</referencedby>
+        <referencedby refid="classparton_1a4045341bd771afd7ac452fa1dc6aea8e" compoundref="parton_8h" startline="22" endline="68">parton::top_mass_contribution</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val, int prec)</argsstring>
+        <name>to_string</name>
+        <qualifiedname>tools::to_string</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prec</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with specified precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of decimal places to consider. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="100" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="91" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::replace</definition>
+        <argsstring>(std::string *in, std::string repl_str, std::string repl_with)</argsstring>
+        <name>replace</name>
+        <qualifiedname>tools::replace</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_str</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_with</declname>
+        </param>
+        <briefdescription>
+<para>Replaces all occurrences of a substring in a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_with</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The replacement string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="108" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="5" bodyend="21"/>
+        <referencedby refid="classanalysis_1a1c3e0d7bb80774d865586b18a1566704" compoundref="graph__build_8cxx" startline="3" endline="30">analysis::build_graphs</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classmeta_1aa38115a3aaa4c30e30800d3f52c1a750" compoundref="meta_8cxx" startline="314" endline="317">meta::get_campaign</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_string</definition>
+        <argsstring>(std::string *inpt, std::string trg)</argsstring>
+        <name>has_string</name>
+        <qualifiedname>tools::has_string</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string contains a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the substring is found, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="116" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="65" bodyend="69"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classmeta_1aac47e377d2bbda2fac5a8cfc5ada7243" compoundref="meta_8cxx" startline="154" endline="198">meta::compiler</referencedby>
+        <referencedby refid="classmetrics_1a160fdefa51ba1fd2135307d3722acc1d" compoundref="loss__plots_8cxx" startline="3" endline="43">metrics::generic_painter</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">dataloader::restore_graphs_</referencedby>
+        <referencedby refid="classmeta_1a24d8657dbb9d0d8903725ee01fe22c14" compoundref="meta_8cxx" startline="226" endline="272">meta::scan_sow</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::ends_with</definition>
+        <argsstring>(std::string *inpt, std::string val)</argsstring>
+        <name>ends_with</name>
+        <qualifiedname>tools::ends_with</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string ends with a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to check for at the end. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string ends with the substring, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="124" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="71" bodyend="75"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">build_path</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dataloader::dump_graphs</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_value</definition>
+        <argsstring>(std::vector&lt; std::string &gt; *data, std::string trg)</argsstring>
+        <name>has_value</name>
+        <qualifiedname>tools::has_value</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a vector of strings contains a specific string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string is found in the vector, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="132" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="77" bodyend="83"/>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::flush</definition>
+        <argsstring>(std::vector&lt; T * &gt; *inpt)</argsstring>
+        <name>flush</name>
+        <qualifiedname>tools::flush</qualifiedname>
+        <param>
+          <type>std::vector&lt; T * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Empties a vector and all objects it points to. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of pointers in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Loop through all elements in the vector.</para>
+<para>&lt; Delete the object the pointer points to.</para>
+<para>&lt; Set the pointer to nullptr to avoid dangling pointers.</para>
+<para>&lt; Clear the vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="167" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="167" bodyend="174"/>
+        <referencedby refid="classanalysis_1af5938086aabb68bf478a72b0593e4bb8" compoundref="analysis_8cxx" startline="36" endline="46">analysis::~analysis</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">dataloader::~dataloader</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classio_1a1c994985d2405202c19fb391cc43a5de" compoundref="io_2cxx_2root_8cxx" startline="358" endline="373">io::root_end</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::put</definition>
+        <argsstring>(std::vector&lt; g * &gt; *out, std::vector&lt; g * &gt; *src, std::vector&lt; int &gt; *trg)</argsstring>
+        <name>put</name>
+        <qualifiedname>tools::put</qualifiedname>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Fills a vector with pointers from another vector based on a selection index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects being pointed to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector to select from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a vector of indices for selection. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the output vector.</para>
+<para>&lt; Reserve space for the output elements.</para>
+<para>&lt; Loop through each selected index.</para>
+<para>&lt; Get the object at the selected index.</para>
+<para>&lt; Add it to the output vector.</para>
+<para>&lt; Mark the object as in use.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="197" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="197" bodyend="205"/>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">dataloader::get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">dataloader::get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">dataloader::get_test_set</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename C</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::extract</definition>
+        <argsstring>(std::vector&lt; T &gt; *prop, std::vector&lt; C * &gt; *src, void(*get_prop)(T *, C *))</argsstring>
+        <name>extract</name>
+        <qualifiedname>tools::extract</qualifiedname>
+        <param>
+          <type>std::vector&lt; T &gt; *</type>
+          <declname>prop</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; C * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>void(*)(T *, C *)</type>
+          <declname>get_prop</declname>
+        </param>
+        <briefdescription>
+<para>Extracts a specific property from a vector of objects into a new vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects in the source vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of the property to extract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill with property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector of objects. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>get_prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function pointer to extract the property from an object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the properties vector.</para>
+<para>&lt; Reserve space for the property values.</para>
+<para>&lt; Loop through each object in the source vector.</para>
+<para>&lt; Create a default-initialized property variable.</para>
+<para>&lt; Call the provided function to extract the property.</para>
+<para>&lt; Add the property value to the output vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="216" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="216" bodyend="224"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string notification::prefix</definition>
+        <argsstring></argsstring>
+        <name>prefix</name>
+        <qualifiedname>notification::prefix</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Prefix used in log messages from this instance. Initialized as empty string. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="126" column="17" bodyfile="modules/notification/include/notification/notification.h" bodystart="126" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" compoundref="dataloader_8cxx" startline="6" endline="12">dataloader::dataloader</referencedby>
+        <referencedby refid="classio_1a87d6c9bb433c979e3d469090b7e4f873" compoundref="io_2cxx_2io_8cxx" startline="18" endline="18">io::io</referencedby>
+        <referencedby refid="classmeta_1a63ad3379066eb6b7c8bf7a7ea9ee0783" compoundref="meta_8cxx" startline="4" endline="126">meta::meta</referencedby>
+        <referencedby refid="classoptimizer_1aff2ebf2bb9af98169baea22791818790" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="3" endline="6">optimizer::optimizer</referencedby>
+        <referencedby refid="classmetric__template_1a85d83f331257a2bcbaca37f1eb4b5d5c" compoundref="metric_2cxx_2properties_8cxx" startline="3" endline="6">metric_template::set_name</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classnotification_1aa14ded524569ac1d7fd121c161a733be" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool notification::debug_mode</definition>
+        <argsstring></argsstring>
+        <name>debug_mode</name>
+        <qualifiedname>notification::debug_mode</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating whether debug mode is enabled. Initialized as false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="127" column="10" bodyfile="modules/notification/include/notification/notification.h" bodystart="127" bodyend="-1"/>
+        <referencedby refid="classanalysis_1ad1bf7fde8eafef15d4dcedcba5ce51f7" compoundref="metric__build_8cxx" startline="16" endline="161">analysis::build_metric</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classnotification_1ab2d4ba20d7bc164eece8982b413eab13" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool notification::suppress_warnings</definition>
+        <argsstring></argsstring>
+        <name>suppress_warnings</name>
+        <qualifiedname>notification::suppress_warnings</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating whether warnings are suppressed. Initialized as false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="128" column="10" bodyfile="modules/notification/include/notification/notification.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnotification_1a77a99c28092cf053b395805c75dde6da" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool notification::suppress_info</definition>
+        <argsstring></argsstring>
+        <name>suppress_info</name>
+        <qualifiedname>notification::suppress_info</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating whether info messages are suppressed. Initialized as false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="129" column="10" bodyfile="modules/notification/include/notification/notification.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Provides functionality for creating and managing visualizations. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The plotting class handles various aspects of data visualization, including creating plots, managing output formats and paths, computing statistics for plotting, and specialized physics visualization techniques like ROC curves for classifier evaluation. It inherits from both tools (for utility functions) and notification (for messaging). </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>notification</label>
+        <link refid="classnotification"/>
+      </node>
+      <node id="1">
+        <label>plotting</label>
+        <link refid="classplotting"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="16">
+        <label>K</label>
+      </node>
+      <node id="11">
+        <label>T</label>
+      </node>
+      <node id="6">
+        <label>bool</label>
+      </node>
+      <node id="7">
+        <label>float</label>
+      </node>
+      <node id="8">
+        <label>int</label>
+      </node>
+      <node id="13">
+        <label>std::map&lt; std::string, std::map&lt; int, std::vector&lt; std::vector&lt; double &gt; &gt; * &gt; &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="template-instance">
+          <edgelabel>&lt; std::string, std::map&lt; int, std::vector&lt; std::vector&lt; double &gt; &gt; * &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="17">
+        <label>std::map&lt; std::string, std::map&lt; int, std::vector&lt; std::vector&lt; int &gt; &gt; * &gt; &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="template-instance">
+          <edgelabel>&lt; std::string, std::map&lt; int, std::vector&lt; std::vector&lt; int &gt; &gt; * &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>notification</label>
+        <link refid="classnotification"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>#prefix</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>#debug_mode</edgelabel>
+          <edgelabel>#suppress_info</edgelabel>
+          <edgelabel>#suppress_warnings</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>plotting</label>
+        <link refid="classplotting"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+color</edgelabel>
+          <edgelabel>+extension</edgelabel>
+          <edgelabel>+filename</edgelabel>
+          <edgelabel>+hatch</edgelabel>
+          <edgelabel>+histfill</edgelabel>
+          <edgelabel>+linestyle</edgelabel>
+          <edgelabel>+marker</edgelabel>
+          <edgelabel>+output_path</edgelabel>
+          <edgelabel>+overflow</edgelabel>
+          <edgelabel>+style</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+alpha</edgelabel>
+          <edgelabel>+axis_size</edgelabel>
+          <edgelabel>+cap_size</edgelabel>
+          <edgelabel>+cross_section</edgelabel>
+          <edgelabel>+font_size</edgelabel>
+          <edgelabel>+integrated_luminosity</edgelabel>
+          <edgelabel>+legend_size</edgelabel>
+          <edgelabel>+line_width</edgelabel>
+          <edgelabel>+title_size</edgelabel>
+          <edgelabel>+x_max</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+dpi</edgelabel>
+          <edgelabel>+x_bins</edgelabel>
+          <edgelabel>+y_bins</edgelabel>
+        </childnode>
+        <childnode refid="6" relation="usage">
+          <edgelabel>+auto_scale</edgelabel>
+          <edgelabel>+counts</edgelabel>
+          <edgelabel>+density</edgelabel>
+          <edgelabel>+errors</edgelabel>
+          <edgelabel>+stack</edgelabel>
+          <edgelabel>+use_latex</edgelabel>
+          <edgelabel>+x_logarithmic</edgelabel>
+          <edgelabel>+y_logarithmic</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>+colors</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>+variable_x_bins</edgelabel>
+          <edgelabel>+variable_y_bins</edgelabel>
+          <edgelabel>+weights</edgelabel>
+          <edgelabel>+x_data</edgelabel>
+          <edgelabel>+y_data</edgelabel>
+          <edgelabel>+y_error_down</edgelabel>
+          <edgelabel>+y_error_up</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>+roc_data</edgelabel>
+        </childnode>
+        <childnode refid="17" relation="usage">
+          <edgelabel>+labels</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>+x_labels</edgelabel>
+          <edgelabel>+y_labels</edgelabel>
+        </childnode>
+      </node>
+      <node id="5">
+        <label>std::basic_string&lt; Char &gt;</label>
+      </node>
+      <node id="15">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="16" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="14">
+        <label>map&lt; int, std::vector&lt; std::vector&lt; double &gt; &gt; * &gt;</label>
+      </node>
+      <node id="18">
+        <label>map&lt; int, std::vector&lt; std::vector&lt; int &gt; &gt; * &gt;</label>
+      </node>
+      <node id="4">
+        <label>std::string</label>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::unordered_map&lt; K, T &gt;</label>
+        <childnode refid="16" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="10">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="11" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="19">
+        <label>std::unordered_map&lt; std::string, float &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="template-instance">
+          <edgelabel>&lt; std::string, float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="12">
+        <label>std::vector&lt; float &gt;</label>
+        <childnode refid="7" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; float &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="4" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/plotting/include/plotting/plotting.h" line="47" column="1" bodyfile="modules/plotting/include/plotting/plotting.h" bodystart="50" bodyend="199"/>
+    <listofallmembers>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>plotting</scope><name>absolute_path</name></member>
+      <member refid="classplotting_1ac86c00ccc1a745c057dd2298cb8df7e2" prot="public" virt="non-virtual"><scope>plotting</scope><name>alpha</name></member>
+      <member refid="classplotting_1ae4bf6eb91a346551c99ed74143c7a941" prot="public" virt="non-virtual"><scope>plotting</scope><name>auto_scale</name></member>
+      <member refid="classplotting_1aa7978ce5eddf9e761419586c7e5cbedf" prot="public" virt="non-virtual"><scope>plotting</scope><name>axis_size</name></member>
+      <member refid="classplotting_1a291087451228246d77c25588f05d0a0e" prot="public" virt="non-virtual"><scope>plotting</scope><name>build_error</name></member>
+      <member refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" prot="public" virt="non-virtual"><scope>plotting</scope><name>build_path</name></member>
+      <member refid="classplotting_1ab59fd114ad68f713daa6f3865c3a3a93" prot="public" virt="non-virtual"><scope>plotting</scope><name>build_ROC</name></member>
+      <member refid="classplotting_1a6d7721d2c1ab7238e331cddec9d4c107" prot="public" virt="non-virtual"><scope>plotting</scope><name>cap_size</name></member>
+      <member refid="classplotting_1a47fc7cceaa57c5fda8d4dbf87240e121" prot="public" virt="non-virtual"><scope>plotting</scope><name>color</name></member>
+      <member refid="classplotting_1afef4131ac14c8dcdce86fa0dfdfa77e2" prot="public" virt="non-virtual"><scope>plotting</scope><name>colors</name></member>
+      <member refid="classplotting_1aaa7d4ffe76a535f0a3b3ca69db170407" prot="public" virt="non-virtual"><scope>plotting</scope><name>counts</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>plotting</scope><name>create_path</name></member>
+      <member refid="classplotting_1a00b3c39c9038fa324c26db790c2c648a" prot="public" virt="non-virtual"><scope>plotting</scope><name>cross_section</name></member>
+      <member refid="classnotification_1a8dd1ebb578269118b18bf7f0e176bf14" prot="public" virt="non-virtual"><scope>plotting</scope><name>Debug</name></member>
+      <member refid="classnotification_1aa14ded524569ac1d7fd121c161a733be" prot="protected" virt="non-virtual"><scope>plotting</scope><name>debug_mode</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>plotting</scope><name>delete_path</name></member>
+      <member refid="classplotting_1a7f1ae0d9fc4bee2173c8a33b684ea209" prot="public" virt="non-virtual"><scope>plotting</scope><name>density</name></member>
+      <member refid="classplotting_1add2c87c991f85f63dab2e2d39612e36d" prot="public" virt="non-virtual"><scope>plotting</scope><name>dpi</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>plotting</scope><name>ends_with</name></member>
+      <member refid="classnotification_1ab0c3843575c157d799e532a9ea5acbd0" prot="public" virt="non-virtual"><scope>plotting</scope><name>Error</name></member>
+      <member refid="classplotting_1aaffe8117627cbabd1dd1bf8df010998e" prot="public" virt="non-virtual"><scope>plotting</scope><name>errors</name></member>
+      <member refid="classplotting_1ad7e6f80b340a86dd287b0e5baa2599cf" prot="public" virt="non-virtual"><scope>plotting</scope><name>extension</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>plotting</scope><name>extract</name></member>
+      <member refid="classplotting_1a65010c1d42e3e2f36390ed00e52070f2" prot="public" virt="non-virtual"><scope>plotting</scope><name>filename</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>plotting</scope><name>flush</name></member>
+      <member refid="classplotting_1ab34a2d30b876bdd96257a2e0388ed1f5" prot="public" virt="non-virtual"><scope>plotting</scope><name>font_size</name></member>
+      <member refid="classplotting_1ad01922fe7c8fe016e0f73b62fe5386a6" prot="private" virt="non-virtual"><scope>plotting</scope><name>generate</name></member>
+      <member refid="classnotification_1ae25782afd10b3cb5fffe17afaf4fffc0" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_debug_mode</name></member>
+      <member refid="classplotting_1a5a598f64f38a5c6fe9cd06a58983ea25" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_max</name></member>
+      <member refid="classplotting_1ae5b9ced73a9b2c8e5e9570d7e719755f" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_min</name></member>
+      <member refid="classnotification_1aa0aad214cf167691e516ecc343306244" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_prefix</name></member>
+      <member refid="classplotting_1abe13ad9c1fd870ebfad2c7692c251245" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_ROC</name></member>
+      <member refid="classnotification_1a3a12e8eaf363a320abee5393436123f0" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_suppress_info</name></member>
+      <member refid="classnotification_1ab53313e9343e9ef6deaefa2bdd3a837a" prot="public" virt="non-virtual"><scope>plotting</scope><name>get_suppress_warning</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>plotting</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>plotting</scope><name>has_value</name></member>
+      <member refid="classplotting_1a3a783845eae7aafd82091f6be5292eae" prot="public" virt="non-virtual"><scope>plotting</scope><name>hatch</name></member>
+      <member refid="classplotting_1aa8e08dbb56fb878b9e6382532d2709f2" prot="public" virt="non-virtual"><scope>plotting</scope><name>histfill</name></member>
+      <member refid="classnotification_1a2ea9e0828e3d323b5bb5cdecc8f018a8" prot="public" virt="non-virtual"><scope>plotting</scope><name>Info</name></member>
+      <member refid="classplotting_1afd227651c30aca3d999480d78fc68813" prot="public" virt="non-virtual"><scope>plotting</scope><name>integrated_luminosity</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>plotting</scope><name>is_file</name></member>
+      <member refid="classplotting_1a70975d4616ff707c72737b042b7336b5" prot="public" virt="non-virtual"><scope>plotting</scope><name>labels</name></member>
+      <member refid="classplotting_1a72d5c3dad1478a260ccbbcd9cbd59ddf" prot="public" virt="non-virtual"><scope>plotting</scope><name>legend_size</name></member>
+      <member refid="classplotting_1a7384cc7ca67315f85455bf66e8ba3432" prot="public" virt="non-virtual"><scope>plotting</scope><name>line_width</name></member>
+      <member refid="classplotting_1a6ae1942c27e21424f306a19384ecb263" prot="public" virt="non-virtual"><scope>plotting</scope><name>linestyle</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>plotting</scope><name>ls</name></member>
+      <member refid="classplotting_1a565fa6acaa397d0a76188aa79d15422f" prot="public" virt="non-virtual"><scope>plotting</scope><name>marker</name></member>
+      <member refid="classplotting_1a8d26e0eb29163870ddbdecbfc2332b1b" prot="public" virt="non-virtual"><scope>plotting</scope><name>mean_stdev</name></member>
+      <member refid="classnotification_1a47e2d300e33c44a24b0c51d9e9a83914" prot="public" virt="non-virtual"><scope>plotting</scope><name>Message</name></member>
+      <member refid="classnotification_1a3ec5fe2d8db29cf32853858ff58fdbd7" prot="public" virt="non-virtual"><scope>plotting</scope><name>notification</name></member>
+      <member refid="classplotting_1a66c02c3630a2ddb7ed8a865912821668" prot="public" virt="non-virtual"><scope>plotting</scope><name>output_path</name></member>
+      <member refid="classplotting_1a86d36942b02834e5dd2089b3a7b1f508" prot="public" virt="non-virtual"><scope>plotting</scope><name>overflow</name></member>
+      <member refid="classplotting_1a2b975fd0d4c29b75a23f4f397ce9240c" prot="public" virt="non-virtual"><scope>plotting</scope><name>plotting</name></member>
+      <member refid="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" prot="protected" virt="non-virtual"><scope>plotting</scope><name>prefix</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>plotting</scope><name>put</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>plotting</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>plotting</scope><name>replace</name></member>
+      <member refid="classplotting_1aa5a0e92e2d5597f1af1bfa4b4163ca22" prot="public" virt="non-virtual"><scope>plotting</scope><name>roc_data</name></member>
+      <member refid="classnotification_1a5a69a50032f5dcf38bed2bb27dc048fc" prot="public" virt="non-virtual"><scope>plotting</scope><name>set_debug_mode</name></member>
+      <member refid="classnotification_1a575db6b2e3b67a7d679205600d83b576" prot="public" virt="non-virtual"><scope>plotting</scope><name>set_prefix</name></member>
+      <member refid="classnotification_1a58eec7023935cff9332ce21e58fc3f5a" prot="public" virt="non-virtual"><scope>plotting</scope><name>set_suppress_info</name></member>
+      <member refid="classnotification_1a9bb77ba73a5f25af292e9eea8a8de970" prot="public" virt="non-virtual"><scope>plotting</scope><name>set_suppress_warning</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>plotting</scope><name>split</name></member>
+      <member refid="classplotting_1ad49b38ef4a3979820b13f5b8e1d88671" prot="public" virt="non-virtual"><scope>plotting</scope><name>stack</name></member>
+      <member refid="classplotting_1ab18dbe3a39565e2158fb0cf7ffd00f5d" prot="public" virt="non-virtual"><scope>plotting</scope><name>style</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>plotting</scope><name>sum</name></member>
+      <member refid="classplotting_1a1760124c718705cf9edcfb2789abbe9e" prot="public" virt="non-virtual"><scope>plotting</scope><name>sum_of_weights</name></member>
+      <member refid="classnotification_1a77a99c28092cf053b395805c75dde6da" prot="protected" virt="non-virtual"><scope>plotting</scope><name>suppress_info</name></member>
+      <member refid="classnotification_1ab2d4ba20d7bc164eece8982b413eab13" prot="protected" virt="non-virtual"><scope>plotting</scope><name>suppress_warnings</name></member>
+      <member refid="classplotting_1a46f193ca6bbc718e2365b530a7bcb913" prot="public" virt="non-virtual"><scope>plotting</scope><name>title</name></member>
+      <member refid="classplotting_1a5d3ba0acefb44fa8728811a8ab18a48f" prot="public" virt="non-virtual"><scope>plotting</scope><name>title_size</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>plotting</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>plotting</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>plotting</scope><name>tools</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>plotting</scope><name>trim</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>plotting</scope><name>type_name</name></member>
+      <member refid="classplotting_1a599e64432757dc2c2b1eabb7454740f6" prot="public" virt="non-virtual"><scope>plotting</scope><name>use_latex</name></member>
+      <member refid="classplotting_1a290cb622b19a72575b8beca8ccb9aa5f" prot="public" virt="non-virtual"><scope>plotting</scope><name>variable_x_bins</name></member>
+      <member refid="classplotting_1a55af05cfc87f87d7404866464756942a" prot="public" virt="non-virtual"><scope>plotting</scope><name>variable_y_bins</name></member>
+      <member refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" prot="public" virt="non-virtual"><scope>plotting</scope><name>Warning</name></member>
+      <member refid="classplotting_1a3242285ecbd4cd026d47b2d62b293f85" prot="public" virt="non-virtual"><scope>plotting</scope><name>weights</name></member>
+      <member refid="classplotting_1adbe97e0079e069818ffb8ba8772514ab" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_bins</name></member>
+      <member refid="classplotting_1a82d8ab7c80e0e0f132c849deb8248f0a" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_data</name></member>
+      <member refid="classplotting_1aaeed582f1f659ddef252aaf69d8bfc08" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_labels</name></member>
+      <member refid="classplotting_1a3746d7dcdabdecf1d1192711f7c205f9" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_logarithmic</name></member>
+      <member refid="classplotting_1a4b428deaf7f9ec7de3bc7aca25809bbe" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_max</name></member>
+      <member refid="classplotting_1aa59536b9ab6ba50c062621743ebf6296" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_min</name></member>
+      <member refid="classplotting_1a8dcedbc730e7b22dbe0ecebc52fd6832" prot="public" virt="non-virtual"><scope>plotting</scope><name>x_step</name></member>
+      <member refid="classplotting_1a1e29db482f10d59f4fa2fae03ebd77f3" prot="public" virt="non-virtual"><scope>plotting</scope><name>xscaling</name></member>
+      <member refid="classplotting_1a0278b7b53b5c2c695b55e9292ba3594b" prot="public" virt="non-virtual"><scope>plotting</scope><name>xtitle</name></member>
+      <member refid="classplotting_1ac135e0fed226096fd752328ac152af49" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_bins</name></member>
+      <member refid="classplotting_1a3168e2d75fe29b6bbbfbe5fc9db11371" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_data</name></member>
+      <member refid="classplotting_1a39e4f4e50b9e8d727e34a8247707116b" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_error_down</name></member>
+      <member refid="classplotting_1a253404a5e3aa9207f6f014e1ebc9f94d" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_error_up</name></member>
+      <member refid="classplotting_1a2c74fafbe5758b6290428fe33598ed9a" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_labels</name></member>
+      <member refid="classplotting_1a2fe01bc531df64ecf8f89559aa659f90" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_logarithmic</name></member>
+      <member refid="classplotting_1ab72aac911d98ff5f5edd0495168dde02" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_max</name></member>
+      <member refid="classplotting_1aa54586a44abc1cbd55e5fda52edef0bd" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_min</name></member>
+      <member refid="classplotting_1ac9c9ac3ffbd1facfdac8b95b35e799a8" prot="public" virt="non-virtual"><scope>plotting</scope><name>y_step</name></member>
+      <member refid="classplotting_1a046412496e33aeb8d9198dd660fa88aa" prot="public" virt="non-virtual"><scope>plotting</scope><name>yscaling</name></member>
+      <member refid="classplotting_1a2937dba273668f146338ec74a8b4323b" prot="public" virt="non-virtual"><scope>plotting</scope><name>ytitle</name></member>
+      <member refid="classnotification_1a0b7272463b149418caf592e398cae64e" prot="public" virt="non-virtual"><scope>plotting</scope><name>~notification</name></member>
+      <member refid="classplotting_1a67f238856d7f5c452a3d6376c57afbd5" prot="public" virt="non-virtual"><scope>plotting</scope><name>~plotting</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>plotting</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

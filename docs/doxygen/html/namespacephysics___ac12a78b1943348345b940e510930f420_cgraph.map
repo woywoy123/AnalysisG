@@ -1,0 +1,6 @@
+<map id="physics_::P" name="physics_::P">
+<area shape="rect" id="Node000001" title="Computes the momentum magnitude." alt="" coords="5,29,100,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="31,30,26,21,28,11,38,5,53,3,70,6,78,14,74,18,68,11,53,8,40,10,33,14,31,20,35,28"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="148,29,215,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,39,134,39,134,45,100,45"/>
+</map>

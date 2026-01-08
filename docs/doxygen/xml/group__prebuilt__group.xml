@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__prebuilt__group" kind="group">
+    <compoundname>prebuilt_group</compoundname>
+    <title>Pre-built Templates</title>
+    <briefdescription>
+<para>Ready-to-use templates included with AnalysisG. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>AnalysisG includes several pre-built templates for common use cases in high-energy physics analysis.</para>
+<sect1 id="group__prebuilt__group_1prebuilt_events">
+<title>Pre-built Events</title>
+<para>Located in <computeroutput>src/AnalysisG/events/</computeroutput>:</para>
+<para><table rows="5" cols="2"><row>
+<entry thead="yes"><para>Event   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput><ref refid="classbsm__4tops" kindref="compound">bsm_4tops</ref></computeroutput>   </para>
+</entry><entry thead="no"><para>BSM 4-top analysis events    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput><ref refid="classexp__mc20" kindref="compound">exp_mc20</ref></computeroutput>   </para>
+</entry><entry thead="no"><para>Experimental MC20 format    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>gnn</computeroutput>   </para>
+</entry><entry thead="no"><para>GNN-specific event format    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput><ref refid="classssml__mc20" kindref="compound">ssml_mc20</ref></computeroutput>   </para>
+</entry><entry thead="no"><para>SSML MC20 format   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="group__prebuilt__group_1prebuilt_models">
+<title>Pre-built Models</title>
+<para>Located in <computeroutput>src/AnalysisG/models/</computeroutput>:</para>
+<para><table rows="3" cols="2"><row>
+<entry thead="yes"><para>Model   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>Grift</computeroutput>   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref> Iterative Feature Transformation    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>RecursiveGraphNeuralNetwork</computeroutput>   </para>
+</entry><entry thead="no"><para>Recursive GNN architecture   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="group__prebuilt__group_1prebuilt_selections">
+<title>Pre-built Selections</title>
+<para>Located in <computeroutput>src/AnalysisG/selections/</computeroutput>:</para>
+<para><table rows="4" cols="2"><row>
+<entry thead="yes"><para>Category   </para>
+</entry><entry thead="yes"><para>Selections    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>example/</computeroutput>   </para>
+</entry><entry thead="no"><para>Example MET selection    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>neutrino/</computeroutput>   </para>
+</entry><entry thead="no"><para>Combinatorial, validation selections    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>performance/</computeroutput>   </para>
+</entry><entry thead="no"><para>Top efficiency measurements   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="group__prebuilt__group_1prebuilt_metrics">
+<title>Pre-built Metrics</title>
+<para>Located in <computeroutput>src/AnalysisG/metrics/</computeroutput>:</para>
+<para><table rows="3" cols="2"><row>
+<entry thead="yes"><para>Metric   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>accuracy</computeroutput>   </para>
+</entry><entry thead="no"><para>Classification accuracy    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>pagerank</computeroutput>   </para>
+</entry><entry thead="no"><para>PageRank-based metrics   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,7 @@
+<map id="event_template::set_index" name="event_template::set_index">
+<area shape="rect" id="Node000001" title="Static setter for the index property." alt="" coords="440,5,593,45"/>
+<area shape="rect" id="Node000002" href="$classevent__template.html#a4fc169ae8c1412e8fba67ef35c9bb01a" title="Default constructor for event_template." alt="" coords="221,5,392,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="426,28,392,28,392,23,426,23"/>
+<area shape="rect" id="Node000003" href="$classevent__template.html#a683c5ec2ccfa48483996ba3128b6a07a" title="Creates a new event template instance." alt="" coords="5,13,173,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="207,28,174,28,174,23,207,23"/>
+</map>

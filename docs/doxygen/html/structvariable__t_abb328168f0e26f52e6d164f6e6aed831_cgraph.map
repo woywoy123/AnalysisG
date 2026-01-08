@@ -1,0 +1,18 @@
+<map id="variable_t::process" name="variable_t::process">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,104,151,129"/>
+<area shape="rect" id="Node000002" href="$structvariable__t.html#a35efa1aca52f54be53701f19713efeab" title=" " alt="" coords="210,5,365,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,102,140,71,198,40,216,32,218,37,200,44,143,75,98,106"/>
+<area shape="rect" id="Node000005" href="$structvariable__t.html#a658b5e8556268b7ae507aef14a5b1adb" title=" " alt="" coords="199,55,375,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="132,101,219,81,220,86,133,107"/>
+<area shape="rect" id="Node000006" href="$structvariable__t.html#a2fdb004c324727113017b83666dcfb5f" title=" " alt="" coords="199,104,376,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="151,114,185,114,185,119,151,119"/>
+<area shape="rect" id="Node000007" href="$classbsc__t.html#a953a8bb68bdd6acd9c97d4c0eb965319" title="Clears the internal buffer." alt="" coords="217,177,357,203"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="116,127,238,170,237,175,114,132"/>
+<area shape="rect" id="Node000008" href="$typecasting_8cxx.html#af402b36c82dfb4b1a34d90e26494da67" title=" " alt="" coords="239,227,335,252"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="93,127,138,169,168,192,200,212,227,223,225,228,197,216,165,196,134,173,90,131"/>
+<area shape="rect" id="Node000003" href="$vector__cast_8h.html#a9888ed684385b240692f6cb6e4c6b82e" title=" " alt="" coords="424,5,555,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,15,410,15,410,21,365,21"/>
+<area shape="rect" id="Node000004" href="$vector__cast_8h.html#adc5ffd895fb49094059fd9dc0af67de9" title=" " alt="" coords="603,5,713,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="555,15,589,15,589,21,555,21"/>
+<area shape="poly" id="edge7_Node000007_Node000007" title=" " alt="" coords="254,179,247,169,251,159,265,153,287,151,315,154,326,164,323,168,313,159,287,156,266,158,255,163,253,168,259,176"/>
+</map>

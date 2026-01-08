@@ -1,0 +1,11 @@
+<map id="io::write" name="io::write">
+<area shape="rect" id="Node000001" title="Templated method to write a vector of objects to a dataset." alt="" coords="5,31,80,56"/>
+<area shape="rect" id="Node000002" href="$classnotification.html#ab758dafbb449e142fb68e11c0470b5c9" title="Outputs a warning message." alt="" coords="128,5,284,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,35,114,30,115,35,80,40"/>
+<area shape="rect" id="Node000003" href="$classio.html#a9ceaef5ce2a5f32905f1409a8c14ca20" title="Templated method to write event data (vector of objects) to HDF5." alt="" coords="135,55,277,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="80,46,122,52,121,58,80,51"/>
+<area shape="rect" id="Node000004" href="$classio.html#a6fdc4311aa9426644ffffc6fa45a2bf3" title="Generic HDF5 write operation for a vector of objects." alt="" coords="332,55,427,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="278,65,318,65,318,70,278,70"/>
+<area shape="rect" id="Node000005" href="$classio.html#a1b1fcdf426ced67387cc9579f8f0f3e2" title="&lt; Private access specifier for the following members." alt="" coords="475,55,572,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="427,65,461,65,461,70,427,70"/>
+</map>

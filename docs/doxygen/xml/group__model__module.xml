@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__model__module" kind="group">
+    <compoundname>model_module</compoundname>
+    <title>Model Module</title>
+    <briefdescription>
+<para>Machine learning model templates. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__model__module_1model_overview">
+<title>Overview</title>
+<para>The Model module provides the <ref refid="classmodel__template" kindref="compound">model_template</ref> class for implementing machine learning models using PyTorch (LibTorch).</para>
+</sect1>
+<sect1 id="group__model__module_1model_structure">
+<title>Model Structure</title>
+<para>A model template defines:</para>
+<para><itemizedlist>
+<listitem><para><bold>Forward pass</bold>: Model architecture and computation</para>
+</listitem><listitem><para><bold>Input features</bold>: Which graph features to use</para>
+</listitem><listitem><para><bold>Output format</bold>: Predictions at node, edge, or graph level</para>
+</listitem><listitem><para><bold>Device placement</bold>: CPU or CUDA execution</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="group__model__module_1model_training">
+<title>Training</title>
+<para>Models are trained using the optimizer module with configurable:</para>
+<para><itemizedlist>
+<listitem><para>Learning rate scheduling</para>
+</listitem><listitem><para>Batch size</para>
+</listitem><listitem><para>Number of epochs</para>
+</listitem><listitem><para>Early stopping criteria</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classmodel__template" kindref="compound">model_template</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

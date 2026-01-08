@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="reconstruction_8cuh" kind="file" language="C++">
+    <compoundname>reconstruction.cuh</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@file<sp/>reconstruction.cuh</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Provides<sp/>CUDA<sp/>kernel<sp/>definitions<sp/>for<sp/>graph<sp/>reconstruction<sp/>operations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>GRAPH_RECONSTRUCTION_CUH</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>GRAPH_RECONSTRUCTION_CUH</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;torch/torch.h&gt;<sp/>///&lt;<sp/>Includes<sp/>PyTorch<sp/>C++<sp/>headers<sp/>for<sp/>tensor<sp/>operations.</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;<sp/>///&lt;<sp/>Includes<sp/>utility<sp/>functions<sp/>for<sp/>CUDA<sp/>operations.</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Namespace<sp/>for<sp/>graph-related<sp/>operations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">namespace<sp/>graph_<sp/>{</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>CUDA<sp/>kernel<sp/>for<sp/>reconstructing<sp/>graph<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements<sp/>(e.g.,<sp/>float,<sp/>double).</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>edge_index<sp/>Input<sp/>tensor<sp/>containing<sp/>edge<sp/>indices<sp/>of<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>features<sp/>Input<sp/>tensor<sp/>containing<sp/>node<sp/>features.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>reconstructed<sp/>Output<sp/>tensor<sp/>for<sp/>reconstructed<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>num_nodes<sp/>The<sp/>number<sp/>of<sp/>nodes<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>reconstruct_edges_kernel(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;long,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>edge_index,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>features,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>reconstructed,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>num_nodes</highlight></codeline>
+<codeline><highlight class="normal">);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">/**</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@brief<sp/>Reconstructs<sp/>the<sp/>edges<sp/>of<sp/>a<sp/>graph<sp/>based<sp/>on<sp/>node<sp/>features.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>edge_index<sp/>Input<sp/>tensor<sp/>containing<sp/>edge<sp/>indices<sp/>of<sp/>the<sp/>graph.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@param<sp/>features<sp/>Input<sp/>tensor<sp/>containing<sp/>node<sp/>features.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*<sp/>@return<sp/>A<sp/>tensor<sp/>containing<sp/>the<sp/>reconstructed<sp/>edges.</highlight></codeline>
+<codeline><highlight class="normal"><sp/>*/</highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>reconstruct_edges(torch::Tensor<sp/>edge_index,<sp/>torch::Tensor<sp/>features);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">}<sp/>//<sp/>namespace<sp/>graph_</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#endif<sp/>//<sp/>GRAPH_RECONSTRUCTION_CUH</highlight></codeline>
+    </programlisting>
+    <location file="pyc/graph/include/graph/reconstruction.cuh"/>
+  </compounddef>
+</doxygen>

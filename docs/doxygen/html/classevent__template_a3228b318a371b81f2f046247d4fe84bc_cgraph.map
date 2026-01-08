@@ -1,0 +1,7 @@
+<map id="event_template::build_mapping" name="event_template::build_mapping">
+<area shape="rect" id="Node000001" title="Builds a mapping between event data structures and handlers." alt="" coords="5,23,171,63"/>
+<area shape="rect" id="Node000002" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="241,5,331,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,30,227,23,227,28,171,35"/>
+<area shape="rect" id="Node000003" href="$classtools.html#ab46f1f3892604cb366b861cb54ce30e0" title="Gets the type name of a variable as a string (for debugging)." alt="" coords="219,55,353,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,51,205,55,204,60,171,56"/>
+</map>

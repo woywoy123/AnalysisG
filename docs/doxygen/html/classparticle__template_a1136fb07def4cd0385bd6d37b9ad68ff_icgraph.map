@@ -1,0 +1,11 @@
+<map id="particle_template::register_parent" name="particle_template::register_parent">
+<area shape="rect" id="Node000001" title="Registers a parent particle." alt="" coords="585,37,731,77"/>
+<area shape="rect" id="Node000002" href="$classparticle__template.html#a9550be5b7d6267872dfce8d92e9b09f2" title="Setter for parents." alt="" coords="392,37,537,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="572,60,538,60,538,55,572,55"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#ab527ed22f6d67969247a0be9dda0165f" title="Default constructor." alt="" coords="199,37,344,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,60,345,60,345,55,378,55"/>
+<area shape="rect" id="Node000004" href="$classparticle__template.html#adf7b55df06b7621b0a6bc509f74d22ff" title="Serializes particle data for storage." alt="" coords="5,5,151,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,46,151,40,152,35,186,40"/>
+<area shape="rect" id="Node000005" href="$classparticle__template.html#a6c492ed991c27a61acad61064fa89b3c" title="Creates a clone of this particle." alt="" coords="5,69,151,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="186,74,152,80,151,75,185,69"/>
+</map>

@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__graph__cuda" kind="group">
+    <compoundname>graph_cuda</compoundname>
+    <title>Graph CUDA Module</title>
+    <briefdescription>
+<para>GPU-accelerated graph operations. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__graph__cuda_1graph_functions">
+<title>Available Functions</title>
+<para>The <computeroutput><ref refid="namespacegraph__" kindref="compound">graph_</ref></computeroutput> namespace provides operations for graph neural network post-processing and analysis.</para>
+<sect2 id="group__graph__cuda_1graph_aggregation">
+<title>Aggregation Functions</title>
+<para><table rows="4" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>edge_aggregation()</computeroutput>   </para>
+</entry><entry thead="no"><para>edge_index, prediction, node_feature   </para>
+</entry><entry thead="no"><para>map&lt;string, Tensor&gt;   </para>
+</entry><entry thead="no"><para>Aggregate by edges    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>node_aggregation()</computeroutput>   </para>
+</entry><entry thead="no"><para>edge_index, prediction, node_feature   </para>
+</entry><entry thead="no"><para>map&lt;string, Tensor&gt;   </para>
+</entry><entry thead="no"><para>Aggregate by nodes    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>unique_aggregation()</computeroutput>   </para>
+</entry><entry thead="no"><para>cluster_map, features, prediction   </para>
+</entry><entry thead="no"><para>map&lt;string, Tensor&gt;   </para>
+</entry><entry thead="no"><para>Aggregate unique clusters   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+<sect2 id="group__graph__cuda_1graph_reconstruction">
+<title>Reconstruction</title>
+<para><table rows="2" cols="4"><row>
+<entry thead="yes"><para>Function   </para>
+</entry><entry thead="yes"><para>Parameters   </para>
+</entry><entry thead="yes"><para>Returns   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>reconstruction()</computeroutput>   </para>
+</entry><entry thead="no"><para>edge_index, truth_edge, pred_edge, node_feature, masses, trk_data   </para>
+</entry><entry thead="no"><para>map&lt;string, Tensor&gt;   </para>
+</entry><entry thead="no"><para>Full graph reconstruction   </para>
+</entry></row>
+</table>
+</para>
+</sect2>
+</sect1>
+<sect1 id="group__graph__cuda_1graph_usage">
+<title>Usage</title>
+<para>These functions are typically used for post-processing GNN outputs:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="preprocessor">#include<sp/>&lt;<ref refid="graph_8cuh" kindref="compound">graph/graph.cuh</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>After<sp/>GNN<sp/>forward<sp/>pass</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/><ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref><sp/>=<sp/>...;<sp/><sp/></highlight><highlight class="comment">//<sp/>[2,<sp/>E]</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>prediction<sp/>=<sp/>...;<sp/><sp/></highlight><highlight class="comment">//<sp/>[E]<sp/>edge<sp/>predictions</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>features<sp/>=<sp/>...;<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>[N,<sp/>F]<sp/>node<sp/>features</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>result<sp/>=<sp/><ref refid="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef" kindref="member">graph_::edge_aggregation</ref>(<ref refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7" kindref="member">edge_index</ref>,<sp/>prediction,<sp/>features);</highlight></codeline>
+<codeline><highlight class="normal">torch::Tensor<sp/>aggregated<sp/>=<sp/>result[</highlight><highlight class="stringliteral">&quot;aggregated&quot;</highlight><highlight class="normal">];</highlight></codeline>
+</programlisting> </para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

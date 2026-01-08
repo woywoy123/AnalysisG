@@ -1,0 +1,9 @@
+<map id="accuracy_metric" name="accuracy_metric">
+<area shape="rect" id="Node000001" title=" " alt="" coords="71,1392,251,1757"/>
+<area shape="rect" id="Node000002" href="$classmetric__template.html" title=" " alt="" coords="83,519,240,1344"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,1358,164,1392,159,1392,159,1358"/>
+<area shape="rect" id="Node000003" href="$classtools.html" title="Provides a wide range of utility functions used throughout the framework." alt="" coords="5,5,136,471"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,484,110,518,105,518,100,485"/>
+<area shape="rect" id="Node000004" href="$classnotification.html" title="Provides logging and messaging functionality with various severity levels." alt="" coords="160,35,344,441"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="226,455,218,519,213,518,221,454"/>
+</map>

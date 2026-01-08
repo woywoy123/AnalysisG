@@ -1,0 +1,6 @@
+<map id="physics_::Beta" name="physics_::Beta">
+<area shape="rect" id="Node000001" title="Computes the beta factor." alt="" coords="5,29,121,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="40,30,35,21,37,11,47,5,63,3,83,6,91,15,87,18,80,11,63,8,49,10,42,15,40,20,44,28"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="169,29,236,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="121,39,156,39,156,45,121,45"/>
+</map>

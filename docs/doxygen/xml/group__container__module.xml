@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__container__module" kind="group">
+    <compoundname>container_module</compoundname>
+    <title>Container Module</title>
+    <briefdescription>
+<para>Data container management for efficient storage. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__container__module_1container_overview">
+<title>Overview</title>
+<para>The Container module provides data container classes for efficient storage and management of analysis data, including graphs and tensors.</para>
+</sect1>
+<sect1 id="group__container__module_1container_features">
+<title>Features</title>
+<para><itemizedlist>
+<listitem><para>Efficient memory management</para>
+</listitem><listitem><para>Serialization support (HDF5)</para>
+</listitem><listitem><para>Batch operations</para>
+</listitem><listitem><para>Device transfer (CPU/CUDA)</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classcontainer" kindref="compound">container</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

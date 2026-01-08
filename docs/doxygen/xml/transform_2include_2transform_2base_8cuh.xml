@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="transform_2include_2transform_2base_8cuh" kind="file" language="C++">
+    <compoundname>transform/include/transform/base.cuh</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/atomic.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Px<sp/>(x-component<sp/>of<sp/>momentum).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements<sp/>(e.g.,<sp/>float,<sp/>double).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pt<sp/>Input<sp/>tensor<sp/>of<sp/>transverse<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>phi<sp/>Input<sp/>tensor<sp/>of<sp/>azimuthal<sp/>angle<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>px<sp/>Output<sp/>tensor<sp/>for<sp/>Px<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PxK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pt,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>phi,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>px</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Compute<sp/>Px<sp/>using<sp/>the<sp/>provided<sp/>pt<sp/>and<sp/>phi<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>px[idx][0]<sp/>=<sp/>px_(&amp;pt[idx][0],<sp/>&amp;phi[idx][0]);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Py<sp/>(y-component<sp/>of<sp/>momentum).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pt<sp/>Input<sp/>tensor<sp/>of<sp/>transverse<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>phi<sp/>Input<sp/>tensor<sp/>of<sp/>azimuthal<sp/>angle<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>py<sp/>Output<sp/>tensor<sp/>for<sp/>Py<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PyK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pt,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>phi,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>py</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Compute<sp/>Py<sp/>using<sp/>the<sp/>provided<sp/>pt<sp/>and<sp/>phi<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>py[idx][0]<sp/>=<sp/>py_(&amp;pt[idx][0],<sp/>&amp;phi[idx][0]);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Pz<sp/>(z-component<sp/>of<sp/>momentum).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pt<sp/>Input<sp/>tensor<sp/>of<sp/>transverse<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>eta<sp/>Input<sp/>tensor<sp/>of<sp/>pseudorapidity<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pz<sp/>Output<sp/>tensor<sp/>for<sp/>Pz<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PzK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pt,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>eta,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pz</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Compute<sp/>Pz<sp/>using<sp/>the<sp/>provided<sp/>pt<sp/>and<sp/>eta<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pz[idx][0]<sp/>=<sp/>pz_(&amp;pt[idx][0],<sp/>&amp;eta[idx][0]);</highlight></codeline>
+<codeline><highlight class="normal">}<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Px,<sp/>Py,<sp/>and<sp/>Pz<sp/>components<sp/>of<sp/>momentum.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmu<sp/>Input<sp/>tensor<sp/>of<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmc<sp/>Output<sp/>tensor<sp/>for<sp/>calculated<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PxPyPzK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmu,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Shared<sp/>memory<sp/>for<sp/>intermediate<sp/>calculations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>extern<sp/>__shared__<sp/>double<sp/>pmx[];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x*blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Load<sp/>input<sp/>data<sp/>into<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmx[threadIdx.y]<sp/>=<sp/>pmu[_idx][threadIdx.y];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Perform<sp/>calculations<sp/>based<sp/>on<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>0){pmc[_idx][threadIdx.y]<sp/>=<sp/>px_(&amp;pmx[0],<sp/>&amp;pmx[2]);<sp/>return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>1){pmc[_idx][threadIdx.y]<sp/>=<sp/>py_(&amp;pmx[0],<sp/>&amp;pmx[2]);<sp/>return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>2){pmc[_idx][threadIdx.y]<sp/>=<sp/>pz_(&amp;pmx[0],<sp/>&amp;pmx[1]);<sp/>return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmc[_idx][threadIdx.y]<sp/>=<sp/>pmx[threadIdx.y];<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Px,<sp/>Py,<sp/>Pz,<sp/>and<sp/>E<sp/>components<sp/>of<sp/>momentum.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmu<sp/>Input<sp/>tensor<sp/>of<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmc<sp/>Output<sp/>tensor<sp/>for<sp/>calculated<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PxPyPzEK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmu,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Shared<sp/>memory<sp/>for<sp/>intermediate<sp/>calculations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>pmx[4];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>pmt[4];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x*blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Load<sp/>input<sp/>data<sp/>into<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>&lt;<sp/>3){pmx[threadIdx.y]<sp/>=<sp/>pmu[_idx][threadIdx.y];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>{pmt[threadIdx.y]<sp/>=<sp/>0;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Perform<sp/>calculations<sp/>based<sp/>on<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>xt<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>0){xt<sp/>=<sp/>px_(&amp;pmx[0],<sp/>&amp;pmx[2]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>1){xt<sp/>=<sp/>py_(&amp;pmx[0],<sp/>&amp;pmx[2]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>2){xt<sp/>=<sp/>pz_(&amp;pmx[0],<sp/>&amp;pmx[1]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmt[threadIdx.y]<sp/>=<sp/>xt*xt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>3){xt<sp/>=<sp/>_sqrt(_sum(pmt,<sp/>3));}<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmc[_idx][threadIdx.y]<sp/>=<sp/>xt;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Pt<sp/>(transverse<sp/>momentum).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>px<sp/>Input<sp/>tensor<sp/>of<sp/>x-component<sp/>of<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>py<sp/>Input<sp/>tensor<sp/>of<sp/>y-component<sp/>of<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pt<sp/>Output<sp/>tensor<sp/>for<sp/>Pt<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;<sp/></highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PtK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>px,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>py,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pt</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Compute<sp/>Pt<sp/>using<sp/>the<sp/>provided<sp/>px<sp/>and<sp/>py<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pt[idx][0]<sp/>=<sp/>pt_(&amp;px[idx][0],<sp/>&amp;py[idx][0]);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Phi<sp/>(azimuthal<sp/>angle).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>px<sp/>Input<sp/>tensor<sp/>of<sp/>x-component<sp/>of<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>py<sp/>Input<sp/>tensor<sp/>of<sp/>y-component<sp/>of<sp/>momentum<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>phi<sp/>Output<sp/>tensor<sp/>for<sp/>Phi<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;<sp/></highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PhiK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>px,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>py,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>phi</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Compute<sp/>Phi<sp/>using<sp/>the<sp/>provided<sp/>px<sp/>and<sp/>py<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>phi[idx][0]<sp/>=<sp/>phi_(&amp;px[idx][0],<sp/>&amp;py[idx][0]);</highlight></codeline>
+<codeline><highlight class="normal">}<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Eta<sp/>(pseudorapidity).</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmc<sp/>Input<sp/>tensor<sp/>of<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>eta<sp/>Output<sp/>tensor<sp/>for<sp/>Eta<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;<sp/></highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>EtaK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>eta</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Compute<sp/>Eta<sp/>using<sp/>the<sp/>provided<sp/>pmc<sp/>values.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>eta[idx][0]<sp/>=<sp/>eta_(&amp;pmc[idx][0],<sp/>&amp;pmc[idx][1],<sp/>&amp;pmc[idx][2]);</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Pt,<sp/>Eta,<sp/>and<sp/>Phi<sp/>components<sp/>of<sp/>momentum.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmc<sp/>Input<sp/>tensor<sp/>of<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmu<sp/>Output<sp/>tensor<sp/>for<sp/>calculated<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PtEtaPhiK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmu</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Shared<sp/>memory<sp/>for<sp/>intermediate<sp/>calculations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>extern<sp/>__shared__<sp/>double<sp/>pmx[];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x*blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Load<sp/>input<sp/>data<sp/>into<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmx[threadIdx.y]<sp/>=<sp/>pmc[_idx][threadIdx.y];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Perform<sp/>calculations<sp/>based<sp/>on<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>rx<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>0){rx<sp/>=<sp/>pt_(&amp;pmx[0],<sp/>&amp;pmx[1]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>if<sp/>(threadIdx.y<sp/>==<sp/>1){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx<sp/>=<sp/>pt_(&amp;pmx[0],<sp/>&amp;pmx[1]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx<sp/>=<sp/>eta_(&amp;rx,<sp/>&amp;pmx[2]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>if<sp/>(threadIdx.y<sp/>==<sp/>2){rx<sp/>=<sp/>phi_(&amp;pmx[0],<sp/>&amp;pmx[1]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>{rx<sp/>=<sp/>pmx[threadIdx.y];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmu[_idx][threadIdx.y]<sp/>=<sp/>rx;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Template<sp/>for<sp/>a<sp/>CUDA<sp/>kernel<sp/>to<sp/>calculate<sp/>Pt,<sp/>Eta,<sp/>Phi,<sp/>and<sp/>E<sp/>components<sp/>of<sp/>momentum.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@tparam<sp/>scalar_t<sp/>The<sp/>data<sp/>type<sp/>of<sp/>the<sp/>tensor<sp/>elements.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmc<sp/>Input<sp/>tensor<sp/>of<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>@param<sp/>pmu<sp/>Output<sp/>tensor<sp/>for<sp/>calculated<sp/>momentum<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>PtEtaPhiEK(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmc,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>pmu</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Shared<sp/>memory<sp/>for<sp/>intermediate<sp/>calculations.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>pmx[4];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>pmt[4];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculate<sp/>the<sp/>global<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x*blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Load<sp/>input<sp/>data<sp/>into<sp/>shared<sp/>memory.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>rx<sp/>=<sp/>0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>&lt;<sp/>3){rx<sp/>=<sp/>pmc[_idx][threadIdx.y];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmx[threadIdx.y]<sp/>=<sp/>rx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmt[threadIdx.y]<sp/>=<sp/>rx*rx;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Perform<sp/>calculations<sp/>based<sp/>on<sp/>thread<sp/>index.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(threadIdx.y<sp/>==<sp/>0){rx<sp/>=<sp/><sp/>pt_(&amp;pmx[0],<sp/>&amp;pmx[1]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>if<sp/>(threadIdx.y<sp/>==<sp/>1){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx<sp/>=<sp/>pt_(&amp;pmx[0],<sp/>&amp;pmx[1]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>rx<sp/>=<sp/>eta_(&amp;rx,<sp/>&amp;pmx[2]);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>if<sp/>(threadIdx.y<sp/>==<sp/>2){rx<sp/>=<sp/>phi_(&amp;pmx[0],<sp/>&amp;pmx[1]);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>else<sp/>{rx<sp/>=<sp/>_sqrt(_sum(pmt,<sp/>3));}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>pmu[_idx][threadIdx.y]<sp/>=<sp/>rx;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/transform/include/transform/base.cuh"/>
+  </compounddef>
+</doxygen>

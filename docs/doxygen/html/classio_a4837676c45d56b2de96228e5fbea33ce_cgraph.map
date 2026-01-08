@@ -1,0 +1,10 @@
+<map id="io::~io" name="io::~io">
+<area shape="rect" id="Node000001" title="Destructor for the io class." alt="" coords="5,29,71,55"/>
+<area shape="rect" id="Node000002" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="279,5,345,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,37,265,19,265,25,71,42"/>
+<area shape="rect" id="Node000003" href="$classio.html#a1c994985d2405202c19fb391cc43a5de" title="Finalizes ROOT file processing, closing any ROOT files opened by root_begin." alt="" coords="119,55,217,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="71,46,105,52,104,58,70,51"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="205,52,265,31,266,36,207,57"/>
+<area shape="rect" id="Node000004" href="$classtools.html#abce97603aeadeaa04fa6c6ff6c721eda" title="Empties a vector and all objects it points to." alt="" coords="265,55,359,80"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="218,65,252,65,252,70,218,70"/>
+</map>

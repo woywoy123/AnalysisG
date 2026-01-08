@@ -1,0 +1,21 @@
+<map id="pyc::physics::cartesian::combined::M" name="pyc::physics::cartesian::combined::M">
+<area shape="rect" id="Node000001" title=" " alt="" coords="528,122,699,162"/>
+<area shape="rect" id="Node000002" href="$classmetrics.html#adb34703cb499689522741aa2ceed61e3" title=" " alt="" coords="284,5,463,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="580,115,534,78,479,44,448,33,450,28,481,40,537,73,583,111"/>
+<area shape="rect" id="Node000004" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="320,79,427,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="514,124,426,105,427,100,515,119"/>
+<area shape="rect" id="Node000005" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="55,79,169,104"/>
+<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="514,139,266,118,169,104,170,99,267,113,514,134"/>
+<area shape="rect" id="Node000006" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="267,203,480,243"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="541,169,434,206,432,201,540,164"/>
+<area shape="rect" id="Node000007" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="5,203,219,243"/>
+<area shape="poly" id="edge12_Node000001_Node000007" title=" " alt="" coords="590,175,543,220,513,242,481,258,441,269,399,275,314,275,236,263,171,246,172,241,237,257,315,269,398,270,439,264,479,253,511,237,540,216,586,171"/>
+<area shape="rect" id="Node000003" href="$classmetrics.html#a24531660bf7917f489a6b67ceed12cdd" title="Captures metrics from the current epoch." alt="" coords="48,5,176,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="270,21,176,21,176,15,270,15"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="417,70,405,61,373,57,348,59,334,64,331,70,338,77,334,80,326,70,330,60,346,54,373,52,407,56,420,65"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="306,102,170,102,170,96,306,97"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="183,81,320,81,320,87,183,86"/>
+<area shape="poly" id="edge8_Node000006_Node000006" title=" " alt="" coords="414,192,400,185,373,182,350,184,336,189,331,195,334,202,329,204,326,194,333,184,349,179,373,177,401,180,416,187"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="253,235,219,235,219,230,253,230"/>
+<area shape="poly" id="edge10_Node000007_Node000006" title=" " alt="" coords="233,212,266,212,266,217,233,217"/>
+</map>

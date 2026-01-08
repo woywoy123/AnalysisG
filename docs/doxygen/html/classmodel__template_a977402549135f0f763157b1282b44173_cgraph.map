@@ -1,0 +1,5 @@
+<map id="model_template::set_output_features" name="model_template::set_output_features">
+<area shape="rect" id="Node000001" title="Sets output features for a specific feature map." alt="" coords="5,5,163,45"/>
+<area shape="rect" id="Node000002" href="$classlossfx.html#a1ff4ab72a5193a641f3184f2fa77daf9" title=" " alt="" coords="211,13,349,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,23,197,23,197,28,163,28"/>
+</map>

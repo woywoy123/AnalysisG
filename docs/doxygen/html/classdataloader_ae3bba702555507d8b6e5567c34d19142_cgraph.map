@@ -1,0 +1,40 @@
+<map id="dataloader::restore_graphs" name="dataloader::restore_graphs">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,83,152,123"/>
+<area shape="rect" id="Node000002" href="$classtools.html#a5ab0f2cc351dd97951358ebe19e9c18d" title="Lists files in a directory, optionally filtered by extension." alt="" coords="237,56,310,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,88,222,75,223,80,153,93"/>
+<area shape="rect" id="Node000005" href="$classdataloader.html#aed6ec872879a44ecfa9ae1c2188690a8" title=" " alt="" coords="200,117,347,157"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="152,113,187,119,186,124,152,118"/>
+<area shape="rect" id="Node000003" href="$classtools.html#a3d538da5310467c9321b27cd6a75b9af" title="Checks if a string ends with a specific substring." alt="" coords="422,5,550,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="310,57,418,31,419,37,311,63"/>
+<area shape="rect" id="Node000004" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="1047,181,1137,207"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="310,64,455,57,656,53,760,55,857,62,939,73,1000,92,1025,107,1047,127,1079,168,1074,171,1043,131,1022,111,998,96,938,79,856,67,760,61,656,58,455,62,311,69"/>
+<area shape="rect" id="Node000006" href="$classdataloader.html#a281bac1652b78652581bad461b1cc966" title=" " alt="" coords="395,124,577,149"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="347,134,381,134,381,139,347,139"/>
+<area shape="rect" id="Node000009" href="$classdataloader.html#a52b546c96dec81d3860fb7e6268b097a" title=" " alt="" coords="413,298,559,338"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="300,155,453,287,449,291,296,159"/>
+<area shape="rect" id="Node000007" href="$classdataloader.html#a60ede9b5c2cacf28b6fd28524f21501f" title=" " alt="" coords="633,117,804,157"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="578,134,619,134,619,139,578,139"/>
+<area shape="rect" id="Node000008" href="$structs_2cxx_2base_8cxx.html#a4eee7b291ed2cdcd4e3c2496c603c48c" title="Counts occurrences of a substring in a string." alt="" coords="900,131,959,156"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="804,137,886,139,886,145,804,142"/>
+<area shape="poly" id="edge8_Node000008_Node000008" title=" " alt="" coords="902,132,896,122,899,113,911,106,929,104,952,107,961,116,958,120,949,112,929,109,912,111,903,116,902,122,907,129"/>
+<area shape="poly" id="edge16_Node000009_Node000004" title=" " alt="" coords="506,296,557,254,589,233,624,217,679,201,735,190,847,179,950,179,1033,184,1032,190,950,184,848,184,735,195,680,206,626,222,592,238,560,258,509,300"/>
+<area shape="rect" id="Node000010" href="$classio.html#ac572af35ee4e5a6dc17a35a1d8eb4561" title="Retrieves the names of datasets available in the currently open HDF5 file." alt="" coords="647,232,790,257"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="539,295,625,266,651,258,653,264,626,271,541,300"/>
+<area shape="rect" id="Node000012" href="$classio.html#a65ca69ec5f12d0f3a463396bcff84d77" title="Ends the current I/O session, closing any open files." alt="" coords="685,281,752,307"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="559,308,671,296,672,301,560,313"/>
+<area shape="rect" id="Node000013" href="$structgraph__hdf5__w.html#a5f54ea06f5abf106fac3209e6583a335" title=" " alt="" coords="625,331,812,356"/>
+<area shape="poly" id="edge13_Node000009_Node000013" title=" " alt="" coords="560,323,612,329,611,334,559,329"/>
+<area shape="rect" id="Node000014" href="$classtools.html#ad7229c72cee65da3605c4be82f9b42d4" title="Checks if a string contains a specific substring." alt="" coords="654,380,783,405"/>
+<area shape="poly" id="edge14_Node000009_Node000014" title=" " alt="" coords="540,336,626,366,653,374,651,379,625,371,538,341"/>
+<area shape="rect" id="Node000015" href="$gnn-particles_8h.html#a726f7868ebf1c63190c267427081d370" title=" " alt="" coords="693,429,744,455"/>
+<area shape="poly" id="edge15_Node000009_Node000015" title=" " alt="" coords="511,336,562,376,626,416,680,433,679,438,624,420,559,381,508,340"/>
+<area shape="rect" id="Node000016" href="$classio.html#a228b6ce6f26848a9adfc0ccf3619a53e" title="Starts an I/O session, opening a file for reading or writing." alt="" coords="683,479,755,504"/>
+<area shape="poly" id="edge17_Node000009_Node000016" title=" " alt="" coords="502,337,552,401,587,436,627,465,670,482,668,487,624,470,584,440,548,404,498,340"/>
+<area shape="rect" id="Node000011" href="$classio.html#a0a188e43f5e4e5b8a3b1cefa677351c2" title="Static callback function for H5Literate, used to iterate over objects in an HDF5 file." alt="" coords="882,232,977,257"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="790,242,868,242,868,247,790,247"/>
+<area shape="rect" id="Node000017" href="$classtools.html#aed9f3247b474a8fb1840860d51cde7ca" title="Creates a directory path, including parent directories if needed." alt="" coords="860,355,999,380"/>
+<area shape="poly" id="edge18_Node000016_Node000017" title=" " alt="" coords="754,484,783,476,811,465,864,428,906,388,909,392,868,432,813,470,784,481,756,489"/>
+<area shape="rect" id="Node000018" href="$classtools.html#a47d3d261edcb898daab56721e18d1e67" title="Checks if a path refers to an existing file." alt="" coords="879,479,979,504"/>
+<area shape="poly" id="edge20_Node000016_Node000018" title=" " alt="" coords="755,489,866,489,866,494,755,494"/>
+<area shape="poly" id="edge19_Node000017_Node000004" title=" " alt="" coords="941,352,1068,215,1071,219,945,356"/>
+</map>

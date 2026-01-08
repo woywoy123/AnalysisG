@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__io__module" kind="group">
+    <compoundname>io_module</compoundname>
+    <title>IO Module</title>
+    <briefdescription>
+<para>Input/output operations for data handling. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__io__module_1io_overview_mod">
+<title>Overview</title>
+<para>The IO module provides functionality for reading and writing data files, including ROOT files and HDF5 storage.</para>
+</sect1>
+<sect1 id="group__io__module_1io_formats_mod">
+<title>Supported Formats</title>
+<para><itemizedlist>
+<listitem><para><bold>ROOT files</bold>: Reading physics data from ROOT TTrees</para>
+</listitem><listitem><para><bold>HDF5 files</bold>: Storing processed graphs and tensors</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classio" kindref="compound">io</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

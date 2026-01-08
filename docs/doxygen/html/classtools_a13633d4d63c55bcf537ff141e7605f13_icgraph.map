@@ -1,0 +1,11 @@
+<map id="tools::has_value" name="tools::has_value">
+<area shape="rect" id="Node000001" title="Checks if a vector of strings contains a specific string." alt="" coords="468,31,596,56"/>
+<area shape="rect" id="Node000002" href="$classio.html#aacb050c4cb6c10038d6bf8edb7244a28" title="Scans for keys (e.g., TTree names, TBranch names) in the open ROOT files." alt="" coords="311,31,420,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="454,46,420,46,420,41,454,41"/>
+<area shape="rect" id="Node000003" href="$classio.html#a65c36380ef79524e8235f792abe9625c" title="Initializes ROOT file processing, potentially opening files specified in settings." alt="" coords="152,5,263,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="297,35,262,29,263,24,298,30"/>
+<area shape="rect" id="Node000005" href="$classio.html#a66a6d354d07e8aa4f9fdadc8f74a314b" title="Retrieves the sizes (number of entries) of TTrees in the open ROOT files." alt="" coords="157,55,258,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="298,56,258,62,258,57,297,51"/>
+<area shape="rect" id="Node000004" href="$classio.html#ae346e23a45d73c24f844827495912941" title="Retrieves the data read from ROOT files, likely structured as a map of data_t objects." alt="" coords="5,5,104,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="138,21,104,21,104,15,138,15"/>
+</map>

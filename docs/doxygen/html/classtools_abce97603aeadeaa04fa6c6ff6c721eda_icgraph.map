@@ -1,0 +1,17 @@
+<map id="tools::flush" name="tools::flush">
+<area shape="rect" id="Node000001" title="Empties a vector and all objects it points to." alt="" coords="540,84,633,109"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#af5938086aabb68bf478a72b0593e4bb8" title="Destructor for the analysis class." alt="" coords="327,5,476,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="554,79,491,44,458,33,460,28,493,40,557,74"/>
+<area shape="rect" id="Node000003" href="$classdataloader.html#aa60a898ed2af2da010a0db8563a37e86" title=" " alt="" coords="311,55,492,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="526,90,481,83,482,77,527,85"/>
+<area shape="rect" id="Node000004" href="$classsampletracer.html#a30d25d5a298b3c5698aee99ede11ce79" title="Compiles objects concurrently using multiple threads." alt="" coords="317,105,485,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="527,108,486,115,485,109,526,103"/>
+<area shape="rect" id="Node000005" href="$classio.html#a1c994985d2405202c19fb391cc43a5de" title="Finalizes ROOT file processing, closing any ROOT files opened by root_begin." alt="" coords="352,169,451,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="559,120,528,140,493,159,452,174,450,169,491,154,525,136,556,115"/>
+<area shape="rect" id="Node000006" href="$classio.html#a4837676c45d56b2de96228e5fbea33ce" title="Destructor for the io class." alt="" coords="175,144,240,169"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="338,176,240,163,240,158,338,171"/>
+<area shape="rect" id="Node000007" href="$classio.html#a65c36380ef79524e8235f792abe9625c" title="Initializes ROOT file processing, potentially opening files specified in settings." alt="" coords="152,193,263,219"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="339,192,263,202,262,197,338,187"/>
+<area shape="rect" id="Node000008" href="$classio.html#ae346e23a45d73c24f844827495912941" title="Retrieves the data read from ROOT files, likely structured as a map of data_t objects." alt="" coords="5,193,104,219"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="138,209,104,209,104,203,138,203"/>
+</map>

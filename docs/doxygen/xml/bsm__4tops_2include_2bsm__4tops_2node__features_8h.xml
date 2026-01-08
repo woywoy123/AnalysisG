@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="bsm__4tops_2include_2bsm__4tops_2node__features_8h" kind="file" language="C++">
+    <compoundname>bsm_4tops/include/bsm_4tops/node_features.h</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ab1c59b5f0c6a25f3a21b6ff62c95596a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void res_node</definition>
+        <argsstring>(int *o, particle_template *p)</argsstring>
+        <name>res_node</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="5" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="5" bodyend="12"/>
+        <referencedby refid="classgraph__tops_1aeeb26c4ab2ef88d0b3799205efc90efc" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="13" endline="36">graph_tops::CompileEvent</referencedby>
+        <referencedby refid="classgraph__children_1af069fe630b6bbf6ffacca8243761e829" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="43" endline="77">graph_children::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets_1ad64c5a15f0406d8a6c9705d50934b81f" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="84" endline="126">graph_truthjets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets__nonu_1add03a6d564186c150f7c907737b77eeb" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="133" endline="174">graph_truthjets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets_1a568114127973b28c968493e79ca67cd7" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="191" endline="231">graph_jets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__nonu_1a3d76d9b5885af9d1ef9c2a150acc1300" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="238" endline="279">graph_jets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__detector__lep_1a8da8c93bcdece302cb06b34e6b9db801" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="287" endline="329">graph_jets_detector_lep::CompileEvent</referencedby>
+        <referencedby refid="classgraph__detector_1a9524462481e7c9e42df5cf73f999737e" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="336" endline="374">graph_detector::CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ab2215efaacd3bffb7241a74646421796" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void top_node</definition>
+        <argsstring>(int *o, particle_template *p)</argsstring>
+        <name>top_node</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="14" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="14" bodyend="40"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <referencedby refid="classgraph__tops_1aeeb26c4ab2ef88d0b3799205efc90efc" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="13" endline="36">graph_tops::CompileEvent</referencedby>
+        <referencedby refid="classgraph__children_1af069fe630b6bbf6ffacca8243761e829" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="43" endline="77">graph_children::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets_1ad64c5a15f0406d8a6c9705d50934b81f" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="84" endline="126">graph_truthjets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets__nonu_1add03a6d564186c150f7c907737b77eeb" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="133" endline="174">graph_truthjets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets_1a568114127973b28c968493e79ca67cd7" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="191" endline="231">graph_jets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__nonu_1a3d76d9b5885af9d1ef9c2a150acc1300" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="238" endline="279">graph_jets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__detector__lep_1a8da8c93bcdece302cb06b34e6b9db801" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="287" endline="329">graph_jets_detector_lep::CompileEvent</referencedby>
+        <referencedby refid="classgraph__detector_1a9524462481e7c9e42df5cf73f999737e" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="336" endline="374">graph_detector::CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a5daf68d52b4706d971b5a8b47c929139" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void pt</definition>
+        <argsstring>(double *o, particle_template *p)</argsstring>
+        <name>pt</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="43" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="43" bodyend="43"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2">pt</references>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a2fdb1bac13680528517c929fb47b98f4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void eta</definition>
+        <argsstring>(double *o, particle_template *p)</argsstring>
+        <name>eta</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="44" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="44" bodyend="44"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447">eta</references>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ac4bd110a4f0667540fb5f5ff27acd86c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void phi</definition>
+        <argsstring>(double *o, particle_template *p)</argsstring>
+        <name>phi</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="45" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="45" bodyend="45"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7">phi</references>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a4776e0edb8c7a7350aa30a628e979e1b" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void energy</definition>
+        <argsstring>(double *o, particle_template *p)</argsstring>
+        <name>energy</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="46" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="46" bodyend="46"/>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a1dabc23a46b24398c8c9280ec07284dd" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void charge</definition>
+        <argsstring>(double *o, particle_template *p)</argsstring>
+        <name>charge</name>
+        <param>
+          <type>double *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="47" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="47" bodyend="47"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a41a2e03f8686640344badf516a008503">charge</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a05898150cc9167a4de297df624e6c15a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void is_lepton</definition>
+        <argsstring>(int *o, particle_template *p)</argsstring>
+        <name>is_lepton</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="49" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="49" bodyend="49"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778">is_lep</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+        <referencedby refid="classgraph__children_1af069fe630b6bbf6ffacca8243761e829" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="43" endline="77">graph_children::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets_1ad64c5a15f0406d8a6c9705d50934b81f" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="84" endline="126">graph_truthjets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets__nonu_1add03a6d564186c150f7c907737b77eeb" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="133" endline="174">graph_truthjets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets_1a568114127973b28c968493e79ca67cd7" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="191" endline="231">graph_jets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__nonu_1a3d76d9b5885af9d1ef9c2a150acc1300" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="238" endline="279">graph_jets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__detector__lep_1a8da8c93bcdece302cb06b34e6b9db801" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="287" endline="329">graph_jets_detector_lep::CompileEvent</referencedby>
+        <referencedby refid="classgraph__detector_1a9524462481e7c9e42df5cf73f999737e" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="336" endline="374">graph_detector::CompileEvent</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classtopmatching_1acbf5d299785f024b7a4b5bd92bbfcd6f" compoundref="mc16_2topmatching_2topmatching_8cxx" startline="33" endline="104">topmatching::strategy</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a3f3117b469cddb9e7a32cef78c5c085f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void is_bquark</definition>
+        <argsstring>(int *o, particle_template *p)</argsstring>
+        <name>is_bquark</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="50" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="50" bodyend="50"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ae0da17ca8558064e75c801fadc3537a4">is_b</references>
+        <referencedby refid="classgraph__children_1af069fe630b6bbf6ffacca8243761e829" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="43" endline="77">graph_children::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets_1ad64c5a15f0406d8a6c9705d50934b81f" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="84" endline="126">graph_truthjets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets__nonu_1add03a6d564186c150f7c907737b77eeb" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="133" endline="174">graph_truthjets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets_1a568114127973b28c968493e79ca67cd7" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="191" endline="231">graph_jets::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__nonu_1a3d76d9b5885af9d1ef9c2a150acc1300" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="238" endline="279">graph_jets_nonu::CompileEvent</referencedby>
+        <referencedby refid="classgraph__jets__detector__lep_1a8da8c93bcdece302cb06b34e6b9db801" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="287" endline="329">graph_jets_detector_lep::CompileEvent</referencedby>
+        <referencedby refid="classgraph__detector_1a9524462481e7c9e42df5cf73f999737e" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="336" endline="374">graph_detector::CompileEvent</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a5d7ab2a09038469b9f1d0bc6e701dea1" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void is_neutrino</definition>
+        <argsstring>(int *o, particle_template *p)</argsstring>
+        <name>is_neutrino</name>
+        <param>
+          <type>int *</type>
+          <declname>o</declname>
+        </param>
+        <param>
+          <type><ref refid="classparticle__template" kindref="compound">particle_template</ref> *</type>
+          <declname>p</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h" line="51" column="13" bodyfile="graphs/bsm_4tops/include/bsm_4tops/node_features.h" bodystart="51" bodyend="51"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d">is_nu</references>
+        <referencedby refid="classgraph__children_1af069fe630b6bbf6ffacca8243761e829" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="43" endline="77">graph_children::CompileEvent</referencedby>
+        <referencedby refid="classgraph__truthjets_1ad64c5a15f0406d8a6c9705d50934b81f" compoundref="bsm__4tops_2cxx_2graphs_8cxx" startline="84" endline="126">graph_truthjets::CompileEvent</referencedby>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#ifndef<sp/>NODES_FEATURES_BSM_4TOPS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NODES_FEATURES_BSM_4TOPS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>---------------------<sp/>Node<sp/>Truth<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ab1c59b5f0c6a25f3a21b6ff62c95596a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ab1c59b5f0c6a25f3a21b6ff62c95596a" kindref="member">res_node</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){</highlight></codeline>
+<codeline lineno="6"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>type<sp/>=<sp/>p<sp/>-&gt;<sp/>type;<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;top&quot;</highlight><highlight class="normal">){*o<sp/>=<sp/>((<ref refid="classtop" kindref="compound">top</ref>*)p)<sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="8"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;children&quot;</highlight><highlight class="normal">){*o<sp/>=<sp/>((<ref refid="classtop__children" kindref="compound">top_children</ref>*)p)<sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="9"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truthjets&quot;</highlight><highlight class="normal">){*o<sp/>=<sp/>((<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)p)<sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){*o<sp/>=<sp/>((<ref refid="classjet" kindref="compound">jet</ref>*)p)<sp/>-&gt;<sp/>from_res;}</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{*o<sp/>=<sp/>0;}<sp/></highlight></codeline>
+<codeline lineno="12"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ab2215efaacd3bffb7241a74646421796" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ab2215efaacd3bffb7241a74646421796" kindref="member">top_node</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"><sp/><sp/><sp/><sp/>std::string<sp/>type<sp/>=<sp/>p<sp/>-&gt;<sp/>type;<sp/></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;top&quot;</highlight><highlight class="normal">){*o<sp/>=<sp/>((<ref refid="classtop" kindref="compound">top</ref>*)p)<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>;}</highlight></codeline>
+<codeline lineno="17"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;children&quot;</highlight><highlight class="normal">){*o<sp/>=<sp/>((<ref refid="classtop__children" kindref="compound">top_children</ref>*)p)<sp/>-&gt;<sp/>top_index;}</highlight></codeline>
+<codeline lineno="18"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;truthjets&quot;</highlight><highlight class="normal">){</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classtruthjet" kindref="compound">truthjet</ref>*<sp/>tx<sp/>=<sp/>(<ref refid="classtruthjet" kindref="compound">truthjet</ref>*)p;<sp/></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!tx<sp/>-&gt;<sp/>top_index.size()){*o<sp/>=<sp/>-1;}</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{*o<sp/>=<sp/>tx<sp/>-&gt;<sp/>top_index[0];}</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;jet&quot;</highlight><highlight class="normal">){</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classjet" kindref="compound">jet</ref>*<sp/>tx<sp/>=<sp/>(<ref refid="classjet" kindref="compound">jet</ref>*)p;<sp/></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(!tx<sp/>-&gt;<sp/>top_index.size()){*o<sp/>=<sp/>-1;}</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{*o<sp/>=<sp/>tx<sp/>-&gt;<sp/>top_index[0];}</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;mu&quot;</highlight><highlight class="normal">){</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classmuon" kindref="compound">muon</ref>*<sp/>tx<sp/>=<sp/>(<ref refid="classmuon" kindref="compound">muon</ref>*)p;<sp/></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>tx<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>;<sp/></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(type<sp/>==<sp/></highlight><highlight class="stringliteral">&quot;el&quot;</highlight><highlight class="normal">){</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classelectron" kindref="compound">electron</ref>*<sp/>tx<sp/>=<sp/>(<ref refid="classelectron" kindref="compound">electron</ref>*)p;<sp/></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>*o<sp/>=<sp/>tx<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86" kindref="member">index</ref>;<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{*o<sp/>=<sp/>-1;}<sp/></highlight></codeline>
+<codeline lineno="40"><highlight class="normal">};<sp/></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight><highlight class="comment">//<sp/>---------------------<sp/>Node<sp/>Observables<sp/>---------------------<sp/>//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="43" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a5daf68d52b4706d971b5a8b47c929139" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28afc9fdf084e290f26a270390dc49061a2" kindref="member">pt</ref>;}<sp/></highlight></codeline>
+<codeline lineno="44" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a2fdb1bac13680528517c929fb47b98f4" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28aeba021d91b44a97dec2588bbea58a447" kindref="member">eta</ref>;}<sp/></highlight></codeline>
+<codeline lineno="45" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1ac4bd110a4f0667540fb5f5ff27acd86c" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acb7a24bb7528f934b841b34c3a73e0c7" kindref="member">phi</ref>;}<sp/></highlight></codeline>
+<codeline lineno="46" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a4776e0edb8c7a7350aa30a628e979e1b" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a05e7d19a6d002118deef70d21ff4226e" kindref="member">energy</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>p<sp/>-&gt;<sp/>e;}</highlight></codeline>
+<codeline lineno="47" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a1dabc23a46b24398c8c9280ec07284dd" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a41a2e03f8686640344badf516a008503" kindref="member">charge</ref>(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>(p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a41a2e03f8686640344badf516a008503" kindref="member">charge</ref>)*(p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref>);}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a05898150cc9167a4de297df624e6c15a" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a05898150cc9167a4de297df624e6c15a" kindref="member">is_lepton</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>(p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28acc9357767a613ec2e912943553e95778" kindref="member">is_lep</ref><sp/>&amp;&amp;<sp/>!p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref>);}</highlight></codeline>
+<codeline lineno="50" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a3f3117b469cddb9e7a32cef78c5c085f" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a3f3117b469cddb9e7a32cef78c5c085f" kindref="member">is_bquark</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ae0da17ca8558064e75c801fadc3537a4" kindref="member">is_b</ref>;}</highlight></codeline>
+<codeline lineno="51" refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a5d7ab2a09038469b9f1d0bc6e701dea1" refkind="member"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="bsm__4tops_2include_2bsm__4tops_2node__features_8h_1a5d7ab2a09038469b9f1d0bc6e701dea1" kindref="member">is_neutrino</ref>(</highlight><highlight class="keywordtype">int</highlight><highlight class="normal">*<sp/>o,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p){*o<sp/>=<sp/>p<sp/>-&gt;<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28ab09e705fe6108a37560c8173e04c822d" kindref="member">is_nu</ref>;}</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="graphs/bsm_4tops/include/bsm_4tops/node_features.h"/>
+  </compounddef>
+</doxygen>

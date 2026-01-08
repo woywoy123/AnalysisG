@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__core__group_core_node_page" kind="page">
+    <compoundname>core_node_page</compoundname>
+    <title>Node Implementation</title>
+    <briefdescription>
+<para>Documentation for the core node implementation. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__core__group_1node_intro">
+<title>Introduction</title>
+<para>Nodes in AnalysisG represent individual physics objects (particles) within an event graph. Each node can carry multiple features represented as tensors.</para>
+</sect1>
+<sect1 id="group__core__group_1node_properties">
+<title>Properties</title>
+<para>Typical node properties include:</para>
+<para><itemizedlist>
+<listitem><para>Kinematic variables (pT, eta, phi, energy)</para>
+</listitem><listitem><para>Identification flags</para>
+</listitem><listitem><para>Quality criteria</para>
+</listitem><listitem><para>Truth-level information (for training)</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="group__core__group_1node_indexing">
+<title>Indexing</title>
+<para>Nodes are indexed sequentially within each graph, starting from 0. The node index is used to:<itemizedlist>
+<listitem><para>Reference nodes in edge definitions</para>
+</listitem><listitem><para>Align feature tensors</para>
+</listitem><listitem><para>Batch multiple graphs together </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/core.dox"/>
+  </compounddef>
+</doxygen>

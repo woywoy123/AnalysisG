@@ -1,0 +1,2980 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="classdataloader" kind="class" language="C++" prot="public">
+    <compoundname>dataloader</compoundname>
+    <basecompoundref refid="classnotification" prot="public" virt="non-virtual">notification</basecompoundref>
+    <basecompoundref refid="classtools" prot="public" virt="non-virtual">tools</basecompoundref>
+    <includes refid="dataloader_8h" local="no">dataloader.h</includes>
+    <sectiondef kind="friend">
+      <memberdef kind="friend" id="classdataloader_1a16a8ca527d3bb66711ffa93078d4e9de" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class analysis</definition>
+        <argsstring></argsstring>
+        <name>analysis</name>
+        <qualifiedname>dataloader::analysis</qualifiedname>
+        <param>
+          <type><ref refid="classanalysis" kindref="compound">analysis</ref></type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="60" column="22" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classdataloader_1aee3423288b5bb8ffa1322a458e69c0bd" prot="private" static="no" mutable="no">
+        <type><ref refid="structsettings__t" kindref="compound">settings_t</ref> *</type>
+        <definition>settings_t* dataloader::setting</definition>
+        <argsstring></argsstring>
+        <name>setting</name>
+        <qualifiedname>dataloader::setting</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="61" column="20" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="61" bodyend="-1"/>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a84a838862778d20a99ff35d701ed55f0" prot="private" static="no" mutable="no">
+        <type>std::thread *</type>
+        <definition>std::thread* dataloader::cuda_mem</definition>
+        <argsstring></argsstring>
+        <name>cuda_mem</name>
+        <qualifiedname>dataloader::cuda_mem</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="62" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="62" bodyend="-1"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a4916a5cc8d712d60d30b577d80d21584" compoundref="dataloader_8cxx" startline="383" endline="392">start_cuda_server</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1ad71139b6e1b5f34908f25f36c3030e63" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; * &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;graph_t*&gt;*&gt; dataloader::batched_cache</definition>
+        <argsstring></argsstring>
+        <name>batched_cache</name>
+        <qualifiedname>dataloader::batched_cache</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="75" column="18" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="75" bodyend="75"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a6fee146467720ac6d2e196d8ff4e874e" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; * &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;graph_t*&gt;*&gt; dataloader::gr_k_fold_training</definition>
+        <argsstring></argsstring>
+        <name>gr_k_fold_training</name>
+        <qualifiedname>dataloader::gr_k_fold_training</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="76" column="18" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="76" bodyend="76"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">get_k_train_set</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a83f66a11646364f1702c889a35f18129" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; * &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;graph_t*&gt;*&gt; dataloader::gr_k_fold_validation</definition>
+        <argsstring></argsstring>
+        <name>gr_k_fold_validation</name>
+        <qualifiedname>dataloader::gr_k_fold_validation</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="77" column="18" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="77" bodyend="77"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">get_k_validation_set</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a53b58986cd3fd735e185cd20da21b096" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; int &gt; * &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;int&gt;*&gt; dataloader::k_fold_training</definition>
+        <argsstring></argsstring>
+        <name>k_fold_training</name>
+        <qualifiedname>dataloader::k_fold_training</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="80" column="18" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="80" bodyend="80"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dump_dataset</referencedby>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">restore_dataset</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" prot="private" static="no" mutable="no">
+        <type>std::map&lt; int, std::vector&lt; int &gt; * &gt;</type>
+        <definition>std::map&lt;int, std::vector&lt;int&gt;*&gt; dataloader::k_fold_validation</definition>
+        <argsstring></argsstring>
+        <name>k_fold_validation</name>
+        <qualifiedname>dataloader::k_fold_validation</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="81" column="18" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="81" bodyend="81"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dump_dataset</referencedby>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">restore_dataset</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a53ab7faeda2e8258867d624067701e19" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt; *</type>
+        <definition>std::vector&lt;int&gt;* dataloader::test_set</definition>
+        <argsstring></argsstring>
+        <name>test_set</name>
+        <qualifiedname>dataloader::test_set</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="83" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="83" bodyend="-1"/>
+        <referencedby refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" compoundref="dataloader_8cxx" startline="6" endline="12">dataloader</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dump_dataset</referencedby>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">generate_test_set</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">get_test_set</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">restore_dataset</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt; *</type>
+        <definition>std::vector&lt;int&gt;* dataloader::train_set</definition>
+        <argsstring></argsstring>
+        <name>train_set</name>
+        <qualifiedname>dataloader::train_set</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="84" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="84" bodyend="-1"/>
+        <referencedby refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" compoundref="dataloader_8cxx" startline="6" endline="12">dataloader</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">generate_test_set</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">restore_dataset</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt; *</type>
+        <definition>std::vector&lt;int&gt;* dataloader::data_index</definition>
+        <argsstring></argsstring>
+        <name>data_index</name>
+        <qualifiedname>dataloader::data_index</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="85" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="85" bodyend="-1"/>
+        <referencedby refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" compoundref="dataloader_8cxx" startline="6" endline="12">dataloader</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">generate_test_set</referencedby>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a84bde8e6c6771e1f86cec2eb22a1e0b1" compoundref="dataset_8cxx" startline="5" endline="10">get_random</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a61c236c14aaf52cf90949649f8437f07" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</type>
+        <definition>std::vector&lt;std::map&lt;std::string, int&gt;*&gt; dataloader::truth_map_graph</definition>
+        <argsstring></argsstring>
+        <name>truth_map_graph</name>
+        <qualifiedname>dataloader::truth_map_graph</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="87" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="87" bodyend="87"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a87d458826433a63fac906f648d914d12" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</type>
+        <definition>std::vector&lt;std::map&lt;std::string, int&gt;*&gt; dataloader::truth_map_node</definition>
+        <argsstring></argsstring>
+        <name>truth_map_node</name>
+        <qualifiedname>dataloader::truth_map_node</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="88" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="88" bodyend="88"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1ae1da5afc72c56ef3a98f2ba8e18659c5" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</type>
+        <definition>std::vector&lt;std::map&lt;std::string, int&gt;*&gt; dataloader::truth_map_edge</definition>
+        <argsstring></argsstring>
+        <name>truth_map_edge</name>
+        <qualifiedname>dataloader::truth_map_edge</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="89" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="89" bodyend="89"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1ae77334f697dbdb10e8a27b74d389e4b5" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</type>
+        <definition>std::vector&lt;std::map&lt;std::string, int&gt;*&gt; dataloader::data_map_graph</definition>
+        <argsstring></argsstring>
+        <name>data_map_graph</name>
+        <qualifiedname>dataloader::data_map_graph</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="91" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="91" bodyend="91"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1aaa3b5585b803325a2ffa775fe0a3a536" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</type>
+        <definition>std::vector&lt;std::map&lt;std::string, int&gt;*&gt; dataloader::data_map_node</definition>
+        <argsstring></argsstring>
+        <name>data_map_node</name>
+        <qualifiedname>dataloader::data_map_node</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="92" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="92" bodyend="92"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a5dd0e6b43573a7484d080d1485ef5683" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</type>
+        <definition>std::vector&lt;std::map&lt;std::string, int&gt;*&gt; dataloader::data_map_edge</definition>
+        <argsstring></argsstring>
+        <name>data_map_edge</name>
+        <qualifiedname>dataloader::data_map_edge</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="93" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="93" bodyend="93"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" compoundref="dataloader_8cxx" startline="151" endline="292">build_batch</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a90f4140497d7e991b80ee0fcd2e2ef0e" prot="private" static="no" mutable="no">
+        <type>std::map&lt; std::string, int &gt;</type>
+        <definition>std::map&lt;std::string, int&gt; dataloader::hash_map</definition>
+        <argsstring></argsstring>
+        <name>hash_map</name>
+        <qualifiedname>dataloader::hash_map</qualifiedname>
+        <initializer>= {}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="95" column="18" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="95" bodyend="95"/>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">restore_dataset</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1a13df314a74b6b69301bae02fd2951657" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::vector&lt;graph_t*&gt;* dataloader::gr_test</definition>
+        <argsstring></argsstring>
+        <name>gr_test</name>
+        <qualifiedname>dataloader::gr_test</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="96" column="22" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="96" bodyend="-1"/>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">get_test_set</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::vector&lt;graph_t*&gt;* dataloader::data_set</definition>
+        <argsstring></argsstring>
+        <name>data_set</name>
+        <qualifiedname>dataloader::data_set</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="97" column="21" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="97" bodyend="-1"/>
+        <referencedby refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" compoundref="dataloader_8cxx" startline="6" endline="12">dataloader</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classdataloader_1a8b0972e3962c58db75a70a3274ee4014" compoundref="dataloader_8cxx" startline="314" endline="381">cuda_memory_server</referencedby>
+        <referencedby refid="classdataloader_1a17822e45f6b5c7d407b71a0660e45f75" compoundref="dataloader_8cxx" startline="115" endline="126">datatransfer</referencedby>
+        <referencedby refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" compoundref="dataset_8cxx" startline="129" endline="173">dump_dataset</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">generate_test_set</referencedby>
+        <referencedby refid="classdataloader_1ade66521611fe2fcbe33562fe51d9692c" compoundref="dataset_8cxx" startline="104" endline="125">get_inference</referencedby>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a84bde8e6c6771e1f86cec2eb22a1e0b1" compoundref="dataset_8cxx" startline="5" endline="10">get_random</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">get_test_set</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</referencedby>
+        <referencedby refid="classdataloader_1a4916a5cc8d712d60d30b577d80d21584" compoundref="dataloader_8cxx" startline="383" endline="392">start_cuda_server</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classdataloader_1abeb0f02011eb7b986feced4028180603" prot="private" static="no" mutable="no">
+        <type>std::default_random_engine</type>
+        <definition>std::default_random_engine dataloader::rnd</definition>
+        <argsstring></argsstring>
+        <name>rnd</name>
+        <qualifiedname>dataloader::rnd</qualifiedname>
+        <initializer>{}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="99" column="36" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="99" bodyend="99"/>
+        <referencedby refid="classdataloader_1a526457cd0648ecbe1f05881733f05579" compoundref="dataloader_8cxx" startline="74" endline="76">shuffle</referencedby>
+        <referencedby refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" compoundref="dataloader_8cxx" startline="70" endline="72">shuffle</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>dataloader::dataloader</definition>
+        <argsstring>()</argsstring>
+        <name>dataloader</name>
+        <qualifiedname>dataloader::dataloader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="33" column="9" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="6" bodyend="12"/>
+        <references refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" compoundref="dataloader_8h" startline="85">data_index</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" compoundref="notification_8h" startline="126">notification::prefix</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+        <references refid="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" compoundref="dataloader_8h" startline="84">train_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>dataloader::~dataloader</definition>
+        <argsstring>()</argsstring>
+        <name>~dataloader</name>
+        <qualifiedname>dataloader::~dataloader</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="34" column="9" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="14" bodyend="68"/>
+        <references refid="classdataloader_1ad71139b6e1b5f34908f25f36c3030e63" compoundref="dataloader_8h" startline="75" endline="75">batched_cache</references>
+        <references refid="classdataloader_1a84a838862778d20a99ff35d701ed55f0" compoundref="dataloader_8h" startline="62">cuda_mem</references>
+        <references refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" compoundref="dataloader_8h" startline="85">data_index</references>
+        <references refid="classdataloader_1a5dd0e6b43573a7484d080d1485ef5683" compoundref="dataloader_8h" startline="93" endline="93">data_map_edge</references>
+        <references refid="classdataloader_1ae77334f697dbdb10e8a27b74d389e4b5" compoundref="dataloader_8h" startline="91" endline="91">data_map_graph</references>
+        <references refid="classdataloader_1aaa3b5585b803325a2ffa775fe0a3a536" compoundref="dataloader_8h" startline="92" endline="92">data_map_node</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" compoundref="tools_8h" startline="167" endline="174">tools::flush</references>
+        <references refid="classdataloader_1a6fee146467720ac6d2e196d8ff4e874e" compoundref="dataloader_8h" startline="76" endline="76">gr_k_fold_training</references>
+        <references refid="classdataloader_1a83f66a11646364f1702c889a35f18129" compoundref="dataloader_8h" startline="77" endline="77">gr_k_fold_validation</references>
+        <references refid="classdataloader_1a13df314a74b6b69301bae02fd2951657" compoundref="dataloader_8h" startline="96">gr_test</references>
+        <references refid="classdataloader_1a53b58986cd3fd735e185cd20da21b096" compoundref="dataloader_8h" startline="80" endline="80">k_fold_training</references>
+        <references refid="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" compoundref="dataloader_8h" startline="81" endline="81">k_fold_validation</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+        <references refid="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" compoundref="dataloader_8h" startline="84">train_set</references>
+        <references refid="classdataloader_1ae1da5afc72c56ef3a98f2ba8e18659c5" compoundref="dataloader_8h" startline="89" endline="89">truth_map_edge</references>
+        <references refid="classdataloader_1a61c236c14aaf52cf90949649f8437f07" compoundref="dataloader_8h" startline="87" endline="87">truth_map_graph</references>
+        <references refid="classdataloader_1a87d458826433a63fac906f648d914d12" compoundref="dataloader_8h" startline="88" endline="88">truth_map_node</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::vector&lt; graph_t * &gt; * dataloader::get_k_train_set</definition>
+        <argsstring>(int k)</argsstring>
+        <name>get_k_train_set</name>
+        <qualifiedname>dataloader::get_k_train_set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="36" column="21" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="61" bodyend="80"/>
+        <references refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" compoundref="dataloader_8h" startline="85">data_index</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classdataloader_1a6fee146467720ac6d2e196d8ff4e874e" compoundref="dataloader_8h" startline="76" endline="76">gr_k_fold_training</references>
+        <references refid="classdataloader_1a53b58986cd3fd735e185cd20da21b096" compoundref="dataloader_8h" startline="80" endline="80">k_fold_training</references>
+        <references refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" compoundref="tools_8h" startline="197" endline="205">tools::put</references>
+        <references refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" compoundref="dataloader_8cxx" startline="70" endline="72">shuffle</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::vector&lt; graph_t * &gt; * dataloader::get_k_validation_set</definition>
+        <argsstring>(int k)</argsstring>
+        <name>get_k_validation_set</name>
+        <qualifiedname>dataloader::get_k_validation_set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="37" column="21" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="82" bodyend="90"/>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classdataloader_1a83f66a11646364f1702c889a35f18129" compoundref="dataloader_8h" startline="77" endline="77">gr_k_fold_validation</references>
+        <references refid="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" compoundref="dataloader_8h" startline="81" endline="81">k_fold_validation</references>
+        <references refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" compoundref="tools_8h" startline="197" endline="205">tools::put</references>
+        <references refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" compoundref="dataloader_8cxx" startline="70" endline="72">shuffle</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::vector&lt; graph_t * &gt; * dataloader::get_test_set</definition>
+        <argsstring>()</argsstring>
+        <name>get_test_set</name>
+        <qualifiedname>dataloader::get_test_set</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="38" column="21" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="92" bodyend="102"/>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classdataloader_1a13df314a74b6b69301bae02fd2951657" compoundref="dataloader_8h" startline="96">gr_test</references>
+        <references refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" compoundref="tools_8h" startline="197" endline="205">tools::put</references>
+        <references refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" compoundref="dataloader_8cxx" startline="70" endline="72">shuffle</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1ad973eae80b8c958e87642459f8a81b47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::vector&lt; graph_t * &gt; * dataloader::build_batch</definition>
+        <argsstring>(std::vector&lt; graph_t * &gt; *data, model_template *mdl, model_report *rep)</argsstring>
+        <name>build_batch</name>
+        <qualifiedname>dataloader::build_batch</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type><ref refid="classmodel__template" kindref="compound">model_template</ref> *</type>
+          <declname>mdl</declname>
+        </param>
+        <param>
+          <type><ref refid="structmodel__report" kindref="compound">model_report</ref> *</type>
+          <declname>rep</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="39" column="21" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="151" bodyend="292"/>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a056d3cfa6a17e1cb57fb271ce3e605a8">batch_index</references>
+        <references refid="classdataloader_1ad71139b6e1b5f34908f25f36c3030e63" compoundref="dataloader_8h" startline="75" endline="75">batched_cache</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8277e0910d750195b448797616e091ad">d</references>
+        <references refid="classdataloader_1a5dd0e6b43573a7484d080d1485ef5683" compoundref="dataloader_8h" startline="93" endline="93">data_map_edge</references>
+        <references refid="classdataloader_1ae77334f697dbdb10e8a27b74d389e4b5" compoundref="dataloader_8h" startline="91" endline="91">data_map_graph</references>
+        <references refid="classdataloader_1aaa3b5585b803325a2ffa775fe0a3a536" compoundref="dataloader_8h" startline="92" endline="92">data_map_node</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="classdataloader_1aee3423288b5bb8ffa1322a458e69c0bd" compoundref="dataloader_8h" startline="61">setting</references>
+        <references refid="classdataloader_1ae1da5afc72c56ef3a98f2ba8e18659c5" compoundref="dataloader_8h" startline="89" endline="89">truth_map_edge</references>
+        <references refid="classdataloader_1a61c236c14aaf52cf90949649f8437f07" compoundref="dataloader_8h" startline="87" endline="87">truth_map_graph</references>
+        <references refid="classdataloader_1a87d458826433a63fac906f648d914d12" compoundref="dataloader_8h" startline="88" endline="88">truth_map_node</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1ade66521611fe2fcbe33562fe51d9692c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::map&lt; std::string, std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; &gt; *</type>
+        <definition>std::map&lt; std::string, std::vector&lt; graph_t * &gt; &gt; * dataloader::get_inference</definition>
+        <argsstring>()</argsstring>
+        <name>get_inference</name>
+        <qualifiedname>dataloader::get_inference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="42" column="18" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="104" bodyend="125"/>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a086338e3e9670d253041f54888995611" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::generate_test_set</definition>
+        <argsstring>(float percentage=50)</argsstring>
+        <name>generate_test_set</name>
+        <qualifiedname>dataloader::generate_test_set</qualifiedname>
+        <param>
+          <type>float</type>
+          <declname>percentage</declname>
+          <defval>50</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="44" column="14" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="41" bodyend="59"/>
+        <references refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" compoundref="dataloader_8h" startline="85">data_index</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" compoundref="dataloader_8cxx" startline="70" endline="72">shuffle</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+        <references refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" compoundref="strings_8cxx" startline="59" endline="63">tools::to_string</references>
+        <references refid="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" compoundref="dataloader_8h" startline="84">train_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::generate_kfold_set</definition>
+        <argsstring>(int k)</argsstring>
+        <name>generate_kfold_set</name>
+        <qualifiedname>dataloader::generate_kfold_set</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="45" column="14" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="12" bodyend="39"/>
+        <references refid="classdataloader_1a53b58986cd3fd735e185cd20da21b096" compoundref="dataloader_8h" startline="80" endline="80">k_fold_training</references>
+        <references refid="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" compoundref="dataloader_8h" startline="81" endline="81">k_fold_validation</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+        <references refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" compoundref="strings_8cxx" startline="59" endline="63">tools::to_string</references>
+        <references refid="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" compoundref="dataloader_8h" startline="84">train_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::dump_dataset</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>dump_dataset</name>
+        <qualifiedname>dataloader::dump_dataset</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="46" column="14" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="129" bodyend="173"/>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="structfolds__t_1a2f5c9cc76bcf002f95e4a67b3dcf2404" compoundref="folds_8h" startline="10">folds_t::hash</references>
+        <references refid="structfolds__t_1a867ad480e4469a457362c98dfe786d58" compoundref="folds_8h" startline="9">folds_t::is_eval</references>
+        <references refid="structfolds__t_1a19bd55f188f293e0559fea8c7160f5d2" compoundref="folds_8h" startline="7">folds_t::is_train</references>
+        <references refid="structfolds__t_1a9e3977066fe54d5958e3063289e700ad" compoundref="folds_8h" startline="8">folds_t::is_valid</references>
+        <references refid="structfolds__t_1abf8a14364fa18f04ba5d13e7d4b62556" compoundref="folds_8h" startline="6">folds_t::k</references>
+        <references refid="classdataloader_1a53b58986cd3fd735e185cd20da21b096" compoundref="dataloader_8h" startline="80" endline="80">k_fold_training</references>
+        <references refid="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" compoundref="dataloader_8h" startline="81" endline="81">k_fold_validation</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool dataloader::restore_dataset</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>restore_dataset</name>
+        <qualifiedname>dataloader::restore_dataset</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="47" column="14" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="175" bodyend="221"/>
+        <references refid="classdataloader_1a90f4140497d7e991b80ee0fcd2e2ef0e" compoundref="dataloader_8h" startline="95" endline="95">hash_map</references>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <references refid="classdataloader_1a53b58986cd3fd735e185cd20da21b096" compoundref="dataloader_8h" startline="80" endline="80">k_fold_training</references>
+        <references refid="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" compoundref="dataloader_8h" startline="81" endline="81">k_fold_validation</references>
+        <references refid="gnn-particles_8h_1a726f7868ebf1c63190c267427081d370">read</references>
+        <references refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" compoundref="dataloader_8h" startline="83">test_set</references>
+        <references refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" compoundref="strings_8cxx" startline="59" endline="63">tools::to_string</references>
+        <references refid="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" compoundref="dataloader_8h" startline="84">train_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a84bde8e6c6771e1f86cec2eb22a1e0b1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt;</type>
+        <definition>std::vector&lt; graph_t * &gt; dataloader::get_random</definition>
+        <argsstring>(int num=5)</argsstring>
+        <name>get_random</name>
+        <qualifiedname>dataloader::get_random</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>num</declname>
+          <defval>5</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="49" column="21" bodyfile="modules/dataloader/cxx/dataset.cxx" bodystart="5" bodyend="10"/>
+        <references refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" compoundref="dataloader_8h" startline="85">data_index</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" compoundref="dataloader_8cxx" startline="70" endline="72">shuffle</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a281bac1652b78652581bad461b1cc966" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::extract_data</definition>
+        <argsstring>(graph_t *gr)</argsstring>
+        <name>extract_data</name>
+        <qualifiedname>dataloader::extract_data</qualifiedname>
+        <param>
+          <type><ref refid="structgraph__t" kindref="compound">graph_t</ref> *</type>
+          <declname>gr</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="50" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="102" bodyend="112"/>
+        <references refid="classdataloader_1a60ede9b5c2cacf28b6fd28524f21501f" compoundref="dataloader_8cxx" startline="78" endline="100">clean_data_elements</references>
+        <references refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" compoundref="dataloader_8h" startline="85">data_index</references>
+        <references refid="classdataloader_1a5dd0e6b43573a7484d080d1485ef5683" compoundref="dataloader_8h" startline="93" endline="93">data_map_edge</references>
+        <references refid="classdataloader_1ae77334f697dbdb10e8a27b74d389e4b5" compoundref="dataloader_8h" startline="91" endline="91">data_map_graph</references>
+        <references refid="classdataloader_1aaa3b5585b803325a2ffa775fe0a3a536" compoundref="dataloader_8h" startline="92" endline="92">data_map_node</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classdataloader_1a90f4140497d7e991b80ee0fcd2e2ef0e" compoundref="dataloader_8h" startline="95" endline="95">hash_map</references>
+        <references refid="classdataloader_1ae1da5afc72c56ef3a98f2ba8e18659c5" compoundref="dataloader_8h" startline="89" endline="89">truth_map_edge</references>
+        <references refid="classdataloader_1a61c236c14aaf52cf90949649f8437f07" compoundref="dataloader_8h" startline="87" endline="87">truth_map_graph</references>
+        <references refid="classdataloader_1a87d458826433a63fac906f648d914d12" compoundref="dataloader_8h" startline="88" endline="88">truth_map_node</references>
+        <referencedby refid="classdataloader_1aed6ec872879a44ecfa9ae1c2188690a8" compoundref="cache_8cxx" startline="321" endline="332">restore_graphs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a17822e45f6b5c7d407b71a0660e45f75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::datatransfer</definition>
+        <argsstring>(torch::TensorOptions *op, size_t *num_events=nullptr, size_t *prg_events=nullptr)</argsstring>
+        <name>datatransfer</name>
+        <qualifiedname>dataloader::datatransfer</qualifiedname>
+        <param>
+          <type>torch::TensorOptions *</type>
+          <declname>op</declname>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>num_events</declname>
+          <defval>nullptr</defval>
+        </param>
+        <param>
+          <type>size_t *</type>
+          <declname>prg_events</declname>
+          <defval>nullptr</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="51" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="115" bodyend="126"/>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <referencedby refid="classdataloader_1aa97ddc9ee69e9b9ecaf763ff8db775a2" compoundref="dataloader_8cxx" startline="128" endline="147">datatransfer</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1aa97ddc9ee69e9b9ecaf763ff8db775a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::datatransfer</definition>
+        <argsstring>(std::map&lt; int, torch::TensorOptions * &gt; *ops)</argsstring>
+        <name>datatransfer</name>
+        <qualifiedname>dataloader::datatransfer</qualifiedname>
+        <param>
+          <type>std::map&lt; int, torch::TensorOptions * &gt; *</type>
+          <declname>ops</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="52" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="128" bodyend="147"/>
+        <references refid="classdataloader_1a17822e45f6b5c7d407b71a0660e45f75" compoundref="dataloader_8cxx" startline="115" endline="126">datatransfer</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool dataloader::dump_graphs</definition>
+        <argsstring>(std::string path=&quot;./&quot;, int threads=10)</argsstring>
+        <name>dump_graphs</name>
+        <qualifiedname>dataloader::dump_graphs</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+          <defval>&quot;./&quot;</defval>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>threads</declname>
+          <defval>10</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="53" column="14" bodyfile="modules/dataloader/cxx/cache.cxx" bodystart="5" bodyend="176"/>
+        <references refid="classtools_1af0028ec6242448428f7c548b6e7cb714" compoundref="tools_8cxx" startline="2" endline="2">tools::tools</references>
+        <references refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="98" endline="103">count</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9af14d031091d837e57007a1fdea58e5fe">data_edge</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a05e49555101f3239adff74b7ab84b12b">data_graph</references>
+        <references refid="classdataloader_1a5dd0e6b43573a7484d080d1485ef5683" compoundref="dataloader_8h" startline="93" endline="93">data_map_edge</references>
+        <references refid="classdataloader_1ae77334f697dbdb10e8a27b74d389e4b5" compoundref="dataloader_8h" startline="91" endline="91">data_map_graph</references>
+        <references refid="classdataloader_1aaa3b5585b803325a2ffa775fe0a3a536" compoundref="dataloader_8h" startline="92" endline="92">data_map_node</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a552cd5bfd507d39d3351ee8b6bc95445">data_node</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9aeaef5a1a889ab3d077c4cbb1bf789bf7">edge_index</references>
+        <references refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" compoundref="strings_8cxx" startline="71" endline="75">tools::ends_with</references>
+        <references refid="bsm__4tops_2include_2bsm__4tops_2graph__features_8h_1ac4429f2ee44f3a8d00eb820c7c69481d" compoundref="bsm__4tops_2include_2bsm__4tops_2graph__features_8h" startline="75" endline="75">event_weight</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a865c0c0b4ab0e063e5caa3387c1a8741">i</references>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <references refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" compoundref="tools_2cxx_2io_8cxx" startline="18" endline="20">tools::rename</references>
+        <references refid="classtools_1aeae88ebd7116d59008600f0723716dba" compoundref="strings_8cxx" startline="5" endline="21">tools::replace</references>
+        <references refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9afc5bd8c8855a5bb98c0a2ffcf7d83a00">truth_edge</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9a1d41882240fd339ed7bacd69ea90f587">truth_graph</references>
+        <references refid="classdataloader_1ae1da5afc72c56ef3a98f2ba8e18659c5" compoundref="dataloader_8h" startline="89" endline="89">truth_map_edge</references>
+        <references refid="classdataloader_1a61c236c14aaf52cf90949649f8437f07" compoundref="dataloader_8h" startline="87" endline="87">truth_map_graph</references>
+        <references refid="classdataloader_1a87d458826433a63fac906f648d914d12" compoundref="dataloader_8h" startline="88" endline="88">truth_map_node</references>
+        <references refid="enums_8h_1a71db5b98a8935886920bcc7eaaf49fb9ae895cb1e23c56f371dafbef2634572f5">truth_node</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1aed6ec872879a44ecfa9ae1c2188690a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::restore_graphs</definition>
+        <argsstring>(std::vector&lt; std::string &gt; paths, int threads)</argsstring>
+        <name>restore_graphs</name>
+        <qualifiedname>dataloader::restore_graphs</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt;</type>
+          <declname>paths</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="55" column="14" bodyfile="modules/dataloader/cxx/cache.cxx" bodystart="321" bodyend="332"/>
+        <references refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</references>
+        <references refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</references>
+        <referencedby refid="classdataloader_1ae3bba702555507d8b6e5567c34d19142" compoundref="cache_8cxx" startline="334" endline="337">restore_graphs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1ae3bba702555507d8b6e5567c34d19142" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::restore_graphs</definition>
+        <argsstring>(std::string paths, int threads)</argsstring>
+        <name>restore_graphs</name>
+        <qualifiedname>dataloader::restore_graphs</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>paths</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="56" column="14" bodyfile="modules/dataloader/cxx/cache.cxx" bodystart="334" bodyend="337"/>
+        <references refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</references>
+        <references refid="classdataloader_1aed6ec872879a44ecfa9ae1c2188690a8" compoundref="cache_8cxx" startline="321" endline="332">restore_graphs</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a4916a5cc8d712d60d30b577d80d21584" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::start_cuda_server</definition>
+        <argsstring>()</argsstring>
+        <name>start_cuda_server</name>
+        <qualifiedname>dataloader::start_cuda_server</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="57" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="383" bodyend="392"/>
+        <references refid="dataloader_8h_1a4ccc00f4d20e5753405d03a5187ce552" compoundref="dataloader_8h" startline="11">_server</references>
+        <references refid="classdataloader_1a84a838862778d20a99ff35d701ed55f0" compoundref="dataloader_8h" startline="62">cuda_mem</references>
+        <references refid="classdataloader_1a8b0972e3962c58db75a70a3274ee4014" compoundref="dataloader_8cxx" startline="314" endline="381">cuda_memory_server</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a575db6b2e3b67a7d679205600d83b576" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_prefix</definition>
+        <argsstring>(std::string prefix)</argsstring>
+        <name>set_prefix</name>
+        <qualifiedname>notification::set_prefix</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>prefix</declname>
+        </param>
+        <briefdescription>
+<para>Sets the prefix used in log messages from this instance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prefix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to use as a prefix for log messages. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="45" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1aa0aad214cf167691e516ecc343306244" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string notification::get_prefix</definition>
+        <argsstring>()</argsstring>
+        <name>get_prefix</name>
+        <qualifiedname>notification::get_prefix</qualifiedname>
+        <briefdescription>
+<para>Returns the prefix currently used in log messages. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The current prefix string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="51" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a2ea9e0828e3d323b5bb5cdecc8f018a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Info</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Info</name>
+        <qualifiedname>notification::Info</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs an info message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="58" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Warning</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Warning</name>
+        <qualifiedname>notification::Warning</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs a warning message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The warning message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="65" column="10"/>
+        <referencedby refid="classio_1ae9363859101b007dedf420f10e437014" compoundref="io_8h" startline="108" endline="112">io::read</referencedby>
+        <referencedby refid="classio_1a2a0214e493a7a2ef5e9507c0e6aa4e70" compoundref="io_8h" startline="95" endline="99">io::read</referencedby>
+        <referencedby refid="classio_1acbb361e3301373cce246acf6208b60ea" compoundref="io_8h" startline="80" endline="86">io::write</referencedby>
+        <referencedby refid="classio_1a39a32d23eeb4ae8f422bb416256fd9cd" compoundref="io_8h" startline="65" endline="71">io::write</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ab0c3843575c157d799e532a9ea5acbd0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Error</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Error</name>
+        <qualifiedname>notification::Error</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs an error message. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The error message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="72" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a8dd1ebb578269118b18bf7f0e176bf14" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Debug</definition>
+        <argsstring>(std::string msg, bool newline=true)</argsstring>
+        <name>Debug</name>
+        <qualifiedname>notification::Debug</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs a debug message (only in debug mode). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The debug message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="79" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a47e2d300e33c44a24b0c51d9e9a83914" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::Message</definition>
+        <argsstring>(std::string msg, std::string tag=&quot;&quot;, bool newline=true)</argsstring>
+        <name>Message</name>
+        <qualifiedname>notification::Message</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>msg</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>tag</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>newline</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>Outputs a message with custom formatting. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>msg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The message to output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A custom tag to prepend to the message. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>newline</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether to append a newline (default: true). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="87" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a5a69a50032f5dcf38bed2bb27dc048fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_debug_mode</definition>
+        <argsstring>(bool dbg)</argsstring>
+        <name>set_debug_mode</name>
+        <qualifiedname>notification::set_debug_mode</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>dbg</declname>
+        </param>
+        <briefdescription>
+<para>Enables or disables debug mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dbg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Boolean flag, set to true to enable debug messages, false to disable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="93" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ae25782afd10b3cb5fffe17afaf4fffc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool notification::get_debug_mode</definition>
+        <argsstring>()</argsstring>
+        <name>get_debug_mode</name>
+        <qualifiedname>notification::get_debug_mode</qualifiedname>
+        <briefdescription>
+<para>Returns the current status of debug mode. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Boolean indicating whether debug mode is enabled (true) or disabled (false). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="99" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a9bb77ba73a5f25af292e9eea8a8de970" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_suppress_warning</definition>
+        <argsstring>(bool sw)</argsstring>
+        <name>set_suppress_warning</name>
+        <qualifiedname>notification::set_suppress_warning</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>sw</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether warnings should be suppressed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Boolean flag, set to true to suppress warnings, false to show them. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="105" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1ab53313e9343e9ef6deaefa2bdd3a837a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool notification::get_suppress_warning</definition>
+        <argsstring>()</argsstring>
+        <name>get_suppress_warning</name>
+        <qualifiedname>notification::get_suppress_warning</qualifiedname>
+        <briefdescription>
+<para>Returns the current warning suppression status. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Boolean indicating whether warnings are suppressed (true) or shown (false). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="111" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a58eec7023935cff9332ce21e58fc3f5a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void notification::set_suppress_info</definition>
+        <argsstring>(bool si)</argsstring>
+        <name>set_suppress_info</name>
+        <qualifiedname>notification::set_suppress_info</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>si</declname>
+        </param>
+        <briefdescription>
+<para>Sets whether info messages should be suppressed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>si</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Boolean flag, set to true to suppress info messages, false to show them. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="117" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnotification_1a3a12e8eaf363a320abee5393436123f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool notification::get_suppress_info</definition>
+        <argsstring>()</argsstring>
+        <name>get_suppress_info</name>
+        <qualifiedname>notification::get_suppress_info</qualifiedname>
+        <briefdescription>
+<para>Returns the current info message suppression status. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Boolean indicating whether info messages are suppressed (true) or shown (false). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="123" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::split</definition>
+        <argsstring>(std::string inpt, std::string del)</argsstring>
+        <name>split</name>
+        <qualifiedname>tools::split</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>del</declname>
+        </param>
+        <briefdescription>
+<para>Splits a string into a vector of substrings based on a delimiter. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input string to split. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>del</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The delimiter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of substrings. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="140" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="23" bodyend="36"/>
+        <references refid="enums_8h_1a666fa98df084d96fc481369704153b28a6a992d5529f459a44fee58c733255e86">index</references>
+        <referencedby refid="classanalysis_1a68b520bbdb4d591d7375f9ecd6532ce8" compoundref="event__build_8cxx" startline="4" endline="135">analysis::build_events</referencedby>
+        <referencedby refid="classanalysis_1a1c3e0d7bb80774d865586b18a1566704" compoundref="graph__build_8cxx" startline="3" endline="30">analysis::build_graphs</referencedby>
+        <referencedby refid="classanalysis_1a7b98125c72486407d782b2bc2ea67389" compoundref="inference__build_8cxx" startline="5" endline="139">analysis::build_inference</referencedby>
+        <referencedby refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" compoundref="event__template_8cxx" startline="78" endline="100">event_template::build_mapping</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classmeta_1aac47e377d2bbda2fac5a8cfc5ada7243" compoundref="meta_8cxx" startline="154" endline="198">meta::compiler</referencedby>
+        <referencedby refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" compoundref="tools_2cxx_2io_8cxx" startline="6" endline="16">tools::create_path</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classmeta_1a35d142708b4b66eeb857eb0c204e459b" compoundref="meta_8cxx" startline="274" endline="279">meta::hash</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="structgraph__t_1a0cf3a18126f321efc170bf1e735d44da" compoundref="struct__graph_8cxx" startline="235" endline="244">graph_t::meta_deserialize</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</referencedby>
+        <referencedby refid="classio_1a65c36380ef79524e8235f792abe9625c" compoundref="io_2cxx_2root_8cxx" startline="301" endline="351">io::root_begin</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+        <referencedby refid="classmetric__template_1a5209be08253548a7a56bd2f08db31a8c" compoundref="metric_2cxx_2properties_8cxx" startline="38" endline="76">metric_template::set_variables</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::trim</definition>
+        <argsstring>(std::string s)</argsstring>
+        <name>trim</name>
+        <qualifiedname>tools::trim</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Removes whitespace from the beginning and end of a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to trim. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The trimmed string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="147" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::string</type>
+        <definition>std::string tools::type_name</definition>
+        <argsstring>()</argsstring>
+        <name>type_name</name>
+        <qualifiedname>tools::type_name</qualifiedname>
+        <briefdescription>
+<para>Gets the type name of a variable as a string (for debugging). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type to get the name of. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The name of the type as a string. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Gets the type name via RTTI.</para>
+<para>&lt; Returns the type name.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="155" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="155" bodyend="158"/>
+        <referencedby refid="classevent__template_1a3228b318a371b81f2f046247d4fe84bc" compoundref="event__template_8cxx" startline="78" endline="100">event_template::build_mapping</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>g</type>
+        <definition>g tools::sum</definition>
+        <argsstring>(std::vector&lt; g &gt; *inpt)</argsstring>
+        <name>sum</name>
+        <qualifiedname>tools::sum</qualifiedname>
+        <param>
+          <type>std::vector&lt; g &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Sums the elements of a vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of elements in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to sum. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The sum of all elements. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Initialize the output variable.</para>
+<para>&lt; Return the sum.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="183" column="7" bodyfile="modules/tools/include/tools/tools.h" bodystart="183" bodyend="187"/>
+        <referencedby refid="classmetrics_1a15f20f34714224f09f44cf520ca6f271" compoundref="loss__plots_8cxx" startline="220" endline="226">metrics::add_th1f_accuracy</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classparticle__template_1a575d99bd23ac34125328e4d23518ff52" compoundref="modules_2particle_2cxx_2physics_8cxx" startline="3" endline="10">particle_template::DeltaR</referencedby>
+        <referencedby refid="classgraph__template_1aa2bef51e5e00b49425c8ac93bcd1f315" compoundref="graph__template_8cxx" startline="87" endline="146">graph_template::double_neutrino</referencedby>
+        <referencedby refid="classgrift_1a72f7575fbd1d744d4f9053e5b8b7ee38" compoundref="grift_8cxx" startline="112" endline="296">grift::forward</referencedby>
+        <referencedby refid="classrecursivegraphneuralnetwork_1a4b09bc8de8d9ecd0b4ff1ffa94deea98" compoundref="RecursiveGraphNeuralNetwork_8cxx" startline="143" endline="300">recursivegraphneuralnetwork::forward</referencedby>
+        <referencedby refid="classmatching_1a04995b471b7aed459aeec59b3ea9a81b" compoundref="matching_8cxx" startline="100" endline="143">matching::match_obj</referencedby>
+        <referencedby refid="classgrift_1ad610edcd0cab14b57197a846ab8a8caf" compoundref="grift_8cxx" startline="83" endline="110">grift::message</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classdataloader_1af9b0d37897d8e37873b660469d3d82ff" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::safe_delete</definition>
+        <argsstring>(std::vector&lt; graph_t * &gt; *data)</argsstring>
+        <name>safe_delete</name>
+        <qualifiedname>dataloader::safe_delete</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="40" column="21" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="294" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::create_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>create_path</name>
+        <qualifiedname>tools::create_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Creates a directory path, including parent directories if needed. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to create. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="49" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="6" bodyend="16"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a7b98125c72486407d782b2bc2ea67389" compoundref="inference__build_8cxx" startline="5" endline="139">analysis::build_inference</referencedby>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="classanalysis_1ab1e46d4a55389c9159584cc1c4f217a0" compoundref="analysis_8cxx" startline="81" endline="95">analysis::build_project</referencedby>
+        <referencedby refid="classcontainer_1a2f036c9c52b38b6fd462a2a72f553c41" compoundref="container_8cxx" startline="65" endline="133">container::compile</referencedby>
+        <referencedby refid="classmetrics_1a60ff488f6951bae8d98bc7a03bc6e464" compoundref="mass__plots_8cxx" startline="13" endline="115">metrics::dump_mass_plots</referencedby>
+        <referencedby refid="classmetric__template_1a422951eb9279ed05c885795ebeed0e5b" compoundref="metric_2cxx_2base_8cxx" startline="125" endline="163">metric_template::execute</referencedby>
+        <referencedby refid="classmetrics_1a160fdefa51ba1fd2135307d3722acc1d" compoundref="loss__plots_8cxx" startline="3" endline="43">metrics::generic_painter</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+        <referencedby refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::delete_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>delete_path</name>
+        <qualifiedname>tools::delete_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Deletes a directory path and its contents. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to delete. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="55" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="22" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::is_file</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>is_file</name>
+        <qualifiedname>tools::is_file</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a path refers to an existing file. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the path is a file and exists, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="62" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="30" bodyend="33"/>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classanalysis_1a1c8b808d255b490be4ea86df4d29cdf1" compoundref="methods_8cxx" startline="7" endline="49">analysis::initialize_loop</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+        <referencedby refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::rename</definition>
+        <argsstring>(std::string start, std::string target)</argsstring>
+        <name>rename</name>
+        <qualifiedname>tools::rename</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>target</declname>
+        </param>
+        <briefdescription>
+<para>Renames a file or directory. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>start</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The original path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new path. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="69" column="17" bodyfile="modules/tools/cxx/io.cxx" bodystart="18" bodyend="20"/>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::absolute_path</definition>
+        <argsstring>(std::string path)</argsstring>
+        <name>absolute_path</name>
+        <qualifiedname>tools::absolute_path</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+<para>Converts a relative path to an absolute path. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The absolute version of the path. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="76" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="49" bodyend="51"/>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a68b520bbdb4d591d7375f9ecd6532ce8" compoundref="event__build_8cxx" startline="4" endline="135">analysis::build_events</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; tools::ls</definition>
+        <argsstring>(std::string path, std::string ext=&quot;&quot;)</argsstring>
+        <name>ls</name>
+        <qualifiedname>tools::ls</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>ext</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+<para>Lists files in a directory, optionally filtered by extension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>File extension filter. If empty, all files are listed. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of filenames in the directory. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="84" column="24" bodyfile="modules/tools/cxx/io.cxx" bodystart="35" bodyend="47"/>
+        <references refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" compoundref="strings_8cxx" startline="71" endline="75">tools::ends_with</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1ae3bba702555507d8b6e5567c34d19142" compoundref="cache_8cxx" startline="334" endline="337">restore_graphs</referencedby>
+        <referencedby refid="classio_1a38cda1cf4b0ad6920e19780ad985d374" compoundref="io_2cxx_2root_8cxx" startline="7" endline="29">io::trigger_pcm</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val)</argsstring>
+        <name>to_string</name>
+        <qualifiedname>tools::to_string</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with standard precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="92" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="59" bodyend="63"/>
+        <referencedby refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" compoundref="dataset_8cxx" startline="12" endline="39">generate_kfold_set</referencedby>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">generate_test_set</referencedby>
+        <referencedby refid="classparticle__template_1a9c586cc0ac38cad5ccacf1bb4985e25b" compoundref="interfaces_8cxx" startline="152" endline="163">particle_template::get_hash</referencedby>
+        <referencedby refid="classtopefficiency_1aae4a7f46ed0d168dd12f6ab5e9074a76" compoundref="topefficiency_8cxx" startline="57" endline="79">topefficiency::region</referencedby>
+        <referencedby refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" compoundref="dataset_8cxx" startline="175" endline="221">restore_dataset</referencedby>
+        <referencedby refid="classevent__template_1a9f5661b7516b43801913ab6fc897a80e" compoundref="event_2cxx_2properties_8cxx" startline="92" endline="97">event_template::set_hash</referencedby>
+        <referencedby refid="classselection__template_1acd31f17488bcf97dd8a5f1b3a7da1cdd" compoundref="selection_2cxx_2properties_8cxx" startline="11" endline="16">selection_template::set_hash</referencedby>
+        <referencedby refid="classparton_1abf09df1e5e6008e9af478a2f540947f8" compoundref="parton_8cxx" startline="33" endline="122">parton::strategy</referencedby>
+        <referencedby refid="classtopjets_1a72145e79c19febe5393d17220c980e2a" compoundref="topjets_8cxx" startline="22" endline="163">topjets::strategy</referencedby>
+        <referencedby refid="classtoptruthjets_1a39c1afcec2800b351fc047fbfa4f009f" compoundref="toptruthjets_8cxx" startline="22" endline="163">toptruthjets::strategy</referencedby>
+        <referencedby refid="classparton_1a4045341bd771afd7ac452fa1dc6aea8e" compoundref="parton_8h" startline="22" endline="68">parton::top_mass_contribution</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string tools::to_string</definition>
+        <argsstring>(double val, int prec)</argsstring>
+        <name>to_string</name>
+        <qualifiedname>tools::to_string</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>val</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>prec</declname>
+        </param>
+        <briefdescription>
+<para>Converts a double value to a string with specified precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The double value to convert. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>prec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of decimal places to consider. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The string representation of the value. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="100" column="24" bodyfile="modules/tools/cxx/strings.cxx" bodystart="91" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void tools::replace</definition>
+        <argsstring>(std::string *in, std::string repl_str, std::string repl_with)</argsstring>
+        <name>replace</name>
+        <qualifiedname>tools::replace</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>in</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_str</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>repl_with</declname>
+        </param>
+        <briefdescription>
+<para>Replaces all occurrences of a substring in a string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to modify. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_str</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>repl_with</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The replacement string. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="108" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="5" bodyend="21"/>
+        <referencedby refid="classanalysis_1a1c3e0d7bb80774d865586b18a1566704" compoundref="graph__build_8cxx" startline="3" endline="30">analysis::build_graphs</referencedby>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classmeta_1aa38115a3aaa4c30e30800d3f52c1a750" compoundref="meta_8cxx" startline="314" endline="317">meta::get_campaign</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_string</definition>
+        <argsstring>(std::string *inpt, std::string trg)</argsstring>
+        <name>has_string</name>
+        <qualifiedname>tools::has_string</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string contains a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the substring is found, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="116" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="65" bodyend="69"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a8fa14cdd754f91cc6554c9e71929cce7">f</references>
+        <referencedby refid="classanalysis_1a0cbe44c90dab45066bfe074e506c5d8d" compoundref="analysis_8cxx" startline="97" endline="142">analysis::check_cache</referencedby>
+        <referencedby refid="classmeta_1aac47e377d2bbda2fac5a8cfc5ada7243" compoundref="meta_8cxx" startline="154" endline="198">meta::compiler</referencedby>
+        <referencedby refid="classmetrics_1a160fdefa51ba1fd2135307d3722acc1d" compoundref="loss__plots_8cxx" startline="3" endline="43">metrics::generic_painter</referencedby>
+        <referencedby refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" compoundref="cache_8cxx" startline="178" endline="319">restore_graphs_</referencedby>
+        <referencedby refid="classmeta_1a24d8657dbb9d0d8903725ee01fe22c14" compoundref="meta_8cxx" startline="226" endline="272">meta::scan_sow</referencedby>
+        <referencedby refid="classmodel__template_1ad6ea8f7ffac83bd49123286ed4cd9fda" compoundref="model__configuration_8cxx" startline="63" endline="82">model_template::set_device</referencedby>
+        <referencedby refid="classmetric__template_1ad34828d0d75d5b0a656ef881620fbc7c" compoundref="metric_2cxx_2properties_8cxx" startline="12" endline="32">metric_template::set_run_name</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::ends_with</definition>
+        <argsstring>(std::string *inpt, std::string val)</argsstring>
+        <name>ends_with</name>
+        <qualifiedname>tools::ends_with</qualifiedname>
+        <param>
+          <type>std::string *</type>
+          <declname>inpt</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>val</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a string ends with a specific substring. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to check for at the end. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string ends with the substring, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="124" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="71" bodyend="75"/>
+        <references refid="enums_8h_1afc0e564c96a59a78f7943fac65657ff3a2db95e8e1a9267b7a1188556b2013b33">l</references>
+        <referencedby refid="classplotting_1ae528701faff0a6f14e970d3a920f6081" compoundref="plotting_8cxx" startline="22" endline="30">plotting::build_path</referencedby>
+        <referencedby refid="classio_1ad9ed4dbed35a168511c44b38f8e8269b" compoundref="io_2cxx_2root_8cxx" startline="31" endline="61">io::check_root_file_paths</referencedby>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" compoundref="tools_2cxx_2io_8cxx" startline="35" endline="47">tools::ls</referencedby>
+        <referencedby refid="classmeta_1aaed15ab5be8f7a86c79373f24abfc952" compoundref="meta_8cxx" startline="133" endline="152">meta::parse_json</referencedby>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+        <referencedby refid="classanalysis_1a401745bb4bcae03160ffa0b5df2887e7" compoundref="analysis_8cxx" startline="153" endline="226">analysis::start</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool tools::has_value</definition>
+        <argsstring>(std::vector&lt; std::string &gt; *data, std::string trg)</argsstring>
+        <name>has_value</name>
+        <qualifiedname>tools::has_value</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt; *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::string</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Checks if a vector of strings contains a specific string. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to search. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the string is found in the vector, false otherwise. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="132" column="17" bodyfile="modules/tools/cxx/strings.cxx" bodystart="77" bodyend="83"/>
+        <referencedby refid="classio_1aacb050c4cb6c10038d6bf8edb7244a28" compoundref="io_2cxx_2root_8cxx" startline="181" endline="288">io::scan_keys</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::flush</definition>
+        <argsstring>(std::vector&lt; T * &gt; *inpt)</argsstring>
+        <name>flush</name>
+        <qualifiedname>tools::flush</qualifiedname>
+        <param>
+          <type>std::vector&lt; T * &gt; *</type>
+          <declname>inpt</declname>
+        </param>
+        <briefdescription>
+<para>Empties a vector and all objects it points to. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of pointers in the vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the vector to empty. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Loop through all elements in the vector.</para>
+<para>&lt; Delete the object the pointer points to.</para>
+<para>&lt; Set the pointer to nullptr to avoid dangling pointers.</para>
+<para>&lt; Clear the vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="167" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="167" bodyend="174"/>
+        <referencedby refid="classanalysis_1af5938086aabb68bf478a72b0593e4bb8" compoundref="analysis_8cxx" startline="36" endline="46">analysis::~analysis</referencedby>
+        <referencedby refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" compoundref="dataloader_8cxx" startline="14" endline="68">~dataloader</referencedby>
+        <referencedby refid="classsampletracer_1a30d25d5a298b3c5698aee99ede11ce79" compoundref="sampletracer_8cxx" startline="95" endline="146">sampletracer::compile_objects</referencedby>
+        <referencedby refid="classio_1a1c994985d2405202c19fb391cc43a5de" compoundref="io_2cxx_2root_8cxx" startline="358" endline="373">io::root_end</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename g</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::put</definition>
+        <argsstring>(std::vector&lt; g * &gt; *out, std::vector&lt; g * &gt; *src, std::vector&lt; int &gt; *trg)</argsstring>
+        <name>put</name>
+        <qualifiedname>tools::put</qualifiedname>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>out</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; g * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>trg</declname>
+        </param>
+        <briefdescription>
+<para>Fills a vector with pointers from another vector based on a selection index. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects being pointed to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector to select from. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a vector of indices for selection. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the output vector.</para>
+<para>&lt; Reserve space for the output elements.</para>
+<para>&lt; Loop through each selected index.</para>
+<para>&lt; Get the object at the selected index.</para>
+<para>&lt; Add it to the output vector.</para>
+<para>&lt; Mark the object as in use.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="197" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="197" bodyend="205"/>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">get_test_set</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename C</type>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void tools::extract</definition>
+        <argsstring>(std::vector&lt; T &gt; *prop, std::vector&lt; C * &gt; *src, void(*get_prop)(T *, C *))</argsstring>
+        <name>extract</name>
+        <qualifiedname>tools::extract</qualifiedname>
+        <param>
+          <type>std::vector&lt; T &gt; *</type>
+          <declname>prop</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; C * &gt; *</type>
+          <declname>src</declname>
+        </param>
+        <param>
+          <type>void(*)(T *, C *)</type>
+          <declname>get_prop</declname>
+        </param>
+        <briefdescription>
+<para>Extracts a specific property from a vector of objects into a new vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of objects in the source vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The type of the property to extract. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the output vector to fill with property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the source vector of objects. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>get_prop</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function pointer to extract the property from an object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>&lt; Clear the properties vector.</para>
+<para>&lt; Reserve space for the property values.</para>
+<para>&lt; Loop through each object in the source vector.</para>
+<para>&lt; Create a default-initialized property variable.</para>
+<para>&lt; Call the provided function to extract the property.</para>
+<para>&lt; Add the property value to the output vector.</para>
+        </inbodydescription>
+        <location file="modules/tools/include/tools/tools.h" line="216" column="17" bodyfile="modules/tools/include/tools/tools.h" bodystart="216" bodyend="224"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="classdataloader_1a8b0972e3962c58db75a70a3274ee4014" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::cuda_memory_server</definition>
+        <argsstring>()</argsstring>
+        <name>cuda_memory_server</name>
+        <qualifiedname>dataloader::cuda_memory_server</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="64" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="314" bodyend="381"/>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <referencedby refid="classdataloader_1a4916a5cc8d712d60d30b577d80d21584" compoundref="dataloader_8cxx" startline="383" endline="392">start_cuda_server</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a60ede9b5c2cacf28b6fd28524f21501f" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::clean_data_elements</definition>
+        <argsstring>(std::map&lt; std::string, int &gt; **data_map, std::vector&lt; std::map&lt; std::string, int &gt; * &gt; *loader_map)</argsstring>
+        <name>clean_data_elements</name>
+        <qualifiedname>dataloader::clean_data_elements</qualifiedname>
+        <param>
+          <type>std::map&lt; std::string, int &gt; **</type>
+          <declname>data_map</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; std::map&lt; std::string, int &gt; * &gt; *</type>
+          <declname>loader_map</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="66" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="78" bodyend="100"/>
+        <references refid="structs_2cxx_2base_8cxx_1a4eee7b291ed2cdcd4e3c2496c603c48c" compoundref="structs_2cxx_2base_8cxx" startline="98" endline="103">count</references>
+        <referencedby refid="classdataloader_1a281bac1652b78652581bad461b1cc966" compoundref="dataloader_8cxx" startline="102" endline="112">extract_data</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::shuffle</definition>
+        <argsstring>(std::vector&lt; int &gt; *idx)</argsstring>
+        <name>shuffle</name>
+        <qualifiedname>dataloader::shuffle</qualifiedname>
+        <param>
+          <type>std::vector&lt; int &gt; *</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="71" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="70" bodyend="72"/>
+        <references refid="classdataloader_1abeb0f02011eb7b986feced4028180603" compoundref="dataloader_8h" startline="99" endline="99">rnd</references>
+        <referencedby refid="classdataloader_1a086338e3e9670d253041f54888995611" compoundref="dataset_8cxx" startline="41" endline="59">generate_test_set</referencedby>
+        <referencedby refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" compoundref="dataset_8cxx" startline="61" endline="80">get_k_train_set</referencedby>
+        <referencedby refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" compoundref="dataset_8cxx" startline="82" endline="90">get_k_validation_set</referencedby>
+        <referencedby refid="classdataloader_1a84bde8e6c6771e1f86cec2eb22a1e0b1" compoundref="dataset_8cxx" startline="5" endline="10">get_random</referencedby>
+        <referencedby refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" compoundref="dataset_8cxx" startline="92" endline="102">get_test_set</referencedby>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a526457cd0648ecbe1f05881733f05579" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void dataloader::shuffle</definition>
+        <argsstring>(std::vector&lt; graph_t * &gt; *idx)</argsstring>
+        <name>shuffle</name>
+        <qualifiedname>dataloader::shuffle</qualifiedname>
+        <param>
+          <type>std::vector&lt; <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+          <declname>idx</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="72" column="14" bodyfile="modules/dataloader/cxx/dataloader.cxx" bodystart="74" bodyend="76"/>
+        <references refid="classdataloader_1abeb0f02011eb7b986feced4028180603" compoundref="dataloader_8h" startline="99" endline="99">rnd</references>
+      </memberdef>
+      <memberdef kind="function" id="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::map&lt; std::string, <ref refid="structgraph__t" kindref="compound">graph_t</ref> * &gt; *</type>
+        <definition>std::map&lt; std::string, graph_t * &gt; * dataloader::restore_graphs_</definition>
+        <argsstring>(std::vector&lt; std::string &gt;, int threads)</argsstring>
+        <name>restore_graphs_</name>
+        <qualifiedname>dataloader::restore_graphs_</qualifiedname>
+        <param>
+          <type>std::vector&lt; std::string &gt;</type>
+          <defname>cache_</defname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>threads</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/dataloader/include/generators/dataloader.h" line="73" column="18" bodyfile="modules/dataloader/cxx/cache.cxx" bodystart="178" bodyend="319"/>
+        <references refid="structgraph__hdf5_1ac4861c215beded575738e21c5fa59106" compoundref="folds_8h" startline="39">graph_hdf5::data_edge</references>
+        <references refid="structgraph__hdf5__w_1a4785757cb603488c4259ee6271620576" compoundref="folds_8h" startline="65">graph_hdf5_w::data_edge</references>
+        <references refid="structgraph__hdf5_1a92ceec70c0a5f21ed825c5c70e4f8ce5" compoundref="folds_8h" startline="37">graph_hdf5::data_graph</references>
+        <references refid="structgraph__hdf5__w_1afb699fddb7b93b341247d5d60a1968f8" compoundref="folds_8h" startline="63">graph_hdf5_w::data_graph</references>
+        <references refid="structgraph__hdf5_1a7d3a7826a9f750c279d82061a1c37ada" compoundref="folds_8h" startline="31">graph_hdf5::data_map_edge</references>
+        <references refid="structgraph__hdf5__w_1a7f882e2f5e98b9534d48c09b74a6a7ac" compoundref="folds_8h" startline="57">graph_hdf5_w::data_map_edge</references>
+        <references refid="structgraph__hdf5_1ad75bec95c60ef18060d2c0c241179594" compoundref="folds_8h" startline="29">graph_hdf5::data_map_graph</references>
+        <references refid="structgraph__hdf5__w_1a915653a3ebb476c45d3fd46ef6db5371" compoundref="folds_8h" startline="55">graph_hdf5_w::data_map_graph</references>
+        <references refid="structgraph__hdf5_1ae79538fb49675ac88aeaa8b778c98b7b" compoundref="folds_8h" startline="30">graph_hdf5::data_map_node</references>
+        <references refid="structgraph__hdf5__w_1a444b192a91dda61cc95f62aa59728eed" compoundref="folds_8h" startline="56">graph_hdf5_w::data_map_node</references>
+        <references refid="structgraph__hdf5_1a73845121c65b5b862ee126750d852622" compoundref="folds_8h" startline="38">graph_hdf5::data_node</references>
+        <references refid="structgraph__hdf5__w_1a67222f2f757174b05384203c0cb92090" compoundref="folds_8h" startline="64">graph_hdf5_w::data_node</references>
+        <references refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" compoundref="dataloader_8h" startline="97">data_set</references>
+        <references refid="classio_1ac572af35ee4e5a6dc17a35a1d8eb4561" compoundref="hdf5_8cxx" startline="62" endline="67">io::dataset_names</references>
+        <references refid="structgraph__hdf5_1a16de66ca84f82d2bccfea05f6061b37a" compoundref="folds_8h" startline="27">graph_hdf5::edge_index</references>
+        <references refid="structgraph__hdf5__w_1ae120fd519de71f933306d31f1be72c1b" compoundref="folds_8h" startline="53">graph_hdf5_w::edge_index</references>
+        <references refid="classio_1a65ca69ec5f12d0f3a463396bcff84d77" compoundref="hdf5_8cxx" startline="28" endline="40">io::end</references>
+        <references refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03fad07182257bce13d49a5c183864e4a277">evaluation</references>
+        <references refid="structgraph__hdf5_1ae22276649690dcace347ba9c2fab8240" compoundref="folds_8h" startline="23">graph_hdf5::event_index</references>
+        <references refid="structgraph__hdf5__w_1aa3d47b676e5d1619850191d760d4a33d" compoundref="folds_8h" startline="49">graph_hdf5_w::event_index</references>
+        <references refid="structgraph__hdf5_1a114dc2b2be3fed1f839b7e8e80134cce" compoundref="folds_8h" startline="22">graph_hdf5::event_weight</references>
+        <references refid="structgraph__hdf5__w_1acb0cfcc862fda7dc61e30f5171ab00c3" compoundref="folds_8h" startline="48">graph_hdf5_w::event_weight</references>
+        <references refid="structgraph__hdf5_1a9f8e7f0c8466132ada000a9e17bf4b74" compoundref="folds_8h" startline="26">graph_hdf5::filename</references>
+        <references refid="structgraph__hdf5__w_1a9198a9bacbcf26fe8693857850f6b50b" compoundref="folds_8h" startline="52">graph_hdf5_w::filename</references>
+        <references refid="structgraph__hdf5__w_1a5f54ea06f5abf106fac3209e6583a335" compoundref="misc_8cxx" startline="5" endline="45">graph_hdf5_w::flush_data</references>
+        <references refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" compoundref="strings_8cxx" startline="65" endline="69">tools::has_string</references>
+        <references refid="structgraph__hdf5_1ab975032fd062ca1a569a12634c3ee11d" compoundref="folds_8h" startline="25">graph_hdf5::hash</references>
+        <references refid="structgraph__hdf5__w_1a5c9d2dfaa6338db369b4abdcf0e75abe" compoundref="folds_8h" startline="51">graph_hdf5_w::hash</references>
+        <references refid="classdataloader_1a90f4140497d7e991b80ee0fcd2e2ef0e" compoundref="dataloader_8h" startline="95" endline="95">hash_map</references>
+        <references refid="structgraph__hdf5_1a4c32f497b548f06050b4e16fadb2c840" compoundref="folds_8h" startline="21">graph_hdf5::num_nodes</references>
+        <references refid="structgraph__hdf5__w_1a79a4a8986816200b3f5bc756f228221e" compoundref="folds_8h" startline="47">graph_hdf5_w::num_nodes</references>
+        <references refid="gnn-particles_8h_1a726f7868ebf1c63190c267427081d370">read</references>
+        <references refid="classdataloader_1aee3423288b5bb8ffa1322a458e69c0bd" compoundref="dataloader_8h" startline="61">setting</references>
+        <references refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" compoundref="strings_8cxx" startline="23" endline="36">tools::split</references>
+        <references refid="classio_1a228b6ce6f26848a9adfc0ccf3619a53e" compoundref="hdf5_8cxx" startline="15" endline="26">io::start</references>
+        <references refid="enums_8h_1adfa5b6ae994fc9e6e30dd3330929c03fac185ddac8b5a8f5aa23c5b80bc12d214">training</references>
+        <references refid="structgraph__hdf5_1a70a4c5392483e6992bfaa8ef2dbcb4c1" compoundref="folds_8h" startline="43">graph_hdf5::truth_edge</references>
+        <references refid="structgraph__hdf5__w_1a4d1172eb1d81617686cddd309153d738" compoundref="folds_8h" startline="69">graph_hdf5_w::truth_edge</references>
+        <references refid="structgraph__hdf5_1a6fe1f16ce2ae22186701645722003ca5" compoundref="folds_8h" startline="41">graph_hdf5::truth_graph</references>
+        <references refid="structgraph__hdf5__w_1a65bcbe253b22f26a422fc6030db7517a" compoundref="folds_8h" startline="67">graph_hdf5_w::truth_graph</references>
+        <references refid="structgraph__hdf5_1a8429c19c930daad950d6cb2174db2d59" compoundref="folds_8h" startline="35">graph_hdf5::truth_map_edge</references>
+        <references refid="structgraph__hdf5__w_1a7b722999eb122127a74d54fdefceb751" compoundref="folds_8h" startline="61">graph_hdf5_w::truth_map_edge</references>
+        <references refid="structgraph__hdf5_1a41e49ecbf8c4efd0e1a0356b7522de04" compoundref="folds_8h" startline="33">graph_hdf5::truth_map_graph</references>
+        <references refid="structgraph__hdf5__w_1ad0834c14e3c38389299edfed4c7c9988" compoundref="folds_8h" startline="59">graph_hdf5_w::truth_map_graph</references>
+        <references refid="structgraph__hdf5_1a7bc6f3ce6c3222f914dc097d1b328cbe" compoundref="folds_8h" startline="34">graph_hdf5::truth_map_node</references>
+        <references refid="structgraph__hdf5__w_1ae392c93b6d8c3f577b371d32d7726e6d" compoundref="folds_8h" startline="60">graph_hdf5_w::truth_map_node</references>
+        <references refid="structgraph__hdf5_1a1e27c30eda39ae231a8f71b6fe2d5b52" compoundref="folds_8h" startline="42">graph_hdf5::truth_node</references>
+        <references refid="structgraph__hdf5__w_1ad3328e9888f860e9045cc38bc208bc9c" compoundref="folds_8h" startline="68">graph_hdf5_w::truth_node</references>
+        <referencedby refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" compoundref="cache_8cxx" startline="5" endline="176">dump_graphs</referencedby>
+        <referencedby refid="classdataloader_1aed6ec872879a44ecfa9ae1c2188690a8" compoundref="cache_8cxx" startline="321" endline="332">restore_graphs</referencedby>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" prot="protected" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string notification::prefix</definition>
+        <argsstring></argsstring>
+        <name>prefix</name>
+        <qualifiedname>notification::prefix</qualifiedname>
+        <initializer>= &quot;&quot;</initializer>
+        <briefdescription>
+<para>Prefix used in log messages from this instance. Initialized as empty string. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="126" column="17" bodyfile="modules/notification/include/notification/notification.h" bodystart="126" bodyend="-1"/>
+        <referencedby refid="classanalysis_1a1391073bb18c75cdad4132e90992fcd3" compoundref="analysis_8cxx" startline="7" endline="34">analysis::analysis</referencedby>
+        <referencedby refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" compoundref="dataloader_8cxx" startline="6" endline="12">dataloader</referencedby>
+        <referencedby refid="classio_1a87d6c9bb433c979e3d469090b7e4f873" compoundref="io_2cxx_2io_8cxx" startline="18" endline="18">io::io</referencedby>
+        <referencedby refid="classmeta_1a63ad3379066eb6b7c8bf7a7ea9ee0783" compoundref="meta_8cxx" startline="4" endline="126">meta::meta</referencedby>
+        <referencedby refid="classoptimizer_1aff2ebf2bb9af98169baea22791818790" compoundref="optimizer_2cxx_2optimizer_8cxx" startline="3" endline="6">optimizer::optimizer</referencedby>
+        <referencedby refid="classmetric__template_1a85d83f331257a2bcbaca37f1eb4b5d5c" compoundref="metric_2cxx_2properties_8cxx" startline="3" endline="6">metric_template::set_name</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classnotification_1aa14ded524569ac1d7fd121c161a733be" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool notification::debug_mode</definition>
+        <argsstring></argsstring>
+        <name>debug_mode</name>
+        <qualifiedname>notification::debug_mode</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating whether debug mode is enabled. Initialized as false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="127" column="10" bodyfile="modules/notification/include/notification/notification.h" bodystart="127" bodyend="-1"/>
+        <referencedby refid="classanalysis_1ad1bf7fde8eafef15d4dcedcba5ce51f7" compoundref="metric__build_8cxx" startline="16" endline="161">analysis::build_metric</referencedby>
+      </memberdef>
+      <memberdef kind="variable" id="classnotification_1ab2d4ba20d7bc164eece8982b413eab13" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool notification::suppress_warnings</definition>
+        <argsstring></argsstring>
+        <name>suppress_warnings</name>
+        <qualifiedname>notification::suppress_warnings</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating whether warnings are suppressed. Initialized as false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="128" column="10" bodyfile="modules/notification/include/notification/notification.h" bodystart="128" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnotification_1a77a99c28092cf053b395805c75dde6da" prot="protected" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool notification::suppress_info</definition>
+        <argsstring></argsstring>
+        <name>suppress_info</name>
+        <qualifiedname>notification::suppress_info</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>Flag indicating whether info messages are suppressed. Initialized as false. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="modules/notification/include/notification/notification.h" line="129" column="10" bodyfile="modules/notification/include/notification/notification.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>dataloader</label>
+        <link refid="classdataloader"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>notification</label>
+        <link refid="classnotification"/>
+      </node>
+      <node id="3">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="27">
+        <label>K</label>
+      </node>
+      <node id="11">
+        <label>T</label>
+      </node>
+      <node id="5">
+        <label>bool</label>
+      </node>
+      <node id="21">
+        <label>DeviceType</label>
+      </node>
+      <node id="1">
+        <label>dataloader</label>
+        <link refid="classdataloader"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="6" relation="public-inheritance">
+        </childnode>
+        <childnode refid="7" relation="usage">
+          <edgelabel>-setting</edgelabel>
+        </childnode>
+        <childnode refid="14" relation="usage">
+          <edgelabel>-cuda_mem</edgelabel>
+        </childnode>
+        <childnode refid="15" relation="usage">
+          <edgelabel>-batched_cache</edgelabel>
+          <edgelabel>-gr_k_fold_training</edgelabel>
+          <edgelabel>-gr_k_fold_validation</edgelabel>
+        </childnode>
+        <childnode refid="34" relation="usage">
+          <edgelabel>-k_fold_training</edgelabel>
+          <edgelabel>-k_fold_validation</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>-data_index</edgelabel>
+          <edgelabel>-test_set</edgelabel>
+          <edgelabel>-train_set</edgelabel>
+        </childnode>
+        <childnode refid="35" relation="usage">
+          <edgelabel>-data_map_edge</edgelabel>
+          <edgelabel>-data_map_graph</edgelabel>
+          <edgelabel>-data_map_node</edgelabel>
+          <edgelabel>-truth_map_edge</edgelabel>
+          <edgelabel>-truth_map_graph</edgelabel>
+          <edgelabel>-truth_map_node</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>-hash_map</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>-data_set</edgelabel>
+          <edgelabel>-gr_test</edgelabel>
+        </childnode>
+        <childnode refid="36" relation="usage">
+          <edgelabel>-rnd</edgelabel>
+        </childnode>
+      </node>
+      <node id="19">
+        <label>double</label>
+      </node>
+      <node id="12">
+        <label>float</label>
+      </node>
+      <node id="22">
+        <label>friend</label>
+      </node>
+      <node id="17">
+        <label>graph_t</label>
+        <link refid="structgraph__t"/>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+in_use</edgelabel>
+          <edgelabel>+num_nodes</edgelabel>
+        </childnode>
+        <childnode refid="18" relation="usage">
+          <edgelabel>+event_index</edgelabel>
+        </childnode>
+        <childnode refid="19" relation="usage">
+          <edgelabel>+event_weight</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>+preselection</edgelabel>
+          <edgelabel>-is_owner</edgelabel>
+        </childnode>
+        <childnode refid="20" relation="usage">
+          <edgelabel>+batched_events</edgelabel>
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+filename</edgelabel>
+          <edgelabel>+graph_name</edgelabel>
+          <edgelabel>+hash</edgelabel>
+        </childnode>
+        <childnode refid="21" relation="usage">
+          <edgelabel>+device</edgelabel>
+        </childnode>
+        <childnode refid="22" relation="usage">
+          <edgelabel>-dataloader</edgelabel>
+          <edgelabel>-graph_template</edgelabel>
+        </childnode>
+        <childnode refid="23" relation="usage">
+          <edgelabel>-mut</edgelabel>
+        </childnode>
+        <childnode refid="24" relation="usage">
+          <edgelabel>-edge_index</edgelabel>
+        </childnode>
+        <childnode refid="25" relation="usage">
+          <edgelabel>-data_map_edge</edgelabel>
+          <edgelabel>-data_map_graph</edgelabel>
+          <edgelabel>-data_map_node</edgelabel>
+          <edgelabel>-truth_map_edge</edgelabel>
+          <edgelabel>-truth_map_graph</edgelabel>
+          <edgelabel>-truth_map_node</edgelabel>
+        </childnode>
+        <childnode refid="28" relation="usage">
+          <edgelabel>-data_edge</edgelabel>
+          <edgelabel>-data_graph</edgelabel>
+          <edgelabel>-data_node</edgelabel>
+          <edgelabel>-truth_edge</edgelabel>
+          <edgelabel>-truth_graph</edgelabel>
+          <edgelabel>-truth_node</edgelabel>
+        </childnode>
+        <childnode refid="29" relation="usage">
+          <edgelabel>-dev_data_edge</edgelabel>
+          <edgelabel>-dev_data_graph</edgelabel>
+          <edgelabel>-dev_data_node</edgelabel>
+          <edgelabel>-dev_truth_edge</edgelabel>
+          <edgelabel>-dev_truth_graph</edgelabel>
+          <edgelabel>-dev_truth_node</edgelabel>
+        </childnode>
+        <childnode refid="32" relation="usage">
+          <edgelabel>-dev_batch_index</edgelabel>
+          <edgelabel>-dev_batched_events</edgelabel>
+          <edgelabel>-dev_edge_index</edgelabel>
+          <edgelabel>-dev_event_weight</edgelabel>
+        </childnode>
+        <childnode refid="33" relation="usage">
+          <edgelabel>-device_index</edgelabel>
+        </childnode>
+      </node>
+      <node id="8">
+        <label>int</label>
+      </node>
+      <node id="18">
+        <label>long</label>
+      </node>
+      <node id="33">
+        <label>std::map&lt; int, bool &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="template-instance">
+          <edgelabel>&lt; int, bool &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="15">
+        <label>std::map&lt; int, std::vector&lt; graph_t * &gt; * &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="16" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="template-instance">
+          <edgelabel>&lt; int, std::vector&lt; graph_t * &gt; * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="34">
+        <label>std::map&lt; int, std::vector&lt; int &gt; * &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="template-instance">
+          <edgelabel>&lt; int, std::vector&lt; int &gt; * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="29">
+        <label>std::map&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="30" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="template-instance">
+          <edgelabel>&lt; int, std::vector&lt; torch::Tensor &gt; &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="32">
+        <label>std::map&lt; int, torch::Tensor &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="31" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="template-instance">
+          <edgelabel>&lt; int, torch::Tensor &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="25">
+        <label>std::map&lt; std::string, int &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="26" relation="template-instance">
+          <edgelabel>&lt; std::string, int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>notification</label>
+        <link refid="classnotification"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>#prefix</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>#debug_mode</edgelabel>
+          <edgelabel>#suppress_info</edgelabel>
+          <edgelabel>#suppress_warnings</edgelabel>
+        </childnode>
+      </node>
+      <node id="7">
+        <label>settings_t</label>
+        <link refid="structsettings__t"/>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+graph_cache</edgelabel>
+          <edgelabel>+metacache_path</edgelabel>
+          <edgelabel>+output_path</edgelabel>
+          <edgelabel>+run_name</edgelabel>
+          <edgelabel>+sow_name</edgelabel>
+          <edgelabel>+training_dataset</edgelabel>
+          <edgelabel>+var_energy</edgelabel>
+          <edgelabel>+var_eta</edgelabel>
+          <edgelabel>+var_phi</edgelabel>
+          <edgelabel>+var_pt</edgelabel>
+          <edgelabel>...</edgelabel>
+        </childnode>
+        <childnode refid="5" relation="usage">
+          <edgelabel>+build_cache</edgelabel>
+          <edgelabel>+continue_training</edgelabel>
+          <edgelabel>+debug_mode</edgelabel>
+          <edgelabel>+evaluation</edgelabel>
+          <edgelabel>+fetch_meta</edgelabel>
+          <edgelabel>+pretagevents</edgelabel>
+          <edgelabel>+selection_root</edgelabel>
+          <edgelabel>+training</edgelabel>
+          <edgelabel>+validation</edgelabel>
+        </childnode>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+batch_size</edgelabel>
+          <edgelabel>+epochs</edgelabel>
+          <edgelabel>+kfolds</edgelabel>
+          <edgelabel>+max_range</edgelabel>
+          <edgelabel>+nbins</edgelabel>
+          <edgelabel>+num_examples</edgelabel>
+          <edgelabel>+refresh</edgelabel>
+          <edgelabel>+threads</edgelabel>
+        </childnode>
+        <childnode refid="9" relation="usage">
+          <edgelabel>+kfold</edgelabel>
+        </childnode>
+        <childnode refid="12" relation="usage">
+          <edgelabel>+train_size</edgelabel>
+        </childnode>
+        <childnode refid="13" relation="usage">
+          <edgelabel>+targets</edgelabel>
+        </childnode>
+      </node>
+      <node id="4">
+        <label>std::basic_string&lt; Char &gt;</label>
+      </node>
+      <node id="36">
+        <label>default_random_engine</label>
+      </node>
+      <node id="26">
+        <label>std::map&lt; K, T &gt;</label>
+        <childnode refid="27" relation="usage">
+          <edgelabel>+keys</edgelabel>
+        </childnode>
+        <childnode refid="11" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="23">
+        <label>std::mutex</label>
+      </node>
+      <node id="3">
+        <label>std::string</label>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>std::thread</label>
+      </node>
+      <node id="10">
+        <label>std::vector&lt; T &gt;</label>
+        <childnode refid="11" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+      </node>
+      <node id="6">
+        <label>tools</label>
+        <link refid="classtools"/>
+      </node>
+      <node id="31">
+        <label>Tensor</label>
+      </node>
+      <node id="24">
+        <label>Tensor *</label>
+      </node>
+      <node id="16">
+        <label>std::vector&lt; graph_t * &gt;</label>
+        <childnode refid="17" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; graph_t * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="9">
+        <label>std::vector&lt; int &gt;</label>
+        <childnode refid="8" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; int &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="20">
+        <label>std::vector&lt; long &gt;</label>
+        <childnode refid="18" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; long &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="35">
+        <label>std::vector&lt; std::map&lt; std::string, int &gt; * &gt;</label>
+        <childnode refid="25" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::map&lt; std::string, int &gt; * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="13">
+        <label>std::vector&lt; std::string &gt;</label>
+        <childnode refid="3" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; std::string &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="28">
+        <label>std::vector&lt; torch::Tensor * &gt;</label>
+        <childnode refid="24" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; torch::Tensor * &gt;</edgelabel>
+        </childnode>
+      </node>
+      <node id="30">
+        <label>std::vector&lt; torch::Tensor &gt;</label>
+        <childnode refid="31" relation="usage">
+          <edgelabel>+elements</edgelabel>
+        </childnode>
+        <childnode refid="10" relation="template-instance">
+          <edgelabel>&lt; torch::Tensor &gt;</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="modules/dataloader/include/generators/dataloader.h" line="28" column="1" bodyfile="modules/dataloader/include/generators/dataloader.h" bodystart="31" bodyend="100"/>
+    <listofallmembers>
+      <member refid="classtools_1a408b66ad73b7b4bb962634c14a55b619" prot="public" virt="non-virtual"><scope>dataloader</scope><name>absolute_path</name></member>
+      <member refid="classdataloader_1a16a8ca527d3bb66711ffa93078d4e9de" prot="private" virt="non-virtual"><scope>dataloader</scope><name>analysis</name></member>
+      <member refid="classdataloader_1ad71139b6e1b5f34908f25f36c3030e63" prot="private" virt="non-virtual"><scope>dataloader</scope><name>batched_cache</name></member>
+      <member refid="classdataloader_1ad973eae80b8c958e87642459f8a81b47" prot="public" virt="non-virtual"><scope>dataloader</scope><name>build_batch</name></member>
+      <member refid="classdataloader_1a60ede9b5c2cacf28b6fd28524f21501f" prot="private" virt="non-virtual"><scope>dataloader</scope><name>clean_data_elements</name></member>
+      <member refid="classtools_1aed9f3247b474a8fb1840860d51cde7ca" prot="public" virt="non-virtual"><scope>dataloader</scope><name>create_path</name></member>
+      <member refid="classdataloader_1a84a838862778d20a99ff35d701ed55f0" prot="private" virt="non-virtual"><scope>dataloader</scope><name>cuda_mem</name></member>
+      <member refid="classdataloader_1a8b0972e3962c58db75a70a3274ee4014" prot="private" virt="non-virtual"><scope>dataloader</scope><name>cuda_memory_server</name></member>
+      <member refid="classdataloader_1a16003e1c2adbfdc1c4610e2a813b9527" prot="private" virt="non-virtual"><scope>dataloader</scope><name>data_index</name></member>
+      <member refid="classdataloader_1a5dd0e6b43573a7484d080d1485ef5683" prot="private" virt="non-virtual"><scope>dataloader</scope><name>data_map_edge</name></member>
+      <member refid="classdataloader_1ae77334f697dbdb10e8a27b74d389e4b5" prot="private" virt="non-virtual"><scope>dataloader</scope><name>data_map_graph</name></member>
+      <member refid="classdataloader_1aaa3b5585b803325a2ffa775fe0a3a536" prot="private" virt="non-virtual"><scope>dataloader</scope><name>data_map_node</name></member>
+      <member refid="classdataloader_1ad76383a0d2ae103e80928c95a65f3015" prot="private" virt="non-virtual"><scope>dataloader</scope><name>data_set</name></member>
+      <member refid="classdataloader_1a2fa1ff07b59195d82493d67dcbe648c8" prot="public" virt="non-virtual"><scope>dataloader</scope><name>dataloader</name></member>
+      <member refid="classdataloader_1a17822e45f6b5c7d407b71a0660e45f75" prot="public" virt="non-virtual"><scope>dataloader</scope><name>datatransfer</name></member>
+      <member refid="classdataloader_1aa97ddc9ee69e9b9ecaf763ff8db775a2" prot="public" virt="non-virtual"><scope>dataloader</scope><name>datatransfer</name></member>
+      <member refid="classnotification_1a8dd1ebb578269118b18bf7f0e176bf14" prot="public" virt="non-virtual"><scope>dataloader</scope><name>Debug</name></member>
+      <member refid="classnotification_1aa14ded524569ac1d7fd121c161a733be" prot="protected" virt="non-virtual"><scope>dataloader</scope><name>debug_mode</name></member>
+      <member refid="classtools_1a1f8f5e775e758e3d2442a9dd46daf78c" prot="public" virt="non-virtual"><scope>dataloader</scope><name>delete_path</name></member>
+      <member refid="classdataloader_1a6a829ac2b88dd9655a52bdf3e3701259" prot="public" virt="non-virtual"><scope>dataloader</scope><name>dump_dataset</name></member>
+      <member refid="classdataloader_1a04c94d9be735c32b80b6599c6bd993b4" prot="public" virt="non-virtual"><scope>dataloader</scope><name>dump_graphs</name></member>
+      <member refid="classtools_1a3d538da5310467c9321b27cd6a75b9af" prot="public" virt="non-virtual"><scope>dataloader</scope><name>ends_with</name></member>
+      <member refid="classnotification_1ab0c3843575c157d799e532a9ea5acbd0" prot="public" virt="non-virtual"><scope>dataloader</scope><name>Error</name></member>
+      <member refid="classtools_1a86175bf887f3e82780cb72910181961d" prot="public" virt="non-virtual"><scope>dataloader</scope><name>extract</name></member>
+      <member refid="classdataloader_1a281bac1652b78652581bad461b1cc966" prot="public" virt="non-virtual"><scope>dataloader</scope><name>extract_data</name></member>
+      <member refid="classtools_1abce97603aeadeaa04fa6c6ff6c721eda" prot="public" virt="non-virtual"><scope>dataloader</scope><name>flush</name></member>
+      <member refid="classdataloader_1ac35a068b2e42d77b1fe986c65e3c2d24" prot="public" virt="non-virtual"><scope>dataloader</scope><name>generate_kfold_set</name></member>
+      <member refid="classdataloader_1a086338e3e9670d253041f54888995611" prot="public" virt="non-virtual"><scope>dataloader</scope><name>generate_test_set</name></member>
+      <member refid="classnotification_1ae25782afd10b3cb5fffe17afaf4fffc0" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_debug_mode</name></member>
+      <member refid="classdataloader_1ade66521611fe2fcbe33562fe51d9692c" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_inference</name></member>
+      <member refid="classdataloader_1ae243f6005ad6f4e2600b44d7ee6d40ed" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_k_train_set</name></member>
+      <member refid="classdataloader_1a132ebd49d79e9339c2aa96ba9cfd6bc7" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_k_validation_set</name></member>
+      <member refid="classnotification_1aa0aad214cf167691e516ecc343306244" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_prefix</name></member>
+      <member refid="classdataloader_1a84bde8e6c6771e1f86cec2eb22a1e0b1" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_random</name></member>
+      <member refid="classnotification_1a3a12e8eaf363a320abee5393436123f0" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_suppress_info</name></member>
+      <member refid="classnotification_1ab53313e9343e9ef6deaefa2bdd3a837a" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_suppress_warning</name></member>
+      <member refid="classdataloader_1a7a0c887638c888df9b55cbdf45c816c9" prot="public" virt="non-virtual"><scope>dataloader</scope><name>get_test_set</name></member>
+      <member refid="classdataloader_1a6fee146467720ac6d2e196d8ff4e874e" prot="private" virt="non-virtual"><scope>dataloader</scope><name>gr_k_fold_training</name></member>
+      <member refid="classdataloader_1a83f66a11646364f1702c889a35f18129" prot="private" virt="non-virtual"><scope>dataloader</scope><name>gr_k_fold_validation</name></member>
+      <member refid="classdataloader_1a13df314a74b6b69301bae02fd2951657" prot="private" virt="non-virtual"><scope>dataloader</scope><name>gr_test</name></member>
+      <member refid="classtools_1ad7229c72cee65da3605c4be82f9b42d4" prot="public" virt="non-virtual"><scope>dataloader</scope><name>has_string</name></member>
+      <member refid="classtools_1a13633d4d63c55bcf537ff141e7605f13" prot="public" virt="non-virtual"><scope>dataloader</scope><name>has_value</name></member>
+      <member refid="classdataloader_1a90f4140497d7e991b80ee0fcd2e2ef0e" prot="private" virt="non-virtual"><scope>dataloader</scope><name>hash_map</name></member>
+      <member refid="classnotification_1a2ea9e0828e3d323b5bb5cdecc8f018a8" prot="public" virt="non-virtual"><scope>dataloader</scope><name>Info</name></member>
+      <member refid="classtools_1a47d3d261edcb898daab56721e18d1e67" prot="public" virt="non-virtual"><scope>dataloader</scope><name>is_file</name></member>
+      <member refid="classdataloader_1a53b58986cd3fd735e185cd20da21b096" prot="private" virt="non-virtual"><scope>dataloader</scope><name>k_fold_training</name></member>
+      <member refid="classdataloader_1a98300277fb075cb50cc6a1a0418672dd" prot="private" virt="non-virtual"><scope>dataloader</scope><name>k_fold_validation</name></member>
+      <member refid="classtools_1a5ab0f2cc351dd97951358ebe19e9c18d" prot="public" virt="non-virtual"><scope>dataloader</scope><name>ls</name></member>
+      <member refid="classnotification_1a47e2d300e33c44a24b0c51d9e9a83914" prot="public" virt="non-virtual"><scope>dataloader</scope><name>Message</name></member>
+      <member refid="classnotification_1a3ec5fe2d8db29cf32853858ff58fdbd7" prot="public" virt="non-virtual"><scope>dataloader</scope><name>notification</name></member>
+      <member refid="classnotification_1a913d4c8a7736df782f900dd436cfeaa6" prot="protected" virt="non-virtual"><scope>dataloader</scope><name>prefix</name></member>
+      <member refid="classtools_1a4450b1e48193bef904b44f7a90aaee98" prot="public" virt="non-virtual"><scope>dataloader</scope><name>put</name></member>
+      <member refid="classtools_1a9265b9f87bde50d0352c6cd1959ae5fc" prot="public" virt="non-virtual"><scope>dataloader</scope><name>rename</name></member>
+      <member refid="classtools_1aeae88ebd7116d59008600f0723716dba" prot="public" virt="non-virtual"><scope>dataloader</scope><name>replace</name></member>
+      <member refid="classdataloader_1a5fddffa25c532953896e2d1646ca1dc4" prot="public" virt="non-virtual"><scope>dataloader</scope><name>restore_dataset</name></member>
+      <member refid="classdataloader_1aed6ec872879a44ecfa9ae1c2188690a8" prot="public" virt="non-virtual"><scope>dataloader</scope><name>restore_graphs</name></member>
+      <member refid="classdataloader_1ae3bba702555507d8b6e5567c34d19142" prot="public" virt="non-virtual"><scope>dataloader</scope><name>restore_graphs</name></member>
+      <member refid="classdataloader_1a52b546c96dec81d3860fb7e6268b097a" prot="private" virt="non-virtual"><scope>dataloader</scope><name>restore_graphs_</name></member>
+      <member refid="classdataloader_1abeb0f02011eb7b986feced4028180603" prot="private" virt="non-virtual"><scope>dataloader</scope><name>rnd</name></member>
+      <member refid="classdataloader_1af9b0d37897d8e37873b660469d3d82ff" prot="public" virt="non-virtual"><scope>dataloader</scope><name>safe_delete</name></member>
+      <member refid="classnotification_1a5a69a50032f5dcf38bed2bb27dc048fc" prot="public" virt="non-virtual"><scope>dataloader</scope><name>set_debug_mode</name></member>
+      <member refid="classnotification_1a575db6b2e3b67a7d679205600d83b576" prot="public" virt="non-virtual"><scope>dataloader</scope><name>set_prefix</name></member>
+      <member refid="classnotification_1a58eec7023935cff9332ce21e58fc3f5a" prot="public" virt="non-virtual"><scope>dataloader</scope><name>set_suppress_info</name></member>
+      <member refid="classnotification_1a9bb77ba73a5f25af292e9eea8a8de970" prot="public" virt="non-virtual"><scope>dataloader</scope><name>set_suppress_warning</name></member>
+      <member refid="classdataloader_1aee3423288b5bb8ffa1322a458e69c0bd" prot="private" virt="non-virtual"><scope>dataloader</scope><name>setting</name></member>
+      <member refid="classdataloader_1a34eafd55816f8c2649a58c7cb8bc42fe" prot="private" virt="non-virtual"><scope>dataloader</scope><name>shuffle</name></member>
+      <member refid="classdataloader_1a526457cd0648ecbe1f05881733f05579" prot="private" virt="non-virtual"><scope>dataloader</scope><name>shuffle</name></member>
+      <member refid="classtools_1a352a6965f2f3c768f0f4ecd1f978fcc0" prot="public" virt="non-virtual"><scope>dataloader</scope><name>split</name></member>
+      <member refid="classdataloader_1a4916a5cc8d712d60d30b577d80d21584" prot="public" virt="non-virtual"><scope>dataloader</scope><name>start_cuda_server</name></member>
+      <member refid="classtools_1a7b784121d8b368a64995feddc7083469" prot="public" virt="non-virtual"><scope>dataloader</scope><name>sum</name></member>
+      <member refid="classnotification_1a77a99c28092cf053b395805c75dde6da" prot="protected" virt="non-virtual"><scope>dataloader</scope><name>suppress_info</name></member>
+      <member refid="classnotification_1ab2d4ba20d7bc164eece8982b413eab13" prot="protected" virt="non-virtual"><scope>dataloader</scope><name>suppress_warnings</name></member>
+      <member refid="classdataloader_1a53ab7faeda2e8258867d624067701e19" prot="private" virt="non-virtual"><scope>dataloader</scope><name>test_set</name></member>
+      <member refid="classtools_1afd037c109d75a9f119ec042e1ba922d9" prot="public" virt="non-virtual"><scope>dataloader</scope><name>to_string</name></member>
+      <member refid="classtools_1a882f089d855dc4b3e0b60c591e11b092" prot="public" virt="non-virtual"><scope>dataloader</scope><name>to_string</name></member>
+      <member refid="classtools_1af0028ec6242448428f7c548b6e7cb714" prot="public" virt="non-virtual"><scope>dataloader</scope><name>tools</name></member>
+      <member refid="classdataloader_1a791b5a10a178c145ec6517296bc2ba54" prot="private" virt="non-virtual"><scope>dataloader</scope><name>train_set</name></member>
+      <member refid="classtools_1a69be8c55f9fd7036080317a2ce98d4de" prot="public" virt="non-virtual"><scope>dataloader</scope><name>trim</name></member>
+      <member refid="classdataloader_1ae1da5afc72c56ef3a98f2ba8e18659c5" prot="private" virt="non-virtual"><scope>dataloader</scope><name>truth_map_edge</name></member>
+      <member refid="classdataloader_1a61c236c14aaf52cf90949649f8437f07" prot="private" virt="non-virtual"><scope>dataloader</scope><name>truth_map_graph</name></member>
+      <member refid="classdataloader_1a87d458826433a63fac906f648d914d12" prot="private" virt="non-virtual"><scope>dataloader</scope><name>truth_map_node</name></member>
+      <member refid="classtools_1ab46f1f3892604cb366b861cb54ce30e0" prot="public" virt="non-virtual"><scope>dataloader</scope><name>type_name</name></member>
+      <member refid="classnotification_1ab758dafbb449e142fb68e11c0470b5c9" prot="public" virt="non-virtual"><scope>dataloader</scope><name>Warning</name></member>
+      <member refid="classdataloader_1aa60a898ed2af2da010a0db8563a37e86" prot="public" virt="non-virtual"><scope>dataloader</scope><name>~dataloader</name></member>
+      <member refid="classnotification_1a0b7272463b149418caf592e398cae64e" prot="public" virt="non-virtual"><scope>dataloader</scope><name>~notification</name></member>
+      <member refid="classtools_1a04762ddd5cc588520c89a387341f77f4" prot="public" virt="non-virtual"><scope>dataloader</scope><name>~tools</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

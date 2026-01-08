@@ -1,0 +1,6 @@
+<map id="element_t::boundary" name="element_t::boundary">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,163,55"/>
+<area shape="rect" id="Node000002" href="$structelement__t.html#a3adc8e28bfad2a83f43efd02f50e8f5a" title=" " alt="" coords="211,29,328,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,39,197,39,197,45,163,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="239,31,232,21,236,11,248,5,269,3,295,6,305,15,302,19,293,11,269,8,250,10,240,15,238,20,243,28"/>
+</map>

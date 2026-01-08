@@ -1,0 +1,79 @@
+<map id="model.h" name="model.h">
+<area shape="rect" id="Node000001" title="Defines data structures for model configuration in the AnalysisG framework." alt="" coords="795,5,869,31"/>
+<area shape="rect" id="Node000002" href="$metric__template_8h.html" title=" " alt="" coords="435,79,578,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="781,33,559,81,558,76,780,28"/>
+<area shape="rect" id="Node000021" href="$model__template_8h.html" title="Defines the base template class for machine learning models in the AnalysisG framework." alt="" coords="1180,79,1321,104"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="883,25,1184,76,1183,81,882,31"/>
+<area shape="rect" id="Node000003" href="$accuracy_8h.html" title=" " alt="" coords="144,152,235,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="443,110,236,156,234,151,442,104"/>
+<area shape="rect" id="Node000005" href="$analysis_8h.html" title="Defines the analysis class, the central orchestrator for physics analysis tasks." alt="" coords="889,299,977,324"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="511,117,518,147,534,176,574,210,619,237,667,259,717,276,813,297,889,306,889,311,812,302,716,281,665,264,616,242,571,214,530,179,513,149,505,118"/>
+<area shape="rect" id="Node000014" href="$metric_2cxx_2base_8cxx.html" title=" " alt="" coords="544,152,624,177"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="531,111,573,150,570,154,527,115"/>
+<area shape="rect" id="Node000015" href="$link_8cxx.html" title=" " alt="" coords="649,152,722,177"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="549,106,657,149,655,154,547,111"/>
+<area shape="rect" id="Node000016" href="$metric_8cxx.html" title=" " alt="" coords="259,152,349,177"/>
+<area shape="poly" id="edge15_Node000002_Node000016" title=" " alt="" coords="462,111,338,154,336,149,461,106"/>
+<area shape="rect" id="Node000017" href="$metric__template_8cxx.html" title=" " alt="" coords="747,152,904,177"/>
+<area shape="poly" id="edge16_Node000002_Node000017" title=" " alt="" coords="571,104,774,149,773,154,570,110"/>
+<area shape="rect" id="Node000018" href="$pagerank_8h.html" title=" " alt="" coords="374,152,469,177"/>
+<area shape="poly" id="edge17_Node000002_Node000018" title=" " alt="" coords="484,115,437,154,434,150,481,110"/>
+<area shape="rect" id="Node000020" href="$metric_2cxx_2properties_8cxx.html" title=" " alt="" coords="5,152,120,177"/>
+<area shape="poly" id="edge19_Node000002_Node000020" title=" " alt="" coords="422,109,132,155,121,157,120,151,132,149,422,103"/>
+<area shape="rect" id="Node000004" href="$accuracy_8cxx.html" title=" " alt="" coords="137,225,242,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="192,191,192,225,187,225,187,191"/>
+<area shape="rect" id="Node000006" href="$analysis_8cxx.html" title=" " alt="" coords="357,372,459,397"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="876,322,695,344,472,375,460,377,459,371,472,369,695,338,875,317"/>
+<area shape="rect" id="Node000007" href="$event__build_8cxx.html" title=" " alt="" coords="484,372,609,397"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="876,326,609,375,608,369,875,321"/>
+<area shape="rect" id="Node000008" href="$graph__build_8cxx.html" title=" " alt="" coords="633,372,759,397"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="883,330,735,374,734,369,881,325"/>
+<area shape="rect" id="Node000009" href="$inference__build_8cxx.html" title=" " alt="" coords="783,372,932,397"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="913,335,872,374,868,370,909,331"/>
+<area shape="rect" id="Node000010" href="$methods_8cxx.html" title=" " alt="" coords="956,372,1063,397"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="957,331,999,370,995,374,954,335"/>
+<area shape="rect" id="Node000011" href="$metric__build_8cxx.html" title=" " alt="" coords="1087,372,1217,397"/>
+<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="982,326,1117,369,1116,374,981,331"/>
+<area shape="rect" id="Node000012" href="$optimizer__build_8cxx.html" title="Implementation of model session creation and management in the analysis class." alt="" coords="1242,372,1393,397"/>
+<area shape="poly" id="edge11_Node000005_Node000012" title=" " alt="" coords="991,321,1256,369,1255,375,990,326"/>
+<area shape="rect" id="Node000013" href="$selection__build_8cxx.html" title=" " alt="" coords="1417,372,1564,397"/>
+<area shape="poly" id="edge12_Node000005_Node000013" title=" " alt="" coords="991,317,1406,369,1417,371,1417,376,1405,375,991,322"/>
+<area shape="rect" id="Node000019" href="$pagerank_8cxx.html" title=" " alt="" coords="358,225,469,251"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="421,191,417,226,412,225,416,191"/>
+<area shape="poly" id="edge23_Node000021_Node000005" title=" " alt="" coords="1167,103,1050,121,1000,136,968,154,956,170,946,189,936,230,933,269,935,298,929,299,928,269,930,229,941,187,951,167,965,150,998,131,1049,116,1166,98"/>
+<area shape="poly" id="edge24_Node000021_Node000014" title=" " alt="" coords="1166,100,927,119,782,135,636,155,625,157,624,151,636,149,781,130,927,114,1166,95"/>
+<area shape="poly" id="edge28_Node000021_Node000015" title=" " alt="" coords="1167,102,969,122,735,155,723,157,722,152,734,149,968,117,1166,97"/>
+<area shape="poly" id="edge29_Node000021_Node000017" title=" " alt="" coords="1169,109,894,155,893,149,1168,104"/>
+<area shape="rect" id="Node000022" href="$RecursiveGraphNeuralNetwork_8h.html" title=" " alt="" coords="1852,152,2087,177"/>
+<area shape="poly" id="edge21_Node000021_Node000022" title=" " alt="" coords="1335,98,1854,149,1853,155,1335,104"/>
+<area shape="rect" id="Node000024" href="$dataloader_8cxx.html" title=" " alt="" coords="2110,152,2229,177"/>
+<area shape="poly" id="edge25_Node000021_Node000024" title=" " alt="" coords="1335,93,1670,112,1884,128,2099,149,2110,151,2109,156,2098,155,1883,133,1670,117,1335,99"/>
+<area shape="rect" id="Node000025" href="$grift_8h.html" title=" " alt="" coords="2253,152,2313,177"/>
+<area shape="poly" id="edge26_Node000021_Node000025" title=" " alt="" coords="1335,89,1502,91,1728,99,1984,117,2114,131,2242,149,2253,152,2252,157,2241,155,2114,136,1983,122,1728,104,1502,96,1335,95"/>
+<area shape="rect" id="Node000027" href="$metrics_8h.html" title="Header file for the metrics class." alt="" coords="979,152,1061,177"/>
+<area shape="poly" id="edge30_Node000021_Node000027" title=" " alt="" coords="1201,111,1058,154,1057,149,1200,106"/>
+<area shape="rect" id="Node000031" href="$optimizer_2include_2generators_2optimizer_8h.html" title=" " alt="" coords="1379,225,1474,251"/>
+<area shape="poly" id="edge41_Node000021_Node000031" title=" " alt="" coords="1335,93,1463,100,1605,111,1727,128,1768,138,1791,150,1798,165,1791,179,1769,196,1737,209,1651,226,1555,235,1474,239,1474,234,1555,230,1650,221,1735,204,1767,191,1787,176,1792,165,1787,154,1766,143,1726,133,1605,117,1462,105,1335,99"/>
+<area shape="rect" id="Node000033" href="$model__checks_8cxx.html" title=" " alt="" coords="1086,152,1229,177"/>
+<area shape="poly" id="edge37_Node000021_Node000033" title=" " alt="" coords="1227,114,1174,154,1171,150,1223,110"/>
+<area shape="rect" id="Node000034" href="$model__configuration_8cxx.html" title=" " alt="" coords="1253,152,1435,177"/>
+<area shape="poly" id="edge38_Node000021_Node000034" title=" " alt="" coords="1278,110,1330,150,1327,154,1275,114"/>
+<area shape="rect" id="Node000035" href="$model__lossfx_8cxx.html" title=" " alt="" coords="1460,152,1596,177"/>
+<area shape="poly" id="edge39_Node000021_Node000035" title=" " alt="" coords="1309,105,1484,149,1482,154,1308,110"/>
+<area shape="rect" id="Node000036" href="$model__template_8cxx.html" title="Implementation of the model_template class methods." alt="" coords="1621,152,1777,177"/>
+<area shape="poly" id="edge40_Node000021_Node000036" title=" " alt="" coords="1336,103,1627,149,1626,155,1335,109"/>
+<area shape="rect" id="Node000023" href="$RecursiveGraphNeuralNetwork_8cxx.html" title=" " alt="" coords="1844,225,2095,251"/>
+<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="1972,191,1972,225,1967,225,1967,191"/>
+<area shape="rect" id="Node000026" href="$grift_8cxx.html" title=" " alt="" coords="2245,225,2320,251"/>
+<area shape="poly" id="edge27_Node000025_Node000026" title=" " alt="" coords="2285,191,2285,225,2280,225,2280,191"/>
+<area shape="rect" id="Node000028" href="$loss__plots_8cxx.html" title=" " alt="" coords="971,225,1085,251"/>
+<area shape="poly" id="edge31_Node000027_Node000028" title=" " alt="" coords="1025,191,1029,225,1024,226,1020,191"/>
+<area shape="rect" id="Node000029" href="$mass__plots_8cxx.html" title="Implements mass plot generation and related utilities." alt="" coords="1109,225,1232,251"/>
+<area shape="poly" id="edge32_Node000027_Node000029" title=" " alt="" coords="1058,181,1147,223,1145,228,1055,186"/>
+<area shape="rect" id="Node000030" href="$metrics_8cxx.html" title="Implementation of the metrics class methods." alt="" coords="1256,225,1355,251"/>
+<area shape="poly" id="edge33_Node000027_Node000030" title=" " alt="" coords="1075,177,1260,223,1259,228,1074,182"/>
+<area shape="poly" id="edge34_Node000027_Node000031" title=" " alt="" coords="1076,175,1367,223,1379,225,1378,230,1366,228,1075,180"/>
+<area shape="poly" id="edge35_Node000031_Node000005" title=" " alt="" coords="1366,253,1144,286,978,307,977,302,1143,281,1365,248"/>
+<area shape="rect" id="Node000032" href="$optimizer_2cxx_2optimizer_8cxx.html" title=" " alt="" coords="1371,299,1482,324"/>
+<area shape="poly" id="edge36_Node000031_Node000032" title=" " alt="" coords="1429,264,1429,299,1424,299,1424,264"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="graph_children::graph_children" name="graph_children::graph_children">
+<area shape="rect" id="Node000001" title=" " alt="" coords="215,5,377,45"/>
+<area shape="rect" id="Node000002" href="$classgraph__children.html#a5ef722d407cccbd00a257b1cf8403004" title="Creates a clone of this graph template." alt="" coords="5,13,167,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,28,167,28,167,23,201,23"/>
+</map>

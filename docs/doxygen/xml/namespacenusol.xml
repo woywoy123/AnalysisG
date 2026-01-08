@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="namespacenusol" kind="namespace" language="C++">
+    <compoundname>nusol</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespacenusol_1a1dd98a265423f0702ed0d5de55b2ad59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor nusol::compute_base_matrix</definition>
+        <argsstring>(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)</argsstring>
+        <name>compute_base_matrix</name>
+        <qualifiedname>nusol::compute_base_matrix</qualifiedname>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc_b</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>pmc_mu</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>masses</declname>
+        </param>
+        <briefdescription>
+<para>Computes the base matrix for neutrino momentum solutions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pmc_b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for b-quark momenta. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>pmc_mu</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for muon momenta. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>masses</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for mass values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the base matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/nusol/include/nusol/base.h" line="24" column="15" declfile="pyc/nusol/include/nusol/base.h" declline="24" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="namespacenusol_1aeba74006f5553165965b9121ed19d70e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>torch::Tensor</type>
+        <definition>torch::Tensor nusol::solve_neutrino_momentum</definition>
+        <argsstring>(torch::Tensor base_matrix, torch::Tensor met)</argsstring>
+        <name>solve_neutrino_momentum</name>
+        <qualifiedname>nusol::solve_neutrino_momentum</qualifiedname>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>base_matrix</declname>
+        </param>
+        <param>
+          <type>torch::Tensor</type>
+          <declname>met</declname>
+        </param>
+        <briefdescription>
+<para>Solves for neutrino momentum using the base matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>base_matrix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor containing the base matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>met</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor for missing transverse energy. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor containing the neutrino momentum solutions. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="pyc/nusol/include/nusol/base.h" line="33" column="15" declfile="pyc/nusol/include/nusol/base.h" declline="33" declcolumn="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>&lt; Includes PyTorch C++ headers for tensor operations. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Namespace for neutrino solution (nusol) base functions. </para>
+    </detaileddescription>
+    <location file="pyc/nusol/include/nusol/base.h" line="14" column="1"/>
+  </compounddef>
+</doxygen>

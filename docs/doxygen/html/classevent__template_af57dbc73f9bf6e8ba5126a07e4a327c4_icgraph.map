@@ -1,0 +1,19 @@
+<map id="event_template::add_leaf" name="event_template::add_leaf">
+<area shape="rect" id="Node000001" title="Adds a leaf (variable) to the event structure." alt="" coords="419,80,608,105"/>
+<area shape="rect" id="Node000002" href="$classbsm__4tops.html#aad7f017512edf6441313f48470d44fd5" title=" " alt="" coords="195,5,367,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="465,78,370,45,331,33,333,28,371,39,467,73"/>
+<area shape="rect" id="Node000004" href="$classexp__mc20.html#a0722113132ac84d16140b17c046ff4e7" title=" " alt="" coords="199,55,363,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="404,83,363,79,364,74,405,78"/>
+<area shape="rect" id="Node000006" href="$classgnn__event.html#a3c9a7e52028ab3304bb23be24332009c" title=" " alt="" coords="198,104,365,129"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="405,107,365,111,364,105,404,101"/>
+<area shape="rect" id="Node000008" href="$classssml__mc20.html#a0e4485a5e50805da1a79ca645000fb10" title=" " alt="" coords="192,153,371,179"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="464,112,371,143,329,156,328,151,370,138,463,107"/>
+<area shape="rect" id="Node000003" href="$classbsm__4tops.html#a886c2087bf3ffbc644f2d35e215856d0" title="Creates a new event template instance." alt="" coords="7,5,143,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="182,21,143,21,143,15,182,15"/>
+<area shape="rect" id="Node000005" href="$classexp__mc20.html#a72d513c2a73ba9b037427be6dda52075" title="Creates a new event template instance." alt="" coords="9,55,141,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="185,70,141,70,141,65,185,65"/>
+<area shape="rect" id="Node000007" href="$classgnn__event.html#ae5ad399474dcb1e8a7396e3d4da9932d" title="Creates a new event template instance." alt="" coords="8,104,141,129"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="184,119,142,119,142,114,184,114"/>
+<area shape="rect" id="Node000009" href="$classssml__mc20.html#a0288589673651d09780e970bba8437d8" title="Creates a new event template instance." alt="" coords="5,153,144,179"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="178,169,144,169,144,163,178,163"/>
+</map>

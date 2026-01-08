@@ -1,0 +1,10 @@
+<map id="selection_template::upcast" name="selection_template::upcast">
+<area shape="rect" id="Node000001" title="Upcasts particles from a map to a derived type." alt="" coords="448,49,595,89"/>
+<area shape="rect" id="Node000002" href="$classregions.html#a238dd04a8c824c8db401e41d36cd428b" title="Alternative selection strategy method." alt="" coords="224,5,356,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="434,52,348,33,349,28,435,47"/>
+<area shape="rect" id="Node000003" href="$classparton.html#abf09df1e5e6008e9af478a2f540947f8" title="Alternative selection strategy method." alt="" coords="5,81,132,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="434,76,132,93,132,88,434,71"/>
+<area shape="rect" id="Node000004" href="$classparton.html#a4045341bd771afd7ac452fa1dc6aea8e" title=" " alt="" coords="180,107,400,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="435,90,349,109,348,104,434,85"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="166,108,132,104,133,99,167,103"/>
+</map>

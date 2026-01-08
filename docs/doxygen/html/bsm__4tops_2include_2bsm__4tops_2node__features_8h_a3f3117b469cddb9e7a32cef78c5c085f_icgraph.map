@@ -1,0 +1,17 @@
+<map id="is_bquark" name="is_bquark">
+<area shape="rect" id="Node000001" title=" " alt="" coords="272,184,357,209"/>
+<area shape="rect" id="Node000002" href="$classgraph__children.html#af069fe630b6bbf6ffacca8243761e829" title="Compiles the event into a graph." alt="" coords="6,5,223,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="303,171,291,142,274,107,251,74,222,45,200,33,202,28,226,41,255,70,279,105,296,139,308,170"/>
+<area shape="rect" id="Node000003" href="$classgraph__truthjets.html#ad64c5a15f0406d8a6c9705d50934b81f" title="Compiles the event into a graph." alt="" coords="23,55,206,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="293,175,262,141,223,110,199,98,201,93,225,105,266,137,297,171"/>
+<area shape="rect" id="Node000004" href="$classgraph__truthjets__nonu.html#add03a6d564186c150f7c907737b77eeb" title="Compiles the event into a graph." alt="" coords="35,119,195,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="258,183,184,162,186,157,260,178"/>
+<area shape="rect" id="Node000005" href="$classgraph__jets.html#a568114127973b28c968493e79ca67cd7" title="Compiles the event into a graph." alt="" coords="20,184,209,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="258,199,209,199,209,194,258,194"/>
+<area shape="rect" id="Node000006" href="$classgraph__jets__nonu.html#a3d76d9b5885af9d1ef9c2a150acc1300" title="Compiles the event into a graph." alt="" coords="19,234,210,274"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="260,215,186,237,184,231,258,210"/>
+<area shape="rect" id="Node000007" href="$classgraph__jets__detector__lep.html#a8da8c93bcdece302cb06b34e6b9db801" title="Compiles the event into a graph." alt="" coords="39,298,190,338"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="297,222,266,256,225,288,191,304,189,299,223,284,262,252,293,219"/>
+<area shape="rect" id="Node000008" href="$classgraph__detector.html#a9524462481e7c9e42df5cf73f999737e" title="Compiles the event into a graph." alt="" coords="5,363,224,388"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="308,224,296,254,279,289,255,323,226,352,202,365,200,360,222,348,251,320,274,286,291,252,303,222"/>
+</map>

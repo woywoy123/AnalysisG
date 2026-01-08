@@ -1,0 +1,25 @@
+<map id="combinatorial::strategy" name="combinatorial::strategy">
+<area shape="rect" id="Node000001" title="Alternative selection strategy method." alt="" coords="5,119,180,145"/>
+<area shape="rect" id="Node000002" href="$classcombinatorial.html#abfc631f135905b89a84996815ff817f6" title=" " alt="" coords="259,5,411,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,117,163,87,227,55,246,47,248,52,229,60,166,91,115,122"/>
+<area shape="rect" id="Node000003" href="$merge__cast_8h.html#a205af11d07be8d10770e7392817fc5c3" title=" " alt="" coords="285,70,385,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="155,117,271,93,272,98,156,122"/>
+<area shape="rect" id="Node000004" href="$classcombinatorial.html#a4f90aaf04154a0d1ca9d59e1ccb2c54e" title=" " alt="" coords="228,119,441,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,129,214,129,214,135,180,135"/>
+<area shape="rect" id="Node000011" href="$classcombinatorial.html#adb51dd4e96b0c4596711f5466571e091" title=" " alt="" coords="252,169,417,209"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="148,142,239,164,238,169,146,147"/>
+<area shape="rect" id="Node000012" href="$classselection__template.html#acfb4c50041c70205e08f6ccb4a850979" title="Converts a map to a vector." alt="" coords="261,233,408,273"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="112,143,162,180,229,219,249,227,247,232,227,224,159,184,108,147"/>
+<area shape="rect" id="Node000005" href="$combinatorial_8cxx.html#acd33f38fd89cd298ef5d1ea858ee0416" title=" " alt="" coords="558,41,607,66"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="406,117,440,106,464,91,488,75,544,58,545,63,490,80,467,95,442,110,408,122"/>
+<area shape="rect" id="Node000006" href="$namespacepyc_1_1nusol.html#a0b618f866aa33e16c704d828744335e1" title=" " alt="" coords="489,90,676,115"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="441,117,476,113,476,118,442,122"/>
+<area shape="rect" id="Node000009" href="$classselection__template.html#a76e4fafd2338fada8d38912c6c803317" title="Removes duplicate particles based on hash." alt="" coords="509,140,656,180"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="442,141,496,148,495,153,441,147"/>
+<area shape="rect" id="Node000010" href="$combinatorial_8cxx.html#ad1088ff61940925cecad1412122dc757" title=" " alt="" coords="543,205,622,230"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="407,142,443,155,467,172,491,190,531,204,529,209,488,194,464,177,440,160,405,147"/>
+<area shape="rect" id="Node000007" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="739,66,833,91"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="676,89,725,83,726,88,676,94"/>
+<area shape="rect" id="Node000008" href="$namespacepyc.html#ab174cc51f6efef06bdb0ba47ec3fe3bf" title=" " alt="" coords="724,115,848,141"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="676,112,711,116,710,121,676,117"/>
+</map>

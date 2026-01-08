@@ -1,0 +1,49 @@
+<map id="tools::create_path" name="tools::create_path">
+<area shape="rect" id="Node000001" title="Creates a directory path, including parent directories if needed." alt="" coords="905,256,1044,281"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a1391073bb18c75cdad4132e90992fcd3" title="&lt; Public access specifier for the following members." alt="" coords="693,5,832,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="964,244,950,202,928,150,896,98,877,73,856,52,822,33,824,28,859,48,881,70,901,95,932,148,955,200,969,242"/>
+<area shape="rect" id="Node000003" href="$classanalysis.html#a7b98125c72486407d782b2bc2ea67389" title="Sets up the environment for model inference (prediction)." alt="" coords="436,56,620,81"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="962,244,946,211,923,171,893,133,856,103,799,78,738,65,676,60,620,60,620,55,677,54,738,59,801,73,859,98,897,130,928,168,951,208,966,242"/>
+<area shape="rect" id="Node000004" href="$classanalysis.html#a401745bb4bcae03160ffa0b5df2887e7" title="Starts the analysis execution." alt="" coords="237,132,351,157"/>
+<area shape="poly" id="edge20_Node000001_Node000004" title=" " alt="" coords="957,246,917,193,889,167,856,147,789,124,717,110,645,104,574,104,506,108,444,116,346,135,345,129,443,111,506,103,574,98,645,99,718,105,790,119,858,142,892,162,921,189,961,242"/>
+<area shape="rect" id="Node000006" href="$classplotting.html#ae528701faff0a6f14e970d3a920f6081" title="Builds a complete path for output files based on configured settings." alt="" coords="689,157,837,183"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="945,250,904,222,856,196,824,185,826,180,858,192,907,218,948,245"/>
+<area shape="rect" id="Node000007" href="$classanalysis.html#ab1e46d4a55389c9159584cc1c4f217a0" title="Builds the project structure, possibly setting up directories or initial configurations." alt="" coords="679,207,847,232"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="906,255,817,235,819,229,907,250"/>
+<area shape="rect" id="Node000009" href="$classcontainer.html#a2f036c9c52b38b6fd462a2a72f553c41" title=" " alt="" coords="691,256,834,281"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="891,271,834,271,834,266,891,266"/>
+<area shape="rect" id="Node000010" href="$classmetrics.html#a60ff488f6951bae8d98bc7a03bc6e464" title="Dumps mass plots for a given k&#45;fold." alt="" coords="449,285,607,325"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="908,287,858,295,726,306,608,308,608,303,726,300,857,290,907,282"/>
+<area shape="rect" id="Node000012" href="$classmetric__template.html#a422951eb9279ed05c885795ebeed0e5b" title=" " alt="" coords="668,357,857,383"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="944,291,904,316,858,340,808,360,806,355,856,336,902,312,942,287"/>
+<area shape="rect" id="Node000013" href="$classmetrics.html#a160fdefa51ba1fd2135307d3722acc1d" title=" " alt="" coords="673,407,853,432"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="959,294,918,346,890,373,859,396,831,409,829,404,856,392,887,369,914,342,955,291"/>
+<area shape="rect" id="Node000016" href="$classio.html#a228b6ce6f26848a9adfc0ccf3619a53e" title="Starts an I/O session, opening a file for reading or writing." alt="" coords="727,456,799,481"/>
+<area shape="poly" id="edge21_Node000001_Node000016" title=" " alt="" coords="966,295,950,329,927,370,896,411,859,446,830,460,800,468,798,463,828,455,856,441,892,407,922,367,945,327,961,293"/>
+<area shape="rect" id="Node000021" href="$classio.html#a38cda1cf4b0ad6920e19780ad985d374" title="Triggers the generation of a ROOT PCM (Precompiled Module) if needed for dictionary generation." alt="" coords="703,505,823,531"/>
+<area shape="poly" id="edge26_Node000001_Node000021" title=" " alt="" coords="970,296,957,340,935,394,903,449,882,474,859,496,842,506,824,513,822,508,840,502,856,492,878,471,898,446,930,392,952,338,965,294"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="476,88,335,134,333,129,474,83"/>
+<area shape="rect" id="Node000005" href="$classanalysis.html#aa5f5f1de2fe05c9fb8c5c0fffbf7b938" title="Fetches tags, possibly related to data versions, processing stages, or k&#45;folds." alt="" coords="6,132,151,157"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="222,156,152,156,152,151,222,151"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="165,133,236,134,236,139,165,138"/>
+<area shape="poly" id="edge10_Node000007_Node000004" title=" " alt="" coords="674,207,620,198,351,156,352,151,620,193,675,202"/>
+<area shape="rect" id="Node000008" href="$classanalysis.html#ad1bf7fde8eafef15d4dcedcba5ce51f7" title="Builds or calculates metrics for evaluating model performance." alt="" coords="445,208,611,233"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="665,223,611,223,611,218,665,217"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="474,206,333,160,335,155,476,201"/>
+<area shape="rect" id="Node000011" href="$classmetrics.html#a8a0b4107864ac5f548ed37a9a4a9372f" title="Dumps all metric plots for a specific k&#45;fold." alt="" coords="217,356,371,381"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="442,331,342,358,341,353,440,326"/>
+<area shape="rect" id="Node000014" href="$classmetrics.html#a2ed5da3a9b6c0e0e9b711afafaeed7ab" title=" " alt="" coords="437,349,619,389"/>
+<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="689,406,618,391,620,386,690,401"/>
+<area shape="rect" id="Node000015" href="$classmetrics.html#a85ac60407efe672dd1ba1c067a06afb2" title=" " alt="" coords="453,413,603,453"/>
+<area shape="poly" id="edge18_Node000013_Node000015" title=" " alt="" coords="659,428,603,431,603,426,659,423"/>
+<area shape="poly" id="edge17_Node000014_Node000011" title=" " alt="" coords="424,371,371,371,371,366,424,366"/>
+<area shape="poly" id="edge19_Node000015_Node000011" title=" " alt="" coords="440,412,341,384,342,379,442,406"/>
+<area shape="rect" id="Node000017" href="$classdataloader.html#a52b546c96dec81d3860fb7e6268b097a" title=" " alt="" coords="455,477,601,517"/>
+<area shape="poly" id="edge22_Node000016_Node000017" title=" " alt="" coords="713,477,602,491,601,485,713,472"/>
+<area shape="rect" id="Node000018" href="$classdataloader.html#a04c94d9be735c32b80b6599c6bd993b4" title=" " alt="" coords="200,455,388,480"/>
+<area shape="poly" id="edge23_Node000017_Node000018" title=" " alt="" coords="440,488,388,482,388,476,441,483"/>
+<area shape="rect" id="Node000019" href="$classdataloader.html#aed6ec872879a44ecfa9ae1c2188690a8" title=" " alt="" coords="221,505,367,545"/>
+<area shape="poly" id="edge24_Node000017_Node000019" title=" " alt="" coords="441,510,368,519,367,513,440,504"/>
+<area shape="rect" id="Node000020" href="$classdataloader.html#ae3bba702555507d8b6e5567c34d19142" title=" " alt="" coords="5,505,152,545"/>
+<area shape="poly" id="edge25_Node000019_Node000020" title=" " alt="" coords="207,527,152,527,152,522,207,522"/>
+</map>

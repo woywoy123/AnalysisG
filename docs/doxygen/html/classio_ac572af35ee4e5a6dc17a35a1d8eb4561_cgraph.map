@@ -1,0 +1,5 @@
+<map id="io::dataset_names" name="io::dataset_names">
+<area shape="rect" id="Node000001" title="Retrieves the names of datasets available in the currently open HDF5 file." alt="" coords="5,5,148,31"/>
+<area shape="rect" id="Node000002" href="$classio.html#a0a188e43f5e4e5b8a3b1cefa677351c2" title="Static callback function for H5Literate, used to iterate over objects in an HDF5 file." alt="" coords="196,5,291,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,15,182,15,182,21,148,21"/>
+</map>

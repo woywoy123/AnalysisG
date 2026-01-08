@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="graph_template_page" kind="page">
+    <compoundname>graph_template_page</compoundname>
+    <title>Graph Template Guide</title>
+    <briefdescription>
+<para>Detailed guide for using and extending <ref refid="classgraph__template" kindref="compound">graph_template</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="graph_template_page_1graph_template_intro">
+<title>Introduction</title>
+<para>The <ref refid="classgraph__template" kindref="compound">graph_template</ref> class is used to construct graph representations from physics events. It defines how particles become nodes, how edges are constructed, and what features are attached.</para>
+</sect1>
+<sect1 id="graph_template_page_1graph_template_workflow">
+<title>Workflow</title>
+<para><orderedlist>
+<listitem><para>Receive an event via <computeroutput>build(event_template*)</computeroutput></para>
+</listitem><listitem><para>Define nodes using <computeroutput>define_particle_nodes()</computeroutput></para>
+</listitem><listitem><para>Define edges using <computeroutput>define_topology()</computeroutput></para>
+</listitem><listitem><para>Add features in <computeroutput>CompileEvent()</computeroutput></para>
+</listitem><listitem><para>Export to <computeroutput><ref refid="structgraph__t" kindref="compound">graph_t</ref></computeroutput> structure for ML</para>
+</listitem></orderedlist>
+</para>
+</sect1>
+<sect1 id="graph_template_page_1graph_template_example">
+<title>Example</title>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">class<sp/></highlight><highlight class="normal">MyGraph<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classgraph__template" kindref="compound">graph_template</ref><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>MyGraph()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Define<sp/>edge<sp/>topology<sp/>-<sp/>here:<sp/>fully<sp/>connected</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classgraph__template_1af5d505282f6126e2fe5d2eab98507d40" kindref="member">define_topology</ref>([](<ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p1,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p2)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;<sp/><sp/></highlight><highlight class="comment">//<sp/>Connect<sp/>all<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1af6db04c1f266cc1d7da481e52784a30d" kindref="member">CompileEvent</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Get<sp/>the<sp/>event</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>MyEvent*<sp/>ev<sp/>=<sp/>get_event&lt;MyEvent&gt;();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>graph-level<sp/>features</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add_graph_data_feature&lt;double,<sp/>MyEvent&gt;(ev,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](MyEvent*<sp/>e)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>e-&gt;met;<sp/>},<sp/></highlight><highlight class="stringliteral">&quot;met&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>node-level<sp/>features<sp/>(for<sp/>each<sp/>particle)</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add_node_data_feature&lt;double,<sp/>Electron&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](Electron*<sp/>e)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>e-&gt;pt;<sp/>},<sp/></highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>edge-level<sp/>features<sp/>(for<sp/>each<sp/>particle<sp/>pair)</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add_edge_data_feature&lt;double,<sp/>Electron&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](std::tuple&lt;Electron*,<sp/>Electron*&gt;*<sp/>pair)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>deltaR(std::get&lt;0&gt;(*pair),<sp/>std::get&lt;1&gt;(*pair));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>},<sp/></highlight><highlight class="stringliteral">&quot;deltaR&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Add<sp/>truth<sp/>labels</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>add_node_truth_feature&lt;int,<sp/>Electron&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[](Electron*<sp/>e)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>e-&gt;isFromTop<sp/>?<sp/>1<sp/>:<sp/>0;<sp/>},<sp/></highlight><highlight class="stringliteral">&quot;from_top&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="classgraph__template_1afb21d1d87f82570a516f9e7b678bb115" kindref="member">PreSelection</ref>()</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Optional:<sp/>skip<sp/>graphs<sp/>that<sp/>don&apos;t<sp/>pass<sp/>criteria</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>num_nodes<sp/>&gt;=<sp/>2;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="graph_template_page_1graph_template_features">
+<title>Adding Features</title>
+<para><table rows="7" cols="3"><row>
+<entry thead="yes"><para>Method   </para>
+</entry><entry thead="yes"><para>Level   </para>
+</entry><entry thead="yes"><para>Type    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>add_graph_data_feature   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref>   </para>
+</entry><entry thead="no"><para>Input    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>add_graph_truth_feature   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref>   </para>
+</entry><entry thead="no"><para>Target    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>add_node_data_feature   </para>
+</entry><entry thead="no"><para><ref refid="classNode" kindref="compound">Node</ref>   </para>
+</entry><entry thead="no"><para>Input    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>add_node_truth_feature   </para>
+</entry><entry thead="no"><para><ref refid="classNode" kindref="compound">Node</ref>   </para>
+</entry><entry thead="no"><para>Target    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>add_edge_data_feature   </para>
+</entry><entry thead="no"><para><ref refid="classEdge" kindref="compound">Edge</ref>   </para>
+</entry><entry thead="no"><para>Input    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>add_edge_truth_feature   </para>
+</entry><entry thead="no"><para><ref refid="classEdge" kindref="compound">Edge</ref>   </para>
+</entry><entry thead="no"><para>Target   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="graph_template_page_1graph_template_topology">
+<title>Topology</title>
+<para>The topology function defines edge connections:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="normal">define_topology([](<ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p1,<sp/><ref refid="classparticle__template" kindref="compound">particle_template</ref>*<sp/>p2)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Return<sp/>true<sp/>if<sp/>p1<sp/>and<sp/>p2<sp/>should<sp/>be<sp/>connected</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Example:<sp/>only<sp/>connect<sp/>different<sp/>particles</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>p1<sp/>!=<sp/>p2;</highlight></codeline>
+<codeline><highlight class="normal">});</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="graph_template_page_1graph_template_properties">
+<title>Properties</title>
+<para><table rows="7" cols="3"><row>
+<entry thead="yes"><para>Property   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>index   </para>
+</entry><entry thead="no"><para>long   </para>
+</entry><entry thead="no"><para>Event index    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>weight   </para>
+</entry><entry thead="no"><para>double   </para>
+</entry><entry thead="no"><para>Event weight    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>preselection   </para>
+</entry><entry thead="no"><para>bool   </para>
+</entry><entry thead="no"><para>PreSelection result    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>hash   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref> hash    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>tree   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>Source tree name    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>name   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para><ref refid="classGraph" kindref="compound">Graph</ref> template name   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/templates.dox"/>
+  </compounddef>
+</doxygen>

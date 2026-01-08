@@ -1,0 +1,5 @@
+<map id="selection_template::set_hash" name="selection_template::set_hash">
+<area shape="rect" id="Node000001" title="Setter for hash." alt="" coords="5,5,152,45"/>
+<area shape="rect" id="Node000002" href="$classtools.html#afd037c109d75a9f119ec042e1ba922d9" title="Converts a double value to a string with standard precision." alt="" coords="200,13,319,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,23,186,23,186,28,152,28"/>
+</map>

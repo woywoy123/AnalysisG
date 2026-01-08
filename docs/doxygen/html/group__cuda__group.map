@@ -1,0 +1,8 @@
+<map id="CUDA Accelerated Computing" name="CUDA Accelerated Computing">
+<area shape="rect" id="Node000001" title="GPU&#45;accelerated operations for physics computations." alt="" coords="5,104,221,129"/>
+<area shape="rect" id="Node000005" href="$group__graph__cuda.html" title="GPU&#45;accelerated graph operations." alt="" coords="283,5,437,31"/>
+<area shape="rect" id="Node000006" href="$group__nusol__cuda.html" title="GPU&#45;accelerated neutrino reconstruction." alt="" coords="283,55,437,80"/>
+<area shape="rect" id="Node000004" href="$group__operators__cuda.html" title="GPU&#45;accelerated mathematical operators." alt="" coords="270,104,450,129"/>
+<area shape="rect" id="Node000002" href="$group__physics__cuda.html" title="GPU&#45;accelerated physics calculations." alt="" coords="277,153,443,179"/>
+<area shape="rect" id="Node000003" href="$group__transform__cuda.html" title="GPU&#45;accelerated coordinate transformations." alt="" coords="269,203,451,228"/>
+</map>

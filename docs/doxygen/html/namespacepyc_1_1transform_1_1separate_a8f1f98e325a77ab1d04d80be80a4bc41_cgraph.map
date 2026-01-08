@@ -1,0 +1,10 @@
+<map id="pyc::transform::separate::Eta" name="pyc::transform::separate::Eta">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,43,216,68"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="279,5,372,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,40,265,26,266,31,185,45"/>
+<area shape="rect" id="Node000003" href="$namespacetransform__.html#a82aaa223736b57490a8639752180e5ec" title="Computes the pseudorapidity (Eta) from a momentum tensor." alt="" coords="264,79,387,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,65,251,76,250,82,186,71"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="303,80,298,70,301,61,310,54,325,52,343,55,351,64,347,67,341,60,325,57,312,59,305,64,304,70,308,77"/>
+<area shape="rect" id="Node000004" href="$utils_8cxx.html#aaec9ca2d20716add3c686abd989934d0" title=" " alt="" coords="435,79,480,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="387,89,421,89,421,94,387,94"/>
+</map>

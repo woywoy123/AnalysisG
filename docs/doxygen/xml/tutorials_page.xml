@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="tutorials_page" kind="page">
+    <compoundname>tutorials_page</compoundname>
+    <title>Tutorials</title>
+    <briefdescription>
+<para>Comprehensive tutorials for AnalysisG. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>See the detailed tutorials in the Sphinx documentation for:<itemizedlist>
+<listitem><para>Event Template Creation</para>
+</listitem><listitem><para><ref refid="classGraph" kindref="compound">Graph</ref> Template Creation</para>
+</listitem><listitem><para>Model Implementation</para>
+</listitem><listitem><para>Complete Analysis Setup </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/getting_started.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="nu_8cu" kind="file" language="C++">
+    <compoundname>nu.cu</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#include<sp/>&lt;nusol/base.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;physics/physics.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;operators/operators.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;transform/transform.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t,<sp/>size_t<sp/>size_x&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_nu_init_(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>s2,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;<sp/>met_xy,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H,<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>X,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>M,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>Unit</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_S2[size_x][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_dNu[size_x][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_dNuT[size_x][3][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_X[size_x][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_T[size_x][3][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>threadIdx.x;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idy<sp/>=<sp/>threadIdx.y;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idz<sp/>=<sp/>threadIdx.z;<sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idx<sp/>&gt;=<sp/>met_xy.size({0})){return;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>-------<sp/>matrix<sp/>inversion<sp/>for<sp/>S2<sp/>------<sp/>//</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_dNu[idx][idy][idz]<sp/><sp/>=<sp/>((idz<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>idy<sp/>&lt;<sp/>2)<sp/>?<sp/>met_xy[_idx][idy]<sp/>:<sp/>0x0)<sp/>-<sp/>H[_idx][idy][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_S2[idx][idy][idz]<sp/>=<sp/>(idy<sp/>&lt;<sp/>2<sp/><sp/>&amp;&amp;<sp/>idz<sp/>&lt;<sp/>2)<sp/>?<sp/>s2[_idx][idy][idz]<sp/>:<sp/>0x0;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!idy<sp/>&amp;&amp;<sp/>!idz){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>s00<sp/>=<sp/>_S2[idx][0][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>s11<sp/>=<sp/>_S2[idx][1][1];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>s01<sp/>=<sp/>_S2[idx][0][1];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>s10<sp/>=<sp/>_S2[idx][1][0];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>double<sp/>det<sp/>=<sp/>_div(s00*s11<sp/>-<sp/>s01*s10);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>S2^-1<sp/>with<sp/>transpose</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_S2[idx][0][0]<sp/>=<sp/><sp/>s11*det;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_S2[idx][1][1]<sp/>=<sp/><sp/>s00*det;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_S2[idx][0][1]<sp/>=<sp/>-s10*det;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_S2[idx][1][0]<sp/>=<sp/>-s01*det;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_dNuT[idx][idz][idy]<sp/>=<sp/>_dNu[idx][idy][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_T[idx][idy][idz]<sp/>=<sp/>_dot(_dNuT[idx],<sp/>_S2[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>Unit[_idx][idy][idz]<sp/>=<sp/>_circl[idy][idz];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/><sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_X[idx][idy][idz]<sp/>=<sp/>_dot(_T[idx],<sp/>_dNu[idx],<sp/>idy,<sp/>idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>X[_idx][idy][idz]<sp/>=<sp/>_X[idx][idy][idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>M[idx][idy][idz]<sp/>=<sp/>_dot(_X[idx],<sp/>_Deriv,<sp/>idy,<sp/>idz,<sp/>3)<sp/>+<sp/>_dot(_X[idx],<sp/>_Deriv,<sp/>idz,<sp/>idy,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">template<sp/>&lt;typename<sp/>scalar_t&gt;</highlight></codeline>
+<codeline><highlight class="normal">__global__<sp/>void<sp/>_chi2(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>sols,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>dst,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>H,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>X,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>nu,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::PackedTensorAccessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;<sp/>chi2</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_S[6][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_X[6][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_H[6][3][3];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__shared__<sp/>double<sp/>_C[6][3];<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idx<sp/>=<sp/>blockIdx.x<sp/>*<sp/>blockDim.x<sp/>+<sp/>threadIdx.x;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idy<sp/>=<sp/>blockIdx.y<sp/>*<sp/>blockDim.y<sp/>+<sp/>threadIdx.y;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>_idz<sp/>=<sp/>blockIdx.z<sp/>*<sp/>blockDim.z<sp/>+<sp/>threadIdx.z;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>bool<sp/>_dst<sp/>=<sp/>dst[_idx][_idy][0]<sp/>&lt;<sp/>200;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_S[_idy][_idz]<sp/>=<sp/>sols[_idx][_idy][_idz];<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>3;<sp/>++x){_X[_idy][_idz][x]<sp/>=<sp/>X[_idx][_idz][x];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>3;<sp/>++x){_H[_idy][_idz][x]<sp/>=<sp/>H[_idx][_idz][x];}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>nu[_idx][_idy][_idz]<sp/>=<sp/>_dot(_H[_idy][_idz],<sp/>_S[_idy],<sp/>3)*_dst;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>_C[_idy][_idz]<sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>_dot(_S,<sp/>_X[_idy],<sp/>_idy,<sp/>_idz,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>__syncthreads();</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(_idz){return;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>chi2[_idx][_idy][0]<sp/><sp/>=<sp/>_dot(_C[_idy],<sp/>_S[_idy],<sp/>3)*_dst;</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::Nu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>H,<sp/>torch::Tensor*<sp/>sigma,<sp/>torch::Tensor*<sp/>met_xy,<sp/>double<sp/>null</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>X<sp/>=<sp/>torch::zeros_like(*H);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>M<sp/>=<sp/>torch::zeros_like(*H);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Unit<sp/>=<sp/>torch::zeros_like(*H);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>bool<sp/>no_sig<sp/>=<sp/>sigma<sp/>==<sp/>nullptr;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(!sigma){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>sx<sp/>=<sp/>met_xy<sp/>-&gt;<sp/>view({-1,<sp/>1,<sp/>2})*0.001;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>sy<sp/>=<sp/>sx.transpose(-1,<sp/>-2);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sigma<sp/>=<sp/>new<sp/>torch::Tensor(sx<sp/>*<sp/>sy);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>H<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>thx<sp/>=<sp/>(dx<sp/>&gt;=<sp/>64)<sp/>?<sp/>64<sp/>:<sp/>dx;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thd<sp/>=<sp/>dim3(thx,<sp/>3,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blk<sp/>=<sp/>blk_(dx,<sp/>thx,<sp/>3,<sp/>3,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(H<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Nu&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_nu_init_&lt;scalar_t,<sp/>64&gt;&lt;&lt;&lt;blk,<sp/>thd&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sigma<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>met_xy<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>M.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Unit.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>if<sp/>(no_sig){delete<sp/>sigma;}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>M_<sp/>=<sp/>M.clone();<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out<sp/>=<sp/>nusol_::Intersection(&amp;M_,<sp/>&amp;Unit,<sp/>null);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thN<sp/>=<sp/>dim3(1,<sp/>6,<sp/>3);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blN<sp/>=<sp/>blk_(dx,<sp/>1,<sp/>6,<sp/>6,<sp/>3,<sp/>3);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>nu<sp/><sp/><sp/>=<sp/>torch::zeros({dx,<sp/>6,<sp/>3},<sp/>MakeOp(H));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>chi2<sp/>=<sp/>torch::zeros({dx,<sp/>6,<sp/>1},<sp/>MakeOp(H));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(H<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;Nu&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_chi2&lt;scalar_t&gt;&lt;&lt;&lt;blN,<sp/>thN&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out[&quot;solutions&quot;].packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out[&quot;distances&quot;].packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>H<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nu.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>chi2.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;());</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;X&quot;]<sp/>=<sp/>X;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;M&quot;]<sp/>=<sp/>M;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;nu&quot;]<sp/>=<sp/>nu;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>out[&quot;distances&quot;]<sp/>=<sp/>chi2.view({-1,<sp/>6});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline><highlight class="normal"><sp/></highlight></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::Nu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b<sp/>,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>met_xy,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>masses,<sp/>torch::Tensor*<sp/>sigma<sp/>,<sp/>double<sp/>null</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H<sp/>=<sp/>nusol_::BaseMatrix(pmc_b,<sp/>pmc_mu,<sp/>masses)[&quot;H&quot;];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>nusol_::Nu(&amp;H,<sp/>sigma,<sp/>met_xy,<sp/>null);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>nusol_::Nu(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>pmc_b<sp/>,<sp/>torch::Tensor*<sp/>pmc_mu,<sp/>torch::Tensor*<sp/>met_xy,<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor*<sp/>sigma,<sp/>double<sp/>null,<sp/>double<sp/>massT,<sp/>double<sp/>massW</highlight></codeline>
+<codeline><highlight class="normal">){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>H<sp/>=<sp/>nusol_::BaseMatrix(pmc_b,<sp/>pmc_mu,<sp/>massT,<sp/>massW,<sp/>0)[&quot;H&quot;];</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>return<sp/>nusol_::Nu(&amp;H,<sp/>sigma,<sp/>met_xy,<sp/>null);<sp/></highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/nusol/cuda/nu.cu"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="group__optimizer__module" kind="group">
+    <compoundname>optimizer_module</compoundname>
+    <title>Optimizer Module</title>
+    <briefdescription>
+<para>Model optimization and training loops. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="group__optimizer__module_1optimizer_overview">
+<title>Overview</title>
+<para>The Optimizer module provides functionality for training machine learning models, including gradient computation and parameter updates.</para>
+</sect1>
+<sect1 id="group__optimizer__module_1optimizer_features">
+<title>Features</title>
+<para><itemizedlist>
+<listitem><para>Multiple optimizer algorithms (Adam, SGD, etc.)</para>
+</listitem><listitem><para>Learning rate scheduling</para>
+</listitem><listitem><para>Gradient clipping</para>
+</listitem><listitem><para>Checkpoint saving</para>
+</listitem><listitem><para>Training/validation loops</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="see"><para><ref refid="classoptimizer" kindref="compound">optimizer</ref> </para>
+</simplesect>
+<simplesect kind="see"><para><ref refid="structoptimizer__params__t" kindref="compound">optimizer_params_t</ref> </para>
+</simplesect>
+</para>
+</sect1>
+    </detaileddescription>
+  </compounddef>
+</doxygen>

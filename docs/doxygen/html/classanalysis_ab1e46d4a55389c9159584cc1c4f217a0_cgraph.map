@@ -1,0 +1,7 @@
+<map id="analysis::build_project" name="analysis::build_project">
+<area shape="rect" id="Node000001" title="Builds the project structure, possibly setting up directories or initial configurations." alt="" coords="5,5,173,31"/>
+<area shape="rect" id="Node000002" href="$classtools.html#aed9f3247b474a8fb1840860d51cde7ca" title="Creates a directory path, including parent directories if needed." alt="" coords="221,5,360,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,15,208,15,208,21,174,21"/>
+<area shape="rect" id="Node000003" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="408,5,499,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,15,394,15,394,21,360,21"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="parton::top_mass_contribution" name="parton::top_mass_contribution">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,95,225,121"/>
+<area shape="rect" id="Node000002" href="$classselection__template.html#a76e4fafd2338fada8d38912c6c803317" title="Removes duplicate particles based on hash." alt="" coords="291,5,438,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,93,289,47,291,52,156,98"/>
+<area shape="rect" id="Node000003" href="$classselection__template.html#a84df199f6022f2a5d27979d43de51547" title="Sums particles into a combined particle." alt="" coords="273,70,456,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,94,259,91,260,96,226,99"/>
+<area shape="rect" id="Node000004" href="$classtools.html#afd037c109d75a9f119ec042e1ba922d9" title="Converts a double value to a string with standard precision." alt="" coords="305,119,424,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="226,116,291,122,291,128,225,121"/>
+<area shape="rect" id="Node000005" href="$classselection__template.html#a82f14833e404fbe0399a2a539eef75b1" title="Upcasts particles from a map to a derived type." alt="" coords="291,169,438,209"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="156,118,291,163,289,168,154,123"/>
+</map>

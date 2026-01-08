@@ -1,0 +1,7 @@
+<map id="selection_template::CompileEvent" name="selection_template::CompileEvent">
+<area shape="rect" id="Node000001" title="Compiles the event for this selection." alt="" coords="5,37,152,77"/>
+<area shape="rect" id="Node000002" href="$classselection__template.html#a906e3f695a675e5a545fa4eab867cfd7" title="The main selection method to override." alt="" coords="200,5,347,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,43,186,37,187,42,152,48"/>
+<area shape="rect" id="Node000003" href="$classselection__template.html#a01a81c84699bb054a8c320fc5575e17b" title="Alternative selection strategy method." alt="" coords="200,69,347,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="152,67,187,72,186,78,152,72"/>
+</map>

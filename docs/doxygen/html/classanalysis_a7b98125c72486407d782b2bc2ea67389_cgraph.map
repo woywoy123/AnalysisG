@@ -1,0 +1,13 @@
+<map id="analysis::build_inference" name="analysis::build_inference">
+<area shape="rect" id="Node000001" title="Sets up the environment for model inference (prediction)." alt="" coords="5,50,189,76"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a25047bd23730c36cde68661179257c9b" title="Static helper method to add content (features) to a data map from various sources." alt="" coords="432,13,596,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,48,175,27,237,10,285,4,333,3,423,9,423,14,333,8,285,9,238,15,177,32,126,53"/>
+<area shape="rect" id="Node000003" href="$classtools.html#aed9f3247b474a8fb1840860d51cde7ca" title="Creates a directory path, including parent directories if needed." alt="" coords="241,74,380,100"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,71,228,75,227,80,190,76"/>
+<area shape="rect" id="Node000004" href="$classtools.html#a352a6965f2f3c768f0f4ecd1f978fcc0" title="Splits a string into a vector of substrings based on a delimiter." alt="" coords="469,88,559,113"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="127,73,177,94,238,110,295,116,353,116,455,107,455,113,353,122,295,121,237,115,176,99,125,78"/>
+<area shape="rect" id="Node000005" href="$classanalysis.html#a8a8e07da99928e764601ff8c56edc1df" title="Static method to execute a model (training or inference) on a set of data." alt="" coords="237,25,384,50"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="190,49,223,45,224,51,190,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="381,89,455,94,454,99,380,94"/>
+<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="384,31,418,29,419,34,385,36"/>
+</map>

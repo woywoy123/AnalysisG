@@ -1,0 +1,7 @@
+<map id="analysis::build_model_session" name="analysis::build_model_session">
+<area shape="rect" id="Node000001" title="Sets up and configures machine learning model sessions for training or inference." alt="" coords="5,5,169,45"/>
+<area shape="rect" id="Node000002" href="$classanalysis.html#a1c8b808d255b490be4ea86df4d29cdf1" title="Static method to initialize a training loop for an optimizer." alt="" coords="217,13,392,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,23,203,23,203,28,170,28"/>
+<area shape="rect" id="Node000003" href="$classtools.html#a47d3d261edcb898daab56721e18d1e67" title="Checks if a path refers to an existing file." alt="" coords="440,13,540,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,23,426,23,426,28,393,28"/>
+</map>

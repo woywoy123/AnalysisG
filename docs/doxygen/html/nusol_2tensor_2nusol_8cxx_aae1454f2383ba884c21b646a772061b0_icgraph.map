@@ -1,0 +1,23 @@
+<map id="HorizontalVertical" name="HorizontalVertical">
+<area shape="rect" id="Node000001" title=" " alt="" coords="972,31,1111,56"/>
+<area shape="rect" id="Node000002" href="$namespacenusol__.html#a2cdd92aeb32c05137ebc7ef96c47a3da" title=" " alt="" coords="775,31,924,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="958,46,924,46,924,41,958,41"/>
+<area shape="rect" id="Node000003" href="$namespacenusol__.html#a6f05175e14627bd3c34ffa61686b7da4" title=" " alt="" coords="627,5,718,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="760,33,718,27,719,22,761,28"/>
+<area shape="rect" id="Node000005" href="$namespacenusol__.html#ac849ef3564c5ac968727dce36494fd0a" title=" " alt="" coords="619,55,727,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="761,58,727,63,726,57,760,53"/>
+<area shape="rect" id="Node000004" href="$namespacepyc_1_1nusol.html#a991cfa801400211ccf412bd1a85b7b69" title=" " alt="" coords="447,5,562,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="613,21,562,21,562,15,613,15"/>
+<area shape="rect" id="Node000006" href="$namespacepyc_1_1nusol.html#af7bb509b120cb3314695cecd70bc5c11" title=" " alt="" coords="439,55,571,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="605,70,571,70,571,65,605,65"/>
+<area shape="rect" id="Node000007" href="$namespacepyc_1_1nusol.html#a9650527ae538fa27121bedfb79a1fbe6" title=" " alt="" coords="439,104,571,129"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="616,87,550,106,548,101,615,81"/>
+<area shape="rect" id="Node000008" href="$namespacepyc_1_1nusol.html#aaaf252028ed63bf2d561dffcd76916e2" title=" " alt="" coords="231,55,363,80"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="437,103,350,83,352,77,438,98"/>
+<area shape="rect" id="Node000009" href="$namespacepyc_1_1nusol.html#af88804c21a54435a41be99cbc03faf30" title=" " alt="" coords="231,104,363,129"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="425,119,363,119,363,114,425,114"/>
+<area shape="rect" id="Node000010" href="$classvalidation.html#aa436b348c281a3d676910cf7b7d575eb" title=" " alt="" coords="203,153,391,179"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="438,135,352,156,350,151,437,130"/>
+<area shape="rect" id="Node000011" href="$classvalidation.html#af388ba0e867008a75602581fdc2ed0f3" title="Alternative selection strategy method." alt="" coords="5,153,155,179"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="189,169,155,169,155,163,189,163"/>
+</map>

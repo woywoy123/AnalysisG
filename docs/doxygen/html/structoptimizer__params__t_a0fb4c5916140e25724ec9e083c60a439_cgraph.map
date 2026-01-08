@@ -1,0 +1,43 @@
+<map id="optimizer_params_t::operator()" name="optimizer_params_t::operator()">
+<area shape="rect" id="Node000001" title="Initializes property callbacks." alt="" coords="5,613,157,653"/>
+<area shape="rect" id="Node000002" href="$structoptimizer__params__t.html#a99afb46790f9820eff97684b563c41b7" title="Setter for alpha." alt="" coords="242,5,394,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,613,93,499,116,332,132,245,152,166,176,100,189,75,203,55,228,38,231,42,207,59,193,78,180,103,157,167,137,246,121,333,98,500,87,613"/>
+<area shape="rect" id="Node000003" href="$structoptimizer__params__t.html#a20ad38bad45c5f18ad1bb458c024afed" title="Setter for amsgrad." alt="" coords="242,69,394,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="82,613,95,510,120,362,136,286,156,216,178,159,203,119,228,102,231,107,207,123,183,161,161,218,141,287,125,363,100,511,87,613"/>
+<area shape="rect" id="Node000004" href="$structoptimizer__params__t.html#a090bfcc98bcaaa82ccdbc972e75f5636" title="Setter for beta_hack." alt="" coords="242,133,394,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="79,613,80,534,85,479,94,419,109,356,132,294,163,235,204,183,228,166,231,171,207,187,167,238,137,296,114,357,100,420,90,480,86,534,84,613"/>
+<area shape="rect" id="Node000005" href="$structoptimizer__params__t.html#a8b1b64be92bd5ccc444608a31e9227b5" title="Setter for betas." alt="" coords="242,197,394,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="80,613,85,544,102,446,117,393,139,340,167,291,204,247,228,231,231,235,207,251,172,294,144,342,123,394,107,447,90,545,85,613"/>
+<area shape="rect" id="Node000006" href="$structoptimizer__params__t.html#a3aa6f3d107e2b96910169b7ca3214ce1" title="Setter for centered." alt="" coords="242,261,394,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="82,613,90,554,110,473,126,429,146,386,172,346,204,311,227,296,230,300,207,315,176,350,151,389,131,431,115,474,95,555,87,613"/>
+<area shape="rect" id="Node000007" href="$structoptimizer__params__t.html#aad6b164532ae2e389d4d5e9e69b2d225" title="Setter for dampening." alt="" coords="242,325,394,365"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="84,613,96,564,119,500,154,433,177,402,204,375,228,360,230,365,207,379,181,406,158,436,123,503,101,566,89,614"/>
+<area shape="rect" id="Node000008" href="$structoptimizer__params__t.html#afc45377e986d38fae9aa4a2a797560d9" title="Setter for eps." alt="" coords="242,389,394,429"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="87,612,103,575,128,528,161,480,204,439,228,425,231,430,207,443,166,484,133,531,108,577,92,614"/>
+<area shape="rect" id="Node000009" href="$structoptimizer__params__t.html#a81a6af047883eed23114dd558d6ebb0b" title="Setter for history_size." alt="" coords="242,453,394,493"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="94,612,139,558,170,528,204,503,228,491,230,496,207,508,173,532,143,561,99,615"/>
+<area shape="rect" id="Node000010" href="$structoptimizer__params__t.html#a8ebccd384b305e1adde2ade4c45733dd" title="Setter for initial_accumulator_value." alt="" coords="205,517,431,557"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="116,611,204,567,225,559,227,564,206,572,118,616"/>
+<area shape="rect" id="Node000011" href="$structoptimizer__params__t.html#ac32d7a491a143726089290ed277631ac" title="Setter for lr." alt="" coords="242,581,394,621"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="157,620,228,611,229,616,158,626"/>
+<area shape="rect" id="Node000012" href="$structoptimizer__params__t.html#ac2e679b6594be0f330e1ccd3575d3080" title="Setter for lr_decay." alt="" coords="242,645,394,685"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="158,641,229,651,228,656,157,646"/>
+<area shape="rect" id="Node000013" href="$structoptimizer__params__t.html#a1fcb52ca0e5ba687f8995d4c5ebc4a32" title="Setter for max_eval." alt="" coords="242,709,394,749"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="118,651,206,695,230,703,228,708,204,700,116,656"/>
+<area shape="rect" id="Node000014" href="$structoptimizer__params__t.html#a75ce1824747f583a8c25e8422e93e4a4" title="Setter for max_iter." alt="" coords="242,773,394,813"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="99,652,143,705,173,734,207,759,230,771,228,775,204,764,170,738,139,709,94,655"/>
+<area shape="rect" id="Node000015" href="$structoptimizer__params__t.html#a0e846478db266ebfee8db1d544118ed5" title="Setter for momentum." alt="" coords="242,837,394,877"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="92,653,108,689,133,736,166,783,207,823,231,837,228,841,204,827,161,786,128,738,103,692,87,655"/>
+<area shape="rect" id="Node000016" href="$structoptimizer__params__t.html#aaa3a6687879e3266fd3a1e1fdc6be8d5" title="Setter for nesterov." alt="" coords="242,901,394,941"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="89,653,101,701,123,764,158,831,181,861,207,887,230,902,228,906,204,891,177,864,154,833,119,766,96,702,84,654"/>
+<area shape="rect" id="Node000017" href="$classcproperty.html#a41a70e8e01c9b1a20b94d2dbf1a6b214" title="Sets the owning object for callback invocation." alt="" coords="239,966,397,991"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="87,653,95,712,114,793,129,837,150,879,175,918,207,951,227,964,224,968,204,955,171,921,145,881,125,839,109,795,89,713,81,654"/>
+<area shape="rect" id="Node000018" href="$classcproperty.html#af4583ba4cf4ebc53f870a2de8f110da7" title="Sets the setter callback function." alt="" coords="240,1015,396,1041"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="86,653,90,720,108,814,123,865,144,915,172,961,207,1001,228,1014,226,1019,204,1005,167,964,139,917,118,867,102,816,85,721,80,654"/>
+<area shape="rect" id="Node000019" href="$structoptimizer__params__t.html#aa1778d736cd0c6391629d82f711ed489" title="Setter for tolerance_change." alt="" coords="232,1065,404,1105"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="85,654,88,728,103,834,119,892,140,949,169,1003,207,1050,222,1061,218,1066,203,1054,165,1006,135,952,113,894,98,835,83,728,80,654"/>
+<area shape="rect" id="Node000020" href="$structoptimizer__params__t.html#aebb411468b85271613182affcd026b84" title="Setter for tolerance_grad." alt="" coords="241,1129,395,1169"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="88,653,102,751,127,890,143,961,162,1027,184,1080,207,1115,229,1131,226,1136,203,1119,179,1082,157,1028,138,963,121,891,96,752,82,654"/>
+<area shape="rect" id="Node000021" href="$structoptimizer__params__t.html#a0f7112d2084c684a68fd7f8a0c915dbe" title="Setter for weight_decay." alt="" coords="242,1193,394,1233"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="87,653,99,763,123,921,139,1003,159,1077,181,1138,207,1180,231,1196,228,1201,203,1183,177,1141,154,1079,134,1004,117,922,94,763,82,654"/>
+</map>

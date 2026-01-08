@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="event_template_page" kind="page">
+    <compoundname>event_template_page</compoundname>
+    <title>Event Template Guide</title>
+    <briefdescription>
+<para>Detailed guide for using and extending <ref refid="classevent__template" kindref="compound">event_template</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="event_template_page_1event_template_intro">
+<title>Introduction</title>
+<para>The <ref refid="classevent__template" kindref="compound">event_template</ref> class is the base class for all event data structures in AnalysisG. It provides the interface for reading physics data from ROOT files and building structured event representations.</para>
+</sect1>
+<sect1 id="event_template_page_1event_template_components">
+<title>Components</title>
+<para>An event template manages three levels of data organization:</para>
+<para><orderedlist>
+<listitem><para><bold>Trees</bold>: ROOT TTree objects containing the data</para>
+</listitem><listitem><para><bold>Branches</bold>: Collections of related variables (e.g., &quot;Electrons&quot;)</para>
+</listitem><listitem><para><bold>Leaves</bold>: Individual variables (e.g., &quot;Electrons.pt&quot;)</para>
+</listitem></orderedlist>
+</para>
+</sect1>
+<sect1 id="event_template_page_1event_template_example">
+<title>Example</title>
+<para>Here&apos;s how to create a custom event template:</para>
+<para><programlisting filename=".cpp"><codeline><highlight class="keyword">class<sp/></highlight><highlight class="normal">MyEvent<sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classevent__template" kindref="compound">event_template</ref><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>MyEvent()<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Define<sp/>which<sp/>tree<sp/>to<sp/>read</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template_1a06204ee006698a0dd37f32e725b8ba59" kindref="member">add_tree</ref>(</highlight><highlight class="stringliteral">&quot;nominal&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Define<sp/>branches<sp/>(particle<sp/>collections)</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template_1a788866cad266f2d1257b5d10ff33bf06" kindref="member">add_branch</ref>(</highlight><highlight class="stringliteral">&quot;electrons&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;el_&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template_1a788866cad266f2d1257b5d10ff33bf06" kindref="member">add_branch</ref>(</highlight><highlight class="stringliteral">&quot;muons&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;mu_&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template_1a788866cad266f2d1257b5d10ff33bf06" kindref="member">add_branch</ref>(</highlight><highlight class="stringliteral">&quot;jets&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;jet_&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Define<sp/>individual<sp/>leaves</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template_1af57dbc73f9bf6e8ba5126a07e4a327c4" kindref="member">add_leaf</ref>(</highlight><highlight class="stringliteral">&quot;met&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;met_et&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classevent__template_1af57dbc73f9bf6e8ba5126a07e4a327c4" kindref="member">add_leaf</ref>(</highlight><highlight class="stringliteral">&quot;met_phi&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="stringliteral">&quot;met_phi&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Register<sp/>particle<sp/>types</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>register_particle&lt;Electron&gt;(</highlight><highlight class="stringliteral">&quot;electrons&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>register_particle&lt;Muon&gt;(</highlight><highlight class="stringliteral">&quot;muons&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>register_particle&lt;Jet&gt;(</highlight><highlight class="stringliteral">&quot;jets&quot;</highlight><highlight class="normal">);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classevent__template_1a9fc686c62ad905b01dcd674498030b95" kindref="member">build</ref>(<ref refid="structelement__t" kindref="compound">element_t</ref>*<sp/>el)</highlight><highlight class="keyword"><sp/>override<sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Custom<sp/>event<sp/>building<sp/>logic</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Access<sp/>raw<sp/>data<sp/>via<sp/>el-&gt;data</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">};</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="event_template_page_1event_template_properties">
+<title>Properties</title>
+<para>Event templates expose several properties:</para>
+<para><table rows="7" cols="3"><row>
+<entry thead="yes"><para>Property   </para>
+</entry><entry thead="yes"><para>Type   </para>
+</entry><entry thead="yes"><para>Description    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>name   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>Template identifier    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>hash   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>Unique configuration hash    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>tree   </para>
+</entry><entry thead="no"><para>string   </para>
+</entry><entry thead="no"><para>Primary TTree name    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>weight   </para>
+</entry><entry thead="no"><para>double   </para>
+</entry><entry thead="no"><para>Event weight    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>index   </para>
+</entry><entry thead="no"><para>long   </para>
+</entry><entry thead="no"><para>Event index in source    </para>
+</entry></row>
+<row>
+<entry thead="no"><para>leaves   </para>
+</entry><entry thead="no"><para>vector&lt;string&gt;   </para>
+</entry><entry thead="no"><para>List of leaf names   </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="event_template_page_1event_template_particles_tpl">
+<title>Particle Management</title>
+<para>Particles are managed through:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>register_particle()</computeroutput>: Register a particle type</para>
+</listitem><listitem><para><computeroutput>particle_link</computeroutput>: Access registered particles by collection</para>
+</listitem><listitem><para><computeroutput>particle_generators</computeroutput>: Factory functions for particle creation </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="/home/runner/work/AnalysisG/AnalysisG/docs/doxygen/pages/templates.dox"/>
+  </compounddef>
+</doxygen>

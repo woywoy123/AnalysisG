@@ -1,0 +1,10 @@
+<map id="pyc::transform::combined::PtEtaPhi" name="pyc::transform::combined::PtEtaPhi">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,195,75"/>
+<area shape="rect" id="Node000002" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="273,5,367,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,37,259,25,260,31,195,42"/>
+<area shape="rect" id="Node000003" href="$namespacetransform__.html#adf008ef1e94217cd7a7dae8c53a127a6" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), and azimuthal angle (Phi) from a momentu..." alt="" coords="243,79,397,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,68,230,74,229,79,194,73"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="295,80,290,70,293,61,303,54,320,52,340,56,349,64,345,68,338,60,320,57,305,59,297,64,295,70,300,77"/>
+<area shape="rect" id="Node000004" href="$utils_8cxx.html#aaec9ca2d20716add3c686abd989934d0" title=" " alt="" coords="445,79,491,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="397,89,432,89,432,94,397,94"/>
+</map>

@@ -1,0 +1,33 @@
+<map id="plotting.cxx" name="plotting.cxx">
+<area shape="rect" id="Node000001" title="Implementation of plotting utilities." alt="" coords="489,5,587,31"/>
+<area shape="rect" id="Node000002" href="$plotting_8h.html" title="Defines the plotting class for creating and managing visualizations." alt="" coords="406,79,545,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="530,33,497,70,493,66,526,29"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="569,79,632,104"/>
+<area shape="poly" id="edge18_Node000001_Node000013" title=" " alt="" coords="550,29,583,66,579,70,546,33"/>
+<area shape="rect" id="Node000003" href="$notification_8h.html" title="Defines the notification class for logging and messaging functionality." alt="" coords="215,152,399,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="449,106,348,149,346,144,447,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="177,225,235,251"/>
+<area shape="poly" id="edge15_Node000002_Node000004" title=" " alt="" coords="406,101,347,108,287,119,236,134,218,143,205,154,199,167,196,181,200,211,195,212,191,181,194,165,201,150,215,139,234,129,286,114,347,103,405,95"/>
+<area shape="rect" id="Node000006" href="$property_8h.html" title="Defines the cproperty template class for property&#45;based access patterns." alt="" coords="5,152,140,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="411,107,151,152,150,147,410,101"/>
+<area shape="rect" id="Node000008" href="$tools_8h.html" title="Defines the tools class that provides general utility functions for the AnalysisG framework." alt="" coords="424,152,527,177"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="478,104,478,138,473,138,473,104"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="503,225,565,251"/>
+<area shape="poly" id="edge17_Node000002_Node000009" title=" " alt="" coords="496,102,521,122,542,151,548,183,544,212,539,212,542,183,537,153,517,126,493,106"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="590,225,641,251"/>
+<area shape="poly" id="edge14_Node000002_Node000011" title=" " alt="" coords="498,102,530,122,563,150,587,181,606,212,601,214,583,184,559,154,527,127,495,106"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="653,152,708,177"/>
+<area shape="poly" id="edge16_Node000002_Node000012" title=" " alt="" coords="509,101,641,147,639,152,507,107"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="293,180,235,219,232,215,290,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="287,225,367,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="313,177,323,211,318,213,308,178"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="95,175,173,216,171,221,93,180"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="29,225,116,251"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="75,178,75,212,70,212,70,178"/>
+<area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="433,180,249,228,248,223,431,175"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="453,180,365,222,363,217,450,175"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="487,176,518,213,514,217,483,179"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="411,225,478,251"/>
+<area shape="poly" id="edge12_Node000008_Node000010" title=" " alt="" coords="473,179,457,214,453,212,468,177"/>
+<area shape="poly" id="edge13_Node000008_Node000011" title=" " alt="" coords="499,175,582,217,579,221,497,180"/>
+</map>

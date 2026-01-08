@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="metric__accuracy_8pxd" kind="file" language="C++">
+    <compoundname>metric_accuracy.pxd</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">#<sp/>distuils:<sp/>language=c++</highlight></codeline>
+<codeline><highlight class="normal">#<sp/>cython:<sp/>language_level=3</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.map<sp/>cimport<sp/>map</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp<sp/>cimport<sp/>int,<sp/>float</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.vector<sp/>cimport<sp/>vector</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>libcpp.string<sp/>cimport<sp/>string</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.metric_template<sp/>cimport<sp/>*</highlight></codeline>
+<codeline><highlight class="normal">from<sp/>AnalysisG.core.plotting<sp/>cimport<sp/>*</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>extern<sp/>from<sp/>&quot;&lt;metrics/accuracy.h&gt;&quot;:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>cppclass<sp/>accuracy_metric(metric_template):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>accuracy_metric()<sp/>except+</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight></codeline>
+<codeline><highlight class="normal">cdef<sp/>struct<sp/>modelx_t:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>#<sp/>-<sp/>name<sp/>-<sp/>k<sp/>-<sp/>scores<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>map[string,<sp/>map[int,<sp/>vector[int<sp/><sp/><sp/>]]]<sp/>ntops_truth</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>map[string,<sp/>map[int,<sp/>vector[double]]]<sp/>edge_scores</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>map[string,<sp/>map[int,<sp/>vector[vector[double]]]]<sp/>ntop_score</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>map[string,<sp/>map[int,<sp/>map[int,<sp/>vector[double]]]]<sp/>ntru_npred_ntop</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>cppclass<sp/>plt_roc_t:</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>plt_roc_t()<sp/>except+<sp/>nogil</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>string<sp/>model<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>string<sp/>variable</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>kfold<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>int<sp/>epoch</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>double<sp/>auc</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>vector[int]<sp/>truth</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>vector[vector[double]]<sp/>scores</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">cdef<sp/>class<sp/>AccuracyMetric(MetricTemplate):</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>accuracy_metric*<sp/>mtr</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>#<sp/>mode<sp/>-<sp/>epoch</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>cdef<sp/>map[string,<sp/>map[int,<sp/>modelx_t]]<sp/>event_level</highlight></codeline>
+    </programlisting>
+    <location file="metrics/accuracy/metric_accuracy.pxd"/>
+  </compounddef>
+</doxygen>

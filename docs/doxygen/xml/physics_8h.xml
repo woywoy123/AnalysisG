@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="physics_8h" kind="file" language="C++">
+    <compoundname>physics.h</compoundname>
+    <includes local="no">torch/torch.h</includes>
+    <includedby refid="nusol_2tensor_2nusol_8cxx" local="no">nusol.cxx</includedby>
+    <includedby refid="interface_2operators_8cxx" local="no">operators.cxx</includedby>
+    <includedby refid="pyc_2interface_2physics_8cxx" local="no">physics.cxx</includedby>
+    <includedby refid="pyc_2physics_2physics_8cxx" local="no">physics.cxx</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>physics.h</label>
+        <link refid="physics_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>torch/torch.h</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="3">
+        <label>operators.cxx</label>
+        <link refid="interface_2operators_8cxx"/>
+      </node>
+      <node id="4">
+        <label>physics.cxx</label>
+        <link refid="pyc_2interface_2physics_8cxx"/>
+      </node>
+      <node id="2">
+        <label>nusol.cxx</label>
+        <link refid="nusol_2tensor_2nusol_8cxx"/>
+      </node>
+      <node id="1">
+        <label>physics.h</label>
+        <link refid="physics_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>physics.cxx</label>
+        <link refid="pyc_2physics_2physics_8cxx"/>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacephysics__">physics_</innernamespace>
+    <briefdescription>
+<para>Provides physics-related functions for C++ operations. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>PHYSICS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>PHYSICS_H</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;torch/torch.h&gt;</highlight><highlight class="normal"><sp/></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14" refid="namespacephysics__" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespacephysics__" kindref="compound">physics_</ref><sp/>{</highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" kindref="member">P2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1ae22e22a969315629a6ae7549f7344805" kindref="member">P2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1ac12a78b1943348345b940e510930f420" kindref="member">P</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1ac12a78b1943348345b940e510930f420" kindref="member">P</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1aace12d6d7317cd102e5059781d724151" kindref="member">Beta2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="69"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1aace12d6d7317cd102e5059781d724151" kindref="member">Beta2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" kindref="member">Beta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b" kindref="member">Beta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" kindref="member">M2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a7787594305d4a156c31be581401b0b0b" kindref="member">M2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" kindref="member">M</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc" kindref="member">M</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="135"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" kindref="member">Mt2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d" kindref="member">Mt2</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="152"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" kindref="member">Mt</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1af5fecf9c76889e0e996dc44793e67153" kindref="member">Mt</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" kindref="member">Theta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a04130da60e65c7800006cd7886515b56" kindref="member">pmc</ref>);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f" kindref="member">Theta</ref>(torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a21de26caa6bcfc936378c4e45d235bd9" kindref="member">px</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28adfed5bc177b87ab317c584e06566adc6" kindref="member">py</ref>,<sp/>torch::Tensor*<sp/><ref refid="enums_8h_1a666fa98df084d96fc481369704153b28a6d2cb9e726c9fac0fb36afc377be3aec" kindref="member">pz</ref>);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be" kindref="member">DeltaR</ref>(torch::Tensor*<sp/>pmu1,<sp/>torch::Tensor*<sp/>pmu2);</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"></highlight></codeline>
+<codeline lineno="198"><highlight class="normal">torch::Tensor<sp/><ref refid="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be" kindref="member">DeltaR</ref>(torch::Tensor*<sp/>eta1,<sp/>torch::Tensor*<sp/>eta2,<sp/>torch::Tensor*<sp/>phi1,<sp/>torch::Tensor*<sp/>phi2);</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight></codeline>
+    </programlisting>
+    <location file="pyc/physics/include/physics/physics.h"/>
+  </compounddef>
+</doxygen>

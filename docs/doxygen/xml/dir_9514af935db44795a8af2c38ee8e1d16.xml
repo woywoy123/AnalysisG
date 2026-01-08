@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="dir_9514af935db44795a8af2c38ee8e1d16" kind="dir">
+    <compoundname>topkinematics</compoundname>
+    <innerfile refid="selections_2mc16_2topkinematics_2____init_____8pxd">selections/mc16/topkinematics/__init__.pxd</innerfile>
+    <innerfile refid="mc16_2topkinematics_2topkinematics_8cxx">mc16/topkinematics/topkinematics.cxx</innerfile>
+    <innerfile refid="mc16_2topkinematics_2topkinematics_8h">mc16/topkinematics/topkinematics.h</innerfile>
+    <innerfile refid="topkinematics_8pxd">topkinematics.pxd</innerfile>
+    <innerfile refid="topkinematics_8pyx">topkinematics.pyx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc16/topkinematics/"/>
+  </compounddef>
+</doxygen>

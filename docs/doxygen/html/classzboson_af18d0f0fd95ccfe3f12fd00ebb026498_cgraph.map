@@ -1,0 +1,9 @@
+<map id="zboson::clone" name="zboson::clone">
+<area shape="rect" id="Node000001" title="Creates a clone of this particle." alt="" coords="5,45,116,70"/>
+<area shape="rect" id="Node000002" href="$classzboson.html#a77028e2003cfc7ac4e29b12167ce925e" title=" " alt="" coords="164,45,287,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,55,151,55,151,60,116,60"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="335,5,480,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="286,44,321,38,321,43,287,49"/>
+<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="335,69,480,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="287,65,321,72,321,77,286,71"/>
+</map>

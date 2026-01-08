@@ -62,7 +62,7 @@
  * - Model training and inference
  * - Metric evaluation
  *
- * @section analysis_workflow Workflow
+ * @section analysis_workflow_mod Workflow
  *
  * A typical analysis workflow using the analysis class:
  *
@@ -76,7 +76,7 @@
  * 8. Configure settings via `m_settings`
  * 9. Start execution with `start()`
  *
- * @section analysis_settings Configuration
+ * @section analysis_settings_mod Configuration
  *
  * The analysis class uses the `settings_t` structure for configuration:
  *
@@ -119,7 +119,7 @@
  * The DataLoader module provides functionality for efficient data loading,
  * batching, and shuffling during model training and evaluation.
  *
- * @section dataloader_features Features
+ * @section dataloader_features_mod Features
  *
  * - Batch construction from graph data
  * - Shuffling and randomization
@@ -127,7 +127,7 @@
  * - K-fold cross-validation support
  * - Device placement (CPU/CUDA)
  *
- * @section dataloader_batching Batching
+ * @section dataloader_batching_mod Batching
  *
  * The dataloader creates batches by:
  * 1. Collecting multiple graphs
@@ -188,7 +188,7 @@
  * 3. Define the edge topology using `define_topology()`
  * 4. Add features using `add_node_data_feature()`, `add_edge_data_feature()`, etc.
  *
- * @section graph_features Feature Types
+ * @section graph_features_mod Feature Types
  *
  * The graph template supports:
  *
@@ -208,12 +208,12 @@
  * @ingroup modules_group
  * @brief Input/output operations for data handling.
  *
- * @section io_overview Overview
+ * @section io_overview_mod Overview
  *
  * The IO module provides functionality for reading and writing data files,
  * including ROOT files and HDF5 storage.
  *
- * @section io_formats Supported Formats
+ * @section io_formats_mod Supported Formats
  *
  * - **ROOT files**: Reading physics data from ROOT TTrees
  * - **HDF5 files**: Storing processed graphs and tensors
@@ -433,7 +433,7 @@
  * The Selection module provides the @ref selection_template class for
  * implementing event selection criteria.
  *
- * @section selection_usage Usage
+ * @section selection_usage_mod Usage
  *
  * To create a custom selection:
  *
@@ -441,7 +441,7 @@
  * 2. Override the selection method
  * 3. Return true for events that pass the selection
  *
- * @section selection_chaining Selection Chaining
+ * @section selection_chaining_mod Selection Chaining
  *
  * Multiple selections can be combined:
  *
@@ -472,7 +472,7 @@
  * - @ref optimizer_params_t: Optimizer configuration
  * - @ref model_report: Training progress reports
  *
- * @section structs_property Property System
+ * @section structs_property_mod Property System
  *
  * The module includes a property system (`cproperty`) for:
  *

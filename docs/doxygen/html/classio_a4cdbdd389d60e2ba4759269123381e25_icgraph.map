@@ -1,0 +1,9 @@
+<map id="io::read_event_h5" name="io::read_event_h5">
+<area shape="rect" id="Node000001" title="Templated method to read event data (vector of objects) from HDF5." alt="" coords="243,31,381,56"/>
+<area shape="rect" id="Node000002" href="$classio.html#ae9363859101b007dedf420f10e437014" title="Templated method to read a single object from a dataset." alt="" coords="124,5,195,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,32,195,26,195,21,229,27"/>
+<area shape="rect" id="Node000003" href="$classio.html#a2a0214e493a7a2ef5e9507c0e6aa4e70" title="Templated method to read a vector of objects from a dataset." alt="" coords="124,55,195,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="229,59,195,64,195,59,228,54"/>
+<area shape="rect" id="Node000004" href="$classio.html#a4744173c6cc8c89a6145fbfb11c3831e" title="Reads graph data in HDF5 format specifically for graph_hdf5_w struct." alt="" coords="5,55,76,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="110,70,76,70,76,65,110,65"/>
+</map>

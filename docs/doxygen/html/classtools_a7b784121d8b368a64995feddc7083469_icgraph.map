@@ -1,0 +1,38 @@
+<map id="tools::sum" name="tools::sum">
+<area shape="rect" id="Node000001" title="Sums the elements of a vector." alt="" coords="727,232,817,257"/>
+<area shape="rect" id="Node000002" href="$classmetrics.html#a15f20f34714224f09f44cf520ca6f271" title=" " alt="" coords="471,5,673,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="764,219,754,180,738,133,712,85,696,64,677,45,656,33,659,28,680,41,700,60,717,82,742,131,759,179,769,218"/>
+<area shape="rect" id="Node000004" href="$classsampletracer.html#a30d25d5a298b3c5698aee99ede11ce79" title="Compiles objects concurrently using multiple threads." alt="" coords="488,55,656,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="758,221,727,164,704,135,677,109,655,97,658,92,680,105,708,131,731,161,763,218"/>
+<area shape="rect" id="Node000005" href="$classparticle__template.html#a575d99bd23ac34125328e4d23518ff52" title="Calculates the angular separation ΔR from another particle." alt="" coords="499,119,645,159"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="746,224,715,198,677,174,644,160,646,155,680,169,718,194,749,220"/>
+<area shape="rect" id="Node000006" href="$classgraph__template.html#aa2bef51e5e00b49425c8ac93bcd1f315" title="Reconstructs double neutrino momenta for di&#45;leptonic events." alt="" coords="483,183,661,223"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="713,235,660,224,661,219,714,230"/>
+<area shape="rect" id="Node000010" href="$classgrift.html#a72f7575fbd1d744d4f9053e5b8b7ee38" title="Virtual forward pass method for a single graph." alt="" coords="519,272,625,297"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="714,259,626,277,625,271,713,254"/>
+<area shape="rect" id="Node000011" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="251,285,365,311"/>
+<area shape="poly" id="edge20_Node000001_Node000011" title=" " alt="" coords="749,269,718,293,680,311,638,322,595,328,510,330,430,324,365,313,366,308,431,319,510,325,595,322,637,316,678,306,715,288,746,265"/>
+<area shape="rect" id="Node000012" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="465,397,679,437"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="756,270,723,312,680,356,648,379,616,399,613,394,645,375,677,352,719,309,752,267"/>
+<area shape="rect" id="Node000014" href="$classmatching.html#a04995b471b7aed459aeec59b3ea9a81b" title=" " alt="" coords="493,461,651,487"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="769,272,760,312,743,360,717,409,700,431,680,451,653,466,650,462,677,447,696,428,713,406,738,358,754,310,764,270"/>
+<area shape="rect" id="Node000003" href="$classmetrics.html#a24531660bf7917f489a6b67ceed12cdd" title="Captures metrics from the current epoch." alt="" coords="244,5,372,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="458,21,372,21,372,15,458,15"/>
+<area shape="rect" id="Node000007" href="$classgraph__truthjets__nonu.html#add03a6d564186c150f7c907737b77eeb" title="Compiles the event into a graph." alt="" coords="228,107,388,147"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="488,182,378,150,379,145,490,177"/>
+<area shape="rect" id="Node000008" href="$classgraph__jets__nonu.html#a3d76d9b5885af9d1ef9c2a150acc1300" title="Compiles the event into a graph." alt="" coords="213,171,403,211"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="470,201,403,198,403,193,470,196"/>
+<area shape="rect" id="Node000009" href="$classgraph__detector.html#a9524462481e7c9e42df5cf73f999737e" title="Compiles the event into a graph." alt="" coords="199,236,417,261"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="471,223,383,239,382,233,470,218"/>
+<area shape="poly" id="edge10_Node000010_Node000010" title=" " alt="" coords="608,262,598,254,572,251,551,253,540,257,537,263,543,270,539,273,532,264,536,254,549,248,572,245,600,249,611,258"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="505,299,366,305,365,300,505,293"/>
+<area shape="poly" id="edge12_Node000011_Node000010" title=" " alt="" coords="379,284,518,277,519,283,379,289"/>
+<area shape="poly" id="edge14_Node000012_Node000012" title=" " alt="" coords="606,385,594,378,572,375,553,377,541,382,537,388,539,396,534,397,532,387,538,378,552,372,572,370,596,373,608,380"/>
+<area shape="rect" id="Node000013" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="201,397,415,437"/>
+<area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="451,428,415,428,415,423,451,423"/>
+<area shape="poly" id="edge16_Node000013_Node000012" title=" " alt="" coords="429,405,465,405,465,410,429,410"/>
+<area shape="rect" id="Node000015" href="$classmatching.html#a6925aacb40ca0e99f178d44959956fdb" title=" " alt="" coords="219,461,397,487"/>
+<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="479,477,398,477,398,471,479,471"/>
+<area shape="rect" id="Node000016" href="$classmatching.html#afbde71106947fe0f714151794c7f6259" title="Alternative selection strategy method." alt="" coords="5,461,151,487"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="204,477,151,477,151,471,204,471"/>
+</map>

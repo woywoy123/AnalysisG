@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="dir_adc135f4cb9fb1e10063ad6158aa1b7c" kind="dir">
+    <compoundname>cxx</compoundname>
+    <innerfile refid="variable_2cxx_2variable_8cxx">variable/cxx/variable.cxx</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="modules/variable/cxx/"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="transform_8cuh" kind="file" language="C++">
+    <compoundname>transform.cuh</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">///&lt;<sp/>Include<sp/>the<sp/>PyTorch<sp/>C++<sp/>library<sp/>header.</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;torch/torch.h&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Header<sp/>guard<sp/>to<sp/>prevent<sp/>multiple<sp/>inclusions<sp/>of<sp/>this<sp/>file.</highlight></codeline>
+<codeline><highlight class="normal">#ifndef<sp/>TRANSFORM_CUH</highlight></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Defines<sp/>TRANSFORM_CUH<sp/>to<sp/>indicate<sp/>that<sp/>this<sp/>header<sp/>has<sp/>been<sp/>included.</highlight></codeline>
+<codeline><highlight class="normal">#define<sp/>TRANSFORM_CUH</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>Namespace<sp/>for<sp/>transformation<sp/>functions.</highlight></codeline>
+<codeline><highlight class="normal">namespace<sp/>transform_<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>x-component<sp/>of<sp/>momentum<sp/>from<sp/>transverse<sp/>momentum<sp/>(pt)<sp/>and<sp/>azimuthal<sp/>angle<sp/>(phi).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Px(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>phi);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>y-component<sp/>of<sp/>momentum<sp/>from<sp/>transverse<sp/>momentum<sp/>(pt)<sp/>and<sp/>azimuthal<sp/>angle<sp/>(phi).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Py(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>phi);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>z-component<sp/>of<sp/>momentum<sp/>from<sp/>transverse<sp/>momentum<sp/>(pt)<sp/>and<sp/>pseudorapidity<sp/>(eta).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Pz(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>3-momentum<sp/>(Px,<sp/>Py,<sp/>Pz)<sp/>from<sp/>transverse<sp/>momentum<sp/>(pt),<sp/>pseudorapidity<sp/>(eta),<sp/>and<sp/>azimuthal<sp/>angle<sp/>(phi).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PxPyPz(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta,<sp/>torch::Tensor*<sp/>phi);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>4-momentum<sp/>(Px,<sp/>Py,<sp/>Pz,<sp/>E)<sp/>from<sp/>transverse<sp/>momentum<sp/>(pt),<sp/>pseudorapidity<sp/>(eta),<sp/>azimuthal<sp/>angle<sp/>(phi),<sp/>and<sp/>energy.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PxPyPzE(torch::Tensor*<sp/>pt,<sp/>torch::Tensor*<sp/>eta,<sp/>torch::Tensor*<sp/>phi,<sp/>torch::Tensor*<sp/>energy);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>3-momentum<sp/>(Px,<sp/>Py,<sp/>Pz)<sp/>from<sp/>a<sp/>4-momentum<sp/>tensor<sp/>(pmu).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PxPyPz(torch::Tensor*<sp/>pmu);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>the<sp/>4-momentum<sp/>(Px,<sp/>Py,<sp/>Pz,<sp/>E)<sp/>from<sp/>a<sp/>4-momentum<sp/>tensor<sp/>(pmu)<sp/>-<sp/>likely<sp/>extracts<sp/>or<sp/>ensures<sp/>all<sp/>four<sp/>components.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PxPyPzE(torch::Tensor*<sp/>pmu);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>transverse<sp/>momentum<sp/>(pt),<sp/>pseudorapidity<sp/>(eta),<sp/>and<sp/>azimuthal<sp/>angle<sp/>(phi)<sp/>from<sp/>a<sp/>Cartesian<sp/>4-momentum<sp/>tensor<sp/>(pmc).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PtEtaPhi(torch::Tensor*<sp/>pmc);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>transverse<sp/>momentum<sp/>(pt),<sp/>pseudorapidity<sp/>(eta),<sp/>and<sp/>azimuthal<sp/>angle<sp/>(phi)<sp/>from<sp/>Cartesian<sp/>momentum<sp/>components<sp/>(px,<sp/>py,<sp/>pz).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PtEtaPhi(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>transverse<sp/>momentum<sp/>(pt),<sp/>pseudorapidity<sp/>(eta),<sp/>azimuthal<sp/>angle<sp/>(phi),<sp/>and<sp/>energy<sp/>(E)<sp/>from<sp/>a<sp/>Cartesian<sp/>4-momentum<sp/>tensor<sp/>(pmc).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PtEtaPhiE(torch::Tensor*<sp/>pmc);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>transverse<sp/>momentum<sp/>(pt),<sp/>pseudorapidity<sp/>(eta),<sp/>azimuthal<sp/>angle<sp/>(phi),<sp/>and<sp/>energy<sp/>(E)<sp/>from<sp/>Cartesian<sp/>momentum<sp/>components<sp/>(px,<sp/>py,<sp/>pz)<sp/>and<sp/>energy<sp/>(e).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>PtEtaPhiE(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz,<sp/>torch::Tensor*<sp/>e);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>transverse<sp/>momentum<sp/>(Pt)<sp/>from<sp/>Cartesian<sp/>momentum<sp/>components<sp/>(px,<sp/>py).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Pt(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>azimuthal<sp/>angle<sp/>(Phi)<sp/>from<sp/>Cartesian<sp/>momentum<sp/>components<sp/>(px,<sp/>py).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Phi(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>pseudorapidity<sp/>(Eta)<sp/>from<sp/>a<sp/>Cartesian<sp/>4-momentum<sp/>tensor<sp/>(pmc).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Eta(torch::Tensor*<sp/>pmc);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>///&lt;<sp/>Calculates<sp/>pseudorapidity<sp/>(Eta)<sp/>from<sp/>Cartesian<sp/>momentum<sp/>components<sp/>(px,<sp/>py,<sp/>pz).</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>torch::Tensor<sp/>Eta(torch::Tensor*<sp/>px,<sp/>torch::Tensor*<sp/>py,<sp/>torch::Tensor*<sp/>pz);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>End<sp/>of<sp/>the<sp/>transform_<sp/>namespace.</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">///&lt;<sp/>End<sp/>of<sp/>the<sp/>header<sp/>guard.</highlight></codeline>
+<codeline><highlight class="normal">#endif</highlight></codeline>
+    </programlisting>
+    <location file="pyc/transform/include/transform/transform.cuh"/>
+  </compounddef>
+</doxygen>

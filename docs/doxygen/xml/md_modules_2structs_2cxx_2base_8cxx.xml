@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="md_modules_2structs_2cxx_2base_8cxx" kind="page">
+    <compoundname>md_modules_2structs_2cxx_2base_8cxx</compoundname>
+    <title>Documentation for base.cxx</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><anchor id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md54"/> </para>
+<sect1 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md55">
+<title>Overview</title>
+<para>This file contains core functionality for the base structure class (<computeroutput><ref refid="classbsc__t" kindref="compound">bsc_t</ref></computeroutput>) which appears to be part of a data processing framework. The file includes methods for type translation, string conversion, buffer manipulation, and utility functions.</para>
+</sect1>
+<sect1 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md56">
+<title>Function Documentation</title>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md57">
+<title>&lt;tt&gt;void buildDict(std::string _name, std::string _shrt)&lt;/tt&gt;</title>
+<para>Builds a dictionary mapping between full names and shortened versions. This appears to be used for data structure mapping or alias creation.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md58">
+<title>&lt;tt&gt;void registerInclude(std::string pth, bool is_abs)&lt;/tt&gt;</title>
+<para>Registers include paths for the system. The <computeroutput>is_abs</computeroutput> parameter indicates whether the path is absolute or relative.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md59">
+<title>&lt;tt&gt;void buildPCM(std::string name, std::string incl, bool exl)&lt;/tt&gt;</title>
+<para>Builds a Precompiled Module (PCM) with the given name, include path, and exclusion flag.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md60">
+<title>&lt;tt&gt;void buildAll()&lt;/tt&gt;</title>
+<para>Initializes and builds all required components. This is likely a convenience function to set up the entire system.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md61">
+<title>&lt;tt&gt;bsc_t::bsc_t()&lt;/tt&gt; and &lt;tt&gt;bsc_t::~bsc_t()&lt;/tt&gt;</title>
+<para>Constructor and destructor for the base structure class.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md62">
+<title>&lt;tt&gt;int count(const std::string* str, const std::string sub)&lt;/tt&gt;</title>
+<para>Utility function to count occurrences of a substring within a string.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md63">
+<title>&lt;tt&gt;data_enum bsc_t::root_type_translate(std::string* root_str)&lt;/tt&gt;</title>
+<para>Translates a string representation of a type to the corresponding enumeration value. Part of the routing system that maps string identifiers to internal data types.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md64">
+<title>&lt;tt&gt;std::string bsc_t::as_string()&lt;/tt&gt;</title>
+<para>Converts the current object to a string representation.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md65">
+<title>&lt;tt&gt;std::string bsc_t::scan_buffer()&lt;/tt&gt;</title>
+<para>Scans and processes the internal buffer, returning a string result.</para>
+</sect2>
+<sect2 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md66">
+<title>&lt;tt&gt;void bsc_t::flush_buffer()&lt;/tt&gt;</title>
+<para>Clears the internal buffer, resetting it to its initial state.</para>
+</sect2>
+</sect1>
+<sect1 id="md_modules_2structs_2cxx_2base_8cxx_1autotoc_md67">
+<title>Code Organization Notes</title>
+<para>The file contains important markers for code organization:<orderedlist>
+<listitem><para>&quot;Add your type&quot; section (marker 2)</para>
+</listitem><listitem><para>&quot;Add the routing&quot; section (marker 3)</para>
+</listitem><listitem><para>&quot;Add the buffer flush&quot; section (marker 4)</para>
+</listitem></orderedlist>
+</para>
+<para>These markers suggest that the code is meant to be extended at these specific points. </para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/structs/cxx/base.cxx.md"/>
+  </compounddef>
+</doxygen>

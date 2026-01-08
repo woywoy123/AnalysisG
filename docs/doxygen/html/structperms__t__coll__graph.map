@@ -1,0 +1,7 @@
+<map id="perms_t" name="perms_t">
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,192,93,257"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,48,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="26,71,26,117,33,167,36,176,31,177,28,169,21,118,21,71"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="72,5,115,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="90,71,71,176,66,175,85,70"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="grift::forward" name="grift::forward">
+<area shape="rect" id="Node000001" title="Virtual forward pass method for a single graph." alt="" coords="168,29,275,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="249,19,241,11,221,8,205,10,196,15,195,20,199,28,195,31,189,21,192,11,203,5,221,3,243,6,252,15"/>
+<area shape="rect" id="Node000002" href="$classgrift.html#ad610edcd0cab14b57197a846ab8a8caf" title=" " alt="" coords="5,29,120,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="154,54,120,53,120,48,154,48"/>
+<area shape="poly" id="edge3_Node000002_Node000001" title=" " alt="" coords="134,30,168,31,168,36,134,36"/>
+</map>

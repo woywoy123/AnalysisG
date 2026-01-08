@@ -1,0 +1,22 @@
+<map id="particle_template::to_cartesian" name="particle_template::to_cartesian">
+<area shape="rect" id="Node000001" title="Converts internal representation to Cartesian coordinates." alt="" coords="585,133,731,173"/>
+<area shape="rect" id="Node000002" href="$classparticle__template.html#a9c586cc0ac38cad5ccacf1bb4985e25b" title="Getter for hash." alt="" coords="392,5,537,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="623,126,582,92,536,60,514,48,516,43,539,55,586,88,626,122"/>
+<area shape="rect" id="Node000006" href="$classparticle__template.html#a2c580f15b494fcbdc17c2339c1ae91e1" title="Getter for px." alt="" coords="392,69,537,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="583,131,525,112,526,107,585,126"/>
+<area shape="rect" id="Node000007" href="$classparticle__template.html#a4825c3c7d011c6c5fbc5b3c734799a7f" title="Getter for py." alt="" coords="392,133,537,173"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="572,156,538,156,538,151,572,151"/>
+<area shape="rect" id="Node000008" href="$classparticle__template.html#ab78f0f9f18d3d13c26fdd549e1027e44" title="Getter for pz." alt="" coords="392,197,537,237"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="585,180,526,200,525,195,583,175"/>
+<area shape="rect" id="Node000009" href="$classparticle__template.html#ad4f1535f5eb70d16c576129eef0ff73c" title="In&#45;place addition operator." alt="" coords="392,261,537,301"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="626,185,586,219,539,252,516,264,514,259,536,247,582,214,623,181"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#ab527ed22f6d67969247a0be9dda0165f" title="Default constructor." alt="" coords="199,101,344,141"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="406,54,393,60,310,103,308,99,391,55,404,49"/>
+<area shape="rect" id="Node000004" href="$classparticle__template.html#adf7b55df06b7621b0a6bc509f74d22ff" title="Serializes particle data for storage." alt="" coords="5,69,151,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,110,151,104,152,99,186,104"/>
+<area shape="rect" id="Node000005" href="$classparticle__template.html#a6c492ed991c27a61acad61064fa89b3c" title="Creates a clone of this particle." alt="" coords="5,133,151,173"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="186,138,152,144,151,139,185,133"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="379,106,345,112,344,107,378,101"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="378,142,344,136,345,131,379,136"/>
+<area shape="poly" id="edge10_Node000008_Node000003" title=" " alt="" coords="404,194,391,188,308,144,310,139,393,183,406,189"/>
+</map>

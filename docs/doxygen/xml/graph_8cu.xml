@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="graph_8cu" kind="file" language="C++">
+    <compoundname>graph.cu</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline><highlight class="normal">//<sp/>Include<sp/>the<sp/>main<sp/>graph<sp/>header<sp/>file,<sp/>which<sp/>likely<sp/>contains<sp/>declarations<sp/>for<sp/>graph-related<sp/>functions<sp/>and<sp/>classes</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;graph/base.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;graph/graph.cuh&gt;</highlight></codeline>
+<codeline><highlight class="normal">#include<sp/>&lt;utils/utils.cuh&gt;</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">//<sp/>Define<sp/>a<sp/>namespace<sp/>for<sp/>graph-related<sp/>operations</highlight></codeline>
+<codeline><highlight class="normal">namespace<sp/>graph_{</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Function<sp/>to<sp/>perform<sp/>unique<sp/>aggregation.<sp/>It<sp/>takes<sp/>cluster<sp/>mapping<sp/>and<sp/>features<sp/>as<sp/>input.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Returns<sp/>a<sp/>map<sp/>of<sp/>string<sp/>to<sp/>PyTorch<sp/>tensors,<sp/>representing<sp/>aggregated<sp/>features<sp/>for<sp/>unique<sp/>clusters.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>unique_aggregation(torch::Tensor*<sp/>cluster_map,<sp/>torch::Tensor*<sp/>features){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Get<sp/>the<sp/>number<sp/>of<sp/>nodes,<sp/>intermediate<sp/>nodes,<sp/>and<sp/>features<sp/>from<sp/>the<sp/>input<sp/>tensors</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>n_nodes<sp/>=<sp/>cluster_map<sp/>-&gt;<sp/>size(0);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>ij_node<sp/>=<sp/>cluster_map<sp/>-&gt;<sp/>size(1);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>n_feat<sp/><sp/>=<sp/>features<sp/>-&gt;<sp/>size(1);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Convert<sp/>cluster_map<sp/>to<sp/>long<sp/>type<sp/>and<sp/>create<sp/>tensors<sp/>for<sp/>unique<sp/>clusters<sp/>and<sp/>output</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>clust<sp/><sp/>=<sp/>cluster_map<sp/>-&gt;<sp/>to(torch::kLong);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>uniq<sp/><sp/><sp/>=<sp/>cluster_map<sp/>-&gt;<sp/>to(torch::kLong);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>output<sp/>=<sp/>torch::zeros({n_nodes,<sp/>n_feat},<sp/>MakeOp(features));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Define<sp/>thread<sp/>and<sp/>block<sp/>dimensions<sp/>for<sp/>CUDA<sp/>kernels</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>ths<sp/>=<sp/>dim3(16,<sp/>8,<sp/>8);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>bls<sp/>=<sp/>blk_(n_nodes,<sp/>16,<sp/>ij_node,<sp/>8,<sp/>ij_node,<sp/>8);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thx<sp/>=<sp/>dim3(16,<sp/>16);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blx<sp/>=<sp/>blk_(n_nodes,<sp/>16,<sp/>n_feat,<sp/>16);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Dispatch<sp/>CUDA<sp/>kernels<sp/>for<sp/>unique<sp/>aggregation</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(features<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;unique_sum&quot;,<sp/>[&amp;]{<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_fast_unique&lt;scalar_t&gt;&lt;&lt;&lt;bls,<sp/>ths&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uniq.packed_accessor64&lt;long,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>clust.packed_accessor64&lt;long,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n_nodes,<sp/>ij_node,<sp/>ij_node);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_unique_sum&lt;scalar_t&gt;&lt;&lt;&lt;blx,<sp/>thx&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>output.packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>uniq.packed_accessor64&lt;long<sp/><sp/><sp/><sp/>,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>features<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n_nodes,<sp/>ij_node,<sp/>n_feat);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Create<sp/>a<sp/>map<sp/>to<sp/>store<sp/>the<sp/>output<sp/>tensors</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out[&quot;node-sum&quot;]<sp/>=<sp/>output;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out[&quot;unique&quot;]<sp/>=<sp/>uniq;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Function<sp/>to<sp/>perform<sp/>edge<sp/>aggregation.<sp/>It<sp/>takes<sp/>edge<sp/>indices,<sp/>prediction,<sp/>and<sp/>node<sp/>features<sp/>as<sp/>input.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Returns<sp/>a<sp/>map<sp/>of<sp/>string<sp/>to<sp/>PyTorch<sp/>tensors,<sp/>representing<sp/>aggregated<sp/>edge<sp/>features.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>edge_aggregation(torch::Tensor*<sp/>edge_index,<sp/>torch::Tensor*<sp/>prediction,<sp/>torch::Tensor*<sp/>node_feature){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Get<sp/>the<sp/>dimensions<sp/>of<sp/>node<sp/>features<sp/>and<sp/>prediction<sp/>tensors</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>node_lx<sp/>=<sp/>node_feature<sp/>-&gt;<sp/>size({0});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>node_fx<sp/>=<sp/>node_feature<sp/>-&gt;<sp/>size({1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>pred_lx<sp/>=<sp/>prediction<sp/>-&gt;<sp/>size({-1});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Prepare<sp/>edge<sp/>index<sp/>tensor<sp/>for<sp/>processing</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_edge_index;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dx<sp/>=<sp/>edge_index<sp/>-&gt;<sp/>size({0});</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>dy<sp/>=<sp/>edge_index<sp/>-&gt;<sp/>size({1});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(dx<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>dy<sp/>!=<sp/>2){_edge_index<sp/>=<sp/>*edge_index;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>else<sp/>{_edge_index<sp/>=<sp/>torch::transpose(*edge_index,<sp/>0,<sp/>1);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>idx<sp/>=<sp/>(dx<sp/>==<sp/>2)*dy<sp/>+<sp/>(dx<sp/>!=<sp/>2)*dx;<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Initialize<sp/>tensors<sp/>for<sp/>edge<sp/>aggregation</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::vector&lt;long&gt;<sp/>dims<sp/>=<sp/>{pred_lx,<sp/>node_lx,<sp/>node_lx};<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_pred<sp/>=<sp/>std::get&lt;1&gt;(prediction<sp/>-&gt;<sp/>max({-1}));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_pair<sp/>=<sp/>-1*torch::ones(dims,<sp/>MakeOp(edge_index));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>_pmui<sp/>=<sp/>torch::zeros({pred_lx,<sp/>node_lx,<sp/>node_fx},<sp/>MakeOp(node_feature));<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Define<sp/>thread<sp/>and<sp/>block<sp/>dimensions<sp/>for<sp/>CUDA<sp/>kernels</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>thx<sp/>=<sp/>dim3(256);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>blx<sp/>=<sp/>blk_(idx,<sp/>256);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>ths<sp/>=<sp/>dim3(32,<sp/>8,<sp/>4);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>dim3<sp/>bls<sp/>=<sp/>blk_(node_lx,<sp/>32,<sp/>node_fx,<sp/>8,<sp/>pred_lx,<sp/>4);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Dispatch<sp/>CUDA<sp/>kernels<sp/>for<sp/>edge<sp/>aggregation</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>AT_DISPATCH_ALL_TYPES(node_feature<sp/>-&gt;<sp/>scalar_type(),<sp/>&quot;PredictionTopology&quot;,<sp/>[&amp;]{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_prediction_topology&lt;scalar_t&gt;&lt;&lt;&lt;blx,<sp/>thx&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pair.packed_accessor64&lt;long,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_edge_index.packed_accessor64&lt;long,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pred.packed_accessor64&lt;long,<sp/>1,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>idx);</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_edge_summing&lt;scalar_t&gt;&lt;&lt;&lt;bls,<sp/>ths&gt;&gt;&gt;(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pair.packed_accessor64&lt;long<sp/><sp/><sp/><sp/>,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pmui.packed_accessor64&lt;scalar_t,<sp/>3,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>node_feature<sp/>-&gt;<sp/>packed_accessor64&lt;scalar_t,<sp/>2,<sp/>torch::RestrictPtrTraits&gt;(),</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>pred_lx,<sp/>node_lx,<sp/>node_fx);</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Sort<sp/>the<sp/>pair<sp/>tensor<sp/>and<sp/>prepare<sp/>the<sp/>output<sp/>map</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_pair<sp/>=<sp/>std::get&lt;0&gt;(_pair.sort(-1,<sp/>true));</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>(size_t<sp/>x(0);<sp/>x<sp/>&lt;<sp/>pred_lx;<sp/>++x){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::string<sp/>name<sp/>=<sp/>&quot;cls::&quot;<sp/>+<sp/>std::to_string(x)<sp/>+<sp/>&quot;::&quot;;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>mx<sp/>=<sp/>std::get&lt;0&gt;((_pair.index({int(x)})<sp/>&gt;<sp/>-1).sum({-1}).max({-1}));<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out[name<sp/>+<sp/>&quot;node-indices&quot;]<sp/>=<sp/>_pair.index({int(x),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::indexing::Slice(),<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::indexing::Slice(torch::indexing::None,<sp/>mx.item&lt;int&gt;())</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>out[name<sp/>+<sp/>&quot;node-sum&quot;]<sp/>=<sp/>_pmui.index({int(x)});<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>out;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Function<sp/>to<sp/>perform<sp/>node<sp/>aggregation.<sp/>It<sp/>takes<sp/>edge<sp/>indices,<sp/>prediction,<sp/>and<sp/>node<sp/>features<sp/>as<sp/>input.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>//<sp/>Returns<sp/>a<sp/>map<sp/>of<sp/>string<sp/>to<sp/>PyTorch<sp/>tensors,<sp/>representing<sp/>aggregated<sp/>node<sp/>features.</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>std::map&lt;std::string,<sp/>torch::Tensor&gt;<sp/>node_aggregation(torch::Tensor*<sp/>edge_index,<sp/>torch::Tensor*<sp/>prediction,<sp/>torch::Tensor*<sp/>node_feature){</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Get<sp/>the<sp/>dimensions<sp/>of<sp/>edge<sp/>indices</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>x<sp/>=<sp/>edge_index<sp/>-&gt;<sp/>size(0);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>const<sp/>unsigned<sp/>int<sp/>j<sp/>=<sp/>edge_index<sp/>-&gt;<sp/>size(1);<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Prepare<sp/>edge<sp/>index<sp/>tensor<sp/>for<sp/>processing</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>e_i;<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>if<sp/>(x<sp/>==<sp/>2<sp/>&amp;&amp;<sp/>j<sp/>!=<sp/>2){e_i<sp/>=<sp/>*edge_index;}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>else<sp/>{e_i<sp/>=<sp/>torch::transpose(*edge_index,<sp/>0,<sp/>1);}</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>e_i<sp/>=<sp/>e_i.index({0,<sp/>torch::indexing::Slice()});</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Extract<sp/>predictions<sp/>for<sp/>the<sp/>edges</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>torch::Tensor<sp/>pred<sp/>=<sp/>prediction<sp/>-&gt;<sp/>index({e_i});<sp/></highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>//<sp/>Call<sp/>edge<sp/>aggregation<sp/>function<sp/>and<sp/>return<sp/>the<sp/>result</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>return<sp/>graph_::edge_aggregation(edge_index,<sp/>&amp;pred,<sp/>node_feature);<sp/></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline><highlight class="normal">}</highlight></codeline>
+<codeline></codeline>
+    </programlisting>
+    <location file="pyc/graph/graph.cu"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,10 @@
+<map id="pyc::physics::cartesian::combined::Beta2" name="pyc::physics::cartesian::combined::Beta2">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,176,87"/>
+<area shape="rect" id="Node000002" href="$namespacephysics__.html#aace12d6d7317cd102e5059781d724151" title="Computes the square of the beta factor." alt="" coords="224,29,348,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,54,210,49,211,54,177,59"/>
+<area shape="rect" id="Node000004" href="$utils_8cxx.html#a123aed6d73594e07c6401a7a6c587808" title=" " alt="" coords="239,79,333,104"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="177,75,226,81,225,87,176,81"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="262,30,257,21,260,11,270,5,286,3,306,6,314,15,310,18,303,11,286,8,271,10,264,15,262,20,267,28"/>
+<area shape="rect" id="Node000003" href="$utils_8cxx.html#a9c1cdc6384bce6bdc92ca917b3f656bf" title=" " alt="" coords="396,29,463,55"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="348,39,382,39,382,45,348,45"/>
+</map>

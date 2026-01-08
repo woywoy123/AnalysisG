@@ -1,0 +1,9 @@
+<map id="electron::build" name="electron::build">
+<area shape="rect" id="Node000001" title="Builds the particle from event data." alt="" coords="5,45,120,70"/>
+<area shape="rect" id="Node000002" href="$classelectron.html#a61817d58c8dc313f400622d54007a27b" title=" " alt="" coords="168,45,304,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,55,154,55,154,60,120,60"/>
+<area shape="rect" id="Node000003" href="$classparticle__template.html#a7fda73e06360bffd1bce45e7ba7370a5" title="Adds a leaf (variable) to read for this particle." alt="" coords="352,5,497,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="304,43,338,37,339,43,305,48"/>
+<area shape="rect" id="Node000004" href="$classparticle__template.html#a83757e8eb32e382a8c0444ede5dda548" title="Applies the particle type as a prefix to leaf names." alt="" coords="352,69,497,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="305,66,339,72,338,77,304,72"/>
+</map>

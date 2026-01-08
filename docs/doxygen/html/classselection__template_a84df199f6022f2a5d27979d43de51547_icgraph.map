@@ -1,0 +1,40 @@
+<map id="selection_template::sum" name="selection_template::sum">
+<area shape="rect" id="Node000001" title="Sums particles into a combined particle." alt="" coords="693,381,876,407"/>
+<area shape="rect" id="Node000002" href="$classmatching.html#abc5f2130144ffdd25c3d8f7f933b23f2" title=" " alt="" coords="471,67,599,92"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="774,369,757,319,731,256,693,189,670,157,644,129,614,109,582,95,585,90,617,104,647,125,674,154,697,186,735,253,762,317,779,367"/>
+<area shape="rect" id="Node000007" href="$classvalidation.html#aa436b348c281a3d676910cf7b7d575eb" title=" " alt="" coords="441,140,629,165"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="772,369,754,327,727,275,690,223,668,200,644,180,620,168,623,163,647,176,672,196,694,220,731,272,759,324,777,367"/>
+<area shape="rect" id="Node000009" href="$classchildrenkinematics.html#a9dfe1425443601d0af03eab580722b76" title="Alternative selection strategy method." alt="" coords="462,190,609,230"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="766,371,716,308,682,273,644,244,608,228,610,223,647,240,686,269,720,304,770,368"/>
+<area shape="rect" id="Node000010" href="$classdecaymodes.html#abfec366758f5b7885063a349cfcda394" title="Alternative selection strategy method." alt="" coords="452,255,619,280"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="756,375,706,338,644,302,591,283,593,278,646,297,709,333,759,370"/>
+<area shape="rect" id="Node000011" href="$classparton.html#abf09df1e5e6008e9af478a2f540947f8" title="Alternative selection strategy method." alt="" coords="225,479,351,504"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="744,378,681,354,600,333,556,327,512,327,468,332,426,346,403,358,382,374,345,412,316,450,298,480,294,477,312,447,341,409,378,370,400,354,424,341,467,327,511,321,556,322,601,328,682,349,746,373"/>
+<area shape="rect" id="Node000012" href="$classtopjets.html#a72145e79c19febe5393d17220c980e2a" title="Alternative selection strategy method." alt="" coords="471,356,600,381"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="679,386,600,378,601,373,680,381"/>
+<area shape="rect" id="Node000013" href="$classtopmatching.html#acbf5d299785f024b7a4b5bd92bbfcd6f" title="Alternative selection strategy method." alt="" coords="452,405,619,431"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="680,407,619,413,618,407,680,401"/>
+<area shape="rect" id="Node000014" href="$classtoptruthjets.html#a39c1afcec2800b351fc047fbfa4f009f" title="Alternative selection strategy method." alt="" coords="455,455,615,480"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="738,414,646,445,597,457,596,452,645,439,736,409"/>
+<area shape="rect" id="Node000015" href="$classzprime.html#a36b1544f00cc1a4ed703ef304f923ea8" title="Alternative selection strategy method." alt="" coords="471,504,600,529"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="761,418,710,457,646,494,601,509,599,504,644,489,707,452,757,413"/>
+<area shape="rect" id="Node000016" href="$classselection__template.html#afa61f4f538c36ee7973c453f3898e778" title="Sums particles from a map and returns the combined particle." alt="" coords="444,553,627,579"/>
+<area shape="poly" id="edge17_Node000001_Node000016" title=" " alt="" coords="770,420,720,482,686,515,647,543,617,556,615,551,644,538,682,511,716,478,765,417"/>
+<area shape="rect" id="Node000017" href="$classselection__template.html#aefb54851b728057af466bf7a78caeda8" title="Sums particles and returns the invariant mass in GeV." alt="" coords="444,603,627,628"/>
+<area shape="poly" id="edge18_Node000001_Node000017" title=" " alt="" coords="775,421,756,459,728,506,692,553,647,592,621,605,619,600,644,588,688,549,724,503,752,457,770,418"/>
+<area shape="rect" id="Node000018" href="$classparton.html#a4045341bd771afd7ac452fa1dc6aea8e" title=" " alt="" coords="425,652,645,677"/>
+<area shape="poly" id="edge19_Node000001_Node000018" title=" " alt="" coords="779,421,763,469,737,529,698,591,674,619,647,643,627,654,624,650,644,638,671,615,694,588,732,527,758,467,774,419"/>
+<area shape="rect" id="Node000003" href="$classmatching.html#a6a20dfdb8f6fa5a23a6859d869040417" title=" " alt="" coords="219,5,357,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="469,66,339,33,341,28,471,61"/>
+<area shape="rect" id="Node000005" href="$classmatching.html#a6925aacb40ca0e99f178d44959956fdb" title=" " alt="" coords="199,55,377,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="457,78,377,74,378,69,458,73"/>
+<area shape="rect" id="Node000006" href="$classmatching.html#a7c3eb589ac6ae85490aa698d73fe8b88" title=" " alt="" coords="211,104,365,129"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="458,94,365,108,364,103,457,88"/>
+<area shape="rect" id="Node000004" href="$classmatching.html#afbde71106947fe0f714151794c7f6259" title="Alternative selection strategy method." alt="" coords="5,55,151,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="221,36,134,57,132,52,220,31"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="185,70,151,70,151,65,185,65"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="220,103,132,83,134,77,221,98"/>
+<area shape="rect" id="Node000008" href="$classvalidation.html#af388ba0e867008a75602581fdc2ed0f3" title="Alternative selection strategy method." alt="" coords="213,153,363,179"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="428,161,363,165,363,159,427,156"/>
+<area shape="poly" id="edge20_Node000018_Node000011" title=" " alt="" coords="437,649,424,643,380,611,343,572,295,506,299,503,347,568,384,607,427,638,439,645"/>
+</map>

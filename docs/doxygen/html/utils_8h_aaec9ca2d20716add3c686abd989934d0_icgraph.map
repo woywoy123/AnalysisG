@@ -1,0 +1,74 @@
+<map id="clip" name="clip">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1432,405,1477,431"/>
+<area shape="rect" id="Node000002" href="$namespacetransform__.html#a82aaa223736b57490a8639752180e5ec" title="Computes the pseudorapidity (Eta) from a momentum tensor." alt="" coords="1245,55,1367,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1447,393,1426,291,1407,228,1382,167,1350,119,1318,82,1322,78,1354,115,1386,165,1412,226,1431,290,1452,392"/>
+<area shape="rect" id="Node000005" href="$namespacetransform__.html#aa90019603231f23c1e857b5f5832b587" title="Computes the azimuthal angle (Phi) from a momentum tensor." alt="" coords="1245,203,1367,228"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="1434,396,1314,230,1319,226,1438,392"/>
+<area shape="rect" id="Node000022" href="$namespacetransform__.html#adf008ef1e94217cd7a7dae8c53a127a6" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), and azimuthal angle (Phi) from a momentu..." alt="" coords="1229,405,1383,431"/>
+<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="1418,421,1384,421,1384,415,1418,415"/>
+<area shape="rect" id="Node000033" href="$namespacetransform__.html#a3cdf10dcac51733e3b2fb18cb2e6ff6e" title="Computes the 3&#45;momentum (Px, Py, Pz) from a 4&#45;momentum tensor." alt="" coords="1232,455,1380,480"/>
+<area shape="poly" id="edge37_Node000001_Node000033" title=" " alt="" coords="1420,433,1385,445,1347,457,1346,452,1383,439,1418,428"/>
+<area shape="rect" id="Node000034" href="$namespacetransform__.html#aba5f46ef65e5c3ed8a6f7e5075552aa2" title="Computes the 4&#45;momentum (Px, Py, Pz, E) from a 4&#45;momentum tensor." alt="" coords="1228,504,1384,529"/>
+<area shape="poly" id="edge38_Node000001_Node000034" title=" " alt="" coords="1438,443,1415,469,1385,494,1359,506,1357,501,1383,489,1411,466,1434,440"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="1331,44,1324,36,1306,33,1291,35,1283,40,1281,46,1286,53,1281,56,1276,46,1279,37,1289,30,1306,28,1326,32,1335,40"/>
+<area shape="rect" id="Node000003" href="$namespacepyc_1_1transform_1_1combined.html#a963033c77bf433002e2f57a5a523b839" title=" " alt="" coords="961,5,1180,31"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="1231,54,1132,33,1133,28,1232,49"/>
+<area shape="rect" id="Node000004" href="$namespacepyc_1_1transform_1_1separate.html#a8f1f98e325a77ab1d04d80be80a4bc41" title=" " alt="" coords="965,55,1176,80"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="1231,70,1176,70,1176,65,1231,65"/>
+<area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="1331,192,1324,184,1306,181,1291,183,1283,188,1281,194,1286,201,1281,204,1276,194,1279,185,1289,178,1306,176,1326,180,1335,188"/>
+<area shape="rect" id="Node000006" href="$namespacepyc_1_1transform_1_1combined.html#a4305377c534019b9f8caa15e0c5f703e" title=" " alt="" coords="962,104,1179,129"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="1275,197,1231,169,1179,143,1144,132,1145,127,1181,138,1234,164,1278,193"/>
+<area shape="rect" id="Node000008" href="$namespacepyc_1_1transform_1_1separate.html#a630c8f6a6ee656a92fb133cbf28a2122" title=" " alt="" coords="965,153,1176,179"/>
+<area shape="poly" id="edge9_Node000005_Node000008" title=" " alt="" coords="1231,202,1132,181,1133,176,1232,197"/>
+<area shape="rect" id="Node000009" href="$namespacetransform__.html#a8d2ad529d804087c315e151410e4a7a1" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), and azimuthal angle (Phi) from x,..." alt="" coords="993,203,1148,228"/>
+<area shape="poly" id="edge10_Node000005_Node000009" title=" " alt="" coords="1231,218,1148,218,1148,213,1231,213"/>
+<area shape="rect" id="Node000010" href="$nusol_2tensor_2nusol_8cxx.html#a28531a30b80ecbd780392279d8a8adf3" title=" " alt="" coords="1032,252,1109,277"/>
+<area shape="poly" id="edge11_Node000005_Node000010" title=" " alt="" coords="1232,233,1110,259,1109,254,1231,228"/>
+<area shape="rect" id="Node000007" href="$namespacepyc_1_1operators.html#a5c947d6968337f95f86e6925acc63dfa" title=" " alt="" coords="737,104,876,129"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="949,119,876,119,876,114,949,114"/>
+<area shape="rect" id="Node000011" href="$nusol_2tensor_2nusol_8cxx.html#ab477f38adf15df486af1a3311204aa26" title=" " alt="" coords="779,179,834,204"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="1018,258,960,242,936,230,912,218,871,206,833,198,835,193,873,201,914,213,939,225,962,237,1019,253"/>
+<area shape="rect" id="Node000014" href="$namespacenusol__.html#a3aacd3a83799d6a470d6188008fd069a" title=" " alt="" coords="751,228,862,253"/>
+<area shape="poly" id="edge15_Node000010_Node000014" title=" " alt="" coords="1018,263,862,248,862,243,1018,257"/>
+<area shape="rect" id="Node000015" href="$namespacenusol__.html#ac849ef3564c5ac968727dce36494fd0a" title=" " alt="" coords="753,277,861,303"/>
+<area shape="poly" id="edge16_Node000010_Node000015" title=" " alt="" coords="1019,272,861,288,860,282,1018,267"/>
+<area shape="rect" id="Node000012" href="$namespacenusol__.html#a6f05175e14627bd3c34ffa61686b7da4" title=" " alt="" coords="500,179,591,204"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="766,194,591,194,591,189,766,189"/>
+<area shape="rect" id="Node000013" href="$namespacepyc_1_1nusol.html#a991cfa801400211ccf412bd1a85b7b69" title=" " alt="" coords="239,179,354,204"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="486,194,354,194,354,189,486,189"/>
+<area shape="rect" id="Node000016" href="$namespacepyc_1_1nusol.html#af7bb509b120cb3314695cecd70bc5c11" title=" " alt="" coords="479,228,611,253"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="738,280,611,256,612,250,739,275"/>
+<area shape="rect" id="Node000017" href="$namespacepyc_1_1nusol.html#a9650527ae538fa27121bedfb79a1fbe6" title=" " alt="" coords="479,277,611,303"/>
+<area shape="poly" id="edge18_Node000015_Node000017" title=" " alt="" coords="739,293,611,293,611,287,739,287"/>
+<area shape="rect" id="Node000018" href="$namespacepyc_1_1nusol.html#aaaf252028ed63bf2d561dffcd76916e2" title=" " alt="" coords="231,228,363,253"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="467,277,361,256,362,251,468,272"/>
+<area shape="rect" id="Node000019" href="$namespacepyc_1_1nusol.html#af88804c21a54435a41be99cbc03faf30" title=" " alt="" coords="231,277,363,303"/>
+<area shape="poly" id="edge20_Node000017_Node000019" title=" " alt="" coords="465,293,363,293,363,287,465,287"/>
+<area shape="rect" id="Node000020" href="$classvalidation.html#aa436b348c281a3d676910cf7b7d575eb" title=" " alt="" coords="203,327,391,352"/>
+<area shape="poly" id="edge21_Node000017_Node000020" title=" " alt="" coords="468,308,362,329,361,324,467,303"/>
+<area shape="rect" id="Node000021" href="$classvalidation.html#af388ba0e867008a75602581fdc2ed0f3" title="Alternative selection strategy method." alt="" coords="5,327,155,352"/>
+<area shape="poly" id="edge22_Node000020_Node000021" title=" " alt="" coords="189,342,155,342,155,337,189,337"/>
+<area shape="poly" id="edge30_Node000022_Node000022" title=" " alt="" coords="1331,394,1324,387,1306,384,1291,386,1283,391,1281,396,1286,404,1281,407,1276,397,1279,387,1289,381,1306,379,1326,382,1335,391"/>
+<area shape="rect" id="Node000023" href="$namespacepyc_1_1physics_1_1cartesian_1_1combined.html#ada89277d3b7f28e15501e5c943516fe0" title=" " alt="" coords="985,302,1156,342"/>
+<area shape="poly" id="edge24_Node000022_Node000023" title=" " alt="" coords="1270,401,1179,356,1146,345,1147,340,1181,352,1272,396"/>
+<area shape="rect" id="Node000026" href="$namespacepyc_1_1physics_1_1cartesian_1_1separate.html#adbd2ec240755f1bf46b2c157f0325669" title=" " alt="" coords="985,366,1156,406"/>
+<area shape="poly" id="edge29_Node000022_Node000026" title=" " alt="" coords="1214,408,1156,400,1157,395,1215,403"/>
+<area shape="rect" id="Node000027" href="$namespacepyc_1_1transform_1_1combined.html#aef62cf52a35f4aef17136491672c9caa" title=" " alt="" coords="976,430,1165,470"/>
+<area shape="poly" id="edge31_Node000022_Node000027" title=" " alt="" coords="1215,433,1166,440,1165,435,1215,428"/>
+<area shape="rect" id="Node000028" href="$namespacepyc_1_1transform_1_1separate.html#ad60db4e9ce774257d24304aa205418a8" title=" " alt="" coords="979,494,1162,534"/>
+<area shape="poly" id="edge32_Node000022_Node000028" title=" " alt="" coords="1243,438,1229,444,1215,454,1206,464,1196,474,1181,484,1154,496,1152,491,1179,480,1193,470,1202,460,1212,450,1227,440,1240,433"/>
+<area shape="rect" id="Node000029" href="$namespacetransform__.html#a59a9589e3d78c302e6f52b2fcd5ceedb" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), azimuthal angle (Phi),..." alt="" coords="989,559,1152,584"/>
+<area shape="poly" id="edge33_Node000022_Node000029" title=" " alt="" coords="1235,440,1230,444,1219,456,1212,469,1207,495,1201,522,1194,535,1182,548,1153,564,1151,559,1178,544,1190,532,1196,520,1202,494,1207,467,1214,453,1226,440,1232,435"/>
+<area shape="rect" id="Node000032" href="$namespacetransform__.html#a0564930def9a67318624f21aa822860e" title="Computes the transverse momentum (Pt), pseudorapidity (Eta), azimuthal angle (Phi),..." alt="" coords="989,608,1152,633"/>
+<area shape="poly" id="edge36_Node000022_Node000032" title=" " alt="" coords="1234,440,1230,444,1216,462,1209,481,1207,520,1205,559,1197,578,1182,597,1154,614,1151,610,1178,593,1193,576,1200,557,1202,519,1204,480,1211,460,1226,440,1230,436"/>
+<area shape="rect" id="Node000024" href="$classrecursivegraphneuralnetwork.html#a7c83216c5899b14dcc03ccf368209ee1" title=" " alt="" coords="700,351,913,391"/>
+<area shape="poly" id="edge25_Node000023_Node000024" title=" " alt="" coords="972,343,914,354,913,349,971,338"/>
+<area shape="rect" id="Node000025" href="$classrecursivegraphneuralnetwork.html#a4b09bc8de8d9ecd0b4ff1ffa94deea98" title="Virtual forward pass method for a single graph." alt="" coords="439,351,652,391"/>
+<area shape="poly" id="edge26_Node000024_Node000025" title=" " alt="" coords="686,383,652,383,652,378,686,378"/>
+<area shape="poly" id="edge28_Node000025_Node000024" title=" " alt="" coords="666,360,700,360,700,365,666,365"/>
+<area shape="poly" id="edge27_Node000025_Node000025" title=" " alt="" coords="588,340,573,333,545,330,521,332,507,337,502,343,504,350,499,352,496,342,504,332,520,327,545,325,574,328,590,335"/>
+<area shape="rect" id="Node000030" href="$namespacepyc_1_1transform_1_1combined.html#a540024e0d49fe477d984815f6844ea5a" title=" " alt="" coords="712,519,901,559"/>
+<area shape="poly" id="edge34_Node000029_Node000030" title=" " alt="" coords="975,563,901,553,902,548,976,557"/>
+<area shape="rect" id="Node000031" href="$namespacepyc_1_1transform_1_1separate.html#aa89702a61f7eecf64504a32f99b2f9af" title=" " alt="" coords="715,583,898,623"/>
+<area shape="poly" id="edge35_Node000029_Node000031" title=" " alt="" coords="976,585,898,595,898,590,975,580"/>
+</map>
