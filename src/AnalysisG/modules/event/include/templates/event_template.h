@@ -1,244 +1,295 @@
-/** \file event_template.h
- *  \brief Header file for the event_template class.
- *
- *  This file contains the declaration of the event_template class, which is a base template class for event data representation and manipulation.
- */
-
 /**
  * @file event_template.h
- * @brief Definiert die Basisvorlage-Klasse für Ereignisdaten-Darstellung und -Manipulation.
+ * @brief Defines the base template class for event data representation and manipulation.
  *
- * Diese Datei enthält die Deklaration der `event_template`-Klasse, die als Basisvorlage
- * für die Verarbeitung von Physik-Ereignisdaten dient. Sie bietet Funktionalitäten für die Verwaltung von Trees,
- * Branches und Leaves in Physik-Datenstrukturen, sowie Eigenschaften wie Ereignisgewicht
- * und Index. Die Klasse unterstützt auch die dynamische Registrierung von Partikeln und den Aufbau von Ereignissen aus Rohdaten.
- * 
- * Die Ereignisarchitektur ist flexibel und erweiterbar gestaltet und ermöglicht die Anpassung
- * an verschiedene Arten von Physikanalysen und Datenformate.
+ * This file contains the declaration of the `event_template` class, which serves as the base template
+ * for processing physics event data. It provides functionality for managing trees, branches, and leaves
+ * in physics data structures, as well as properties like event weight and index. The class also supports
+ * dynamic particle registration and building events from raw data.
+ *
+ * The event architecture is designed to be flexible and extensible, allowing customization
+ * for different types of physics analyses and data formats.
+ *
+ * @section event_template_usage Usage
+ *
+ * Subclass event_template to create custom event types:
+ *
+ * ```cpp
+ * class MyEvent : public event_template {
+ * public:
+ *     MyEvent() : event_template() {
+ *         add_tree("nominal");
+ *         add_branch("el_");    // Electron branches
+ *         add_branch("mu_");    // Muon branches  
+ *         add_branch("jet_");   // Jet branches
+ *         add_leaf("met_et");
+ *         add_leaf("met_phi");
+ *         
+ *         // Register particle types
+ *         register_particle("Electron", "el_");
+ *         register_particle("Muon", "mu_");
+ *         register_particle("Jet", "jet_");
+ *     }
+ *     
+ *     void build(element_t* el) override {
+ *         // Custom event building logic
+ *     }
+ * };
+ * ```
  */
 
-#ifndef EVENT_TEMPLATE_H ///< Start des Include-Guards für EVENT_TEMPLATE_H, um Mehrfachinklusionen zu verhindern.
-#define EVENT_TEMPLATE_H ///< Definition von EVENT_TEMPLATE_H, um anzuzeigen, dass der Header inkludiert wurde.
+#ifndef EVENT_TEMPLATE_H ///< Start of include guard for EVENT_TEMPLATE_H to prevent multiple inclusions.
+#define EVENT_TEMPLATE_H ///< Definition of EVENT_TEMPLATE_H to indicate the header has been included.
 
-#include <templates/particle_template.h> ///< Inkludiert die `particle_template`-Klasse für die Partikel-Datenverarbeitung.
-#include <structs/property.h> ///< Inkludiert die `cproperty`-Vorlage für die benutzerdefinierte Eigenschaftsverwaltung.
-#include <structs/element.h> ///< Inkludiert die `element_t`-Struktur, wahrscheinlich ein Basisdatenelement-Typ.
-#include <structs/event.h> ///< Inkludiert die `event_t`-Struktur für die Ereignisdatendarstellung.
-#include <tools/tools.h> ///< Inkludiert die `tools`-Klasse für Hilfsfunktionen.
-#include <meta/meta.h> ///< Inkludiert die `meta`-Klasse für Metadaten-Handling.
+#include <templates/particle_template.h> ///< Includes the `particle_template` class for particle data handling.
+#include <structs/property.h> ///< Includes the `cproperty` template for custom property management.
+#include <structs/element.h> ///< Includes the `element_t` structure, a base data element type.
+#include <structs/event.h> ///< Includes the `event_t` structure for event data representation.
+#include <tools/tools.h> ///< Includes the `tools` class for utility functions.
+#include <meta/meta.h> ///< Includes the `meta` class for metadata handling.
 
 /**
  * @class event_template
- * @brief Basisvorlage-Klasse für Ereignisdaten-Darstellung und -Manipulation.
+ * @brief Base template class for event data representation and manipulation.
  *
- * Erbt von `tools`, um Hilfsfunktionen bereitzustellen. Diese Klasse ist dazu gedacht, für
- * spezifische Ereignistypen oder Analysen als Unterklasse verwendet zu werden. Sie verwaltet Sammlungen von Trees, Branches und Leaves,
- * die die Ereignisstruktur definieren, sowie Eigenschaften wie Ereignisgewicht und Index.
- * Sie unterstützt die dynamische Partikelregistrierung und den Aufbau von Ereignissen aus Rohdaten.
- * 
- * Die Klasse dient als zentrale Komponente im AnalysisG-Framework und verbindet Rohdaten
- * mit Analyseobjekten und -algorithmen auf höherer Ebene. Sie bietet Schnittstellen für den Datenzugriff,
- * die Filterung und Transformation, die für Physikanalysen benötigt werden.
+ * Inherits from `tools` to provide utility functions. This class is designed to be subclassed
+ * for specific event types or analyses. It manages collections of trees, branches, and leaves
+ * that define the event structure, as well as properties such as event weight and index.
+ * It supports dynamic particle registration and building events from raw data.
+ *
+ * The class serves as a central component in the AnalysisG framework, connecting raw data
+ * with higher-level analysis objects and algorithms. It provides interfaces for data access,
+ * filtering, and transformation needed for physics analyses.
+ *
+ * @section event_template_structure Data Structure
+ *
+ * Events are organized hierarchically:
+ * - **Trees**: ROOT TTrees containing the data (e.g., "nominal", "systematic")
+ * - **Branches**: Particle collections within trees (e.g., "el_", "jet_")
+ * - **Leaves**: Individual variables (e.g., "el_pt", "met_et")
+ *
+ * @section event_template_particles Particle Management
+ *
+ * Particles are registered using `register_particle()` and accessed via `particle_link`:
+ * - Each particle type maps to a collection of particle_template instances
+ * - Particles are built from raw data during `build()` calls
  */
-class event_template: public tools // Definiert die Klasse 'event_template', die von 'tools' erbt.
+class event_template: public tools
 {
 public:
     /**
-     * @brief Standard-Konstruktor für event_template.
-     * 
-     * Initialisiert ein leeres Ereignis-Template mit Standard-Eigenschaften und Einstellungen.
-     * Richtet Eigenschafts-Mappings ein und initialisiert Sammlungen.
+     * @brief Default constructor for event_template.
+     *
+     * Initializes an empty event template with default properties and settings.
+     * Sets up property mappings and initializes collections.
      */
     event_template();
-    
+
     /**
-     * @brief Destruktor für event_template.
-     * 
-     * Bereinigt zugewiesene Ressourcen, einschließlich registrierter Partikel und Datenstrukturen.
+     * @brief Destructor for event_template.
+     *
+     * Cleans up allocated resources including registered particles and data structures.
      */
     virtual ~event_template();
-    
+
     /**
-     * @brief Erstellt eine neue Ereignis-Template-Instanz.
-     * @return Zeiger auf das neu erstellte event_template-Objekt.
-     * 
-     * Factory-Methode, die eine neue Instanz der event_template-Klasse erstellt und zurückgibt.
-     * Nützlich für die Erstellung von abgeleiteten Klasseninstanzen in einem polymorphen Kontext.
+     * @brief Creates a new event template instance.
+     * @return Pointer to the newly created event_template object.
+     *
+     * Factory method that creates and returns a new instance of the event_template class.
+     * Useful for creating derived class instances in a polymorphic context.
      */
     virtual event_template* clone();
-    
+
     /**
-     * @brief Virtuelle Methode zum Zurücksetzen des Ereignis-Templates auf seinen Anfangszustand.
+     * @brief Resets the event template to its initial state.
      *
-     * Löscht alle Ereignisdaten und bereitet die Vorlage für die neue Ereignisverarbeitung vor.
+     * Clears all event data and prepares the template for new event processing.
      */
     virtual void reset();
-    
+
     /**
-     * @brief Initialisiert das Ereignis-Template mit notwendigen Einstellungen.
+     * @brief Initializes the event template with necessary settings.
      *
-     * Richtet interne Datenstrukturen und Konfigurationen ein. Diese Methode sollte aufgerufen werden,
-     * bevor andere Operationen auf dem Template durchgeführt werden.
+     * Sets up internal data structures and configurations. This method should be called
+     * before performing other operations on the template.
      */
     void initialize();
-    
+
     /**
-     * @brief Baut ein Ereignis aus Rohdaten auf.
+     * @brief Builds an event from raw data.
      *
-     * Virtuelle Methode, die Rohdaten verarbeitet, um eine strukturierte Ereignisrepräsentation zu erstellen.
-     * Diese Basismethode leitet die Implementierung an die überladene build(element_t*) Methode weiter.
+     * Virtual method that processes raw data to create a structured event representation.
+     * This base method delegates implementation to the overloaded build(element_t*) method.
      */
     void build();
-    
+
     /**
-     * @brief Baut eine Ereignisdatenstruktur aus einem Element auf.
-     * @param el Zeiger auf eine element_t-Struktur, die Rohdaten des Ereignisses enthält.
+     * @brief Builds an event data structure from an element.
+     * @param el Pointer to an element_t structure containing raw event data.
      *
-     * Virtuelle Methode, die Rohelement-Daten verarbeitet, um die Ereignisstruktur aufzubauen.
-     * Diese Methode wird typischerweise in abgeleiteten Klassen überschrieben, um spezifische Ereignisformate zu handhaben.
+     * Virtual method that processes raw element data to build the event structure.
+     * This method is typically overridden in derived classes to handle specific event formats.
      */
     virtual void build(element_t* el);
-    
+
     /**
-     * @brief Baut ein Mapping zwischen Ereignisdatenstrukturen und Handlern auf.
-     * @param evnt Zeiger auf eine Map, die Strings mit data_t-Zeigern verbindet.
+     * @brief Builds a mapping between event data structures and handlers.
+     * @param evnt Pointer to a map associating strings with data_t pointers.
      *
-     * Erstellt Beziehungen zwischen den Trees, Branches, Leaves des Ereignisses und den 
-     * entsprechenden Datenhandlern, um den Datenzugriff und die Manipulation zu erleichtern.
+     * Creates relationships between the event's trees, branches, leaves and their
+     * corresponding data handlers to facilitate data access and manipulation.
      */
     void build_mapping(std::map<std::string, data_t*>* evnt);
-    
+
     /**
-     * @brief Löscht alle Leaf-String-Referenzen.
+     * @brief Clears all leaf string references.
      *
-     * Setzt interne Sammlungen von Trees, Branches und Leaves zurück.
-     * Dies ist nützlich bei der Vorbereitung zur Verarbeitung eines neuen Ereignisformats.
+     * Resets internal collections of trees, branches, and leaves.
+     * This is useful when preparing to process a new event format.
      */
     void clear_leaves();
-    
+
     /**
-     * @brief Registriert ein Partikel zur Nachverfolgung in diesem Ereignis.
-     * @param name Der Name, der dieses Partikel identifiziert.
-     * @param collection Der Typ oder die Sammlung, zu der dieses Partikel gehört (z.B. "Electrons").
+     * @brief Registers a particle for tracking in this event.
+     * @param name The name that identifies this particle type (e.g., "Electron").
+     * @param collection The branch prefix for this particle collection (e.g., "el_").
      */
     void register_particle(std::string name, std::string collection);
-    
+
     /**
-     * @brief Fügt einen Tree zur Ereignisstruktur hinzu.
-     * @param key Der Primärschlüssel oder Name für diesen Tree.
-     * @param tree Der spezifische Tree-Name, wenn er sich vom Schlüssel unterscheidet, oder ein Alias.
+     * @brief Adds a tree to the event structure.
+     * @param key The primary key or name for this tree.
+     * @param tree The specific tree name if different from key, or an alias.
      */
     void add_tree(std::string key, std::string tree = "");
-    
+
     /**
-     * @brief Fügt einen Branch zur Ereignisstruktur hinzu.
-     * @param key Der Primärschlüssel oder Name für diesen Branch (z.B. "Electrons").
-     * @param branch Der spezifische Branch-Name, wenn er sich vom Schlüssel unterscheidet, oder ein Alias.
+     * @brief Adds a branch to the event structure.
+     * @param key The primary key or name for this branch (e.g., "el_").
+     * @param branch The specific branch name if different from key, or an alias.
      */
     void add_branch(std::string key, std::string branch = "");
-    
+
     /**
-     * @brief Fügt ein Leaf (Variable) zur Ereignisstruktur hinzu.
-     * @param key Der Primärschlüssel oder Name für dieses Leaf (z.B. "Electrons.pt").
-     * @param leaf Der spezifische Leaf-Name, wenn er sich vom Schlüssel unterscheidet, oder ein Alias.
+     * @brief Adds a leaf (variable) to the event structure.
+     * @param key The primary key or name for this leaf (e.g., "met_et").
+     * @param leaf The specific leaf name if different from key, or an alias.
      */
     void add_leaf(std::string key, std::string leaf = "");
 
-    // Eigenschaften mit Property-Mapping
-    
+    // Properties with property mapping
+
     /**
-     * @brief Eigenschaft: Ein Name für dieses Ereignis-Template oder diese Instanz.
-     * 
-     * Diese Eigenschaft ermöglicht das Setzen und Abrufen eines benutzerdefinierten Namens für das Ereignis,
-     * was bei der Identifikation oder Kennzeichnung von Ereignissen in komplexen Analysen hilfreich sein kann.
+     * @brief Property: A name for this event template or instance.
+     *
+     * This property allows setting and getting a custom name for the event,
+     * which can be helpful in identifying or labeling events in complex analyses.
      */
     cproperty<std::string, event_template> name;
-    /** 
-     * @brief Statischer Setter für die `name`-Eigenschaft.
-     * @param[in] name Zeiger auf einen String, der den Namen enthält.
-     * @param[in] ev Zeiger auf die `event_template`-Instanz.
+    /**
+     * @brief Static setter for the `name` property.
+     * @param[in] name Pointer to a string containing the name.
+     * @param[in] ev Pointer to the `event_template` instance.
      */
     void static set_name(std::string*, event_template*);
 
     /**
-     * @brief Eigenschaft: Ein Hash-String, der möglicherweise die Konfiguration oder Quelle dieses Ereignisses identifiziert.
-     * 
-     * Diese Eigenschaft speichert einen Hash-Wert, der typischerweise zur eindeutigen Identifizierung des Ereignisses
-     * oder seiner Konfiguration verwendet wird. Dies kann für Caching oder Querverweise nützlich sein.
+     * @brief Property: A hash string that may identify the configuration or source of this event.
+     *
+     * This property stores a hash value typically used to uniquely identify the event
+     * or its configuration. This can be useful for caching or cross-referencing.
      */
     cproperty<std::string, event_template> hash;
-    /** 
-     * @brief Statischer Setter für die `hash`-Eigenschaft.
-     * @param[in] hash Zeiger auf einen String, der den Hash enthält.
-     * @param[in] ev Zeiger auf die `event_template`-Instanz.
+    /**
+     * @brief Static setter for the `hash` property.
+     * @param[in] hash Pointer to a string containing the hash.
+     * @param[in] ev Pointer to the `event_template` instance.
      */
     void static set_hash(std::string*, event_template*);
 
     /**
-     * @brief Eigenschaft: Der primäre TTree-Name für dieses Ereignis.
-     * 
-     * Diese Eigenschaft speichert den Namen des Haupt-TTrees, aus dem dieses Ereignis stammt.
-     * Dies ist besonders relevant, wenn mit ROOT-Dateien gearbeitet wird, die mehrere TTrees enthalten.
+     * @brief Property: The primary TTree name for this event.
+     *
+     * This property stores the name of the main TTree from which this event originates.
+     * This is particularly relevant when working with ROOT files containing multiple TTrees.
      */
     cproperty<std::string, event_template> tree;
-    /** 
-     * @brief Statischer Getter für die `tree`-Eigenschaft.
-     * @param[out] name Zeiger auf einen String zum Speichern des Tree-Namens.
-     * @param[in] ev Zeiger auf die `event_template`-Instanz.
+    /**
+     * @brief Static getter for the `tree` property.
+     * @param[out] name Pointer to a string to store the tree name.
+     * @param[in] ev Pointer to the `event_template` instance.
      */
     void static get_tree(std::string*, event_template*);
 
     /**
-     * @brief Eigenschaft: Das Ereignisgewicht, das für Normalisierung oder Skalierung verwendet wird.
-     * 
-     * Diese Eigenschaft speichert das Gewicht des Ereignisses, welches typischerweise für die Normalisierung,
-     * Cross-Section-Anpassungen oder andere physikbasierte Skalierungen verwendet wird.
+     * @brief Property: The event weight used for normalization or scaling.
+     *
+     * This property stores the event weight, which is typically used for normalization,
+     * cross-section adjustments, or other physics-based scalings.
      */
     cproperty<double, event_template> weight;
-    /** 
-     * @brief Statischer Setter für die `weight`-Eigenschaft.
-     * @param[in] val Zeiger auf einen double-Wert, der den Gewichtswert enthält.
-     * @param[in] ev Zeiger auf die `event_template`-Instanz.
+    /**
+     * @brief Static setter for the `weight` property.
+     * @param[in] val Pointer to a double containing the weight value.
+     * @param[in] ev Pointer to the `event_template` instance.
      */
     void static set_weight(double*, event_template*);
 
     /**
-     * @brief Eigenschaft: Der Ereignisindex oder die Eintragsnummer im Quell-TTree.
-     * 
-     * Diese Eigenschaft speichert die Position oder den Index des Ereignisses innerhalb der Quelldaten,
-     * was für die Rückverfolgung oder Identifizierung einzelner Ereignisse nützlich ist.
+     * @brief Property: The event index or entry number in the source TTree.
+     *
+     * This property stores the position or index of the event within the source data,
+     * which is useful for tracing or identifying individual events.
      */
     cproperty<long, event_template> index;
-    /** 
-     * @brief Statischer Setter für die `index`-Eigenschaft.
-     * @param[in] val Zeiger auf einen long-Wert, der den Indexwert enthält.
-     * @param[in] ev Zeiger auf die `event_template`-Instanz.
+    /**
+     * @brief Static setter for the `index` property.
+     * @param[in] val Pointer to a long containing the index value.
+     * @param[in] ev Pointer to the `event_template` instance.
      */
     void static set_index(long*, event_template*);
 
     /**
-     * @brief Eigenschaft: Liste der TLeaf-Namen (Variablen), die für dieses Ereignis gelesen werden sollen.
-     * 
-     * Diese Eigenschaft speichert die Namen aller Variablen oder Datenfelder, die aus den Rohdaten
-     * für dieses Ereignis extrahiert und verfügbar gemacht werden sollen.
+     * @brief Property: List of TLeaf names (variables) to read for this event.
+     *
+     * This property stores the names of all variables or data fields that should be
+     * extracted and made available from the raw data for this event.
      */
     cproperty<std::vector<std::string>, event_template> leaves;
-    /** 
-     * @brief Statischer Getter für die `leaves`-Eigenschaft.
-     * @param[out] inpt Zeiger auf einen Vektor von Strings zum Speichern der Leaf-Namen.
-     * @param[in] ev Zeiger auf die `event_template`-Instanz.
+    /**
+     * @brief Static getter for the `leaves` property.
+     * @param[out] inpt Pointer to a vector of strings to store the leaf names.
+     * @param[in] ev Pointer to the `event_template` instance.
      */
     void static get_leaves(std::vector<std::string>*, event_template*);
 
     /**
-     * @brief Interne Map zur Speicherung von Tree-Namen-Mappings oder Aliasen.
-     * 
-     * Diese Map verbindet logische Baumnamen (als Schlüssel verwendet in der Analyse) 
-    
+     * @brief Internal map for storing tree name mappings or aliases.
+     *
+     * This map connects logical tree names (used as keys in the analysis)
+     * with their actual names in the ROOT files.
+     */
+    std::map<std::string, std::string> m_trees = {}; ///< Map of tree name aliases.
+
+    /**
+     * @brief Internal map for storing branch name mappings or aliases.
+     */
+    std::map<std::string, std::string> m_branches = {}; ///< Map of branch name aliases.
+
+    /**
+     * @brief Internal map for storing leaf name mappings or aliases.
+     */
+    std::map<std::string, std::string> m_leaves = {}; ///< Map of leaf name aliases.
+
     // Particle management structures
-    
+
     std::map<std::string, std::map<std::string, particle_template*>*> particle_link; ///< Map of registered particles by type and name.
     std::map<std::string, particle_template*(*)()> particle_generators; ///< Map of particle generator functions by type.
+
+    meta* meta_data = nullptr; ///< Pointer to event metadata.
+    std::string filename = ""; ///< Source filename for this event.
+    event_t data; ///< Internal event data structure.
 };
 
 #endif // End of include guard for EVENT_TEMPLATE_H
