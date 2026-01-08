@@ -1,0 +1,3 @@
+/home/runner/work/AnalysisG/AnalysisG/_codeql_build_dir/CMakeFiles/doc_doxygen.dir
+/home/runner/work/AnalysisG/AnalysisG/_codeql_build_dir/CMakeFiles/edit_cache.dir
+/home/runner/work/AnalysisG/AnalysisG/_codeql_build_dir/CMakeFiles/rebuild_cache.dir
