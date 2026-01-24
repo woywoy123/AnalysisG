@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="RecursiveGraphNeuralNetwork_page" kind="page">
+    <compoundname>RecursiveGraphNeuralNetwork_page</compoundname>
+    <title>RecursiveGraphNeuralNetwork Model</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="RecursiveGraphNeuralNetwork_page_1RecursiveGraphNeuralNetwork_intro">
+<title>Introduction</title><para>The <computeroutput>RecursiveGraphNeuralNetwork</computeroutput> class, implemented in Cython, represents a specific implementation of a Recursive Graph Neural Network (RGNN) model within the AnalysisG framework. It inherits from the generic <computeroutput>ModelTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant to the RGNN architecture. This class provides a high-performance interface to an underlying C++ RGNN model, enabling efficient training and inference for hierarchical graph-based data.</para>
+</sect1>
+<sect1 id="RecursiveGraphNeuralNetwork_page_1RecursiveGraphNeuralNetwork_class">
+<title>The RecursiveGraphNeuralNetwork Class</title><para><computeroutput>RecursiveGraphNeuralNetwork</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>ModelTemplate</computeroutput>, thereby gaining all the base functionalities for managing input/output graph features, device settings, and checkpoint paths. Its primary role is to encapsulate a C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object, which likely contains the core RGNN model logic and parameters.</para>
+<sect2 id="RecursiveGraphNeuralNetwork_page_1RecursiveGraphNeuralNetwork_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object with default parameters (1024, 0.1) and assigns its pointer to <computeroutput>self.rnn</computeroutput>. It then assigns <computeroutput>self.rnn</computeroutput> to <computeroutput>self.nn_ptr</computeroutput>, allowing <computeroutput>RecursiveGraphNeuralNetwork</computeroutput> to be treated as a generic <computeroutput>ModelTemplate</computeroutput> while still managing its specialized C++ object.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object pointed to by <computeroutput>self.nn_ptr</computeroutput> (which is <computeroutput>self.rnn</computeroutput>), ensuring proper memory management for the specialized model.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="RecursiveGraphNeuralNetwork_page_1RecursiveGraphNeuralNetwork_properties">
+<title>Properties</title><para>These properties provide controlled access to specific parameters and configurations of the Recursive Graph Neural Network model.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property dx -&gt; int</computeroutput>: Gets and sets the <computeroutput>_dx</computeroutput> parameter of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This likely relates to the dimension of the node features.</para>
+</listitem><listitem><para><computeroutput>@property x -&gt; int</computeroutput>: Gets and sets the <computeroutput>_x</computeroutput> parameter of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This likely relates to the input feature dimension.</para>
+</listitem><listitem><para><computeroutput>@property output -&gt; int</computeroutput>: Gets and sets the <computeroutput>_output</computeroutput> parameter of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This likely relates to the output dimension of the model.</para>
+</listitem><listitem><para><computeroutput>@property rep -&gt; int</computeroutput>: Gets and sets the <computeroutput>_rep</computeroutput> parameter of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This likely relates to the number of message passing steps or repetitions.</para>
+</listitem><listitem><para><computeroutput>@property is_mc -&gt; bool</computeroutput>: Gets and sets the <computeroutput>is_mc</computeroutput> flag of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This likely indicates whether the model is processing Monte Carlo data.</para>
+</listitem><listitem><para><computeroutput>@property res_mass -&gt; double</computeroutput>: Gets and sets the <computeroutput>res_mass</computeroutput> parameter of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This likely relates to a resonance mass used in the model.</para>
+</listitem><listitem><para><computeroutput>@property drop_out -&gt; double</computeroutput>: Gets and sets the <computeroutput>drop_out</computeroutput> rate of the underlying C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> object. This is a regularization parameter.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="RecursiveGraphNeuralNetwork_page_1RecursiveGraphNeuralNetwork_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>RecursiveGraphNeuralNetwork</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class RecursiveGraphNeuralNetwork</computeroutput>: Declares <computeroutput>RecursiveGraphNeuralNetwork</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef recursivegraphneuralnetwork *rnn</computeroutput>: A C++ pointer to a <computeroutput>recursivegraphneuralnetwork</computeroutput> object, which is the specialized C++ implementation of the RGNN model.</para>
+</listitem><listitem><para><computeroutput>self.nn_ptr = self.rnn</computeroutput>: This line demonstrates how the base <computeroutput>ModelTemplate</computeroutput>&apos;s C++ pointer (<computeroutput>nn_ptr</computeroutput>) is made to point to the specialized <computeroutput>recursivegraphneuralnetwork</computeroutput> object, allowing <computeroutput>RecursiveGraphNeuralNetwork</computeroutput> to fulfill the <computeroutput>ModelTemplate</computeroutput> interface.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.model_template cimport ModelTemplate</computeroutput>: Imports the base <computeroutput>ModelTemplate</computeroutput> class, from which <computeroutput>RecursiveGraphNeuralNetwork</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.models.RecursiveGraphNeuralNetwork.RecursiveGraphNeuralNetwork cimport recursivegraphneuralnetwork</computeroutput>: Imports the C++ <computeroutput>recursivegraphneuralnetwork</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="models/RecursiveGraphNeuralNetwork/RecursiveGraphNeuralNetwork.dox"/>
+  </compounddef>
+</doxygen>

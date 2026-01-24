@@ -1,0 +1,51 @@
+
+/**
+ * @file particles.dox
+ * @brief Detailed documentation for the truth particles in the ssml_mc20 event.
+ *
+ * @page ssml_mc20_particles_page ssml_mc20 Truth Particles
+ *
+ * This page provides detailed documentation for the truth-level particle classes used in the `ssml_mc20` event.
+ *
+ * @section ssml_mc20_particles_zboson Z-Boson
+ * The `zboson` class represents a truth-level Z' boson.
+ *
+ * @subsection ssml_mc20_particles_zboson_ctor Constructor
+ * - `zboson()`: Initializes the particle type to "parton_Zprime" and defines the data leaves.
+ *
+ * @subsection ssml_mc20_particles_zboson_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `zboson` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `zboson` particle's properties from the input data.
+ *
+ * @section ssml_mc20_particles_top Top
+ * The `top` class represents a truth-level top quark.
+ *
+ * @subsection ssml_mc20_particles_top_ctor Constructor
+ * - `top()`: Initializes the particle type to "parton_top" and defines the data leaves.
+ *
+ * @subsection ssml_mc20_particles_top_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `top` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `top` particle's properties from the input data.
+ *
+ * @subsection ssml_mc20_particles_top_attributes Attributes
+ * - `from_res`: A boolean flag indicating if the top quark originates from a Z' boson.
+ *
+ * @section ssml_mc20_particles_parton Parton
+ * The `parton` class represents a truth-level parton from the top quark decay.
+ *
+ * @subsection ssml_mc20_particles_parton_ctor Constructor
+ * - `parton()`: Initializes the particle type to "parton" and defines the data leaves for the W decay products and the b-quark.
+ *
+ * @subsection ssml_mc20_particles_parton_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `parton` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `parton` particle's properties from the input data. This method creates three `parton` objects per top quark, one for each of the W decay products and one for the b-quark.
+ *
+ * @subsection ssml_mc20_particles_parton_attributes Attributes
+ * - `top_index`: The index of the parent top quark.
+ * - `muon_index`: The index of the matched muon, if any.
+ * - `electron_index`: The index of the matched electron, if any.
+ * - `jet_index`: The index of the matched jet, if any.
+ * - `truthjet_index`: The index of the matched truth jet, if any.
+ * - `jets`: A map of associated `jet` objects.
+ * - `truthjets`: A map of associated `truthjet` objects.
+ */

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="graph__ssml__mc20_8dox" kind="file" language="C++">
+    <compoundname>graph_ssml_mc20.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for specialized graph classes within the AnalysisG framework for SSML MC20 events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>graph_ssml_mc20.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>specialized<sp/>graph<sp/>classes<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework<sp/>for<sp/>SSML<sp/>MC20<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>SSML_MC20Graphs_page<sp/>SSML_MC20<sp/>Graphs</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>SSML_MC20Graphs_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_ssml_mc20.pyx`<sp/>module<sp/>defines<sp/>a<sp/>collection<sp/>of<sp/>specialized<sp/>graph<sp/>classes<sp/>tailored<sp/>for<sp/>Semi-Supervised<sp/>Machine<sp/>Learning<sp/>(SSML)<sp/>Monte<sp/>Carlo<sp/>20<sp/>(MC20)<sp/>events<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>These<sp/>classes,<sp/>including<sp/>`GraphJets`,<sp/>`GraphJetsNoNu`,<sp/>`GraphDetectorLep`,<sp/>and<sp/>`GraphDetector`,<sp/>all<sp/>inherit<sp/>from<sp/>the<sp/>generic<sp/>`GraphTemplate`.<sp/>They<sp/>encapsulate<sp/>specific<sp/>C++<sp/>graph<sp/>types,<sp/>providing<sp/>a<sp/>high-performance<sp/>and<sp/>Python-friendly<sp/>interface<sp/>to<sp/>detailed<sp/>graph<sp/>structures<sp/>relevant<sp/>to<sp/>SSML<sp/>MC20<sp/>analyses.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>SSML_MC20Graphs_classes<sp/>Specialized<sp/>Graph<sp/>Classes</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Each<sp/>class<sp/>below<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>They<sp/>all<sp/>inherit<sp/>from<sp/>`GraphTemplate`,<sp/>gaining<sp/>its<sp/>base<sp/>functionalities<sp/>for<sp/>graph<sp/>indexing,<sp/>tree<sp/>association,<sp/>and<sp/>pre-selection<sp/>management.<sp/>Their<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>wrap<sp/>a<sp/>specific<sp/>C++<sp/>graph<sp/>object,<sp/>allowing<sp/>for<sp/>specialized<sp/>data<sp/>access<sp/>and<sp/>manipulation.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SSML_MC20Graphs_GraphJets_class<sp/>GraphJets<sp/>Class</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>**Introduction**:<sp/>Represents<sp/>a<sp/>graph<sp/>constructed<sp/>from<sp/>reconstructed<sp/>jets<sp/>in<sp/>SSML<sp/>MC20<sp/>events.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`graph_jets`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>empty.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:<sp/>Deallocates<sp/>the<sp/>C++<sp/>`graph_jets`<sp/>object<sp/>via<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SSML_MC20Graphs_GraphJetsNoNu_class<sp/>GraphJetsNoNu<sp/>Class</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>**Introduction**:<sp/>Represents<sp/>a<sp/>graph<sp/>constructed<sp/>from<sp/>reconstructed<sp/>jets,<sp/>excluding<sp/>neutrinos,<sp/>in<sp/>SSML<sp/>MC20<sp/>events.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`graph_jets_nonu`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>empty.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:<sp/>Deallocates<sp/>the<sp/>C++<sp/>`graph_jets_nonu`<sp/>object<sp/>via<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SSML_MC20Graphs_GraphDetectorLep_class<sp/>GraphDetectorLep<sp/>Class</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>**Introduction**:<sp/>Represents<sp/>a<sp/>graph<sp/>focusing<sp/>on<sp/>detector-level<sp/>leptons<sp/>in<sp/>SSML<sp/>MC20<sp/>events.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`graph_jets_detector_lep`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>empty.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:<sp/>Deallocates<sp/>the<sp/>C++<sp/>`graph_jets_detector_lep`<sp/>object<sp/>via<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SSML_MC20Graphs_GraphDetector_class<sp/>GraphDetector<sp/>Class</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>**Introduction**:<sp/>Represents<sp/>a<sp/>graph<sp/>constructed<sp/>from<sp/>general<sp/>detector-level<sp/>objects<sp/>in<sp/>SSML<sp/>MC20<sp/>events.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`graph_detector`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>empty.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:<sp/>Deallocates<sp/>the<sp/>C++<sp/>`graph_detector`<sp/>object<sp/>via<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@section<sp/>SSML_MC20Graphs_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>All<sp/>classes<sp/>in<sp/>this<sp/>module<sp/>leverage<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>...`:<sp/>Declares<sp/>each<sp/>class<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>&lt;cpp_type&gt;<sp/>*ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>specific<sp/>graph<sp/>type<sp/>(e.g.,<sp/>`graph_jets*`,<sp/>`graph_detector*`),<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.graph_template<sp/>cimport<sp/>GraphTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`GraphTemplate`<sp/>class,<sp/>from<sp/>which<sp/>all<sp/>these<sp/>specialized<sp/>classes<sp/>inherit.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.graphs.ssml_mc20.graph_ssml_mc20<sp/>cimport<sp/>*`:<sp/>Imports<sp/>the<sp/>C++<sp/>graph<sp/>class<sp/>declarations<sp/>from<sp/>their<sp/>`.pxd`<sp/>file.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="graphs/ssml_mc20/graph_ssml_mc20.dox"/>
+  </compounddef>
+</doxygen>

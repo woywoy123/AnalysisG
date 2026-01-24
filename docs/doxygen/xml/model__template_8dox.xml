@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="model__template_8dox" kind="file" language="C++">
+    <compoundname>model_template.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the ModelTemplate Cython class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>model_template.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>ModelTemplate<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>ModelTemplate_page<sp/>ModelTemplate</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>ModelTemplate_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`ModelTemplate`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>serves<sp/>as<sp/>a<sp/>foundational<sp/>base<sp/>for<sp/>machine<sp/>learning<sp/>models<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>It<sp/>provides<sp/>a<sp/>standardized<sp/>interface<sp/>for<sp/>managing<sp/>input<sp/>and<sp/>output<sp/>features<sp/>for<sp/>graph-based<sp/>data,<sp/>as<sp/>well<sp/>as<sp/>configuring<sp/>the<sp/>computational<sp/>device<sp/>and<sp/>model<sp/>checkpoints.<sp/>This<sp/>class<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>inherited<sp/>by<sp/>specific<sp/>model<sp/>implementations,<sp/>offering<sp/>common<sp/>functionalities<sp/>and<sp/>efficient<sp/>interaction<sp/>with<sp/>an<sp/>underlying<sp/>C++<sp/>model<sp/>structure.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>ModelTemplate_class<sp/>The<sp/>ModelTemplate<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`ModelTemplate`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>This<sp/>design<sp/>allows<sp/>for<sp/>direct<sp/>and<sp/>optimized<sp/>interaction<sp/>with<sp/>C++<sp/>objects<sp/>and<sp/>types,<sp/>which<sp/>is<sp/>crucial<sp/>for<sp/>performance<sp/>in<sp/>machine<sp/>learning<sp/>applications.<sp/>It<sp/>encapsulates<sp/>a<sp/>pointer<sp/>(`self.nn_ptr`)<sp/>to<sp/>a<sp/>C++<sp/>`model_template`<sp/>object,<sp/>managing<sp/>its<sp/>lifecycle<sp/>and<sp/>exposing<sp/>its<sp/>parameters<sp/>as<sp/>Python<sp/>properties.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ModelTemplate_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>`self.rename`<sp/>to<sp/>`False`.<sp/>If<sp/>the<sp/>instance<sp/>is<sp/>not<sp/>`ModelTemplate`<sp/>itself<sp/>(i.e.,<sp/>it&apos;s<sp/>a<sp/>subclass),<sp/>it<sp/>returns<sp/>immediately.<sp/>Otherwise,<sp/>it<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`model_template`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.nn_ptr`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>standard<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>left<sp/>empty<sp/>as<sp/>primary<sp/>initialization<sp/>is<sp/>handled<sp/>by<sp/>`__cinit__`.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>If<sp/>the<sp/>instance<sp/>is<sp/>not<sp/>`ModelTemplate`<sp/>itself,<sp/>it<sp/>returns.<sp/>Otherwise,<sp/>it<sp/>deallocates<sp/>the<sp/>C++<sp/>`model_template`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.nn_ptr`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ModelTemplate_internal_methods<sp/>Internal<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>dict<sp/>conv(self,<sp/>map[string,<sp/>string]*<sp/>inpt)`:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>An<sp/>internal<sp/>helper<sp/>method<sp/>to<sp/>convert<sp/>a<sp/>C++<sp/>`map&lt;string,<sp/>string&gt;`<sp/>(passed<sp/>as<sp/>a<sp/>pointer)<sp/>into<sp/>a<sp/>Python<sp/>dictionary.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>C++<sp/>map<sp/>and<sp/>uses<sp/>`env`<sp/>to<sp/>convert<sp/>C++<sp/>strings<sp/>to<sp/>Python<sp/>strings<sp/>for<sp/>both<sp/>keys<sp/>and<sp/>values.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>inpt<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>C++<sp/>`map&lt;string,<sp/>string&gt;`.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>Python<sp/>dictionary.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>map[string,<sp/>string]<sp/>cond(self,<sp/>dict<sp/>inpt)`:</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/><sp/><sp/>An<sp/>internal<sp/>helper<sp/>method<sp/>to<sp/>convert<sp/>a<sp/>Python<sp/>dictionary<sp/>into<sp/>a<sp/>C++<sp/>`map&lt;string,<sp/>string&gt;`.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>Python<sp/>dictionary<sp/>and<sp/>uses<sp/>`enc`<sp/>to<sp/>convert<sp/>Python<sp/>strings<sp/>to<sp/>C++<sp/>strings<sp/>for<sp/>both<sp/>keys<sp/>and<sp/>values.<sp/>If<sp/>`self.rename`<sp/>is<sp/>`False`,<sp/>it<sp/>also<sp/>sets<sp/>the<sp/>C++<sp/>model&apos;s<sp/>name<sp/>to<sp/>the<sp/>Python<sp/>class<sp/>name.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>inpt<sp/>A<sp/>Python<sp/>dictionary.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>C++<sp/>`map&lt;string,<sp/>string&gt;`.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ModelTemplate_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>These<sp/>properties<sp/>provide<sp/>controlled<sp/>access<sp/>to<sp/>the<sp/>configuration<sp/>and<sp/>state<sp/>of<sp/>the<sp/>`ModelTemplate`.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>o_graph`:</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>a<sp/>dictionary<sp/>representing<sp/>output<sp/>graph<sp/>features.<sp/>The<sp/>getter<sp/>converts<sp/>a<sp/>C++<sp/>map<sp/>to<sp/>a<sp/>Python<sp/>dict<sp/>using<sp/>`conv`.<sp/>The<sp/>setter<sp/>converts<sp/>a<sp/>Python<sp/>dict<sp/>to<sp/>a<sp/>C++<sp/>map<sp/>using<sp/>`cond`.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>o_node`:</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>a<sp/>dictionary<sp/>representing<sp/>output<sp/>node<sp/>features.<sp/>Similar<sp/>conversion<sp/>logic<sp/>as<sp/>`o_graph`.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>o_edge`:</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>a<sp/>dictionary<sp/>representing<sp/>output<sp/>edge<sp/>features.<sp/>Similar<sp/>conversion<sp/>logic<sp/>as<sp/>`o_graph`.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>i_graph`:</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>a<sp/>list<sp/>of<sp/>input<sp/>graph<sp/>features.<sp/>The<sp/>getter<sp/>converts<sp/>a<sp/>C++<sp/>vector<sp/>to<sp/>a<sp/>Python<sp/>list<sp/>using<sp/>`env_vec`.<sp/>The<sp/>setter<sp/>converts<sp/>a<sp/>Python<sp/>list<sp/>to<sp/>a<sp/>C++<sp/>vector<sp/>using<sp/>`enc_list`.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>i_node`:</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>a<sp/>list<sp/>of<sp/>input<sp/>node<sp/>features.<sp/>Similar<sp/>conversion<sp/>logic<sp/>as<sp/>`i_graph`.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>i_edge`:</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>a<sp/>list<sp/>of<sp/>input<sp/>edge<sp/>features.<sp/>Similar<sp/>conversion<sp/>logic<sp/>as<sp/>`i_graph`.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>device`:</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>the<sp/>computational<sp/>device<sp/>(e.g.,<sp/>&quot;cpu&quot;,<sp/>&quot;cuda:0&quot;)<sp/>as<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>checkpoint_path`:</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>the<sp/>path<sp/>to<sp/>the<sp/>model<sp/>checkpoint<sp/>file<sp/>as<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>weight_name`:</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>the<sp/>name<sp/>of<sp/>the<sp/>weight<sp/>to<sp/>be<sp/>used<sp/>by<sp/>the<sp/>model<sp/>as<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>tree_name`:</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>the<sp/>name<sp/>of<sp/>the<sp/>ROOT<sp/>tree<sp/>associated<sp/>with<sp/>the<sp/>model<sp/>as<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>name`:</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Gets<sp/>and<sp/>sets<sp/>the<sp/>name<sp/>of<sp/>the<sp/>model.<sp/>If<sp/>`self.rename`<sp/>is<sp/>`False`,<sp/>it<sp/>defaults<sp/>to<sp/>the<sp/>Python<sp/>class<sp/>name.<sp/>Setting<sp/>this<sp/>property<sp/>explicitly<sp/>sets<sp/>`self.rename`<sp/>to<sp/>`True`<sp/>and<sp/>updates<sp/>the<sp/>C++<sp/>model&apos;s<sp/>name.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/>@section<sp/>ModelTemplate_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/>The<sp/>`ModelTemplate`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>ModelTemplate`:<sp/>Declares<sp/>`ModelTemplate`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>model_template<sp/>*nn_ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object,<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>libcpp.string<sp/>cimport<sp/>string`:<sp/>Imports<sp/>the<sp/>C++<sp/>`std::string`<sp/>type.</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>libcpp.map<sp/>cimport<sp/>map,<sp/>pair`:<sp/>Imports<sp/>C++<sp/>`std::map`<sp/>and<sp/>`std::pair`<sp/>types.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>from<sp/>`tools.pxd`,<sp/>including<sp/>`env`,<sp/>`enc`,<sp/>`env_vec`,<sp/>`enc_list`<sp/>for<sp/>string<sp/>and<sp/>list<sp/>conversions.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.model_template<sp/>cimport<sp/>model_template`:<sp/>Imports<sp/>the<sp/>C++<sp/>`model_template`<sp/>class<sp/>declaration<sp/>from<sp/>its<sp/>`.pxd`<sp/>file.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/>-<sp/>`cython.operator.dereference<sp/>as<sp/>deref`:<sp/>Used<sp/>to<sp/>dereference<sp/>C++<sp/>pointers.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/model_template.dox"/>
+  </compounddef>
+</doxygen>

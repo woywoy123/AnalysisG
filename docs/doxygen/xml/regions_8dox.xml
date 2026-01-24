@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="regions_8dox" kind="file" language="C++">
+    <compoundname>regions.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the Regions Cython class, a specialized SelectionTemplate for defining and managing analysis regions. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>regions.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>Regions<sp/>Cython<sp/>class,<sp/>a<sp/>specialized<sp/>SelectionTemplate<sp/>for<sp/>defining<sp/>and<sp/>managing<sp/>analysis<sp/>regions.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>RegionsSelection_page<sp/>Regions<sp/>Selection</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>RegionsSelection_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`Regions`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>selection<sp/>template<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>for<sp/>defining<sp/>and<sp/>managing<sp/>various<sp/>analysis<sp/>regions.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>generic<sp/>`SelectionTemplate`<sp/>class,<sp/>extending<sp/>its<sp/>functionalities<sp/>to<sp/>incorporate<sp/>features<sp/>and<sp/>structures<sp/>relevant<sp/>to<sp/>region-based<sp/>selections.<sp/>This<sp/>class<sp/>provides<sp/>a<sp/>high-performance<sp/>interface<sp/>to<sp/>an<sp/>underlying<sp/>C++<sp/>regions<sp/>object,<sp/>enabling<sp/>efficient<sp/>categorization<sp/>of<sp/>events<sp/>into<sp/>different<sp/>analysis<sp/>regions.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>RegionsSelection_class<sp/>The<sp/>Regions<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`Regions`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>It<sp/>inherits<sp/>from<sp/>`SelectionTemplate`,<sp/>thereby<sp/>gaining<sp/>all<sp/>the<sp/>base<sp/>functionalities<sp/>for<sp/>event<sp/>selection,<sp/>ROOT<sp/>file<sp/>interpretation,<sp/>and<sp/>weight<sp/>management.<sp/>Its<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>encapsulate<sp/>a<sp/>C++<sp/>`regions`<sp/>object,<sp/>which<sp/>likely<sp/>contains<sp/>the<sp/>logic<sp/>for<sp/>defining<sp/>and<sp/>checking<sp/>events<sp/>against<sp/>specific<sp/>analysis<sp/>regions.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>RegionsSelection_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`regions`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.ptr`<sp/>to<sp/>a<sp/>`regions*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.tt`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Python<sp/>initializer.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>It<sp/>deallocates<sp/>the<sp/>C++<sp/>`regions`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.tt`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management<sp/>for<sp/>the<sp/>specialized<sp/>regions<sp/>data.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>RegionsSelection_internal_methods<sp/>Internal<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>transform_dict_keys(self)`:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>This<sp/>method<sp/>is<sp/>intended<sp/>to<sp/>transform<sp/>the<sp/>keys<sp/>of<sp/>internal<sp/>dictionaries.<sp/>In<sp/>this<sp/>specific<sp/>implementation,<sp/>it<sp/>assigns<sp/>the<sp/>`output`<sp/>member<sp/>of<sp/>the<sp/>underlying<sp/>C++<sp/>`regions`<sp/>object<sp/>to<sp/>`self.output`.<sp/>This<sp/>is<sp/>likely<sp/>used<sp/>to<sp/>expose<sp/>the<sp/>results<sp/>of<sp/>region<sp/>classification<sp/>to<sp/>the<sp/>Python<sp/>layer.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@section<sp/>RegionsSelection_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>The<sp/>`Regions`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>Regions`:<sp/>Declares<sp/>`Regions`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>regions<sp/>*tt`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`regions`<sp/>object,<sp/>which<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>implementation<sp/>for<sp/>managing<sp/>analysis<sp/>regions.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.ptr<sp/>=<sp/>new<sp/>regions()`:<sp/>Initializes<sp/>the<sp/>base<sp/>`SelectionTemplate`&apos;s<sp/>C++<sp/>pointer.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.tt<sp/>=<sp/>&lt;regions*&gt;self.ptr`:<sp/>This<sp/>line<sp/>demonstrates<sp/>C++<sp/>upcasting,<sp/>where<sp/>the<sp/>base<sp/>`SelectionTemplate`&apos;s<sp/>C++<sp/>pointer<sp/>(`self.ptr`)<sp/>is<sp/>cast<sp/>to<sp/>the<sp/>specialized<sp/>`regions`<sp/>type<sp/>and<sp/>assigned<sp/>to<sp/>`self.tt`.<sp/>This<sp/>allows<sp/>`Regions`<sp/>to<sp/>fulfill<sp/>the<sp/>`SelectionTemplate`<sp/>interface<sp/>while<sp/>internally<sp/>managing<sp/>its<sp/>specific<sp/>`regions`<sp/>data.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>SelectionTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`SelectionTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`Regions`<sp/>inherits.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>as_dict,<sp/>as_list`:<sp/>Imports<sp/>utility<sp/>functions<sp/>for<sp/>converting<sp/>between<sp/>C++<sp/>and<sp/>Python<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/analysis/regions/regions.dox"/>
+  </compounddef>
+</doxygen>

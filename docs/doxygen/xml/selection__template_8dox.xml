@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="selection__template_8dox" kind="file" language="C++">
+    <compoundname>selection_template.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the SelectionTemplate Cython class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>selection_template.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>SelectionTemplate<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>SelectionTemplate_page<sp/>SelectionTemplate</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>SelectionTemplate_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`SelectionTemplate`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>serves<sp/>as<sp/>a<sp/>foundational<sp/>base<sp/>for<sp/>defining<sp/>and<sp/>applying<sp/>event<sp/>selections<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>It<sp/>provides<sp/>robust<sp/>mechanisms<sp/>for<sp/>interpreting<sp/>data<sp/>from<sp/>ROOT<sp/>files,<sp/>managing<sp/>event<sp/>weights,<sp/>and<sp/>associating<sp/>metadata.<sp/>This<sp/>class<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>inherited<sp/>by<sp/>specific<sp/>selection<sp/>implementations,<sp/>offering<sp/>common<sp/>functionalities<sp/>for<sp/>data<sp/>processing<sp/>and<sp/>filtering,<sp/>with<sp/>a<sp/>strong<sp/>emphasis<sp/>on<sp/>performance<sp/>through<sp/>its<sp/>C++<sp/>backend.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>SelectionTemplate_class<sp/>The<sp/>SelectionTemplate<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`SelectionTemplate`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>This<sp/>allows<sp/>for<sp/>direct<sp/>and<sp/>optimized<sp/>interaction<sp/>with<sp/>C++<sp/>objects<sp/>and<sp/>types,<sp/>which<sp/>is<sp/>crucial<sp/>for<sp/>efficient<sp/>processing<sp/>of<sp/>large<sp/>datasets<sp/>in<sp/>high-energy<sp/>physics.<sp/>It<sp/>encapsulates<sp/>a<sp/>pointer<sp/>(`self.ptr`)<sp/>to<sp/>a<sp/>C++<sp/>`selection_template`<sp/>object,<sp/>managing<sp/>its<sp/>lifecycle<sp/>and<sp/>exposing<sp/>its<sp/>parameters<sp/>and<sp/>functionalities<sp/>as<sp/>Python<sp/>properties<sp/>and<sp/>methods.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SelectionTemplate_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>If<sp/>the<sp/>instance<sp/>is<sp/>not<sp/>`SelectionTemplate`<sp/>itself<sp/>(i.e.,<sp/>it&apos;s<sp/>a<sp/>subclass),<sp/>it<sp/>returns<sp/>immediately.<sp/>Otherwise,<sp/>it<sp/>initializes<sp/>`self.root_leaves`<sp/>as<sp/>an<sp/>empty<sp/>dictionary<sp/>and<sp/>a<sp/>new<sp/>C++<sp/>`selection_template`<sp/>object,<sp/>assigning<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self,<sp/>inpt<sp/>=<sp/>None)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Python<sp/>initializer.<sp/>If<sp/>`inpt`<sp/>(a<sp/>dictionary)<sp/>is<sp/>provided,<sp/>it<sp/>attempts<sp/>to<sp/>set<sp/>various<sp/>attributes<sp/>of<sp/>`self`<sp/>from<sp/>`inpt[&quot;data&quot;]`.<sp/>It<sp/>also<sp/>initializes<sp/>`self.ptr.passed_weights`<sp/>and<sp/>`self.ptr.matched_meta`<sp/>from<sp/>`inpt[&quot;weights&quot;]`<sp/>and<sp/>`inpt[&quot;meta&quot;]`<sp/>respectively,<sp/>converting<sp/>them<sp/>from<sp/>Python<sp/>types<sp/>to<sp/>C++<sp/>maps.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>If<sp/>the<sp/>instance<sp/>is<sp/>not<sp/>`SelectionTemplate`<sp/>itself,<sp/>it<sp/>returns.<sp/>Otherwise,<sp/>it<sp/>deallocates<sp/>the<sp/>C++<sp/>`selection_template`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.ptr`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SelectionTemplate_special_methods<sp/>Special<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`__hash__(self)`:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Computes<sp/>a<sp/>hash<sp/>value<sp/>for<sp/>the<sp/>selection<sp/>object.<sp/>It<sp/>converts<sp/>the<sp/>first<sp/>8<sp/>characters<sp/>of<sp/>the<sp/>C++<sp/>object&apos;s<sp/>hash<sp/>string<sp/>to<sp/>an<sp/>integer.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`__name__(self)`:</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Returns<sp/>the<sp/>name<sp/>of<sp/>the<sp/>underlying<sp/>C++<sp/>selection<sp/>object<sp/>as<sp/>a<sp/>Python<sp/>string,<sp/>using<sp/>the<sp/>`env`<sp/>utility<sp/>function<sp/>for<sp/>conversion.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`__reduce__(self)`:</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Implements<sp/>the<sp/>`__reduce__`<sp/>protocol<sp/>for<sp/>pickling<sp/>`SelectionTemplate`<sp/>objects,<sp/>allowing<sp/>them<sp/>to<sp/>be<sp/>serialized<sp/>and<sp/>deserialized.<sp/>It<sp/>captures<sp/>non-callable<sp/>attributes,<sp/>`passed_weights`,<sp/>and<sp/>`matched_meta`.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SelectionTemplate_internal_methods<sp/>Internal<sp/>Methods</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>transform_dict_keys(self)`:</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>An<sp/>empty<sp/>placeholder<sp/>method.<sp/>This<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>subclasses<sp/>to<sp/>perform<sp/>any<sp/>necessary<sp/>transformations<sp/>on<sp/>dictionary<sp/>keys,<sp/>for<sp/>example,<sp/>to<sp/>match<sp/>specific<sp/>naming<sp/>conventions<sp/>or<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SelectionTemplate_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`dump(self,<sp/>str<sp/>path<sp/>=<sp/>&quot;./pkl-data&quot;,<sp/>str<sp/>name<sp/>=<sp/>&quot;&quot;)`:</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Saves<sp/>the<sp/>current<sp/>`SelectionTemplate`<sp/>object<sp/>to<sp/>a<sp/>pickle<sp/>file.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>path<sp/>The<sp/>directory<sp/>path<sp/>to<sp/>save<sp/>the<sp/>file.<sp/>Defaults<sp/>to<sp/>&quot;./pkl-data&quot;.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>name<sp/>The<sp/>filename<sp/>(without<sp/>extension).<sp/>Defaults<sp/>to<sp/>`self.ptr.name`.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`load(self,<sp/>str<sp/>path<sp/>=<sp/>&quot;./pkl-data&quot;,<sp/>str<sp/>name<sp/>=<sp/>&quot;&quot;)`:</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Loads<sp/>a<sp/>`SelectionTemplate`<sp/>object<sp/>from<sp/>a<sp/>pickle<sp/>file.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>path<sp/>The<sp/>directory<sp/>path<sp/>to<sp/>load<sp/>from.<sp/>Defaults<sp/>to<sp/>&quot;./pkl-data&quot;.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>name<sp/>The<sp/>filename<sp/>(without<sp/>extension).<sp/>Defaults<sp/>to<sp/>`self.ptr.name`.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>The<sp/>loaded<sp/>`SelectionTemplate`<sp/>object<sp/>or<sp/>`None`<sp/>if<sp/>loading<sp/>fails.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`HashToWeightFile(self,<sp/>hash_)`:</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Converts<sp/>a<sp/>given<sp/>hash<sp/>(or<sp/>list/dictionary<sp/>of<sp/>hashes)<sp/>to<sp/>a<sp/>list<sp/>of<sp/>tuples,<sp/>where<sp/>each<sp/>tuple<sp/>contains<sp/>a<sp/>filename<sp/>and<sp/>its<sp/>associated<sp/>weight.<sp/>This<sp/>method<sp/>uses<sp/>the<sp/>underlying<sp/>C++<sp/>`reverse_hash`<sp/>functionality.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>hash_<sp/>A<sp/>string,<sp/>list<sp/>of<sp/>strings,<sp/>or<sp/>dictionary<sp/>of<sp/>strings<sp/>representing<sp/>hashes.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>list<sp/>of<sp/>(filename,<sp/>weight)<sp/>tuples.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>-<sp/>`Postprocessing(self)`:</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/><sp/>An<sp/>empty<sp/>placeholder<sp/>method<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>subclasses<sp/>for<sp/>any<sp/>post-processing<sp/>steps<sp/>required<sp/>after<sp/>data<sp/>interpretation<sp/>and<sp/>selection.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>-<sp/>`InterpretROOT(self,<sp/>str<sp/>path,<sp/>str<sp/>tree)`:</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>core<sp/>method<sp/>for<sp/>interpreting<sp/>and<sp/>processing<sp/>data<sp/>from<sp/>ROOT<sp/>files<sp/>based<sp/>on<sp/>defined<sp/>`root_leaves`.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Configuration<sp/>Check**:<sp/>Verifies<sp/>that<sp/>`self.root_leaves`<sp/>(a<sp/>dictionary<sp/>mapping<sp/>leaf<sp/>names<sp/>to<sp/>functions)<sp/>is<sp/>properly<sp/>set.<sp/>If<sp/>not,<sp/>it<sp/>prints<sp/>an<sp/>error<sp/>and<sp/>returns<sp/>`self`.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**IO<sp/>Setup**:<sp/>Initializes<sp/>an<sp/>`IO`<sp/>object<sp/>(from<sp/>`AnalysisG.core.io`)<sp/>with<sp/>the<sp/>provided<sp/>`path`<sp/>and<sp/>`tree`,<sp/>and<sp/>the<sp/>specified<sp/>`root_leaves`.<sp/>Verbosity<sp/>is<sp/>set<sp/>to<sp/>`False`.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Data<sp/>Iteration**:<sp/>Iterates<sp/>through<sp/>the<sp/>`IO`<sp/>object,<sp/>processing<sp/>each<sp/>event.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Leaf<sp/>Association**:<sp/>Dynamically<sp/>associates<sp/>leaf<sp/>names<sp/>from<sp/>the<sp/>ROOT<sp/>file<sp/>with<sp/>the<sp/>functions<sp/>defined<sp/>in<sp/>`self.root_leaves`.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Function<sp/>Application**:<sp/>Applies<sp/>the<sp/>user-defined<sp/>functions<sp/>(from<sp/>`self.root_leaves.values()`)<sp/>to<sp/>the<sp/>extracted<sp/>data<sp/>for<sp/>each<sp/>event.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Postprocessing<sp/>Call**:<sp/>After<sp/>processing<sp/>all<sp/>events,<sp/>it<sp/>calls<sp/>`self.Postprocessing()`.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>path<sp/>The<sp/>path<sp/>to<sp/>the<sp/>ROOT<sp/>file(s).</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>tree<sp/>The<sp/>name<sp/>of<sp/>the<sp/>ROOT<sp/>tree<sp/>to<sp/>read<sp/>from.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>`self`<sp/>for<sp/>method<sp/>chaining.</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>SelectionTemplate_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/>These<sp/>properties<sp/>provide<sp/>controlled<sp/>access<sp/>to<sp/>the<sp/>data<sp/>managed<sp/>by<sp/>the<sp/>`SelectionTemplate`.</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>PassedWeights`:</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>a<sp/>nested<sp/>dictionary<sp/>representing<sp/>the<sp/>weights<sp/>that<sp/>have<sp/>passed<sp/>the<sp/>selection<sp/>criteria.<sp/>The<sp/>C++<sp/>map<sp/>is<sp/>converted<sp/>to<sp/>a<sp/>Python<sp/>dictionary<sp/>using<sp/>`as_basic_dict_dict`.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>GetMetaData`:</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>a<sp/>dictionary<sp/>of<sp/>`Meta`<sp/>objects<sp/>associated<sp/>with<sp/>the<sp/>selected<sp/>events.<sp/>It<sp/>iterates<sp/>through<sp/>`self.ptr.matched_meta`<sp/>(a<sp/>C++<sp/>map<sp/>of<sp/>strings<sp/>to<sp/>`meta_t`<sp/>structs)<sp/>and<sp/>converts<sp/>each<sp/>`meta_t`<sp/>into<sp/>a<sp/>Python<sp/>`Meta`<sp/>object.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/>@section<sp/>SelectionTemplate_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/>The<sp/>`SelectionTemplate`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>SelectionTemplate`:<sp/>Declares<sp/>`SelectionTemplate`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>selection_template<sp/>*ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`selection_template`<sp/>object,<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>libcpp<sp/>cimport<sp/>string,<sp/>map,<sp/>pair,<sp/>vector`:<sp/>Imports<sp/>C++<sp/>standard<sp/>library<sp/>types.</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>from<sp/>`tools.pxd`,<sp/>including<sp/>`env`,<sp/>`enc`,<sp/>`as_basic_dict_dict`,<sp/>and<sp/>`tools().ends_with`.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.meta<sp/>cimport<sp/>*`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>for<sp/>`meta_t`<sp/>and<sp/>the<sp/>Python<sp/>`Meta`<sp/>class.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.io<sp/>import<sp/>IO`:<sp/>Imports<sp/>the<sp/>Python<sp/>`IO`<sp/>class<sp/>for<sp/>ROOT<sp/>file<sp/>handling.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/>-<sp/>`pathlib`,<sp/>`pickle`:<sp/>Python<sp/>libraries<sp/>used<sp/>for<sp/>path<sp/>manipulation<sp/>and<sp/>object<sp/>serialization.</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/selection_template.dox"/>
+  </compounddef>
+</doxygen>

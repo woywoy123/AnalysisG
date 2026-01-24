@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="gnn_2event_8dox" kind="file" language="C++">
+    <compoundname>event.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the gnn_event class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>event.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>gnn_event<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>gnn_event_page<sp/>gnn_event</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>gnn_event_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`gnn_event`<sp/>class<sp/>is<sp/>a<sp/>specialization<sp/>of<sp/>the<sp/>`event_template`<sp/>designed<sp/>to<sp/>handle<sp/>the<sp/>output<sp/>of<sp/>a<sp/>Graph<sp/>Neural<sp/>Network<sp/>(GNN).<sp/>It<sp/>reads<sp/>the<sp/>GNN&apos;s<sp/>predictions<sp/>and<sp/>reconstructs<sp/>particle<sp/>objects<sp/>(tops<sp/>and<sp/>Z&apos;<sp/>primes)<sp/>based<sp/>on<sp/>these<sp/>predictions.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>gnn_event_class<sp/>The<sp/>gnn_event<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`gnn_event`<sp/>class<sp/>inherits<sp/>from<sp/>`event_template`<sp/>and<sp/>implements<sp/>its<sp/>virtual<sp/>methods<sp/>to<sp/>provide<sp/>event-specific<sp/>functionality.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`gnn_event()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>event<sp/>by<sp/>setting<sp/>its<sp/>name,<sp/>defining<sp/>the<sp/>data<sp/>leaves<sp/>to<sp/>be<sp/>read<sp/>from<sp/>the<sp/>input<sp/>tree,<sp/>and<sp/>registering<sp/>the<sp/>particle<sp/>types<sp/>that<sp/>are<sp/>expected<sp/>in<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~gnn_event()`:<sp/>The<sp/>destructor<sp/>deregisters<sp/>the<sp/>particle<sp/>collections<sp/>created<sp/>during<sp/>the<sp/>event<sp/>processing.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`event_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`gnn_event`.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>event&apos;s<sp/>data<sp/>members<sp/>with<sp/>the<sp/>GNN<sp/>predictions<sp/>and<sp/>truth<sp/>information<sp/>from<sp/>the<sp/>input<sp/>data<sp/>element.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>method<sp/>of<sp/>the<sp/>class.<sp/>It<sp/>reconstructs<sp/>the<sp/>event<sp/>by<sp/>clustering<sp/>the<sp/>GNN<sp/>nodes<sp/>into<sp/>particle<sp/>objects<sp/>based<sp/>on<sp/>the<sp/>predicted<sp/>edge<sp/>scores.<sp/>This<sp/>includes:</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Clustering**:<sp/>A<sp/>PageRank-based<sp/>clustering<sp/>algorithm<sp/>is<sp/>used<sp/>to<sp/>group<sp/>nodes<sp/>into<sp/>top<sp/>and<sp/>Z&apos;<sp/>candidates<sp/>based<sp/>on<sp/>the<sp/>`edge_top_scores`<sp/>and<sp/>`edge_res_scores`<sp/>respectively.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Truth<sp/>Reconstruction**:<sp/>The<sp/>same<sp/>clustering<sp/>is<sp/>applied<sp/>to<sp/>the<sp/>truth-level<sp/>edge<sp/>information<sp/>(`t_edge_top`<sp/>and<sp/>`t_edge_res`)<sp/>to<sp/>reconstruct<sp/>the<sp/>true<sp/>top<sp/>and<sp/>Z&apos;<sp/>particles.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Particle<sp/>Creation**:<sp/>For<sp/>each<sp/>cluster,<sp/>a<sp/>`top`<sp/>or<sp/>`zprime`<sp/>particle<sp/>is<sp/>created,<sp/>and<sp/>its<sp/>kinematic<sp/>properties<sp/>are<sp/>calculated<sp/>by<sp/>summing<sp/>the<sp/>four-vectors<sp/>of<sp/>its<sp/>constituent<sp/>nodes.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Vectorization**:<sp/>The<sp/>reconstructed<sp/>and<sp/>truth<sp/>particle<sp/>collections<sp/>are<sp/>vectorized<sp/>for<sp/>easier<sp/>access.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_predictions<sp/>GNN<sp/>Predictions</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>The<sp/>`gnn_event`<sp/>class<sp/>stores<sp/>the<sp/>following<sp/>GNN<sp/>predictions:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`edge_res_scores`:<sp/>The<sp/>predicted<sp/>probability<sp/>of<sp/>each<sp/>edge<sp/>being<sp/>part<sp/>of<sp/>a<sp/>Z&apos;<sp/>decay.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`edge_top_scores`:<sp/>The<sp/>predicted<sp/>probability<sp/>of<sp/>each<sp/>edge<sp/>being<sp/>part<sp/>of<sp/>a<sp/>top<sp/>quark<sp/>decay.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`ntops_scores`:<sp/>The<sp/>predicted<sp/>probability<sp/>distribution<sp/>for<sp/>the<sp/>number<sp/>of<sp/>top<sp/>quarks<sp/>in<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`signal_scores`:<sp/>The<sp/>predicted<sp/>probability<sp/>of<sp/>the<sp/>event<sp/>being<sp/>a<sp/>signal<sp/>event.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`p_signal`:<sp/>The<sp/>predicted<sp/>signal<sp/>class<sp/>(boolean).</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`s_signal`:<sp/>The<sp/>signal<sp/>score.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`p_ntops`:<sp/>The<sp/>predicted<sp/>number<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`s_ntops`:<sp/>The<sp/>score<sp/>for<sp/>the<sp/>predicted<sp/>number<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_truth<sp/>Truth<sp/>Information</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>The<sp/>`gnn_event`<sp/>class<sp/>also<sp/>stores<sp/>the<sp/>following<sp/>truth<sp/>information:</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`t_ntops`:<sp/>The<sp/>true<sp/>number<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`t_signal`:<sp/>The<sp/>true<sp/>signal<sp/>label.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`t_edge_res`:<sp/>The<sp/>true<sp/>Z&apos;<sp/>edge<sp/>labels.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`t_edge_top`:<sp/>The<sp/>true<sp/>top<sp/>edge<sp/>labels.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_reco<sp/>Reconstructed<sp/>Particles</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`r_zprime`:<sp/>A<sp/>vector<sp/>of<sp/>reconstructed<sp/>`zprime`<sp/>particles.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>-<sp/>`r_tops`:<sp/>A<sp/>vector<sp/>of<sp/>reconstructed<sp/>`top`<sp/>particles.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_truth_particles<sp/>Truth<sp/>Particles</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`t_zprime`:<sp/>A<sp/>vector<sp/>of<sp/>truth-level<sp/>`zprime`<sp/>particles.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`t_tops`:<sp/>A<sp/>vector<sp/>of<sp/>truth-level<sp/>`top`<sp/>particles.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>gnn_event_nodes<sp/>Event<sp/>Particles</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>-<sp/>`event_particles`:<sp/>A<sp/>vector<sp/>of<sp/>the<sp/>input<sp/>`particle_gnn`<sp/>nodes<sp/>to<sp/>the<sp/>GNN.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="events/gnn/event.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ParticleTemplate_page" kind="page">
+    <compoundname>ParticleTemplate_page</compoundname>
+    <title>ParticleTemplate</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ParticleTemplate_page_1ParticleTemplate_intro">
+<title>Introduction</title><para>The <computeroutput>ParticleTemplate</computeroutput> class, implemented in Cython, serves as a fundamental building block within the AnalysisG framework for representing individual particles in high-energy physics events. It provides a comprehensive set of properties to describe a particle&apos;s kinematics, quantum numbers, and its relationship to other particles (e.g., parents, children, ancestors, descendants). This class is designed for high-performance data access and manipulation, leveraging an underlying C++ particle structure.</para>
+</sect1>
+<sect1 id="ParticleTemplate_page_1ParticleTemplate_class">
+<title>The ParticleTemplate Class</title><para><computeroutput>ParticleTemplate</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types, which is crucial for handling large numbers of particles and complex event topologies efficiently. It encapsulates a pointer (<computeroutput>self.ptr</computeroutput>) to a C++ <computeroutput>particle_template</computeroutput> object, managing its lifecycle and exposing its attributes as Python properties.</para>
+<sect2 id="ParticleTemplate_page_1ParticleTemplate_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. If the instance is not <computeroutput>ParticleTemplate</computeroutput> itself (i.e., it&apos;s a subclass), it returns immediately. Otherwise, it initializes a new C++ <computeroutput>particle_template</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer, intentionally left empty as primary initialization is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. If the instance is not <computeroutput>ParticleTemplate</computeroutput> itself, it returns. Otherwise, it deallocates the C++ <computeroutput>particle_template</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ParticleTemplate_page_1ParticleTemplate_special_methods">
+<title>Special Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__hash__(self)</computeroutput>: Computes a hash value for the particle. It converts the first 8 characters of the C++ object&apos;s hash string to an integer.</para>
+</listitem><listitem><para><computeroutput>__eq__(self, other)</computeroutput>: Compares two <computeroutput>ParticleTemplate</computeroutput> objects for equality. It first checks if <computeroutput>other</computeroutput> is an instance or subclass of <computeroutput>ParticleTemplate</computeroutput> using <computeroutput>is_self</computeroutput>. If so, it compares the underlying C++ <computeroutput>particle_template</computeroutput> objects.</para>
+</listitem><listitem><para><computeroutput>is_self(self, inpt) -&gt; bool</computeroutput>: A utility method to check if the given input <computeroutput>inpt</computeroutput> is an instance of <computeroutput>ParticleTemplate</computeroutput> or a subclass thereof.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ParticleTemplate_page_1ParticleTemplate_properties">
+<title>Properties</title><para>These properties provide controlled access to the various kinematic, quantum, and relational attributes of the encapsulated C++ <computeroutput>particle_template</computeroutput> object. Many properties have both getters and setters, allowing for both retrieval and modification of particle data.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property index -&gt; int</computeroutput>: Gets and sets the unique index of the particle within an event.</para>
+</listitem><listitem><para><computeroutput>@property px -&gt; double</computeroutput>: Gets and sets the x-component of the particle&apos;s momentum.</para>
+</listitem><listitem><para><computeroutput>@property py -&gt; double</computeroutput>: Gets and sets the y-component of the particle&apos;s momentum.</para>
+</listitem><listitem><para><computeroutput>@property pz -&gt; double</computeroutput>: Gets and sets the z-component of the particle&apos;s momentum.</para>
+</listitem><listitem><para><computeroutput>@property e -&gt; double</computeroutput>: Gets and sets the particle&apos;s energy.</para>
+</listitem><listitem><para><computeroutput>@property pt -&gt; double</computeroutput>: Gets and sets the particle&apos;s transverse momentum.</para>
+</listitem><listitem><para><computeroutput>@property eta -&gt; double</computeroutput>: Gets and sets the particle&apos;s pseudorapidity.</para>
+</listitem><listitem><para><computeroutput>@property phi -&gt; double</computeroutput>: Gets and sets the particle&apos;s azimuthal angle.</para>
+</listitem><listitem><para><computeroutput>@property m -&gt; double</computeroutput>: Gets and sets the particle&apos;s invariant mass.</para>
+</listitem><listitem><para><computeroutput>@property charge -&gt; int</computeroutput>: Gets and sets the particle&apos;s electric charge.</para>
+</listitem><listitem><para><computeroutput>@property pdgid -&gt; int</computeroutput>: Gets and sets the particle&apos;s PDG (Particle Data Group) ID.</para>
+</listitem><listitem><para><computeroutput>@property status -&gt; int</computeroutput>: Gets and sets the particle&apos;s status code.</para>
+</listitem><listitem><para><computeroutput>@property is_self_particle -&gt; bool</computeroutput>: Indicates if the particle is the &quot;self&quot; particle in a comparison.</para>
+</listitem><listitem><para><computeroutput>@property is_from_event -&gt; bool</computeroutput>: Indicates if the particle originates from the event.</para>
+</listitem><listitem><para><computeroutput>@property is_from_signal -&gt; bool</computeroutput>: Indicates if the particle originates from the signal process.</para>
+</listitem><listitem><para><computeroutput>@property is_from_pileup -&gt; bool</computeroutput>: Indicates if the particle originates from pile-up interactions.</para>
+</listitem><listitem><para><computeroutput>@property is_from_hardscatter -&gt; bool</computeroutput>: Indicates if the particle originates from the hard scatter process.</para>
+</listitem><listitem><para><computeroutput>@property is_from_parton -&gt; bool</computeroutput>: Indicates if the particle is a parton.</para>
+</listitem><listitem><para><computeroutput>@property is_from_truth -&gt; bool</computeroutput>: Indicates if the particle is a truth-level particle.</para>
+</listitem><listitem><para><computeroutput>@property is_from_reco -&gt; bool</computeroutput>: Indicates if the particle is a reconstructed-level particle.</para>
+</listitem><listitem><para><computeroutput>@property is_from_jet -&gt; bool</computeroutput>: Indicates if the particle is associated with a jet.</para>
+</listitem><listitem><para><computeroutput>@property is_from_lepton -&gt; bool</computeroutput>: Indicates if the particle is a lepton.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon -&gt; bool</computeroutput>: Indicates if the particle is a photon.</para>
+</listitem><listitem><para><computeroutput>@property is_from_neutrino -&gt; bool</computeroutput>: Indicates if the particle is a neutrino.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau -&gt; bool</computeroutput>: Indicates if the particle is a tau lepton.</para>
+</listitem><listitem><para><computeroutput>@property is_from_bjet -&gt; bool</computeroutput>: Indicates if the particle is a b-jet.</para>
+</listitem><listitem><para><computeroutput>@property is_from_cjet -&gt; bool</computeroutput>: Indicates if the particle is a c-jet.</para>
+</listitem><listitem><para><computeroutput>@property is_from_lightjet -&gt; bool</computeroutput>: Indicates if the particle is a light jet.</para>
+</listitem><listitem><para><computeroutput>@property is_from_top -&gt; bool</computeroutput>: Indicates if the particle is a top quark.</para>
+</listitem><listitem><para><computeroutput>@property is_from_w -&gt; bool</computeroutput>: Indicates if the particle is a W boson.</para>
+</listitem><listitem><para><computeroutput>@property is_from_z -&gt; bool</computeroutput>: Indicates if the particle is a Z boson.</para>
+</listitem><listitem><para><computeroutput>@property is_from_h -&gt; bool</computeroutput>: Indicates if the particle is a Higgs boson.</para>
+</listitem><listitem><para><computeroutput>@property is_from_gluon -&gt; bool</computeroutput>: Indicates if the particle is a gluon.</para>
+</listitem><listitem><para><computeroutput>@property is_from_quark -&gt; bool</computeroutput>: Indicates if the particle is a quark.</para>
+</listitem><listitem><para><computeroutput>@property is_from_electron -&gt; bool</computeroutput>: Indicates if the particle is an electron.</para>
+</listitem><listitem><para><computeroutput>@property is_from_muon -&gt; bool</computeroutput>: Indicates if the particle is a muon.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon -&gt; bool</computeroutput>: Indicates if the particle is a photon.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau -&gt; bool</computeroutput>: Indicates if the particle is a tau lepton.</para>
+</listitem><listitem><para><computeroutput>@property is_from_b -&gt; bool</computeroutput>: Indicates if the particle is a b quark.</para>
+</listitem><listitem><para><computeroutput>@property is_from_c -&gt; bool</computeroutput>: Indicates if the particle is a c quark.</para>
+</listitem><listitem><para><computeroutput>@property is_from_light -&gt; bool</computeroutput>: Indicates if the particle is a light quark.</para>
+</listitem><listitem><para><computeroutput>@property is_from_top_decay -&gt; bool</computeroutput>: Indicates if the particle is from a top quark decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_w_decay -&gt; bool</computeroutput>: Indicates if the particle is from a W boson decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_z_decay -&gt; bool</computeroutput>: Indicates if the particle is from a Z boson decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_h_decay -&gt; bool</computeroutput>: Indicates if the particle is from a Higgs boson decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_gluon_decay -&gt; bool</computeroutput>: Indicates if the particle is from a gluon decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_quark_decay -&gt; bool</computeroutput>: Indicates if the particle is from a quark decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_electron_decay -&gt; bool</computeroutput>: Indicates if the particle is from an electron decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_muon_decay -&gt; bool</computeroutput>: Indicates if the particle is from a muon decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon_decay -&gt; bool</computeroutput>: Indicates if the particle is from a photon decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau_decay -&gt; bool</computeroutput>: Indicates if the particle is from a tau lepton decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_b_decay -&gt; bool</computeroutput>: Indicates if the particle is from a b quark decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_c_decay -&gt; bool</computeroutput>: Indicates if the particle is from a c quark decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_light_decay -&gt; bool</computeroutput>: Indicates if the particle is from a light quark decay.</para>
+</listitem><listitem><para><computeroutput>@property is_from_top_parent -&gt; bool</computeroutput>: Indicates if the particle has a top quark as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_w_parent -&gt; bool</computeroutput>: Indicates if the particle has a W boson as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_z_parent -&gt; bool</computeroutput>: Indicates if the particle has a Z boson as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_h_parent -&gt; bool</computeroutput>: Indicates if the particle has a Higgs boson as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_gluon_parent -&gt; bool</computeroutput>: Indicates if the particle has a gluon as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_quark_parent -&gt; bool</computeroutput>: Indicates if the particle has a quark as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_electron_parent -&gt; bool</computeroutput>: Indicates if the particle has an electron as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_muon_parent -&gt; bool</computeroutput>: Indicates if the particle has a muon as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon_parent -&gt; bool</computeroutput>: Indicates if the particle has a photon as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau_parent -&gt; bool</computeroutput>: Indicates if the particle has a tau lepton as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_b_parent -&gt; bool</computeroutput>: Indicates if the particle has a b quark as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_c_parent -&gt; bool</computeroutput>: Indicates if the particle has a c quark as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_light_parent -&gt; bool</computeroutput>: Indicates if the particle has a light quark as a direct parent.</para>
+</listitem><listitem><para><computeroutput>@property is_from_top_child -&gt; bool</computeroutput>: Indicates if the particle has a top quark as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_w_child -&gt; bool</computeroutput>: Indicates if the particle has a W boson as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_z_child -&gt; bool</computeroutput>: Indicates if the particle has a Z boson as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_h_child -&gt; bool</computeroutput>: Indicates if the particle has a Higgs boson as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_gluon_child -&gt; bool</computeroutput>: Indicates if the particle has a gluon as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_quark_child -&gt; bool</computeroutput>: Indicates if the particle has a quark as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_electron_child -&gt; bool</computeroutput>: Indicates if the particle has an electron as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_muon_child -&gt; bool</computeroutput>: Indicates if the particle has a muon as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon_child -&gt; bool</computeroutput>: Indicates if the particle has a photon as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau_child -&gt; bool</computeroutput>: Indicates if the particle has a tau lepton as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_b_child -&gt; bool</computeroutput>: Indicates if the particle has a b quark as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_c_child -&gt; bool</computeroutput>: Indicates if the particle has a c quark as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_light_child -&gt; bool</computeroutput>: Indicates if the particle has a light quark as a direct child.</para>
+</listitem><listitem><para><computeroutput>@property is_from_top_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a top quark as an ancestor (any level up the decay chain).</para>
+</listitem><listitem><para><computeroutput>@property is_from_w_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a W boson as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_z_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a Z boson as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_h_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a Higgs boson as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_gluon_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a gluon as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_quark_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a quark as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_electron_ancestor -&gt; bool</computeroutput>: Indicates if the particle has an electron as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_muon_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a muon as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a photon as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a tau lepton as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_b_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a b quark as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_c_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a c quark as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_light_ancestor -&gt; bool</computeroutput>: Indicates if the particle has a light quark as an ancestor.</para>
+</listitem><listitem><para><computeroutput>@property is_from_top_descendant -&gt; bool</computeroutput>: Indicates if the particle has a top quark as a descendant (any level down the decay chain).</para>
+</listitem><listitem><para><computeroutput>@property is_from_w_descendant -&gt; bool</computeroutput>: Indicates if the particle has a W boson as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_z_descendant -&gt; bool</computeroutput>: Indicates if the particle has a Z boson as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_h_descendant -&gt; bool</computeroutput>: Indicates if the particle has a Higgs boson as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_gluon_descendant -&gt; bool</computeroutput>: Indicates if the particle has a gluon as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_quark_descendant -&gt; bool</computeroutput>: Indicates if the particle has a quark as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_electron_descendant -&gt; bool</computeroutput>: Indicates if the particle has an electron as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_muon_descendant -&gt; bool</computeroutput>: Indicates if the particle has a muon as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_photon_descendant -&gt; bool</computeroutput>: Indicates if the particle has a photon as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_tau_descendant -&gt; bool</computeroutput>: Indicates if the particle has a tau lepton as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_b_descendant -&gt; bool</computeroutput>: Indicates if the particle has a b quark as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_c_descendant -&gt; bool</computeroutput>: Indicates if the particle has a c quark as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property is_from_light_descendant -&gt; bool</computeroutput>: Indicates if the particle has a light quark as a descendant.</para>
+</listitem><listitem><para><computeroutput>@property parents -&gt; list</computeroutput>: Gets and sets a list of <computeroutput>ParticleTemplate</computeroutput> objects representing the direct parents of this particle.</para>
+</listitem><listitem><para><computeroutput>@property children -&gt; list</computeroutput>: Gets and sets a list of <computeroutput>ParticleTemplate</computeroutput> objects representing the direct children of this particle.</para>
+</listitem><listitem><para><computeroutput>@property ancestors -&gt; list</computeroutput>: Gets and sets a list of <computeroutput>ParticleTemplate</computeroutput> objects representing all ancestors of this particle in the decay chain.</para>
+</listitem><listitem><para><computeroutput>@property descendants -&gt; list</computeroutput>: Gets and sets a list of <computeroutput>ParticleTemplate</computeroutput> objects representing all descendants of this particle in the decay chain.</para>
+</listitem><listitem><para><computeroutput>@property is_final_state -&gt; bool</computeroutput>: Indicates if the particle is a final state particle.</para>
+</listitem><listitem><para><computeroutput>@property is_initial_state -&gt; bool</computeroutput>: Indicates if the particle is an initial state particle.</para>
+</listitem><listitem><para><computeroutput>@property is_intermediate_state -&gt; bool</computeroutput>: Indicates if the particle is an intermediate state particle.</para>
+</listitem><listitem><para><computeroutput>@property is_stable -&gt; bool</computeroutput>: Indicates if the particle is stable.</para>
+</listitem><listitem><para><computeroutput>@property is_unstable -&gt; bool</computeroutput>: Indicates if the particle is unstable.</para>
+</listitem><listitem><para><computeroutput>@property is_charged -&gt; bool</computeroutput>: Indicates if the particle is electrically charged.</para>
+</listitem><listitem><para><computeroutput>@property is_neutral -&gt; bool</computeroutput>: Indicates if the particle is electrically neutral.</para>
+</listitem><listitem><para><computeroutput>@property is_lepton -&gt; bool</computeroutput>: Indicates if the particle is a lepton.</para>
+</listitem><listitem><para><computeroutput>@property is_hadron -&gt; bool</computeroutput>: Indicates if the particle is a hadron.</para>
+</listitem><listitem><para><computeroutput>@property is_boson -&gt; bool</computeroutput>: Indicates if the particle is a boson.</para>
+</listitem><listitem><para><computeroutput>@property is_quark -&gt; bool</computeroutput>: Indicates if the particle is a quark.</para>
+</listitem><listitem><para><computeroutput>@property is_gluon -&gt; bool</computeroutput>: Indicates if the particle is a gluon.</para>
+</listitem><listitem><para><computeroutput>@property is_photon -&gt; bool</computeroutput>: Indicates if the particle is a photon.</para>
+</listitem><listitem><para><computeroutput>@property is_electron -&gt; bool</computeroutput>: Indicates if the particle is an electron.</para>
+</listitem><listitem><para><computeroutput>@property is_muon -&gt; bool</computeroutput>: Indicates if the particle is a muon.</para>
+</listitem><listitem><para><computeroutput>@property is_tau -&gt; bool</computeroutput>: Indicates if the particle is a tau lepton.</para>
+</listitem><listitem><para><computeroutput>@property is_neutrino -&gt; bool</computeroutput>: Indicates if the particle is a neutrino.</para>
+</listitem><listitem><para><computeroutput>@property is_b -&gt; bool</computeroutput>: Indicates if the particle is a b quark.</para>
+</listitem><listitem><para><computeroutput>@property is_c -&gt; bool</computeroutput>: Indicates if the particle is a c quark.</para>
+</listitem><listitem><para><computeroutput>@property is_light -&gt; bool</computeroutput>: Indicates if the particle is a light quark.</para>
+</listitem><listitem><para><computeroutput>@property is_top -&gt; bool</computeroutput>: Indicates if the particle is a top quark.</para>
+</listitem><listitem><para><computeroutput>@property is_w -&gt; bool</computeroutput>: Indicates if the particle is a W boson.</para>
+</listitem><listitem><para><computeroutput>@property is_z -&gt; bool</computeroutput>: Indicates if the particle is a Z boson.</para>
+</listitem><listitem><para><computeroutput>@property is_h -&gt; bool</computeroutput>: Indicates if the particle is a Higgs boson.</para>
+</listitem><listitem><para><computeroutput>@property is_jet -&gt; bool</computeroutput>: Indicates if the particle is a jet.</para>
+</listitem><listitem><para><computeroutput>@property is_bjet -&gt; bool</computeroutput>: Indicates if the particle is a b-tagged jet.</para>
+</listitem><listitem><para><computeroutput>@property is_cjet -&gt; bool</computeroutput>: Indicates if the particle is a c-tagged jet.</para>
+</listitem><listitem><para><computeroutput>@property is_lightjet -&gt; bool</computeroutput>: Indicates if the particle is a light-tagged jet.</para>
+</listitem><listitem><para><computeroutput>@property is_reco -&gt; bool</computeroutput>: Indicates if the particle is a reconstructed particle.</para>
+</listitem><listitem><para><computeroutput>@property is_truth -&gt; bool</computeroutput>: Indicates if the particle is a truth particle.</para>
+</listitem><listitem><para><computeroutput>@property is_parton -&gt; bool</computeroutput>: Indicates if the particle is a parton.</para>
+</listitem><listitem><para><computeroutput>@property is_hardscatter -&gt; bool</computeroutput>: Indicates if the particle is from the hard scatter.</para>
+</listitem><listitem><para><computeroutput>@property is_pileup -&gt; bool</computeroutput>: Indicates if the particle is from pileup.</para>
+</listitem><listitem><para><computeroutput>@property is_signal -&gt; bool</computeroutput>: Indicates if the particle is from the signal.</para>
+</listitem><listitem><para><computeroutput>@property is_event -&gt; bool</computeroutput>: Indicates if the particle is from the event.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ParticleTemplate_page_1ParticleTemplate_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>ParticleTemplate</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ParticleTemplate</computeroutput>: Declares <computeroutput>ParticleTemplate</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef particle_template *ptr</computeroutput>: A C++ pointer to a <computeroutput>particle_template</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport vector</computeroutput>: Imports the C++ <computeroutput>std::vector</computeroutput> type.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, including <computeroutput>env</computeroutput> and <computeroutput>enc</computeroutput> for string conversions.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.particle_template cimport *</computeroutput>: Imports C++ declarations from <computeroutput>particle_template.pxd</computeroutput>, which defines <computeroutput>particle_template</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/particle_template.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,35 @@
+/**
+ * @file event.dox
+ * @brief Detailed documentation for the Event Cython class, a generic event selection for MC16 events.
+ *
+ * @page EventSelection_page Event Selection
+ *
+ * @section EventSelection_intro Introduction
+ * The `Event` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for generic event selection in Monte Carlo 16 (MC16) events. It inherits from the generic `SelectionTemplate` class, providing a foundational structure for event-level filtering. While its `transform_dict_keys` method is currently empty, it serves as a placeholder for potential future data exposure from the underlying C++ event selection logic.
+ *
+ * @section EventSelection_class The Event Class
+ * `Event` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `SelectionTemplate`, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ `event` object, which likely contains the core logic for applying generic event-level selections.
+ *
+ * @subsection EventSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `event` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to an `event*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `event` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection EventSelection_internal_methods Internal Methods
+ * - `cdef void transform_dict_keys(self)`:
+ *   This method is a placeholder from `SelectionTemplate` and is currently empty in this implementation. It is intended to be overridden by subclasses or to be populated if the underlying C++ `event` object exposes data that needs to be converted into Python dictionaries or lists.
+ *
+ * @section EventSelection_cpp_interaction C++ Interaction
+ * The `Event` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class Event`: Declares `Event` as a Cython extension type.
+ * - `cdef event *tt`: A C++ pointer to an `event` object, which is the specialized C++ implementation for event selections.
+ * - `self.ptr = new event()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <event*>self.ptr`: This line demonstrates C++ upcasting, allowing `Event` to fulfill the `SelectionTemplate` interface while internally managing its specific `event` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `Event` inherits.
+ * - `from AnalysisG.core.tools cimport as_dict, as_list`: Imports utility functions for converting between C++ and Python data structures (though not used in the current `transform_dict_keys`).
+ */

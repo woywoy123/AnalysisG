@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="Analysis_page" kind="page">
+    <compoundname>Analysis_page</compoundname>
+    <title>Analysis</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="Analysis_page_1Analysis_intro">
+<title>Introduction</title><para>The <computeroutput>Analysis</computeroutput> class, implemented in Cython, serves as the primary entry point and orchestrator for managing and executing data processing workflows within the AnalysisG framework. It provides a comprehensive interface for configuring and running complex analyses, including the integration of samples, event and graph templates, selection criteria, metric calculations, and machine learning models. This class is designed to streamline the entire analysis pipeline, from data input to result generation, leveraging a high-performance C++ backend for critical operations.</para>
+</sect1>
+<sect1 id="Analysis_page_1Analysis_factory_function">
+<title>factory(title, total)</title><para>A helper function to create and configure a <computeroutput>tqdm</computeroutput> progress bar instance. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>title</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The descriptive title for the progress bar. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>total</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The total number of iterations or steps for the progress bar. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A <computeroutput>tqdm</computeroutput> progress bar instance, configured to be dynamic, leave output, and display a description.</para>
+</simplesect>
+</para>
+</sect1>
+<sect1 id="Analysis_page_1Analysis_class">
+<title>The Analysis Class</title><para><computeroutput>Analysis</computeroutput> is a <computeroutput>cdef class</computeroutput>, signifying its implementation as a Cython extension type. This design enables direct and optimized interaction with an underlying C++ <computeroutput>analysis</computeroutput> object, which handles the heavy lifting of data processing, threading, and resource management. The Python <computeroutput>Analysis</computeroutput> class provides a user-friendly interface to configure and control this powerful backend.</para>
+<sect2 id="Analysis_page_1Analysis_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>analysis</computeroutput> object (<computeroutput>self.ana</computeroutput>) and sets up empty Python lists for storing references to added templates (<computeroutput>selections_</computeroutput>, <computeroutput>graphs_</computeroutput>, <computeroutput>events_</computeroutput>, <computeroutput>models_</computeroutput>, <computeroutput>optim_</computeroutput>) and a dictionary for metadata (<computeroutput>meta_</computeroutput>).</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer, intentionally left empty as primary initialization is handled by <computeroutput>__cinit__</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>analysis</computeroutput> object pointed to by <computeroutput>self.ana</computeroutput> and explicitly calls <computeroutput>gc.collect()</computeroutput> to encourage garbage collection of associated Python objects.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="Analysis_page_1Analysis_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>AddSamples(self, str path, str label)</computeroutput>: Adds data samples to the analysis. These samples are typically ROOT files or directories containing them. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The file path (or directory) to the samples. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>label</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A descriptive label for these samples.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>AddEvent(self, EventTemplate ev, str label)</computeroutput>: Registers an <computeroutput>EventTemplate</computeroutput> with the analysis. This template defines how event-level data should be structured and processed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>EventTemplate</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>label</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A label for this event template.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>AddGraph(self, GraphTemplate ev, str label)</computeroutput>: Registers a <computeroutput>GraphTemplate</computeroutput> with the analysis. This template defines how graph-level data should be structured and processed. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ev</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>GraphTemplate</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>label</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A label for this graph template.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>AddSelection(self, SelectionTemplate selc)</computeroutput>: Registers a <computeroutput>SelectionTemplate</computeroutput> with the analysis. This template defines specific criteria for event selection. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>selc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>SelectionTemplate</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>AddMetric(self, MetricTemplate mex, ModelTemplate mdl)</computeroutput>: Registers a <computeroutput>MetricTemplate</computeroutput> with an associated <computeroutput>ModelTemplate</computeroutput> for evaluation. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mex</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>MetricTemplate</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>mdl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ModelTemplate</computeroutput> that the metric will evaluate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name)</computeroutput>: Registers a <computeroutput>ModelTemplate</computeroutput> for training, along with its <computeroutput>OptimizerConfig</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ModelTemplate</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>op</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>OptimizerConfig</computeroutput> specifying the optimizer parameters. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>run_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A name for this training run.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>AddModelInference(self, ModelTemplate model, str run_name = &quot;run_name&quot;)</computeroutput>: Registers a <computeroutput>ModelTemplate</computeroutput> specifically for inference (prediction) tasks. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>model</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ModelTemplate</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>run_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A name for this inference run. Defaults to &quot;run_name&quot;.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>Start(self)</computeroutput>: Initiates the entire analysis process. This method orchestrates the execution of samples, events, graphs, selections, metrics, and models according to the configured settings.<itemizedlist>
+<listitem><para><bold>Metadata Handling</bold>: Attempts to load cached metadata from <computeroutput>meta_state.pkl</computeroutput>. If <computeroutput>FetchMeta</computeroutput> is enabled, it fetches new metadata using the <computeroutput>Meta</computeroutput> class and caches it.</para>
+</listitem><listitem><para><bold>C++ Backend Start</bold>: Calls <computeroutput>self.ana.start()</computeroutput> to begin the C++-level processing.</para>
+</listitem><listitem><para><bold>Progress Tracking</bold>: Enters a loop to monitor the progress of the C++ backend using <computeroutput>self.ana.progress()</computeroutput>, <computeroutput>self.ana.progress_mode()</computeroutput>, and <computeroutput>self.ana.progress_report()</computeroutput>. It uses <computeroutput>tqdm</computeroutput> progress bars (created by the <computeroutput>factory</computeroutput> function) to display real-time progress.</para>
+</listitem><listitem><para><bold>Dynamic Progress Bars</bold>: Dynamically creates and updates progress bars for different stages or components of the analysis.</para>
+</listitem><listitem><para><bold>Completion Check</bold>: Continuously checks <computeroutput>self.ana.is_complete()</computeroutput> to determine when all tasks are finished.</para>
+</listitem><listitem><para><bold>Reporting</bold>: Prints progress reports and model reports as they become available from the C++ backend.</para>
+</listitem><listitem><para><bold>Error Handling</bold>: Catches <computeroutput>KeyboardInterrupt</computeroutput> to allow graceful exit during long-running processes.</para>
+</listitem><listitem><para><bold>Thread Management</bold>: Calls <computeroutput>self.ana.attach_threads()</computeroutput> to manage C++ threads.</para>
+</listitem><listitem><para><bold>Post-processing</bold>: Calls <computeroutput>transform_dict_keys()</computeroutput> on all registered <computeroutput>SelectionTemplate</computeroutput> instances.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="Analysis_page_1Analysis_properties">
+<title>Properties</title><para>These properties provide extensive configuration options for controlling the behavior of the analysis.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property SumOfWeightsTreeName -&gt; str</computeroutput>: Gets and sets the name of the ROOT tree containing sum-of-weights information.</para>
+</listitem><listitem><para><computeroutput>@property OutputPath -&gt; str</computeroutput>: Gets and sets the base directory path where analysis outputs (e.g., plots, caches, metadata) will be saved.</para>
+</listitem><listitem><para><computeroutput>@property kFolds -&gt; int</computeroutput>: Gets and sets the total number of k-folds for cross-validation.</para>
+</listitem><listitem><para><computeroutput>@property kFold -&gt; list</computeroutput>: Gets and sets a specific k-fold (or list of k-folds) to process.</para>
+</listitem><listitem><para><computeroutput>@property GetMetaData -&gt; MetaLookup</computeroutput>: Retrieves a <computeroutput>MetaLookup</computeroutput> object populated with the metadata collected during the analysis. If metadata is missing, it logs a warning.</para>
+</listitem><listitem><para><computeroutput>@property Epochs -&gt; int</computeroutput>: Gets and sets the number of training epochs for models.</para>
+</listitem><listitem><para><computeroutput>@property NumExamples -&gt; int</computeroutput>: Gets and sets the number of examples to process.</para>
+</listitem><listitem><para><computeroutput>@property TrainingDataset -&gt; str</computeroutput>: Gets and sets the path to the training dataset file (e.g., HDF5). Automatically appends &quot;.h5&quot; if not present.</para>
+</listitem><listitem><para><computeroutput>@property TrainSize -&gt; float</computeroutput>: Gets and sets the fraction of data to use for training (e.g., 0.8 for 80%).</para>
+</listitem><listitem><para><computeroutput>@property Training -&gt; bool</computeroutput>: Gets and sets whether training should be performed.</para>
+</listitem><listitem><para><computeroutput>@property Validation -&gt; bool</computeroutput>: Gets and sets whether validation should be performed.</para>
+</listitem><listitem><para><computeroutput>@property Evaluation -&gt; bool</computeroutput>: Gets and sets whether evaluation should be performed.</para>
+</listitem><listitem><para><computeroutput>@property ContinueTraining -&gt; bool</computeroutput>: Gets and sets whether to continue training from a previous checkpoint.</para>
+</listitem><listitem><para><computeroutput>@property nBins -&gt; int</computeroutput>: Gets and sets the default number of bins for histograms.</para>
+</listitem><listitem><para><computeroutput>@property Refresh -&gt; int</computeroutput>: Gets and sets the refresh rate for progress bars (in milliseconds).</para>
+</listitem><listitem><para><computeroutput>@property MaxRange -&gt; int</computeroutput>: Gets and sets the maximum range for certain data processing operations.</para>
+</listitem><listitem><para><computeroutput>@property VarPt -&gt; str</computeroutput>: Gets and sets the variable name for transverse momentum (pT).</para>
+</listitem><listitem><para><computeroutput>@property VarEta -&gt; str</computeroutput>: Gets and sets the variable name for pseudorapidity (eta).</para>
+</listitem><listitem><para><computeroutput>@property VarPhi -&gt; str</computeroutput>: Gets and sets the variable name for azimuthal angle (phi).</para>
+</listitem><listitem><para><computeroutput>@property VarEnergy -&gt; str</computeroutput>: Gets and sets the variable name for energy.</para>
+</listitem><listitem><para><computeroutput>@property Targets -&gt; list</computeroutput>: Gets and sets a list of target variables for machine learning tasks.</para>
+</listitem><listitem><para><computeroutput>@property DebugMode -&gt; bool</computeroutput>: Gets and sets whether debug mode is enabled, providing more verbose output.</para>
+</listitem><listitem><para><computeroutput>@property Threads -&gt; int</computeroutput>: Gets and sets the number of threads to use for parallel processing.</para>
+</listitem><listitem><para><computeroutput>@property GraphCache -&gt; str</computeroutput>: Gets and sets the path to the graph cache directory.</para>
+</listitem><listitem><para><computeroutput>@property BatchSize -&gt; int</computeroutput>: Gets and sets the batch size for data processing and model training.</para>
+</listitem><listitem><para><computeroutput>@property FetchMeta -&gt; bool</computeroutput>: Gets and sets whether metadata should be fetched from external sources (e.g., PyAMI).</para>
+</listitem><listitem><para><computeroutput>@property BuildCache -&gt; bool</computeroutput>: Gets and sets whether to build a data cache.</para>
+</listitem><listitem><para><computeroutput>@property PreTagEvents -&gt; bool</computeroutput>: Gets and sets whether events should be pre-tagged.</para>
+</listitem><listitem><para><computeroutput>@property SaveSelectionToROOT -&gt; bool</computeroutput>: Gets and sets whether selected events should be saved to a ROOT file.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="Analysis_page_1Analysis_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>Analysis</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Analysis</computeroutput>: Declares <computeroutput>Analysis</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef analysis *ana</computeroutput>: A C++ pointer to an <computeroutput>analysis</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport bool, string, map, pair</computeroutput>: Imports C++ standard library types.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.meta cimport *</computeroutput>, <computeroutput>from AnalysisG.core.tools cimport *</computeroutput>, <computeroutput>from AnalysisG.core.lossfx cimport *</computeroutput>, <computeroutput>from AnalysisG.core.event_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.graph_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.selection_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.metric_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.model_template cimport *</computeroutput>: Imports C++ declarations from corresponding <computeroutput>.pxd</computeroutput> files and Python classes.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.analysis cimport analysis</computeroutput>: Imports the C++ <computeroutput>analysis</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>tqdm</computeroutput>, <computeroutput>pickle</computeroutput>, <computeroutput>gc</computeroutput>, <computeroutput>time.sleep</computeroutput>: Python libraries used for progress bars, object serialization, garbage collection, and pausing execution. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/analysis.dox"/>
+  </compounddef>
+</doxygen>

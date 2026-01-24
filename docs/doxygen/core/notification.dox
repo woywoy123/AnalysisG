@@ -1,0 +1,28 @@
+/**
+ * @file notification.dox
+ * @brief Detailed documentation for the Notification Cython class.
+ *
+ * @page Notification_page Notification
+ *
+ * @section Notification_intro Introduction
+ * The `Notification` class, implemented in Cython, provides a simple wrapper around an underlying C++ notification object within the AnalysisG framework. Its primary purpose is to facilitate communication and logging, offering a Python-friendly interface to C++ notification functionalities. This class is designed to be lightweight and efficient, enabling seamless integration of C++-level notifications into Python-based workflows.
+ *
+ * @section Notification_class The Notification Class
+ * `Notification` is a `cdef class`, indicating its implementation as a Cython extension type. This allows for direct and optimized interaction with the C++ `notification` object. It encapsulates a pointer (`self.ptr`) to a C++ `notification` instance, managing its lifecycle.
+ *
+ * @subsection Notification_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It is intentionally left empty, as the C++ object is initialized in `__init__`.
+ *
+ * - `__init__(self)`:
+ *   The Python initializer. It creates a new C++ `notification` object and assigns its pointer to `self.ptr`.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `notification` object pointed to by `self.ptr`, ensuring proper memory management.
+ *
+ * @section Notification_cpp_interaction C++ Interaction
+ * The `Notification` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class Notification`: Declares `Notification` as a Cython extension type.
+ * - `cdef notification *ptr`: A C++ pointer to a `notification` object, managed by the Cython class.
+ * - `from AnalysisG.core.notification cimport notification`: Imports the C++ `notification` class declaration from its `.pxd` file.
+ */

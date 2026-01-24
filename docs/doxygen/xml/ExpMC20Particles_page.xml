@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ExpMC20Particles_page" kind="page">
+    <compoundname>ExpMC20Particles_page</compoundname>
+    <title>ExpMC20 Particles</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ExpMC20Particles_page_1ExpMC20Particles_intro">
+<title>Introduction</title><para>The <computeroutput>particle_exp_mc20.pyx</computeroutput> module defines a collection of specialized particle classes tailored for experimental Monte Carlo 20 (MC20) events within the AnalysisG framework. These classes, including <computeroutput>Top</computeroutput>, <computeroutput>Child</computeroutput>, <computeroutput>PhysicsDetector</computeroutput>, <computeroutput>PhysicsTruth</computeroutput>, <computeroutput>Electron</computeroutput>, <computeroutput>Muon</computeroutput>, and <computeroutput>Jet</computeroutput>, all inherit from the generic <computeroutput>ParticleTemplate</computeroutput>. They encapsulate specific C++ particle types, providing a high-performance and Python-friendly interface to detailed particle information relevant to MC20 analyses.</para>
+</sect1>
+<sect1 id="ExpMC20Particles_page_1ExpMC20Particles_classes">
+<title>Specialized Particle Classes</title><para>Each class below is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. They all inherit from <computeroutput>ParticleTemplate</computeroutput>, gaining its base functionalities for kinematic, quantum, and relational properties. Their primary role is to wrap a specific C++ particle object, allowing for specialized data access and manipulation.</para>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_Top_class">
+<title>Top Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a top quark particle in experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>top</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>top</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_Child_class">
+<title>Child Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a child particle in a decay chain within experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>child</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>child</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_PhysicsDetector_class">
+<title>PhysicsDetector Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a particle as observed by the detector (reconstructed level) in experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>physics_detector</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>physics_detector</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_PhysicsTruth_class">
+<title>PhysicsTruth Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a truth-level particle (from simulation) in experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>physics_truth</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>physics_truth</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_Electron_class">
+<title>Electron Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents an electron particle in experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>electron</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>electron</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_Muon_class">
+<title>Muon Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a muon particle in experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>muon</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>muon</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ExpMC20Particles_page_1ExpMC20Particles_Jet_class">
+<title>Jet Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a jet particle in experimental MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>jet</computeroutput> object and assigns its pointer to <computeroutput>self.p</computeroutput>. It then upcasts <computeroutput>self.p</computeroutput> to a <computeroutput>particle_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>jet</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ExpMC20Particles_page_1ExpMC20Particles_cpp_interaction">
+<title>C++ Interaction</title><para>All classes in this module leverage Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ...</computeroutput>: Declares each class as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef &lt;cpp_type&gt; *p</computeroutput>: A C++ pointer to a specific particle type (e.g., <computeroutput>top*</computeroutput>, <computeroutput>electron*</computeroutput>), managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>self.ptr = &lt;particle_template*&gt;(self.p)</computeroutput>: This line demonstrates C++ upcasting, where a pointer to a derived class (e.g., <computeroutput>top*</computeroutput>) is assigned to a pointer to its base class (<computeroutput>particle_template*</computeroutput>). This allows the specialized particle classes to fulfill the <computeroutput>ParticleTemplate</computeroutput> interface while internally managing their specific C++ particle data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.events.exp_mc20.particle_exp_mc20 cimport *</computeroutput>: Imports the C++ particle class declarations from their <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.particle_template cimport ParticleTemplate</computeroutput>: Imports the base <computeroutput>ParticleTemplate</computeroutput> class, from which all these specialized classes inherit. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="events/exp_mc20/particle_exp_mc20.dox"/>
+  </compounddef>
+</doxygen>

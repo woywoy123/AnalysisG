@@ -1,0 +1,40 @@
+
+/**
+ * @file pagerank.dox
+ * @brief Detailed documentation for the pagerank_metric class.
+ *
+ * @page pagerank_metric_page PageRank Metric
+ *
+ * @section pagerank_metric_intro Introduction
+ * The `pagerank_metric` class is a specialization of the `metric_template` and is designed to perform PageRank calculations on graph structures. Although the metric implementation is incomplete, this documentation describes the core PageRank algorithm implemented in the class.
+ *
+ * @section pagerank_metric_class The pagerank_metric Class
+ * The `pagerank_metric` class inherits from `metric_template`.
+ *
+ * @subsection pagerank_metric_ctor Constructor and Destructor
+ * - `pagerank_metric()`: The constructor initializes the metric name to "pagerank".
+ * - `~pagerank_metric()`: The destructor.
+ *
+ * @subsection pagerank_metric_methods Methods
+ * - `pagerank_metric* clone()`: Creates a new instance of the `pagerank_metric`.
+ * - `void pagerank(std::map<int, std::map<std::string, std::string>>* clust, std::map<int, std::map<int, float>>* bin_data)`: This method implements the PageRank algorithm.
+ *
+ * @subsection pagerank_metric_pagerank_algo PageRank Algorithm
+ * The `pagerank` method takes a cluster of nodes (`clust`) and a matrix of binary edge data (`bin_data`) as input and calculates the PageRank for each node in the cluster.
+ *
+ * The algorithm proceeds as follows:
+ * 1. **Initialization**:
+ *    - The damping factor `alpha` is set to 0.85.
+ *    - The transition matrix `Mij` is constructed from `bin_data`. The matrix is normalized such that the columns sum to 1.
+ *    - The initial PageRank vector `pr_` is initialized with the diagonal elements of `bin_data`, representing self-links.
+ *
+ * 2. **Iteration**:
+ *    - The algorithm iteratively updates the PageRank vector `PR` until convergence.
+ *    - In each iteration, the new PageRank `pr_` is calculated as: `pr_[i] = alpha * sum(Mij[i][j] * PR[j]) + (1 - alpha) / n_nodes`.
+ *    - The convergence is checked by comparing the norm of the difference between the new and old PageRank vectors.
+ *
+ * 3. **Final Scores**:
+ *    - After convergence, the final PageRank scores are calculated based on the contributions from the other nodes in the graph.
+ *
+ * @note The `define_metric`, `event`, `batch`, and `end` methods are currently not implemented.
+ */

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="graph__template_8dox" kind="file" language="C++">
+    <compoundname>graph_template.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the GraphTemplate Cython class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>graph_template.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>GraphTemplate<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>GraphTemplate_page<sp/>GraphTemplate</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>GraphTemplate_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`GraphTemplate`<sp/>class<sp/>is<sp/>a<sp/>Cython-implemented<sp/>component<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>as<sp/>a<sp/>foundational<sp/>template<sp/>for<sp/>graph-based<sp/>data<sp/>structures.<sp/>Similar<sp/>to<sp/>`EventTemplate`,<sp/>it<sp/>provides<sp/>a<sp/>high-performance<sp/>interface<sp/>to<sp/>an<sp/>underlying<sp/>C++<sp/>graph<sp/>object,<sp/>facilitating<sp/>efficient<sp/>graph<sp/>manipulation<sp/>and<sp/>access<sp/>within<sp/>the<sp/>Python<sp/>environment.<sp/>This<sp/>class<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>inherited<sp/>by<sp/>more<sp/>specialized<sp/>graph<sp/>implementations,<sp/>offering<sp/>common<sp/>functionalities<sp/>for<sp/>graph<sp/>indexing,<sp/>tree<sp/>association,<sp/>and<sp/>pre-selection<sp/>management.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>GraphTemplate_class<sp/>The<sp/>GraphTemplate<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`GraphTemplate`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>signifying<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>This<sp/>allows<sp/>for<sp/>direct<sp/>and<sp/>optimized<sp/>interaction<sp/>with<sp/>C++<sp/>objects<sp/>and<sp/>types.<sp/>It<sp/>encapsulates<sp/>a<sp/>pointer<sp/>(`self.ptr`)<sp/>to<sp/>a<sp/>C++<sp/>`graph_template`<sp/>object,<sp/>managing<sp/>its<sp/>lifecycle<sp/>and<sp/>exposing<sp/>its<sp/>attributes<sp/>and<sp/>methods<sp/>to<sp/>Python.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>GraphTemplate_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>invoked<sp/>during<sp/>object<sp/>allocation.<sp/>If<sp/>the<sp/>instance<sp/>is<sp/>a<sp/>subclass<sp/>of<sp/>`GraphTemplate`,<sp/>it<sp/>returns<sp/>immediately.<sp/>Otherwise,<sp/>it<sp/>instantiates<sp/>a<sp/>new<sp/>C++<sp/>`graph_template`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>memory<sp/>address<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>standard<sp/>Python<sp/>initializer,<sp/>deliberately<sp/>left<sp/>empty<sp/>as<sp/>primary<sp/>initialization<sp/>is<sp/>handled<sp/>by<sp/>`__cinit__`<sp/>and<sp/>the<sp/>encapsulated<sp/>C++<sp/>object.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>It<sp/>checks<sp/>if<sp/>the<sp/>instance<sp/>is<sp/>`GraphTemplate`<sp/>itself<sp/>before<sp/>deallocating<sp/>the<sp/>C++<sp/>`graph_template`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.ptr`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>GraphTemplate_special_methods<sp/>Special<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`__hash__(self)`:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Generates<sp/>a<sp/>hash<sp/>value<sp/>for<sp/>the<sp/>graph<sp/>object.<sp/>It<sp/>converts<sp/>the<sp/>first<sp/>8<sp/>characters<sp/>of<sp/>the<sp/>C++<sp/>object&apos;s<sp/>hash<sp/>string<sp/>to<sp/>an<sp/>integer.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`__eq__(self,<sp/>other)`:</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Determines<sp/>equality<sp/>between<sp/>two<sp/>`GraphTemplate`<sp/>objects.<sp/>It<sp/>first<sp/>verifies<sp/>if<sp/>`other`<sp/>is<sp/>an<sp/>instance<sp/>or<sp/>subclass<sp/>of<sp/>`GraphTemplate`<sp/>using<sp/>`is_self`.<sp/>If<sp/>valid,<sp/>it<sp/>compares<sp/>the<sp/>underlying<sp/>C++<sp/>`graph_template`<sp/>objects<sp/>for<sp/>equality.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`is_self(self,<sp/>inpt)<sp/>-&gt;<sp/>bool`:</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>A<sp/>helper<sp/>method<sp/>to<sp/>ascertain<sp/>if<sp/>the<sp/>provided<sp/>input<sp/>`inpt`<sp/>is<sp/>an<sp/>instance<sp/>of<sp/>`GraphTemplate`<sp/>or<sp/>one<sp/>of<sp/>its<sp/>derived<sp/>classes.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>GraphTemplate_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>These<sp/>properties<sp/>offer<sp/>controlled<sp/>access<sp/>to<sp/>the<sp/>data<sp/>members<sp/>of<sp/>the<sp/>encapsulated<sp/>C++<sp/>`graph_template`<sp/>object.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>index`:</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>the<sp/>integer<sp/>index<sp/>of<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Tree`:</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>the<sp/>name<sp/>of<sp/>the<sp/>primary<sp/>ROOT<sp/>tree<sp/>associated<sp/>with<sp/>the<sp/>graph<sp/>as<sp/>a<sp/>Python<sp/>string.<sp/>It<sp/>utilizes<sp/>the<sp/>`env`<sp/>utility<sp/>function<sp/>for<sp/>C++<sp/>to<sp/>Python<sp/>string<sp/>conversion.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>PreSelection`:</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>the<sp/>pre-selection<sp/>status<sp/>or<sp/>value<sp/>associated<sp/>with<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@PreSelection.setter<sp/>PreSelection(self,<sp/>val)`:</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/>Sets<sp/>the<sp/>pre-selection<sp/>status<sp/>or<sp/>value<sp/>for<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>@section<sp/>GraphTemplate_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>The<sp/>`GraphTemplate`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>GraphTemplate`:<sp/>Declares<sp/>`GraphTemplate`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>graph_template<sp/>*ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`graph_template`<sp/>object,<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>libcpp<sp/>cimport<sp/>int`:<sp/>Imports<sp/>the<sp/>C++<sp/>`int`<sp/>type.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>from<sp/>`tools.pxd`,<sp/>likely<sp/>including<sp/>`env`<sp/>for<sp/>string<sp/>conversions.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>-<sp/>`env(self.ptr.tree)`:<sp/>This<sp/>function<sp/>(presumably<sp/>from<sp/>`AnalysisG.core.tools`)<sp/>handles<sp/>the<sp/>conversion<sp/>from<sp/>C++<sp/>`std::string`<sp/>to<sp/>Python<sp/>`str`.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/graph_template.dox"/>
+  </compounddef>
+</doxygen>

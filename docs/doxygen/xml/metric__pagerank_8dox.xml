@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="metric__pagerank_8dox" kind="file" language="C++">
+    <compoundname>metric_pagerank.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the PageRankMetric Cython class, intended for PageRank-related metrics. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>metric_pagerank.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>PageRankMetric<sp/>Cython<sp/>class,<sp/>intended<sp/>for<sp/>PageRank-related<sp/>metrics.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>PageRankMetric_page<sp/>PageRank<sp/>Metric</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>PageRankMetric_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`PageRankMetric`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>a<sp/>specialized<sp/>metric<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework<sp/>for<sp/>calculating<sp/>and<sp/>analyzing<sp/>PageRank-related<sp/>metrics<sp/>on<sp/>graph<sp/>structures.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>`MetricTemplate`<sp/>class,<sp/>providing<sp/>a<sp/>foundation<sp/>for<sp/>integrating<sp/>PageRank<sp/>calculations<sp/>into<sp/>the<sp/>broader<sp/>analysis<sp/>pipeline.<sp/>While<sp/>the<sp/>provided<sp/>snippet<sp/>is<sp/>incomplete,<sp/>its<sp/>purpose<sp/>is<sp/>to<sp/>leverage<sp/>an<sp/>underlying<sp/>C++<sp/>PageRank<sp/>implementation<sp/>for<sp/>high-performance<sp/>graph<sp/>analysis.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>PageRankMetric_class<sp/>The<sp/>PageRankMetric<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`PageRankMetric`<sp/>is<sp/>a<sp/>`cdef<sp/>class`<sp/>that<sp/>inherits<sp/>from<sp/>`MetricTemplate`.<sp/>This<sp/>indicates<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type,<sp/>allowing<sp/>for<sp/>direct<sp/>and<sp/>optimized<sp/>interaction<sp/>with<sp/>a<sp/>C++<sp/>`pagerank_metric`<sp/>object.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>PageRankMetric_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`pagerank_metric`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.ptr`<sp/>to<sp/>a<sp/>`pagerank_metric*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.mtr`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Python<sp/>initializer.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Cython<sp/>destructor,<sp/>responsible<sp/>for<sp/>deallocating<sp/>the<sp/>C++<sp/>`pagerank_metric`<sp/>object.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@section<sp/>PageRankMetric_technical_details<sp/>Technical<sp/>Details</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>**Cython<sp/>Implementation**:<sp/>The<sp/>class<sp/>is<sp/>implemented<sp/>in<sp/>Cython,<sp/>enabling<sp/>direct<sp/>binding<sp/>to<sp/>C++<sp/>code<sp/>for<sp/>performance.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>**C++<sp/>Backend**:<sp/>It<sp/>relies<sp/>on<sp/>an<sp/>underlying<sp/>C++<sp/>`pagerank_metric`<sp/>class<sp/>(presumably<sp/>defined<sp/>in<sp/>a<sp/>corresponding<sp/>`.pxd`<sp/>file)<sp/>to<sp/>perform<sp/>the<sp/>actual<sp/>PageRank<sp/>calculations.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>**Inheritance**:<sp/>Inherits<sp/>from<sp/>`MetricTemplate`,<sp/>suggesting<sp/>it<sp/>integrates<sp/>into<sp/>the<sp/>generic<sp/>metric<sp/>processing<sp/>pipeline<sp/>of<sp/>AnalysisG.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@section<sp/>PageRankMetric_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>The<sp/>`PageRankMetric`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>PageRankMetric`:<sp/>Declares<sp/>`PageRankMetric`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>pagerank_metric<sp/>*ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`pagerank_metric`<sp/>object,<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>pagerank_metric<sp/>*mtr`:<sp/>An<sp/>additional<sp/>C++<sp/>pointer,<sp/>likely<sp/>for<sp/>specialized<sp/>access<sp/>to<sp/>the<sp/>`pagerank_metric`<sp/>object.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>from<sp/>`tools.pxd`.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.metric_template<sp/>cimport<sp/>MetricTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`MetricTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`PageRankMetric`<sp/>inherits.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="metrics/pagerank/metric_pagerank.dox"/>
+  </compounddef>
+</doxygen>

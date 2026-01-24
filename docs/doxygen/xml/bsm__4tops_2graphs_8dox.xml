@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="bsm__4tops_2graphs_8dox" kind="file" language="C++">
+    <compoundname>graphs.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the graph classes in the bsm_4tops analysis. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>graphs.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>graph<sp/>classes<sp/>in<sp/>the<sp/>bsm_4tops<sp/>analysis.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>bsm_4tops_graphs_page<sp/>bsm_4tops<sp/>Graphs</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>This<sp/>page<sp/>provides<sp/>detailed<sp/>documentation<sp/>for<sp/>the<sp/>various<sp/>graph<sp/>classes<sp/>used<sp/>in<sp/>the<sp/>`bsm_4tops`<sp/>analysis.<sp/>These<sp/>classes<sp/>inherit<sp/>from<sp/>`graph_template`<sp/>and<sp/>define<sp/>the<sp/>specific<sp/>nodes,<sp/>features,<sp/>and<sp/>topologies<sp/>used<sp/>to<sp/>represent<sp/>the<sp/>event<sp/>as<sp/>a<sp/>graph.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_tops<sp/>Graph<sp/>of<sp/>Tops</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_tops`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>where<sp/>each<sp/>node<sp/>is<sp/>a<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_tops_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_tops()`:<sp/>Initializes<sp/>the<sp/>graph<sp/>name<sp/>to<sp/>&quot;graph_tops&quot;.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_tops_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`graph_tops`<sp/>graph.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>Defines<sp/>the<sp/>graph<sp/>structure<sp/>and<sp/>features.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>of<sp/>the<sp/>graph<sp/>are<sp/>the<sp/>top<sp/>quarks<sp/>from<sp/>the<sp/>event<sp/>(`event-&gt;Tops`).</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Graph<sp/>Truth<sp/>Features**:<sp/>`signal`,<sp/>`ntops`.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Node<sp/>Truth<sp/>Features**:<sp/>`top_node`,<sp/>`res_node`.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Edge<sp/>Truth<sp/>Features**:<sp/>`res_edge`.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Graph<sp/>Data<sp/>Features**:<sp/>`met`,<sp/>`phi`,<sp/>`weight`,<sp/>`event_number`.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Node<sp/>Data<sp/>Features**:<sp/>`pt`,<sp/>`eta`,<sp/>`phi`,<sp/>`energy`,<sp/>`charge`.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_children<sp/>Graph<sp/>of<sp/>Top<sp/>Children</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_children`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>where<sp/>each<sp/>node<sp/>is<sp/>a<sp/>decay<sp/>product<sp/>of<sp/>a<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_children_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_children()`:<sp/>Initializes<sp/>the<sp/>graph<sp/>name<sp/>to<sp/>&quot;graph_children&quot;.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_children_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`graph_children`<sp/>graph.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>Defines<sp/>the<sp/>graph<sp/>structure<sp/>and<sp/>features.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>of<sp/>the<sp/>graph<sp/>are<sp/>the<sp/>top<sp/>decay<sp/>products<sp/>from<sp/>the<sp/>event<sp/>(`event-&gt;Children`).</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Topology**:<sp/>A<sp/>fully<sp/>connected<sp/>topology<sp/>is<sp/>used.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Graph<sp/>Truth<sp/>Features**:<sp/>`signal`,<sp/>`n_nu`,<sp/>`n_lep`,<sp/>`ntops`.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Node<sp/>Truth<sp/>Features**:<sp/>`top_node`,<sp/>`res_node`.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Edge<sp/>Truth<sp/>Features**:<sp/>`res_edge`,<sp/>`top_edge`.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Graph<sp/>Data<sp/>Features**:<sp/>`met`,<sp/>`phi`,<sp/>`num_jets`,<sp/>`num_leps`,<sp/>`weight`,<sp/>`event_number`.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Node<sp/>Data<sp/>Features**:<sp/>`pt`,<sp/>`eta`,<sp/>`phi`,<sp/>`energy`,<sp/>`charge`,<sp/>`is_lep`,<sp/>`is_b`,<sp/>`is_nu`.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_truthjets<sp/>Graph<sp/>of<sp/>Truth<sp/>Jets</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_truthjets`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>truth<sp/>jets<sp/>and<sp/>leptonic<sp/>top<sp/>decay<sp/>products.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_truthjets_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_truthjets()`:<sp/>Initializes<sp/>the<sp/>graph<sp/>name<sp/>to<sp/>&quot;graph_truthjets&quot;.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_truthjets_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`graph_truthjets`<sp/>graph.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>Defines<sp/>the<sp/>graph<sp/>structure<sp/>and<sp/>features.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>are<sp/>the<sp/>truth<sp/>jets<sp/>and<sp/>the<sp/>leptonic/neutrino<sp/>decay<sp/>products<sp/>of<sp/>the<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Topology**:<sp/>A<sp/>fully<sp/>connected<sp/>topology<sp/>is<sp/>used.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Features**:<sp/>Similar<sp/>to<sp/>`graph_children`,<sp/>but<sp/>with<sp/>`num_truthjets`<sp/>as<sp/>a<sp/>graph<sp/>data<sp/>feature.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_truthjets_nonu<sp/>Graph<sp/>of<sp/>Truth<sp/>Jets<sp/>(No<sp/>Neutrinos)</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_truthjets_nonu`<sp/>class<sp/>is<sp/>similar<sp/>to<sp/>`graph_truthjets`,<sp/>but<sp/>excludes<sp/>neutrinos<sp/>from<sp/>the<sp/>graph<sp/>nodes.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_truthjets_nonu_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>are<sp/>the<sp/>truth<sp/>jets<sp/>and<sp/>the<sp/>leptonic<sp/>(non-neutrino)<sp/>decay<sp/>products<sp/>of<sp/>the<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Neutrino<sp/>Information**:<sp/>The<sp/>`double_neutrino()`<sp/>method<sp/>is<sp/>called<sp/>to<sp/>add<sp/>information<sp/>about<sp/>the<sp/>neutrinos<sp/>to<sp/>the<sp/>graph,<sp/>even<sp/>though<sp/>they<sp/>are<sp/>not<sp/>included<sp/>as<sp/>nodes.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_jets<sp/>Graph<sp/>of<sp/>Reconstructed<sp/>Jets</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_jets`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>reconstructed<sp/>jets<sp/>and<sp/>leptonic<sp/>top<sp/>decay<sp/>products.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_jets_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_jets()`:<sp/>Initializes<sp/>the<sp/>graph<sp/>name<sp/>to<sp/>&quot;graph_jets&quot;.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_jets_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>PreSelection()`:<sp/>A<sp/>preselection<sp/>method<sp/>that<sp/>can<sp/>be<sp/>used<sp/>to<sp/>filter<sp/>events.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>Defines<sp/>the<sp/>graph<sp/>structure<sp/>and<sp/>features.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>are<sp/>the<sp/>reconstructed<sp/>jets<sp/>and<sp/>the<sp/>leptonic/neutrino<sp/>decay<sp/>products<sp/>of<sp/>the<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Topology**:<sp/>A<sp/>fully<sp/>connected<sp/>topology<sp/>is<sp/>used.</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Features**:<sp/>Similar<sp/>to<sp/>`graph_truthjets`,<sp/>but<sp/>using<sp/>reconstructed<sp/>jets.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_jets_nonu<sp/>Graph<sp/>of<sp/>Reconstructed<sp/>Jets<sp/>(No<sp/>Neutrinos)</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_jets_nonu`<sp/>class<sp/>is<sp/>similar<sp/>to<sp/>`graph_jets`,<sp/>but<sp/>excludes<sp/>neutrinos<sp/>from<sp/>the<sp/>graph<sp/>nodes.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_jets_nonu_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>are<sp/>the<sp/>reconstructed<sp/>jets<sp/>and<sp/>the<sp/>leptonic<sp/>(non-neutrino)<sp/>decay<sp/>products<sp/>of<sp/>the<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Neutrino<sp/>Information**:<sp/>The<sp/>`double_neutrino()`<sp/>method<sp/>is<sp/>called<sp/>to<sp/>add<sp/>information<sp/>about<sp/>the<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_jets_detector_lep<sp/>Graph<sp/>of<sp/>Detector<sp/>Objects<sp/>(with<sp/>Neutrinos)</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_jets_detector_lep`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>all<sp/>detector-level<sp/>objects<sp/>(jets,<sp/>electrons,<sp/>muons)<sp/>and<sp/>truth<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_jets_detector_lep_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>Reconstructed<sp/>jets,<sp/>electrons,<sp/>muons,<sp/>and<sp/>truth<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_graphs_graph_detector<sp/>Graph<sp/>of<sp/>Detector<sp/>Objects<sp/>(No<sp/>Neutrinos)</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_detector`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>all<sp/>detector-level<sp/>objects<sp/>(jets,<sp/>electrons,<sp/>muons).</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_graphs_graph_detector_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>Reconstructed<sp/>jets,<sp/>electrons,<sp/>and<sp/>muons.</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Neutrino<sp/>Information**:<sp/>The<sp/>`double_neutrino()`<sp/>method<sp/>is<sp/>called<sp/>to<sp/>add<sp/>information<sp/>about<sp/>the<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="graphs/bsm_4tops/graphs.dox"/>
+  </compounddef>
+</doxygen>

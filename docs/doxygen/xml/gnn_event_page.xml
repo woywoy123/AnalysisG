@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="gnn_event_page" kind="page">
+    <compoundname>gnn_event_page</compoundname>
+    <title>gnn_event</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="gnn_event_page_1gnn_event_intro">
+<title>Introduction</title><para>The <computeroutput>gnn_event</computeroutput> class is a specialization of the <computeroutput>event_template</computeroutput> designed to handle the output of a Graph Neural Network (GNN). It reads the GNN&apos;s predictions and reconstructs particle objects (tops and Z&apos; primes) based on these predictions.</para>
+</sect1>
+<sect1 id="gnn_event_page_1gnn_event_class">
+<title>The gnn_event Class</title><para>The <computeroutput>gnn_event</computeroutput> class inherits from <computeroutput>event_template</computeroutput> and implements its virtual methods to provide event-specific functionality.</para>
+<sect2 id="gnn_event_page_1gnn_event_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>gnn_event()</computeroutput>: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.</para>
+</listitem><listitem><para><computeroutput>~gnn_event()</computeroutput>: The destructor deregisters the particle collections created during the event processing.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_event_page_1gnn_event_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>event_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>gnn_event</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>void build(element_t* el)</computeroutput>: Populates the event&apos;s data members with the GNN predictions and truth information from the input data element.</para>
+</listitem><listitem><para><computeroutput>void CompileEvent()</computeroutput>: This is the core method of the class. It reconstructs the event by clustering the GNN nodes into particle objects based on the predicted edge scores. This includes:<itemizedlist>
+<listitem><para><bold>Clustering</bold>: A PageRank-based clustering algorithm is used to group nodes into top and Z&apos; candidates based on the <computeroutput>edge_top_scores</computeroutput> and <computeroutput>edge_res_scores</computeroutput> respectively.</para>
+</listitem><listitem><para><bold>Truth Reconstruction</bold>: The same clustering is applied to the truth-level edge information (<computeroutput>t_edge_top</computeroutput> and <computeroutput>t_edge_res</computeroutput>) to reconstruct the true top and Z&apos; particles.</para>
+</listitem><listitem><para><bold>Particle Creation</bold>: For each cluster, a <computeroutput>top</computeroutput> or <computeroutput>zprime</computeroutput> particle is created, and its kinematic properties are calculated by summing the four-vectors of its constituent nodes.</para>
+</listitem><listitem><para><bold>Vectorization</bold>: The reconstructed and truth particle collections are vectorized for easier access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_event_page_1gnn_event_predictions">
+<title>GNN Predictions</title><para>The <computeroutput>gnn_event</computeroutput> class stores the following GNN predictions:<itemizedlist>
+<listitem><para><computeroutput>edge_res_scores</computeroutput>: The predicted probability of each edge being part of a Z&apos; decay.</para>
+</listitem><listitem><para><computeroutput>edge_top_scores</computeroutput>: The predicted probability of each edge being part of a top quark decay.</para>
+</listitem><listitem><para><computeroutput>ntops_scores</computeroutput>: The predicted probability distribution for the number of top quarks in the event.</para>
+</listitem><listitem><para><computeroutput>signal_scores</computeroutput>: The predicted probability of the event being a signal event.</para>
+</listitem><listitem><para><computeroutput>p_signal</computeroutput>: The predicted signal class (boolean).</para>
+</listitem><listitem><para><computeroutput>s_signal</computeroutput>: The signal score.</para>
+</listitem><listitem><para><computeroutput>p_ntops</computeroutput>: The predicted number of top quarks.</para>
+</listitem><listitem><para><computeroutput>s_ntops</computeroutput>: The score for the predicted number of top quarks.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_event_page_1gnn_event_truth">
+<title>Truth Information</title><para>The <computeroutput>gnn_event</computeroutput> class also stores the following truth information:<itemizedlist>
+<listitem><para><computeroutput>t_ntops</computeroutput>: The true number of top quarks.</para>
+</listitem><listitem><para><computeroutput>t_signal</computeroutput>: The true signal label.</para>
+</listitem><listitem><para><computeroutput>t_edge_res</computeroutput>: The true Z&apos; edge labels.</para>
+</listitem><listitem><para><computeroutput>t_edge_top</computeroutput>: The true top edge labels.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_event_page_1gnn_event_reco">
+<title>Reconstructed Particles</title><para><itemizedlist>
+<listitem><para><computeroutput>r_zprime</computeroutput>: A vector of reconstructed <computeroutput>zprime</computeroutput> particles.</para>
+</listitem><listitem><para><computeroutput>r_tops</computeroutput>: A vector of reconstructed <computeroutput>top</computeroutput> particles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_event_page_1gnn_event_truth_particles">
+<title>Truth Particles</title><para><itemizedlist>
+<listitem><para><computeroutput>t_zprime</computeroutput>: A vector of truth-level <computeroutput>zprime</computeroutput> particles.</para>
+</listitem><listitem><para><computeroutput>t_tops</computeroutput>: A vector of truth-level <computeroutput>top</computeroutput> particles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_event_page_1gnn_event_nodes">
+<title>Event Particles</title><para><itemizedlist>
+<listitem><para><computeroutput>event_particles</computeroutput>: A vector of the input <computeroutput>particle_gnn</computeroutput> nodes to the GNN. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/gnn/event.dox"/>
+  </compounddef>
+</doxygen>

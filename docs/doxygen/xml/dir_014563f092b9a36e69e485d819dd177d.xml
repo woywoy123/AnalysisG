@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dir_014563f092b9a36e69e485d819dd177d" kind="dir">
+    <compoundname>graphs</compoundname>
+    <innerdir refid="dir_0b245b1405edd58251adf99dc048dd17">graphs/bsm_4tops</innerdir>
+    <innerdir refid="dir_b10912f1a09fe7b891e27c82af01f9d0">graphs/exp_mc20</innerdir>
+    <innerdir refid="dir_d0a8bdc5043d45daff3ee7d468cbf7db">graphs/ssml_mc20</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="graphs/"/>
+  </compounddef>
+</doxygen>

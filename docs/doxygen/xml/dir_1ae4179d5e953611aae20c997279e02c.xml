@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dir_1ae4179d5e953611aae20c997279e02c" kind="dir">
+    <compoundname>models</compoundname>
+    <innerdir refid="dir_84c920c1d5812ef6877905e563bf9263">models/Grift</innerdir>
+    <innerdir refid="dir_fe57f14a16ecd34363a14f9de1fd51f9">models/RecursiveGraphNeuralNetwork</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="models/"/>
+  </compounddef>
+</doxygen>

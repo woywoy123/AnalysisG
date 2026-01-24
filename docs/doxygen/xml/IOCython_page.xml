@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="IOCython_page" kind="page">
+    <compoundname>IOCython_page</compoundname>
+    <title>IO</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="IOCython_page_1IOCython_intro">
+<title>Introduction</title><para>The <computeroutput>IO</computeroutput> class, implemented in Cython, is a critical component of the AnalysisG framework, providing high-performance input/output operations primarily for ROOT files. It acts as an interface between the Python environment and an underlying C++ I/O engine, enabling efficient data reading, metadata management, and iteration over complex event structures. This class is designed to streamline the process of accessing and processing experimental data, often involving large datasets.</para>
+</sect1>
+<sect1 id="IOCython_page_1IOCython_class">
+<title>The IO Class</title><para><computeroutput>IO</computeroutput> is a <computeroutput>cdef class</computeroutput>, signifying its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types, which is essential for handling ROOT files efficiently. It encapsulates a pointer (<computeroutput>self.ptr</computeroutput>) to a C++ <computeroutput>io</computeroutput> object, managing its lifecycle and exposing its functionalities to Python.</para>
+<sect2 id="IOCython_page_1IOCython_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>io</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It also initializes <computeroutput>self.data_ops</computeroutput> to <computeroutput>NULL</computeroutput> and <computeroutput>self.meta_data</computeroutput> as an empty Python dictionary. It triggers a PCM (presumably &quot;Progress Control Mechanism&quot;) using <computeroutput>self.ptr.trigger_pcm()</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, root = [])</computeroutput>: The Python initializer. It takes an optional <computeroutput>root</computeroutput> argument, which can be a list of ROOT file paths or a single path string. It initializes <computeroutput>self.prg</computeroutput> (for <computeroutput>tqdm</computeroutput> progress bar) to <computeroutput>None</computeroutput> and sets <computeroutput>self.Files</computeroutput> property based on the <computeroutput>root</computeroutput> input. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>root</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A list of ROOT file paths or a single ROOT file path string.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It calls <computeroutput>self.ptr.root_end()</computeroutput> to finalize ROOT operations and then deallocates the C++ <computeroutput>io</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="IOCython_page_1IOCython_special_methods">
+<title>Special Methods (Iterator Protocol)</title><para>The <computeroutput>IO</computeroutput> class implements the Python iterator protocol, allowing it to be used directly in <computeroutput>for</computeroutput> loops.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>__len__(self)</computeroutput>: Returns the maximum number of entries across all ROOT files managed by the <computeroutput>IO</computeroutput> object. This is typically used by <computeroutput>tqdm</computeroutput> to determine the total progress. <simplesect kind="return"><para>The maximum size (number of entries) of the ROOT files.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>__iter__(self)</computeroutput>: Initializes the iterator. If a progress bar (<computeroutput>self.prg</computeroutput>) is not already initialized, it creates a <computeroutput>tqdm</computeroutput> instance. It then calls <computeroutput>self.ptr.root_begin()</computeroutput> to prepare the C++ I/O engine for reading and retrieves the data operations pointer (<computeroutput>self.data_ops</computeroutput>). It also clears <computeroutput>self.skip</computeroutput> (a dictionary used to track processed files) and returns <computeroutput>self</computeroutput>. <simplesect kind="return"><para>The <computeroutput>IO</computeroutput> class instance, configured as an iterator.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>__next__(self)</computeroutput>: Retrieves the next data item during iteration.<itemizedlist>
+<listitem><para>It iterates through the <computeroutput>data_ops</computeroutput> (a C++ map of file paths to <computeroutput>data_t</computeroutput> pointers).</para>
+</listitem><listitem><para>For each file, it checks <computeroutput>self.skip</computeroutput> to see if it has been fully processed.</para>
+</listitem><listitem><para>It uses <computeroutput>switch_board(itr.second)</computeroutput> to convert the C++ <computeroutput>data_t</computeroutput> object into a Python dictionary, merging it into <computeroutput>output</computeroutput>.</para>
+</listitem><listitem><para>It updates <computeroutput>self.skip</computeroutput> for the current file based on <computeroutput>itr.second.next()</computeroutput>, which advances the C++ data pointer.</para>
+</listitem><listitem><para>If no data is retrieved (i.e., <computeroutput>output</computeroutput> is empty), it means iteration is complete, so it calls <computeroutput>self.ptr.root_end()</computeroutput>, resets <computeroutput>self.prg</computeroutput>, and raises <computeroutput>StopIteration</computeroutput>.</para>
+</listitem><listitem><para>It updates the <computeroutput>tqdm</computeroutput> progress bar and adds the <computeroutput>filename</computeroutput> to the output dictionary. <simplesect kind="return"><para>A dictionary containing the next data item from the ROOT files. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>StopIteration</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>When all data from all configured ROOT files has been processed.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="IOCython_page_1IOCython_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cpdef dict MetaData(self)</computeroutput>: Retrieves metadata associated with the ROOT files. It populates <computeroutput>self.meta_data</computeroutput> by iterating through <computeroutput>self.ptr.meta_data</computeroutput> (a C++ map of file paths to <computeroutput>meta</computeroutput> objects). For each <computeroutput>meta</computeroutput> object, it creates a Python <computeroutput>Meta</computeroutput> object and potentially enables PyAMI processing if <computeroutput>self.EnablePyAMI</computeroutput> is true. <simplesect kind="return"><para>A dictionary where keys are file paths (Python strings) and values are <computeroutput>Meta</computeroutput> objects containing metadata.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cpdef void ScanKeys(self)</computeroutput>: Triggers the underlying C++ I/O engine to scan the keys (trees, branches, leaves) present in the configured ROOT files. This populates the <computeroutput>self.ptr.keys</computeroutput> structure.</para>
+</listitem><listitem><para><computeroutput>cpdef void begin(self)</computeroutput>: Explicitly calls <computeroutput>self.ptr.root_begin()</computeroutput> to initialize the ROOT I/O structure. This is typically handled by <computeroutput>__iter__</computeroutput> but can be called manually.</para>
+</listitem><listitem><para><computeroutput>cpdef void end(self)</computeroutput>: Explicitly calls <computeroutput>self.ptr.root_end()</computeroutput> to finalize the ROOT I/O structure and release resources. This is typically handled by <computeroutput>__dealloc__</computeroutput> or <computeroutput>__next__</computeroutput> (on <computeroutput>StopIteration</computeroutput>) but can be called manually.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="IOCython_page_1IOCython_properties">
+<title>Properties</title><para>These properties provide controlled access to the configuration and state of the <computeroutput>IO</computeroutput> object.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property Verbose</computeroutput>: Controls the verbosity of the underlying C++ I/O operations.<itemizedlist>
+<listitem><para><computeroutput>@Verbose.getter Verbose(self)</computeroutput>: Returns <computeroutput>True</computeroutput> if verbose output is enabled, <computeroutput>False</computeroutput> otherwise.</para>
+</listitem><listitem><para><computeroutput>@Verbose.setter Verbose(self, bool val)</computeroutput>: Sets the verbosity. <computeroutput>True</computeroutput> enables verbose, <computeroutput>False</computeroutput> disables it.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property EnablePyAMI</computeroutput>: Controls whether PyAMI (ATLAS Metadata Interface) integration is enabled for metadata processing.<itemizedlist>
+<listitem><para><computeroutput>@EnablePyAMI.getter EnablePyAMI(self)</computeroutput>: Returns <computeroutput>True</computeroutput> if PyAMI is enabled, <computeroutput>False</computeroutput> otherwise.</para>
+</listitem><listitem><para><computeroutput>@EnablePyAMI.setter EnablePyAMI(self, val)</computeroutput>: Sets the PyAMI state.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property MetaCachePath</computeroutput>: Manages the file path for caching metadata.<itemizedlist>
+<listitem><para><computeroutput>@MetaCachePath.getter MetaCachePath(self)</computeroutput>: Returns the metadata cache path as a Python string.</para>
+</listitem><listitem><para><computeroutput>@MetaCachePath.setter MetaCachePath(self, val)</computeroutput>: Sets the metadata cache path.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Trees</computeroutput>: Manages the list of ROOT tree names to be read.<itemizedlist>
+<listitem><para><computeroutput>@Trees.getter Trees(self)</computeroutput>: Returns a list of tree names as Python strings.</para>
+</listitem><listitem><para><computeroutput>@Trees.setter Trees(self, val)</computeroutput>: Sets the tree names. Accepts a single string or a list of strings.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property SumOfWeightsTreeName</computeroutput>: Manages the name of the ROOT tree that contains the sum of weights information.<itemizedlist>
+<listitem><para><computeroutput>@SumOfWeightsTreeName.getter SumOfWeightsTreeName(self)</computeroutput>: Returns the sum of weights tree name as a Python string.</para>
+</listitem><listitem><para><computeroutput>@SumOfWeightsTreeName.setter SumOfWeightsTreeName(self, str val)</computeroutput>: Sets the sum of weights tree name.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Branches</computeroutput>: Manages the list of ROOT branch names to be read.<itemizedlist>
+<listitem><para><computeroutput>@Branches.getter Branches(self)</computeroutput>: Returns a list of branch names as Python strings.</para>
+</listitem><listitem><para><computeroutput>@Branches.setter Branches(self, val)</computeroutput>: Sets the branch names. Accepts a single string or a list of strings.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Leaves</computeroutput>: Manages the list of ROOT leaf names to be read.<itemizedlist>
+<listitem><para><computeroutput>@Leaves.getter Leaves(self)</computeroutput>: Returns a list of leaf names as Python strings.</para>
+</listitem><listitem><para><computeroutput>@Leaves.setter Leaves(self, val)</computeroutput>: Sets the leaf names. Accepts a single string or a list of strings.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Files</computeroutput>: Manages the list of ROOT file paths to be processed.<itemizedlist>
+<listitem><para><computeroutput>@Files.getter Files(self)</computeroutput>: Returns a list of valid ROOT file paths as Python strings. It calls <computeroutput>self.ptr.check_root_file_paths()</computeroutput> to validate paths.</para>
+</listitem><listitem><para><computeroutput>@Files.setter Files(self, val)</computeroutput>: Sets the ROOT file paths. Accepts a single string or a list of strings. It clears existing files if <computeroutput>val</computeroutput> is empty and then validates the new paths.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Keys</computeroutput>: Retrieves a nested dictionary representing the structure of keys (trees, branches, leaves) found in the ROOT files. It calls <computeroutput>self.ptr.scan_keys()</computeroutput> to ensure the keys are up-to-date. <simplesect kind="return"><para>A dictionary: <computeroutput>filename -&gt; tree_name -&gt; branch_name -&gt; [leaf_names]</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="IOCython_page_1IOCython_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>IO</computeroutput> class heavily relies on Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class IO</computeroutput>: Declares <computeroutput>IO</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef io *ptr</computeroutput>: A C++ pointer to an <computeroutput>io</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport bool, map, pair, string, vector</computeroutput>: Imports C++ standard library types.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.io cimport io</computeroutput>: Imports the C++ <computeroutput>io</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>, <computeroutput>from AnalysisG.core.meta cimport Meta, meta</computeroutput>, <computeroutput>from AnalysisG.core.structs cimport data_t, data_enum, switch_board</computeroutput>: Imports C++ declarations from corresponding <computeroutput>.pxd</computeroutput> files.</para>
+</listitem><listitem><para><computeroutput>tqdm</computeroutput>: Used for displaying progress bars in the console.</para>
+</listitem><listitem><para><computeroutput>dereference as deref</computeroutput>: Used to dereference C++ pointers.</para>
+</listitem><listitem><para><computeroutput>env</computeroutput>, <computeroutput>enc</computeroutput>, <computeroutput>env_vec</computeroutput>, <computeroutput>enc_list</computeroutput>: Utility functions (presumably from <computeroutput>AnalysisG.core.tools</computeroutput>) for converting between Python and C++ data types (strings, lists, vectors).</para>
+</listitem><listitem><para><computeroutput>data_t*</computeroutput>: Pointer to a C++ <computeroutput>data_t</computeroutput> structure, representing data from a ROOT tree entry.</para>
+</listitem><listitem><para><computeroutput>meta*</computeroutput>: Pointer to a C++ <computeroutput>meta</computeroutput> structure, representing metadata.</para>
+</listitem><listitem><para><computeroutput>switch_board</computeroutput>: A function (likely from <computeroutput>AnalysisG.core.structs</computeroutput>) to convert C++ <computeroutput>data_t</computeroutput> to a Python dictionary. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/io.dox"/>
+  </compounddef>
+</doxygen>

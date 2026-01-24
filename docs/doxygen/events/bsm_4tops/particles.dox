@@ -1,0 +1,136 @@
+
+/**
+ * @file particles.dox
+ * @brief Detailed documentation for the particles in the bsm_4tops event.
+ *
+ * @page bsm_4tops_particles_page bsm_4tops Particles
+ *
+ * This page provides detailed documentation for the various particle classes used in the `bsm_4tops` event. These classes inherit from `particle_template` and define the specific properties and behaviors of each particle type.
+ *
+ * @section bsm_4tops_particles_top Top
+ * The `top` class represents a top quark in the event.
+ *
+ * @subsection bsm_4tops_particles_top_ctor Constructor
+ * - `top()`: Initializes the particle type to "top" and defines the data leaves to be read from the input tree.
+ *
+ * @subsection bsm_4tops_particles_top_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `top` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `top` particle's properties from the input data.
+ *
+ * @subsection bsm_4tops_particles_top_attributes Attributes
+ * - `from_res`: A boolean flag indicating if the top quark originates from a resonance.
+ * - `status`: The status code of the top quark from the Monte Carlo truth record.
+ * - `TruthJets`: A vector of `truthjet` pointers that are associated with this top quark.
+ * - `Jets`: A vector of `jet` pointers that are associated with this top quark.
+ *
+ * @section bsm_4tops_particles_children Top Children
+ * The `top_children` class represents the decay products of a top quark.
+ *
+ * @subsection bsm_4tops_particles_children_ctor Constructor
+ * - `top_children()`: Initializes the particle type to "children" and defines the data leaves. It also sets up a getter function for the `from_res` attribute.
+ *
+ * @subsection bsm_4tops_particles_children_methods Methods
+ * - `void get_from_res(bool* val, top_children* prt)`: A static method that determines if the top child originates from a resonant top quark by checking its parent particles.
+ * - `particle_template* clone()`: Creates a new instance of the `top_children` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `top_children` particle's properties from the input data.
+ *
+ * @subsection bsm_4tops_particles_children_attributes Attributes
+ * - `top_index`: The index of the parent top quark.
+ * - `is_lep`: A boolean flag indicating if the child is a lepton.
+ * - `from_res`: A boolean flag indicating if the child originates from a resonance (obtained via the `get_from_res` getter).
+ *
+ * @section bsm_4tops_particles_truthjet Truth Jets
+ * The `truthjet` class represents a truth-level jet.
+ *
+ * @subsection bsm_4tops_particles_truthjet_ctor Constructor
+ * - `truthjet()`: Initializes the particle type to "truthjets" and defines the data leaves. It also sets up a getter for the `from_res` attribute.
+ *
+ * @subsection bsm_4tops_particles_truthjet_methods Methods
+ * - `void get_from_res(bool* val, truthjet* prt)`: A static method that determines if the truth jet originates from a resonant top quark by checking its associated tops.
+ * - `particle_template* clone()`: Creates a new instance of the `truthjet` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `truthjet` particle's properties from the input data.
+ *
+ * @subsection bsm_4tops_particles_truthjet_attributes Attributes
+ * - `top_index`: A vector of indices of the associated top quarks.
+ * - `top_quark_count`: The number of top quarks associated with the jet.
+ * - `w_boson_count`: The number of W bosons associated with the jet.
+ * - `Parton`: A vector of `truthjetparton` pointers that are constituents of this truth jet.
+ * - `Tops`: A vector of `top` pointers that this truth jet is associated with.
+ * - `from_res`: A boolean flag indicating if the jet originates from a resonance.
+ *
+ * @section bsm_4tops_particles_truthjetparton Truth Jet Partons
+ * The `truthjetparton` class represents a parton associated with a truth jet.
+ *
+ * @subsection bsm_4tops_particles_truthjetparton_ctor Constructor
+ * - `truthjetparton()`: Initializes the particle type to "TJparton" and defines the data leaves.
+ *
+ * @subsection bsm_4tops_particles_truthjetparton_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `truthjetparton` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `truthjetparton` particle's properties from the input data.
+ *
+ * @subsection bsm_4tops_particles_truthjetparton_attributes Attributes
+ * - `truthjet_index`: The index of the parent truth jet.
+ * - `topchild_index`: A vector of indices of the associated top children.
+ *
+ * @section bsm_4tops_particles_jet Jets
+ * The `jet` class represents a reconstructed jet.
+ *
+ * @subsection bsm_4tops_particles_jet_ctor Constructor
+ * - `jet()`: Initializes the particle type to "jet" and defines the data leaves, including various b-tagging discriminants. It also sets up a getter for the `from_res` attribute.
+ *
+ * @subsection bsm_4tops_particles_jet_methods Methods
+ * - `void get_from_res(bool* val, jet* prt)`: A static method that determines if the jet originates from a resonant top quark by checking its associated tops.
+ * - `particle_template* clone()`: Creates a new instance of the `jet` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `jet` particle's properties from the input data.
+ *
+ * @subsection bsm_4tops_particles_jet_attributes Attributes
+ * - `top_index`: A vector of indices of the associated top quarks.
+ * - `btag_DL1r_60`, `btag_DL1_60`, etc.: Boolean flags for different b-tagging working points.
+ * - `DL1_b`, `DL1_c`, `DL1_u`, etc.: The values of the DL1 and DL1r b-tagging discriminants.
+ * - `is_b`: A boolean flag indicating if the jet is b-tagged (using the DL1r 85% working point).
+ * - `Parton`: A vector of `jetparton` pointers that are constituents of this jet.
+ * - `Tops`: A vector of `top` pointers that this jet is associated with.
+ * - `from_res`: A boolean flag indicating if the jet originates from a resonance.
+ *
+ * @section bsm_4tops_particles_jetparton Jet Partons
+ * The `jetparton` class represents a parton associated with a reconstructed jet.
+ *
+ * @subsection bsm_4tops_particles_jetparton_ctor Constructor
+ * - `jetparton()`: Initializes the particle type to "Jparton" and defines the data leaves.
+ *
+ * @subsection bsm_4tops_particles_jetparton_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `jetparton` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `jetparton` particle's properties from the input data.
+ *
+ * @subsection bsm_4tops_particles_jetparton_attributes Attributes
+ * - `jet_index`: The index of the parent jet.
+ * - `topchild_index`: A vector of indices of the associated top children.
+ *
+ * @section bsm_4tops_particles_electron Electron
+ * The `electron` class represents a reconstructed electron.
+ *
+ * @subsection bsm_4tops_particles_electron_ctor Constructor
+ * - `electron()`: Initializes the particle type to "el" and defines the data leaves.
+ *
+ * @subsection bsm_4tops_particles_electron_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `electron` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `electron` particle's properties from the input data.
+ *
+ * @subsection bsp_4tops_particles_electron_attributes Attributes
+ * - `from_res`: A boolean indicating if the electron originates from a resonance.
+ * - `top_index`: The index of the parent top quark.
+ *
+ * @section bsm_4tops_particles_muon Muon
+ * The `muon` class represents a reconstructed muon.
+ *
+ * @subsection bsm_4tops_particles_muon_ctor Constructor
+ * - `muon()`: Initializes the particle type to "mu" and defines the data leaves.
+ *
+ * @subsection bsm_4tops_particles_muon_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `muon` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `muon` particle's properties from the input data.
+ *
+ * @subsection bsp_4tops_particles_muon_attributes Attributes
+ * - `from_res`: A boolean indicating if the muon originates from a resonance.
+ * - `top_index`: The index of the parent top quark.
+ */

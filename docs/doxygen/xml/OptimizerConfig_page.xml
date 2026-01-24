@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="OptimizerConfig_page" kind="page">
+    <compoundname>OptimizerConfig_page</compoundname>
+    <title>OptimizerConfig</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="OptimizerConfig_page_1OptimizerConfig_intro">
+<title>Introduction</title><para>The <computeroutput>OptimizerConfig</computeroutput> class, implemented in Cython, serves as a configuration container for various optimization parameters within the AnalysisG framework. It provides a structured and efficient way to define and manage settings for different optimizers, leveraging an underlying C++ <computeroutput>optimizer_params_t</computeroutput> structure for high-performance access and manipulation. This class is crucial for fine-tuning the training process of machine learning models by allowing precise control over optimizer behavior.</para>
+</sect1>
+<sect1 id="OptimizerConfig_page_1OptimizerConfig_class">
+<title>The OptimizerConfig Class</title><para><computeroutput>OptimizerConfig</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. This design choice enables direct and optimized interaction with C++ data structures, which is beneficial for performance-critical applications. It encapsulates a pointer (<computeroutput>self.params</computeroutput>) to a C++ <computeroutput>optimizer_params_t</computeroutput> object, managing its lifecycle and exposing its parameters as Python properties.</para>
+<sect2 id="OptimizerConfig_page_1OptimizerConfig_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>optimizer_params_t</computeroutput> object and assigns its pointer to <computeroutput>self.params</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer, intentionally left empty as primary initialization is handled by <computeroutput>__cinit__</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>optimizer_params_t</computeroutput> object pointed to by <computeroutput>self.params</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="OptimizerConfig_page_1OptimizerConfig_properties">
+<title>Properties</title><para>These properties provide controlled access to the various parameters of the encapsulated C++ <computeroutput>optimizer_params_t</computeroutput> object. Each property has a getter and a setter, allowing for both retrieval and modification of the optimizer&apos;s configuration.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property Optimizer -&gt; str</computeroutput>: Gets and sets the name of the optimizer (e.g., &quot;Adam&quot;, &quot;SGD&quot;).</para>
+</listitem><listitem><para><computeroutput>@property lr -&gt; double</computeroutput>: Gets and sets the learning rate for the optimizer.</para>
+</listitem><listitem><para><computeroutput>@property lr_decay -&gt; double</computeroutput>: Gets and sets the learning rate decay factor.</para>
+</listitem><listitem><para><computeroutput>@property weight_decay -&gt; double</computeroutput>: Gets and sets the weight decay (L2 penalty) for regularization.</para>
+</listitem><listitem><para><computeroutput>@property initial_accumulator_value -&gt; double</computeroutput>: Gets and sets the initial value for the accumulators in optimizers like Adagrad.</para>
+</listitem><listitem><para><computeroutput>@property eps -&gt; double</computeroutput>: Gets and sets a small constant for numerical stability (e.g., in Adam, Adagrad).</para>
+</listitem><listitem><para><computeroutput>@property tolerance_grad -&gt; double</computeroutput>: Gets and sets the tolerance for the gradient in some optimizers.</para>
+</listitem><listitem><para><computeroutput>@property tolerance_change -&gt; double</computeroutput>: Gets and sets the tolerance for change in some optimizers.</para>
+</listitem><listitem><para><computeroutput>@property alpha -&gt; double</computeroutput>: Gets and sets the alpha parameter, often used in RMSprop.</para>
+</listitem><listitem><para><computeroutput>@property momentum -&gt; double</computeroutput>: Gets and sets the momentum factor, used in optimizers like SGD with momentum.</para>
+</listitem><listitem><para><computeroutput>@property dampening -&gt; double</computeroutput>: Gets and sets the dampening factor for momentum.</para>
+</listitem><listitem><para><computeroutput>@property amsgrad -&gt; bool</computeroutput>: Gets and sets whether to use the AMSGrad variant of Adam.</para>
+</listitem><listitem><para><computeroutput>@property centered -&gt; bool</computeroutput>: Gets and sets whether to use the centered RMSprop, which estimates the variance of the gradient.</para>
+</listitem><listitem><para><computeroutput>@property nesterov -&gt; bool</computeroutput>: Gets and sets whether to use Nesterov momentum.</para>
+</listitem><listitem><para><computeroutput>@property max_iter -&gt; int</computeroutput>: Gets and sets the maximum number of iterations for some optimizers.</para>
+</listitem><listitem><para><computeroutput>@property max_eval -&gt; int</computeroutput>: Gets and sets the maximum number of function evaluations for some optimizers.</para>
+</listitem><listitem><para><computeroutput>@property history_size -&gt; int</computeroutput>: Gets and sets the history size for optimizers like L-BFGS.</para>
+</listitem><listitem><para><computeroutput>@property betas -&gt; tuple</computeroutput>: Gets and sets the beta parameters (e.g., <computeroutput>(beta1, beta2)</computeroutput> for Adam). The setter expects a Python tuple of two floats, which are then converted to a C++ <computeroutput>vector&lt;float&gt;</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="OptimizerConfig_page_1OptimizerConfig_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>OptimizerConfig</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class OptimizerConfig</computeroutput>: Declares <computeroutput>OptimizerConfig</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef optimizer_params_t *params</computeroutput>: A C++ pointer to an <computeroutput>optimizer_params_t</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport float</computeroutput>: Imports the C++ <computeroutput>float</computeroutput> type.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, likely including <computeroutput>env</computeroutput> and <computeroutput>enc</computeroutput> for string conversions.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.lossfx cimport *</computeroutput>: Imports C++ declarations from <computeroutput>lossfx.pxd</computeroutput>, which defines <computeroutput>optimizer_params_t</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>env(self.params.optimizer)</computeroutput> and <computeroutput>enc(val)</computeroutput>: These functions handle the conversion between C++ <computeroutput>std::string</computeroutput> and Python <computeroutput>str</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>vector[float](val[0], val[1])</computeroutput>: Demonstrates conversion of Python tuple to C++ <computeroutput>std::vector&lt;float&gt;</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/lossfx.dox"/>
+  </compounddef>
+</doxygen>

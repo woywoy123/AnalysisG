@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dir_7d604191edc08013a26f918aa8ef79ad" kind="dir">
+    <compoundname>events</compoundname>
+    <innerdir refid="dir_0f133139428cd3d7561565c70572be73">events/bsm_4tops</innerdir>
+    <innerdir refid="dir_bb1b57868d0ed55cbf44e35df64feb04">events/exp_mc20</innerdir>
+    <innerdir refid="dir_030b4031ff7ee61dbbd5f985d6322d9e">events/gnn</innerdir>
+    <innerdir refid="dir_bf9accd39ab31d22606c1f7cbbd2d08d">events/ssml_mc20</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="events/"/>
+  </compounddef>
+</doxygen>

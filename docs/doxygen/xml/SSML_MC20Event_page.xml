@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="SSML_MC20Event_page" kind="page">
+    <compoundname>SSML_MC20Event_page</compoundname>
+    <title>SSML_MC20 Event</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="SSML_MC20Event_page_1SSML_MC20Event_intro">
+<title>Introduction</title><para>The <computeroutput>SSML_MC20</computeroutput> class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to Semi-Supervised Machine Learning (SSML) Monte Carlo 20 (MC20) events. It inherits from the generic <computeroutput>EventTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant for SSML MC20 processing. This class provides a high-performance interface to an underlying C++ event object tailored for SSML-based analyses.</para>
+</sect1>
+<sect1 id="SSML_MC20Event_page_1SSML_MC20Event_class">
+<title>The SSML_MC20 Class</title><para><computeroutput>SSML_MC20</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>EventTemplate</computeroutput>, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ <computeroutput>ssml_mc20</computeroutput> object, which likely contains specific data members and methods pertinent to SSML MC20 events.</para>
+<sect2 id="SSML_MC20Event_page_1SSML_MC20Event_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>ssml_mc20</computeroutput> object and assigns its pointer to <computeroutput>self.ev</computeroutput>. It then upcasts <computeroutput>self.ev</computeroutput> to an <computeroutput>event_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>, allowing <computeroutput>SSML_MC20</computeroutput> to be treated as a generic <computeroutput>EventTemplate</computeroutput> while still managing its specialized C++ object.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>ssml_mc20</computeroutput> object pointed to by <computeroutput>self.ev</computeroutput>, ensuring proper memory management for the specialized event data. Note that <computeroutput>self.ptr</computeroutput> is not directly deleted here, as it points to <computeroutput>self.ev</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="SSML_MC20Event_page_1SSML_MC20Event_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>SSML_MC20</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class SSML_MC20</computeroutput>: Declares <computeroutput>SSML_MC20</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef ssml_mc20 *ev</computeroutput>: A C++ pointer to an <computeroutput>ssml_mc20</computeroutput> object, which is the specialized C++ representation of an SSML MC20 event.</para>
+</listitem><listitem><para><computeroutput>self.ptr = &lt;event_template*&gt;(self.ev)</computeroutput>: This line demonstrates C++ upcasting, where a pointer to a derived class (<computeroutput>ssml_mc20</computeroutput>) is assigned to a pointer to its base class (<computeroutput>event_template</computeroutput>). This allows <computeroutput>SSML_MC20</computeroutput> to fulfill the <computeroutput>EventTemplate</computeroutput> interface while internally managing its specific <computeroutput>ssml_mc20</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.event_template cimport EventTemplate</computeroutput>: Imports the base <computeroutput>EventTemplate</computeroutput> class, from which <computeroutput>SSML_MC20</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.events.ssml_mc20.event_ssml_mc20 cimport *</computeroutput>: Imports the C++ <computeroutput>ssml_mc20</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="events/ssml_mc20/event_ssml_mc20.dox"/>
+  </compounddef>
+</doxygen>

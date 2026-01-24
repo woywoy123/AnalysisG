@@ -1,0 +1,12 @@
+/**
+ * @file transform.dox
+ * @brief Detailed documentation for the transform module within the AnalysisG.pyc framework, including its CUDA kernel implementations for data transformation utilities.
+ *
+ * @page transform_page transform
+ *
+ * @section transform_intro Introduction
+ * The `transform` module provides high-performance data transformation utilities, optimized with Cython and accelerated using CUDA kernels. This module is essential for efficiently preparing and manipulating data for analysis and machine learning tasks within the AnalysisG framework, leveraging GPU capabilities for rapid processing.
+ *
+ * @section transform_contents Contents
+ * This module contains optimized data transformation functions, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ */

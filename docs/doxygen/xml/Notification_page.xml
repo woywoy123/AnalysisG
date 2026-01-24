@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="Notification_page" kind="page">
+    <compoundname>Notification_page</compoundname>
+    <title>Notification</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="Notification_page_1Notification_intro">
+<title>Introduction</title><para>The <computeroutput>Notification</computeroutput> class, implemented in Cython, provides a simple wrapper around an underlying C++ notification object within the AnalysisG framework. Its primary purpose is to facilitate communication and logging, offering a Python-friendly interface to C++ notification functionalities. This class is designed to be lightweight and efficient, enabling seamless integration of C++-level notifications into Python-based workflows.</para>
+</sect1>
+<sect1 id="Notification_page_1Notification_class">
+<title>The Notification Class</title><para><computeroutput>Notification</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. This allows for direct and optimized interaction with the C++ <computeroutput>notification</computeroutput> object. It encapsulates a pointer (<computeroutput>self.ptr</computeroutput>) to a C++ <computeroutput>notification</computeroutput> instance, managing its lifecycle.</para>
+<sect2 id="Notification_page_1Notification_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It is intentionally left empty, as the C++ object is initialized in <computeroutput>__init__</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The Python initializer. It creates a new C++ <computeroutput>notification</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>notification</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="Notification_page_1Notification_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>Notification</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Notification</computeroutput>: Declares <computeroutput>Notification</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef notification *ptr</computeroutput>: A C++ pointer to a <computeroutput>notification</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.notification cimport notification</computeroutput>: Imports the C++ <computeroutput>notification</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/notification.dox"/>
+  </compounddef>
+</doxygen>

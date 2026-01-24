@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="gnn_particles_page" kind="page">
+    <compoundname>gnn_particles_page</compoundname>
+    <title>gnn_event Particles</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>gnn_event</computeroutput>. These classes are used to represent the input nodes to the GNN and the reconstructed particles.</para>
+<sect1 id="gnn_particles_page_1gnn_particles_particle_gnn">
+<title>GNN Particle</title><para>The <computeroutput>particle_gnn</computeroutput> class represents a single node in the input graph for the GNN.</para>
+<sect2 id="gnn_particles_page_1gnn_particles_particle_gnn_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_gnn()</computeroutput>: Initializes the particle type to &quot;gnn-particle&quot; and defines the data leaves to be read from the input tree.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_particles_page_1gnn_particles_particle_gnn_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>particle_gnn</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>particle_gnn</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_particles_page_1gnn_particles_particle_gnn_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>lep</computeroutput>: A boolean flag indicating if the particle is a lepton.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="gnn_particles_page_1gnn_particles_top">
+<title>Top</title><para>The <computeroutput>top</computeroutput> class represents a reconstructed top quark. It inherits from <computeroutput>particle_template</computeroutput>.</para>
+<sect2 id="gnn_particles_page_1gnn_particles_top_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>top()</computeroutput>: Initializes the particle type to &quot;top&quot;.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_particles_page_1gnn_particles_top_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>av_score</computeroutput>: The average PageRank score of the nodes in the cluster that formed this top quark.</para>
+</listitem><listitem><para><computeroutput>n_leps</computeroutput>: The number of leptons in the cluster.</para>
+</listitem><listitem><para><computeroutput>n_nodes</computeroutput>: The number of nodes in the cluster.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="gnn_particles_page_1gnn_particles_zprime">
+<title>Z&apos;</title><para>The <computeroutput>zprime</computeroutput> class represents a reconstructed Z&apos; boson. It inherits from <computeroutput>particle_template</computeroutput>.</para>
+<sect2 id="gnn_particles_page_1gnn_particles_zprime_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>zprime()</computeroutput>: Initializes the particle type to &quot;zprime&quot;.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="gnn_particles_page_1gnn_particles_zprime_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>av_score</computeroutput>: The average PageRank score of the nodes in the cluster that formed this Z&apos; boson.</para>
+</listitem><listitem><para><computeroutput>n_leps</computeroutput>: The number of leptons in the cluster.</para>
+</listitem><listitem><para><computeroutput>n_nodes</computeroutput>: The number of nodes in the cluster. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/gnn/particles.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="io_8dox" kind="file" language="C++">
+    <compoundname>io.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the IO Cython class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>io.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>IO<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>IOCython_page<sp/>IO</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>IOCython_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`IO`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>critical<sp/>component<sp/>of<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>providing<sp/>high-performance<sp/>input/output<sp/>operations<sp/>primarily<sp/>for<sp/>ROOT<sp/>files.<sp/>It<sp/>acts<sp/>as<sp/>an<sp/>interface<sp/>between<sp/>the<sp/>Python<sp/>environment<sp/>and<sp/>an<sp/>underlying<sp/>C++<sp/>I/O<sp/>engine,<sp/>enabling<sp/>efficient<sp/>data<sp/>reading,<sp/>metadata<sp/>management,<sp/>and<sp/>iteration<sp/>over<sp/>complex<sp/>event<sp/>structures.<sp/>This<sp/>class<sp/>is<sp/>designed<sp/>to<sp/>streamline<sp/>the<sp/>process<sp/>of<sp/>accessing<sp/>and<sp/>processing<sp/>experimental<sp/>data,<sp/>often<sp/>involving<sp/>large<sp/>datasets.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>IOCython_class<sp/>The<sp/>IO<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`IO`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>signifying<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>This<sp/>allows<sp/>for<sp/>direct<sp/>and<sp/>optimized<sp/>interaction<sp/>with<sp/>C++<sp/>objects<sp/>and<sp/>types,<sp/>which<sp/>is<sp/>essential<sp/>for<sp/>handling<sp/>ROOT<sp/>files<sp/>efficiently.<sp/>It<sp/>encapsulates<sp/>a<sp/>pointer<sp/>(`self.ptr`)<sp/>to<sp/>a<sp/>C++<sp/>`io`<sp/>object,<sp/>managing<sp/>its<sp/>lifecycle<sp/>and<sp/>exposing<sp/>its<sp/>functionalities<sp/>to<sp/>Python.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>IOCython_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`io`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>also<sp/>initializes<sp/>`self.data_ops`<sp/>to<sp/>`NULL`<sp/>and<sp/>`self.meta_data`<sp/>as<sp/>an<sp/>empty<sp/>Python<sp/>dictionary.<sp/>It<sp/>triggers<sp/>a<sp/>PCM<sp/>(presumably<sp/>&quot;Progress<sp/>Control<sp/>Mechanism&quot;)<sp/>using<sp/>`self.ptr.trigger_pcm()`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self,<sp/>root<sp/>=<sp/>[])`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Python<sp/>initializer.<sp/>It<sp/>takes<sp/>an<sp/>optional<sp/>`root`<sp/>argument,<sp/>which<sp/>can<sp/>be<sp/>a<sp/>list<sp/>of<sp/>ROOT<sp/>file<sp/>paths<sp/>or<sp/>a<sp/>single<sp/>path<sp/>string.<sp/>It<sp/>initializes<sp/>`self.prg`<sp/>(for<sp/>`tqdm`<sp/>progress<sp/>bar)<sp/>to<sp/>`None`<sp/>and<sp/>sets<sp/>`self.Files`<sp/>property<sp/>based<sp/>on<sp/>the<sp/>`root`<sp/>input.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>root<sp/>A<sp/>list<sp/>of<sp/>ROOT<sp/>file<sp/>paths<sp/>or<sp/>a<sp/>single<sp/>ROOT<sp/>file<sp/>path<sp/>string.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>It<sp/>calls<sp/>`self.ptr.root_end()`<sp/>to<sp/>finalize<sp/>ROOT<sp/>operations<sp/>and<sp/>then<sp/>deallocates<sp/>the<sp/>C++<sp/>`io`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.ptr`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>IOCython_special_methods<sp/>Special<sp/>Methods<sp/>(Iterator<sp/>Protocol)</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>The<sp/>`IO`<sp/>class<sp/>implements<sp/>the<sp/>Python<sp/>iterator<sp/>protocol,<sp/>allowing<sp/>it<sp/>to<sp/>be<sp/>used<sp/>directly<sp/>in<sp/>`for`<sp/>loops.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`__len__(self)`:</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Returns<sp/>the<sp/>maximum<sp/>number<sp/>of<sp/>entries<sp/>across<sp/>all<sp/>ROOT<sp/>files<sp/>managed<sp/>by<sp/>the<sp/>`IO`<sp/>object.<sp/>This<sp/>is<sp/>typically<sp/>used<sp/>by<sp/>`tqdm`<sp/>to<sp/>determine<sp/>the<sp/>total<sp/>progress.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>The<sp/>maximum<sp/>size<sp/>(number<sp/>of<sp/>entries)<sp/>of<sp/>the<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`__iter__(self)`:</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Initializes<sp/>the<sp/>iterator.<sp/>If<sp/>a<sp/>progress<sp/>bar<sp/>(`self.prg`)<sp/>is<sp/>not<sp/>already<sp/>initialized,<sp/>it<sp/>creates<sp/>a<sp/>`tqdm`<sp/>instance.<sp/>It<sp/>then<sp/>calls<sp/>`self.ptr.root_begin()`<sp/>to<sp/>prepare<sp/>the<sp/>C++<sp/>I/O<sp/>engine<sp/>for<sp/>reading<sp/>and<sp/>retrieves<sp/>the<sp/>data<sp/>operations<sp/>pointer<sp/>(`self.data_ops`).<sp/>It<sp/>also<sp/>clears<sp/>`self.skip`<sp/>(a<sp/>dictionary<sp/>used<sp/>to<sp/>track<sp/>processed<sp/>files)<sp/>and<sp/>returns<sp/>`self`.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>The<sp/>`IO`<sp/>class<sp/>instance,<sp/>configured<sp/>as<sp/>an<sp/>iterator.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`__next__(self)`:</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>the<sp/>next<sp/>data<sp/>item<sp/>during<sp/>iteration.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>`data_ops`<sp/>(a<sp/>C++<sp/>map<sp/>of<sp/>file<sp/>paths<sp/>to<sp/>`data_t`<sp/>pointers).</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>For<sp/>each<sp/>file,<sp/>it<sp/>checks<sp/>`self.skip`<sp/>to<sp/>see<sp/>if<sp/>it<sp/>has<sp/>been<sp/>fully<sp/>processed.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>It<sp/>uses<sp/>`switch_board(itr.second)`<sp/>to<sp/>convert<sp/>the<sp/>C++<sp/>`data_t`<sp/>object<sp/>into<sp/>a<sp/>Python<sp/>dictionary,<sp/>merging<sp/>it<sp/>into<sp/>`output`.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>It<sp/>updates<sp/>`self.skip`<sp/>for<sp/>the<sp/>current<sp/>file<sp/>based<sp/>on<sp/>`itr.second.next()`,<sp/>which<sp/>advances<sp/>the<sp/>C++<sp/>data<sp/>pointer.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>If<sp/>no<sp/>data<sp/>is<sp/>retrieved<sp/>(i.e.,<sp/>`output`<sp/>is<sp/>empty),<sp/>it<sp/>means<sp/>iteration<sp/>is<sp/>complete,<sp/>so<sp/>it<sp/>calls<sp/>`self.ptr.root_end()`,<sp/>resets<sp/>`self.prg`,<sp/>and<sp/>raises<sp/>`StopIteration`.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>It<sp/>updates<sp/>the<sp/>`tqdm`<sp/>progress<sp/>bar<sp/>and<sp/>adds<sp/>the<sp/>`filename`<sp/>to<sp/>the<sp/>output<sp/>dictionary.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>dictionary<sp/>containing<sp/>the<sp/>next<sp/>data<sp/>item<sp/>from<sp/>the<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@throws<sp/>StopIteration<sp/>When<sp/>all<sp/>data<sp/>from<sp/>all<sp/>configured<sp/>ROOT<sp/>files<sp/>has<sp/>been<sp/>processed.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>IOCython_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>-<sp/>`cpdef<sp/>dict<sp/>MetaData(self)`:</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>metadata<sp/>associated<sp/>with<sp/>the<sp/>ROOT<sp/>files.<sp/>It<sp/>populates<sp/>`self.meta_data`<sp/>by<sp/>iterating<sp/>through<sp/>`self.ptr.meta_data`<sp/>(a<sp/>C++<sp/>map<sp/>of<sp/>file<sp/>paths<sp/>to<sp/>`meta`<sp/>objects).<sp/>For<sp/>each<sp/>`meta`<sp/>object,<sp/>it<sp/>creates<sp/>a<sp/>Python<sp/>`Meta`<sp/>object<sp/>and<sp/>potentially<sp/>enables<sp/>PyAMI<sp/>processing<sp/>if<sp/>`self.EnablePyAMI`<sp/>is<sp/>true.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>dictionary<sp/>where<sp/>keys<sp/>are<sp/>file<sp/>paths<sp/>(Python<sp/>strings)<sp/>and<sp/>values<sp/>are<sp/>`Meta`<sp/>objects<sp/>containing<sp/>metadata.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`cpdef<sp/>void<sp/>ScanKeys(self)`:</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Triggers<sp/>the<sp/>underlying<sp/>C++<sp/>I/O<sp/>engine<sp/>to<sp/>scan<sp/>the<sp/>keys<sp/>(trees,<sp/>branches,<sp/>leaves)<sp/>present<sp/>in<sp/>the<sp/>configured<sp/>ROOT<sp/>files.<sp/>This<sp/>populates<sp/>the<sp/>`self.ptr.keys`<sp/>structure.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>-<sp/>`cpdef<sp/>void<sp/>begin(self)`:</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Explicitly<sp/>calls<sp/>`self.ptr.root_begin()`<sp/>to<sp/>initialize<sp/>the<sp/>ROOT<sp/>I/O<sp/>structure.<sp/>This<sp/>is<sp/>typically<sp/>handled<sp/>by<sp/>`__iter__`<sp/>but<sp/>can<sp/>be<sp/>called<sp/>manually.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>-<sp/>`cpdef<sp/>void<sp/>end(self)`:</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Explicitly<sp/>calls<sp/>`self.ptr.root_end()`<sp/>to<sp/>finalize<sp/>the<sp/>ROOT<sp/>I/O<sp/>structure<sp/>and<sp/>release<sp/>resources.<sp/>This<sp/>is<sp/>typically<sp/>handled<sp/>by<sp/>`__dealloc__`<sp/>or<sp/>`__next__`<sp/>(on<sp/>`StopIteration`)<sp/>but<sp/>can<sp/>be<sp/>called<sp/>manually.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>IOCython_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>These<sp/>properties<sp/>provide<sp/>controlled<sp/>access<sp/>to<sp/>the<sp/>configuration<sp/>and<sp/>state<sp/>of<sp/>the<sp/>`IO`<sp/>object.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Verbose`:</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Controls<sp/>the<sp/>verbosity<sp/>of<sp/>the<sp/>underlying<sp/>C++<sp/>I/O<sp/>operations.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Verbose.getter<sp/>Verbose(self)`:<sp/>Returns<sp/>`True`<sp/>if<sp/>verbose<sp/>output<sp/>is<sp/>enabled,<sp/>`False`<sp/>otherwise.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Verbose.setter<sp/>Verbose(self,<sp/>bool<sp/>val)`:<sp/>Sets<sp/>the<sp/>verbosity.<sp/>`True`<sp/>enables<sp/>verbose,<sp/>`False`<sp/>disables<sp/>it.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>EnablePyAMI`:</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Controls<sp/>whether<sp/>PyAMI<sp/>(ATLAS<sp/>Metadata<sp/>Interface)<sp/>integration<sp/>is<sp/>enabled<sp/>for<sp/>metadata<sp/>processing.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@EnablePyAMI.getter<sp/>EnablePyAMI(self)`:<sp/>Returns<sp/>`True`<sp/>if<sp/>PyAMI<sp/>is<sp/>enabled,<sp/>`False`<sp/>otherwise.</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@EnablePyAMI.setter<sp/>EnablePyAMI(self,<sp/>val)`:<sp/>Sets<sp/>the<sp/>PyAMI<sp/>state.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>MetaCachePath`:</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Manages<sp/>the<sp/>file<sp/>path<sp/>for<sp/>caching<sp/>metadata.</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@MetaCachePath.getter<sp/>MetaCachePath(self)`:<sp/>Returns<sp/>the<sp/>metadata<sp/>cache<sp/>path<sp/>as<sp/>a<sp/>Python<sp/>string.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@MetaCachePath.setter<sp/>MetaCachePath(self,<sp/>val)`:<sp/>Sets<sp/>the<sp/>metadata<sp/>cache<sp/>path.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Trees`:</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Manages<sp/>the<sp/>list<sp/>of<sp/>ROOT<sp/>tree<sp/>names<sp/>to<sp/>be<sp/>read.</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Trees.getter<sp/>Trees(self)`:<sp/>Returns<sp/>a<sp/>list<sp/>of<sp/>tree<sp/>names<sp/>as<sp/>Python<sp/>strings.</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Trees.setter<sp/>Trees(self,<sp/>val)`:<sp/>Sets<sp/>the<sp/>tree<sp/>names.<sp/>Accepts<sp/>a<sp/>single<sp/>string<sp/>or<sp/>a<sp/>list<sp/>of<sp/>strings.</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>SumOfWeightsTreeName`:</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Manages<sp/>the<sp/>name<sp/>of<sp/>the<sp/>ROOT<sp/>tree<sp/>that<sp/>contains<sp/>the<sp/>sum<sp/>of<sp/>weights<sp/>information.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@SumOfWeightsTreeName.getter<sp/>SumOfWeightsTreeName(self)`:<sp/>Returns<sp/>the<sp/>sum<sp/>of<sp/>weights<sp/>tree<sp/>name<sp/>as<sp/>a<sp/>Python<sp/>string.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@SumOfWeightsTreeName.setter<sp/>SumOfWeightsTreeName(self,<sp/>str<sp/>val)`:<sp/>Sets<sp/>the<sp/>sum<sp/>of<sp/>weights<sp/>tree<sp/>name.</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Branches`:</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Manages<sp/>the<sp/>list<sp/>of<sp/>ROOT<sp/>branch<sp/>names<sp/>to<sp/>be<sp/>read.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Branches.getter<sp/>Branches(self)`:<sp/>Returns<sp/>a<sp/>list<sp/>of<sp/>branch<sp/>names<sp/>as<sp/>Python<sp/>strings.</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Branches.setter<sp/>Branches(self,<sp/>val)`:<sp/>Sets<sp/>the<sp/>branch<sp/>names.<sp/>Accepts<sp/>a<sp/>single<sp/>string<sp/>or<sp/>a<sp/>list<sp/>of<sp/>strings.</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Leaves`:</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Manages<sp/>the<sp/>list<sp/>of<sp/>ROOT<sp/>leaf<sp/>names<sp/>to<sp/>be<sp/>read.</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Leaves.getter<sp/>Leaves(self)`:<sp/>Returns<sp/>a<sp/>list<sp/>of<sp/>leaf<sp/>names<sp/>as<sp/>Python<sp/>strings.</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Leaves.setter<sp/>Leaves(self,<sp/>val)`:<sp/>Sets<sp/>the<sp/>leaf<sp/>names.<sp/>Accepts<sp/>a<sp/>single<sp/>string<sp/>or<sp/>a<sp/>list<sp/>of<sp/>strings.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Files`:</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Manages<sp/>the<sp/>list<sp/>of<sp/>ROOT<sp/>file<sp/>paths<sp/>to<sp/>be<sp/>processed.</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Files.getter<sp/>Files(self)`:<sp/>Returns<sp/>a<sp/>list<sp/>of<sp/>valid<sp/>ROOT<sp/>file<sp/>paths<sp/>as<sp/>Python<sp/>strings.<sp/>It<sp/>calls<sp/>`self.ptr.check_root_file_paths()`<sp/>to<sp/>validate<sp/>paths.</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`@Files.setter<sp/>Files(self,<sp/>val)`:<sp/>Sets<sp/>the<sp/>ROOT<sp/>file<sp/>paths.<sp/>Accepts<sp/>a<sp/>single<sp/>string<sp/>or<sp/>a<sp/>list<sp/>of<sp/>strings.<sp/>It<sp/>clears<sp/>existing<sp/>files<sp/>if<sp/>`val`<sp/>is<sp/>empty<sp/>and<sp/>then<sp/>validates<sp/>the<sp/>new<sp/>paths.</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>Keys`:</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Retrieves<sp/>a<sp/>nested<sp/>dictionary<sp/>representing<sp/>the<sp/>structure<sp/>of<sp/>keys<sp/>(trees,<sp/>branches,<sp/>leaves)<sp/>found<sp/>in<sp/>the<sp/>ROOT<sp/>files.<sp/>It<sp/>calls<sp/>`self.ptr.scan_keys()`<sp/>to<sp/>ensure<sp/>the<sp/>keys<sp/>are<sp/>up-to-date.</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>dictionary:<sp/>`filename<sp/>-&gt;<sp/>tree_name<sp/>-&gt;<sp/>branch_name<sp/>-&gt;<sp/>[leaf_names]`.</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/>@section<sp/>IOCython_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/>The<sp/>`IO`<sp/>class<sp/>heavily<sp/>relies<sp/>on<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>IO`:<sp/>Declares<sp/>`IO`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>io<sp/>*ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>an<sp/>`io`<sp/>object,<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>libcpp<sp/>cimport<sp/>bool,<sp/>map,<sp/>pair,<sp/>string,<sp/>vector`:<sp/>Imports<sp/>C++<sp/>standard<sp/>library<sp/>types.</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.io<sp/>cimport<sp/>io`:<sp/>Imports<sp/>the<sp/>C++<sp/>`io`<sp/>class<sp/>declaration<sp/>from<sp/>its<sp/>`.pxd`<sp/>file.</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`,<sp/>`from<sp/>AnalysisG.core.meta<sp/>cimport<sp/>Meta,<sp/>meta`,<sp/>`from<sp/>AnalysisG.core.structs<sp/>cimport<sp/>data_t,<sp/>data_enum,<sp/>switch_board`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>from<sp/>corresponding<sp/>`.pxd`<sp/>files.</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*<sp/>-<sp/>`tqdm`:<sp/>Used<sp/>for<sp/>displaying<sp/>progress<sp/>bars<sp/>in<sp/>the<sp/>console.</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/>-<sp/>`dereference<sp/>as<sp/>deref`:<sp/>Used<sp/>to<sp/>dereference<sp/>C++<sp/>pointers.</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/>-<sp/>`env`,<sp/>`enc`,<sp/>`env_vec`,<sp/>`enc_list`:<sp/>Utility<sp/>functions<sp/>(presumably<sp/>from<sp/>`AnalysisG.core.tools`)<sp/>for<sp/>converting<sp/>between<sp/>Python<sp/>and<sp/>C++<sp/>data<sp/>types<sp/>(strings,<sp/>lists,<sp/>vectors).</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/>-<sp/>`data_t*`:<sp/>Pointer<sp/>to<sp/>a<sp/>C++<sp/>`data_t`<sp/>structure,<sp/>representing<sp/>data<sp/>from<sp/>a<sp/>ROOT<sp/>tree<sp/>entry.</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/>-<sp/>`meta*`:<sp/>Pointer<sp/>to<sp/>a<sp/>C++<sp/>`meta`<sp/>structure,<sp/>representing<sp/>metadata.</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/>-<sp/>`switch_board`:<sp/>A<sp/>function<sp/>(likely<sp/>from<sp/>`AnalysisG.core.structs`)<sp/>to<sp/>convert<sp/>C++<sp/>`data_t`<sp/>to<sp/>a<sp/>Python<sp/>dictionary.</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/io.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,51 @@
+
+/**
+ * @file graph.dox
+ * @brief Detailed documentation for the graph_template and graph_t classes.
+ *
+ * @page graph_module_page Graph Module
+ *
+ * @section graph_module_intro Introduction
+ * The `graph` module provides the base template for representing a physics event as a graph, and the data structure for storing the graph information.
+ *
+ * @section graph_template_class The graph_template Class
+ * The `graph_template` class is an abstract base class that defines the structure and features of a graph.
+ *
+ * @subsection graph_template_ctor Constructor and Destructor
+ * - `graph_template()`: The constructor initializes the properties of the graph, such as `name`, `preselection`, `hash`, `tree`, `index`, and `weight`.
+ * - `~graph_template()`: The destructor.
+ *
+ * @subsection graph_template_methods_virtual Virtual Methods
+ * - `graph_template* clone()`: Creates a copy of the graph object.
+ * - `void CompileEvent()`: This method is intended to be overridden by derived classes to implement the logic for constructing the graph from an event.
+ * - `bool PreSelection()`: A virtual method for applying a preselection to the event before building the graph.
+ *
+ * @subsection graph_template_methods_building Graph Building
+ * - `graph_template* build(event_template* ev)`: Builds a graph from an event template.
+ * - `void define_particle_nodes(std::vector<particle_template*>* prt)`: Defines the nodes of the graph from a vector of particles.
+ * - `void define_topology(std::function<bool(particle_template*, particle_template*)> fx)`: Defines the topology of the graph based on a given function.
+ * - `bool double_neutrino(...)`: A method for reconstructing two neutrinos in the event using a combinatorial algorithm.
+ *
+ * @subsection graph_template_methods_features Feature Management
+ * - `void add_graph_feature(...)`: Adds a graph-level feature.
+ * - `void add_node_feature(...)`: Adds a node-level feature.
+ * - `void add_edge_feature(...)`: Adds an edge-level feature.
+ * - `graph_t* data_export()`: Exports the graph data into a `graph_t` object.
+ *
+ * @section graph_t_struct The graph_t Struct
+ * The `graph_t` struct is a data structure for storing the graph information in a way that is suitable for machine learning models.
+ *
+ * @subsection graph_t_methods_add Adding Data
+ * - `void add_truth_graph(...)`, `void add_truth_node(...)`, `void add_truth_edge(...)`: Add truth-level features to the graph.
+ * - `void add_data_graph(...)`, `void add_data_node(...)`, `void add_data_edge(...)`: Add data-level (reconstructed) features to the graph.
+ *
+ * @subsection graph_t_methods_access Accessing Data
+ * - `torch::Tensor* has_feature(graph_enum tp, std::string name, int dev)`: Retrieves a feature tensor from the graph.
+ *
+ * @subsection graph_t_methods_device Device Management
+ * - `void transfer_to_device(torch::TensorOptions* dev)`: Transfers the graph data to a specific device (e.g., a GPU).
+ *
+ * @subsection graph_t_methods_serialization Serialization
+ * - `void serialize(graph_hdf5* m_hdf5)`: Serializes the graph data into an HDF5-compatible format.
+ * - `void deserialize(graph_hdf5* m_hdf5)`: Deserializes the graph data from an HDF5-compatible format.
+ */

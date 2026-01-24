@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ChildrenKinematicsSelection_page" kind="page">
+    <compoundname>ChildrenKinematicsSelection_page</compoundname>
+    <title>Children Kinematics Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ChildrenKinematicsSelection_page_1ChildrenKinematicsSelection_intro">
+<title>Introduction</title><para>The <computeroutput>ChildrenKinematics</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for detailed analysis of the kinematic properties of particles originating from top quark decays in Monte Carlo 16 (MC16) events. It extends the generic <computeroutput>SelectionTemplate</computeroutput> class, providing tailored functionalities for handling various kinematic observables, particle identification (PDG ID), and decay modes. This class facilitates a high-performance extraction and organization of children kinematics data for further physics analysis.</para>
+</sect1>
+<sect1 id="ChildrenKinematicsSelection_page_1ChildrenKinematicsSelection_helper_functions">
+<title>Helper Functions (C-style)</title><para>These functions are implemented as C-style functions in Cython for performance optimization and direct interaction with C++ types.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>cdef str pdgid(int ipt)</computeroutput>: Converts a PDG (Particle Data Group) ID to a symbolic string representation, often used for display in plots or tables. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ipt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The integer PDG ID of a particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A string representation of the particle (e.g., &quot;d&quot;, &quot;u&quot;, &quot;e&quot;, &quot;$\nu_{e}$&quot;, &quot;g&quot;, &quot;$\gamma$&quot;, etc.).</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef void merge(vector[float]* ix, vector[float]* iy)</computeroutput>: Merges the contents of <computeroutput>iy</computeroutput> (source vector) into <computeroutput>ix</computeroutput> (destination vector) by appending elements. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the destination C++ <computeroutput>std::vector&lt;float&gt;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>iy</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the source C++ <computeroutput>std::vector&lt;float&gt;</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def res(ck, data)</computeroutput>: Processes kinematic data for &quot;resonant&quot; particles. It extracts the numerical values from <computeroutput>data[1]</computeroutput> and merges them into <computeroutput>ck.r_data</computeroutput> keyed by a derived name from <computeroutput>data[0]</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ck</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ChildrenKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def spc(ck, data)</computeroutput>: Processes kinematic data for &quot;spectator&quot; particles. Similar to <computeroutput>res</computeroutput>, but merges into <computeroutput>ck.s_data</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ck</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ChildrenKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def rdcy(ck, data)</computeroutput>: Processes kinematic data for &quot;resonant decay&quot; particles. Similar to <computeroutput>res</computeroutput>, but merges into <computeroutput>ck.r_decay</computeroutput>. Handles &quot;frc&quot; prefix for fractional kinematics. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ck</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ChildrenKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def sdcy(ck, data)</computeroutput>: Processes kinematic data for &quot;spectator decay&quot; particles. Similar to <computeroutput>spc</computeroutput>, but merges into <computeroutput>ck.s_decay</computeroutput>. Handles &quot;frc&quot; prefix for fractional kinematics. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ck</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ChildrenKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def tpm(ck, data)</computeroutput>: Processes kinematic data related to &quot;top permutation&quot; matching. It extracts values and merges them into <computeroutput>ck.top_pem</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ck</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ChildrenKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="ChildrenKinematicsSelection_page_1ChildrenKinematicsSelection_class">
+<title>The ChildrenKinematics Class</title><para><computeroutput>ChildrenKinematics</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>SelectionTemplate</computeroutput>. It is tailored for collecting and organizing kinematic information from children particles, particularly those from top quark decays.</para>
+<sect2 id="ChildrenKinematicsSelection_page_1ChildrenKinematicsSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent.<itemizedlist>
+<listitem><para>Initializes <computeroutput>self.root_leaves</computeroutput> to define specific ROOT branches (<computeroutput>res_pt</computeroutput>, <computeroutput>spec_pt</computeroutput>, <computeroutput>res_decay_pt</computeroutput>, <computeroutput>top_perm_pt</computeroutput>, etc.) and associates them with the appropriate helper functions (<computeroutput>res</computeroutput>, <computeroutput>spc</computeroutput>, <computeroutput>rdcy</computeroutput>, <computeroutput>sdcy</computeroutput>, <computeroutput>tpm</computeroutput>) for data processing during <computeroutput>InterpretROOT</computeroutput>.</para>
+</listitem><listitem><para>Initializes several internal Python dictionaries (<computeroutput>res_kinematics</computeroutput>, <computeroutput>spec_kinematics</computeroutput>, <computeroutput>res_pdgid_kinematics</computeroutput>, <computeroutput>spec_pdgid_kinematics</computeroutput>, <computeroutput>res_decay_mode</computeroutput>, <computeroutput>spec_decay_mode</computeroutput>, <computeroutput>fractional</computeroutput>, <computeroutput>dr_clustering</computeroutput>, <computeroutput>top_children_dr</computeroutput>) for structured storage of processed kinematic data.</para>
+</listitem><listitem><para>Initializes a new C++ <computeroutput>childrenkinematics</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>childrenkinematics*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>childrenkinematics</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ChildrenKinematicsSelection_page_1ChildrenKinematicsSelection_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>Postprocessing(self)</computeroutput>: This method is called after all data has been interpreted from ROOT files. It performs extensive organization and structuring of the raw kinematic data collected by the helper functions into meaningful Python dictionaries.<itemizedlist>
+<listitem><para><bold>Kinematics Organization</bold>: Populates <computeroutput>res_kinematics</computeroutput> and <computeroutput>spec_kinematics</computeroutput> for primary kinematic variables (pt, eta, phi, energy).</para>
+</listitem><listitem><para><bold>PDG ID-based Kinematics</bold>: Processes PDG IDs to group kinematics by particle type, populating <computeroutput>res_pdgid_kinematics</computeroutput> and <computeroutput>spec_pdgid_kinematics</computeroutput>.</para>
+</listitem><listitem><para><bold>Decay Mode Analysis</bold>: Organizes decay-related kinematics (is_lepton, mass, dR) into <computeroutput>res_decay_mode</computeroutput> and <computeroutput>spec_decay_mode</computeroutput>, categorizing by leptonic/hadronic decay.</para>
+</listitem><listitem><para><bold>Fractional Kinematics</bold>: Calculates and stores fractional pT and energy contributions for different particle types, populating <computeroutput>fractional</computeroutput>.</para>
+</listitem><listitem><para><bold>Delta R Clustering</bold>: Processes <computeroutput>dR</computeroutput> values from top permutations and decay children, populating <computeroutput>dr_clustering</computeroutput> and <computeroutput>top_children_dr</computeroutput>.</para>
+</listitem><listitem><para>Clears intermediate <computeroutput>r_data</computeroutput>, <computeroutput>s_data</computeroutput>, <computeroutput>r_decay</computeroutput>, <computeroutput>s_decay</computeroutput>, and <computeroutput>top_pem</computeroutput> storage.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is a placeholder from <computeroutput>SelectionTemplate</computeroutput> and is intentionally left empty in this implementation.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ChildrenKinematicsSelection_page_1ChildrenKinematicsSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>ChildrenKinematics</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ChildrenKinematics</computeroutput>: Declares <computeroutput>ChildrenKinematics</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef childrenkinematics *tt</computeroutput>: A C++ pointer to a <computeroutput>childrenkinematics</computeroutput> object, which is the specialized C++ backend for children kinematics processing.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new childrenkinematics()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;childrenkinematics*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>ChildrenKinematics</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>childrenkinematics</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>ChildrenKinematics</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for string encoding/decoding and data structures. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/childrenkinematics/childrenkinematics.dox"/>
+  </compounddef>
+</doxygen>

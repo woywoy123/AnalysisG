@@ -1,0 +1,46 @@
+
+/**
+ * @file metrics.dox
+ * @brief Detailed documentation for the metrics module.
+ *
+ * @page metrics_module_page Metrics Module
+ *
+ * @section metrics_module_intro Introduction
+ * The `metrics` module provides a class for collecting, processing, and plotting various metrics during the training of a machine learning model. It is designed to work with the `model_template` and `optimizer` classes to provide a comprehensive monitoring and evaluation framework.
+ *
+ * @section metrics_class The metrics Class
+ * The `metrics` class is the main component of this module.
+ *
+ * @subsection metrics_ctor Constructor and Destructor
+ * - `metrics()`: The constructor.
+ * - `~metrics()`: The destructor cleans up the allocated resources, including the `analytics_t` objects.
+ *
+ * @subsection metrics_methods_registration Model Registration
+ * - `model_report* register_model(model_template* mod, int kfold)`: This method registers a model with the metrics module for a specific k-fold. It creates an `analytics_t` object to store the metrics for the model and initializes the histograms for tracking loss and accuracy.
+ *
+ * @subsection metrics_methods_capture Metric Capture
+ * - `void capture(mode_enum mode, int kfold, int epoch, int smpl_len)`: This method is called at the end of each epoch to capture the metrics for the current mode (training, validation, or evaluation). It calculates the loss and accuracy for the graph, node, and edge predictions and fills the corresponding histograms. It also calculates and fills the mass plots if specified in the settings.
+ *
+ * @subsection metrics_methods_plotting Plotting
+ * - `void dump_plots(int k)`: This method generates and saves all the metric plots for a specific k-fold. This includes loss plots, accuracy plots, and mass plots.
+ * - `void dump_loss_plots(int k)`: Generates and saves the loss plots.
+ * - `void dump_accuracy_plots(int k)`: Generates and saves the accuracy plots.
+ * - `void dump_mass_plots(int k)`: Generates and saves the mass plots.
+ * - `void generic_painter(...)`: A generic function for creating and styling plots.
+ *
+ * @subsection metrics_methods_histograms Histogram Management
+ * - `void build_th1f_loss(...)`, `void add_th1f_loss(...)`: Methods for creating and filling the loss histograms.
+ * - `void build_th1f_accuracy(...)`, `void add_th1f_accuracy(...)`: Methods for creating and filling the accuracy histograms.
+ * - `void build_th1f_mass(...)`, `void add_th1f_mass(...)`: Methods for creating and filling the mass histograms.
+ *
+ * @section analytics_t_struct The analytics_t Struct
+ * The `analytics_t` struct is a data container that holds all the metrics and histograms for a single model and k-fold.
+ *
+ * @subsection analytics_t_members Members
+ * - `model_template* model`: A pointer to the model template.
+ * - `model_report* report`: A pointer to the model report.
+ * - `int this_epoch`: The current epoch number.
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph`, `loss_node`, `loss_edge`: Maps for storing the loss histograms.
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_graph`, `accuracy_node`, `accuracy_edge`: Maps for storing the accuracy histograms.
+ * - `std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge`, `pred_mass_edge`: Maps for storing the mass histograms.
+ */

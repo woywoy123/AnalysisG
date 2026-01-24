@@ -1,0 +1,42 @@
+
+/**
+ * @file lossfx.dox
+ * @brief Detailed documentation for the lossfx module.
+ *
+ * @page lossfx_module_page Loss Function and Optimizer Module
+ *
+ * @section lossfx_module_intro Introduction
+ * The `lossfx` module provides a unified interface for creating and managing various loss functions and optimizers from the PyTorch library.
+ *
+ * @section lossfx_class The lossfx Class
+ * The `lossfx` class is the main component of this module.
+ *
+ * @subsection lossfx_ctor Constructor and Destructor
+ * - `lossfx()`: The constructor.
+ * - `~lossfx()`: The destructor cleans up all the allocated loss function and optimizer objects.
+ *
+ * @subsection lossfx_methods_optimizer Optimizer Management
+ * - `torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params)`: This method builds and returns a PyTorch optimizer based on the provided parameters. It supports Adam, Adagrad, AdamW, LBFGS, RMSprop, and SGD.
+ * - `void build_adam(...)`, `void build_adagrad(...)`, etc.: These are helper methods for building the specific optimizer types.
+ *
+ * @subsection lossfx_methods_loss Loss Function Management
+ * - `bool build_loss_function(loss_enum lss)`: This method creates an instance of a specific loss function. It supports a wide range of loss functions available in PyTorch, such as BCE, CrossEntropy, MSE, etc.
+ * - `torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss)`: This method calculates the loss given the predictions and truth values, using the specified loss function.
+ * - `torch::Tensor _fx_loss(...)`: These are helper methods for calculating the loss for each specific loss function type.
+ *
+ * @subsection lossfx_methods_weight_init Weight Initialization
+ * - `void weight_init(torch::nn::Sequential* data, mlp_init method)`: This method initializes the weights of a neural network module using various initialization schemes, such as Xavier, Kaiming, normal, and uniform distributions.
+ *
+ * @subsection lossfx_methods_device Device Management
+ * - `void to(torch::TensorOptions* op)`: This method moves all the created loss function objects to a specific device (e.g., a GPU).
+ *
+ * @section lossfx_enums Enumerations
+ * The module defines two enumerations for identifying the loss functions and optimizers:
+ * - `loss_enum`: An enumeration of the supported loss functions.
+ * - `opt_enum`: An enumeration of the supported optimizers.
+ *
+ * @section lossfx_switching String to Enum Conversion
+ * The `switching.cxx` file contains helper functions for converting strings to the `loss_enum` and `opt_enum` enumerations.
+ * - `loss_enum lossfx::loss_string(std::string name)`
+ * - `opt_enum lossfx::optim_string(std::string name)`
+ */

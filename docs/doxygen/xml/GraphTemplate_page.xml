@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="GraphTemplate_page" kind="page">
+    <compoundname>GraphTemplate_page</compoundname>
+    <title>GraphTemplate</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="GraphTemplate_page_1GraphTemplate_intro">
+<title>Introduction</title><para>The <computeroutput>GraphTemplate</computeroutput> class is a Cython-implemented component within the AnalysisG framework, designed as a foundational template for graph-based data structures. Similar to <computeroutput>EventTemplate</computeroutput>, it provides a high-performance interface to an underlying C++ graph object, facilitating efficient graph manipulation and access within the Python environment. This class is intended to be inherited by more specialized graph implementations, offering common functionalities for graph indexing, tree association, and pre-selection management.</para>
+</sect1>
+<sect1 id="GraphTemplate_page_1GraphTemplate_class">
+<title>The GraphTemplate Class</title><para><computeroutput>GraphTemplate</computeroutput> is a <computeroutput>cdef class</computeroutput>, signifying its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types. It encapsulates a pointer (<computeroutput>self.ptr</computeroutput>) to a C++ <computeroutput>graph_template</computeroutput> object, managing its lifecycle and exposing its attributes and methods to Python.</para>
+<sect2 id="GraphTemplate_page_1GraphTemplate_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, invoked during object allocation. If the instance is a subclass of <computeroutput>GraphTemplate</computeroutput>, it returns immediately. Otherwise, it instantiates a new C++ <computeroutput>graph_template</computeroutput> object and assigns its memory address to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer, deliberately left empty as primary initialization is handled by <computeroutput>__cinit__</computeroutput> and the encapsulated C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It checks if the instance is <computeroutput>GraphTemplate</computeroutput> itself before deallocating the C++ <computeroutput>graph_template</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="GraphTemplate_page_1GraphTemplate_special_methods">
+<title>Special Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__hash__(self)</computeroutput>: Generates a hash value for the graph object. It converts the first 8 characters of the C++ object&apos;s hash string to an integer.</para>
+</listitem><listitem><para><computeroutput>__eq__(self, other)</computeroutput>: Determines equality between two <computeroutput>GraphTemplate</computeroutput> objects. It first verifies if <computeroutput>other</computeroutput> is an instance or subclass of <computeroutput>GraphTemplate</computeroutput> using <computeroutput>is_self</computeroutput>. If valid, it compares the underlying C++ <computeroutput>graph_template</computeroutput> objects for equality.</para>
+</listitem><listitem><para><computeroutput>is_self(self, inpt) -&gt; bool</computeroutput>: A helper method to ascertain if the provided input <computeroutput>inpt</computeroutput> is an instance of <computeroutput>GraphTemplate</computeroutput> or one of its derived classes.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="GraphTemplate_page_1GraphTemplate_properties">
+<title>Properties</title><para>These properties offer controlled access to the data members of the encapsulated C++ <computeroutput>graph_template</computeroutput> object.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property index</computeroutput>: Retrieves the integer index of the graph.</para>
+</listitem><listitem><para><computeroutput>@property Tree</computeroutput>: Retrieves the name of the primary ROOT tree associated with the graph as a Python string. It utilizes the <computeroutput>env</computeroutput> utility function for C++ to Python string conversion.</para>
+</listitem><listitem><para><computeroutput>@property PreSelection</computeroutput>: Retrieves the pre-selection status or value associated with the graph.<itemizedlist>
+<listitem><para><computeroutput>@PreSelection.setter PreSelection(self, val)</computeroutput>: Sets the pre-selection status or value for the graph.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="GraphTemplate_page_1GraphTemplate_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>GraphTemplate</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class GraphTemplate</computeroutput>: Declares <computeroutput>GraphTemplate</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef graph_template *ptr</computeroutput>: A C++ pointer to a <computeroutput>graph_template</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport int</computeroutput>: Imports the C++ <computeroutput>int</computeroutput> type.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, likely including <computeroutput>env</computeroutput> for string conversions.</para>
+</listitem><listitem><para><computeroutput>env(self.ptr.tree)</computeroutput>: This function (presumably from <computeroutput>AnalysisG.core.tools</computeroutput>) handles the conversion from C++ <computeroutput>std::string</computeroutput> to Python <computeroutput>str</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/graph_template.dox"/>
+  </compounddef>
+</doxygen>

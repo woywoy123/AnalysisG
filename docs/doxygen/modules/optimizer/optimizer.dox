@@ -1,0 +1,29 @@
+
+/**
+ * @file optimizer.dox
+ * @brief Detailed documentation for the optimizer class.
+ *
+ * @page optimizer_module_page Optimizer Module
+ *
+ * @section optimizer_module_intro Introduction
+ * The `optimizer` module provides a class for managing the training, validation, and evaluation of machine learning models. It orchestrates the training loops, handles data loading and batching, and captures metrics.
+ *
+ * @section optimizer_class The optimizer Class
+ * The `optimizer` class is the main component of this module.
+ *
+ * @subsection optimizer_ctor Constructor and Destructor
+ * - `optimizer()`: The constructor initializes the `optimizer` object and creates a `metrics` object.
+ * - `~optimizer()`: The destructor cleans up the allocated resources, including the `metrics` object and the model sessions.
+ *
+ * @subsection optimizer_methods_import Importing Data and Models
+ * - `void import_dataloader(dataloader* dl)`: Imports a `dataloader` object to be used for data loading and batching.
+ * - `void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models)`: Imports the model and optimizer parameters for the training session. It also performs a test run to ensure that the model and parameters are correctly configured.
+ *
+ * @subsection optimizer_methods_training Training and Evaluation Loops
+ * - `void training_loop(int k, int epoch)`: This method implements the training loop for a given k-fold and epoch. It iterates through the training data, performs the forward and backward passes, and captures the training metrics.
+ * - `void validation_loop(int k, int epoch)`: This method implements the validation loop. It iterates through the validation data, performs the forward pass (without gradient calculation), and captures the validation metrics.
+ * - `void evaluation_loop(int k, int epoch)`: This method implements the evaluation loop. It iterates through the test data, performs the forward pass, and captures the evaluation metrics.
+ *
+ * @subsection optimizer_methods_launch Launching the Model
+ * - `void launch_model(int k)`: This method launches the training and evaluation process for a given k-fold. It iterates through the specified number of epochs and calls the training, validation, and evaluation loops accordingly. It also triggers the plotting of the metrics at the end of each epoch if in debug mode.
+ */

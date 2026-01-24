@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="EventTemplate_page" kind="page">
+    <compoundname>EventTemplate_page</compoundname>
+    <title>EventTemplate</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="EventTemplate_page_1EventTemplate_intro">
+<title>Introduction</title><para>The <computeroutput>EventTemplate</computeroutput> class is a Cython-implemented class within the AnalysisG framework, serving as a foundational template for event-based data structures. It provides a high-performance interface to an underlying C++ event object, enabling efficient data manipulation and access within the Python environment. This class is designed to be inherited by more specific event implementations, providing common functionalities for event indexing, weighting, and tree/branch management.</para>
+</sect1>
+<sect1 id="EventTemplate_page_1EventTemplate_class">
+<title>The EventTemplate Class</title><para>The <computeroutput>EventTemplate</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating it&apos;s a Cython extension type, allowing direct interaction with C++ objects and types for performance optimization. It encapsulates a pointer to a C++ <computeroutput>event_template</computeroutput> object, managing its lifecycle and exposing its properties and methods to Python.</para>
+<sect2 id="EventTemplate_page_1EventTemplate_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent. This method is called when the object is allocated. If the instance is not <computeroutput>EventTemplate</computeroutput> itself (i.e., it&apos;s a subclass), it returns immediately. Otherwise, it allocates a new C++ <computeroutput>event_template</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent. This method is called when the object is deallocated. If the instance is not <computeroutput>EventTemplate</computeroutput> itself, it returns. Otherwise, it deallocates the C++ <computeroutput>event_template</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, preventing memory leaks.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="EventTemplate_page_1EventTemplate_special_methods">
+<title>Special Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__name__(self)</computeroutput>: Returns the name of the underlying C++ event object as a Python string. It uses the <computeroutput>env</computeroutput> utility function to convert a C++ string to a Python string.</para>
+</listitem><listitem><para><computeroutput>__hash__(self)</computeroutput>: Computes a hash value for the event. It converts the first 8 characters of the C++ object&apos;s hash string to an integer.</para>
+</listitem><listitem><para><computeroutput>__eq__(self, other)</computeroutput>: Compares two <computeroutput>EventTemplate</computeroutput> objects for equality. It first checks if <computeroutput>other</computeroutput> is an instance or subclass of <computeroutput>EventTemplate</computeroutput> using <computeroutput>is_self</computeroutput>. If so, it compares the underlying C++ <computeroutput>event_template</computeroutput> objects.</para>
+</listitem><listitem><para><computeroutput>is_self(self, inpt) -&gt; bool</computeroutput>: A utility method to check if the given input <computeroutput>inpt</computeroutput> is an instance of <computeroutput>EventTemplate</computeroutput> or a subclass thereof.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="EventTemplate_page_1EventTemplate_properties">
+<title>Properties</title><para>The following properties provide controlled access to the underlying C++ <computeroutput>event_template</computeroutput>&apos;s data members.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property index -&gt; int</computeroutput>: Retrieves the integer index of the event.<itemizedlist>
+<listitem><para><computeroutput>@index.setter index(self, val: Union[str, double])</computeroutput>: Sets the index of the event. It attempts to set the C++ <computeroutput>index</computeroutput> directly. If a <computeroutput>TypeError</computeroutput> occurs (e.g., <computeroutput>val</computeroutput> is a string), it assumes <computeroutput>val</computeroutput> represents a leaf name and stores it in <computeroutput>self.ptr.leaves</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property weight -&gt; double</computeroutput>: Retrieves the double-precision floating-point weight of the event.<itemizedlist>
+<listitem><para><computeroutput>@weight.setter weight(self, val: Union[str, double])</computeroutput>: Sets the weight of the event. Similar to <computeroutput>index.setter</computeroutput>, it handles <computeroutput>TypeError</computeroutput> by storing <computeroutput>val</computeroutput> in <computeroutput>self.ptr.leaves</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Tree -&gt; str</computeroutput>: Retrieves the name of the primary ROOT tree associated with the event.<itemizedlist>
+<listitem><para><computeroutput>@Tree.setter Tree(self, str val)</computeroutput>: Sets the name of the primary ROOT tree. It uses the <computeroutput>enc</computeroutput> utility function to convert the Python string <computeroutput>val</computeroutput> to a C++ string.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Trees -&gt; list</computeroutput>: Retrieves a list of all ROOT tree names associated with the event.<itemizedlist>
+<listitem><para><computeroutput>@Trees.setter Trees(self, val: Union[str, list])</computeroutput>: Sets the list of ROOT tree names. It can accept a single string or a list of strings. If a list, it iterates and calls the setter for each element.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Branches -&gt; list</computeroutput>: Retrieves a list of all ROOT branch names associated with the event.<itemizedlist>
+<listitem><para><computeroutput>@Branches.setter Branches(self, val: Union[str, list])</computeroutput>: Sets the list of ROOT branch names. Similar to <computeroutput>Trees.setter</computeroutput>, it handles single strings or lists of strings.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property Name</computeroutput>: Retrieves the name of the underlying C++ event object. This appears to be a duplicate of <computeroutput>__name__</computeroutput> but exposed as a property.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="EventTemplate_page_1EventTemplate_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>EventTemplate</computeroutput> class heavily relies on Cython&apos;s ability to interact with C++.<itemizedlist>
+<listitem><para><computeroutput>cdef class EventTemplate</computeroutput>: Declares <computeroutput>EventTemplate</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef event_template *ptr</computeroutput>: A C++ pointer to an <computeroutput>event_template</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport int, vector</computeroutput>: Imports C++ primitive types and containers.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.event_template cimport *</computeroutput>: Imports C++ declarations from the corresponding <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from the <computeroutput>tools.pxd</computeroutput> file, likely containing <computeroutput>env</computeroutput> and <computeroutput>enc</computeroutput> utility functions for string conversion.</para>
+</listitem><listitem><para><computeroutput>env(self.ptr.name)</computeroutput> and <computeroutput>enc(val)</computeroutput>: These functions (presumably from <computeroutput>AnalysisG.core.tools</computeroutput>) handle the conversion between C++ <computeroutput>std::string</computeroutput> and Python <computeroutput>str</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/event_template.dox"/>
+  </compounddef>
+</doxygen>

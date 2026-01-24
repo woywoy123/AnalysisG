@@ -1,0 +1,48 @@
+
+/**
+ * @file graphs.dox
+ * @brief Detailed documentation for the graph classes in the ssml_mc20 analysis.
+ *
+ * @page ssml_mc20_graphs_page ssml_mc20 Graphs
+ *
+ * This page provides detailed documentation for the various graph classes used in the `ssml_mc20` analysis. These classes inherit from `graph_template` and define the specific nodes and features used to represent the event as a graph.
+ *
+ * @section ssml_mc20_graphs_graph_jets Graph of Reconstructed Jets
+ * The `graph_jets` class constructs a graph using reconstructed jets and truth-level top decay products.
+ *
+ * @subsection ssml_mc20_graphs_graph_jets_ctor Constructor
+ * - `graph_jets()`: Initializes the graph name to "graph_jets".
+ *
+ * @subsection ssml_mc20_graphs_graph_jets_methods Methods
+ * - `graph_template* clone()`: Creates a new instance of the `graph_jets` graph.
+ * - `void CompileEvent()`: Defines the graph structure and features.
+ *   - **Nodes**: The nodes are the reconstructed jets and the leptonic/neutrino decay products of the truth top quarks.
+ *   - **Graph Truth Features**: `signal`, `n_lep`, `ntops`.
+ *   - **Node Truth Features**: `top_node`, `res_node`.
+ *   - **Edge Truth Features**: `res_edge`, `top_edge`.
+ *   - **Graph Data Features**: `met`, `phi`, `num_jets`, `num_leps`, `weight`, `event_number`.
+ *   - **Node Data Features**: `pt`, `eta`, `phi`, `energy`, `is_lep`, `is_b`.
+ *
+ * @section ssml_mc20_graphs_graph_jets_nonu Graph of Reconstructed Jets (No Neutrinos)
+ * The `graph_jets_nonu` class is similar to `graph_jets`, but excludes neutrinos from the graph nodes.
+ *
+ * @subsection ssml_mc20_graphs_graph_jets_nonu_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: The nodes are the reconstructed jets and the leptonic (non-neutrino) decay products of the truth top quarks.
+ *   - **Neutrino Information**: The `double_neutrino()` method is called to add information about the neutrinos.
+ *
+ * @section ssml_mc20_graphs_graph_jets_detector_lep Graph of Detector Objects (with Neutrinos)
+ * The `graph_jets_detector_lep` class constructs a graph using all detector-level objects (jets, electrons, muons) and truth neutrinos.
+ *
+ * @subsection ssml_mc20_graphs_graph_jets_detector_lep_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: Reconstructed jets, electrons, muons, and truth neutrinos from the top children.
+ *
+ * @section ssml_mc20_graphs_graph_detector Graph of Detector Objects
+ * The `graph_detector` class constructs a graph using all detector-level objects (jets, electrons, muons).
+ *
+ * @subsection ssml_mc20_graphs_graph_detector_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: Reconstructed jets, electrons, and muons.
+ *   - **Neutrino Information**: The `double_neutrino()` method is called to add information about the neutrinos.
+ */

@@ -1,0 +1,29 @@
+/**
+ * @file event_bsm_4tops.dox
+ * @brief Detailed documentation for the BSM4Tops Cython class, a specialized EventTemplate for BSM 4-top events.
+ *
+ * @page BSM4TopsEvent_page BSM4Tops Event
+ *
+ * @section BSM4TopsEvent_intro Introduction
+ * The `BSM4Tops` class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to Beyond Standard Model (BSM) 4-top quark production events. It inherits from the generic `EventTemplate` class, extending its functionalities to incorporate features and structures relevant to this particular physics signature. This class provides a high-performance interface to an underlying C++ event object tailored for BSM 4-top analysis.
+ *
+ * @section BSM4TopsEvent_class The BSM4Tops Class
+ * `BSM4Tops` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `EventTemplate`, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ `bsm_4tops` object, which likely contains specific data members and methods pertinent to BSM 4-top events.
+ *
+ * @subsection BSM4TopsEvent_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `bsm_4tops` object and assigns its pointer to `self.ptr`. This effectively sets up the specialized C++ backend for BSM 4-top events.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `bsm_4tops` object pointed to by `self.ptr`, ensuring proper memory management for the specialized event data.
+ *
+ * @section BSM4TopsEvent_cpp_interaction C++ Interaction
+ * The `BSM4Tops` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class BSM4Tops`: Declares `BSM4Tops` as a Cython extension type.
+ * - `cdef bsm_4tops *ptr`: A C++ pointer to a `bsm_4tops` object, managed by the Cython class. This `bsm_4tops` object is the specialized C++ representation of a BSM 4-top event.
+ * - `from AnalysisG.events.bsm_4tops.event_bsm_4tops cimport bsm_4tops`: Imports the C++ `bsm_4tops` class declaration from its `.pxd` file.
+ * - `from AnalysisG.core.event_template cimport EventTemplate`: Imports the base `EventTemplate` class, from which `BSM4Tops` inherits.
+ */

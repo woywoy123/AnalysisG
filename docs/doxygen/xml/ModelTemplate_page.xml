@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ModelTemplate_page" kind="page">
+    <compoundname>ModelTemplate_page</compoundname>
+    <title>ModelTemplate</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ModelTemplate_page_1ModelTemplate_intro">
+<title>Introduction</title><para>The <computeroutput>ModelTemplate</computeroutput> class, implemented in Cython, serves as a foundational base for machine learning models within the AnalysisG framework. It provides a standardized interface for managing input and output features for graph-based data, as well as configuring the computational device and model checkpoints. This class is designed to be inherited by specific model implementations, offering common functionalities and efficient interaction with an underlying C++ model structure.</para>
+</sect1>
+<sect1 id="ModelTemplate_page_1ModelTemplate_class">
+<title>The ModelTemplate Class</title><para><computeroutput>ModelTemplate</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. This design allows for direct and optimized interaction with C++ objects and types, which is crucial for performance in machine learning applications. It encapsulates a pointer (<computeroutput>self.nn_ptr</computeroutput>) to a C++ <computeroutput>model_template</computeroutput> object, managing its lifecycle and exposing its parameters as Python properties.</para>
+<sect2 id="ModelTemplate_page_1ModelTemplate_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes <computeroutput>self.rename</computeroutput> to <computeroutput>False</computeroutput>. If the instance is not <computeroutput>ModelTemplate</computeroutput> itself (i.e., it&apos;s a subclass), it returns immediately. Otherwise, it initializes a new C++ <computeroutput>model_template</computeroutput> object and assigns its pointer to <computeroutput>self.nn_ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer, intentionally left empty as primary initialization is handled by <computeroutput>__cinit__</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. If the instance is not <computeroutput>ModelTemplate</computeroutput> itself, it returns. Otherwise, it deallocates the C++ <computeroutput>model_template</computeroutput> object pointed to by <computeroutput>self.nn_ptr</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ModelTemplate_page_1ModelTemplate_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef dict conv(self, map[string, string]* inpt)</computeroutput>: An internal helper method to convert a C++ <computeroutput>map&lt;string, string&gt;</computeroutput> (passed as a pointer) into a Python dictionary. It iterates through the C++ map and uses <computeroutput>env</computeroutput> to convert C++ strings to Python strings for both keys and values. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a C++ <computeroutput>map&lt;string, string&gt;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python dictionary.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef map[string, string] cond(self, dict inpt)</computeroutput>: An internal helper method to convert a Python dictionary into a C++ <computeroutput>map&lt;string, string&gt;</computeroutput>. It iterates through the Python dictionary and uses <computeroutput>enc</computeroutput> to convert Python strings to C++ strings for both keys and values. If <computeroutput>self.rename</computeroutput> is <computeroutput>False</computeroutput>, it also sets the C++ model&apos;s name to the Python class name. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Python dictionary. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A C++ <computeroutput>map&lt;string, string&gt;</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ModelTemplate_page_1ModelTemplate_properties">
+<title>Properties</title><para>These properties provide controlled access to the configuration and state of the <computeroutput>ModelTemplate</computeroutput>.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property o_graph</computeroutput>: Gets and sets a dictionary representing output graph features. The getter converts a C++ map to a Python dict using <computeroutput>conv</computeroutput>. The setter converts a Python dict to a C++ map using <computeroutput>cond</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property o_node</computeroutput>: Gets and sets a dictionary representing output node features. Similar conversion logic as <computeroutput>o_graph</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property o_edge</computeroutput>: Gets and sets a dictionary representing output edge features. Similar conversion logic as <computeroutput>o_graph</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property i_graph</computeroutput>: Gets and sets a list of input graph features. The getter converts a C++ vector to a Python list using <computeroutput>env_vec</computeroutput>. The setter converts a Python list to a C++ vector using <computeroutput>enc_list</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property i_node</computeroutput>: Gets and sets a list of input node features. Similar conversion logic as <computeroutput>i_graph</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property i_edge</computeroutput>: Gets and sets a list of input edge features. Similar conversion logic as <computeroutput>i_graph</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property device</computeroutput>: Gets and sets the computational device (e.g., &quot;cpu&quot;, &quot;cuda:0&quot;) as a string.</para>
+</listitem><listitem><para><computeroutput>@property checkpoint_path</computeroutput>: Gets and sets the path to the model checkpoint file as a string.</para>
+</listitem><listitem><para><computeroutput>@property weight_name</computeroutput>: Gets and sets the name of the weight to be used by the model as a string.</para>
+</listitem><listitem><para><computeroutput>@property tree_name</computeroutput>: Gets and sets the name of the ROOT tree associated with the model as a string.</para>
+</listitem><listitem><para><computeroutput>@property name</computeroutput>: Gets and sets the name of the model. If <computeroutput>self.rename</computeroutput> is <computeroutput>False</computeroutput>, it defaults to the Python class name. Setting this property explicitly sets <computeroutput>self.rename</computeroutput> to <computeroutput>True</computeroutput> and updates the C++ model&apos;s name.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ModelTemplate_page_1ModelTemplate_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>ModelTemplate</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ModelTemplate</computeroutput>: Declares <computeroutput>ModelTemplate</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef model_template *nn_ptr</computeroutput>: A C++ pointer to a <computeroutput>model_template</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp.string cimport string</computeroutput>: Imports the C++ <computeroutput>std::string</computeroutput> type.</para>
+</listitem><listitem><para><computeroutput>from libcpp.map cimport map, pair</computeroutput>: Imports C++ <computeroutput>std::map</computeroutput> and <computeroutput>std::pair</computeroutput> types.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, including <computeroutput>env</computeroutput>, <computeroutput>enc</computeroutput>, <computeroutput>env_vec</computeroutput>, <computeroutput>enc_list</computeroutput> for string and list conversions.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.model_template cimport model_template</computeroutput>: Imports the C++ <computeroutput>model_template</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>cython.operator.dereference as deref</computeroutput>: Used to dereference C++ pointers. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/model_template.dox"/>
+  </compounddef>
+</doxygen>

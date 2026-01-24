@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dir_217c73d33aa2f2528e57fa1905ac8ac0" kind="dir">
+    <compoundname>selections/mc16</compoundname>
+    <innerdir refid="dir_22822b97f0af7f3754dc9599ed767a96">selections/mc16/childrenkinematics</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc16/"/>
+  </compounddef>
+</doxygen>

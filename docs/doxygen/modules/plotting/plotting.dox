@@ -1,0 +1,41 @@
+
+/**
+ * @file plotting.dox
+ * @brief Detailed documentation for the plotting class.
+ *
+ * @page plotting_module_page Plotting Module
+ *
+ * @section plotting_module_intro Introduction
+ * The `plotting` module provides a class for creating and managing various types of plots, including histograms, graphs, and ROC curves.
+ *
+ * @section plotting_class The plotting Class
+ * The `plotting` class is the main component of this module.
+ *
+ * @subsection plotting_ctor Constructor and Destructor
+ * - `plotting()`: The constructor.
+ * - `~plotting()`: The destructor cleans up the allocated memory, including the ROC data.
+ *
+ * @subsection plotting_methods_path Path Building
+ * - `std::string build_path()`: Constructs the full output path for a plot, including the filename and extension.
+ *
+ * @subsection plotting_methods_data Data Handling
+ * - `float get_max(std::string dim)`: Returns the maximum value of the x or y data.
+ * - `float get_min(std::string dim)`: Returns the minimum value of the x or y data.
+ * - `float sum_of_weights()`: Returns the sum of the weights.
+ * - `std::tuple<float, float> mean_stdev(std::vector<float>* data)`: Calculates the mean and standard deviation of a vector of floats.
+ * - `void build_error()`: Calculates the error bars for the y-data.
+ *
+ * @subsection plotting_methods_roc ROC Curves
+ * - `void build_ROC(std::string name, int kfold, std::vector<int>* label, std::vector<std::vector<double>>* scores)`: Builds the data for a Receiver Operating Characteristic (ROC) curve. It takes the true labels and the predicted scores as input and stores them in the `roc_data` and `labels` maps.
+ * - `std::vector<roc_t> get_ROC()`: Returns a vector of `roc_t` structs, which contain the data for all the ROC curves that have been built.
+ *
+ * @section roc_t_struct The roc_t Struct
+ * The `roc_t` struct is a simple data container for the information needed to plot a ROC curve.
+ *
+ * @subsection roc_t_members Members
+ * - `int kfold`: The k-fold index.
+ * - `int cls`: The number of classes.
+ * - `std::string model`: The name of the model.
+ * - `std::vector<std::vector<int>>* truth`: A pointer to the true labels.
+ * - `std::vector<std::vector<double>>* scores`: A pointer to the predicted scores.
+ */

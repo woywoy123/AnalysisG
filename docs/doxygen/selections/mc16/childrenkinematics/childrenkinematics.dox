@@ -1,0 +1,82 @@
+/**
+ * @file childrenkinematics.dox
+ * @brief Detailed documentation for the ChildrenKinematics Cython class, specialized for analyzing the kinematics of top quark children in MC16 events.
+ *
+ * @page ChildrenKinematicsSelection_page Children Kinematics Selection
+ *
+ * @section ChildrenKinematicsSelection_intro Introduction
+ * The `ChildrenKinematics` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for detailed analysis of the kinematic properties of particles originating from top quark decays in Monte Carlo 16 (MC16) events. It extends the generic `SelectionTemplate` class, providing tailored functionalities for handling various kinematic observables, particle identification (PDG ID), and decay modes. This class facilitates a high-performance extraction and organization of children kinematics data for further physics analysis.
+ *
+ * @section ChildrenKinematicsSelection_helper_functions Helper Functions (C-style)
+ * These functions are implemented as C-style functions in Cython for performance optimization and direct interaction with C++ types.
+ *
+ * - `cdef str pdgid(int ipt)`:
+ *   Converts a PDG (Particle Data Group) ID to a symbolic string representation, often used for display in plots or tables.
+ *   @param ipt The integer PDG ID of a particle.
+ *   @return A string representation of the particle (e.g., "d", "u", "e", "$\nu_{e}$", "g", "$\gamma$", etc.).
+ *
+ * - `cdef void merge(vector[float]* ix, vector[float]* iy)`:
+ *   Merges the contents of `iy` (source vector) into `ix` (destination vector) by appending elements.
+ *   @param ix A pointer to the destination C++ `std::vector<float>`.
+ *   @param iy A pointer to the source C++ `std::vector<float>`.
+ *
+ * - `def res(ck, data)`:
+ *   Processes kinematic data for "resonant" particles. It extracts the numerical values from `data[1]` and merges them into `ck.r_data` keyed by a derived name from `data[0]`.
+ *   @param ck An instance of `ChildrenKinematics`.
+ *   @param data A tuple `(name_string, vector_of_floats)` containing the data.
+ *
+ * - `def spc(ck, data)`:
+ *   Processes kinematic data for "spectator" particles. Similar to `res`, but merges into `ck.s_data`.
+ *   @param ck An instance of `ChildrenKinematics`.
+ *   @param data A tuple `(name_string, vector_of_floats)` containing the data.
+ *
+ * - `def rdcy(ck, data)`:
+ *   Processes kinematic data for "resonant decay" particles. Similar to `res`, but merges into `ck.r_decay`. Handles "frc" prefix for fractional kinematics.
+ *   @param ck An instance of `ChildrenKinematics`.
+ *   @param data A tuple `(name_string, vector_of_floats)` containing the data.
+ *
+ * - `def sdcy(ck, data)`:
+ *   Processes kinematic data for "spectator decay" particles. Similar to `spc`, but merges into `ck.s_decay`. Handles "frc" prefix for fractional kinematics.
+ *   @param ck An instance of `ChildrenKinematics`.
+ *   @param data A tuple `(name_string, vector_of_floats)` containing the data.
+ *
+ * - `def tpm(ck, data)`:
+ *   Processes kinematic data related to "top permutation" matching. It extracts values and merges them into `ck.top_pem`.
+ *   @param ck An instance of `ChildrenKinematics`.
+ *   @param data A tuple `(name_string, vector_of_floats)` containing the data.
+ *
+ * @section ChildrenKinematicsSelection_class The ChildrenKinematics Class
+ * `ChildrenKinematics` is a `cdef class` that inherits from `SelectionTemplate`. It is tailored for collecting and organizing kinematic information from children particles, particularly those from top quark decays.
+ *
+ * @subsection ChildrenKinematicsSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent.
+ *   - Initializes `self.root_leaves` to define specific ROOT branches (`res_pt`, `spec_pt`, `res_decay_pt`, `top_perm_pt`, etc.) and associates them with the appropriate helper functions (`res`, `spc`, `rdcy`, `sdcy`, `tpm`) for data processing during `InterpretROOT`.
+ *   - Initializes several internal Python dictionaries (`res_kinematics`, `spec_kinematics`, `res_pdgid_kinematics`, `spec_pdgid_kinematics`, `res_decay_mode`, `spec_decay_mode`, `fractional`, `dr_clustering`, `top_children_dr`) for structured storage of processed kinematic data.
+ *   - Initializes a new C++ `childrenkinematics` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `childrenkinematics*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__dealloc__(self)`:
+ *   Deallocates the C++ `childrenkinematics` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection ChildrenKinematicsSelection_methods Methods
+ * - `Postprocessing(self)`:
+ *   This method is called after all data has been interpreted from ROOT files. It performs extensive organization and structuring of the raw kinematic data collected by the helper functions into meaningful Python dictionaries.
+ *   - **Kinematics Organization**: Populates `res_kinematics` and `spec_kinematics` for primary kinematic variables (pt, eta, phi, energy).
+ *   - **PDG ID-based Kinematics**: Processes PDG IDs to group kinematics by particle type, populating `res_pdgid_kinematics` and `spec_pdgid_kinematics`.
+ *   - **Decay Mode Analysis**: Organizes decay-related kinematics (is_lepton, mass, dR) into `res_decay_mode` and `spec_decay_mode`, categorizing by leptonic/hadronic decay.
+ *   - **Fractional Kinematics**: Calculates and stores fractional pT and energy contributions for different particle types, populating `fractional`.
+ *   - **Delta R Clustering**: Processes `dR` values from top permutations and decay children, populating `dr_clustering` and `top_children_dr`.
+ *   - Clears intermediate `r_data`, `s_data`, `r_decay`, `s_decay`, and `top_pem` storage.
+ *
+ * - `cdef void transform_dict_keys(self)`:
+ *   This method is a placeholder from `SelectionTemplate` and is intentionally left empty in this implementation.
+ *
+ * @section ChildrenKinematicsSelection_cpp_interaction C++ Interaction
+ * The `ChildrenKinematics` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class ChildrenKinematics`: Declares `ChildrenKinematics` as a Cython extension type.
+ * - `cdef childrenkinematics *tt`: A C++ pointer to a `childrenkinematics` object, which is the specialized C++ backend for children kinematics processing.
+ * - `self.ptr = new childrenkinematics()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <childrenkinematics*>self.ptr`: This line demonstrates C++ upcasting, allowing `ChildrenKinematics` to fulfill the `SelectionTemplate` interface while internally managing its specific `childrenkinematics` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `ChildrenKinematics` inherits.
+ * - `from AnalysisG.core.tools cimport *`: Imports utility functions for string encoding/decoding and data structures.
+ */

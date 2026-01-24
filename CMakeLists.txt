@@ -96,6 +96,7 @@ file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGE
 #COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
 #WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 #COMMENT "Generating documentation with Doxygen" VERBATIM)
+ 
 #else (DOXYGEN_FOUND)
 #message("Doxygen need to be installed to generate the doxygen documentation")
 

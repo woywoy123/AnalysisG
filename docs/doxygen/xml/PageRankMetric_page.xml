@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="PageRankMetric_page" kind="page">
+    <compoundname>PageRankMetric_page</compoundname>
+    <title>PageRank Metric</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="PageRankMetric_page_1PageRankMetric_intro">
+<title>Introduction</title><para>The <computeroutput>PageRankMetric</computeroutput> class, implemented in Cython, is designed to be a specialized metric within the AnalysisG framework for calculating and analyzing PageRank-related metrics on graph structures. It inherits from the <computeroutput>MetricTemplate</computeroutput> class, providing a foundation for integrating PageRank calculations into the broader analysis pipeline. While the provided snippet is incomplete, its purpose is to leverage an underlying C++ PageRank implementation for high-performance graph analysis.</para>
+</sect1>
+<sect1 id="PageRankMetric_page_1PageRankMetric_class">
+<title>The PageRankMetric Class</title><para><computeroutput>PageRankMetric</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>MetricTemplate</computeroutput>. This indicates its implementation as a Cython extension type, allowing for direct and optimized interaction with a C++ <computeroutput>pagerank_metric</computeroutput> object.</para>
+<sect2 id="PageRankMetric_page_1PageRankMetric_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>pagerank_metric</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>pagerank_metric*</computeroutput> and assigns it to <computeroutput>self.mtr</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Cython destructor, responsible for deallocating the C++ <computeroutput>pagerank_metric</computeroutput> object.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PageRankMetric_page_1PageRankMetric_technical_details">
+<title>Technical Details</title><para><itemizedlist>
+<listitem><para><bold>Cython Implementation</bold>: The class is implemented in Cython, enabling direct binding to C++ code for performance.</para>
+</listitem><listitem><para><bold>C++ Backend</bold>: It relies on an underlying C++ <computeroutput>pagerank_metric</computeroutput> class (presumably defined in a corresponding <computeroutput>.pxd</computeroutput> file) to perform the actual PageRank calculations.</para>
+</listitem><listitem><para><bold>Inheritance</bold>: Inherits from <computeroutput>MetricTemplate</computeroutput>, suggesting it integrates into the generic metric processing pipeline of AnalysisG.</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="PageRankMetric_page_1PageRankMetric_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>PageRankMetric</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class PageRankMetric</computeroutput>: Declares <computeroutput>PageRankMetric</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef pagerank_metric *ptr</computeroutput>: A C++ pointer to a <computeroutput>pagerank_metric</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>cdef pagerank_metric *mtr</computeroutput>: An additional C++ pointer, likely for specialized access to the <computeroutput>pagerank_metric</computeroutput> object.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.metric_template cimport MetricTemplate</computeroutput>: Imports the base <computeroutput>MetricTemplate</computeroutput> class, from which <computeroutput>PageRankMetric</computeroutput> inherits. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="metrics/pagerank/metric_pagerank.dox"/>
+  </compounddef>
+</doxygen>

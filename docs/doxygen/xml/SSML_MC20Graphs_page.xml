@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="SSML_MC20Graphs_page" kind="page">
+    <compoundname>SSML_MC20Graphs_page</compoundname>
+    <title>SSML_MC20 Graphs</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_intro">
+<title>Introduction</title><para>The <computeroutput>graph_ssml_mc20.pyx</computeroutput> module defines a collection of specialized graph classes tailored for Semi-Supervised Machine Learning (SSML) Monte Carlo 20 (MC20) events within the AnalysisG framework. These classes, including <computeroutput>GraphJets</computeroutput>, <computeroutput>GraphJetsNoNu</computeroutput>, <computeroutput>GraphDetectorLep</computeroutput>, and <computeroutput>GraphDetector</computeroutput>, all inherit from the generic <computeroutput>GraphTemplate</computeroutput>. They encapsulate specific C++ graph types, providing a high-performance and Python-friendly interface to detailed graph structures relevant to SSML MC20 analyses.</para>
+</sect1>
+<sect1 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_classes">
+<title>Specialized Graph Classes</title><para>Each class below is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. They all inherit from <computeroutput>GraphTemplate</computeroutput>, gaining its base functionalities for graph indexing, tree association, and pre-selection management. Their primary role is to wrap a specific C++ graph object, allowing for specialized data access and manipulation.</para>
+<sect2 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_GraphJets_class">
+<title>GraphJets Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a graph constructed from reconstructed jets in SSML MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>graph_jets</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>graph_jets</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_GraphJetsNoNu_class">
+<title>GraphJetsNoNu Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a graph constructed from reconstructed jets, excluding neutrinos, in SSML MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>graph_jets_nonu</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>graph_jets_nonu</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_GraphDetectorLep_class">
+<title>GraphDetectorLep Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a graph focusing on detector-level leptons in SSML MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>graph_jets_detector_lep</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>graph_jets_detector_lep</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_GraphDetector_class">
+<title>GraphDetector Class</title><para><itemizedlist>
+<listitem><para><bold>Introduction</bold>: Represents a graph constructed from general detector-level objects in SSML MC20 events.</para>
+</listitem><listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>graph_detector</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Python initializer, intentionally empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>graph_detector</computeroutput> object via <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="SSML_MC20Graphs_page_1SSML_MC20Graphs_cpp_interaction">
+<title>C++ Interaction</title><para>All classes in this module leverage Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ...</computeroutput>: Declares each class as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef &lt;cpp_type&gt; *ptr</computeroutput>: A C++ pointer to a specific graph type (e.g., <computeroutput>graph_jets*</computeroutput>, <computeroutput>graph_detector*</computeroutput>), managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.graph_template cimport GraphTemplate</computeroutput>: Imports the base <computeroutput>GraphTemplate</computeroutput> class, from which all these specialized classes inherit.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.graphs.ssml_mc20.graph_ssml_mc20 cimport *</computeroutput>: Imports the C++ graph class declarations from their <computeroutput>.pxd</computeroutput> file. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="graphs/ssml_mc20/graph_ssml_mc20.dox"/>
+  </compounddef>
+</doxygen>

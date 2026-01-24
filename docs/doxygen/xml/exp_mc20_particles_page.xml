@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="exp_mc20_particles_page" kind="page">
+    <compoundname>exp_mc20_particles_page</compoundname>
+    <title>exp_mc20 Particles</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>exp_mc20</computeroutput> event. These classes inherit from <computeroutput>particle_template</computeroutput> and define the specific properties and behaviors of each particle type.</para>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_top">
+<title>Top</title><para>The <computeroutput>top</computeroutput> class represents a top quark in the event.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_top_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>top()</computeroutput>: Initializes the particle type to &quot;top&quot; and defines the data leaves to be read from the input tree.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_top_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>top</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>top</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_child">
+<title>Child</title><para>The <computeroutput>child</computeroutput> class represents a decay product of a top quark.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_child_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>child()</computeroutput>: Initializes the particle type to &quot;child&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_child_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>child</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>child</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_physics_detector">
+<title>Physics Detector</title><para>The <computeroutput>physics_detector</computeroutput> class represents a particle reconstructed at the detector level, with links to the truth level.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_physics_detector_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>physics_detector()</computeroutput>: Initializes the particle type to &quot;physdet&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_physics_detector_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>physics_detector</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>physics_detector</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_physics_detector_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>top_index</computeroutput>: A vector of indices of the associated top quarks.</para>
+</listitem><listitem><para><computeroutput>parton</computeroutput>: The true flavor of the particle.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_physics_truth">
+<title>Physics Truth</title><para>The <computeroutput>physics_truth</computeroutput> class represents a particle at the truth level.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_physics_truth_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>physics_truth()</computeroutput>: Initializes the particle type to &quot;phystru&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_physics_truth_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>physics_truth</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>physics_truth</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_physics_truth_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>top_index</computeroutput>: A vector of indices of the associated top quarks.</para>
+</listitem><listitem><para><computeroutput>parton</computeroutput>: The parton truth label.</para>
+</listitem><listitem><para><computeroutput>type</computeroutput>: The type of the particle.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_jet">
+<title>Jet</title><para>The <computeroutput>jet</computeroutput> class represents a reconstructed jet.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_jet_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>jet()</computeroutput>: Initializes the particle type to &quot;jet&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_jet_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>jet</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>jet</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_jet_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>flav</computeroutput>: The truth flavor of the jet.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_electron">
+<title>Electron</title><para>The <computeroutput>electron</computeroutput> class represents a reconstructed electron.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_electron_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>electron()</computeroutput>: Initializes the particle type to &quot;el&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_electron_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>electron</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>electron</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_electron_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>is_tight</computeroutput>: A boolean flag indicating if the electron passes the tight selection criteria.</para>
+</listitem><listitem><para><computeroutput>d0sig</computeroutput>: The transverse impact parameter significance.</para>
+</listitem><listitem><para><computeroutput>delta_z0</computeroutput>: The longitudinal impact parameter.</para>
+</listitem><listitem><para><computeroutput>true_type</computeroutput>: The truth type of the electron.</para>
+</listitem><listitem><para><computeroutput>true_origin</computeroutput>: The truth origin of the electron.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="exp_mc20_particles_page_1exp_mc20_particles_muon">
+<title>Muon</title><para>The <computeroutput>muon</computeroutput> class represents a reconstructed muon.</para>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_muon_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>muon()</computeroutput>: Initializes the particle type to &quot;mu&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_muon_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>muon</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>muon</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="exp_mc20_particles_page_1exp_mc20_particles_muon_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>is_tight</computeroutput>: A boolean flag indicating if the muon passes the tight selection criteria.</para>
+</listitem><listitem><para><computeroutput>d0sig</computeroutput>: The transverse impact parameter significance.</para>
+</listitem><listitem><para><computeroutput>delta_z0</computeroutput>: The longitudinal impact parameter.</para>
+</listitem><listitem><para><computeroutput>true_type</computeroutput>: The truth type of the muon.</para>
+</listitem><listitem><para><computeroutput>true_origin</computeroutput>: The truth origin of the muon. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/exp_mc20/particles.dox"/>
+  </compounddef>
+</doxygen>

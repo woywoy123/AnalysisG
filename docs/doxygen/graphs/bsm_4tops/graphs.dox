@@ -1,0 +1,99 @@
+
+/**
+ * @file graphs.dox
+ * @brief Detailed documentation for the graph classes in the bsm_4tops analysis.
+ *
+ * @page bsm_4tops_graphs_page bsm_4tops Graphs
+ *
+ * This page provides detailed documentation for the various graph classes used in the `bsm_4tops` analysis. These classes inherit from `graph_template` and define the specific nodes, features, and topologies used to represent the event as a graph.
+ *
+ * @section bsm_4tops_graphs_graph_tops Graph of Tops
+ * The `graph_tops` class constructs a graph where each node is a top quark.
+ *
+ * @subsection bsm_4tops_graphs_graph_tops_ctor Constructor
+ * - `graph_tops()`: Initializes the graph name to "graph_tops".
+ *
+ * @subsection bsm_4tops_graphs_graph_tops_methods Methods
+ * - `graph_template* clone()`: Creates a new instance of the `graph_tops` graph.
+ * - `void CompileEvent()`: Defines the graph structure and features.
+ *   - **Nodes**: The nodes of the graph are the top quarks from the event (`event->Tops`).
+ *   - **Graph Truth Features**: `signal`, `ntops`.
+ *   - **Node Truth Features**: `top_node`, `res_node`.
+ *   - **Edge Truth Features**: `res_edge`.
+ *   - **Graph Data Features**: `met`, `phi`, `weight`, `event_number`.
+ *   - **Node Data Features**: `pt`, `eta`, `phi`, `energy`, `charge`.
+ *
+ * @section bsm_4tops_graphs_graph_children Graph of Top Children
+ * The `graph_children` class constructs a graph where each node is a decay product of a top quark.
+ *
+ * @subsection bsm_4tops_graphs_graph_children_ctor Constructor
+ * - `graph_children()`: Initializes the graph name to "graph_children".
+ *
+ * @subsection bsm_4tops_graphs_graph_children_methods Methods
+ * - `graph_template* clone()`: Creates a new instance of the `graph_children` graph.
+ * - `void CompileEvent()`: Defines the graph structure and features.
+ *   - **Nodes**: The nodes of the graph are the top decay products from the event (`event->Children`).
+ *   - **Topology**: A fully connected topology is used.
+ *   - **Graph Truth Features**: `signal`, `n_nu`, `n_lep`, `ntops`.
+ *   - **Node Truth Features**: `top_node`, `res_node`.
+ *   - **Edge Truth Features**: `res_edge`, `top_edge`.
+ *   - **Graph Data Features**: `met`, `phi`, `num_jets`, `num_leps`, `weight`, `event_number`.
+ *   - **Node Data Features**: `pt`, `eta`, `phi`, `energy`, `charge`, `is_lep`, `is_b`, `is_nu`.
+ *
+ * @section bsm_4tops_graphs_graph_truthjets Graph of Truth Jets
+ * The `graph_truthjets` class constructs a graph using truth jets and leptonic top decay products.
+ *
+ * @subsection bsm_4tops_graphs_graph_truthjets_ctor Constructor
+ * - `graph_truthjets()`: Initializes the graph name to "graph_truthjets".
+ *
+ * @subsection bsm_4tops_graphs_graph_truthjets_methods Methods
+ * - `graph_template* clone()`: Creates a new instance of the `graph_truthjets` graph.
+ * - `void CompileEvent()`: Defines the graph structure and features.
+ *   - **Nodes**: The nodes are the truth jets and the leptonic/neutrino decay products of the top quarks.
+ *   - **Topology**: A fully connected topology is used.
+ *   - **Features**: Similar to `graph_children`, but with `num_truthjets` as a graph data feature.
+ *
+ * @section bsm_4tops_graphs_graph_truthjets_nonu Graph of Truth Jets (No Neutrinos)
+ * The `graph_truthjets_nonu` class is similar to `graph_truthjets`, but excludes neutrinos from the graph nodes.
+ *
+ * @subsection bsm_4tops_graphs_graph_truthjets_nonu_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: The nodes are the truth jets and the leptonic (non-neutrino) decay products of the top quarks.
+ *   - **Neutrino Information**: The `double_neutrino()` method is called to add information about the neutrinos to the graph, even though they are not included as nodes.
+ *
+ * @section bsm_4tops_graphs_graph_jets Graph of Reconstructed Jets
+ * The `graph_jets` class constructs a graph using reconstructed jets and leptonic top decay products.
+ *
+ * @subsection bsm_4tops_graphs_graph_jets_ctor Constructor
+ * - `graph_jets()`: Initializes the graph name to "graph_jets".
+ *
+ * @subsection bsm_4tops_graphs_graph_jets_methods Methods
+ * - `bool PreSelection()`: A preselection method that can be used to filter events.
+ * - `void CompileEvent()`: Defines the graph structure and features.
+ *   - **Nodes**: The nodes are the reconstructed jets and the leptonic/neutrino decay products of the top quarks.
+ *   - **Topology**: A fully connected topology is used.
+ *   - **Features**: Similar to `graph_truthjets`, but using reconstructed jets.
+ *
+ * @section bsm_4tops_graphs_graph_jets_nonu Graph of Reconstructed Jets (No Neutrinos)
+ * The `graph_jets_nonu` class is similar to `graph_jets`, but excludes neutrinos from the graph nodes.
+ *
+ * @subsection bsm_4tops_graphs_graph_jets_nonu_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: The nodes are the reconstructed jets and the leptonic (non-neutrino) decay products of the top quarks.
+ *   - **Neutrino Information**: The `double_neutrino()` method is called to add information about the neutrinos.
+ *
+ * @section bsm_4tops_graphs_graph_jets_detector_lep Graph of Detector Objects (with Neutrinos)
+ * The `graph_jets_detector_lep` class constructs a graph using all detector-level objects (jets, electrons, muons) and truth neutrinos.
+ *
+ * @subsection bsm_4tops_graphs_graph_jets_detector_lep_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: Reconstructed jets, electrons, muons, and truth neutrinos.
+ *
+ * @section bsm_4tops_graphs_graph_detector Graph of Detector Objects (No Neutrinos)
+ * The `graph_detector` class constructs a graph using all detector-level objects (jets, electrons, muons).
+ *
+ * @subsection bsm_4tops_graphs_graph_detector_methods Methods
+ * - `void CompileEvent()`:
+ *   - **Nodes**: Reconstructed jets, electrons, and muons.
+ *   - **Neutrino Information**: The `double_neutrino()` method is called to add information about the neutrinos.
+ */

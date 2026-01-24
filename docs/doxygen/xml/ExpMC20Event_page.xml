@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ExpMC20Event_page" kind="page">
+    <compoundname>ExpMC20Event_page</compoundname>
+    <title>ExpMC20 Event</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ExpMC20Event_page_1ExpMC20Event_intro">
+<title>Introduction</title><para>The <computeroutput>ExpMC20</computeroutput> class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to experimental Monte Carlo 20 (MC20) events. It inherits from the generic <computeroutput>EventTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant to this particular dataset. This class provides a high-performance interface to an underlying C++ event object tailored for experimental MC20 analysis.</para>
+</sect1>
+<sect1 id="ExpMC20Event_page_1ExpMC20Event_class">
+<title>The ExpMC20 Class</title><para><computeroutput>ExpMC20</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>EventTemplate</computeroutput>, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ <computeroutput>exp_mc20</computeroutput> object, which likely contains specific data members and methods pertinent to experimental MC20 events.</para>
+<sect2 id="ExpMC20Event_page_1ExpMC20Event_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>exp_mc20</computeroutput> object and assigns its pointer to <computeroutput>self.exp</computeroutput>. Crucially, it then upcasts <computeroutput>self.exp</computeroutput> to an <computeroutput>event_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>, allowing <computeroutput>ExpMC20</computeroutput> to be treated as a generic <computeroutput>EventTemplate</computeroutput> while still managing its specialized C++ object.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>exp_mc20</computeroutput> object pointed to by <computeroutput>self.exp</computeroutput> (via <computeroutput>self.ptr</computeroutput>), ensuring proper memory management for the specialized event data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ExpMC20Event_page_1ExpMC20Event_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>ExpMC20</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ExpMC20</computeroutput>: Declares <computeroutput>ExpMC20</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef exp_mc20 *exp</computeroutput>: A C++ pointer to an <computeroutput>exp_mc20</computeroutput> object, which is the specialized C++ representation of an experimental MC20 event.</para>
+</listitem><listitem><para><computeroutput>self.ptr = &lt;event_template*&gt;(self.exp)</computeroutput>: This line demonstrates C++ upcasting, where a pointer to a derived class (<computeroutput>exp_mc20</computeroutput>) is assigned to a pointer to its base class (<computeroutput>event_template</computeroutput>). This allows <computeroutput>ExpMC20</computeroutput> to fulfill the <computeroutput>EventTemplate</computeroutput> interface while internally managing its specific <computeroutput>exp_mc20</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.event_template cimport EventTemplate</computeroutput>: Imports the base <computeroutput>EventTemplate</computeroutput> class, from which <computeroutput>ExpMC20</computeroutput> inherits. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="events/exp_mc20/event_exp_mc20.dox"/>
+  </compounddef>
+</doxygen>

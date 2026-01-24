@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="accuracy_metric_page" kind="page">
+    <compoundname>accuracy_metric_page</compoundname>
+    <title>Accuracy Metric</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="accuracy_metric_page_1accuracy_metric_intro">
+<title>Introduction</title><para>The <computeroutput>accuracy_metric</computeroutput> class is a specialization of the <computeroutput>metric_template</computeroutput> and is designed to calculate and record accuracy metrics for GNN-based analyses. It computes the accuracy of edge predictions and the classification of the number of top quarks.</para>
+</sect1>
+<sect1 id="accuracy_metric_page_1accuracy_metric_class">
+<title>The accuracy_metric Class</title><para>The <computeroutput>accuracy_metric</computeroutput> class inherits from <computeroutput>metric_template</computeroutput> and implements its virtual methods to provide metric-specific functionality.</para>
+<sect2 id="accuracy_metric_page_1accuracy_metric_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>accuracy_metric()</computeroutput>: The constructor initializes the metric name to &quot;accuracy&quot;.</para>
+</listitem><listitem><para><computeroutput>~accuracy_metric()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="accuracy_metric_page_1accuracy_metric_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>accuracy_metric* clone()</computeroutput>: Creates a new instance of the <computeroutput>accuracy_metric</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>void define_variables()</computeroutput>: Registers the output variables for the metric. This includes event-wise and global accuracies for edge predictions and n-top classification, for training, validation, and evaluation modes.</para>
+</listitem><listitem><para><computeroutput>void event()</computeroutput>: Writes the event-wise metrics to the output file.</para>
+</listitem><listitem><para><computeroutput>void batch()</computeroutput>: This method is not used in this metric.</para>
+</listitem><listitem><para><computeroutput>void end()</computeroutput>: This method is called at the end of the processing. It calculates the final global accuracies and writes them to the output file.</para>
+</listitem><listitem><para><computeroutput>void define_metric(metric_t* mtx)</computeroutput>: This is the core method of the class. It takes a <computeroutput>metric_t</computeroutput> object containing the GNN predictions and truth information, and calculates the accuracies.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="accuracy_metric_page_1accuracy_metric_calculation">
+<title>Accuracy Calculation</title><para>The <computeroutput>define_metric</computeroutput> method performs the following calculations:<itemizedlist>
+<listitem><para><bold>N-Top Accuracy</bold>: It compares the predicted number of top quarks (the index with the highest score in <computeroutput>ntop_scores</computeroutput>) with the true number of top quarks for each event and accumulates the results in a confusion matrix (<computeroutput>ntop_accuracy</computeroutput>).</para>
+</listitem><listitem><para><bold>Edge Accuracy</bold>: For each edge in the graph, it compares the predicted edge class (based on <computeroutput>edge_sc</computeroutput>) with the true edge class (<computeroutput>edge_tr</computeroutput>) and calculates the event-wise and global edge accuracies.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="accuracy_metric_page_1accuracy_metric_output">
+<title>Output Variables</title><para>The metric outputs the following variables to a ROOT file:<itemizedlist>
+<listitem><para><bold>Event-wise</bold>:<itemizedlist>
+<listitem><para><computeroutput>edge_accuracy</computeroutput>: The accuracy of edge predictions for the event.</para>
+</listitem><listitem><para><computeroutput>ntop_scores</computeroutput>: The predicted scores for the number of top quarks.</para>
+</listitem><listitem><para><computeroutput>ntop_truth</computeroutput>: The true number of top quarks.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><bold>Global</bold>:<itemizedlist>
+<listitem><para><computeroutput>global_edge_accuracy</computeroutput>: The overall accuracy of edge predictions.</para>
+</listitem><listitem><para><computeroutput>ntops_accuracy</computeroutput>: A vector containing the accuracy for each n-top class. </para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="metrics/accuracy/accuracy.dox"/>
+  </compounddef>
+</doxygen>

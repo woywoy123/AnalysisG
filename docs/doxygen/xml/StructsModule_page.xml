@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="StructsModule_page" kind="page">
+    <compoundname>StructsModule_page</compoundname>
+    <title>Structs Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="StructsModule_page_1StructsModule_intro">
+<title>Introduction</title><para>The <computeroutput>structs.pyx</computeroutput> module is a crucial, albeit small, component within the AnalysisG framework. Its primary role is to facilitate type-safe and efficient conversion of complex C++ data structures, specifically <computeroutput>data_t</computeroutput> objects, into Python dictionaries. This module acts as a bridge, allowing Python code to seamlessly access and interpret data that is managed and processed at the C++ level, ensuring data integrity and performance.</para>
+</sect1>
+<sect1 id="StructsModule_page_1StructsModule_elements_function">
+<title>elements(basic* null, data_t* data)</title><para>This is a helper function designed to extract an element from a <computeroutput>data_t</computeroutput> object. It uses a type-hinting null pointer (<computeroutput>basic* null</computeroutput>) to guide Cython&apos;s type inference during the conversion process.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>null</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A null pointer of a specific C++ type (e.g., <computeroutput>vector&lt;vector&lt;float&gt;&gt;*</computeroutput>) used by Cython for type inference during the <computeroutput>data.element()</computeroutput> call. This parameter is not used for its value. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a C++ <computeroutput>data_t</computeroutput> object from which the element is to be extracted. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python dictionary containing the extracted element, where the key is <computeroutput>data.path</computeroutput> and the value is the converted C++ element. Returns an empty dictionary if the element cannot be extracted.</para>
+</simplesect>
+</para>
+</sect1>
+<sect1 id="StructsModule_page_1StructsModule_switch_board_function">
+<title>switch_board(data_t* data)</title><para>The <computeroutput>switch_board</computeroutput> function is the central dispatcher for converting a C++ <computeroutput>data_t</computeroutput> object into a Python dictionary. It inspects the <computeroutput>type</computeroutput> member of the <computeroutput>data_t</computeroutput> object (which is an enum <computeroutput>data_enum</computeroutput>) to determine the underlying C++ data type. Based on this type, it dispatches the call to the <computeroutput>elements</computeroutput> helper function with the appropriate type casting, ensuring that the C++ data is correctly interpreted and converted into a Python object.</para>
+<para>This function handles a wide range of C++ data types, including:<itemizedlist>
+<listitem><para>Vectors of vectors of floats, doubles, longs, ints, and booleans (<computeroutput>vvv_f</computeroutput>, <computeroutput>vvv_d</computeroutput>, <computeroutput>vvv_l</computeroutput>, <computeroutput>vvv_i</computeroutput>, <computeroutput>vvv_b</computeroutput>).</para>
+</listitem><listitem><para>Vectors of floats, doubles, longs, ints, booleans, and chars (<computeroutput>vv_f</computeroutput>, <computeroutput>vv_d</computeroutput>, <computeroutput>vv_l</computeroutput>, <computeroutput>vv_i</computeroutput>, <computeroutput>vv_b</computeroutput>, <computeroutput>vv_c</computeroutput>).</para>
+</listitem><listitem><para>Single floats, doubles, longs, ints, booleans, and chars (<computeroutput>v_f</computeroutput>, <computeroutput>v_d</computeroutput>, <computeroutput>v_l</computeroutput>, <computeroutput>v_i</computeroutput>, <computeroutput>v_b</computeroutput>, <computeroutput>v_c</computeroutput>).</para>
+</listitem><listitem><para>Unsigned long long and unsigned int (<computeroutput>v_ull</computeroutput>, <computeroutput>v_ui</computeroutput>).</para>
+</listitem></itemizedlist>
+</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a C++ <computeroutput>data_t</computeroutput> object whose content needs to be converted to a Python dictionary. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python dictionary representing the converted data from the <computeroutput>data_t</computeroutput> object. Returns an empty dictionary if the <computeroutput>data_t</computeroutput>&apos;s type is not recognized or supported.</para>
+</simplesect>
+</para>
+</sect1>
+<sect1 id="StructsModule_page_1StructsModule_technical_details">
+<title>Technical Details</title><para><itemizedlist>
+<listitem><para><bold>Cython Implementation</bold>: The module is written in Cython (<computeroutput>.pyx</computeroutput>), allowing it to directly interact with C++ types and pointers.</para>
+</listitem><listitem><para><bold>C++ <computeroutput>data_t</computeroutput></bold>: This is a C++ struct (defined in a corresponding <computeroutput>.pxd</computeroutput> file) that likely encapsulates a generic data type along with metadata like its path and an enum indicating its actual type.</para>
+</listitem><listitem><para><bold>C++ <computeroutput>data_enum</computeroutput></bold>: An enumeration (also defined in a <computeroutput>.pxd</computeroutput> file) that specifies the various data types that <computeroutput>data_t</computeroutput> can hold.</para>
+</listitem><listitem><para><bold>Type Casting</bold>: The <computeroutput>switch_board</computeroutput> function heavily relies on explicit type casting (e.g., <computeroutput>&lt;vector[vector[float ]]*&gt;(NULL)</computeroutput>) to correctly inform Cython about the expected C++ type when calling <computeroutput>data.element()</computeroutput>. This is a common Cython pattern for working with templated or generic C++ functions.</para>
+</listitem><listitem><para><bold><computeroutput>cdef dict</computeroutput></bold>: Cython&apos;s way of declaring a Python dictionary that can be efficiently manipulated within Cython code. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/structs.dox"/>
+  </compounddef>
+</doxygen>

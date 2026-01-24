@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ssml_mc20_event_page" kind="page">
+    <compoundname>ssml_mc20_event_page</compoundname>
+    <title>ssml_mc20 Event</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ssml_mc20_event_page_1ssml_mc20_event_intro">
+<title>Introduction</title><para>The <computeroutput>ssml_mc20</computeroutput> class is a specialization of the <computeroutput>event_template</computeroutput> and is designed to handle events from the Same-Sign-Muon-Lepton analysis for Run 3 (MC20). It defines the structure of the event, including the particles and their relationships, and provides methods for building and compiling the event from the input data.</para>
+</sect1>
+<sect1 id="ssml_mc20_event_page_1ssml_mc20_event_class">
+<title>The ssml_mc20 Class</title><para>The <computeroutput>ssml_mc20</computeroutput> class inherits from <computeroutput>event_template</computeroutput> and implements its virtual methods to provide event-specific functionality.</para>
+<sect2 id="ssml_mc20_event_page_1ssml_mc20_event_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>ssml_mc20()</computeroutput>: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.</para>
+</listitem><listitem><para><computeroutput>~ssml_mc20()</computeroutput>: The destructor cleans up any resources allocated by the event.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_event_page_1ssml_mc20_event_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>event_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>ssml_mc20</computeroutput> event.</para>
+</listitem><listitem><para><computeroutput>void build(element_t* el)</computeroutput>: Populates the event&apos;s data members (event number, weights, MET, etc.) from the input data element.</para>
+</listitem><listitem><para><computeroutput>void CompileEvent()</computeroutput>: This is the core method of the class. It reconstructs the event by linking the various particles together. This includes:<itemizedlist>
+<listitem><para>Associating tops with their parent Z&apos; boson.</para>
+</listitem><listitem><para>Linking partons to their corresponding jets, truth jets, muons, and electrons.</para>
+</listitem><listitem><para>Matching various particle collections (partons, electrons, muons, jets, truth jets) to their parent tops.</para>
+</listitem><listitem><para>Vectorizing the particle collections for easier access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_event_page_1ssml_mc20_event_attributes">
+<title>Event Attributes</title><para>The <computeroutput>ssml_mc20</computeroutput> event contains a wide range of attributes, including:<itemizedlist>
+<listitem><para><bold>Event Information</bold>: <computeroutput>eventNumber</computeroutput>, <computeroutput>event_category</computeroutput>.</para>
+</listitem><listitem><para><bold>Weights</bold>: <computeroutput>weight_mc</computeroutput>, <computeroutput>weight_pileup</computeroutput>, <computeroutput>weight_jvt_effSF</computeroutput>, <computeroutput>weight_lep_tightSF</computeroutput>, <computeroutput>weight_ftag_effSF</computeroutput>, <computeroutput>weight_beamspot</computeroutput>.</para>
+</listitem><listitem><para><bold>Kinematic Variables</bold>: <computeroutput>HT_all</computeroutput>, <computeroutput>met</computeroutput>, <computeroutput>phi</computeroutput>, <computeroutput>met_sum</computeroutput>.</para>
+</listitem><listitem><para><bold>Selection Flags</bold>: <computeroutput>pass_ssee</computeroutput>, <computeroutput>pass_ssem</computeroutput>, <computeroutput>pass_ssmm</computeroutput>, <computeroutput>pass_eem_zveto</computeroutput>, etc.</para>
+</listitem><listitem><para><bold>Particle Counts</bold>: <computeroutput>n_electrons</computeroutput>, <computeroutput>n_fjets</computeroutput>, <computeroutput>n_jets</computeroutput>, <computeroutput>n_leptons</computeroutput>, <computeroutput>n_muons</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_event_page_1ssml_mc20_event_particles">
+<title>Particle Collections</title><para>The <computeroutput>ssml_mc20</computeroutput> event contains the following particle collections:<itemizedlist>
+<listitem><para><computeroutput>m_zprime</computeroutput>: A map of Z&apos; bosons.</para>
+</listitem><listitem><para><computeroutput>m_tops</computeroutput>: A map of top quarks.</para>
+</listitem><listitem><para><computeroutput>m_truthjets</computeroutput>: A map of truth jets.</para>
+</listitem><listitem><para><computeroutput>m_partons</computeroutput>: A map of partons.</para>
+</listitem><listitem><para><computeroutput>m_leptons</computeroutput>: A map of leptons.</para>
+</listitem><listitem><para><computeroutput>m_electrons</computeroutput>: A map of electrons.</para>
+</listitem><listitem><para><computeroutput>m_muons</computeroutput>: A map of muons.</para>
+</listitem><listitem><para><computeroutput>m_jets</computeroutput>: A map of jets.</para>
+</listitem></itemizedlist>
+</para>
+<para>After <computeroutput>CompileEvent()</computeroutput> is called, these maps are used to populate the following vector collections for easier access:<itemizedlist>
+<listitem><para><computeroutput>Tops</computeroutput></para>
+</listitem><listitem><para><computeroutput>Zprime</computeroutput></para>
+</listitem><listitem><para><computeroutput>Detector</computeroutput> (a combined collection of jets, muons, and electrons)</para>
+</listitem><listitem><para><computeroutput>Leptons</computeroutput> (a combined collection of muons and electrons)</para>
+</listitem><listitem><para><computeroutput>Leptsn</computeroutput> (a collection of <computeroutput>lepton</computeroutput> objects)</para>
+</listitem><listitem><para><computeroutput>Electrons</computeroutput> </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/ssml_mc20/event.dox"/>
+  </compounddef>
+</doxygen>

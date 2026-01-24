@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="RegionsSelection_page" kind="page">
+    <compoundname>RegionsSelection_page</compoundname>
+    <title>Regions Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="RegionsSelection_page_1RegionsSelection_intro">
+<title>Introduction</title><para>The <computeroutput>Regions</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for defining and managing various analysis regions. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant to region-based selections. This class provides a high-performance interface to an underlying C++ regions object, enabling efficient categorization of events into different analysis regions.</para>
+</sect1>
+<sect1 id="RegionsSelection_page_1RegionsSelection_class">
+<title>The Regions Class</title><para><computeroutput>Regions</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>regions</computeroutput> object, which likely contains the logic for defining and checking events against specific analysis regions.</para>
+<sect2 id="RegionsSelection_page_1RegionsSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>regions</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>regions*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>regions</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management for the specialized regions data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="RegionsSelection_page_1RegionsSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is intended to transform the keys of internal dictionaries. In this specific implementation, it assigns the <computeroutput>output</computeroutput> member of the underlying C++ <computeroutput>regions</computeroutput> object to <computeroutput>self.output</computeroutput>. This is likely used to expose the results of region classification to the Python layer.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="RegionsSelection_page_1RegionsSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>Regions</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Regions</computeroutput>: Declares <computeroutput>Regions</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef regions *tt</computeroutput>: A C++ pointer to a <computeroutput>regions</computeroutput> object, which is the specialized C++ implementation for managing analysis regions.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new regions()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;regions*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, where the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer (<computeroutput>self.ptr</computeroutput>) is cast to the specialized <computeroutput>regions</computeroutput> type and assigned to <computeroutput>self.tt</computeroutput>. This allows <computeroutput>Regions</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>regions</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>Regions</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport as_dict, as_list</computeroutput>: Imports utility functions for converting between C++ and Python data structures. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/analysis/regions/regions.dox"/>
+  </compounddef>
+</doxygen>

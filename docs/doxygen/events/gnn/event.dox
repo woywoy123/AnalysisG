@@ -1,0 +1,55 @@
+
+/**
+ * @file event.dox
+ * @brief Detailed documentation for the gnn_event class.
+ *
+ * @page gnn_event_page gnn_event
+ *
+ * @section gnn_event_intro Introduction
+ * The `gnn_event` class is a specialization of the `event_template` designed to handle the output of a Graph Neural Network (GNN). It reads the GNN's predictions and reconstructs particle objects (tops and Z' primes) based on these predictions.
+ *
+ * @section gnn_event_class The gnn_event Class
+ * The `gnn_event` class inherits from `event_template` and implements its virtual methods to provide event-specific functionality.
+ *
+ * @subsection gnn_event_ctor Constructor and Destructor
+ * - `gnn_event()`: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.
+ * - `~gnn_event()`: The destructor deregisters the particle collections created during the event processing.
+ *
+ * @subsection gnn_event_methods Methods
+ * - `event_template* clone()`: Creates a new instance of the `gnn_event`.
+ * - `void build(element_t* el)`: Populates the event's data members with the GNN predictions and truth information from the input data element.
+ * - `void CompileEvent()`: This is the core method of the class. It reconstructs the event by clustering the GNN nodes into particle objects based on the predicted edge scores. This includes:
+ *   - **Clustering**: A PageRank-based clustering algorithm is used to group nodes into top and Z' candidates based on the `edge_top_scores` and `edge_res_scores` respectively.
+ *   - **Truth Reconstruction**: The same clustering is applied to the truth-level edge information (`t_edge_top` and `t_edge_res`) to reconstruct the true top and Z' particles.
+ *   - **Particle Creation**: For each cluster, a `top` or `zprime` particle is created, and its kinematic properties are calculated by summing the four-vectors of its constituent nodes.
+ *   - **Vectorization**: The reconstructed and truth particle collections are vectorized for easier access.
+ *
+ * @subsection gnn_event_predictions GNN Predictions
+ * The `gnn_event` class stores the following GNN predictions:
+ * - `edge_res_scores`: The predicted probability of each edge being part of a Z' decay.
+ * - `edge_top_scores`: The predicted probability of each edge being part of a top quark decay.
+ * - `ntops_scores`: The predicted probability distribution for the number of top quarks in the event.
+ * - `signal_scores`: The predicted probability of the event being a signal event.
+ * - `p_signal`: The predicted signal class (boolean).
+ * - `s_signal`: The signal score.
+ * - `p_ntops`: The predicted number of top quarks.
+ * - `s_ntops`: The score for the predicted number of top quarks.
+ *
+ * @subsection gnn_event_truth Truth Information
+ * The `gnn_event` class also stores the following truth information:
+ * - `t_ntops`: The true number of top quarks.
+ * - `t_signal`: The true signal label.
+ * - `t_edge_res`: The true Z' edge labels.
+ * - `t_edge_top`: The true top edge labels.
+ *
+ * @subsection gnn_event_reco Reconstructed Particles
+ * - `r_zprime`: A vector of reconstructed `zprime` particles.
+ * - `r_tops`: A vector of reconstructed `top` particles.
+ *
+ * @subsection gnn_event_truth_particles Truth Particles
+ * - `t_zprime`: A vector of truth-level `zprime` particles.
+ * - `t_tops`: A vector of truth-level `top` particles.
+ *
+ * @subsection gnn_event_nodes Event Particles
+ * - `event_particles`: A vector of the input `particle_gnn` nodes to the GNN.
+ */

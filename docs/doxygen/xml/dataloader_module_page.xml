@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dataloader_module_page" kind="page">
+    <compoundname>dataloader_module_page</compoundname>
+    <title>Dataloader Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="dataloader_module_page_1dataloader_module_intro">
+<title>Introduction</title><para>The <computeroutput>dataloader</computeroutput> module is responsible for managing the graph data, including loading, caching, batching, and splitting it into training, validation, and test sets.</para>
+</sect1>
+<sect1 id="dataloader_module_page_1dataloader_class">
+<title>The dataloader Class</title><para>The <computeroutput>dataloader</computeroutput> class is the main component of this module.</para>
+<sect2 id="dataloader_module_page_1dataloader_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>dataloader()</computeroutput>: The constructor initializes the data structures for storing the graphs and their indices.</para>
+</listitem><listitem><para><computeroutput>~dataloader()</computeroutput>: The destructor cleans up all the allocated memory, including the graph objects, data maps, and k-fold sets.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="dataloader_module_page_1dataloader_methods_data">
+<title>Data Handling</title><para><itemizedlist>
+<listitem><para><computeroutput>void extract_data(graph_t* gr)</computeroutput>: Adds a <computeroutput>graph_t</computeroutput> object to the dataset. It also performs a cleaning step to avoid duplicating the data maps.</para>
+</listitem><listitem><para><computeroutput>void datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* cur_evnt)</computeroutput>: Transfers the graph data to a specific device (e.g., a GPU).</para>
+</listitem><listitem><para><computeroutput>void datatransfer(std::map&lt;int, torch::TensorOptions*&gt;* ops)</computeroutput>: Transfers the graph data to multiple devices in parallel.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="dataloader_module_page_1dataloader_methods_batching">
+<title>Batching</title><para><itemizedlist>
+<listitem><para><computeroutput>std::vector&lt;graph_t*&gt;* build_batch(std::vector&lt;graph_t*&gt;* data, model_template* mdl, model_report* rep)</computeroutput>: This is the core method for creating batches of graphs. It takes a vector of <computeroutput>graph_t</computeroutput> objects and a model template, and returns a vector of batched graphs. The batching process involves concatenating the node and edge features of the individual graphs into larger tensors.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="dataloader_module_page_1dataloader_methods_dataset">
+<title>Dataset Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void generate_kfold_set(int k)</computeroutput>: Splits the training set into <computeroutput>k</computeroutput> folds for cross-validation.</para>
+</listitem><listitem><para><computeroutput>void generate_test_set(float percentage)</computeroutput>: Splits the entire dataset into a training set and a test set.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;graph_t*&gt;* get_k_train_set(int k)</computeroutput>: Returns the training set for a specific k-fold.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;graph_t*&gt;* get_k_validation_set(int k)</computeroutput>: Returns the validation set for a specific k-fold.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;graph_t*&gt;* get_test_set()</computeroutput>: Returns the test set.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, std::vector&lt;graph_t*&gt;&gt;* get_inference()</computeroutput>: Returns the dataset organized by filename for inference.</para>
+</listitem><listitem><para><computeroutput>void dump_dataset(std::string path)</computeroutput>: Saves the k-fold information to a file.</para>
+</listitem><listitem><para><computeroutput>bool restore_dataset(std::string path)</computeroutput>: Restores the k-fold information from a file.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="dataloader_module_page_1dataloader_methods_cache">
+<title>Caching</title><para><itemizedlist>
+<listitem><para><computeroutput>bool dump_graphs(std::string path, int threads)</computeroutput>: Serializes the graph objects and saves them to HDF5 files for caching. This is a multi-threaded process.</para>
+</listitem><listitem><para><computeroutput>void restore_graphs(std::vector&lt;std::string&gt; path, int threads)</computeroutput>: Restores the graph objects from HDF5 cache files.</para>
+</listitem><listitem><para><computeroutput>void restore_graphs(std::string path, int threads)</computeroutput>: A convenience method to restore graphs from a directory of HDF5 files.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="dataloader_module_page_1dataloader_methods_cuda">
+<title>CUDA Memory Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void cuda_memory_server()</computeroutput>: A server that runs in a separate thread to monitor and manage CUDA memory usage. It offloads graph data from the GPU to the CPU when the GPU memory is close to full.</para>
+</listitem><listitem><para><computeroutput>void start_cuda_server()</computeroutput>: Starts the CUDA memory server. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/dataloader/dataloader.dox"/>
+  </compounddef>
+</doxygen>

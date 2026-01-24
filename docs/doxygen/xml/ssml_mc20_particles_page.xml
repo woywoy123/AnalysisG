@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ssml_mc20_particles_page" kind="page">
+    <compoundname>ssml_mc20_particles_page</compoundname>
+    <title>ssml_mc20 Truth Particles</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This page provides detailed documentation for the truth-level particle classes used in the <computeroutput>ssml_mc20</computeroutput> event.</para>
+<sect1 id="ssml_mc20_particles_page_1ssml_mc20_particles_zboson">
+<title>Z-Boson</title><para>The <computeroutput>zboson</computeroutput> class represents a truth-level Z&apos; boson.</para>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_zboson_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>zboson()</computeroutput>: Initializes the particle type to &quot;parton_Zprime&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_zboson_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>zboson</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>zboson</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_particles_page_1ssml_mc20_particles_top">
+<title>Top</title><para>The <computeroutput>top</computeroutput> class represents a truth-level top quark.</para>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_top_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>top()</computeroutput>: Initializes the particle type to &quot;parton_top&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_top_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>top</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>top</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_top_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>from_res</computeroutput>: A boolean flag indicating if the top quark originates from a Z&apos; boson.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_particles_page_1ssml_mc20_particles_parton">
+<title>Parton</title><para>The <computeroutput>parton</computeroutput> class represents a truth-level parton from the top quark decay.</para>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_parton_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>parton()</computeroutput>: Initializes the particle type to &quot;parton&quot; and defines the data leaves for the W decay products and the b-quark.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_parton_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>parton</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>parton</computeroutput> particle&apos;s properties from the input data. This method creates three <computeroutput>parton</computeroutput> objects per top quark, one for each of the W decay products and one for the b-quark.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_parton_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>top_index</computeroutput>: The index of the parent top quark.</para>
+</listitem><listitem><para><computeroutput>muon_index</computeroutput>: The index of the matched muon, if any.</para>
+</listitem><listitem><para><computeroutput>electron_index</computeroutput>: The index of the matched electron, if any.</para>
+</listitem><listitem><para><computeroutput>jet_index</computeroutput>: The index of the matched jet, if any.</para>
+</listitem><listitem><para><computeroutput>truthjet_index</computeroutput>: The index of the matched truth jet, if any.</para>
+</listitem><listitem><para><computeroutput>jets</computeroutput>: A map of associated <computeroutput>jet</computeroutput> objects.</para>
+</listitem><listitem><para><computeroutput>truthjets</computeroutput>: A map of associated <computeroutput>truthjet</computeroutput> objects. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/ssml_mc20/particles.dox"/>
+  </compounddef>
+</doxygen>

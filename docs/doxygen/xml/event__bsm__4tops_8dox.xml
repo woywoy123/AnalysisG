@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="event__bsm__4tops_8dox" kind="file" language="C++">
+    <compoundname>event_bsm_4tops.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the BSM4Tops Cython class, a specialized EventTemplate for BSM 4-top events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>event_bsm_4tops.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>BSM4Tops<sp/>Cython<sp/>class,<sp/>a<sp/>specialized<sp/>EventTemplate<sp/>for<sp/>BSM<sp/>4-top<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>BSM4TopsEvent_page<sp/>BSM4Tops<sp/>Event</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>BSM4TopsEvent_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`BSM4Tops`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>event<sp/>template<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>to<sp/>handle<sp/>data<sp/>specific<sp/>to<sp/>Beyond<sp/>Standard<sp/>Model<sp/>(BSM)<sp/>4-top<sp/>quark<sp/>production<sp/>events.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>generic<sp/>`EventTemplate`<sp/>class,<sp/>extending<sp/>its<sp/>functionalities<sp/>to<sp/>incorporate<sp/>features<sp/>and<sp/>structures<sp/>relevant<sp/>to<sp/>this<sp/>particular<sp/>physics<sp/>signature.<sp/>This<sp/>class<sp/>provides<sp/>a<sp/>high-performance<sp/>interface<sp/>to<sp/>an<sp/>underlying<sp/>C++<sp/>event<sp/>object<sp/>tailored<sp/>for<sp/>BSM<sp/>4-top<sp/>analysis.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>BSM4TopsEvent_class<sp/>The<sp/>BSM4Tops<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`BSM4Tops`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>It<sp/>inherits<sp/>from<sp/>`EventTemplate`,<sp/>thereby<sp/>gaining<sp/>all<sp/>the<sp/>base<sp/>functionalities<sp/>for<sp/>event<sp/>indexing,<sp/>weighting,<sp/>and<sp/>tree/branch<sp/>management.<sp/>Its<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>encapsulate<sp/>a<sp/>C++<sp/>`bsm_4tops`<sp/>object,<sp/>which<sp/>likely<sp/>contains<sp/>specific<sp/>data<sp/>members<sp/>and<sp/>methods<sp/>pertinent<sp/>to<sp/>BSM<sp/>4-top<sp/>events.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>BSM4TopsEvent_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`bsm_4tops`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>This<sp/>effectively<sp/>sets<sp/>up<sp/>the<sp/>specialized<sp/>C++<sp/>backend<sp/>for<sp/>BSM<sp/>4-top<sp/>events.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>standard<sp/>Python<sp/>initializer.<sp/>This<sp/>method<sp/>is<sp/>intentionally<sp/>left<sp/>empty,<sp/>as<sp/>initialization<sp/>logic<sp/>is<sp/>handled<sp/>by<sp/>`__cinit__`<sp/>and<sp/>the<sp/>underlying<sp/>C++<sp/>object.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>It<sp/>deallocates<sp/>the<sp/>C++<sp/>`bsm_4tops`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.ptr`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management<sp/>for<sp/>the<sp/>specialized<sp/>event<sp/>data.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@section<sp/>BSM4TopsEvent_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>The<sp/>`BSM4Tops`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>BSM4Tops`:<sp/>Declares<sp/>`BSM4Tops`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>bsm_4tops<sp/>*ptr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`bsm_4tops`<sp/>object,<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.<sp/>This<sp/>`bsm_4tops`<sp/>object<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>representation<sp/>of<sp/>a<sp/>BSM<sp/>4-top<sp/>event.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.events.bsm_4tops.event_bsm_4tops<sp/>cimport<sp/>bsm_4tops`:<sp/>Imports<sp/>the<sp/>C++<sp/>`bsm_4tops`<sp/>class<sp/>declaration<sp/>from<sp/>its<sp/>`.pxd`<sp/>file.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.event_template<sp/>cimport<sp/>EventTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`EventTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`BSM4Tops`<sp/>inherits.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="events/bsm_4tops/event_bsm_4tops.dox"/>
+  </compounddef>
+</doxygen>

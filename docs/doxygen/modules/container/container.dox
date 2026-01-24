@@ -1,0 +1,54 @@
+
+/**
+ * @file container.dox
+ * @brief Detailed documentation for the container and entry_t classes.
+ *
+ * @page container_module_page Container Module
+ *
+ * @section container_module_intro Introduction
+ * The `container` module provides the data structures for holding and managing the various objects created during the analysis, such as events, graphs, and selections. It is designed to handle the data in a structured and efficient way, especially in a multi-threaded environment.
+ *
+ * @section container_class The container Class
+ * The `container` class is the main data holder for a single input file. It stores all the events, graphs, and selections associated with that file.
+ *
+ * @subsection container_ctor Constructor and Destructor
+ * - `container()`: The constructor.
+ * - `~container()`: The destructor cleans up all the allocated memory, including the meta data, event templates, graph templates, and selection templates.
+ *
+ * @subsection container_methods_add Adding Objects
+ * - `void add_meta_data(meta* data, std::string fname)`: Adds the meta data for the file.
+ * - `entry_t* add_entry(std::string hash)`: Adds a new `entry_t` to the container, identified by a hash.
+ * - `bool add_event_template(event_template* ev, std::string _label)`: Adds an event template to the container.
+ * - `bool add_graph_template(graph_template* gr, std::string _label)`: Adds a graph template to the container.
+ * - `bool add_selection_template(selection_template* sel)`: Adds a selection template to the container.
+ *
+ * @subsection container_methods_access Accessing Objects
+ * - `void get_events(std::vector<event_template*>* out, std::string label)`: Retrieves all the events with a specific label.
+ * - `meta* get_meta_data()`: Returns the meta data associated with the container.
+ *
+ * @subsection container_methods_processing Processing
+ * - `void compile(size_t* l, int threadIdx)`: This is the core processing method of the container. It iterates through all the entries and:
+ *   - Compiles the events.
+ *   - Compiles and merges the selections, and writes them to output files if specified.
+ *   - Compiles the graphs and exports them to `graph_t` objects.
+ *   - Cleans up the memory used by the templates.
+ * - `void fill_selections(std::map<std::string, selection_template*>* inpt)`: Merges the results of the selections from this container into a global map of selections.
+ * - `void populate_dataloader(dataloader* dl)`: Populates a `dataloader` with the `graph_t` objects created during the `compile` step.
+ *
+ * @section entry_t_struct The entry_t Struct
+ * The `entry_t` struct is a simple data holder for a single event hash. It stores the event, graph, and selection templates that are associated with that hash.
+ *
+ * @subsection entry_t_methods Methods
+ * - `void init()`: Initializes the vectors for storing the templates.
+ * - `void destroy()`: Deletes all the templates stored in the entry.
+ * - `bool has_event(event_template* ev)`: Checks if an event template with the same name and tree already exists. If not, it adds the template to the entry.
+ * - `bool has_graph(graph_template* gr)`: Checks for and adds a graph template.
+ * - `bool has_selection(selection_template* sel)`: Checks for and adds a selection template.
+ *
+ * @subsection entry_t_members Members
+ * - `std::string hash`: The hash of the event.
+ * - `std::vector<event_template*> m_event`: A vector of event templates.
+ * - `std::vector<graph_template*> m_graph`: A vector of graph templates.
+ * - `std::vector<selection_template*> m_selection`: A vector of selection templates.
+ * - `std::vector<graph_t*> m_data`: A vector of `graph_t` objects created from the graph templates.
+ */

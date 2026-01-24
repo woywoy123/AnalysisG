@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="METSelection_page" kind="page">
+    <compoundname>METSelection_page</compoundname>
+    <title>MET Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="METSelection_page_1METSelection_intro">
+<title>Introduction</title><para>The <computeroutput>MET</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for handling Missing Transverse Energy (MET) related selections. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant to MET-based analyses. This class provides a high-performance interface to an underlying C++ MET object, enabling efficient filtering and analysis based on MET properties.</para>
+</sect1>
+<sect1 id="METSelection_page_1METSelection_class">
+<title>The MET Class</title><para><computeroutput>MET</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>met</computeroutput> object, which likely contains the logic for calculating and applying selections based on MET.</para>
+<sect2 id="METSelection_page_1METSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>met</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>met*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>met</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management for the specialized MET data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="METSelection_page_1METSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is intended to transform the keys of internal dictionaries. In this specific implementation, it converts the <computeroutput>missing_et</computeroutput> member of the underlying C++ <computeroutput>met</computeroutput> object into a Python dictionary using <computeroutput>as_basic_dict</computeroutput> and assigns it to <computeroutput>self.missing_et</computeroutput>. This is likely used to expose MET values to the Python layer.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="METSelection_page_1METSelection_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property missing_et</computeroutput>: (Implicitly defined through <computeroutput>transform_dict_keys</computeroutput>) This property would provide access to a dictionary containing MET-related values, converted from the underlying C++ <computeroutput>met</computeroutput> object.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="METSelection_page_1METSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>MET</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class MET</computeroutput>: Declares <computeroutput>MET</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef met *tt</computeroutput>: A C++ pointer to a <computeroutput>met</computeroutput> object, which is the specialized C++ implementation for MET calculations and selections.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new met()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;met*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, where the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer (<computeroutput>self.ptr</computeroutput>) is cast to the specialized <computeroutput>met</computeroutput> type and assigned to <computeroutput>self.tt</computeroutput>. This allows <computeroutput>MET</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>met</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>MET</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures, specifically <computeroutput>as_basic_dict</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/example/met/met.dox"/>
+  </compounddef>
+</doxygen>

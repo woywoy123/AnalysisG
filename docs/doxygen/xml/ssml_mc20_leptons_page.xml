@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ssml_mc20_leptons_page" kind="page">
+    <compoundname>ssml_mc20_leptons_page</compoundname>
+    <title>ssml_mc20 Leptons</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This page provides detailed documentation for the lepton classes used in the <computeroutput>ssml_mc20</computeroutput> event.</para>
+<sect1 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_muon">
+<title>Muon</title><para>The <computeroutput>muon</computeroutput> class represents a reconstructed muon.</para>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_muon_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>muon()</computeroutput>: Initializes the particle type to &quot;mu&quot; and defines the data leaves to be read from the input tree. It also sets up a getter for the <computeroutput>from_res</computeroutput> attribute.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_muon_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>muon</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>muon</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem><listitem><para><computeroutput>void get_from_res(bool* val, muon* el)</computeroutput>: A static method that determines if the muon originates from a resonant top quark by checking its parent particles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_muon_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>top_index</computeroutput>: The index of the associated truth top quark.</para>
+</listitem><listitem><para><computeroutput>from_res</computeroutput>: A boolean flag indicating if the muon originates from a resonance.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_electron">
+<title>Electron</title><para>The <computeroutput>electron</computeroutput> class represents a reconstructed electron.</para>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_electron_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>electron()</computeroutput>: Initializes the particle type to &quot;el&quot; and defines the data leaves. It also sets up a getter for the <computeroutput>from_res</computeroutput> attribute.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_electron_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>electron</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>electron</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem><listitem><para><computeroutput>void get_from_res(bool* val, electron* el)</computeroutput>: A static method that determines if the electron originates from a resonant top quark by checking its parent particles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_electron_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>top_index</computeroutput>: The index of the associated truth top quark.</para>
+</listitem><listitem><para><computeroutput>pass_ecids</computeroutput>: A boolean flag indicating if the electron passes the ECIDS criteria.</para>
+</listitem><listitem><para><computeroutput>from_res</computeroutput>: A boolean flag indicating if the electron originates from a resonance.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_lepton">
+<title>Lepton</title><para>The <computeroutput>lepton</computeroutput> class is a generic lepton class.</para>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_lepton_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>lepton()</computeroutput>: Initializes the particle type to &quot;lepton&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_lepton_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>lepton</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>lepton</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_leptons_page_1ssml_mc20_leptons_lepton_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>ambiguity</computeroutput>: The ambiguity flag for the lepton. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/ssml_mc20/leptons.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="analysis_module_page" kind="page">
+    <compoundname>analysis_module_page</compoundname>
+    <title>Analysis Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="analysis_module_page_1analysis_module_intro">
+<title>Introduction</title><para>The <computeroutput>analysis</computeroutput> module is the central hub of the |g-framework|. It orchestrates the entire analysis workflow, from reading data and building events to constructing graphs, training models, and running inference. This page provides a detailed overview of the <computeroutput>analysis</computeroutput> class and its various components.</para>
+</sect1>
+<sect1 id="analysis_module_page_1analysis_class">
+<title>The analysis Class</title><para>The <computeroutput>analysis</computeroutput> class manages the overall analysis session.</para>
+<sect2 id="analysis_module_page_1analysis_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>analysis()</computeroutput>: The constructor initializes the analysis environment. This includes setting up the sample tracer, data loader, and I/O reader. It also builds the necessary PCM (Pre-Compiled Module) files for ROOT.</para>
+</listitem><listitem><para><computeroutput>~analysis()</computeroutput>: The destructor cleans up all the resources allocated during the analysis session, including flushing data from the k-fold tags, deleting the trainer instances, and cleaning up the loader, tracer, and reader.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_methods_setup">
+<title>Setup Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void add_samples(std::string path, std::string label)</computeroutput>: Adds a sample to the analysis, specifying the path to the data and a label.</para>
+</listitem><listitem><para><computeroutput>void add_event_template(event_template* ev, std::string label)</computeroutput>: Adds an event template to be used for a specific sample label.</para>
+</listitem><listitem><para><computeroutput>void add_graph_template(graph_template* ev, std::string label)</computeroutput>: Adds a graph template to be used for a specific sample label.</para>
+</listitem><listitem><para><computeroutput>void add_selection_template(selection_template* sel)</computeroutput>: Adds a selection template to the analysis.</para>
+</listitem><listitem><para><computeroutput>void add_metric_template(metric_template* mx, model_template* mdl)</computeroutput>: Adds a metric template and links it to a model.</para>
+</listitem><listitem><para><computeroutput>void add_model(model_template* model, optimizer_params_t* op, std::string run_name)</computeroutput>: Adds a model for training, along with its optimizer parameters and a run name.</para>
+</listitem><listitem><para><computeroutput>void add_model(model_template* model, std::string run_name)</computeroutput>: Adds a model for inference.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_methods_execution">
+<title>Execution Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void start()</computeroutput>: This is the main entry point for running the analysis. It orchestrates the entire workflow, including:<itemizedlist>
+<listitem><para>Checking the cache for pre-built graphs.</para>
+</listitem><listitem><para>Building events from the input ROOT files.</para>
+</listitem><listitem><para>Building graphs from the events.</para>
+</listitem><listitem><para>Building selections.</para>
+</listitem><listitem><para>Building the data loader.</para>
+</listitem><listitem><para>Building and running the metric calculations.</para>
+</listitem><listitem><para>Building and running the model training sessions.</para>
+</listitem><listitem><para>Building and running the model inference.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>void build_project()</computeroutput>: Sets up the output directory structure for the analysis.</para>
+</listitem><listitem><para><computeroutput>void check_cache()</computeroutput>: Checks for cached graph files to avoid rebuilding them.</para>
+</listitem><listitem><para><computeroutput>void fetchtags()</computeroutput>: Fetches the k-fold tags from a pre-existing file.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="analysis_module_page_1analysis_build_processes">
+<title>Build Processes</title><para>The <computeroutput>analysis</computeroutput> class is composed of several build processes, each implemented in a separate file.</para>
+<sect2 id="analysis_module_page_1analysis_event_build">
+<title>Event Building (<computeroutput>event_build.cxx</computeroutput>)</title><para><itemizedlist>
+<listitem><para><computeroutput>void analysis::build_events()</computeroutput>: This method is responsible for reading the input ROOT files and constructing the <computeroutput>event_template</computeroutput> objects. It uses a multi-threaded approach to process the files in parallel.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_graph_build">
+<title>Graph Building (<computeroutput>graph_build.cxx</computeroutput>)</title><para><itemizedlist>
+<listitem><para><computeroutput>void analysis::build_graphs()</computeroutput>: This method takes the <computeroutput>event_template</computeroutput> objects and uses the registered <computeroutput>graph_template</computeroutput>s to construct the graph representations of the events.</para>
+</listitem><listitem><para><computeroutput>void analysis::build_dataloader(bool training)</computeroutput>: This method populates the <computeroutput>dataloader</computeroutput> with the constructed graphs and, if in training mode, generates the test and k-fold sets.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_selection_build">
+<title>Selection Building (<computeroutput>selection_build.cxx</computeroutput>)</title><para><itemizedlist>
+<listitem><para><computeroutput>void analysis::build_selections()</computeroutput>: This method applies the registered <computeroutput>selection_template</computeroutput>s to the events to perform event selections.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_metric_build">
+<title>Metric Building (<computeroutput>metric_build.cxx</computeroutput>)</title><para><itemizedlist>
+<listitem><para><computeroutput>void analysis::build_metric_folds()</computeroutput>: Determines the k-folds to be used for the metric calculations.</para>
+</listitem><listitem><para><computeroutput>bool analysis::build_metric()</computeroutput>: Orchestrates the calculation of the metrics. It batches the data, transfers it to the appropriate devices, and runs the metric calculations in parallel.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_optimizer_build">
+<title>Optimizer and Model Building (<computeroutput>optimizer_build.cxx</computeroutput>)</title><para><itemizedlist>
+<listitem><para><computeroutput>void analysis::build_model_session()</computeroutput>: Sets up the model training sessions, including initializing the optimizers and distributing the data for k-fold cross-validation.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, std::vector&lt;float&gt;&gt; analysis::progress()</computeroutput>: Returns the training progress of all models.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, std::string&gt; analysis::progress_mode()</computeroutput>: Returns the current training mode of all models.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, std::string&gt; analysis::progress_report()</computeroutput>: Returns a detailed progress report for all models.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, bool&gt; analysis::is_complete()</computeroutput>: Checks if the training is complete for all models.</para>
+</listitem><listitem><para><computeroutput>void analysis::attach_threads()</computeroutput>: Attaches the training threads for parallel execution.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_inference_build">
+<title>Inference Building (<computeroutput>inference_build.cxx</computeroutput>)</title><para><itemizedlist>
+<listitem><para><computeroutput>void analysis::build_inference()</computeroutput>: This method runs the inference using the trained models. It batches the data, transfers it to the appropriate devices, and runs the inference in parallel. The results are written to output ROOT files.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="analysis_module_page_1analysis_methods">
+<title>Other Methods (<computeroutput>methods.cxx</computeroutput>)</title><para>This file contains various helper methods used by the <computeroutput>analysis</computeroutput> class, such as:<itemizedlist>
+<listitem><para><computeroutput>void analysis::initialize_loop(...)</computeroutput>: Initializes the training loop for a given model and k-fold.</para>
+</listitem><listitem><para><computeroutput>int analysis::add_content(...)</computeroutput>: A helper function for adding data to the output ROOT tree.</para>
+</listitem><listitem><para><computeroutput>void analysis::execution(...)</computeroutput>: The main execution function for running inference on a batch of data.</para>
+</listitem><listitem><para><computeroutput>void analysis::execution_metric(...)</computeroutput>: The main execution function for running a metric calculation. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/analysis/analysis.dox"/>
+  </compounddef>
+</doxygen>

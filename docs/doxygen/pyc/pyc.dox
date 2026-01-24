@@ -1,0 +1,19 @@
+/**
+ * @file pyc.dox
+ * @brief Detailed documentation for the AnalysisG.pyc package, which contains Cython-optimized utilities for high-performance data analysis.
+ *
+ * @page pyc_page AnalysisG.pyc
+ *
+ * @section pyc_intro Introduction
+ * The `AnalysisG.pyc` package is a collection of Cython-optimized modules designed to enhance the performance of various data analysis tasks within the AnalysisG framework. By leveraging Cython, these modules provide significant speed improvements for computationally intensive operations, bridging the gap between Python's ease of use and C/C++'s execution speed.
+ *
+ * @section pyc_contents Contents
+ * This package contains several sub-modules, each focusing on specific optimized functionalities:
+ * - `cutils`: Common utility functions.
+ * - `graph`: Graph-related operations and data structures.
+ * - `interface`: Interfaces for interacting with external libraries or systems.
+ * - `nusol`: Neutrino solver utilities.
+ * - `operators`: Optimized mathematical or logical operators.
+ * - `physics`: Physics-related calculations and constants.
+ * - `transform`: Data transformation utilities.
+ */

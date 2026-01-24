@@ -1,0 +1,38 @@
+/**
+ * @file matching.dox
+ * @brief Detailed documentation for the TopMatching Cython class, specialized for top quark matching in MC20 events.
+ *
+ * @page MC20TopMatchingSelection_page MC20 Top Matching Selection
+ *
+ * @section MC20TopMatchingSelection_intro Introduction
+ * The `TopMatching` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for analyzing top quark matching in Monte Carlo 20 (MC20) events. It inherits from the generic `SelectionTemplate` class, extending its functionalities to incorporate specific criteria for matching top quarks, particularly with respect to energy limits. This class provides a high-performance interface to an underlying C++ matching object, enabling efficient filtering and analysis based on top quark matching properties.
+ *
+ * @section MC20TopMatchingSelection_class The TopMatching Class
+ * `TopMatching` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `SelectionTemplate`, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ `matching` object, which likely contains the logic for performing top quark matching and applying energy constraints.
+ *
+ * @subsection MC20TopMatchingSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `matching` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `matching*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `matching` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection MC20TopMatchingSelection_properties Properties
+ * - `@property EnergyLimit`:
+ *   Gets and sets the energy constraint value used in the top quark matching algorithm. This property directly interacts with the `energy_constraint` member of the underlying C++ `matching` object.
+ *   @return The current energy limit value.
+ *   @param val The new energy limit value to set.
+ *
+ * @section MC20TopMatchingSelection_cpp_interaction C++ Interaction
+ * The `TopMatching` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class TopMatching`: Declares `TopMatching` as a Cython extension type.
+ * - `cdef matching *tt`: A C++ pointer to a `matching` object, which is the specialized C++ implementation for top quark matching.
+ * - `self.ptr = new matching()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <matching*>self.ptr`: This line demonstrates C++ upcasting, allowing `TopMatching` to fulfill the `SelectionTemplate` interface while internally managing its specific `matching` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `TopMatching` inherits.
+ * - `from AnalysisG.core.tools cimport *`: Imports utility functions for converting between C++ and Python data structures.
+ * - `from AnalysisG.core.particle_template cimport *`: Imports particle template definitions.
+ */

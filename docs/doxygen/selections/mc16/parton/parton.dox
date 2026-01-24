@@ -1,0 +1,60 @@
+/**
+ * @file parton.dox
+ * @brief Detailed documentation for the Parton Cython class, specialized for analyzing parton-level information and its association with jets in MC16 events.
+ *
+ * @page PartonSelection_page Parton Selection
+ *
+ * @section PartonSelection_intro Introduction
+ * The `Parton` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of parton-level information and its association with jets in Monte Carlo 16 (MC16) events. It inherits from the generic `SelectionTemplate` class, extending its functionalities to extract and organize detailed kinematic and energy contributions from partons and their corresponding truth-jets and reconstructed jets. This class facilitates a high-performance extraction and structuring of parton-level data for further physics analysis.
+ *
+ * @section PartonSelection_class The Parton Class
+ * `Parton` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `SelectionTemplate`, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ `parton` object, which likely contains the logic for matching partons to jets and calculating their kinematic properties and fractional contributions.
+ *
+ * @subsection PartonSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `parton` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `parton*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `parton` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection PartonSelection_internal_methods Internal Methods
+ * - `cdef void transform_dict_keys(self)`:
+ *   This method is responsible for converting the C++ data structures within the underlying `parton` object into Python dictionaries, making them accessible as properties of the `Parton` instance.
+ *   - `self.ntops_tjets_pt`: Populated from `self.tt.ntops_tjets_pt` (pT of truth-jets associated with top quarks).
+ *   - `self.ntops_tjets_e`: Populated from `self.tt.ntops_tjets_e` (energy of truth-jets associated with top quarks).
+ *   - `self.ntops_jets_pt`: Populated from `self.tt.ntops_jets_pt` (pT of reconstructed jets associated with top quarks).
+ *   - `self.ntops_jets_e`: Populated from `self.tt.ntops_jets_e` (energy of reconstructed jets associated with top quarks).
+ *   - `self.nparton_tjet_e`: Populated from `self.tt.nparton_tjet_e` (energy of partons in truth-jets).
+ *   - `self.nparton_jet_e`: Populated from `self.tt.nparton_jet_e` (energy of partons in reconstructed jets).
+ *   - `self.frac_parton_tjet_e`: Populated from `self.tt.frac_parton_tjet_e` (fractional energy of partons in truth-jets).
+ *   - `self.frac_parton_jet_e`: Populated from `self.tt.frac_parton_jet_e` (fractional energy of partons in reconstructed jets).
+ *   - `self.frac_ntop_tjet_contribution`: Populated from `self.tt.frac_ntop_tjet_contribution` (fractional contribution of top quarks to truth-jets).
+ *   - `self.frac_ntop_jet_contribution`: Populated from `self.tt.frac_ntop_jet_contribution` (fractional contribution of top quarks to reconstructed jets).
+ *   - `self.frac_mass_top`: Populated from `self.tt.frac_mass_top` (fractional mass of top quarks).
+ *
+ * @subsection PartonSelection_properties Properties
+ * The following properties are implicitly defined and populated by the `transform_dict_keys` method, providing access to the processed parton-level information:
+ * - `@property ntops_tjets_pt -> dict`: Dictionary of pT values for truth-jets associated with top quarks.
+ * - `@property ntops_tjets_e -> dict`: Dictionary of energy values for truth-jets associated with top quarks.
+ * - `@property ntops_jets_pt -> dict`: Dictionary of pT values for reconstructed jets associated with top quarks.
+ * - `@property ntops_jets_e -> dict`: Dictionary of energy values for reconstructed jets associated with top quarks.
+ * - `@property nparton_tjet_e -> dict`: Dictionary of energy values for partons within truth-jets.
+ * - `@property nparton_jet_e -> dict`: Dictionary of energy values for partons within reconstructed jets.
+ * - `@property frac_parton_tjet_e -> dict`: Dictionary of fractional energy contributions of partons within truth-jets.
+ * - `@property frac_parton_jet_e -> dict`: Dictionary of fractional energy contributions of partons within reconstructed jets.
+ * - `@property frac_ntop_tjet_contribution -> dict`: Dictionary of fractional contributions of top quarks to truth-jets.
+ * - `@property frac_ntop_jet_contribution -> dict`: Dictionary of fractional contributions of top quarks to reconstructed jets.
+ * - `@property frac_mass_top -> dict`: Dictionary of fractional mass contributions of top quarks.
+ *
+ * @section PartonSelection_cpp_interaction C++ Interaction
+ * The `Parton` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class Parton`: Declares `Parton` as a Cython extension type.
+ * - `cdef parton *tt`: A C++ pointer to a `parton` object, which is the specialized C++ implementation for parton-level analysis.
+ * - `self.ptr = new parton()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <parton*>self.ptr`: This line demonstrates C++ upcasting, allowing `Parton` to fulfill the `SelectionTemplate` interface while internally managing its specific `parton` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `Parton` inherits.
+ * - `from AnalysisG.core.tools cimport *`: Imports utility functions for converting between C++ and Python data structures, specifically `as_dict`.
+ */

@@ -1,0 +1,12 @@
+/**
+ * @file operators.dox
+ * @brief Detailed documentation for the operators module within the AnalysisG.pyc framework, including its CUDA kernel implementations for optimized mathematical and logical operations.
+ *
+ * @page operators_page operators
+ *
+ * @section operators_intro Introduction
+ * The `operators` module provides a suite of optimized mathematical and logical operators, implemented with Cython and accelerated using CUDA kernels. These operators are designed to perform common computational tasks with high efficiency, particularly beneficial for large-scale data processing and numerical simulations within the AnalysisG framework.
+ *
+ * @section operators_contents Contents
+ * This module contains optimized operator functions, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ */

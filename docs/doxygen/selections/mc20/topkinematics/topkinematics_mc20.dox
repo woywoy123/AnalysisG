@@ -1,0 +1,46 @@
+/**
+ * @file topkinematics_mc20.dox
+ * @brief Detailed documentation for the TopKinematics Cython class, specialized for analyzing top quark kinematics in MC20 events.
+ *
+ * @page MC20TopKinematicsSelection_page MC20 Top Kinematics Selection
+ *
+ * @section MC20TopKinematicsSelection_intro Introduction
+ * The `TopKinematics` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top quark kinematics in Monte Carlo 20 (MC20) events. It inherits from the generic `SelectionTemplate` class, extending its functionalities to extract and organize detailed information about resonant and spectator top quark kinematics, as well as mass and Delta-R (dR) combinations. This class facilitates a high-performance extraction and structuring of top quark kinematic data for further physics analysis in the MC20 context.
+ *
+ * @section MC20TopKinematicsSelection_class The TopKinematics Class
+ * `TopKinematics` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `SelectionTemplate`, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ `topkinematics` object, which likely contains the logic for calculating and storing top quark kinematic properties.
+ *
+ * @subsection MC20TopKinematicsSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `topkinematics` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `topkinematics*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `topkinematics` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection MC20TopKinematicsSelection_internal_methods Internal Methods
+ * - `cdef void transform_dict_keys(self)`:
+ *   This method is responsible for converting the C++ data structures within the underlying `topkinematics` object into Python dictionaries, making them accessible as properties of the `TopKinematics` instance.
+ *   - `self.res_top_kinematics`: Populated from `self.tt.res_top_kinematics` (kinematics of resonant top quarks).
+ *   - `self.spec_top_kinematics`: Populated from `self.tt.spec_top_kinematics` (kinematics of spectator top quarks).
+ *   - `self.mass_combi`: Populated from `self.tt.mass_combi` (mass combinations).
+ *   - `self.deltaR`: Populated from `self.tt.deltaR` (Delta-R combinations).
+ *
+ * @subsection MC20TopKinematicsSelection_properties Properties
+ * The following properties are implicitly defined and populated by the `transform_dict_keys` method, providing access to the processed top quark kinematic information:
+ * - `@property res_top_kinematics -> dict`: Dictionary containing kinematic data for resonant top quarks.
+ * - `@property spec_top_kinematics -> dict`: Dictionary containing kinematic data for spectator top quarks.
+ * - `@property mass_combi -> dict`: Dictionary containing mass combination data.
+ * - `@property deltaR -> dict`: Dictionary containing Delta-R combination data.
+ *
+ * @section MC20TopKinematicsSelection_cpp_interaction C++ Interaction
+ * The `TopKinematics` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class TopKinematics`: Declares `TopKinematics` as a Cython extension type.
+ * - `cdef topkinematics *tt`: A C++ pointer to a `topkinematics` object, which is the specialized C++ implementation for top quark kinematic analysis.
+ * - `self.ptr = new topkinematics()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <topkinematics*>self.ptr`: This line demonstrates C++ upcasting, allowing `TopKinematics` to fulfill the `SelectionTemplate` interface while internally managing its specific `topkinematics` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `TopKinematics` inherits.
+ * - `from AnalysisG.core.tools cimport as_dict`: Imports utility functions for converting between C++ and Python data structures.
+ */

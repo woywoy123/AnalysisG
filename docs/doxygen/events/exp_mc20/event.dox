@@ -1,0 +1,46 @@
+
+/**
+ * @file event.dox
+ * @brief Detailed documentation for the exp_mc20 event class.
+ *
+ * @page exp_mc20_event_page exp_mc20 Event
+ *
+ * @section exp_mc20_event_intro Introduction
+ * The `exp_mc20` class is a specialization of the `event_template` and is designed to handle events from the experimental Monte Carlo simulation for Run 3 (MC20). It defines the structure of the event, including the particles and their relationships, and provides methods for building and compiling the event from the input data.
+ *
+ * @section exp_mc20_event_class The exp_mc20 Class
+ * The `exp_mc20` class inherits from `event_template` and implements its virtual methods to provide event-specific functionality.
+ *
+ * @subsection exp_mc20_event_ctor Constructor and Destructor
+ * - `exp_mc20()`: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.
+ * - `~exp_mc20()`: The destructor cleans up any resources allocated by the event.
+ *
+ * @subsection exp_mc20_event_methods Methods
+ * - `event_template* clone()`: Creates a new instance of the `exp_mc20` event.
+ * - `void build(element_t* el)`: Populates the event's data members (event number, pile-up, missing transverse energy, etc.) from the input data element.
+ * - `void CompileEvent()`: This is the core method of the class. It reconstructs the event by linking the various particles together. This includes:
+ *   - Associating top children with their parent tops.
+ *   - Linking physics truth objects to their parent tops.
+ *   - Linking physics detector objects to their parent tops.
+ *   - Matching detector-level objects (jets, electrons, muons) to their corresponding truth-level physics detector objects.
+ *   - Vectorizing the particle collections for easier access.
+ *
+ * @subsection exp_mc20_event_particles Particle Collections
+ * The `exp_mc20` event contains the following particle collections:
+ * - `m_tops`: A map of top quarks in the event.
+ * - `m_children`: A map of the decay products of the top quarks.
+ * - `m_physdet`: A map of physics detector objects.
+ * - `m_phystru`: A map of physics truth objects.
+ * - `m_electrons`: A map of electrons in the event.
+ * - `m_muons`: A map of muons in the event.
+ * - `m_jets`: A map of jets in the event.
+ *
+ * After `CompileEvent()` is called, these maps are used to populate the following vector collections for easier access:
+ * - `Tops`
+ * - `TopChildren`
+ * - `PhysicsTruth`
+ * - `PhysicsDetector`
+ * - `Detector` (a combined collection of jets, muons, and electrons)
+ * - `Jets`
+ * - `Leptons` (a combined collection of electrons and muons)
+ */

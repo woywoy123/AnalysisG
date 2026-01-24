@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="structs_8dox" kind="file" language="C++">
+    <compoundname>structs.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the structs.pyx Cython module, focusing on type-safe data conversion between C++ and Python. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>structs.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>structs.pyx<sp/>Cython<sp/>module,<sp/>focusing<sp/>on<sp/>type-safe<sp/>data<sp/>conversion<sp/>between<sp/>C++<sp/>and<sp/>Python.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>StructsModule_page<sp/>Structs<sp/>Module</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>StructsModule_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`structs.pyx`<sp/>module<sp/>is<sp/>a<sp/>crucial,<sp/>albeit<sp/>small,<sp/>component<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>Its<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>facilitate<sp/>type-safe<sp/>and<sp/>efficient<sp/>conversion<sp/>of<sp/>complex<sp/>C++<sp/>data<sp/>structures,<sp/>specifically<sp/>`data_t`<sp/>objects,<sp/>into<sp/>Python<sp/>dictionaries.<sp/>This<sp/>module<sp/>acts<sp/>as<sp/>a<sp/>bridge,<sp/>allowing<sp/>Python<sp/>code<sp/>to<sp/>seamlessly<sp/>access<sp/>and<sp/>interpret<sp/>data<sp/>that<sp/>is<sp/>managed<sp/>and<sp/>processed<sp/>at<sp/>the<sp/>C++<sp/>level,<sp/>ensuring<sp/>data<sp/>integrity<sp/>and<sp/>performance.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>StructsModule_elements_function<sp/>elements(basic*<sp/>null,<sp/>data_t*<sp/>data)</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>This<sp/>is<sp/>a<sp/>helper<sp/>function<sp/>designed<sp/>to<sp/>extract<sp/>an<sp/>element<sp/>from<sp/>a<sp/>`data_t`<sp/>object.<sp/>It<sp/>uses<sp/>a<sp/>type-hinting<sp/>null<sp/>pointer<sp/>(`basic*<sp/>null`)<sp/>to<sp/>guide<sp/>Cython&apos;s<sp/>type<sp/>inference<sp/>during<sp/>the<sp/>conversion<sp/>process.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@param<sp/>null<sp/>A<sp/>null<sp/>pointer<sp/>of<sp/>a<sp/>specific<sp/>C++<sp/>type<sp/>(e.g.,<sp/>`vector&lt;vector&lt;float&gt;&gt;*`)<sp/>used<sp/>by<sp/>Cython<sp/>for<sp/>type<sp/>inference<sp/>during<sp/>the<sp/>`data.element()`<sp/>call.<sp/>This<sp/>parameter<sp/>is<sp/>not<sp/>used<sp/>for<sp/>its<sp/>value.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@param<sp/>data<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>C++<sp/>`data_t`<sp/>object<sp/>from<sp/>which<sp/>the<sp/>element<sp/>is<sp/>to<sp/>be<sp/>extracted.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>Python<sp/>dictionary<sp/>containing<sp/>the<sp/>extracted<sp/>element,<sp/>where<sp/>the<sp/>key<sp/>is<sp/>`data.path`<sp/>and<sp/>the<sp/>value<sp/>is<sp/>the<sp/>converted<sp/>C++<sp/>element.<sp/>Returns<sp/>an<sp/>empty<sp/>dictionary<sp/>if<sp/>the<sp/>element<sp/>cannot<sp/>be<sp/>extracted.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>@section<sp/>StructsModule_switch_board_function<sp/>switch_board(data_t*<sp/>data)</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>The<sp/>`switch_board`<sp/>function<sp/>is<sp/>the<sp/>central<sp/>dispatcher<sp/>for<sp/>converting<sp/>a<sp/>C++<sp/>`data_t`<sp/>object<sp/>into<sp/>a<sp/>Python<sp/>dictionary.<sp/>It<sp/>inspects<sp/>the<sp/>`type`<sp/>member<sp/>of<sp/>the<sp/>`data_t`<sp/>object<sp/>(which<sp/>is<sp/>an<sp/>enum<sp/>`data_enum`)<sp/>to<sp/>determine<sp/>the<sp/>underlying<sp/>C++<sp/>data<sp/>type.<sp/>Based<sp/>on<sp/>this<sp/>type,<sp/>it<sp/>dispatches<sp/>the<sp/>call<sp/>to<sp/>the<sp/>`elements`<sp/>helper<sp/>function<sp/>with<sp/>the<sp/>appropriate<sp/>type<sp/>casting,<sp/>ensuring<sp/>that<sp/>the<sp/>C++<sp/>data<sp/>is<sp/>correctly<sp/>interpreted<sp/>and<sp/>converted<sp/>into<sp/>a<sp/>Python<sp/>object.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>This<sp/>function<sp/>handles<sp/>a<sp/>wide<sp/>range<sp/>of<sp/>C++<sp/>data<sp/>types,<sp/>including:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>Vectors<sp/>of<sp/>vectors<sp/>of<sp/>floats,<sp/>doubles,<sp/>longs,<sp/>ints,<sp/>and<sp/>booleans<sp/>(`vvv_f`,<sp/>`vvv_d`,<sp/>`vvv_l`,<sp/>`vvv_i`,<sp/>`vvv_b`).</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>Vectors<sp/>of<sp/>floats,<sp/>doubles,<sp/>longs,<sp/>ints,<sp/>booleans,<sp/>and<sp/>chars<sp/>(`vv_f`,<sp/>`vv_d`,<sp/>`vv_l`,<sp/>`vv_i`,<sp/>`vv_b`,<sp/>`vv_c`).</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>Single<sp/>floats,<sp/>doubles,<sp/>longs,<sp/>ints,<sp/>booleans,<sp/>and<sp/>chars<sp/>(`v_f`,<sp/>`v_d`,<sp/>`v_l`,<sp/>`v_i`,<sp/>`v_b`,<sp/>`v_c`).</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>Unsigned<sp/>long<sp/>long<sp/>and<sp/>unsigned<sp/>int<sp/>(`v_ull`,<sp/>`v_ui`).</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@param<sp/>data<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>C++<sp/>`data_t`<sp/>object<sp/>whose<sp/>content<sp/>needs<sp/>to<sp/>be<sp/>converted<sp/>to<sp/>a<sp/>Python<sp/>dictionary.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>Python<sp/>dictionary<sp/>representing<sp/>the<sp/>converted<sp/>data<sp/>from<sp/>the<sp/>`data_t`<sp/>object.<sp/>Returns<sp/>an<sp/>empty<sp/>dictionary<sp/>if<sp/>the<sp/>`data_t`&apos;s<sp/>type<sp/>is<sp/>not<sp/>recognized<sp/>or<sp/>supported.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@section<sp/>StructsModule_technical_details<sp/>Technical<sp/>Details</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>**Cython<sp/>Implementation**:<sp/>The<sp/>module<sp/>is<sp/>written<sp/>in<sp/>Cython<sp/>(`.pyx`),<sp/>allowing<sp/>it<sp/>to<sp/>directly<sp/>interact<sp/>with<sp/>C++<sp/>types<sp/>and<sp/>pointers.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>**C++<sp/>`data_t`**:<sp/>This<sp/>is<sp/>a<sp/>C++<sp/>struct<sp/>(defined<sp/>in<sp/>a<sp/>corresponding<sp/>`.pxd`<sp/>file)<sp/>that<sp/>likely<sp/>encapsulates<sp/>a<sp/>generic<sp/>data<sp/>type<sp/>along<sp/>with<sp/>metadata<sp/>like<sp/>its<sp/>path<sp/>and<sp/>an<sp/>enum<sp/>indicating<sp/>its<sp/>actual<sp/>type.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>**C++<sp/>`data_enum`**:<sp/>An<sp/>enumeration<sp/>(also<sp/>defined<sp/>in<sp/>a<sp/>`.pxd`<sp/>file)<sp/>that<sp/>specifies<sp/>the<sp/>various<sp/>data<sp/>types<sp/>that<sp/>`data_t`<sp/>can<sp/>hold.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>**Type<sp/>Casting**:<sp/>The<sp/>`switch_board`<sp/>function<sp/>heavily<sp/>relies<sp/>on<sp/>explicit<sp/>type<sp/>casting<sp/>(e.g.,<sp/>`&lt;vector[vector[float<sp/>]]*&gt;(NULL)`)<sp/>to<sp/>correctly<sp/>inform<sp/>Cython<sp/>about<sp/>the<sp/>expected<sp/>C++<sp/>type<sp/>when<sp/>calling<sp/>`data.element()`.<sp/>This<sp/>is<sp/>a<sp/>common<sp/>Cython<sp/>pattern<sp/>for<sp/>working<sp/>with<sp/>templated<sp/>or<sp/>generic<sp/>C++<sp/>functions.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>**`cdef<sp/>dict`**:<sp/>Cython&apos;s<sp/>way<sp/>of<sp/>declaring<sp/>a<sp/>Python<sp/>dictionary<sp/>that<sp/>can<sp/>be<sp/>efficiently<sp/>manipulated<sp/>within<sp/>Cython<sp/>code.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/structs.dox"/>
+  </compounddef>
+</doxygen>

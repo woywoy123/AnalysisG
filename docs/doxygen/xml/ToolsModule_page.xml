@@ -1,0 +1,482 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ToolsModule_page" kind="page">
+    <compoundname>ToolsModule_page</compoundname>
+    <title>Tools Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ToolsModule_page_1ToolsModule_intro">
+<title>Introduction</title><para>The <computeroutput>tools.pyx</computeroutput> module is a vital utility component within the AnalysisG framework, offering a suite of high-performance functions implemented in Cython. These functions are designed to bridge the gap between Python and C++ data types, facilitate efficient string manipulation, and provide convenient file system operations. This module is extensively used across the framework to ensure seamless interaction between Python-level logic and underlying C++ functionalities.</para>
+</sect1>
+<sect1 id="ToolsModule_page_1ToolsModule_helper_functions">
+<title>Helper Functions (C-style)</title><para>These functions are implemented as C-style functions in Cython for maximum performance and direct interaction with C++ types.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>cdef string enc(str val)</computeroutput>: Encodes a Python <computeroutput>str</computeroutput> object into a C++ <computeroutput>std::string</computeroutput> (UTF-8 encoding). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Python string to encode. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A C++ <computeroutput>std::string</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef str env(string val)</computeroutput>: Decodes a C++ <computeroutput>std::string</computeroutput> object into a Python <computeroutput>str</computeroutput> (UTF-8 decoding). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The C++ <computeroutput>std::string</computeroutput> to decode. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>str</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef list env_vec(vector[string]* inpt)</computeroutput>: Converts a C++ <computeroutput>std::vector&lt;std::string&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>list</computeroutput> of <computeroutput>str</computeroutput> objects. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a C++ <computeroutput>std::vector&lt;std::string&gt;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>list</computeroutput> of <computeroutput>str</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef vector[string] enc_list(list inpt)</computeroutput>: Converts a Python <computeroutput>list</computeroutput> of <computeroutput>str</computeroutput> objects into a C++ <computeroutput>std::vector&lt;std::string&gt;</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Python <computeroutput>list</computeroutput> of <computeroutput>str</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A C++ <computeroutput>std::vector&lt;std::string&gt;</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_basic_dist_dict_f(map[string, map[float, base_types]]* inpt)</computeroutput>: Converts a nested C++ <computeroutput>std::map&lt;std::string, std::map&lt;float, base_types&gt;&gt;</computeroutput> to a Python dictionary. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ map. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef list as_list(vector[base_types]* inp)</computeroutput>: Converts a C++ <computeroutput>std::vector&lt;base_types&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>list</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ <computeroutput>std::vector&lt;base_types&gt;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>list</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_basic_dict(map[string, base_types]* inpt)</computeroutput>: Converts a C++ <computeroutput>std::map&lt;std::string, base_types&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>dict</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ <computeroutput>std::map</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_basic_udict(unordered_map[string, base_types]* inpt)</computeroutput>: Converts a C++ <computeroutput>std::unordered_map&lt;std::string, base_types&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>dict</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ <computeroutput>std::unordered_map</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_basic_dict_dict(map[string, map[string, base_types]]* inpt)</computeroutput>: Converts a nested C++ <computeroutput>std::map&lt;std::string, std::map&lt;std::string, base_types&gt;&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>dict</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the nested C++ <computeroutput>std::map</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_dict(map[string, vector[base_types]]* inpt)</computeroutput>: Converts a C++ <computeroutput>std::map&lt;std::string, std::vector&lt;base_types&gt;&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>dict</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ <computeroutput>std::map</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_dict_dict(map[string, map[string, vector[base_types]]]* inpt)</computeroutput>: Converts a nested C++ <computeroutput>std::map&lt;std::string, std::map&lt;std::string, std::vector&lt;base_types&gt;&gt;&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>dict</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the nested C++ <computeroutput>std::map</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef dict as_dict_dict_dict(map[string, map[string, map[string, vector[base_types]]]]* inpt)</computeroutput>: Converts a triple-nested C++ <computeroutput>std::map&lt;std::string, std::map&lt;std::string, std::map&lt;std::string, std::vector&lt;base_types&gt;&gt;&gt;&gt;</computeroutput> (passed as a pointer) into a Python <computeroutput>dict</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the triple-nested C++ <computeroutput>std::map</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python <computeroutput>dict</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef void as_map(dict inpt, map[string, base_types]* out)</computeroutput>: Converts a Python <computeroutput>dict</computeroutput> into a C++ <computeroutput>std::map&lt;std::string, base_types&gt;</computeroutput> (passed as a pointer <computeroutput>out</computeroutput>). Handles conversion of string values to C++ <computeroutput>std::string</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Python <computeroutput>dict</computeroutput> to convert. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ <computeroutput>std::map</computeroutput> to populate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>cdef void as_umap(dict inpt, unordered_map[string, base_types]* out)</computeroutput>: Converts a Python <computeroutput>dict</computeroutput> into a C++ <computeroutput>std::unordered_map&lt;std::string, base_types&gt;</computeroutput> (passed as a pointer <computeroutput>out</computeroutput>). Handles conversion of string values to C++ <computeroutput>std::string</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Python <computeroutput>dict</computeroutput> to convert. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to the C++ <computeroutput>std::unordered_map</computeroutput> to populate.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="ToolsModule_page_1ToolsModule_Tools_class">
+<title>The Tools Class</title><para><computeroutput>Tools</computeroutput> is a <computeroutput>cdef class</computeroutput> that acts as a Python wrapper for a collection of C++ utility functions, providing convenient access to file system operations, string manipulations, and data processing utilities.</para>
+<sect2 id="ToolsModule_page_1Tools_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>tools</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The Python initializer, intentionally left empty.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>tools</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ToolsModule_page_1Tools_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>create_path(self, str pth)</computeroutput>: Creates a directory path, including any necessary parent directories. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to create.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>delete_path(self, str pth)</computeroutput>: Deletes a file or an empty directory. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to delete.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>is_file(self, str pth)</computeroutput>: Checks if a given path corresponds to an existing file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>True</computeroutput> if it&apos;s a file, <computeroutput>False</computeroutput> otherwise.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>rename(self, str src, str dst)</computeroutput>: Renames or moves a file or directory from <computeroutput>src</computeroutput> to <computeroutput>dst</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>src</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The source path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dst</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The destination path.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>abs(self, str pth)</computeroutput>: Returns the absolute path for a given path. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to resolve. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The absolute path as a Python string.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>ls(self, str pth, str ext)</computeroutput>: Lists files in a directory matching a given extension. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>pth</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ext</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The file extension to filter by (e.g., &quot;.root&quot;). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python list of matching file paths.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>replace(self, str val, str rpl, str rpwl)</computeroutput>: Replaces occurrences of a substring <computeroutput>rpl</computeroutput> with <computeroutput>rpwl</computeroutput> within the string <computeroutput>val</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The original string. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rpl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to replace. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rpwl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The replacement substring. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The modified string.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>has_substring(self, str val, str rpl)</computeroutput>: Checks if a string <computeroutput>val</computeroutput> contains a substring <computeroutput>rpl</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to search within. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rpl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The substring to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>True</computeroutput> if <computeroutput>rpl</computeroutput> is found, <computeroutput>False</computeroutput> otherwise.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>ends_with(self, str val, str rpl)</computeroutput>: Checks if a string <computeroutput>val</computeroutput> ends with a substring <computeroutput>rpl</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to check. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>rpl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The suffix to check for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>True</computeroutput> if <computeroutput>val</computeroutput> ends with <computeroutput>rpl</computeroutput>, <computeroutput>False</computeroutput> otherwise.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>has_value(self, list data, str trg)</computeroutput>: Checks if a list of strings <computeroutput>data</computeroutput> contains a target string <computeroutput>trg</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Python list of strings. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The target string to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>True</computeroutput> if <computeroutput>trg</computeroutput> is found in <computeroutput>data</computeroutput>, <computeroutput>False</computeroutput> otherwise.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>split(self, str data, trg)</computeroutput>: Splits a string <computeroutput>data</computeroutput> by a delimiter <computeroutput>trg</computeroutput> (which can be a string or an integer for splitting at a specific index). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to split. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>trg</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The delimiter (string) or index (int) to split by. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python list of substrings.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>hash(self, str data, int lx = 8)</computeroutput>: Computes a hash for the given string <computeroutput>data</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to hash. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The length of the hash string to return (default 8). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The hash as a Python string.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>encode64(self, str data)</computeroutput>: Base64 encodes a string. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to encode. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The base64 encoded string.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>decode64(self, str data)</computeroutput>: Base64 decodes a string. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The string to decode. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The base64 decoded string.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>discretize(self, list data, int lx)</computeroutput>: Discretizes a list of data (strings or integers). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Python list of strings or integers. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The discretization parameter. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A discretized list.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ToolsModule_page_1ToolsModule_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>tools.pyx</computeroutput> module extensively uses Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Tools</computeroutput>: Declares <computeroutput>Tools</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef tools *ptr</computeroutput>: A C++ pointer to a <computeroutput>tools</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport bool, int, map, pair, string, vector</computeroutput>: Imports C++ standard library types.</para>
+</listitem><listitem><para><computeroutput>from libcpp.unordered_map cimport unordered_map</computeroutput>: Imports C++ <computeroutput>std::unordered_map</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports the C++ <computeroutput>tools</computeroutput> class declaration and <computeroutput>base_types</computeroutput> from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>cython.operator.dereference as dref</computeroutput>: Used to dereference C++ pointers. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/tools.dox"/>
+  </compounddef>
+</doxygen>

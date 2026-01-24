@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dir_f7bab29040f56711375e13800667d539" kind="dir">
+    <compoundname>selections</compoundname>
+    <innerdir refid="dir_6885d297930b69d0328b70243704877b">selections/analysis</innerdir>
+    <innerdir refid="dir_438cce133384f973360f389a59082800">selections/example</innerdir>
+    <innerdir refid="dir_217c73d33aa2f2528e57fa1905ac8ac0">selections/mc16</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/"/>
+  </compounddef>
+</doxygen>

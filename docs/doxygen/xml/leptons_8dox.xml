@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="leptons_8dox" kind="file" language="C++">
+    <compoundname>leptons.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the lepton classes in the ssml_mc20 event. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>leptons.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>lepton<sp/>classes<sp/>in<sp/>the<sp/>ssml_mc20<sp/>event.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>ssml_mc20_leptons_page<sp/>ssml_mc20<sp/>Leptons</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>This<sp/>page<sp/>provides<sp/>detailed<sp/>documentation<sp/>for<sp/>the<sp/>lepton<sp/>classes<sp/>used<sp/>in<sp/>the<sp/>`ssml_mc20`<sp/>event.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>ssml_mc20_leptons_muon<sp/>Muon</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>The<sp/>`muon`<sp/>class<sp/>represents<sp/>a<sp/>reconstructed<sp/>muon.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_muon_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`muon()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;mu&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves<sp/>to<sp/>be<sp/>read<sp/>from<sp/>the<sp/>input<sp/>tree.<sp/>It<sp/>also<sp/>sets<sp/>up<sp/>a<sp/>getter<sp/>for<sp/>the<sp/>`from_res`<sp/>attribute.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_muon_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`muon`<sp/>particle.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`muon`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>get_from_res(bool*<sp/>val,<sp/>muon*<sp/>el)`:<sp/>A<sp/>static<sp/>method<sp/>that<sp/>determines<sp/>if<sp/>the<sp/>muon<sp/>originates<sp/>from<sp/>a<sp/>resonant<sp/>top<sp/>quark<sp/>by<sp/>checking<sp/>its<sp/>parent<sp/>particles.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_muon_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>associated<sp/>truth<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>muon<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@section<sp/>ssml_mc20_leptons_electron<sp/>Electron</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>The<sp/>`electron`<sp/>class<sp/>represents<sp/>a<sp/>reconstructed<sp/>electron.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_electron_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`electron()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;el&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.<sp/>It<sp/>also<sp/>sets<sp/>up<sp/>a<sp/>getter<sp/>for<sp/>the<sp/>`from_res`<sp/>attribute.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_electron_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`electron`<sp/>particle.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`electron`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>get_from_res(bool*<sp/>val,<sp/>electron*<sp/>el)`:<sp/>A<sp/>static<sp/>method<sp/>that<sp/>determines<sp/>if<sp/>the<sp/>electron<sp/>originates<sp/>from<sp/>a<sp/>resonant<sp/>top<sp/>quark<sp/>by<sp/>checking<sp/>its<sp/>parent<sp/>particles.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_electron_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>associated<sp/>truth<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`pass_ecids`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>electron<sp/>passes<sp/>the<sp/>ECIDS<sp/>criteria.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>electron<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@section<sp/>ssml_mc20_leptons_lepton<sp/>Lepton</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>The<sp/>`lepton`<sp/>class<sp/>is<sp/>a<sp/>generic<sp/>lepton<sp/>class.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_lepton_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`lepton()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;lepton&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_lepton_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`lepton`<sp/>particle.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`lepton`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_leptons_lepton_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`ambiguity`:<sp/>The<sp/>ambiguity<sp/>flag<sp/>for<sp/>the<sp/>lepton.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="events/ssml_mc20/leptons.dox"/>
+  </compounddef>
+</doxygen>
