@@ -266,7 +266,7 @@ class NuSol(traject):
 class SingleNu(NuSol):
 
     def __init__(self, b, mu, ev):
-        t = NuSol(b, mu, ev)
+        t = NuSol(b, mu, None, ev)
         self._M = t.M
         self._X = t.X
         self._H = t.H
@@ -290,8 +290,8 @@ class DoubleNu:
         mu, mu_ = mus 
         self.ev = np.array([ev.px, ev.py, 1])
 
-        sol1 = NuSol(b , mu , None, mW1**2, mT1**2, 0)
-        sol2 = NuSol(b_, mu_, None, mW2**2, mT2**2, 0)
+        sol1 = NuSol(b , mu , None, None, mW1**2, mT1**2, 0)
+        sol2 = NuSol(b_, mu_, None, None, mW2**2, mT2**2, 0)
         self.solutionSets = [sol1, sol2]
 
         V0 = np.outer([ev.px, ev.py, 0], [0, 0, 1])
@@ -303,9 +303,8 @@ class DoubleNu:
         n_   = self.S.T.dot(N_).dot(self.S)
         n    = self.S.T.dot(N ).dot(self.S)
         try: v, _ = intersections_ellipses(N , n_)
-        except ValueError: self.failed = True; return
+        except ValueError: self.failed = True
         v_   = [self.S.dot(sol) for sol in v]
-
         if not v:
             es = [ss.H_perp for ss in self.solutionSets]
             met = self.ev
@@ -315,6 +314,9 @@ class DoubleNu:
             self.lsq = True
             if sum(residuals(ts)**2) > 1e-6: pass
             else: v, v_ = [[i] for i in nus(ts)]
+
+        print(v)
+        print(v_)
         for k, v in {"perp" : v , "perp_":  v_, "n_" : n_, "n" : n}.items(): setattr(self, k, v)
 
     def nunu_s(self):
@@ -326,6 +328,9 @@ class DoubleNu:
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
         nu1 = np.array([K.dot(s)   for s  in self.perp ])
         nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
+        print(nu1)
+        print(nu2)
+        return
 
         for i in range(len(nu1)):
             p1 = particle(nu1[i][0], nu1[i][1], nu1[i][2])

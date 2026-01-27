@@ -56,38 +56,4 @@ def atanh(tau): return np.atanh(tau.real) if abs(tau) < 1 else None
 def atan2(y, x): return np.atan2(y, x)
 
 
-def x1(Sx, Sy, w, o):  return Sx - (Sx + w * Sy) / o ** 2
-def y1(Sx, Sy, w, o):  return Sy - (Sx + w * Sy) * w /o ** 2
-
-def mW(m_nu, lep, Sx): return complex(m_nu**2 - lep.mass ** 2 - 2 * lep.p * Sx)**0.5
-
-def mT(m_nu, lep, bq, sin, cos, Sx, Sy): 
-    m = m_nu ** 2 + bq.mass ** 2 - lep.mass ** 2
-    S = Sx * ( lep.p + bq.p * cos ) + Sy * bq.p * sin
-    return complex(m - 2 * S)**0.5
-
-def H_tilde(z, Sx, Sy, data): 
-    return np.array([
-        [z / data.o         , 0, x1(Sx, Sy, data.w, data.o) - data.lep.p],
-        [z * data.w / data.o, 0, y1(Sx, Sy, data.w, data.o)             ],
-        [0                  , z,                                       0],
-    ])
-
-#self.w =  (1 / self.sin)*( br * (self.l_b / self.j_b) - self.cos ) 
-def omega(l_eta, b_eta, sin, theta, branch):
-    w = sinh(l_eta - b_eta) / (sin * np.cosh(l_eta) * np.sinh(b_eta))
-    return (w + np.tan(theta * 0.5) ** (branch))*branch
-
-
-def GammaR(data, sign):
-    return (data.wp + sign * data.wm)/(data.op if sign > 0 else data.om)**2
-
-def deltaR(data, sign):
-    a = (data.op + sign * data.om)**2 - (data.wp + data.wm)**2
-    return a / (2 * (data.wp + data.wm))
-
-def Hypers(data, tau, K):
-    ch, sh = cosh(tau), sinh(tau)
-    return np.array([ch, sh] if K > 0 else [sh, ch]).T * abs(K) ** 0.5
-
 

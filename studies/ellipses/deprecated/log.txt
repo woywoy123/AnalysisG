@@ -1,0 +1,6 @@
+Refined Root tau: 0.311979+1.403740j
+Stationary Lambda: -0.789563+0.633242j
+P(lambda): -2.790837e-12+1.344569e-11j
+dP/dtau (partial): 1.387779e-16+0.000000e+00j
+P is zero? True
+dP/dtau is zero? True

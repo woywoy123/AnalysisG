@@ -23,11 +23,19 @@ for i in DataLoader():
             if t.hash is None: nu = t; continue
             if t.mass < 60: lep = t
             else: bjet = t
-        if lep is not None:   leptons.append(lep)
-        if bjets is not None: bjets.append(bjet)
-        if nu is not None:    neutrino.append(nu)
-    if len(neutrino) < 2 or len(leptons) < 2: continue
-    break
+        if lep  is not None: leptons.append(lep)
+        if bjet is not None: bjets.append(bjet)
+        if nu   is not None: neutrino.append(nu)
+    if len(neutrino) < 2 or len(leptons) < 2 or len(bjets) < 2: continue
+    DoubleNu(
+        (bjets[0], bjets[1]), 
+        (leptons[0], leptons[1]),
+        i, 
+        (leptons[0] + neutrino[0]).mass, 
+        (bjets[0] + leptons[0] + neutrino[0]).mass,
+        (leptons[1] + neutrino[1]).mass, 
+        (bjets[1] + leptons[1] + neutrino[1]).mass
+    ).nunu_s()
 
 
 f = figure()
@@ -59,6 +67,15 @@ hx1 = sol1.H
 hx2 = sol2.H
 
 
+DoubleNu(
+        (bjets[0], bjets[1]), 
+        (leptons[0], leptons[1]),
+        i, 
+        (leptons[0] + neutrino[0]).mass, 
+        (bjets[0] + leptons[0] + neutrino[0]).mass,
+        (leptons[1] + neutrino[1]).mass, 
+        (bjets[1] + leptons[1] + neutrino[1]).mass
+)
 
 hinv = np.linalg.inv(hx1 / np.linalg.norm(hx1))
 hinv = hinv.T.dot(hx2 / np.linalg.norm(hx2)).dot(hinv)

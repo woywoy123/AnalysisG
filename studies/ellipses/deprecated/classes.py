@@ -1,5 +1,46 @@
 from atomics import *
 from particle import *
+from conuic import *
+
+class Conuic:
+
+    def __init__(self, met, phi, detector, event = None):
+
+        self.fig = figure()
+        self.fig.auto_lims = True
+
+        self.fig.plot_title(f'Event Ellipses {event.idx}', 12)
+        self.fig.axis_label("x", "Sx")
+        self.fig.axis_label("y", "Sy")
+        self.fig.axis_label("z", "Sz")
+
+        self.px = math.cos(phi)*met
+        self.py = math.sin(phi)*met
+        self.pz = 0
+        self.fig.color = "r"
+        self.fig.marker_size = 24
+        self.fig.marker_sym = "*"
+        #self.fig._scatter3(self.px, self.py, self.pz)
+        self.loss = 0
+
+        self.lep, self.jet = [], []
+        for i in detector:
+            l = self.lep if i.mass < 200 else self.jet
+            l.append(i)
+
+        self.engine = [conuic(i, j, event, self.fig) for i in self.lep for j in self.jet]
+
+        _tmp_lep = {}
+        for i in self.engine:
+            if i.error is None: self.loss += i.is_truth; continue
+            try: _tmp_lep[i.lep.hash][i.jet.hash] = i.jet
+            except KeyError: _tmp_lep[i.lep.hash] = {i.lep.hash : i.lep}
+            self.fig.objects[i.name] = [i.ellipse]
+
+        print("neutrino loss:", self.loss)
+        self.fig.show()
+
+
 
 class event:
 
@@ -7,7 +48,6 @@ class event:
         self.cache = []
         self.met = 0
         self.phi = 0
-
         self.idx = idx
         self.DetectorObjects = {}
         self.truth_pairs = {}
@@ -15,9 +55,6 @@ class event:
 
     def build(self):
         self.met, self.phi = get_numbers(self.cache[0].split(" "))
-        self.px = math.cos(self.phi)*self.met
-        self.py = math.sin(self.phi)*self.met
-
         blocks = {}
         title = None
         for i in self.cache:

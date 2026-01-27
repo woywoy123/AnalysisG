@@ -39,10 +39,10 @@ class Particle:
     def p(self): return self.p2**0.5
    
     @property
-    def b2(self): return 1 - (self.mass / self.e)**2
+    def b2(self): return self.p2 / (self.e**2)
 
     @property
-    def b(self): return (complex(self.b2)**0.5).real
+    def b(self): return self.b2**0.5
 
     @property
     def phi(self): return math.atan2(self.py, self.px)
