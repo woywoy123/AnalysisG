@@ -1,3 +1,5 @@
+add_subdirectory(common)
 add_subdirectory(nusol)
 add_subdirectory(conuix)
+add_subdirectory(conuic)
 add_subdirectory(ellipse)

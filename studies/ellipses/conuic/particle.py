@@ -14,13 +14,7 @@ class Particle:
         return o
 
     def __add__(self, o):
-        return Particle(
-                o.px + self.px, 
-                o.py + self.py, 
-                o.pz + self.pz, 
-                o.e  + self.e
-        )
-
+        return Particle(o.px + self.px, o.py + self.py, o.pz + self.pz, o.e  + self.e)
 
     def __radd__(self, o):
         if o != 0: return self.__add__(o)

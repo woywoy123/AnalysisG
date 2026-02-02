@@ -49,8 +49,6 @@ void bsm_4tops::CompileEvent(){
     std::map<int, truthjetparton*> _TruthJetPartons = this -> sort_by_index(&this -> m_TruthJetParton); 
     std::map<int, jetparton*>           _JetPartons = this -> sort_by_index(&this -> m_JetParton); 
 
-
-    //double metx(0), mety(0); 
     std::map<int, top_children*>::iterator itc; 
     for (itc = _TopChildren.begin(); itc != _TopChildren.end(); ++itc){
         int index = itc -> second -> top_index; 
@@ -58,9 +56,6 @@ void bsm_4tops::CompileEvent(){
         _Tops[index] -> register_child(itc -> second); 
         itc -> second -> register_parent(_Tops[index]); 
         itc -> second -> index = index; 
-        //if (!itc -> second -> is_nu){continue;}
-        //metx += double(itc -> second -> px); 
-        //mety += double(itc -> second -> py); 
     }
  
     std::map<int, truthjet*>::iterator itj; 
@@ -160,18 +155,22 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
 
-    if (this -> debug_mode){this -> debug_strings();}
-    if (!this -> reconstruct_nunu){return;}
- 
+//    if (this -> debug_mode){this -> debug_strings();}
+//    if (!this -> reconstruct_nunu){return;}
+//    return; 
+
+
+
     double phi_ = this -> phi; //std::atan2(mety, metx);
     double met_ = this -> met; //std::sqrt(metx * metx + mety * mety); 
-
     std::vector<particle_template*> nux = this -> multi_neutrino(
             &this -> DetectorObjects, phi_, met_, 
             172.68 * 1000, 80.385 * 1000, 
             0.0001,// mobius violation factor
             0.5 // tolerance
     ); 
+
+    abort(); 
 
     // fetching the reconstructed neutrinos and checking their truth mapping to the tops.
     for (int x(0); x < nux.size(); ++x){

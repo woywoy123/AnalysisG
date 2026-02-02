@@ -1,6 +1,6 @@
 #ifndef H_CONUIX_STRUCT_H
 #define H_CONUIX_STRUCT_H
-#include <conuix/matrix.h>
+#include <common/matrix.h>
 class particle_template; 
 
 namespace Conuix {

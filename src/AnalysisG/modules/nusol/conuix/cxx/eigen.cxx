@@ -1,4 +1,4 @@
-#include <conuix/solvers.h>
+#include <common/solvers.h>
 #include <conuix/conuic.h>
 #include <iostream>
 #include <iomanip>

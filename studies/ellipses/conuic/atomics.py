@@ -1,32 +1,12 @@
-import math
-import cmath
 import numpy as np
-
-def get_numbers(arr):
-    data = []
-    for i in arr:
-        if "0x" in i: data.append(i)
-        try: f = float(i)
-        except: continue
-        data.append(f)
-    return data
+import math
 
 def string(obj, tl, mrg = 8): 
     d = str(getattr(obj, tl))
     l = "".join([" " for i in range(mrg - len(d))])
     return str(tl) + ": " + l + d
 
-def string_clx(val):
-    if not isinstance(val, complex): return str(val)
-    d = str(val.real)
-    if val.imag == 0: return d
-    sign = " + " if val.imag > 0 else " - "
-    return d + sign + str(abs(val.imag)) + "i"
-
-def string_(tl, val, mrg = 8): 
-    d = string_clx(val)
-    l = "".join([" " for i in range(mrg - len(d))])
-    return str(tl) + ": " + l + d
+def signs(v1, v2, s): return v1 if s > 0 else v2
 
 def costheta(v1, v2):
     v1_sq = v1.px**2 + v1.py**2 + v1.pz**2
@@ -35,6 +15,9 @@ def costheta(v1, v2):
     if v2_sq == 0: return 0
     v1v2 = v1.px*v2.px + v1.py*v2.py + v1.pz*v2.pz
     return v1v2/math.sqrt(v1_sq * v2_sq)
+
+def angle(cs): return math.acos(cs) * 180 / np.pi
+
 
 def rotation_z(phi):
     c, s = np.cos(phi), np.sin(phi)
@@ -48,46 +31,34 @@ def rotation_x(psi):
     c, s = np.cos(psi), np.sin(psi)
     return np.array([[1, 0, 0], [0, c, -s], [0, s, c]])
 
-def nulls(dim_x, dim_y): return [[0 for i in range(dim_x)] for j in range(dim_y)]
-def cosh(tau): return np.cosh(tau.real)
-def sinh(tau): return np.sinh(tau.real)
-def tanh(tau): return np.tanh(tau.real)
-def atanh(tau): return np.atanh(tau.real) if abs(tau) < 1 else None
-def atan2(y, x): return np.atan2(y, x)
 
+def _print(tlt, val = None, obj = None):
+    if val is None: return print("====== " + tlt + " ======")
+    if isinstance(val, list) and obj is not None: 
+        val = sum([string(obj, i) + " \n" for i in val])
+    if isinstance(val, dict):
+        o = ""
+        for i in val: o += string_(i, val[i]) + " \n"
+        val = o
 
-def x1(Sx, Sy, w, o):  return Sx - (Sx + w * Sy) / o ** 2
-def y1(Sx, Sy, w, o):  return Sy - (Sx + w * Sy) * w /o ** 2
+    print("-------- " + tlt + " ------")
+    print(val)
 
-def mW(m_nu, lep, Sx): return complex(m_nu**2 - lep.mass ** 2 - 2 * lep.p * Sx)**0.5
+def assertions(tlt, trgt, val, limit =  0.1, hard_limit = False):
+    try: 
+        if isinstance(trgt, np.ndarray): 
+            assert sum(sum(abs(trgt - val) / abs(trgt + (trgt == 0))*100 > limit)) == 0
+            print(tlt + "+>: diff:\n", abs(trgt - val))
+            return True
+        else: 
+            if trgt == 0: assert abs(trgt - val) < limit
+            else: assert (abs(trgt - val) / abs(trgt))*100 < limit
+        print(tlt + "+>:\n", trgt, val, "diff:", abs(trgt - val))
+        return True
+    except AssertionError: print(tlt + "!>:\n", trgt, "\n", val, "\ndiff:\n", abs(trgt - val))
+    if hard_limit: raise AssertionError
 
-def mT(m_nu, lep, bq, sin, cos, Sx, Sy): 
-    m = m_nu ** 2 + bq.mass ** 2 - lep.mass ** 2
-    S = Sx * ( lep.p + bq.p * cos ) + Sy * bq.p * sin
-    return complex(m - 2 * S)**0.5
-
-def H_tilde(z, Sx, Sy, data): 
-    return np.array([
-        [z / data.o         , 0, x1(Sx, Sy, data.w, data.o) - data.lep.p],
-        [z * data.w / data.o, 0, y1(Sx, Sy, data.w, data.o)             ],
-        [0                  , z,                                       0],
-    ])
-
-#self.w =  (1 / self.sin)*( br * (self.l_b / self.j_b) - self.cos ) 
-def omega(l_eta, b_eta, sin, theta, branch):
-    w = sinh(l_eta - b_eta) / (sin * np.cosh(l_eta) * np.sinh(b_eta))
-    return (w + np.tan(theta * 0.5) ** (branch))*branch
-
-
-def GammaR(data, sign):
-    return (data.wp + sign * data.wm)/(data.op if sign > 0 else data.om)**2
-
-def deltaR(data, sign):
-    a = (data.op + sign * data.om)**2 - (data.wp + data.wm)**2
-    return a / (2 * (data.wp + data.wm))
-
-def Hypers(data, tau, K):
-    ch, sh = cosh(tau), sinh(tau)
-    return np.array([ch, sh] if K > 0 else [sh, ch]).T * abs(K) ** 0.5
+def observation(tlt, val):
+    print("NOTE: " + tlt + " +>: ", val)
 
 

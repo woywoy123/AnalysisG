@@ -2,6 +2,8 @@ from particle import *
 from atomics import *
 import numpy as np
 import math
+from scipy.optimize import leastsq
+
 
 def R(axis, angle):
     c, s = math.cos(angle), math.sin(angle)
@@ -11,14 +13,14 @@ def R(axis, angle):
 
 
 class NuSol(object):
-    def __init__(self, b, mu, mW2, mT2, mN2 = 0):
+    def __init__(self, b, mu, wbs, top, nu):
         self._b = b
         self._mu = mu
-        self.mW2 = mW2*mW2
-        self.mN2 = mN2*mN2
-        self.mT2 = mT2*mT2
-        self._sx = None
-        self._sy = None
+        self.mW2 = wbs.mass ** 2 
+        self.mT2 = top.mass ** 2 
+        self.mN2 = nu.mass ** 2  
+        self.use_minus = False
+        self.truth = nu
 
     @property
     def b(self): return self._b
@@ -40,24 +42,20 @@ class NuSol(object):
 
     @property
     def Sx(self):
-        P = self.mu.p
-        beta = self.mu.b
-        return (self.x0 * beta - P * (1 - beta**2))/(beta**2)
+        return (self.x0 * self.mu.b - self.mu.b * self.mu.e * (1 - self.mu.b**2))/(self.mu.b**2)
 
     @property
-    def Sy(self):
-        beta = self.b.b
-        return ((self.x0p / beta) - self.c * self.Sx) / self.s
+    def Sy(self): return ((self.x0p / self.b.b) - self.c * self.Sx) / self.s
 
     @property
     def w(self):
         beta_m, beta_b = self.mu.b, self.b.b
-        return (beta_m/beta_b - self.c)/self.s
+        return (beta_m/beta_b - self.c)/self.s if not self.use_minus else self.wm
 
     @property
     def wm(self):
         beta_m, beta_b = self.mu.b, self.b.b
-        return (-beta_m/beta_b - self.c)/self.s
+        return -(beta_m/beta_b + self.c)/self.s
 
     @property
     def Om2(self): return self.w**2 + 1 - self.mu.b**2
@@ -82,15 +80,16 @@ class NuSol(object):
         return  p1 + p2 + p3
 
     @property
-    def Z(self): return math.sqrt(max(0, self.Z2))
+    def Z(self):
+        z2 = self.Z2
+        return math.sqrt(z2) if z2 > 0 else - math.sqrt(-z2)
 
     @property
     def H_tilde(self):
         return np.array([
-            [self.Z/math.sqrt(self.Om2)           , 0   , self.x1 - self.mu.p],
+            [self.Z/math.sqrt(self.Om2)           , 0   , self.x1 - self.mu.e * self.mu.b],
             [self.w * self.Z / math.sqrt(self.Om2), 0   , self.y1            ],
             [0,                                   self.Z, 0                  ]])
-
 
     @property
     def R_T(self):
@@ -102,3 +101,21 @@ class NuSol(object):
 
     @property
     def H(self): return self.R_T.dot(self.H_tilde)
+
+    @property
+    def solution(self):
+        H = self.H_tilde
+        RT = self.R_T
+        tru = np.array([self.truth.px, self.truth.py, self.truth.pz])
+
+        def nus(ts):  return RT.dot(H.dot([math.cos(ts[0]), math.sin(ts[0]), 1]))
+        def res(par): return sum( (nus(par) - tru) ** 2)
+        ts, _ = leastsq(res, [0], ftol = 1e-18, epsfcn = 0.000000001)
+        return {
+                "H_T"     : H, 
+                "neutrino": H.dot([math.cos(ts[0]), math.sin(ts[0]), 1]), 
+                "angle"   : ts
+        }
+
+
+

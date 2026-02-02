@@ -1,10 +1,7 @@
-from classes import * 
-from time import sleep 
-
+from dataloader import * 
+from conuic import *
 
 for i in DataLoader():
     #    if i.idx != 3: continue
     print("====================== EVENT: ", i.idx, " ==========================")
-    nu = Conuic(i.met, i.phi, list(i.DetectorObjects.values()), i)
-#    exit()
-#    sleep(0.5)
+    nu = Conuic(list(i.DetectorObjects.values()), i)

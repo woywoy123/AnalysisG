@@ -98,17 +98,17 @@ bool conuic::mass_line(long double mW, long double mT, std::complex<long double>
     long double b = -(mT * mT - mW * mW - jm * jm) / (2 * je * jb);
 
     long double a0 =   this -> cache -> base.o * this -> cache -> base.cpsi / lb; 
-    long double b0 = - this -> cache -> base.spsi; 
-    long double c0 = - lm * lm / (le * lb); 
     long double d0 =   this -> cache -> base.o * this -> cache -> base.spsi / lb; 
+
+    long double b0 = - this -> cache -> base.spsi; 
     long double e0 =   this -> cache -> base.cpsi; 
+
+    long double c0 =                   - lm * lm / (le * lb); 
     long double f0 = - this -> cache -> base.tpsi * le / lb; 
 
     long double x = a * (a0 * cs + d0 * ss) - (b - c0 * cs - f0 * ss) * a0;
     long double y = a * (b0 * cs + e0 * ss) - (b - c0 * cs - f0 * ss) * b0;
-    //std::complex<long double> zeta = 0.5L * std::log( std::complex<long double>(x + y, 0.0) / std::complex<long double>(y - x, 0.0) ); 
-    //std::complex<long double> tcmx = std::tanh(zeta); 
-    long double t = std::sin(std::atan2(x, y)); 
+    long double t = std::sin(std::atan2(y, x)); 
     
     std::complex<long double> z = -((mW * mW + lm * lm) / ( 2 * le * lb) + c0) * std::sqrt((1.0L - t*t)) / (a0 + b0 * t); 
     if (z_){*z_ = std::abs(z);}

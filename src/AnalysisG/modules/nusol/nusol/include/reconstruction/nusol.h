@@ -8,12 +8,14 @@
 class nusol; 
 class ellipse; 
 class conuix; 
+class conuiac; 
 class nuelx; 
 class mtx; 
 
 enum class nusol_enum {
     ellipse,  // https://arxiv.org/pdf/1305.1878
     conuix,   // generalized n-neutrino approach
+    conuic,   // a completely analytical reconstruction 
     undefined
 }; 
 
@@ -39,6 +41,7 @@ struct nusol_t {
         friend ellipse; 
         friend conuix;
         friend nusol; 
+        friend conuiac; 
 
         double met_x = 0; 
         double met_y = 0; 
@@ -46,10 +49,7 @@ struct nusol_t {
 }; 
 
 
-class nusol: 
-    notification, 
-    tools
-{
+class nusol: notification, tools {
     public:
         nusol(nusol_t* parameters); 
         std::vector<particle_template*> solve(); 
@@ -66,10 +66,10 @@ class nusol:
                 double score = 0; 
         }; 
 
-
         nusol_t* params = nullptr; 
         ellipse* D_nunu = nullptr; 
         conuix*  M_nunu = nullptr; 
+        conuiac* C_nunu = nullptr; 
 }; 
 
 #endif

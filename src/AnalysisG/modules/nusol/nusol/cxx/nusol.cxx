@@ -1,6 +1,7 @@
 #include <reconstruction/nusol.h>
 #include <ellipse/ellipse.h>
 #include <conuix/conuix.h>
+#include <conuic/conuic.h>
 
 nusol::neutrino::~neutrino(){}
 
@@ -41,6 +42,7 @@ nusol::nusol(nusol_t* parameters){
 nusol::~nusol(){
     if (this -> D_nunu){delete this -> D_nunu;}
     if (this -> M_nunu){delete this -> M_nunu;}
+    if (this -> C_nunu){delete this -> C_nunu;}
 }
 
 std::vector<particle_template*> nusol::solve(){
@@ -50,6 +52,11 @@ std::vector<particle_template*> nusol::solve(){
         double dz = (nx1 -> pz - nx2 -> pz) / (std::fabs(nx1 -> pz) + std::fabs(nx2 -> pz)); 
         return dx * dx + dy * dy + dz * dz; 
     }; 
+
+    if (this -> params -> mode == nusol_enum::conuic){
+        this -> C_nunu = new conuiac(this -> params); 
+        return this -> C_nunu -> solve(); 
+    }
 
     this -> M_nunu = new conuix( this -> params);    
     this -> D_nunu = new ellipse(this -> params);

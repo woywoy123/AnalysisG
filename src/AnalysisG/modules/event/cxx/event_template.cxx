@@ -149,7 +149,7 @@ std::vector<particle_template*> event_template:: multi_neutrino(
     para.limit = limit; 
     para.targets = targets; 
     para.violation = violation; 
-    para.mode = nusol_enum::conuix; 
+    para.mode = nusol_enum::conuic; 
 
     nusol* nx = new nusol(&para); 
     std::vector<particle_template*> nunux = nx -> solve();

@@ -59,8 +59,6 @@ class particle_template : public tools
         void to_cartesian(); 
         void to_polar(); 
 
-
-
         cproperty<double, particle_template> mass; 
         void static set_mass(double*, particle_template*); 
         void static get_mass(double*, particle_template*); 

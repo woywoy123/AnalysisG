@@ -12,12 +12,12 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/mtx.cxx
 )
 
-add_library(cellipse ${SOURCE_FILES})
-target_include_directories(cellipse PRIVATE include/ellipse)
-target_include_directories(cellipse PUBLIC include)
+add_library(rellipse ${SOURCE_FILES})
+target_include_directories(rellipse PRIVATE include/ellipse)
+target_include_directories(rellipse PUBLIC include)
 
-target_link_libraries(cellipse  PUBLIC cstructs cparticle_template)
-target_link_libraries(cellipse  PRIVATE cnusol sconuix)
+target_link_libraries(rellipse  PUBLIC cstructs cparticle_template)
+target_link_libraries(rellipse  PRIVATE rnusol rconuix)
 
-target_compile_options(cellipse PRIVATE -fPIC)
-target_compile_options(cellipse PRIVATE -Wall -pedantic -Wextra -Wshadow)
+target_compile_options(rellipse PRIVATE -fPIC)
+target_compile_options(rellipse PRIVATE -Wall -pedantic -Wextra -Wshadow)

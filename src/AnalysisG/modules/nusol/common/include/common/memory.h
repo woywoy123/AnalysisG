@@ -1,0 +1,48 @@
+#ifndef H_COMMON_MEMORY
+#define H_COMMON_MEMORY
+
+long double** alloc(
+    const int dim_i, const int dim_j
+); 
+
+long double** flush(
+    long double** dmx, const int dim_j
+); 
+
+void copy(
+    long double** from, long double** to, 
+    const int dim_i, const int dim_j
+); 
+
+void ops(
+    long double** O, long double** A, long double** B, 
+    const int dim_i, const int dim_j, 
+    const float sign
+); 
+
+void opm(
+    long double** O, long double** A, 
+    const int dim_i, const int dim_j, 
+    const float c
+); 
+
+void opt(
+    long double** O, long double** A, 
+    const int dim_i, const int dim_j
+); 
+
+
+long double _trace(long double** A); 
+long double _m_00(long double**  M); 
+long double _m_01(long double**  M); 
+long double _m_02(long double**  M); 
+long double _m_10(long double**  M); 
+long double _m_11(long double**  M); 
+long double _m_12(long double**  M); 
+long double _m_20(long double**  M); 
+long double _m_21(long double**  M); 
+long double _m_22(long double**  M); 
+long double _det( long double**  v); 
+
+
+#endif

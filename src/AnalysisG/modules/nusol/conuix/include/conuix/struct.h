@@ -1,6 +1,7 @@
 #ifndef H_CONUIX_STRUCT
 #define H_CONUIX_STRUCT
-#include <conuix/matrix.h>
+
+#include <common/matrix.h>
 #include <conuix/htilde.h>
 #include <iostream>
 #include <iomanip>

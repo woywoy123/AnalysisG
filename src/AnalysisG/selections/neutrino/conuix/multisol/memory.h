@@ -1,0 +1,55 @@
+#ifndef H_CONUIX_MEMORY
+#define H_CONUIX_MEMORY
+
+long double** alloc(
+    const int dim_i, const int dim_j
+); 
+
+long double** flush(
+    long double** dmx, const int dim_j
+); 
+
+void copy(
+    long double** from, long double** to, 
+    const int dim_i, const int dim_j
+); 
+
+void copy_ij(
+    long double** from, long double** to, 
+    const int dim_i, const int dim_i_, const int dim_j
+); 
+
+
+
+void ops(
+    long double** O, long double** A, long double** B, 
+    const int dim_i, const int dim_j, 
+    const long double sign
+); 
+
+void opm(
+    long double** O, long double** A, 
+    const int dim_i, const int dim_j, 
+    const long double c
+); 
+
+void opt(
+    long double** O, long double** A, 
+    const int dim_i, const int dim_j
+); 
+
+
+long double _trace(long double** A); 
+long double _m_00(long double**  M); 
+long double _m_01(long double**  M); 
+long double _m_02(long double**  M); 
+long double _m_10(long double**  M); 
+long double _m_11(long double**  M); 
+long double _m_12(long double**  M); 
+long double _m_20(long double**  M); 
+long double _m_21(long double**  M); 
+long double _m_22(long double**  M); 
+long double _det( long double**  v); 
+
+
+#endif
