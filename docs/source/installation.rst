@@ -68,7 +68,7 @@ After installation, verify that AnalysisG is properly installed:
 
    import AnalysisG
    from AnalysisG.core import Analysis
-   print("AnalysisG version:", AnalysisG.__version__ if hasattr(AnalysisG, '__version__') else "5.0")
+   print("AnalysisG imported successfully!")
 
 Troubleshooting
 ---------------

@@ -36,3 +36,4 @@ local/**/*.png
 # Doxygen documentation
 doxygen-docs/
 unscoped/
+docs/_build/
