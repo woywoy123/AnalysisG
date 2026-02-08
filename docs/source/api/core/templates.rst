@@ -176,8 +176,8 @@ GraphTemplate
 
    Base class for defining graph structures for GNNs.
 
-   GraphTemplate specifies how to construct graphs from events and particles, 
-   including node features, edge features, and connectivity.
+   GraphTemplate is a base class that can be extended to define custom graph structures.
+   The actual graph construction and feature extraction is handled by user implementations.
 
    **Constructor**
 
@@ -185,73 +185,39 @@ GraphTemplate
 
       Initialize the graph template.
 
-   **Key Methods to Override**
+   **Properties**
 
-   .. method:: Nodes(event) -> list
+   .. attribute:: index
+      :type: int
 
-      Define which particles become nodes.
+      Graph index identifier (read-only).
 
-      :param event: Event object
-      :return: List of particles to use as nodes
-      :rtype: list
+   .. attribute:: Tree
+      :type: str
 
-   .. method:: Edges(event) -> list
+      Name of the ROOT tree (read-only).
 
-      Define edge connectivity.
+   .. attribute:: PreSelection
+      :type: bool
 
-      :param event: Event object
-      :return: List of (source, target) tuples
-      :rtype: list
+      Whether pre-selection is enabled.
 
-   .. method:: NodeFeatures(particle) -> list
+   **Example Usage**
 
-      Extract features from a particle/node.
-
-      :param particle: Particle object
-      :return: Feature vector
-      :rtype: list
-
-   .. method:: EdgeFeatures(source, target) -> list
-
-      Calculate features for an edge.
-
-      :param source: Source particle
-      :param target: Target particle
-      :return: Edge feature vector
-      :rtype: list
-
-   **Example Subclass**
+   GraphTemplate is typically subclassed and used with the Analysis framework:
 
    .. code-block:: python
 
-      from AnalysisG.core import GraphTemplate
+      from AnalysisG.core import GraphTemplate, Analysis
       
-      class ParticleGraph(GraphTemplate):
+      class MyGraph(GraphTemplate):
           def __init__(self):
               super().__init__()
-          
-          def Nodes(self, event):
-              # Use all jets as nodes
-              return event.jets
-          
-          def Edges(self, event):
-              # Connect all jets to all other jets
-              edges = []
-              for i, jet1 in enumerate(event.jets):
-                  for j, jet2 in enumerate(event.jets):
-                      if i != j:
-                          edges.append((i, j))
-              return edges
-          
-          def NodeFeatures(self, jet):
-              # Return kinematic features
-              return [jet.pt, jet.eta, jet.phi, jet.E]
-          
-          def EdgeFeatures(self, jet1, jet2):
-              # Calculate delta R
-              delta_r = ((jet1.eta - jet2.eta)**2 + 
-                        (jet1.phi - jet2.phi)**2)**0.5
-              return [delta_r]
+              self.PreSelection = True
+      
+      # Use with Analysis
+      ana = Analysis()
+      ana.AddGraph(MyGraph(), "my_graph")
 
 SelectionTemplate
 -----------------
