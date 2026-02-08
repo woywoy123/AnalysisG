@@ -174,7 +174,7 @@ PyC integrates seamlessly with AnalysisG:
 
 .. code-block:: python
 
-   from AnalysisG.core import EventTemplate
+   from AnalysisG.core.event_template import EventTemplate
    import pyc
    
    class MyEvent(EventTemplate):

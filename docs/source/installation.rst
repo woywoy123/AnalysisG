@@ -67,7 +67,7 @@ After installation, verify that AnalysisG is properly installed:
 .. code-block:: python
 
    import AnalysisG
-   from AnalysisG.core import Analysis
+   from AnalysisG import Analysis
    print("AnalysisG imported successfully!")
 
 Troubleshooting

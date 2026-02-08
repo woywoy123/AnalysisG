@@ -77,7 +77,7 @@ Implement custom metrics using MetricTemplate:
 
 .. code-block:: python
 
-   from AnalysisG.core import MetricTemplate
+   from AnalysisG.core.metric_template import MetricTemplate
    
    class MyMetrics(MetricTemplate):
        def __init__(self):
@@ -98,7 +98,7 @@ Integration Example
 
 .. code-block:: python
 
-   from AnalysisG.core import Analysis, MetricTemplate
+   from AnalysisG import Analysis, MetricTemplate
    
    class CustomMetrics(MetricTemplate):
        def Calculate(self, preds, targets):

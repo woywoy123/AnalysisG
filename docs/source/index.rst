@@ -47,7 +47,9 @@ Quick Start
 
 .. code-block:: python
 
-   from AnalysisG.core import Analysis, EventTemplate, ParticleTemplate
+   from AnalysisG import Analysis
+   from AnalysisG.core.event_template import EventTemplate
+   from AnalysisG.core.particle_template import ParticleTemplate
    
    # Define your event and particle templates
    class MyEvent(EventTemplate):

@@ -20,7 +20,7 @@ Integration with Analysis
 
 .. code-block:: python
 
-   from AnalysisG.core import Analysis, OptimizerConfig
+   from AnalysisG import Analysis, OptimizerConfig
    from AnalysisG.models import Grift
    
    # Configure optimizer

@@ -55,7 +55,8 @@ Example Usage
 
 .. code-block:: python
 
-   from AnalysisG.core import Analysis, EventTemplate
+   from AnalysisG import Analysis
+   from AnalysisG.core.event_template import EventTemplate
    
    # Create analysis instance
    ana = Analysis()

@@ -85,7 +85,7 @@ Integration with Analysis
 
 .. code-block:: python
 
-   from AnalysisG.core import Analysis
+   from AnalysisG import Analysis
    from AnalysisG.modules.plotting import AnalysisPlotter
    
    ana = Analysis()

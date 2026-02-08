@@ -152,7 +152,7 @@ Class Reference
       
       .. code-block:: python
 
-         from AnalysisG.core import OptimizerConfig
+         from AnalysisG.core.lossfx import OptimizerConfig
          
          model = MyModel()
          config = OptimizerConfig()

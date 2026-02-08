@@ -102,7 +102,7 @@ EventTemplate
 
    .. code-block:: python
 
-      from AnalysisG.core import EventTemplate
+      from AnalysisG.core.event_template import EventTemplate
       
       class MyEvent(EventTemplate):
           def __init__(self):
@@ -151,11 +151,11 @@ ParticleTemplate
 
    .. code-block:: python
 
-      from AnalysisG.core import ParticleTemplate
+      from AnalysisG.core.particle_template import ParticleTemplate
       
       class Jet(ParticleTemplate):
           def __init__(self):
-              super().__init__()
+              ParticleTemplate.__init__(self)
           
           @property
           def pt(self):
@@ -208,7 +208,7 @@ GraphTemplate
 
    .. code-block:: python
 
-      from AnalysisG.core import GraphTemplate, Analysis
+      from AnalysisG.core.graph_template import GraphTemplate, Analysis
       
       class MyGraph(GraphTemplate):
           def __init__(self):
@@ -289,7 +289,7 @@ SelectionTemplate
    .. code-block:: python
 
       from AnalysisG.selections.example.met.met import MET
-      from AnalysisG.core import Analysis
+      from AnalysisG import Analysis
       
       # Use predefined selection
       selection = MET()
@@ -353,7 +353,7 @@ MetricTemplate
    .. code-block:: python
 
       from AnalysisG.metrics import AccuracyMetric
-      from AnalysisG.core import Analysis
+      from AnalysisG import Analysis
       
       # Use predefined metric
       mx = AccuracyMetric()
@@ -441,7 +441,7 @@ ModelTemplate
    .. code-block:: python
 
       from AnalysisG.models import Grift
-      from AnalysisG.core import Analysis, OptimizerConfig
+      from AnalysisG import Analysis, OptimizerConfig
       
       # Create model instance
       model = Grift()
