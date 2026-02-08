@@ -82,7 +82,7 @@ class NuSol(object):
     @property
     def Z(self):
         z2 = self.Z2
-        return math.sqrt(z2) if z2 > 0 else - math.sqrt(-z2)
+        return math.sqrt(z2) if z2 > 0 else math.sqrt(-z2)
 
     @property
     def H_tilde(self):

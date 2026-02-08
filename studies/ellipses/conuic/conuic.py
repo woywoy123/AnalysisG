@@ -25,13 +25,14 @@ class Conuix(variables):
         b = - 2 * (Sx * (self.p_mu + self.p_b * self.c_th) + self.p_b * self.s_th * Sy)
         return complex(a + b)**0.5
 
-    def Z2f(self, Sx, m_nu, sign):
+    def Z2f(self, Sx, m_nu, sign, get_coeff = False):
         a = - (1 + self.t_th / signs(self.t_psi_p, self.t_psi_m, sign))
         b = 2 * self.p_mu 
         c = self.m_mu ** 2 - m_nu ** 2 
+        if get_coeff: return [a, b, c]
         return a * Sx**2 + b * Sx + c 
 
-    def Z2(self, Sy, Sx, m_nu, w, o):
+    def Z2(self, Sy, Sx, m_nu, w, o, get_coeff = False):
         a = (self.b_mu ** 2 - w ** 2) / o ** 2 
         b = 2 * w / o ** 2
         c = - (1 - self.b_mu ** 2) / o ** 2 
@@ -39,6 +40,7 @@ class Conuix(variables):
         e = self.m_mu ** 2 - m_nu ** 2 
         co = iter([a, b, c, d, e])
         fo = iter([ Sx**2, Sx * Sy,  Sy ** 2, Sx, 1])
+        if get_coeff: return [a, b, c, d, e]
         return sum([next(co) * next(fo) for _ in range(5)])
 
     # -------- Constants generators ----------- #
@@ -56,6 +58,17 @@ class Conuix(variables):
     def Gamma(self, sign):
         return (self.wp + sign * self.wm) / signs(self.op, self.om, sign)**2
 
+
+    def komega(self):
+        r = self.b_mu / self.b_b
+        kp, km = r + 1, r - 1
+        tpx = math.tan(self.theta)
+        kmap = 0.5 * np.array([[kp,   km], [-km, -kp]])
+        kpsi = 0.5 * np.array([[tpx,  1 / tpx], [-1 / tpx, -tpx]])
+        print(np.linalg.inv(kmap).dot(kpsi))
+
+
+        
     # --------- delta G^2 factorization parameters --------- # 
     def dG2_factorization(self):
         self.psi_p  , self.psi_m   = math.atan(self.dp)  , math.atan(self.dm)

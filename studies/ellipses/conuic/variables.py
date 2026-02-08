@@ -14,9 +14,9 @@ class branches:
         self.w = signs(var.wp, var.wm, sign)
 
         self.kappa = math.atan(signs(var.wp, var.wm, sign))
-        self.Sx0 = - var.m_mu **2 / var.p_mu
-        self.Sy0 = - math.tan(self.kappa) * var.lep.e / var.lep.b
-        self.S0  = np.array([[self.Sx0], [self.Sy0]])
+        self.Sx0   = - var.m_mu **2 / var.p_mu
+        self.Sy0   = - math.tan(self.kappa) * var.lep.e / var.lep.b
+        self.S0    = np.array([[self.Sx0], [self.Sy0]])
 
         self.eigv = np.array([
             [self.o ,         0], 
@@ -33,12 +33,13 @@ class branches:
         self.inst = var
 
     def y1x1(self, tau, m_nu = None):
-        if m_nu is None: m_nu = self.m_nu
+        if m_nu is None: m_nu = self.inst.mass_neutrino(self.sign)
         Sy, Sx = self.Sy(tau), self.Sx(tau)
         x1 = self.inst.x1(Sx, Sy, self.sign)
         y1 = self.inst.y1(Sx, Sy, self.sign)
-        return y1, x1
-    
+        z1 = self.inst.Z2(Sy, Sx, m_nu, self.w, self.o)
+        return x1, y1, abs(z1.real)**0.5
+   
     def Sx(self, tau, m_nu = None):
         if m_nu is None: m_nu = self.m_nu
         Sx  = math.cos(self.kappa) * math.cosh(tau) / (self.l2**0.5) - self.l1 * math.sin(self.kappa) * math.sinh(tau)
@@ -50,9 +51,9 @@ class branches:
         return self.eps * m_nu * Sy + self.Sy0
 
     def SxSy(self, tau, m_nu = None):
-        if m_nu is None: m_nu = self.m_nu
+        if m_nu is None: m_nu = self.inst.mass_neutrino(self.sign)
         S = self.M.dot(np.array([[math.cosh(tau), math.sinh(tau)]]).T)
-        S = (m_nu * self.eps * S + self.S0)
+        S = (m_nu * self.eps * S + self.S0).reshape((-1))
         return S
 
     def tau(self, Sx, Sy):
@@ -66,14 +67,20 @@ class hyper:
     def __init__(self, instance, sign):
         self.inst = instance
         self.sign = sign
+        self.B = np.array(self.y1x1(0))
 
     def y1x1(self, tau):
         sy, sx = self.inst.dG2_SySx(tau)
         x1 = self.inst.x1(sx, sy, self.sign)
         y1 = self.inst.y1(sx, sy, self.sign)
-        return y1, x1
+        w = signs(self.inst.wp, self.inst.wm, self.sign)
+        o = signs(self.inst.op, self.inst.om, self.sign)
+        z1 = self.inst.Z2(sy, sx, self.inst.mass_neutrino(self.sign), w, o)
+        return x1, y1, abs(z1)**0.5
 
-    def SySx(self, tau): return self.inst.dG2_SySx(tau)
+    def SxSy(self, tau): 
+        sy, sx = self.inst.dG2_SySx(tau)
+        return np.array([self.sign * sx, self.sign * sy, self.inst.dG2(self.sign * sy, self.sign * sx)])
 
     def tau(self, Sx, Sy):
         S = np.array([[Sx, Sy]]).T
@@ -93,15 +100,55 @@ class line:
         self.sol_pts = None
         self.sign1 = sign1
         self.sign2 = sign2
+        self.x0 = x0
+        self.y0 = y0
+        self.rz = 0 
+        self.ry = 0
+        self.rx = 0
+
+        if x0 is not None and y0 is not None: 
+            sx, sy, sz = var.SolveSxSy(x0, y0, var.mass_neutrino(sign1), sign2)
+            self.sol_pts = np.array([x0, y0, (abs(sz)**0.5).real])
+            return 
         if x0 is not None and y0 is None: self.sol_pts = np.array([x0, m * x0 + b, 1])
         if y0 is not None and x0 is None: self.sol_pts = np.array([(y0 - b)/m, y0, 1]) 
         if sum([i is not None for i in [x0, y0]]) == 2: self.sol_pts = np.array([x0, y0, 1])
-        self.x0 = x0
-        self.y0 = y0
+
+    @property
+    def Rz(self):
+        rz = np.array([
+            [ math.cos(self.rz), -math.sin(self.rz),  0],
+            [ math.sin(self.rz),  math.cos(self.rz),  0],
+            [                 0,         0         ,  1]
+        ])
+        return rz
+
+    @property
+    def Ry(self):
+        ry = np.array([
+            [  math.cos(self.ry),         0,  math.sin(self.ry)],
+            [ 0                 ,         1,                  0],
+            [- math.sin(self.ry),         0,  math.cos(self.ry)]
+        ])
+        return ry
+
+
+    @property
+    def Rx(self):
+        rx = np.array([
+            [ 1,                  0,                  0],
+            [ 0,  math.cos(self.rx), -math.sin(self.rx)],
+            [ 0,  math.sin(self.rx),  math.cos(self.rx)]
+        ])
+        return rx
+
+
+
+
 
     def __call__(self, t):
         Sx, Sy, z1 = self.var.SolveSxSy(self.x0, self.y0, self.var.mass_neutrino(self.sign1), self.sign2)
-        return np.array([t, self.m * t + self.b, z1])
+        return np.array([t, self.m * t + self.b, z1.real])
 
     def __hash__(self): return sum([hash(self.m) + hash(self.b)])
 
@@ -130,6 +177,7 @@ class variables(debug):
         self.m_b  = jet.mass
 
         self.c_th = costheta(lep, jet)
+        self.theta = math.acos(self.c_th)
         self.s_th = (1 - self.c_th ** 2) ** 0.5
         self.t_th = self.s_th / self.c_th
 
@@ -140,10 +188,6 @@ class variables(debug):
         self.dm, self.Gm = self.delta(-1), self.Gamma(-1.0)
 
         self.dG2_factorization()
-        print(self.dm, self.dp, self.dm, self.lam_m, self.lam_p, self.Gp, self.Gm)
-
-        print(self.lam_m * self.lam_p, self.Gp * self.Gm * (1 - self.lep.b**2))
-        exit()
 
         # --------- Branch specific parameterization ---------- #
         self.Z2_p = branches(self, +1)
@@ -157,26 +201,25 @@ class variables(debug):
         self.G2_p = hyper(self, +1)
         self.G2_m = hyper(self, -1)
 
-    def SxSy_points(self, m_nu, sign):
+    def Z2_crootL(self, sign, raw = False):
+        m_nu = self.mass_neutrino(sign)
         tn = signs(self.t_psi_p, self.t_psi_m, sign)
-        dsc = complex( (self.p_mu * tn)**2 + tn * (tn + self.t_th)*(self.m_mu ** 2 - m_nu**2) )
-
-        ap = self.p_mu * tn + dsc ** 0.5
-        am = self.p_mu * tn - dsc ** 0.5
-        SxP, SxM = ap / (tn + self.t_th), am / (tn + self.t_th)
-        SyP, SyM = SxP / tn, SxM / tn
-
         w = signs(self.wp, self.wm, sign)
         o = signs(self.op, self.om, sign)
-        return [
-            [
-                SxP, SyP, self.x1(SxP, SyP, sign), self.y1(SxP, SyP, sign), 
-                abs(self.Z2(SyP, SxP, m_nu, w, o))**0.5, sign], 
-            [
-                SxM, SyM, self.x1(SxM, SyM, sign), self.y1(SxM, SyM, sign), 
-                abs(self.Z2(SyM, SxM, m_nu, w, o))**0.5, sign
-            ]
-        ]
+        kx = self.Z2(0, 0, m_nu, w, o, True)
+        a, b, c, bx, cx = kx
+        ax = a + b / tn + c / tn**2
+        dsc = complex(abs(bx**2 - 4 * ax * cx))**0.5
+        if abs(dsc.imag) > 0: return []
+        dsc = dsc.real
+        SxP, SxM = (-bx + dsc)/(2 * ax), -(bx + dsc)/(2 * ax)
+        if raw: return [SxP, SxM]
+        
+        o  = []
+        for i in [[+1, +1], [+1, -1], [-1, +1], [-1, -1]]:
+            for k in [[SxP, SxP], [SxP, SxM], [SxM, SxP], [SxM, SxM]]:
+                o += self.clines(k[0], k[1], sign, sign, i[0], i[1])[-1]
+        return o
 
     def lines(self, Sx11 = None, Sy11 = None, Sx22 = None, Sy22 = None):
         # --------- The plus branch ------------- #
@@ -212,10 +255,8 @@ class variables(debug):
             v = [x22 - x21, y22 - y21]
             return u[0] * v[1] - u[1] * v[0]
         
-
         def Mxx(x1, x2, y1, y2): return (y2 - y1) / (x2 - x1)
         def Bxx(x1, y1, mxx):    return y1 - mxx * x1
-        def Mobius(x1, y1, x2, y2): return 
         def Ixx(b1, b2, m1, m2): 
             x0  = (b1 - b2)/(m2 - m1)
             y0, y1 = m1 * x0 + b1, m2 * x0 + b2
@@ -240,7 +281,6 @@ class variables(debug):
             o = []
             for i in f: o += [i] if i not in o else []
             return o
-
 
         tn11 = signs(self.t_psi_p, self.t_psi_m, sign1)
         tn22 = signs(self.t_psi_p, self.t_psi_m, sign2)
