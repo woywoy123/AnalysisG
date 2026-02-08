@@ -10,6 +10,7 @@ Welcome to the AnalysisG documentation! AnalysisG is a Graph Neural Network Anal
    :caption: Contents:
 
    introduction
+   architecture
    installation
    api/index
    examples/index
