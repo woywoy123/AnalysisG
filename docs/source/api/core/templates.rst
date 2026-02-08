@@ -226,62 +226,80 @@ SelectionTemplate
 
    Base class for defining event selection criteria.
 
-   SelectionTemplate implements the logic for deciding which events pass selection 
-   and what variables to output.
+   SelectionTemplate is implemented in C++ with Cython bindings. Users typically extend  
+   this class in C++ to implement custom selection logic, then access it from Python.
 
    **Constructor**
 
-   .. method:: __init__()
+   .. method:: __init__(inpt=None)
 
       Initialize the selection template.
 
-   **Key Methods to Override**
+      :param inpt: Optional dictionary to restore state from pickle
+      :type inpt: dict or None
 
-   .. method:: Selection(event) -> bool
+   **Properties**
 
-      Implement selection logic.
+   .. attribute:: PassedWeights
+      :type: dict
 
-      :param event: Event object to evaluate
-      :return: True if event passes selection
-      :rtype: bool
+      Dictionary of passed event weights (read-only).
 
-   .. method:: Strategy(event)
+   **Methods**
 
-      Perform calculations on selected events.
+   .. method:: dump(path="./pkl-data", name="")
 
-      :param event: Selected event object
+      Save selection results to pickle file.
 
-      This method is called only for events passing Selection().
+      :param path: Directory to save pickle file
+      :param name: Name for the pickle file (defaults to selection name)
+      :type path: str
+      :type name: str
 
-   **Example Subclass**
+   .. method:: load(path="./pkl-data", name="")
+
+      Load selection results from pickle file.
+
+      :param path: Directory containing pickle file
+      :param name: Name of the pickle file
+      :type path: str
+      :type name: str
+      :return: Loaded SelectionTemplate or None if failed
+      :rtype: SelectionTemplate or None
+
+   .. method:: HashToWeightFile(hash_)
+
+      Convert hash to weight file mapping.
+
+      :param hash_: Hash or list/dict of hashes
+      :return: List of (filename, weight) tuples
+      :rtype: list
+
+   .. method:: GetMetaData
+
+      Get metadata associated with selection.
+
+      :return: Dictionary mapping to Meta objects
+      :rtype: dict
+
+   **Example Usage**
+
+   Selections are typically implemented in C++. For example, the MET selection:
 
    .. code-block:: python
 
-      from AnalysisG.core import SelectionTemplate
+      from AnalysisG.selections.example.met.met import MET
+      from AnalysisG.core import Analysis
       
-      class TTbarSelection(SelectionTemplate):
-          def __init__(self):
-              super().__init__()
-          
-          def Selection(self, event):
-              # Require at least 4 jets
-              if event.n_jets < 4:
-                  return False
-              
-              # Require at least 1 lepton
-              if event.n_leptons < 1:
-                  return False
-              
-              # Require missing ET
-              if event.met < 20:
-                  return False
-              
-              return True
-          
-          def Strategy(self, event):
-              # Calculate top mass candidates
-              event.top_mass_candidates = []
-              # ... reconstruction logic ...
+      # Use predefined selection
+      selection = MET()
+      
+      # Add to analysis
+      ana = Analysis()
+      ana.AddSelection(selection)
+      
+      # After running, access results
+      weights = selection.PassedWeights
 
 MetricTemplate
 --------------
@@ -290,49 +308,61 @@ MetricTemplate
 
    Base class for defining evaluation metrics.
 
-   MetricTemplate specifies how to evaluate model performance using various metrics.
+   MetricTemplate is used to evaluate model performance. It's typically extended
+   in C++ with Python bindings.
 
    **Constructor**
 
    .. method:: __init__()
 
       Initialize the metric template.
+      
+      Note: Subclasses must set ``self.mtx`` to a C++ metric_template pointer.
 
-   **Key Methods to Override**
+   **Properties**
 
-   .. method:: Calculate(predictions, targets) -> dict
+   .. attribute:: RunNames
+      :type: dict
 
-      Calculate metrics.
+      Dictionary mapping run identifiers to names.
 
-      :param predictions: Model predictions
-      :param targets: Ground truth targets
-      :return: Dictionary of metric name -> value
-      :rtype: dict
+   .. attribute:: Variables
+      :type: list
 
-   **Example Subclass**
+      List of variable names to track.
+
+   **Methods**
+
+   .. method:: Postprocessing()
+
+      Optional post-processing hook called after metrics calculation.
+
+   .. method:: InterpretROOT(path, epochs=[], kfolds=[])
+
+      Interpret ROOT files containing metric data.
+
+      :param path: Path to ROOT files (supports wildcards)
+      :param epochs: List of epochs to process
+      :param kfolds: List of k-fold indices to process
+      :type path: str
+      :type epochs: list
+      :type kfolds: list
+
+   **Example Usage**
 
    .. code-block:: python
 
-      from AnalysisG.core import MetricTemplate
-      import numpy as np
+      from AnalysisG.metrics import AccuracyMetric
+      from AnalysisG.core import Analysis
       
-      class ClassificationMetrics(MetricTemplate):
-          def __init__(self):
-              super().__init__()
-          
-          def Calculate(self, predictions, targets):
-              # Calculate accuracy
-              correct = np.sum(predictions == targets)
-              accuracy = correct / len(targets)
-              
-              # Calculate precision/recall
-              # ... metric calculations ...
-              
-              return {
-                  'accuracy': accuracy,
-                  'precision': precision,
-                  'recall': recall
-              }
+      # Use predefined metric
+      mx = AccuracyMetric()
+      mx.RunNames = {"train": "Training", "valid": "Validation"}
+      mx.Variables = ["accuracy", "loss"]
+      
+      # Add to analysis with model
+      ana = Analysis()
+      ana.AddMetric(mx, model)
 
 ModelTemplate
 -------------
@@ -341,7 +371,7 @@ ModelTemplate
 
    Base class for defining machine learning models.
 
-   ModelTemplate wraps PyTorch models for use in the AnalysisG framework.
+   ModelTemplate wraps models for use in the AnalysisG framework, typically PyTorch models.
 
    **Constructor**
 
@@ -349,45 +379,89 @@ ModelTemplate
 
       Initialize the model template.
 
-   **Key Methods to Override**
+   **Properties**
 
-   .. method:: forward(inputs) -> outputs
+   .. attribute:: o_graph
+      :type: dict
 
-      Model forward pass.
+      Output graph-level features mapping to loss functions.
+      
+      Example: ``{"signal": "CrossEntropyLoss"}``
 
-      :param inputs: Input tensors
-      :return: Output predictions
+   .. attribute:: o_node
+      :type: dict
 
-   **Example Subclass**
+      Output node-level features mapping to loss functions.
+
+   .. attribute:: o_edge
+      :type: dict
+
+      Output edge-level features mapping to loss functions.
+      
+      Example: ``{"top_edge": "CrossEntropyLoss"}``
+
+   .. attribute:: i_graph
+      :type: list
+
+      Input graph-level feature names.
+      
+      Example: ``["met", "phi"]``
+
+   .. attribute:: i_node
+      :type: list
+
+      Input node-level feature names.
+      
+      Example: ``["pt", "eta", "phi", "energy"]``
+
+   .. attribute:: i_edge
+      :type: list
+
+      Input edge-level feature names.
+
+   .. attribute:: device
+      :type: str
+
+      Device to run model on.
+      
+      Example: ``"cuda:0"`` or ``"cpu"``
+
+   .. attribute:: checkpoint_path
+      :type: str
+
+      Path to model checkpoint file.
+
+   .. attribute:: name
+      :type: str
+
+      Model name (defaults to class name).
+
+   **Example Usage**
 
    .. code-block:: python
 
-      from AnalysisG.core import ModelTemplate
-      import torch.nn as nn
+      from AnalysisG.models import Grift
+      from AnalysisG.core import Analysis, OptimizerConfig
       
-      class GNNClassifier(ModelTemplate):
-          def __init__(self):
-              super().__init__()
-              
-              # Define model architecture
-              self.conv1 = GraphConv(4, 64)
-              self.conv2 = GraphConv(64, 64)
-              self.fc = nn.Linear(64, 2)
-          
-          def forward(self, data):
-              x, edge_index = data.x, data.edge_index
-              
-              x = self.conv1(x, edge_index)
-              x = torch.relu(x)
-              x = self.conv2(x, edge_index)
-              x = torch.relu(x)
-              
-              # Global pooling
-              x = global_mean_pool(x, data.batch)
-              
-              # Classification
-              x = self.fc(x)
-              return x
+      # Create model instance
+      model = Grift()
+      model.name = "Grift-Model-v1"
+      model.device = "cuda:0"
+      
+      # Configure outputs and loss functions
+      model.o_edge = {"top_edge": "CrossEntropyLoss"}
+      model.o_graph = {"signal": "CrossEntropyLoss"}
+      
+      # Configure inputs
+      model.i_node = ["pt", "eta", "phi", "energy"]
+      model.i_graph = ["met", "phi"]
+      
+      # Add to analysis for training
+      config = OptimizerConfig()
+      config.lr = 0.001
+      
+      ana = Analysis()
+      ana.AddModel(model, config, "training_run")
 
 Design Patterns
 ---------------
