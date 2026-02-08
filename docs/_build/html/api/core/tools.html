@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools Module &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Examples" href="../../examples/index.html" />
+    <link rel="prev" title="I/O Module" href="io.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#core-api">Core API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="analysis.html">Analysis Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html">Template Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">I/O Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Tools Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#common-use-cases">Common Use Cases</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Tools Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/core/tools.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tools-module">
+<h1>Tools Module<a class="headerlink" href="#tools-module" title="Link to this heading"></a></h1>
+<p>The tools module provides utility functions and helper classes used throughout AnalysisG.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module (<code class="docutils literal notranslate"><span class="pre">src/AnalysisG/core/tools.pyx</span></code>) contains:</p>
+<ul class="simple">
+<li><p>String encoding/decoding utilities</p></li>
+<li><p>Type conversion functions</p></li>
+<li><p>Data structure helpers</p></li>
+<li><p>Common operations</p></li>
+</ul>
+<p>These utilities are used internally by AnalysisG and are also available for user code.</p>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="string-utilities">
+<h3>String Utilities<a class="headerlink" href="#string-utilities" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="enc">
+<span class="sig-name descname"><span class="pre">enc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#enc" title="Link to this definition"></a></dt>
+<dd><p>Encode Python string to C++ string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – Python string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Encoded bytes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bytes</p>
+</dd>
+</dl>
+<p>Used internally for Python-C++ string conversion.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="env">
+<span class="sig-name descname"><span class="pre">env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#env" title="Link to this definition"></a></dt>
+<dd><p>Decode C++ string to Python string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b</strong> (<em>bytes</em>) – Bytes from C++</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Python string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>Used internally for C++-Python string conversion.</p>
+</dd></dl>
+
+</section>
+<section id="type-conversion">
+<h3>Type Conversion<a class="headerlink" href="#type-conversion" title="Link to this heading"></a></h3>
+<p>The tools module provides type conversion utilities for:</p>
+<ul class="simple">
+<li><p>ROOT types to Python types</p></li>
+<li><p>Numpy arrays to C++ vectors</p></li>
+<li><p>Python lists to C++ vectors</p></li>
+<li><p>And vice versa</p></li>
+</ul>
+</section>
+<section id="data-structure-operations">
+<h3>Data Structure Operations<a class="headerlink" href="#data-structure-operations" title="Link to this heading"></a></h3>
+<p>Common operations on data structures:</p>
+<ul class="simple">
+<li><p>Flattening nested lists</p></li>
+<li><p>Filtering collections</p></li>
+<li><p>Mapping transformations</p></li>
+<li><p>Aggregation operations</p></li>
+</ul>
+</section>
+<section id="physics-utilities">
+<h3>Physics Utilities<a class="headerlink" href="#physics-utilities" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="c1"># Calculate delta R</span>
+<span class="n">delta_r</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">eta2</span><span class="p">,</span> <span class="n">phi2</span><span class="p">)</span>
+
+<span class="c1"># Calculate invariant mass</span>
+<span class="n">mass</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">InvariantMass</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">eta1</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">,</span> <span class="n">eta2</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">E2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="vector-operations">
+<h3>Vector Operations<a class="headerlink" href="#vector-operations" title="Link to this heading"></a></h3>
+<p>Operations on 4-vectors and 3-vectors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="c1"># Create 4-vector</span>
+<span class="n">vec</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">FourVector</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
+
+<span class="c1"># Vector operations</span>
+<span class="n">pt</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">Pt</span><span class="p">()</span>
+<span class="n">eta</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">Eta</span><span class="p">()</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">Phi</span><span class="p">()</span>
+<span class="n">mass</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">M</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<section id="cython-implementation">
+<h3>Cython Implementation<a class="headerlink" href="#cython-implementation" title="Link to this heading"></a></h3>
+<p>The tools module is implemented in Cython for:</p>
+<ul class="simple">
+<li><p>Performance-critical operations</p></li>
+<li><p>Zero-copy data transfer</p></li>
+<li><p>Efficient type conversion</p></li>
+<li><p>C++ STL integration</p></li>
+</ul>
+</section>
+</section>
+<section id="common-use-cases">
+<h2>Common Use Cases<a class="headerlink" href="#common-use-cases" title="Link to this heading"></a></h2>
+<section id="string-handling">
+<h3>String Handling<a class="headerlink" href="#string-handling" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.tools</span> <span class="kn">import</span> <span class="n">enc</span><span class="p">,</span> <span class="n">env</span>
+
+<span class="c1"># Convert Python string to C++ string</span>
+<span class="n">cpp_str</span> <span class="o">=</span> <span class="n">enc</span><span class="p">(</span><span class="s2">&quot;my_tree_name&quot;</span><span class="p">)</span>
+
+<span class="c1"># Convert C++ string back to Python</span>
+<span class="n">py_str</span> <span class="o">=</span> <span class="n">env</span><span class="p">(</span><span class="n">cpp_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-root-data">
+<h3>Working with ROOT Data<a class="headerlink" href="#working-with-root-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">tools</span>
+
+<span class="c1"># Convert ROOT vector to Python list</span>
+<span class="n">python_list</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">convert_vector</span><span class="p">(</span><span class="n">root_vector</span><span class="p">)</span>
+
+<span class="c1"># Convert Python list to ROOT vector</span>
+<span class="n">root_vector</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">to_vector</span><span class="p">(</span><span class="n">python_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="analysis.html"><span class="doc">Analysis Class</span></a> - Analysis class</p></li>
+<li><p><a class="reference internal" href="templates.html"><span class="doc">Template Classes</span></a> - Template classes</p></li>
+<li><p><a class="reference internal" href="io.html"><span class="doc">I/O Module</span></a> - I/O utilities</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="io.html" class="btn btn-neutral float-left" title="I/O Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../examples/index.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

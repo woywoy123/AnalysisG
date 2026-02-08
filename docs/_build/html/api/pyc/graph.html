@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graph Module (PyC) &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Transform Module (PyC)" href="transform.html" />
+    <link rel="prev" title="Operators Module (PyC)" href="operators.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../pyc.html">PyC Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#key-features">Key Features</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../pyc.html#architecture">Architecture</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="physics.html">Physics Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="operators.html">Operators Module (PyC)</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Graph Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="transform.html">Transform Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nusol.html">NuSol Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tools.html">Tools Module (PyC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#submodule-overview">Submodule Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#usage-examples">Usage Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#gpu-acceleration">GPU Acceleration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#c-api">C++ API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#building-pyc">Building PyC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#core-api">Core API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#pyc-api">PyC API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="physics.html">Physics Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="operators.html">Operators Module (PyC)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Graph Module (PyC)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-functions">Key Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="transform.html">Transform Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nusol.html">NuSol Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools.html">Tools Module (PyC)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../pyc.html">PyC Package</a></li>
+      <li class="breadcrumb-item active">Graph Module (PyC)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/pyc/graph.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graph-module-pyc">
+<h1>Graph Module (PyC)<a class="headerlink" href="#graph-module-pyc" title="Link to this heading"></a></h1>
+<p>Graph algorithms and operations for graph neural networks.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Located in <code class="docutils literal notranslate"><span class="pre">pyc/pyc/graph/</span></code>, this module implements graph algorithms with
+optimized C++ and CUDA backends.</p>
+</section>
+<section id="key-functions">
+<h2>Key Functions<a class="headerlink" href="#key-functions" title="Link to this heading"></a></h2>
+<section id="edge-construction">
+<h3>Edge Construction<a class="headerlink" href="#edge-construction" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyc.graph</span> <span class="k">as</span> <span class="nn">graph</span>
+
+<span class="c1"># K-nearest neighbors graph</span>
+<span class="n">edge_index</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">knn_graph</span><span class="p">(</span><span class="n">node_positions</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Radius graph</span>
+<span class="n">edge_index</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">radius_graph</span><span class="p">(</span><span class="n">node_positions</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c1"># Fully connected graph</span>
+<span class="n">edge_index</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">fully_connected</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="node-aggregation">
+<h3>Node Aggregation<a class="headerlink" href="#node-aggregation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggregate neighbor features</span>
+<span class="n">aggregated</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">aggregate_neighbors</span><span class="p">(</span>
+    <span class="n">node_features</span><span class="p">,</span>
+    <span class="n">edge_index</span><span class="p">,</span>
+    <span class="n">aggregation</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="graph-pooling">
+<h3>Graph Pooling<a class="headerlink" href="#graph-pooling" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Global pooling</span>
+<span class="n">graph_feature</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">global_mean_pool</span><span class="p">(</span><span class="n">node_features</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+
+<span class="c1"># Top-k pooling</span>
+<span class="n">pooled</span><span class="p">,</span> <span class="n">edge_index</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">topk_pool</span><span class="p">(</span>
+    <span class="n">node_features</span><span class="p">,</span>
+    <span class="n">edge_index</span><span class="p">,</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">100</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pagerank">
+<h3>PageRank<a class="headerlink" href="#pagerank" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute PageRank scores</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">pagerank</span><span class="p">(</span><span class="n">edge_index</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="operators.html"><span class="doc">Operators Module (PyC)</span></a> - Tensor operations</p></li>
+<li><p><a class="reference internal" href="physics.html"><span class="doc">Physics Module (PyC)</span></a> - Physics calculations</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="operators.html" class="btn btn-neutral float-left" title="Operators Module (PyC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="transform.html" class="btn btn-neutral float-right" title="Transform Module (PyC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

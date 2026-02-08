@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Classes &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plotting Module" href="plotting.html" />
+    <link rel="prev" title="Analysis Class" href="analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#core-api">Core API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="analysis.html">Analysis Class</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Template Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventtemplate">EventTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#particletemplate">ParticleTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#graphtemplate">GraphTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#selectiontemplate">SelectionTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metrictemplate">MetricTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modeltemplate">ModelTemplate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#design-patterns">Design Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">I/O Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools.html">Tools Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Template Classes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/core/templates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-classes">
+<h1>Template Classes<a class="headerlink" href="#template-classes" title="Link to this heading"></a></h1>
+<p>AnalysisG uses a template-based design pattern where users extend base template classes
+to define their specific analysis behavior. This provides flexibility while maintaining
+a consistent interface.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The framework provides several template classes:</p>
+<ul class="simple">
+<li><p><strong>EventTemplate</strong>: Define event structure and behavior</p></li>
+<li><p><strong>ParticleTemplate</strong>: Define particle properties and methods</p></li>
+<li><p><strong>GraphTemplate</strong>: Define graph structures for GNNs</p></li>
+<li><p><strong>SelectionTemplate</strong>: Define event selection criteria</p></li>
+<li><p><strong>MetricTemplate</strong>: Define evaluation metrics</p></li>
+<li><p><strong>ModelTemplate</strong>: Define machine learning models</p></li>
+</ul>
+<p>All templates are implemented in Cython (<code class="docutils literal notranslate"><span class="pre">.pyx</span></code> files) with corresponding header files (<code class="docutils literal notranslate"><span class="pre">.pxd</span></code>).</p>
+</section>
+<section id="eventtemplate">
+<h2>EventTemplate<a class="headerlink" href="#eventtemplate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">EventTemplate</span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate" title="Link to this definition"></a></dt>
+<dd><p>Base class for defining event structures.</p>
+<p>EventTemplate provides the interface between ROOT data and Python objects. Subclasses
+define which ROOT trees, branches, and leaves to read, and how to construct event objects.</p>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.EventTemplate.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the event template.</p>
+<p>When subclassing, call super().__init__() first, then configure properties.</p>
+</dd></dl>
+
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.Tree">
+<span class="sig-name descname"><span class="pre">Tree</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.Tree" title="Link to this definition"></a></dt>
+<dd><p>Name of the ROOT tree to read.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">Tree</span> <span class="o">=</span> <span class="s2">&quot;nominal&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.Trees">
+<span class="sig-name descname"><span class="pre">Trees</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.Trees" title="Link to this definition"></a></dt>
+<dd><p>Multiple tree names to read.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">Trees</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;nominal&quot;</span><span class="p">,</span> <span class="s2">&quot;systematic_up&quot;</span><span class="p">,</span> <span class="s2">&quot;systematic_down&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.Branches">
+<span class="sig-name descname"><span class="pre">Branches</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.Branches" title="Link to this definition"></a></dt>
+<dd><p>Branch names to read from the tree.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">Branches</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_eta&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_phi&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_E&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.index" title="Link to this definition"></a></dt>
+<dd><p>Event index or branch name containing indices.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.weight">
+<span class="sig-name descname"><span class="pre">weight</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.weight" title="Link to this definition"></a></dt>
+<dd><p>Event weight or branch name containing weights.</p>
+</dd></dl>
+
+<p><strong>Magic Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.__name__">
+<span class="sig-name descname"><span class="pre">__name__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.__name__" title="Link to this definition"></a></dt>
+<dd><p>Return the name of the event template.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.__hash__" title="Link to this definition"></a></dt>
+<dd><p>Return a hash of the event template configuration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.EventTemplate.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#AnalysisG.core.EventTemplate.__eq__" title="Link to this definition"></a></dt>
+<dd><p>Compare two event templates for equality.</p>
+</dd></dl>
+
+<p><strong>Example Subclass</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">EventTemplate</span>
+
+<span class="k">class</span> <span class="nc">MyEvent</span><span class="p">(</span><span class="n">EventTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Configure tree reading</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tree</span> <span class="o">=</span> <span class="s2">&quot;nominal&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Branches</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_eta&quot;</span><span class="p">,</span> <span class="s2">&quot;met_met&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Define event-level variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="s2">&quot;event_weight&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="s2">&quot;event_number&quot;</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called after ROOT data is loaded.&quot;&quot;&quot;</span>
+        <span class="c1"># Perform event-level calculations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ht</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jets_pt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_jets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jets_pt</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="particletemplate">
+<h2>ParticleTemplate<a class="headerlink" href="#particletemplate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.ParticleTemplate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">ParticleTemplate</span></span><a class="headerlink" href="#AnalysisG.core.ParticleTemplate" title="Link to this definition"></a></dt>
+<dd><p>Base class for defining particle structures.</p>
+<p>ParticleTemplate defines how individual particles are constructed from ROOT data
+and what properties/methods they have.</p>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.ParticleTemplate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.ParticleTemplate.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the particle template.</p>
+</dd></dl>
+
+<p><strong>Common Properties</strong></p>
+<p>Particle templates typically define:</p>
+<ul class="simple">
+<li><p>Kinematic properties (pt, eta, phi, mass, energy)</p></li>
+<li><p>Identification variables</p></li>
+<li><p>Isolation variables</p></li>
+<li><p>Truth matching information</p></li>
+</ul>
+<p><strong>Example Subclass</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">ParticleTemplate</span>
+
+<span class="k">class</span> <span class="nc">Jet</span><span class="p">(</span><span class="n">ParticleTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pt</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">eta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eta</span>
+
+    <span class="k">def</span> <span class="nf">is_btagged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wp</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if jet is b-tagged.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">btag_score</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">btag_wp</span><span class="p">[</span><span class="n">wp</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="graphtemplate">
+<h2>GraphTemplate<a class="headerlink" href="#graphtemplate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.GraphTemplate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">GraphTemplate</span></span><a class="headerlink" href="#AnalysisG.core.GraphTemplate" title="Link to this definition"></a></dt>
+<dd><p>Base class for defining graph structures for GNNs.</p>
+<p>GraphTemplate specifies how to construct graphs from events and particles,
+including node features, edge features, and connectivity.</p>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.GraphTemplate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.GraphTemplate.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the graph template.</p>
+</dd></dl>
+
+<p><strong>Key Methods to Override</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.GraphTemplate.Nodes">
+<span class="sig-name descname"><span class="pre">Nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#AnalysisG.core.GraphTemplate.Nodes" title="Link to this definition"></a></dt>
+<dd><p>Define which particles become nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Event object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of particles to use as nodes</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.GraphTemplate.Edges">
+<span class="sig-name descname"><span class="pre">Edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#AnalysisG.core.GraphTemplate.Edges" title="Link to this definition"></a></dt>
+<dd><p>Define edge connectivity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Event object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of (source, target) tuples</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.GraphTemplate.NodeFeatures">
+<span class="sig-name descname"><span class="pre">NodeFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">particle</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#AnalysisG.core.GraphTemplate.NodeFeatures" title="Link to this definition"></a></dt>
+<dd><p>Extract features from a particle/node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>particle</strong> – Particle object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Feature vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.GraphTemplate.EdgeFeatures">
+<span class="sig-name descname"><span class="pre">EdgeFeatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#AnalysisG.core.GraphTemplate.EdgeFeatures" title="Link to this definition"></a></dt>
+<dd><p>Calculate features for an edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – Source particle</p></li>
+<li><p><strong>target</strong> – Target particle</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Edge feature vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Example Subclass</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">GraphTemplate</span>
+
+<span class="k">class</span> <span class="nc">ParticleGraph</span><span class="p">(</span><span class="n">GraphTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">Nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Use all jets as nodes</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">jets</span>
+
+    <span class="k">def</span> <span class="nf">Edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Connect all jets to all other jets</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">jet1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">jet2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">edges</span>
+
+    <span class="k">def</span> <span class="nf">NodeFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jet</span><span class="p">):</span>
+        <span class="c1"># Return kinematic features</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">jet</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">E</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">EdgeFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jet1</span><span class="p">,</span> <span class="n">jet2</span><span class="p">):</span>
+        <span class="c1"># Calculate delta R</span>
+        <span class="n">delta_r</span> <span class="o">=</span> <span class="p">((</span><span class="n">jet1</span><span class="o">.</span><span class="n">eta</span> <span class="o">-</span> <span class="n">jet2</span><span class="o">.</span><span class="n">eta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                  <span class="p">(</span><span class="n">jet1</span><span class="o">.</span><span class="n">phi</span> <span class="o">-</span> <span class="n">jet2</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">delta_r</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="selectiontemplate">
+<h2>SelectionTemplate<a class="headerlink" href="#selectiontemplate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.SelectionTemplate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">SelectionTemplate</span></span><a class="headerlink" href="#AnalysisG.core.SelectionTemplate" title="Link to this definition"></a></dt>
+<dd><p>Base class for defining event selection criteria.</p>
+<p>SelectionTemplate implements the logic for deciding which events pass selection
+and what variables to output.</p>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.SelectionTemplate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.SelectionTemplate.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the selection template.</p>
+</dd></dl>
+
+<p><strong>Key Methods to Override</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.SelectionTemplate.Selection">
+<span class="sig-name descname"><span class="pre">Selection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#AnalysisG.core.SelectionTemplate.Selection" title="Link to this definition"></a></dt>
+<dd><p>Implement selection logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Event object to evaluate</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if event passes selection</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.SelectionTemplate.Strategy">
+<span class="sig-name descname"><span class="pre">Strategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.SelectionTemplate.Strategy" title="Link to this definition"></a></dt>
+<dd><p>Perform calculations on selected events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Selected event object</p>
+</dd>
+</dl>
+<p>This method is called only for events passing Selection().</p>
+</dd></dl>
+
+<p><strong>Example Subclass</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">SelectionTemplate</span>
+
+<span class="k">class</span> <span class="nc">TTbarSelection</span><span class="p">(</span><span class="n">SelectionTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">Selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Require at least 4 jets</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">n_jets</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Require at least 1 lepton</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">n_leptons</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Require missing ET</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">met</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">Strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Calculate top mass candidates</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">top_mass_candidates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># ... reconstruction logic ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="metrictemplate">
+<h2>MetricTemplate<a class="headerlink" href="#metrictemplate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.MetricTemplate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">MetricTemplate</span></span><a class="headerlink" href="#AnalysisG.core.MetricTemplate" title="Link to this definition"></a></dt>
+<dd><p>Base class for defining evaluation metrics.</p>
+<p>MetricTemplate specifies how to evaluate model performance using various metrics.</p>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.MetricTemplate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.MetricTemplate.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the metric template.</p>
+</dd></dl>
+
+<p><strong>Key Methods to Override</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.MetricTemplate.Calculate">
+<span class="sig-name descname"><span class="pre">Calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#AnalysisG.core.MetricTemplate.Calculate" title="Link to this definition"></a></dt>
+<dd><p>Calculate metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictions</strong> – Model predictions</p></li>
+<li><p><strong>targets</strong> – Ground truth targets</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of metric name -&gt; value</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Example Subclass</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">MetricTemplate</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">ClassificationMetrics</span><span class="p">(</span><span class="n">MetricTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">Calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># Calculate accuracy</span>
+        <span class="n">correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">predictions</span> <span class="o">==</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
+
+        <span class="c1"># Calculate precision/recall</span>
+        <span class="c1"># ... metric calculations ...</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+            <span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="n">precision</span><span class="p">,</span>
+            <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="n">recall</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="modeltemplate">
+<h2>ModelTemplate<a class="headerlink" href="#modeltemplate" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.ModelTemplate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">ModelTemplate</span></span><a class="headerlink" href="#AnalysisG.core.ModelTemplate" title="Link to this definition"></a></dt>
+<dd><p>Base class for defining machine learning models.</p>
+<p>ModelTemplate wraps PyTorch models for use in the AnalysisG framework.</p>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.ModelTemplate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.ModelTemplate.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the model template.</p>
+</dd></dl>
+
+<p><strong>Key Methods to Override</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.ModelTemplate.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">outputs</span></span></span><a class="headerlink" href="#AnalysisG.core.ModelTemplate.forward" title="Link to this definition"></a></dt>
+<dd><p>Model forward pass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> – Input tensors</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output predictions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p><strong>Example Subclass</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">ModelTemplate</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+<span class="k">class</span> <span class="nc">GNNClassifier</span><span class="p">(</span><span class="n">ModelTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Define model architecture</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">GraphConv</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">GraphConv</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">edge_index</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">edge_index</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Global pooling</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">global_mean_pool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+
+        <span class="c1"># Classification</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="design-patterns">
+<h2>Design Patterns<a class="headerlink" href="#design-patterns" title="Link to this heading"></a></h2>
+<section id="inheritance-hierarchy">
+<h3>Inheritance Hierarchy<a class="headerlink" href="#inheritance-hierarchy" title="Link to this heading"></a></h3>
+<p>All templates follow this pattern:</p>
+<ol class="arabic simple">
+<li><p>Base template class (e.g., EventTemplate) defines interface</p></li>
+<li><p>User creates subclass implementing specific behavior</p></li>
+<li><p>Framework calls methods on subclass through base interface</p></li>
+</ol>
+<p>This allows:</p>
+<ul class="simple">
+<li><p>Type safety through base classes</p></li>
+<li><p>Flexibility through inheritance</p></li>
+<li><p>Consistent API across different implementations</p></li>
+</ul>
+</section>
+<section id="template-methods">
+<h3>Template Methods<a class="headerlink" href="#template-methods" title="Link to this heading"></a></h3>
+<p>Templates use the “template method” pattern:</p>
+<ul class="simple">
+<li><p>Base class defines algorithm skeleton</p></li>
+<li><p>Subclasses fill in specific steps</p></li>
+<li><p>Framework controls overall flow</p></li>
+</ul>
+</section>
+<section id="memory-management">
+<h3>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading"></a></h3>
+<p>Templates use Cython’s memory management:</p>
+<ul class="simple">
+<li><p>Automatic reference counting</p></li>
+<li><p>C++ object lifecycle management</p></li>
+<li><p>Integration with Python garbage collection</p></li>
+</ul>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="analysis.html"><span class="doc">Analysis Class</span></a> - Analysis class documentation</p></li>
+<li><p><a class="reference internal" href="io.html"><span class="doc">I/O Module</span></a> - ROOT I/O functionality</p></li>
+<li><p><span class="xref std std-doc">../modules/index</span> - Module documentation</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analysis.html" class="btn btn-neutral float-left" title="Analysis Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plotting.html" class="btn btn-neutral float-right" title="Plotting Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

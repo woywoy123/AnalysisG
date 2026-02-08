@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules Documentation" href="../modules/index.html" />
+    <link rel="prev" title="Tools Module" href="../api/core/tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-examples">Basic Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reading-root-files">Reading ROOT Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-event-template">Creating Event Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-analysis">Running Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-examples">Advanced Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#graph-neural-network">Graph Neural Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#event-selection">Event Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#neutrino-reconstruction">Neutrino Reconstruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyc-high-performance-computing">PyC High-Performance Computing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#complete-analysis-pipeline">Complete Analysis Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<p>This section provides practical examples of using AnalysisG.</p>
+<section id="basic-examples">
+<h2>Basic Examples<a class="headerlink" href="#basic-examples" title="Link to this heading"></a></h2>
+<section id="reading-root-files">
+<h3>Reading ROOT Files<a class="headerlink" href="#reading-root-files" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">io</span>
+
+<span class="c1"># Open ROOT file</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;data.root&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read branches</span>
+<span class="n">jets_pt</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">)</span>
+<span class="n">jets_eta</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_eta&quot;</span><span class="p">)</span>
+<span class="n">met</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;met_met&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-event-template">
+<h3>Creating Event Template<a class="headerlink" href="#creating-event-template" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">EventTemplate</span><span class="p">,</span> <span class="n">ParticleTemplate</span>
+
+<span class="k">class</span> <span class="nc">Jet</span><span class="p">(</span><span class="n">ParticleTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_btagged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">btag_score</span> <span class="o">&gt;</span> <span class="mf">0.8</span>
+
+<span class="k">class</span> <span class="nc">MyEvent</span><span class="p">(</span><span class="n">EventTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tree</span> <span class="o">=</span> <span class="s2">&quot;nominal&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Branches</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;jets_pt&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_eta&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_phi&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;met_met&quot;</span><span class="p">,</span> <span class="s2">&quot;met_phi&quot;</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create jet objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jets_pt</span><span class="p">)):</span>
+            <span class="n">jet</span> <span class="o">=</span> <span class="n">Jet</span><span class="p">()</span>
+            <span class="n">jet</span><span class="o">.</span><span class="n">pt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jets_pt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">jet</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jets_eta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">jet</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jets_phi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">jet</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jets_E</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jet</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-analysis">
+<h3>Running Analysis<a class="headerlink" href="#running-analysis" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">Analysis</span>
+
+<span class="c1"># Create analysis</span>
+<span class="n">ana</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">()</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">OutputPath</span> <span class="o">=</span> <span class="s2">&quot;output/&quot;</span>
+
+<span class="c1"># Add samples</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;/data/ttbar/*.root&quot;</span><span class="p">,</span> <span class="s2">&quot;ttbar&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add event template</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddEvent</span><span class="p">(</span><span class="n">MyEvent</span><span class="p">(),</span> <span class="s2">&quot;events&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-examples">
+<h2>Advanced Examples<a class="headerlink" href="#advanced-examples" title="Link to this heading"></a></h2>
+<section id="graph-neural-network">
+<h3>Graph Neural Network<a class="headerlink" href="#graph-neural-network" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">GraphTemplate</span>
+<span class="kn">import</span> <span class="nn">pyc.physics</span> <span class="k">as</span> <span class="nn">phys</span>
+
+<span class="k">class</span> <span class="nc">ParticleGraph</span><span class="p">(</span><span class="n">GraphTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">Nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">jets</span>
+
+    <span class="k">def</span> <span class="nf">Edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">)):</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">edges</span>
+
+    <span class="k">def</span> <span class="nf">NodeFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jet</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">jet</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">E</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">EdgeFeatures</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jet1</span><span class="p">,</span> <span class="n">jet2</span><span class="p">):</span>
+        <span class="n">dr</span> <span class="o">=</span> <span class="n">phys</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">jet1</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet1</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">jet2</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet2</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">dr</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="event-selection">
+<h3>Event Selection<a class="headerlink" href="#event-selection" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">SelectionTemplate</span>
+
+<span class="k">class</span> <span class="nc">TTbarSelection</span><span class="p">(</span><span class="n">SelectionTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">Selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># At least 4 jets</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># At least 2 b-tagged jets</span>
+        <span class="n">n_btags</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">jet</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">jets</span> <span class="k">if</span> <span class="n">jet</span><span class="o">.</span><span class="n">is_btagged</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_btags</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Missing ET cut</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">met</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">Strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Perform analysis on selected events</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">ht</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">jet</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">jet</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="neutrino-reconstruction">
+<h3>Neutrino Reconstruction<a class="headerlink" href="#neutrino-reconstruction" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.nusol</span> <span class="kn">import</span> <span class="n">NuSol</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">NuSol</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">leptons</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="n">lepton</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">leptons</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Solve for neutrino</span>
+    <span class="n">solutions</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span>
+        <span class="n">lepton</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">lepton</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">lepton</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">lepton</span><span class="o">.</span><span class="n">E</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">met</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">met_phi</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Select best solution</span>
+    <span class="k">if</span> <span class="n">solutions</span><span class="p">:</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">chi2</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">neutrino</span> <span class="o">=</span> <span class="n">best</span>
+</pre></div>
+</div>
+</section>
+<section id="pyc-high-performance-computing">
+<h3>PyC High-Performance Computing<a class="headerlink" href="#pyc-high-performance-computing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pyc.physics</span> <span class="k">as</span> <span class="nn">phys</span>
+
+<span class="c1"># Large batch of events</span>
+<span class="n">n_events</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">jet1_pt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">150</span>
+<span class="n">jet1_eta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.5</span>
+<span class="n">jet1_phi</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3.14</span>
+<span class="n">jet1_E</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">200</span>
+
+<span class="n">jet2_pt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">150</span>
+<span class="n">jet2_eta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.5</span>
+<span class="n">jet2_phi</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3.14</span>
+<span class="n">jet2_E</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n_events</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="mi">200</span>
+
+<span class="c1"># Move to GPU</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="n">jet1_pt</span> <span class="o">=</span> <span class="n">jet1_pt</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet1_eta</span> <span class="o">=</span> <span class="n">jet1_eta</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet1_phi</span> <span class="o">=</span> <span class="n">jet1_phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet1_E</span> <span class="o">=</span> <span class="n">jet1_E</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet2_pt</span> <span class="o">=</span> <span class="n">jet2_pt</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet2_eta</span> <span class="o">=</span> <span class="n">jet2_eta</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet2_phi</span> <span class="o">=</span> <span class="n">jet2_phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">jet2_E</span> <span class="o">=</span> <span class="n">jet2_E</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># Compute invariant mass for all events at once</span>
+<span class="n">masses</span> <span class="o">=</span> <span class="n">phys</span><span class="o">.</span><span class="n">InvariantMass</span><span class="p">(</span>
+    <span class="n">jet1_pt</span><span class="p">,</span> <span class="n">jet1_eta</span><span class="p">,</span> <span class="n">jet1_phi</span><span class="p">,</span> <span class="n">jet1_E</span><span class="p">,</span>
+    <span class="n">jet2_pt</span><span class="p">,</span> <span class="n">jet2_eta</span><span class="p">,</span> <span class="n">jet2_phi</span><span class="p">,</span> <span class="n">jet2_E</span>
+<span class="p">)</span>
+
+<span class="c1"># Results on GPU, extremely fast</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-analysis-pipeline">
+<h3>Complete Analysis Pipeline<a class="headerlink" href="#complete-analysis-pipeline" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Analysis</span><span class="p">,</span> <span class="n">EventTemplate</span><span class="p">,</span> <span class="n">GraphTemplate</span><span class="p">,</span>
+    <span class="n">SelectionTemplate</span><span class="p">,</span> <span class="n">ModelTemplate</span>
+<span class="p">)</span>
+
+<span class="c1"># 1. Define components</span>
+<span class="k">class</span> <span class="nc">MyEvent</span><span class="p">(</span><span class="n">EventTemplate</span><span class="p">):</span>
+    <span class="c1"># ... define event structure</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">MyGraph</span><span class="p">(</span><span class="n">GraphTemplate</span><span class="p">):</span>
+    <span class="c1"># ... define graph structure</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">MySelection</span><span class="p">(</span><span class="n">SelectionTemplate</span><span class="p">):</span>
+    <span class="c1"># ... define selection</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">ModelTemplate</span><span class="p">):</span>
+    <span class="c1"># ... define ML model</span>
+    <span class="k">pass</span>
+
+<span class="c1"># 2. Setup analysis</span>
+<span class="n">ana</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">()</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">OutputPath</span> <span class="o">=</span> <span class="s2">&quot;results/&quot;</span>
+
+<span class="c1"># 3. Add samples</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;/data/signal/*.root&quot;</span><span class="p">,</span> <span class="s2">&quot;signal&quot;</span><span class="p">)</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;/data/background/*.root&quot;</span><span class="p">,</span> <span class="s2">&quot;background&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Configure pipeline</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddEvent</span><span class="p">(</span><span class="n">MyEvent</span><span class="p">(),</span> <span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSelection</span><span class="p">(</span><span class="n">MySelection</span><span class="p">())</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddGraph</span><span class="p">(</span><span class="n">MyGraph</span><span class="p">(),</span> <span class="s2">&quot;graphs&quot;</span><span class="p">)</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddModel</span><span class="p">(</span><span class="n">MyModel</span><span class="p">(),</span> <span class="n">optimizer_config</span><span class="p">,</span> <span class="s2">&quot;training&quot;</span><span class="p">)</span>
+
+<span class="c1"># 5. Run</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/index.html"><span class="doc">API Reference</span></a> - Complete API reference</p></li>
+<li><p><a class="reference internal" href="../introduction.html"><span class="doc">Introduction to AnalysisG</span></a> - Framework introduction</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api/core/tools.html" class="btn btn-neutral float-left" title="Tools Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/index.html" class="btn btn-neutral float-right" title="Modules Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

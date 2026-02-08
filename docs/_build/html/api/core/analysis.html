@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis Class &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Template Classes" href="templates.html" />
+    <link rel="prev" title="Tools Module (PyC)" href="../pyc/tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#core-api">Core API</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Analysis Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class-reference">Class Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-management">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thread-safety">Thread Safety</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html">Template Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">I/O Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools.html">Tools Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Analysis Class</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/core/analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analysis-class">
+<h1>Analysis Class<a class="headerlink" href="#analysis-class" title="Link to this heading"></a></h1>
+<p>The Analysis class is the central component of the AnalysisG framework, responsible for orchestrating
+the entire analysis workflow from sample loading to result generation.</p>
+<section id="class-reference">
+<h2>Class Reference<a class="headerlink" href="#class-reference" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">AnalysisG.core.</span></span><span class="sig-name descname"><span class="pre">Analysis</span></span><a class="headerlink" href="#AnalysisG.core.Analysis" title="Link to this definition"></a></dt>
+<dd><p>Main analysis orchestration class.</p>
+<p>The Analysis class manages the complete analysis pipeline including:</p>
+<ul class="simple">
+<li><p>Sample loading and caching</p></li>
+<li><p>Event template registration and processing</p></li>
+<li><p>Graph generation for GNNs</p></li>
+<li><p>Selection criteria application</p></li>
+<li><p>Model training and inference</p></li>
+<li><p>Metric calculation and reporting</p></li>
+</ul>
+<p><strong>Constructor</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a new Analysis instance.</p>
+<p>Creates the underlying C++ analysis object and initializes internal data structures.</p>
+</dd></dl>
+
+<p><strong>Sample Management</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddSamples">
+<span class="sig-name descname"><span class="pre">AddSamples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddSamples" title="Link to this definition"></a></dt>
+<dd><p>Add ROOT samples to the analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Path to ROOT file or directory containing ROOT files</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Label to identify this sample set (e.g., “signal”, “background”)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;/data/ttbar/*.root&quot;</span><span class="p">,</span> <span class="s2">&quot;ttbar&quot;</span><span class="p">)</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;/data/zjets/*.root&quot;</span><span class="p">,</span> <span class="s2">&quot;zjets&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p><strong>Template Registration</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddEvent">
+<span class="sig-name descname"><span class="pre">AddEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.EventTemplate" title="AnalysisG.core.EventTemplate"><span class="pre">EventTemplate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddEvent" title="Link to this definition"></a></dt>
+<dd><p>Register an event template for processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.EventTemplate" title="AnalysisG.core.EventTemplate"><em>EventTemplate</em></a>) – Event template instance defining event structure</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Unique label for this event template</p></li>
+</ul>
+</dd>
+</dl>
+<p>The event template defines:</p>
+<ul class="simple">
+<li><p>Which ROOT trees/branches to read</p></li>
+<li><p>How to construct event objects</p></li>
+<li><p>Event-level variables and calculations</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyEvent</span><span class="p">(</span><span class="n">EventTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tree</span> <span class="o">=</span> <span class="s2">&quot;nominal&quot;</span>
+
+<span class="n">ana</span><span class="o">.</span><span class="n">AddEvent</span><span class="p">(</span><span class="n">MyEvent</span><span class="p">(),</span> <span class="s2">&quot;my_events&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddGraph">
+<span class="sig-name descname"><span class="pre">AddGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.GraphTemplate" title="AnalysisG.core.GraphTemplate"><span class="pre">GraphTemplate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddGraph" title="Link to this definition"></a></dt>
+<dd><p>Register a graph template for GNN applications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.GraphTemplate" title="AnalysisG.core.GraphTemplate"><em>GraphTemplate</em></a>) – Graph template defining graph structure</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – Unique label for this graph template</p></li>
+</ul>
+</dd>
+</dl>
+<p>Graph templates define:</p>
+<ul class="simple">
+<li><p>Node features and construction</p></li>
+<li><p>Edge features and connectivity</p></li>
+<li><p>Global graph features</p></li>
+<li><p>Batching strategy</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyGraph</span><span class="p">(</span><span class="n">GraphTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Configure graph structure</span>
+
+<span class="n">ana</span><span class="o">.</span><span class="n">AddGraph</span><span class="p">(</span><span class="n">MyGraph</span><span class="p">(),</span> <span class="s2">&quot;particle_graph&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddSelection">
+<span class="sig-name descname"><span class="pre">AddSelection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selection_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.SelectionTemplate" title="AnalysisG.core.SelectionTemplate"><span class="pre">SelectionTemplate</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddSelection" title="Link to this definition"></a></dt>
+<dd><p>Register a selection template for event filtering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>selection_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.SelectionTemplate" title="AnalysisG.core.SelectionTemplate"><em>SelectionTemplate</em></a>) – Selection template defining selection criteria</p>
+</dd>
+</dl>
+<p>Selection templates implement:</p>
+<ul class="simple">
+<li><p>Event-level cuts</p></li>
+<li><p>Particle-level requirements</p></li>
+<li><p>Custom selection logic</p></li>
+<li><p>Output variable calculations</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MySelection</span><span class="p">(</span><span class="n">SelectionTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Return True to keep event</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">n_jets</span> <span class="o">&gt;=</span> <span class="mi">4</span>
+
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSelection</span><span class="p">(</span><span class="n">MySelection</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p><strong>Model Management</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddModel">
+<span class="sig-name descname"><span class="pre">AddModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.ModelTemplate" title="AnalysisG.core.ModelTemplate"><span class="pre">ModelTemplate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../modules/optimizer.html#OptimizerConfig" title="OptimizerConfig"><span class="pre">OptimizerConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddModel" title="Link to this definition"></a></dt>
+<dd><p>Add a model for training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.ModelTemplate" title="AnalysisG.core.ModelTemplate"><em>ModelTemplate</em></a>) – Model template instance</p></li>
+<li><p><strong>optimizer_config</strong> (<a class="reference internal" href="../modules/optimizer.html#OptimizerConfig" title="OptimizerConfig"><em>OptimizerConfig</em></a>) – Optimizer configuration (learning rate, etc.)</p></li>
+<li><p><strong>run_name</strong> (<em>str</em>) – Unique name for this training run</p></li>
+</ul>
+</dd>
+</dl>
+<p>This method configures the model for training mode with:</p>
+<ul class="simple">
+<li><p>Model architecture</p></li>
+<li><p>Training hyperparameters</p></li>
+<li><p>Optimization algorithm</p></li>
+<li><p>Loss functions</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">OptimizerConfig</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">OptimizerConfig</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+
+<span class="n">ana</span><span class="o">.</span><span class="n">AddModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="s2">&quot;training_run_1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddModelInference">
+<span class="sig-name descname"><span class="pre">AddModelInference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.ModelTemplate" title="AnalysisG.core.ModelTemplate"><span class="pre">ModelTemplate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'run_name'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddModelInference" title="Link to this definition"></a></dt>
+<dd><p>Add a model for inference only (no training).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.ModelTemplate" title="AnalysisG.core.ModelTemplate"><em>ModelTemplate</em></a>) – Model template with loaded weights</p></li>
+<li><p><strong>run_name</strong> (<em>str</em>) – Name for this inference run</p></li>
+</ul>
+</dd>
+</dl>
+<p>Use this for:</p>
+<ul class="simple">
+<li><p>Evaluating pre-trained models</p></li>
+<li><p>Generating predictions</p></li>
+<li><p>Performance testing</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.AddMetric">
+<span class="sig-name descname"><span class="pre">AddMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.MetricTemplate" title="AnalysisG.core.MetricTemplate"><span class="pre">MetricTemplate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="templates.html#AnalysisG.core.ModelTemplate" title="AnalysisG.core.ModelTemplate"><span class="pre">ModelTemplate</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.AddMetric" title="Link to this definition"></a></dt>
+<dd><p>Register evaluation metrics for a model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.MetricTemplate" title="AnalysisG.core.MetricTemplate"><em>MetricTemplate</em></a>) – Metric template defining metrics to compute</p></li>
+<li><p><strong>model_template</strong> (<a class="reference internal" href="templates.html#AnalysisG.core.ModelTemplate" title="AnalysisG.core.ModelTemplate"><em>ModelTemplate</em></a>) – Model to evaluate</p></li>
+</ul>
+</dd>
+</dl>
+<p>Common metrics include:</p>
+<ul class="simple">
+<li><p>Accuracy, precision, recall</p></li>
+<li><p>ROC curves and AUC</p></li>
+<li><p>Confusion matrices</p></li>
+<li><p>Custom physics metrics</p></li>
+</ul>
+</dd></dl>
+
+<p><strong>Execution</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.Start">
+<span class="sig-name descname"><span class="pre">Start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#AnalysisG.core.Analysis.Start" title="Link to this definition"></a></dt>
+<dd><p>Execute the analysis.</p>
+<p>This method:</p>
+<ol class="arabic simple">
+<li><p>Validates all registered components</p></li>
+<li><p>Loads and caches sample metadata</p></li>
+<li><p>Processes events through registered templates</p></li>
+<li><p>Generates graphs if configured</p></li>
+<li><p>Trains models or runs inference</p></li>
+<li><p>Calculates metrics</p></li>
+<li><p>Saves results</p></li>
+</ol>
+<p>The method blocks until analysis completes.</p>
+</dd></dl>
+
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.OutputPath">
+<span class="sig-name descname"><span class="pre">OutputPath</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#AnalysisG.core.Analysis.OutputPath" title="Link to this definition"></a></dt>
+<dd><p>Directory path for output files.</p>
+<p>Set this before calling Start() to specify where results should be saved:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ana</span><span class="o">.</span><span class="n">OutputPath</span> <span class="o">=</span> <span class="s2">&quot;/path/to/output&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.FetchMeta">
+<span class="sig-name descname"><span class="pre">FetchMeta</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#AnalysisG.core.Analysis.FetchMeta" title="Link to this definition"></a></dt>
+<dd><p>Whether to fetch metadata from PyAMI.</p>
+<p>When True, queries PyAMI for:</p>
+<ul class="simple">
+<li><p>Cross-sections</p></li>
+<li><p>Generator filters</p></li>
+<li><p>Dataset information</p></li>
+<li><p>Luminosity data</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="AnalysisG.core.Analysis.PreTagEvents">
+<span class="sig-name descname"><span class="pre">PreTagEvents</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#AnalysisG.core.Analysis.PreTagEvents" title="Link to this definition"></a></dt>
+<dd><p>Whether to pre-tag events before processing.</p>
+<p>Pre-tagging can improve efficiency for:</p>
+<ul class="simple">
+<li><p>Large datasets</p></li>
+<li><p>Complex selections</p></li>
+<li><p>Multiple iterations</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="memory-management">
+<h2>Memory Management<a class="headerlink" href="#memory-management" title="Link to this heading"></a></h2>
+<p>The Analysis class uses RAII principles through Cython:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__cinit__</span></code>: Allocates C++ objects</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__dealloc__</span></code>: Cleans up C++ objects</p></li>
+<li><p>Automatic garbage collection of Python references</p></li>
+</ul>
+</section>
+<section id="thread-safety">
+<h2>Thread Safety<a class="headerlink" href="#thread-safety" title="Link to this heading"></a></h2>
+<p>The Analysis class is <strong>not thread-safe</strong>. Create separate instances for parallel analyses.</p>
+<p>However, internal processing uses multi-threading for:</p>
+<ul class="simple">
+<li><p>Sample loading</p></li>
+<li><p>Event processing (when possible)</p></li>
+<li><p>Graph generation</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="templates.html"><span class="doc">Template Classes</span></a> - Template classes documentation</p></li>
+<li><p><a class="reference internal" href="io.html"><span class="doc">I/O Module</span></a> - ROOT I/O functionality</p></li>
+<li><p><a class="reference internal" href="../modules/optimizer.html"><span class="doc">Optimizer Module</span></a> - Training optimization</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../pyc/tools.html" class="btn btn-neutral float-left" title="Tools Module (PyC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="templates.html" class="btn btn-neutral float-right" title="Template Classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

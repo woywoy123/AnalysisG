@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Physics Module (PyC) &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Operators Module (PyC)" href="operators.html" />
+    <link rel="prev" title="PyC Package" href="../pyc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../pyc.html">PyC Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#key-features">Key Features</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../pyc.html#architecture">Architecture</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Physics Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="operators.html">Operators Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graph.html">Graph Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="transform.html">Transform Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nusol.html">NuSol Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tools.html">Tools Module (PyC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#submodule-overview">Submodule Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#usage-examples">Usage Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#gpu-acceleration">GPU Acceleration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#c-api">C++ API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#building-pyc">Building PyC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pyc.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#core-api">Core API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#pyc-api">PyC API</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Physics Module (PyC)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#batch-operations">Batch Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpu-acceleration">GPU Acceleration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="operators.html">Operators Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph.html">Graph Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transform.html">Transform Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nusol.html">NuSol Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools.html">Tools Module (PyC)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../pyc.html">PyC Package</a></li>
+      <li class="breadcrumb-item active">Physics Module (PyC)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/pyc/physics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="physics-module-pyc">
+<h1>Physics Module (PyC)<a class="headerlink" href="#physics-module-pyc" title="Link to this heading"></a></h1>
+<p>The PyC physics module provides high-performance physics calculations.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Located in <code class="docutils literal notranslate"><span class="pre">pyc/pyc/physics/</span></code>, this module implements common particle physics calculations
+with optimized C++ and CUDA backends.</p>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="delta-r-calculation">
+<h3>Delta R Calculation<a class="headerlink" href="#delta-r-calculation" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaR">
+<span class="sig-name descname"><span class="pre">DeltaR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DeltaR" title="Link to this definition"></a></dt>
+<dd><p>Calculate angular distance (ΔR) between two particles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eta1</strong> – Pseudorapidity of first particle</p></li>
+<li><p><strong>phi1</strong> – Azimuthal angle of first particle (radians)</p></li>
+<li><p><strong>eta2</strong> – Pseudorapidity of second particle</p></li>
+<li><p><strong>phi2</strong> – Azimuthal angle of second particle (radians)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ΔR = √(Δη² + Δφ²)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or torch.Tensor</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[\Delta R = \sqrt{(\eta_1 - \eta_2)^2 + (\phi_1 - \phi_2)^2}\]</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyc.physics</span> <span class="k">as</span> <span class="nn">phys</span>
+
+<span class="n">dr</span> <span class="o">=</span> <span class="n">phys</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">jet_eta</span><span class="p">,</span> <span class="n">jet_phi</span><span class="p">,</span> <span class="n">lepton_eta</span><span class="p">,</span> <span class="n">lepton_phi</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="invariant-mass">
+<h3>Invariant Mass<a class="headerlink" href="#invariant-mass" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="InvariantMass">
+<span class="sig-name descname"><span class="pre">InvariantMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#InvariantMass" title="Link to this definition"></a></dt>
+<dd><p>Calculate invariant mass of two particles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pt1</strong> – Transverse momentum of first particle [GeV]</p></li>
+<li><p><strong>eta1</strong> – Pseudorapidity of first particle</p></li>
+<li><p><strong>phi1</strong> – Azimuthal angle of first particle</p></li>
+<li><p><strong>E1</strong> – Energy of first particle [GeV]</p></li>
+<li><p><strong>pt2</strong> – Transverse momentum of second particle [GeV]</p></li>
+<li><p><strong>eta2</strong> – Pseudorapidity of second particle</p></li>
+<li><p><strong>phi2</strong> – Azimuthal angle of second particle</p></li>
+<li><p><strong>E2</strong> – Energy of second particle [GeV]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Invariant mass [GeV]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or torch.Tensor</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[m_{inv} = \sqrt{(E_1 + E_2)^2 - |\vec{p}_1 + \vec{p}_2|^2}\]</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mass</span> <span class="o">=</span> <span class="n">phys</span><span class="o">.</span><span class="n">InvariantMass</span><span class="p">(</span>
+    <span class="n">jet1</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">jet1</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet1</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">jet1</span><span class="o">.</span><span class="n">E</span><span class="p">,</span>
+    <span class="n">jet2</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">jet2</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet2</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">jet2</span><span class="o">.</span><span class="n">E</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="transverse-mass">
+<h3>Transverse Mass<a class="headerlink" href="#transverse-mass" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="TransverseMass">
+<span class="sig-name descname"><span class="pre">TransverseMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pt2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TransverseMass" title="Link to this definition"></a></dt>
+<dd><p>Calculate transverse mass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pt1</strong> – Transverse momentum of first particle [GeV]</p></li>
+<li><p><strong>phi1</strong> – Azimuthal angle of first particle</p></li>
+<li><p><strong>pt2</strong> – Transverse momentum of second particle [GeV]</p></li>
+<li><p><strong>phi2</strong> – Azimuthal angle of second particle</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transverse mass [GeV]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or torch.Tensor</p>
+</dd>
+</dl>
+<div class="math notranslate nohighlight">
+\[m_T = \sqrt{2 p_{T,1} p_{T,2} (1 - \cos(\phi_1 - \phi_2))}\]</div>
+</dd></dl>
+
+</section>
+<section id="four-vector-operations">
+<h3>Four-Vector Operations<a class="headerlink" href="#four-vector-operations" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="FourVector">
+<span class="sig-name descname"><span class="pre">FourVector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FourVector" title="Link to this definition"></a></dt>
+<dd><p>Create a 4-vector from kinematic variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pt</strong> – Transverse momentum [GeV]</p></li>
+<li><p><strong>eta</strong> – Pseudorapidity</p></li>
+<li><p><strong>phi</strong> – Azimuthal angle</p></li>
+<li><p><strong>E</strong> – Energy [GeV]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>4-vector (px, py, pz, E)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple or torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="AddFourVectors">
+<span class="sig-name descname"><span class="pre">AddFourVectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vec2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#AddFourVectors" title="Link to this definition"></a></dt>
+<dd><p>Add two 4-vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec1</strong> – First 4-vector</p></li>
+<li><p><strong>vec2</strong> – Second 4-vector</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sum 4-vector</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="angular-utilities">
+<h3>Angular Utilities<a class="headerlink" href="#angular-utilities" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaPhi">
+<span class="sig-name descname"><span class="pre">DeltaPhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DeltaPhi" title="Link to this definition"></a></dt>
+<dd><p>Calculate difference in azimuthal angle, accounting for 2π periodicity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi1</strong> – First angle [radians]</p></li>
+<li><p><strong>phi2</strong> – Second angle [radians]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Δφ in range [-π, π]</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaEta">
+<span class="sig-name descname"><span class="pre">DeltaEta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DeltaEta" title="Link to this definition"></a></dt>
+<dd><p>Calculate difference in pseudorapidity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eta1</strong> – First pseudorapidity</p></li>
+<li><p><strong>eta2</strong> – Second pseudorapidity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Δη</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="batch-operations">
+<h2>Batch Operations<a class="headerlink" href="#batch-operations" title="Link to this heading"></a></h2>
+<p>All functions support batch operations with tensors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pyc.physics</span> <span class="k">as</span> <span class="nn">phys</span>
+
+<span class="c1"># Batch of 1000 particle pairs</span>
+<span class="n">eta1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">phi1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">eta2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">phi2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Compute all delta R values at once</span>
+<span class="n">dr</span> <span class="o">=</span> <span class="n">phys</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">eta2</span><span class="p">,</span> <span class="n">phi2</span><span class="p">)</span>  <span class="c1"># shape: (1000,)</span>
+</pre></div>
+</div>
+</section>
+<section id="gpu-acceleration">
+<h2>GPU Acceleration<a class="headerlink" href="#gpu-acceleration" title="Link to this heading"></a></h2>
+<p>Operations automatically use GPU when tensors are on GPU:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pyc.physics</span> <span class="k">as</span> <span class="nn">phys</span>
+
+<span class="c1"># Move to GPU</span>
+<span class="n">eta1_gpu</span> <span class="o">=</span> <span class="n">eta1</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">phi1_gpu</span> <span class="o">=</span> <span class="n">phi1</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">eta2_gpu</span> <span class="o">=</span> <span class="n">eta2</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+<span class="n">phi2_gpu</span> <span class="o">=</span> <span class="n">phi2</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># Computation runs on GPU</span>
+<span class="n">dr_gpu</span> <span class="o">=</span> <span class="n">phys</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1_gpu</span><span class="p">,</span> <span class="n">phi1_gpu</span><span class="p">,</span> <span class="n">eta2_gpu</span><span class="p">,</span> <span class="n">phi2_gpu</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<p>The physics module is implemented in:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">physics.cxx</span></code>: C++ CPU implementation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">include/physics/physics.h</span></code>: C++ header</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cuda/physics.cxx</span></code>: CUDA GPU implementation</p></li>
+</ul>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h2>
+<p>Typical speedups over numpy (CPU):</p>
+<ul class="simple">
+<li><p>Delta R: 50-100x faster</p></li>
+<li><p>Invariant mass: 30-80x faster</p></li>
+<li><p>Batch operations: 100-1000x faster on GPU</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="operators.html"><span class="doc">Operators Module (PyC)</span></a> - Tensor operations</p></li>
+<li><p><a class="reference internal" href="transform.html"><span class="doc">Transform Module (PyC)</span></a> - Coordinate transformations</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../pyc.html" class="btn btn-neutral float-left" title="PyC Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="operators.html" class="btn btn-neutral float-right" title="Operators Module (PyC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

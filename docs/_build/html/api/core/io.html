@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I/O Module &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tools Module" href="tools.html" />
+    <link rel="prev" title="Plotting Module" href="plotting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#core-api">Core API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="analysis.html">Analysis Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html">Template Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">I/O Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reading-root-files">Reading ROOT Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advanced-features">Advanced Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-with-analysis">Integration with Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tools.html">Tools Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">I/O Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/core/io.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="i-o-module">
+<h1>I/O Module<a class="headerlink" href="#i-o-module" title="Link to this heading"></a></h1>
+<p>The I/O module provides a Cython interface to ROOT for reading n-tuples with minimal overhead.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">io</span></code> module (<code class="docutils literal notranslate"><span class="pre">src/AnalysisG/core/io.pyx</span></code>) provides simplified access to ROOT files:</p>
+<ul class="simple">
+<li><p>Read ROOT trees and branches</p></li>
+<li><p>Efficient data loading with caching</p></li>
+<li><p>Minimal syntax (can read ROOT files in 3 lines of code)</p></li>
+<li><p>Automatic type conversion between ROOT and Python</p></li>
+<li><p>Support for vector branches</p></li>
+<li><p>Friend tree support</p></li>
+</ul>
+</section>
+<section id="reading-root-files">
+<h2>Reading ROOT Files<a class="headerlink" href="#reading-root-files" title="Link to this heading"></a></h2>
+<section id="basic-usage">
+<h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">io</span>
+
+<span class="c1"># Open a ROOT file</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;data.root&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access a tree</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read branches</span>
+<span class="n">jet_pt</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">)</span>
+<span class="n">jet_eta</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_eta&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-multiple-files">
+<h3>Reading Multiple Files<a class="headerlink" href="#reading-multiple-files" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">io</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="c1"># Find all ROOT files in directory</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;/data/ttbar/*.root&quot;</span><span class="p">)</span>
+
+<span class="c1"># Process each file</span>
+<span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Access branches</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;variable_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-vector-branches">
+<h3>Working with Vector Branches<a class="headerlink" href="#working-with-vector-branches" title="Link to this heading"></a></h3>
+<p>ROOT vector branches (e.g., <code class="docutils literal notranslate"><span class="pre">vector&lt;float&gt;</span></code>) are automatically converted:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">io</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;data.root&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Vector branch - returns list of lists</span>
+<span class="n">jets_pt</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">)</span>  <span class="c1"># [[jet1_pt, jet2_pt, ...], ...]</span>
+
+<span class="c1"># Access first event&#39;s jets</span>
+<span class="n">event_0_jets</span> <span class="o">=</span> <span class="n">jets_pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># Access specific jet</span>
+<span class="n">event_0_jet_0_pt</span> <span class="o">=</span> <span class="n">jets_pt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="friend-trees">
+<h3>Friend Trees<a class="headerlink" href="#friend-trees" title="Link to this heading"></a></h3>
+<p>ROOT friend trees are supported for combining data from multiple trees:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">io</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;data.root&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add friend tree</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">AddFriend</span><span class="p">(</span><span class="s2">&quot;systematic&quot;</span><span class="p">,</span> <span class="s2">&quot;syst.root&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access branches from both trees</span>
+<span class="n">nominal_pt</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">)</span>
+<span class="n">syst_pt</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;systematic.jets_pt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="file-operations">
+<h3>File Operations<a class="headerlink" href="#file-operations" title="Link to this heading"></a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#open" title="Link to this definition"></a></dt>
+<dd><p>Open a ROOT file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – Path to ROOT file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ROOT file object</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/data/sample.root&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="tree-operations">
+<h3>Tree Operations<a class="headerlink" href="#tree-operations" title="Link to this heading"></a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="File.Get">
+<span class="sig-prename descclassname"><span class="pre">File.</span></span><span class="sig-name descname"><span class="pre">Get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#File.Get" title="Link to this definition"></a></dt>
+<dd><p>Get a tree from the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tree_name</strong> (<em>str</em>) – Name of the tree</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tree object</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="branch-operations">
+<h3>Branch Operations<a class="headerlink" href="#branch-operations" title="Link to this heading"></a></h3>
+<dl class="py method">
+<dt class="sig sig-object py" id="Tree.Get">
+<span class="sig-prename descclassname"><span class="pre">Tree.</span></span><span class="sig-name descname"><span class="pre">Get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">branch_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tree.Get" title="Link to this definition"></a></dt>
+<dd><p>Read a branch from the tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>branch_name</strong> (<em>str</em>) – Name of the branch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Branch data (list or nested list for vectors)</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Tree.GetEntries">
+<span class="sig-prename descclassname"><span class="pre">Tree.</span></span><span class="sig-name descname"><span class="pre">GetEntries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#Tree.GetEntries" title="Link to this definition"></a></dt>
+<dd><p>Get the number of entries in the tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of entries</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Tree.GetEntry">
+<span class="sig-prename descclassname"><span class="pre">Tree.</span></span><span class="sig-name descname"><span class="pre">GetEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Tree.GetEntry" title="Link to this definition"></a></dt>
+<dd><p>Load a specific entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Entry index</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of bytes read</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Tree.GetListOfBranches">
+<span class="sig-prename descclassname"><span class="pre">Tree.</span></span><span class="sig-name descname"><span class="pre">GetListOfBranches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Tree.GetListOfBranches" title="Link to this definition"></a></dt>
+<dd><p>Get list of all branches in the tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of branch names</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="advanced-features">
+<h2>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h2>
+<section id="caching">
+<h3>Caching<a class="headerlink" href="#caching" title="Link to this heading"></a></h3>
+<p>The I/O module implements intelligent caching:</p>
+<ul class="simple">
+<li><p>Branch data is cached after first access</p></li>
+<li><p>Reduces disk I/O for repeated access</p></li>
+<li><p>Automatic memory management</p></li>
+</ul>
+</section>
+<section id="type-conversion">
+<h3>Type Conversion<a class="headerlink" href="#type-conversion" title="Link to this heading"></a></h3>
+<p>Automatic conversion between ROOT and Python types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Float_t</span></code>, <code class="docutils literal notranslate"><span class="pre">Double_t</span></code> → <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Int_t</span></code>, <code class="docutils literal notranslate"><span class="pre">Long64_t</span></code> → <code class="docutils literal notranslate"><span class="pre">int</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bool_t</span></code> → <code class="docutils literal notranslate"><span class="pre">bool</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;T&gt;</span></code> → <code class="docutils literal notranslate"><span class="pre">list</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> → <code class="docutils literal notranslate"><span class="pre">str</span></code></p></li>
+</ul>
+</section>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h3>
+<p>The I/O module is optimized for:</p>
+<ul class="simple">
+<li><p>Minimal memory copying</p></li>
+<li><p>Efficient type conversion</p></li>
+<li><p>Lazy loading (only load requested branches)</p></li>
+<li><p>Parallel file reading (when using Analysis class)</p></li>
+</ul>
+</section>
+<section id="error-handling">
+<h3>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">io</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;data.root&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File not found&quot;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;nonexistent_tree&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tree not found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-with-analysis">
+<h2>Integration with Analysis<a class="headerlink" href="#integration-with-analysis" title="Link to this heading"></a></h2>
+<p>The I/O module integrates seamlessly with the Analysis framework:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">Analysis</span><span class="p">,</span> <span class="n">EventTemplate</span>
+
+<span class="k">class</span> <span class="nc">MyEvent</span><span class="p">(</span><span class="n">EventTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Specify what to read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Tree</span> <span class="o">=</span> <span class="s2">&quot;nominal&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Branches</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;jets_pt&quot;</span><span class="p">,</span> <span class="s2">&quot;jets_eta&quot;</span><span class="p">,</span> <span class="s2">&quot;met_met&quot;</span><span class="p">]</span>
+
+<span class="c1"># Analysis handles I/O automatically</span>
+<span class="n">ana</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">()</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;/data/*.root&quot;</span><span class="p">,</span> <span class="s2">&quot;signal&quot;</span><span class="p">)</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddEvent</span><span class="p">(</span><span class="n">MyEvent</span><span class="p">(),</span> <span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>  <span class="c1"># I/O handled internally</span>
+</pre></div>
+</div>
+</section>
+<section id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<section id="c-backend">
+<h3>C++ Backend<a class="headerlink" href="#c-backend" title="Link to this heading"></a></h3>
+<p>The I/O module wraps ROOT’s C++ API:</p>
+<ul class="simple">
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">TFile</span></code>, <code class="docutils literal notranslate"><span class="pre">TTree</span></code>, <code class="docutils literal notranslate"><span class="pre">TBranch</span></code> classes</p></li>
+<li><p>Implements efficient buffer management</p></li>
+<li><p>Handles memory ownership correctly</p></li>
+</ul>
+</section>
+<section id="cython-interface">
+<h3>Cython Interface<a class="headerlink" href="#cython-interface" title="Link to this heading"></a></h3>
+<p>The Cython implementation provides:</p>
+<ul class="simple">
+<li><p>Python-friendly API</p></li>
+<li><p>Automatic GIL management</p></li>
+<li><p>Proper exception handling</p></li>
+<li><p>Memory safety</p></li>
+</ul>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="analysis.html"><span class="doc">Analysis Class</span></a> - Analysis class</p></li>
+<li><p><a class="reference internal" href="templates.html"><span class="doc">Template Classes</span></a> - Template classes</p></li>
+<li><p><a class="reference external" href="https://root.cern/doc/master/">ROOT Documentation</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plotting.html" class="btn btn-neutral float-left" title="Plotting Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tools.html" class="btn btn-neutral float-right" title="Tools Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

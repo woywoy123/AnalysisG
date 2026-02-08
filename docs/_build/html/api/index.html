@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Core Module" href="core.html" />
+    <link rel="prev" title="Installation" href="../installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html">PyC Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-api">Core API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core/analysis.html">Analysis Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core/templates.html">Template Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core/plotting.html">Plotting Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core/io.html">I/O Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core/tools.html">Tools Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#modules-api">Modules API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/nusol.html">NuSol Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/plotting.html">Plotting Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pyc-api">PyC API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyc/physics.html">Physics Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyc/operators.html">Operators Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyc/graph.html">Graph Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyc/transform.html">Transform Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyc/nusol.html">NuSol Module (PyC)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyc/tools.html">Tools Module (PyC)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<p>This section contains the complete API reference for AnalysisG.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#main-components">Main Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#available-modules">Available Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-structure">Module Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc.html">PyC Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#key-features">Key Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#submodule-overview">Submodule Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#usage-examples">Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#gpu-acceleration">GPU Acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#c-api">C++ API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#building-pyc">Building PyC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="core-api">
+<h2>Core API<a class="headerlink" href="#core-api" title="Link to this heading"></a></h2>
+<p>The core module contains the fundamental building blocks of AnalysisG.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core/analysis.html">Analysis Class</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/analysis.html#class-reference">Class Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/analysis.html#memory-management">Memory Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/analysis.html#thread-safety">Thread Safety</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/analysis.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core/templates.html">Template Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#eventtemplate">EventTemplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#particletemplate">ParticleTemplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#graphtemplate">GraphTemplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#selectiontemplate">SelectionTemplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#metrictemplate">MetricTemplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#modeltemplate">ModelTemplate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#design-patterns">Design Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/templates.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core/plotting.html">Plotting Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#integration-with-boost-histogram">Integration with boost-histogram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/plotting.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core/io.html">I/O Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#reading-root-files">Reading ROOT Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#integration-with-analysis">Integration with Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#implementation-details">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="core/tools.html">Tools Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core/tools.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/tools.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/tools.html#implementation-details">Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/tools.html#common-use-cases">Common Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/tools.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="modules-api">
+<h2>Modules API<a class="headerlink" href="#modules-api" title="Link to this heading"></a></h2>
+<p>Specialized functionality and algorithms.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/optimizer.html">Optimizer Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#integration-with-analysis">Integration with Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#optimizerconfig-class">OptimizerConfig Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#learning-rate-scheduling">Learning Rate Scheduling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#gradient-clipping">Gradient Clipping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#c-implementation">C++ Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/optimizer.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/metrics.html">Metrics Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/metrics.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/metrics.html#c-implementation">C++ Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/metrics.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/metrics.html#integration-example">Integration Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/metrics.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/nusol.html">NuSol Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#neutrino-reconstruction-problem">Neutrino Reconstruction Problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#algorithms">Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#advanced-usage">Advanced Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#c-implementation">C++ Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/nusol.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/plotting.html">Plotting Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/plotting.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/plotting.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/plotting.html#c-backend">C++ Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/plotting.html#integration-with-analysis">Integration with Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/plotting.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="pyc-api">
+<h2>PyC API<a class="headerlink" href="#pyc-api" title="Link to this heading"></a></h2>
+<p>High-performance C++/CUDA implementations.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyc/physics.html">Physics Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#batch-operations">Batch Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#gpu-acceleration">GPU Acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/operators.html">Operators Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/operators.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/operators.html#key-functions">Key Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/operators.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/graph.html">Graph Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/graph.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/graph.html#key-functions">Key Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/graph.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/transform.html">Transform Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/transform.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/transform.html#coordinate-systems">Coordinate Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/transform.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/nusol.html">NuSol Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#key-features">Key Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/tools.html">Tools Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/tools.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/tools.html#key-functions">Key Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/tools.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="core.html" class="btn btn-neutral float-right" title="Core Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

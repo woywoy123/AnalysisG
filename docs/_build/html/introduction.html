@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to AnalysisG &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ee801c84"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="AnalysisG Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to AnalysisG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#philosophy">Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#template-based-design">Template-Based Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polymorphic-objects">Polymorphic Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core-module">Core Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyc-package">PyC Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analysis-agnostic">Analysis Agnostic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction to AnalysisG</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction-to-analysisg">
+<h1>Introduction to AnalysisG<a class="headerlink" href="#introduction-to-analysisg" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>AnalysisG is a comprehensive Graph Neural Network Analysis Framework specifically designed for High Energy Physics (HEPP) applications.
+The framework addresses the computational challenges faced when converting ROOT-based data structures into formats suitable for machine
+learning algorithms, particularly Graph Neural Networks.</p>
+</section>
+<section id="philosophy">
+<h2>Philosophy<a class="headerlink" href="#philosophy" title="Link to this heading"></a></h2>
+<p>AnalysisG follows a philosophy similar to <em>AnalysisTop</em>, treating events and particles as polymorphic objects. This approach provides:</p>
+<ul class="simple">
+<li><p><strong>Flexibility</strong>: Easy adaptation to different analyses and data formats</p></li>
+<li><p><strong>Performance</strong>: C++ backend with Cython bindings for optimal speed</p></li>
+<li><p><strong>Simplicity</strong>: Intuitive Python API that hides implementation complexity</p></li>
+<li><p><strong>Extensibility</strong>: Template-based design for custom implementations</p></li>
+</ul>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>The framework is built on several key architectural principles:</p>
+<section id="template-based-design">
+<h3>Template-Based Design<a class="headerlink" href="#template-based-design" title="Link to this heading"></a></h3>
+<p>AnalysisG uses template classes that users extend to define their specific analysis:</p>
+<ul class="simple">
+<li><p><strong>EventTemplate</strong>: Define event-level structures and behavior</p></li>
+<li><p><strong>ParticleTemplate</strong>: Define particle-level structures and behavior</p></li>
+<li><p><strong>GraphTemplate</strong>: Define graph structures for GNN applications</p></li>
+<li><p><strong>SelectionTemplate</strong>: Define event selection criteria</p></li>
+<li><p><strong>MetricTemplate</strong>: Define evaluation metrics</p></li>
+</ul>
+</section>
+<section id="polymorphic-objects">
+<h3>Polymorphic Objects<a class="headerlink" href="#polymorphic-objects" title="Link to this heading"></a></h3>
+<p>Events and particles are treated as polymorphic objects, allowing:</p>
+<ul class="simple">
+<li><p>Natural representation of complex decay chains</p></li>
+<li><p>Easy truth matching studies</p></li>
+<li><p>Flexible particle relationship definitions</p></li>
+<li><p>Efficient memory management</p></li>
+</ul>
+</section>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h3>
+<p>The framework achieves high performance through:</p>
+<ul class="simple">
+<li><p><strong>C++ Core</strong>: Performance-critical code written in C++</p></li>
+<li><p><strong>Cython Interface</strong>: Minimal overhead Python bindings</p></li>
+<li><p><strong>CUDA Kernels</strong>: Native GPU acceleration for key operations</p></li>
+<li><p><strong>Efficient Memory</strong>: Shared pointers and minimal copying</p></li>
+</ul>
+</section>
+</section>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h2>
+<section id="core-module">
+<h3>Core Module<a class="headerlink" href="#core-module" title="Link to this heading"></a></h3>
+<p>The core module (<code class="docutils literal notranslate"><span class="pre">src/AnalysisG/core</span></code>) contains the fundamental building blocks:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">analysis.pyx</span></code>: Main analysis compilation and execution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_template.pyx</span></code>: Base event template class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">particle_template.pyx</span></code>: Base particle template class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">graph_template.pyx</span></code>: Base graph template class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">selection_template.pyx</span></code>: Base selection template class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metric_template.pyx</span></code>: Base metric template class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_template.pyx</span></code>: Base model template class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plotting.pyx</span></code>: Plotting utilities</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">io.pyx</span></code>: ROOT I/O interface</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tools.pyx</span></code>: Utility functions</p></li>
+</ul>
+</section>
+<section id="modules">
+<h3>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h3>
+<p>The modules directory (<code class="docutils literal notranslate"><span class="pre">src/AnalysisG/modules</span></code>) contains specialized functionality:</p>
+<ul class="simple">
+<li><p><strong>optimizer</strong>: Training optimization algorithms</p></li>
+<li><p><strong>plotting</strong>: Advanced plotting routines</p></li>
+<li><p><strong>metrics</strong>: Evaluation metrics implementations</p></li>
+<li><p><strong>nusol</strong>: Neutrino reconstruction algorithms</p></li>
+</ul>
+</section>
+<section id="pyc-package">
+<h3>PyC Package<a class="headerlink" href="#pyc-package" title="Link to this heading"></a></h3>
+<p>The PyC package (<code class="docutils literal notranslate"><span class="pre">pyc/pyc</span></code>) is a self-contained high-performance package:</p>
+<ul class="simple">
+<li><p><strong>physics</strong>: Physics calculations (ΔR, invariant mass, etc.)</p></li>
+<li><p><strong>operators</strong>: Tensor operations</p></li>
+<li><p><strong>graph</strong>: Graph operations</p></li>
+<li><p><strong>transform</strong>: Coordinate transformations</p></li>
+<li><p><strong>nusol</strong>: Neutrino reconstruction</p></li>
+<li><p><strong>plotting</strong>: Fast plotting utilities</p></li>
+<li><p><strong>tools</strong>: Utility functions</p></li>
+</ul>
+</section>
+</section>
+<section id="use-cases">
+<h2>Use Cases<a class="headerlink" href="#use-cases" title="Link to this heading"></a></h2>
+<p>AnalysisG is designed for:</p>
+<ol class="arabic simple">
+<li><p><strong>Graph Neural Network Training</strong>: Convert HEPP data to graph structures</p></li>
+<li><p><strong>Truth Matching Studies</strong>: Match reconstructed particles to truth information</p></li>
+<li><p><strong>Cut-Based Analyses</strong>: Implement selection criteria and export results</p></li>
+<li><p><strong>Neutrino Reconstruction</strong>: Analytical and numerical neutrino reconstruction</p></li>
+<li><p><strong>Performance Studies</strong>: Evaluate algorithm efficiency and accuracy</p></li>
+</ol>
+</section>
+<section id="analysis-agnostic">
+<h2>Analysis Agnostic<a class="headerlink" href="#analysis-agnostic" title="Link to this heading"></a></h2>
+<p>The framework aims to remain analysis-agnostic, allowing:</p>
+<ul class="simple">
+<li><p>Multiple ATLAS analyses to benefit from shared infrastructure</p></li>
+<li><p>Easy adaptation to other experiments (CMS, LHCb, etc.)</p></li>
+<li><p>Flexible integration with existing analysis workflows</p></li>
+<li><p>Community-driven development and contributions</p></li>
+</ul>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Check out the <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> guide to get started</p></li>
+<li><p>Explore the <a class="reference internal" href="api/index.html"><span class="doc">API Reference</span></a> for detailed API documentation</p></li>
+<li><p>See <a class="reference internal" href="examples/index.html"><span class="doc">Examples</span></a> for practical usage examples</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="AnalysisG Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plotting Module &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="I/O Module" href="io.html" />
+    <link rel="prev" title="Template Classes" href="templates.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules.html">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#core-api">Core API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="analysis.html">Analysis Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html">Template Classes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plotting Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advanced-features">Advanced Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-with-boost-histogram">Integration with boost-histogram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">I/O Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools.html">Tools Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Plotting Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/core/plotting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plotting-module">
+<h1>Plotting Module<a class="headerlink" href="#plotting-module" title="Link to this heading"></a></h1>
+<p>The plotting module provides a high-level interface for creating physics plots using
+boost-histogram and mplhep.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">plotting</span></code> module (<code class="docutils literal notranslate"><span class="pre">src/AnalysisG/core/plotting.pyx</span></code>) offers:</p>
+<ul class="simple">
+<li><p>Object-oriented plotting interface</p></li>
+<li><p>Integration with boost-histogram</p></li>
+<li><p>ATLAS/CMS style presets via mplhep</p></li>
+<li><p>Automatic histogram binning</p></li>
+<li><p>Support for 1D and 2D histograms</p></li>
+<li><p>Statistical error handling</p></li>
+<li><p>Easy figure export</p></li>
+</ul>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<section id="creating-histograms">
+<h3>Creating Histograms<a class="headerlink" href="#creating-histograms" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+
+<span class="c1"># Create 1D histogram</span>
+<span class="n">hist</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Title</span> <span class="o">=</span> <span class="s2">&quot;Jet $p_T$&quot;</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xTitle</span> <span class="o">=</span> <span class="s2">&quot;$p_T$ [GeV]&quot;</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">yTitle</span> <span class="o">=</span> <span class="s2">&quot;Events&quot;</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xBins</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xMin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xMax</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="c1"># Fill histogram</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">jet</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">:</span>
+        <span class="n">hist</span><span class="o">.</span><span class="n">Fill</span><span class="p">(</span><span class="n">jet</span><span class="o">.</span><span class="n">pt</span><span class="p">)</span>
+
+<span class="c1"># Draw histogram</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">SaveFigure</span><span class="p">(</span><span class="s2">&quot;jet_pt.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="d-histograms">
+<h3>2D Histograms<a class="headerlink" href="#d-histograms" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram2D</span>
+
+<span class="c1"># Create 2D histogram</span>
+<span class="n">hist2d</span> <span class="o">=</span> <span class="n">Histogram2D</span><span class="p">()</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">Title</span> <span class="o">=</span> <span class="s2">&quot;Jet $\eta$ vs $\phi$&quot;</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">xTitle</span> <span class="o">=</span> <span class="s2">&quot;$\eta$&quot;</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">yTitle</span> <span class="o">=</span> <span class="s2">&quot;$\phi$&quot;</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">xBins</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">yBins</span> <span class="o">=</span> <span class="mi">50</span>
+
+<span class="c1"># Fill histogram</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">jet</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">jets</span><span class="p">:</span>
+        <span class="n">hist2d</span><span class="o">.</span><span class="n">Fill</span><span class="p">(</span><span class="n">jet</span><span class="o">.</span><span class="n">eta</span><span class="p">,</span> <span class="n">jet</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
+
+<span class="c1"># Draw as heatmap</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">hist2d</span><span class="o">.</span><span class="n">SaveFigure</span><span class="p">(</span><span class="s2">&quot;jet_eta_phi.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="histogram-class">
+<h3>Histogram Class<a class="headerlink" href="#histogram-class" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="Histogram">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Histogram</span></span><a class="headerlink" href="#Histogram" title="Link to this definition"></a></dt>
+<dd><p>1D histogram class.</p>
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.Title">
+<span class="sig-name descname"><span class="pre">Title</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram.Title" title="Link to this definition"></a></dt>
+<dd><p>Histogram title.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.xTitle">
+<span class="sig-name descname"><span class="pre">xTitle</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram.xTitle" title="Link to this definition"></a></dt>
+<dd><p>X-axis title with LaTeX support.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.yTitle">
+<span class="sig-name descname"><span class="pre">yTitle</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram.yTitle" title="Link to this definition"></a></dt>
+<dd><p>Y-axis title with LaTeX support.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.xBins">
+<span class="sig-name descname"><span class="pre">xBins</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#Histogram.xBins" title="Link to this definition"></a></dt>
+<dd><p>Number of bins on x-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.xMin">
+<span class="sig-name descname"><span class="pre">xMin</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram.xMin" title="Link to this definition"></a></dt>
+<dd><p>Minimum value on x-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.xMax">
+<span class="sig-name descname"><span class="pre">xMax</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram.xMax" title="Link to this definition"></a></dt>
+<dd><p>Maximum value on x-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.Color">
+<span class="sig-name descname"><span class="pre">Color</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram.Color" title="Link to this definition"></a></dt>
+<dd><p>Histogram color (matplotlib color string).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.LineWidth">
+<span class="sig-name descname"><span class="pre">LineWidth</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram.LineWidth" title="Link to this definition"></a></dt>
+<dd><p>Line width for histogram outline.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.Alpha">
+<span class="sig-name descname"><span class="pre">Alpha</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram.Alpha" title="Link to this definition"></a></dt>
+<dd><p>Transparency (0-1).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram.Style">
+<span class="sig-name descname"><span class="pre">Style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram.Style" title="Link to this definition"></a></dt>
+<dd><p>Histogram style: “step”, “fill”, “errorbar”.</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram.Fill">
+<span class="sig-name descname"><span class="pre">Fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Histogram.Fill" title="Link to this definition"></a></dt>
+<dd><p>Fill histogram with a value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – Value to fill</p></li>
+<li><p><strong>weight</strong> (<em>float</em>) – Event weight</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram.Draw">
+<span class="sig-name descname"><span class="pre">Draw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Histogram.Draw" title="Link to this definition"></a></dt>
+<dd><p>Draw the histogram.</p>
+<p>Creates or updates the current figure with the histogram.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram.SaveFigure">
+<span class="sig-name descname"><span class="pre">SaveFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Histogram.SaveFigure" title="Link to this definition"></a></dt>
+<dd><p>Save figure to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – Output filename</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – Resolution in dots per inch</p></li>
+</ul>
+</dd>
+</dl>
+<p>Supported formats: PNG, PDF, SVG, EPS</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram.Clear">
+<span class="sig-name descname"><span class="pre">Clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Histogram.Clear" title="Link to this definition"></a></dt>
+<dd><p>Clear histogram contents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram.Normalize">
+<span class="sig-name descname"><span class="pre">Normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Histogram.Normalize" title="Link to this definition"></a></dt>
+<dd><p>Normalize histogram to given value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>norm</strong> (<em>float</em>) – Normalization value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram.GetIntegral">
+<span class="sig-name descname"><span class="pre">GetIntegral</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Histogram.GetIntegral" title="Link to this definition"></a></dt>
+<dd><p>Get integral of histogram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sum of all bin contents</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="histogram2d-class">
+<h3>Histogram2D Class<a class="headerlink" href="#histogram2d-class" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="Histogram2D">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Histogram2D</span></span><a class="headerlink" href="#Histogram2D" title="Link to this definition"></a></dt>
+<dd><p>2D histogram class.</p>
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.Title">
+<span class="sig-name descname"><span class="pre">Title</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram2D.Title" title="Link to this definition"></a></dt>
+<dd><p>Histogram title.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.xTitle">
+<span class="sig-name descname"><span class="pre">xTitle</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram2D.xTitle" title="Link to this definition"></a></dt>
+<dd><p>X-axis title.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.yTitle">
+<span class="sig-name descname"><span class="pre">yTitle</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram2D.yTitle" title="Link to this definition"></a></dt>
+<dd><p>Y-axis title.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.xBins">
+<span class="sig-name descname"><span class="pre">xBins</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#Histogram2D.xBins" title="Link to this definition"></a></dt>
+<dd><p>Number of bins on x-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.yBins">
+<span class="sig-name descname"><span class="pre">yBins</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#Histogram2D.yBins" title="Link to this definition"></a></dt>
+<dd><p>Number of bins on y-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.xMin">
+<span class="sig-name descname"><span class="pre">xMin</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram2D.xMin" title="Link to this definition"></a></dt>
+<dd><p>Minimum value on x-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.xMax">
+<span class="sig-name descname"><span class="pre">xMax</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram2D.xMax" title="Link to this definition"></a></dt>
+<dd><p>Maximum value on x-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.yMin">
+<span class="sig-name descname"><span class="pre">yMin</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram2D.yMin" title="Link to this definition"></a></dt>
+<dd><p>Minimum value on y-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.yMax">
+<span class="sig-name descname"><span class="pre">yMax</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#Histogram2D.yMax" title="Link to this definition"></a></dt>
+<dd><p>Maximum value on y-axis.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Histogram2D.ColorMap">
+<span class="sig-name descname"><span class="pre">ColorMap</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#Histogram2D.ColorMap" title="Link to this definition"></a></dt>
+<dd><p>Colormap name (e.g., “viridis”, “plasma”, “hot”).</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram2D.Fill">
+<span class="sig-name descname"><span class="pre">Fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Histogram2D.Fill" title="Link to this definition"></a></dt>
+<dd><p>Fill histogram with values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – X value</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Y value</p></li>
+<li><p><strong>weight</strong> (<em>float</em>) – Event weight</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram2D.Draw">
+<span class="sig-name descname"><span class="pre">Draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'colormesh'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Histogram2D.Draw" title="Link to this definition"></a></dt>
+<dd><p>Draw the 2D histogram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>style</strong> (<em>str</em>) – Drawing style: “colormesh”, “contour”, “contourf”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram2D.SaveFigure">
+<span class="sig-name descname"><span class="pre">SaveFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Histogram2D.SaveFigure" title="Link to this definition"></a></dt>
+<dd><p>Save figure to file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Histogram2D.Clear">
+<span class="sig-name descname"><span class="pre">Clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Histogram2D.Clear" title="Link to this definition"></a></dt>
+<dd><p>Clear histogram contents.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="advanced-features">
+<h2>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h2>
+<section id="atlas-style-plots">
+<h3>ATLAS Style Plots<a class="headerlink" href="#atlas-style-plots" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+<span class="kn">import</span> <span class="nn">mplhep</span>
+
+<span class="c1"># Use ATLAS style</span>
+<span class="n">mplhep</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">mplhep</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">ATLAS</span><span class="p">)</span>
+
+<span class="n">hist</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Title</span> <span class="o">=</span> <span class="s2">&quot;ATLAS Simulation&quot;</span>
+<span class="c1"># ... configure and fill histogram ...</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="stacked-histograms">
+<h3>Stacked Histograms<a class="headerlink" href="#stacked-histograms" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Create multiple histograms</span>
+<span class="n">signal</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">background1</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">background2</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+
+<span class="c1"># Fill histograms...</span>
+
+<span class="c1"># Draw stacked</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">background1</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">background2</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Signal&quot;</span><span class="p">,</span> <span class="s2">&quot;Background 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Background 2&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;stacked.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="ratio-plots">
+<h3>Ratio Plots<a class="headerlink" href="#ratio-plots" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.gridspec</span> <span class="kn">import</span> <span class="n">GridSpec</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">mc</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+
+<span class="c1"># Fill histograms...</span>
+
+<span class="c1"># Create figure with ratio plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">height_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Main plot</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">data</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;MC&quot;</span><span class="p">])</span>
+
+<span class="c1"># Ratio plot</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">ratio</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">GetIntegral</span><span class="p">()</span> <span class="o">/</span> <span class="n">mc</span><span class="o">.</span><span class="n">GetIntegral</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">xMin</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">xMax</span><span class="p">],</span> <span class="p">[</span><span class="n">ratio</span><span class="p">,</span> <span class="n">ratio</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Data/MC&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;ratio_plot.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="error-bars">
+<h3>Error Bars<a class="headerlink" href="#error-bars" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+
+<span class="n">hist</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Style</span> <span class="o">=</span> <span class="s2">&quot;errorbar&quot;</span>  <span class="c1"># Show error bars</span>
+
+<span class="c1"># Fill histogram...</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-styling">
+<h3>Custom Styling<a class="headerlink" href="#custom-styling" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+
+<span class="n">hist</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Alpha</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">Style</span> <span class="o">=</span> <span class="s2">&quot;fill&quot;</span>
+
+<span class="c1"># Configure bins</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xBins</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xMin</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xMax</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Labels with LaTeX</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">xTitle</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$p_T$ [GeV]&quot;</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">yTitle</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;$\frac</span><span class="si">{dN}{dp_T}</span><span class="s2">$ [GeV$^{-1}$]&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-with-boost-histogram">
+<h2>Integration with boost-histogram<a class="headerlink" href="#integration-with-boost-histogram" title="Link to this heading"></a></h2>
+<p>The plotting module uses boost-histogram for efficient histogram operations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core.plotting</span> <span class="kn">import</span> <span class="n">Histogram</span>
+<span class="kn">import</span> <span class="nn">boost_histogram</span> <span class="k">as</span> <span class="nn">bh</span>
+
+<span class="n">hist</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">()</span>
+<span class="c1"># Internal boost-histogram object accessible</span>
+<span class="n">boost_hist</span> <span class="o">=</span> <span class="n">hist</span><span class="o">.</span><span class="n">_histogram</span>
+</pre></div>
+</div>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h2>
+<p>The plotting module is optimized for:</p>
+<ul class="simple">
+<li><p>Fast filling (boost-histogram backend)</p></li>
+<li><p>Efficient memory usage</p></li>
+<li><p>Large datasets (millions of events)</p></li>
+<li><p>Batch plotting operations</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://boost-histogram.readthedocs.io/">boost-histogram documentation</a></p></li>
+<li><p><a class="reference external" href="https://mplhep.readthedocs.io/">mplhep documentation</a></p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/">matplotlib documentation</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="templates.html" class="btn btn-neutral float-left" title="Template Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="io.html" class="btn btn-neutral float-right" title="I/O Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

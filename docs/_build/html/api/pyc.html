@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyC Package &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Physics Module (PyC)" href="pyc/physics.html" />
+    <link rel="prev" title="Plotting Module" href="modules/plotting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core.html">Core Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PyC Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-features">Key Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functionality">Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyc/physics.html">Physics Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyc/operators.html">Operators Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyc/graph.html">Graph Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyc/transform.html">Transform Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyc/nusol.html">NuSol Module (PyC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyc/tools.html">Tools Module (PyC)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodule-overview">Submodule Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#physics">Physics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operators">Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#graph">Graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transform">Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nusol">NuSol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tools">Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#standalone-usage">Standalone Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#with-analysisg">With AnalysisG</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gpu-acceleration">GPU Acceleration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cuda-support">CUDA Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tensor-vs-cuda-interfaces">Tensor vs CUDA Interfaces</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-api">C++ API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-pyc">Building PyC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#core-api">Core API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#modules-api">Modules API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">PyC Package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyc-package">
+<h1>PyC Package<a class="headerlink" href="#pyc-package" title="Link to this heading"></a></h1>
+<p>PyC (Python CUDA) is a high-performance package for physics calculations with native C++ and CUDA implementations.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>PyC is a self-contained package located in <code class="docutils literal notranslate"><span class="pre">pyc/pyc/</span></code> that provides:</p>
+<ul class="simple">
+<li><p>High-performance physics calculations</p></li>
+<li><p>Native C++ implementations</p></li>
+<li><p>CUDA acceleration for GPU computing</p></li>
+<li><p>LibTorch integration</p></li>
+<li><p>Tensor operations</p></li>
+<li><p>Graph algorithms</p></li>
+</ul>
+<p>PyC can be used independently of the main AnalysisG framework or integrated seamlessly with it.</p>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>C++ Backend</strong>: All algorithms implemented in optimized C++</p></li>
+<li><p><strong>CUDA Kernels</strong>: Native GPU acceleration for supported operations</p></li>
+<li><p><strong>LibTorch</strong>: Integration with PyTorch’s tensor library</p></li>
+<li><p><strong>Vectorization</strong>: SIMD optimizations where applicable</p></li>
+</ul>
+</section>
+<section id="functionality">
+<h3>Functionality<a class="headerlink" href="#functionality" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Physics calculations (ΔR, invariant mass, etc.)</p></li>
+<li><p>Coordinate transformations</p></li>
+<li><p>Graph operations</p></li>
+<li><p>Tensor operations</p></li>
+<li><p>Neutrino reconstruction</p></li>
+<li><p>Plotting utilities</p></li>
+</ul>
+</section>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>PyC consists of several submodules:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyc/physics.html">Physics Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#batch-operations">Batch Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#gpu-acceleration">GPU Acceleration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/physics.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/operators.html">Operators Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/operators.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/operators.html#key-functions">Key Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/operators.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/graph.html">Graph Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/graph.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/graph.html#key-functions">Key Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/graph.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/transform.html">Transform Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/transform.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/transform.html#coordinate-systems">Coordinate Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/transform.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/nusol.html">NuSol Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#key-features">Key Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#api-reference">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/nusol.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyc/tools.html">Tools Module (PyC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyc/tools.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/tools.html#key-functions">Key Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyc/tools.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodule-overview">
+<h2>Submodule Overview<a class="headerlink" href="#submodule-overview" title="Link to this heading"></a></h2>
+<section id="physics">
+<h3>Physics<a class="headerlink" href="#physics" title="Link to this heading"></a></h3>
+<p>Physics calculations including:</p>
+<ul class="simple">
+<li><p>Delta R (ΔR) calculation</p></li>
+<li><p>Invariant mass</p></li>
+<li><p>Transverse mass</p></li>
+<li><p>Angular distances</p></li>
+<li><p>Momentum operations</p></li>
+</ul>
+<p>See <a class="reference internal" href="pyc/physics.html"><span class="doc">Physics Module (PyC)</span></a> for details.</p>
+</section>
+<section id="operators">
+<h3>Operators<a class="headerlink" href="#operators" title="Link to this heading"></a></h3>
+<p>Tensor operations:</p>
+<ul class="simple">
+<li><p>Element-wise operations</p></li>
+<li><p>Aggregations (sum, mean, etc.)</p></li>
+<li><p>Graph-based aggregations</p></li>
+<li><p>Custom operators</p></li>
+</ul>
+<p>See <a class="reference internal" href="pyc/operators.html"><span class="doc">Operators Module (PyC)</span></a> for details.</p>
+</section>
+<section id="graph">
+<h3>Graph<a class="headerlink" href="#graph" title="Link to this heading"></a></h3>
+<p>Graph algorithms:</p>
+<ul class="simple">
+<li><p>Edge construction</p></li>
+<li><p>Node aggregation</p></li>
+<li><p>Graph pooling</p></li>
+<li><p>PageRank</p></li>
+<li><p>Community detection</p></li>
+</ul>
+<p>See <a class="reference internal" href="pyc/graph.html"><span class="doc">Graph Module (PyC)</span></a> for details.</p>
+</section>
+<section id="transform">
+<h3>Transform<a class="headerlink" href="#transform" title="Link to this heading"></a></h3>
+<p>Coordinate transformations:</p>
+<ul class="simple">
+<li><p>Cartesian to polar</p></li>
+<li><p>Polar to Cartesian</p></li>
+<li><p>Boost transformations</p></li>
+<li><p>Rotation matrices</p></li>
+</ul>
+<p>See <a class="reference internal" href="pyc/transform.html"><span class="doc">Transform Module (PyC)</span></a> for details.</p>
+</section>
+<section id="nusol">
+<h3>NuSol<a class="headerlink" href="#nusol" title="Link to this heading"></a></h3>
+<p>CUDA-accelerated neutrino reconstruction:</p>
+<ul class="simple">
+<li><p>Batch processing</p></li>
+<li><p>Multiple algorithms</p></li>
+<li><p>GPU acceleration</p></li>
+<li><p>Tensor interface</p></li>
+</ul>
+<p>See <a class="reference internal" href="pyc/nusol.html"><span class="doc">NuSol Module (PyC)</span></a> for details.</p>
+</section>
+<section id="tools">
+<h3>Tools<a class="headerlink" href="#tools" title="Link to this heading"></a></h3>
+<p>Utility functions:</p>
+<ul class="simple">
+<li><p>I/O operations</p></li>
+<li><p>String utilities</p></li>
+<li><p>Data conversion</p></li>
+<li><p>Helper functions</p></li>
+</ul>
+<p>See <a class="reference internal" href="pyc/tools.html"><span class="doc">Tools Module (PyC)</span></a> for details.</p>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>PyC is automatically built with AnalysisG when CUDA is available:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># CUDA will be detected automatically</span>
+pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>To disable CUDA support:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set environment variable</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DISABLE_CUDA</span><span class="o">=</span><span class="m">1</span>
+pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="usage-examples">
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading"></a></h2>
+<section id="standalone-usage">
+<h3>Standalone Usage<a class="headerlink" href="#standalone-usage" title="Link to this heading"></a></h3>
+<p>PyC can be used without the AnalysisG framework:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyc</span>
+
+<span class="c1"># Physics calculations</span>
+<span class="n">delta_r</span> <span class="o">=</span> <span class="n">pyc</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">eta2</span><span class="p">,</span> <span class="n">phi2</span><span class="p">)</span>
+<span class="n">mass</span> <span class="o">=</span> <span class="n">pyc</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">InvariantMass</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">eta1</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">E1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">,</span> <span class="n">eta2</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">E2</span><span class="p">)</span>
+
+<span class="c1"># Tensor operations</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pyc</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="with-analysisg">
+<h3>With AnalysisG<a class="headerlink" href="#with-analysisg" title="Link to this heading"></a></h3>
+<p>PyC integrates seamlessly with AnalysisG:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">EventTemplate</span>
+<span class="kn">import</span> <span class="nn">pyc</span>
+
+<span class="k">class</span> <span class="nc">MyEvent</span><span class="p">(</span><span class="n">EventTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Use PyC for calculations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_r</span> <span class="o">=</span> <span class="n">pyc</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jet_eta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jet_phi</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lepton_eta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lepton_phi</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="gpu-acceleration">
+<h2>GPU Acceleration<a class="headerlink" href="#gpu-acceleration" title="Link to this heading"></a></h2>
+<section id="cuda-support">
+<h3>CUDA Support<a class="headerlink" href="#cuda-support" title="Link to this heading"></a></h3>
+<p>When CUDA is available, operations automatically use GPU:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pyc</span>
+
+<span class="c1"># Move tensors to GPU</span>
+<span class="n">tensor_gpu</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+<span class="c1"># Operations run on GPU</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pyc</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">tensor_gpu</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="tensor-vs-cuda-interfaces">
+<h3>Tensor vs CUDA Interfaces<a class="headerlink" href="#tensor-vs-cuda-interfaces" title="Link to this heading"></a></h3>
+<p>PyC provides two interfaces:</p>
+<ul class="simple">
+<li><p><strong>Tensor Interface</strong>: Uses LibTorch tensors (CPU or GPU)</p></li>
+<li><p><strong>CUDA Interface</strong>: Direct CUDA kernel calls (GPU only)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tensor interface (automatically uses GPU if available)</span>
+<span class="kn">import</span> <span class="nn">pyc</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pyc</span><span class="o">.</span><span class="n">physics</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">eta2</span><span class="p">,</span> <span class="n">phi2</span><span class="p">)</span>
+
+<span class="c1"># Direct CUDA interface (requires GPU)</span>
+<span class="kn">from</span> <span class="nn">pyc.cuda</span> <span class="kn">import</span> <span class="n">physics</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">physics</span><span class="o">.</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1_gpu</span><span class="p">,</span> <span class="n">phi1_gpu</span><span class="p">,</span> <span class="n">eta2_gpu</span><span class="p">,</span> <span class="n">phi2_gpu</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-benchmarks">
+<h2>Performance Benchmarks<a class="headerlink" href="#performance-benchmarks" title="Link to this heading"></a></h2>
+<p>PyC provides significant speedups over pure Python:</p>
+<ul class="simple">
+<li><p><strong>Physics calculations</strong>: 10-100x faster than numpy</p></li>
+<li><p><strong>Graph operations</strong>: 5-50x faster than networkx</p></li>
+<li><p><strong>Tensor operations</strong>: Comparable to native PyTorch</p></li>
+<li><p><strong>GPU operations</strong>: 100-1000x faster for large batches</p></li>
+</ul>
+<p>See <code class="docutils literal notranslate"><span class="pre">pyc/benchmarks/</span></code> for detailed benchmarks.</p>
+</section>
+<section id="c-api">
+<h2>C++ API<a class="headerlink" href="#c-api" title="Link to this heading"></a></h2>
+<p>PyC also provides a C++ API for direct use in C++ code:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pyc/physics.h&gt;</span>
+
+<span class="c1">// Calculate delta R</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">dr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Physics</span><span class="o">::</span><span class="n">DeltaR</span><span class="p">(</span><span class="n">eta1</span><span class="p">,</span><span class="w"> </span><span class="n">phi1</span><span class="p">,</span><span class="w"> </span><span class="n">eta2</span><span class="p">,</span><span class="w"> </span><span class="n">phi2</span><span class="p">);</span>
+
+<span class="c1">// Invariant mass</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Physics</span><span class="o">::</span><span class="n">InvariantMass</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span><span class="w"> </span><span class="n">eta1</span><span class="p">,</span><span class="w"> </span><span class="n">phi1</span><span class="p">,</span><span class="w"> </span><span class="n">E1</span><span class="p">,</span>
+<span class="w">                                    </span><span class="n">pt2</span><span class="p">,</span><span class="w"> </span><span class="n">eta2</span><span class="p">,</span><span class="w"> </span><span class="n">phi2</span><span class="p">,</span><span class="w"> </span><span class="n">E2</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="building-pyc">
+<h2>Building PyC<a class="headerlink" href="#building-pyc" title="Link to this heading"></a></h2>
+<p>PyC is built using CMake:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>..
+make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</pre></div>
+</div>
+<p>For CUDA support:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-DUSE_CUDA<span class="o">=</span>ON<span class="w"> </span>..
+make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+</pre></div>
+</div>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<p>Required:</p>
+<ul class="simple">
+<li><p>C++17 compatible compiler</p></li>
+<li><p>CMake &gt;= 3.23</p></li>
+<li><p>LibTorch (PyTorch C++ library)</p></li>
+</ul>
+<p>Optional:</p>
+<ul class="simple">
+<li><p>CUDA Toolkit &gt;= 11.0 (for GPU acceleration)</p></li>
+<li><p>cuDNN (for advanced GPU features)</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="core.html"><span class="doc">Core Module</span></a> - Core AnalysisG API</p></li>
+<li><p><a class="reference internal" href="modules.html"><span class="doc">Modules API</span></a> - Modules API</p></li>
+<li><p><a class="reference external" href="https://pytorch.org/cppdocs/">LibTorch Documentation</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules/plotting.html" class="btn btn-neutral float-left" title="Plotting Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyc/physics.html" class="btn btn-neutral float-right" title="Physics Module (PyC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

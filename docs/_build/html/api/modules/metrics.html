@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metrics Module &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="NuSol Module" href="nusol.html" />
+    <link rel="prev" title="Optimizer Module" href="optimizer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html">Modules API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../modules.html#available-modules">Available Modules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Metrics Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nusol.html">NuSol Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#module-structure">Module Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#core-api">Core API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#modules-api">Modules API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Metrics Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-implementation">C++ Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-example">Integration Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nusol.html">NuSol Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">Modules API</a></li>
+      <li class="breadcrumb-item active">Metrics Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/modules/metrics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="metrics-module">
+<h1>Metrics Module<a class="headerlink" href="#metrics-module" title="Link to this heading"></a></h1>
+<p>The metrics module provides evaluation metrics for analysis and machine learning.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Located in <code class="docutils literal notranslate"><span class="pre">src/AnalysisG/modules/metrics/</span></code>, this module implements:</p>
+<ul class="simple">
+<li><p>Mass reconstruction plots</p></li>
+<li><p>Loss function visualizations</p></li>
+<li><p>Custom metric calculations</p></li>
+<li><p>Performance evaluation tools</p></li>
+</ul>
+<p>The module integrates with both the Analysis framework and standalone usage.</p>
+</section>
+<section id="c-implementation">
+<h2>C++ Implementation<a class="headerlink" href="#c-implementation" title="Link to this heading"></a></h2>
+<p>The module includes C++ implementations in:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.cxx</span></code>: Core metric calculations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mass_plots.cxx</span></code>: Mass distribution plotting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loss_plots.cxx</span></code>: Loss visualization</p></li>
+</ul>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="mass-plots">
+<h3>Mass Plots<a class="headerlink" href="#mass-plots" title="Link to this heading"></a></h3>
+<p>Functionality for plotting reconstructed masses:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="c1"># Create mass plot</span>
+<span class="n">mass_plot</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">MassPlot</span><span class="p">()</span>
+<span class="n">mass_plot</span><span class="o">.</span><span class="n">Title</span> <span class="o">=</span> <span class="s2">&quot;Top Quark Mass&quot;</span>
+<span class="n">mass_plot</span><span class="o">.</span><span class="n">xTitle</span> <span class="o">=</span> <span class="s2">&quot;Mass [GeV]&quot;</span>
+
+<span class="c1"># Fill with reconstructed masses</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">top_candidate</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">top_candidates</span><span class="p">:</span>
+        <span class="n">mass_plot</span><span class="o">.</span><span class="n">Fill</span><span class="p">(</span><span class="n">top_candidate</span><span class="o">.</span><span class="n">mass</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loss-plots">
+<h3>Loss Plots<a class="headerlink" href="#loss-plots" title="Link to this heading"></a></h3>
+<p>Visualization of training losses:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="c1"># Create loss plot</span>
+<span class="n">loss_plot</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">LossPlot</span><span class="p">()</span>
+
+<span class="c1"># Add training losses</span>
+<span class="k">for</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">training_losses</span><span class="p">):</span>
+    <span class="n">loss_plot</span><span class="o">.</span><span class="n">AddTrainingLoss</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+
+<span class="c1"># Add validation losses</span>
+<span class="k">for</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">validation_losses</span><span class="p">):</span>
+    <span class="n">loss_plot</span><span class="o">.</span><span class="n">AddValidationLoss</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
+
+<span class="c1"># Draw</span>
+<span class="n">loss_plot</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">loss_plot</span><span class="o">.</span><span class="n">SaveFigure</span><span class="p">(</span><span class="s2">&quot;training_losses.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-metrics">
+<h3>Custom Metrics<a class="headerlink" href="#custom-metrics" title="Link to this heading"></a></h3>
+<p>Implement custom metrics using MetricTemplate:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">MetricTemplate</span>
+
+<span class="k">class</span> <span class="nc">MyMetrics</span><span class="p">(</span><span class="n">MetricTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">Calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># Custom metric calculations</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">calculate_accuracy</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="n">f1_score</span> <span class="o">=</span> <span class="n">calculate_f1</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+            <span class="s1">&#39;f1_score&#39;</span><span class="p">:</span> <span class="n">f1_score</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-example">
+<h2>Integration Example<a class="headerlink" href="#integration-example" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">Analysis</span><span class="p">,</span> <span class="n">MetricTemplate</span>
+
+<span class="k">class</span> <span class="nc">CustomMetrics</span><span class="p">(</span><span class="n">MetricTemplate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;custom_metric&#39;</span><span class="p">:</span> <span class="n">compute_metric</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">targets</span><span class="p">)}</span>
+
+<span class="c1"># Add to analysis</span>
+<span class="n">ana</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">()</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">CustomMetrics</span><span class="p">()</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddMetric</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../core/templates.html"><span class="doc">Template Classes</span></a> - MetricTemplate documentation</p></li>
+<li><p><a class="reference internal" href="../core/plotting.html"><span class="doc">Plotting Module</span></a> - Plotting utilities</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="optimizer.html" class="btn btn-neutral float-left" title="Optimizer Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nusol.html" class="btn btn-neutral float-right" title="NuSol Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

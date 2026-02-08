@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NuSol Module &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plotting Module" href="plotting.html" />
+    <link rel="prev" title="Metrics Module" href="metrics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html">Modules API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../modules.html#available-modules">Available Modules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metrics.html">Metrics Module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NuSol Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#module-structure">Module Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#core-api">Core API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#modules-api">Modules API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics.html">Metrics Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NuSol Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#neutrino-reconstruction-problem">Neutrino Reconstruction Problem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#algorithms">Algorithms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-reference">API Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advanced-usage">Advanced Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-implementation">C++ Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">Modules API</a></li>
+      <li class="breadcrumb-item active">NuSol Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/modules/nusol.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="nusol-module">
+<h1>NuSol Module<a class="headerlink" href="#nusol-module" title="Link to this heading"></a></h1>
+<p>The NuSol (Neutrino Solution) module provides algorithms for neutrino reconstruction in particle physics.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Located in <code class="docutils literal notranslate"><span class="pre">src/AnalysisG/modules/nusol/</span></code>, this module implements various neutrino reconstruction algorithms:</p>
+<ul class="simple">
+<li><p><strong>NuSol</strong>: Standard neutrino reconstruction</p></li>
+<li><p><strong>Ellipse</strong>: Ellipse-based methods</p></li>
+<li><p><strong>Conuix</strong>: Conic section intersection methods</p></li>
+<li><p><strong>MultiSol</strong>: Multiple solution handling</p></li>
+</ul>
+<p>These algorithms solve the challenging problem of reconstructing neutrino 4-momenta from incomplete
+kinematic information in particle physics events.</p>
+</section>
+<section id="neutrino-reconstruction-problem">
+<h2>Neutrino Reconstruction Problem<a class="headerlink" href="#neutrino-reconstruction-problem" title="Link to this heading"></a></h2>
+<p>In particle physics, neutrinos are not detected directly, but their presence is inferred from:</p>
+<ul class="simple">
+<li><p>Missing transverse energy (MET)</p></li>
+<li><p>Kinematic constraints (e.g., W boson mass)</p></li>
+<li><p>Top quark decay topology</p></li>
+</ul>
+<p>The reconstruction typically involves solving a system of nonlinear equations with:</p>
+<ul class="simple">
+<li><p>Known: Lepton kinematics, MET, jet kinematics</p></li>
+<li><p>Unknown: Neutrino longitudinal momentum (pz) and potentially complete 3-momentum</p></li>
+</ul>
+</section>
+<section id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Link to this heading"></a></h2>
+<section id="nusol-algorithm">
+<h3>NuSol Algorithm<a class="headerlink" href="#nusol-algorithm" title="Link to this heading"></a></h3>
+<p>Standard neutrino reconstruction using W-boson mass constraint:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.nusol</span> <span class="kn">import</span> <span class="n">NuSol</span>
+
+<span class="c1"># Create solver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">NuSol</span><span class="p">()</span>
+
+<span class="c1"># Set inputs</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">lepton_pt</span> <span class="o">=</span> <span class="n">lepton</span><span class="o">.</span><span class="n">pt</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">lepton_eta</span> <span class="o">=</span> <span class="n">lepton</span><span class="o">.</span><span class="n">eta</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">lepton_phi</span> <span class="o">=</span> <span class="n">lepton</span><span class="o">.</span><span class="n">phi</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">lepton_E</span> <span class="o">=</span> <span class="n">lepton</span><span class="o">.</span><span class="n">E</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">met</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">met</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">met_phi</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">met_phi</span>
+
+<span class="c1"># Solve</span>
+<span class="n">solutions</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Solve</span><span class="p">()</span>
+
+<span class="c1"># Access solutions</span>
+<span class="k">for</span> <span class="n">sol</span> <span class="ow">in</span> <span class="n">solutions</span><span class="p">:</span>
+    <span class="n">nu_pt</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">pt</span>
+    <span class="n">nu_eta</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">eta</span>
+    <span class="n">nu_phi</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">phi</span>
+    <span class="n">nu_E</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">E</span>
+</pre></div>
+</div>
+</section>
+<section id="ellipse-method">
+<h3>Ellipse Method<a class="headerlink" href="#ellipse-method" title="Link to this heading"></a></h3>
+<p>Uses elliptical constraints for improved reconstruction:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.nusol.ellipse</span> <span class="kn">import</span> <span class="n">EllipseNuSol</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">EllipseNuSol</span><span class="p">()</span>
+<span class="c1"># Configure and solve</span>
+<span class="n">solutions</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="n">lepton</span><span class="p">,</span> <span class="n">met</span><span class="p">,</span> <span class="n">b_jet</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="conuix-method">
+<h3>Conuix Method<a class="headerlink" href="#conuix-method" title="Link to this heading"></a></h3>
+<p>Conic section intersection approach:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.nusol.conuix</span> <span class="kn">import</span> <span class="n">ConuixNuSol</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">ConuixNuSol</span><span class="p">()</span>
+<span class="n">solutions</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span><span class="n">lepton</span><span class="p">,</span> <span class="n">met</span><span class="p">,</span> <span class="n">b_jet</span><span class="p">,</span> <span class="n">top_mass</span><span class="o">=</span><span class="mf">173.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="multiple-solution-handling">
+<h3>Multiple Solution Handling<a class="headerlink" href="#multiple-solution-handling" title="Link to this heading"></a></h3>
+<p>Many events have multiple mathematically valid solutions. The module provides:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.nusol</span> <span class="kn">import</span> <span class="n">MultiSol</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">MultiSol</span><span class="p">()</span>
+<span class="n">solutions</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">SolveAll</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+<span class="c1"># Select best solution</span>
+<span class="n">best_sol</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">SelectBest</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="n">selection_criteria</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="nusol-class">
+<h3>NuSol Class<a class="headerlink" href="#nusol-class" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="NuSol">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">NuSol</span></span><a class="headerlink" href="#NuSol" title="Link to this definition"></a></dt>
+<dd><p>Standard neutrino reconstruction solver.</p>
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.lepton_pt">
+<span class="sig-name descname"><span class="pre">lepton_pt</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.lepton_pt" title="Link to this definition"></a></dt>
+<dd><p>Lepton transverse momentum [GeV].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.lepton_eta">
+<span class="sig-name descname"><span class="pre">lepton_eta</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.lepton_eta" title="Link to this definition"></a></dt>
+<dd><p>Lepton pseudorapidity.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.lepton_phi">
+<span class="sig-name descname"><span class="pre">lepton_phi</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.lepton_phi" title="Link to this definition"></a></dt>
+<dd><p>Lepton azimuthal angle.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.lepton_E">
+<span class="sig-name descname"><span class="pre">lepton_E</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.lepton_E" title="Link to this definition"></a></dt>
+<dd><p>Lepton energy [GeV].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.met">
+<span class="sig-name descname"><span class="pre">met</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.met" title="Link to this definition"></a></dt>
+<dd><p>Missing transverse energy [GeV].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.met_phi">
+<span class="sig-name descname"><span class="pre">met_phi</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.met_phi" title="Link to this definition"></a></dt>
+<dd><p>MET azimuthal angle.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.w_mass">
+<span class="sig-name descname"><span class="pre">w_mass</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.w_mass" title="Link to this definition"></a></dt>
+<dd><p>W boson mass constraint [GeV]. Default: 80.4</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSol.top_mass">
+<span class="sig-name descname"><span class="pre">top_mass</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSol.top_mass" title="Link to this definition"></a></dt>
+<dd><p>Top quark mass constraint [GeV]. Default: 173.0</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="NuSol.Solve">
+<span class="sig-name descname"><span class="pre">Solve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#NuSol.Solve" title="Link to this definition"></a></dt>
+<dd><p>Solve for neutrino solutions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of neutrino solution objects</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="NuSol.SetMassConstraints">
+<span class="sig-name descname"><span class="pre">SetMassConstraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#NuSol.SetMassConstraints" title="Link to this definition"></a></dt>
+<dd><p>Set mass constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w_mass</strong> – W boson mass [GeV]</p></li>
+<li><p><strong>top_mass</strong> – Top quark mass [GeV]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="solution-object">
+<h3>Solution Object<a class="headerlink" href="#solution-object" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="NuSolSolution">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">NuSolSolution</span></span><a class="headerlink" href="#NuSolSolution" title="Link to this definition"></a></dt>
+<dd><p>Represents a neutrino solution.</p>
+<p><strong>Properties</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSolSolution.pt">
+<span class="sig-name descname"><span class="pre">pt</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSolSolution.pt" title="Link to this definition"></a></dt>
+<dd><p>Neutrino transverse momentum [GeV].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSolSolution.eta">
+<span class="sig-name descname"><span class="pre">eta</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSolSolution.eta" title="Link to this definition"></a></dt>
+<dd><p>Neutrino pseudorapidity.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSolSolution.phi">
+<span class="sig-name descname"><span class="pre">phi</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSolSolution.phi" title="Link to this definition"></a></dt>
+<dd><p>Neutrino azimuthal angle.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSolSolution.E">
+<span class="sig-name descname"><span class="pre">E</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSolSolution.E" title="Link to this definition"></a></dt>
+<dd><p>Neutrino energy [GeV].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSolSolution.pz">
+<span class="sig-name descname"><span class="pre">pz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSolSolution.pz" title="Link to this definition"></a></dt>
+<dd><p>Neutrino longitudinal momentum [GeV].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="NuSolSolution.chi2">
+<span class="sig-name descname"><span class="pre">chi2</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#NuSolSolution.chi2" title="Link to this definition"></a></dt>
+<dd><p>Chi-squared goodness-of-fit.</p>
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="NuSolSolution.FourVector">
+<span class="sig-name descname"><span class="pre">FourVector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#NuSolSolution.FourVector" title="Link to this definition"></a></dt>
+<dd><p>Get 4-vector representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pt, eta, phi, E) tuple</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading"></a></h2>
+<section id="batch-processing">
+<h3>Batch Processing<a class="headerlink" href="#batch-processing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.nusol</span> <span class="kn">import</span> <span class="n">NuSol</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">NuSol</span><span class="p">()</span>
+
+<span class="n">all_solutions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+    <span class="n">solutions</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">Solve</span><span class="p">(</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">lepton</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">met</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">met_phi</span>
+    <span class="p">)</span>
+    <span class="n">all_solutions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">solutions</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="solution-selection">
+<h3>Solution Selection<a class="headerlink" href="#solution-selection" title="Link to this heading"></a></h3>
+<p>Choose the best solution from multiple candidates:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">select_best_solution</span><span class="p">(</span><span class="n">solutions</span><span class="p">):</span>
+    <span class="c1"># Select solution with lowest chi2</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">chi2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">best</span>
+
+<span class="c1"># Or use physics constraints</span>
+<span class="k">def</span> <span class="nf">select_physical_solution</span><span class="p">(</span><span class="n">solutions</span><span class="p">):</span>
+    <span class="c1"># Require neutrino |eta| &lt; 5</span>
+    <span class="n">physical</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">solutions</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">eta</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">physical</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">physical</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">chi2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="c-implementation">
+<h2>C++ Implementation<a class="headerlink" href="#c-implementation" title="Link to this heading"></a></h2>
+<p>The neutrino reconstruction algorithms are implemented in C++ for performance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nusol/cxx/nusol.cxx</span></code>: Core algorithm</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ellipse/cxx/ellipse.cxx</span></code>: Ellipse method</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">conuix/cxx/conuix.cxx</span></code>: Conic intersection method</p></li>
+</ul>
+<p>The C++ code uses:</p>
+<ul class="simple">
+<li><p>Eigen for linear algebra</p></li>
+<li><p>Numerical solvers for nonlinear equations</p></li>
+<li><p>Optimized matrix operations</p></li>
+</ul>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Link to this heading"></a></h2>
+<p>The C++ implementation provides:</p>
+<ul class="simple">
+<li><p>~1-10 μs per event (depending on method)</p></li>
+<li><p>Support for batch processing</p></li>
+<li><p>CUDA acceleration available (via PyC package)</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../pyc/nusol.html"><span class="doc">NuSol Module (PyC)</span></a> - CUDA-accelerated NuSol in PyC</p></li>
+<li><p><a class="reference internal" href="../core/templates.html"><span class="doc">Template Classes</span></a> - Template classes</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="metrics.html" class="btn btn-neutral float-left" title="Metrics Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plotting.html" class="btn btn-neutral float-right" title="Plotting Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

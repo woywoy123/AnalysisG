@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plotting Module &mdash; AnalysisG 5.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ee801c84"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PyC Package" href="../pyc.html" />
+    <link rel="prev" title="NuSol Module" href="nusol.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            AnalysisG
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to AnalysisG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../core.html">Core Module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../modules.html">Modules API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../modules.html#available-modules">Available Modules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metrics.html">Metrics Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nusol.html">NuSol Module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Plotting Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#module-structure">Module Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../modules.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../pyc.html">PyC Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#core-api">Core API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#modules-api">Modules API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics.html">Metrics Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nusol.html">NuSol Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plotting Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advanced-features">Advanced Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-backend">C++ Backend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-with-analysis">Integration with Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#pyc-api">PyC API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/index.html">Modules Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AnalysisG</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../modules.html">Modules API</a></li>
+      <li class="breadcrumb-item active">Plotting Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/api/modules/plotting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plotting-module">
+<h1>Plotting Module<a class="headerlink" href="#plotting-module" title="Link to this heading"></a></h1>
+<p>The modules plotting package provides advanced plotting capabilities beyond the core plotting module.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Located in <code class="docutils literal notranslate"><span class="pre">src/AnalysisG/modules/plotting/</span></code>, this module extends core plotting with:</p>
+<ul class="simple">
+<li><p>Multi-panel figures</p></li>
+<li><p>Complex plot layouts</p></li>
+<li><p>Advanced styling</p></li>
+<li><p>Publication-ready figures</p></li>
+<li><p>Specialized physics plots</p></li>
+</ul>
+<p>This module builds on top of <code class="docutils literal notranslate"><span class="pre">AnalysisG.core.plotting</span></code> with additional functionality
+for complex visualizations.</p>
+</section>
+<section id="advanced-features">
+<h2>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h2>
+<section id="multi-panel-figures">
+<h3>Multi-Panel Figures<a class="headerlink" href="#multi-panel-figures" title="Link to this heading"></a></h3>
+<p>Create figures with multiple subplots:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.plotting</span> <span class="kn">import</span> <span class="n">MultiPanel</span>
+
+<span class="c1"># Create 2x2 panel figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">MultiPanel</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Add plots to each panel</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">AddHistogram</span><span class="p">(</span><span class="n">hist1</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Panel 1&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">AddHistogram</span><span class="p">(</span><span class="n">hist2</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Panel 2&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">AddHistogram</span><span class="p">(</span><span class="n">hist3</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Panel 3&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">AddHistogram</span><span class="p">(</span><span class="n">hist4</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Panel 4&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">SaveFigure</span><span class="p">(</span><span class="s2">&quot;multipanel.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="correlation-matrices">
+<h3>Correlation Matrices<a class="headerlink" href="#correlation-matrices" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.plotting</span> <span class="kn">import</span> <span class="n">CorrelationMatrix</span>
+
+<span class="c1"># Create correlation matrix</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="n">CorrelationMatrix</span><span class="p">()</span>
+<span class="n">corr</span><span class="o">.</span><span class="n">SetVariables</span><span class="p">([</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="s2">&quot;mass&quot;</span><span class="p">])</span>
+<span class="n">corr</span><span class="o">.</span><span class="n">SetData</span><span class="p">(</span><span class="n">correlation_data</span><span class="p">)</span>
+
+<span class="n">corr</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">corr</span><span class="o">.</span><span class="n">SaveFigure</span><span class="p">(</span><span class="s2">&quot;correlations.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="distribution-comparisons">
+<h3>Distribution Comparisons<a class="headerlink" href="#distribution-comparisons" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.modules.plotting</span> <span class="kn">import</span> <span class="n">ComparisonPlot</span>
+
+<span class="n">comp</span> <span class="o">=</span> <span class="n">ComparisonPlot</span><span class="p">()</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">AddDistribution</span><span class="p">(</span><span class="n">data_hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;points&quot;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">AddDistribution</span><span class="p">(</span><span class="n">mc_hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;MC&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;fill&quot;</span><span class="p">)</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">AddRatioPanel</span><span class="p">()</span>  <span class="c1"># Add data/MC ratio</span>
+
+<span class="n">comp</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+<span class="n">comp</span><span class="o">.</span><span class="n">SaveFigure</span><span class="p">(</span><span class="s2">&quot;comparison.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="c-backend">
+<h2>C++ Backend<a class="headerlink" href="#c-backend" title="Link to this heading"></a></h2>
+<p>The plotting module uses C++ (<code class="docutils literal notranslate"><span class="pre">plotting.cxx</span></code>) for:</p>
+<ul class="simple">
+<li><p>Efficient histogram operations</p></li>
+<li><p>Large dataset handling</p></li>
+<li><p>Memory-efficient storage</p></li>
+<li><p>Fast rendering</p></li>
+</ul>
+</section>
+<section id="integration-with-analysis">
+<h2>Integration with Analysis<a class="headerlink" href="#integration-with-analysis" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">AnalysisG.core</span> <span class="kn">import</span> <span class="n">Analysis</span>
+<span class="kn">from</span> <span class="nn">AnalysisG.modules.plotting</span> <span class="kn">import</span> <span class="n">AnalysisPlotter</span>
+
+<span class="n">ana</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">()</span>
+<span class="c1"># ... configure analysis ...</span>
+
+<span class="c1"># Add plotting</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">AnalysisPlotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">OutputDirectory</span> <span class="o">=</span> <span class="s2">&quot;plots/&quot;</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddPlotter</span><span class="p">(</span><span class="n">plotter</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../core/plotting.html"><span class="doc">Plotting Module</span></a> - Core plotting module</p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/">matplotlib documentation</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="nusol.html" class="btn btn-neutral float-left" title="NuSol Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pyc.html" class="btn btn-neutral float-right" title="PyC Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, AnalysisG Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
