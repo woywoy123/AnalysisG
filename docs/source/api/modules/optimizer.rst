@@ -1,36 +1,42 @@
 Optimizer Module
 ================
 
-The optimizer module provides training optimization algorithms for machine learning models.
+The optimizer module provides training optimization configuration for machine learning models.
 
 Overview
 --------
 
-Located in ``src/AnalysisG/modules/optimizer/``, this module implements:
+OptimizerConfig is located in ``src/AnalysisG/core/lossfx.pyx`` and provides configuration
+for LibTorch optimizers including:
 
-- Optimizer configuration
-- Learning rate scheduling
-- Gradient clipping
-- Weight decay
-- Momentum optimization
-- Adam and other optimizers
+- Learning rate and decay
+- Optimizer selection (SGD, Adam, RMSprop, etc.)
+- Scheduler selection (StepLR, etc.)
+- Momentum and weight decay
+- Advanced optimizer parameters
 
 Integration with Analysis
 --------------------------
 
 .. code-block:: python
 
-   from AnalysisG.core import Analysis, ModelTemplate, OptimizerConfig
+   from AnalysisG.core import Analysis, OptimizerConfig
+   from AnalysisG.models import Grift
    
    # Configure optimizer
    config = OptimizerConfig()
-   config.learning_rate = 0.001
+   config.Optimizer = "Adam"
+   config.Scheduler = "StepLR"
+   config.lr = 0.001
    config.weight_decay = 1e-5
    config.momentum = 0.9
+   config.step_size = 10
+   config.gamma = 0.1
    
    # Add to analysis
+   model = Grift()
    ana = Analysis()
-   ana.AddModel(my_model, config, "training_run")
+   ana.AddModel(model, config, "training_run")
 
 OptimizerConfig Class
 ---------------------
@@ -39,112 +45,176 @@ OptimizerConfig Class
 
    Configuration class for optimization parameters.
 
+   Located in ``AnalysisG.core.lossfx``.
+
    **Properties**
 
-   .. attribute:: learning_rate
+   **Optimizer and Scheduler**
+
+   .. attribute:: Optimizer
+      :type: str
+
+      Type of optimizer. Examples: "Adam", "SGD", "RMSprop", "Adagrad", "LBFGS"
+
+   .. attribute:: Scheduler
+      :type: str
+
+      Type of learning rate scheduler. Examples: "StepLR", "ExponentialLR"
+
+   **Learning Rate**
+
+   .. attribute:: lr
       :type: float
 
-      Learning rate for optimizer. Default: 0.001
+      Learning rate for the optimizer.
+
+   .. attribute:: lr_decay
+      :type: float
+
+      Learning rate decay factor.
+
+   .. attribute:: step_size
+      :type: int
+
+      Number of epochs between learning rate updates (for StepLR).
+
+   .. attribute:: gamma
+      :type: float
+
+      Multiplicative factor for learning rate decay.
+
+   **Regularization**
 
    .. attribute:: weight_decay
       :type: float
 
-      L2 regularization parameter. Default: 0.0
+      L2 regularization parameter (weight decay).
+
+   **Momentum Parameters**
 
    .. attribute:: momentum
       :type: float
 
-      Momentum factor for SGD-based optimizers. Default: 0.9
+      Momentum factor for SGD and related optimizers.
 
-   .. attribute:: beta1
+   .. attribute:: dampening
       :type: float
 
-      Beta1 parameter for Adam optimizer. Default: 0.9
+      Dampening for momentum.
 
-   .. attribute:: beta2
+   .. attribute:: nesterov
+      :type: bool
+
+      Whether to use Nesterov momentum.
+
+   **Adam/RMSprop Parameters**
+
+   .. attribute:: alpha
       :type: float
 
-      Beta2 parameter for Adam optimizer. Default: 0.999
+      Smoothing constant for RMSprop.
 
-   .. attribute:: epsilon
+   .. attribute:: eps
       :type: float
 
-      Epsilon for numerical stability. Default: 1e-8
+      Epsilon for numerical stability.
 
-   .. attribute:: optimizer_type
-      :type: str
+   .. attribute:: amsgrad
+      :type: bool
 
-      Type of optimizer: "adam", "sgd", "adamw". Default: "adam"
+      Whether to use AMSGrad variant of Adam.
 
-   .. attribute:: scheduler_type
-      :type: str
+   .. attribute:: centered
+      :type: bool
 
-      Learning rate scheduler: "step", "cosine", "plateau". Default: None
+      Whether to use centered version of RMSprop.
 
-   .. attribute:: scheduler_params
-      :type: dict
+   **Adagrad Parameters**
 
-      Parameters for the scheduler.
+   .. attribute:: initial_accumulator_value
+      :type: float
 
-Learning Rate Scheduling
--------------------------
+      Initial value of the accumulator for Adagrad.
 
-Step Scheduler
+   **LBFGS Parameters**
+
+   .. attribute:: max_iter
+      :type: int
+
+      Maximum number of iterations per optimization step.
+
+   .. attribute:: max_eval
+      :type: int
+
+      Maximum number of function evaluations per optimization step.
+
+   .. attribute:: tolerance_grad
+      :type: float
+
+      Termination tolerance on first order optimality.
+
+   .. attribute:: tolerance_change
+      :type: float
+
+      Termination tolerance on function value/parameter changes.
+
+   .. attribute:: history_size
+      :type: int
+
+      Update history size for LBFGS.
+
+Example Configurations
+----------------------
+
+Adam Optimizer
 ~~~~~~~~~~~~~~
 
 .. code-block:: python
 
    config = OptimizerConfig()
-   config.scheduler_type = "step"
-   config.scheduler_params = {
-       'step_size': 30,  # Epochs between lr drops
-       'gamma': 0.1      # Multiplication factor
-   }
+   config.Optimizer = "Adam"
+   config.lr = 0.001
+   config.weight_decay = 1e-5
+   config.eps = 1e-8
+   config.amsgrad = False
 
-Cosine Annealing
-~~~~~~~~~~~~~~~~
-
-.. code-block:: python
-
-   config = OptimizerConfig()
-   config.scheduler_type = "cosine"
-   config.scheduler_params = {
-       'T_max': 100,     # Maximum iterations
-       'eta_min': 1e-6   # Minimum learning rate
-   }
-
-Plateau Scheduler
+SGD with Momentum
 ~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
    config = OptimizerConfig()
-   config.scheduler_type = "plateau"
-   config.scheduler_params = {
-       'mode': 'min',    # Minimize metric
-       'factor': 0.5,    # LR reduction factor
-       'patience': 10    # Epochs to wait
-   }
+   config.Optimizer = "SGD"
+   config.lr = 0.01
+   config.momentum = 0.9
+   config.weight_decay = 5e-4
+   config.nesterov = True
 
-Gradient Clipping
------------------
+With Learning Rate Scheduling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
    config = OptimizerConfig()
-   config.gradient_clip_value = 1.0  # Clip gradients to [-1, 1]
-   # or
-   config.gradient_clip_norm = 1.0   # Clip gradient norm to 1.0
+   config.Optimizer = "Adam"
+   config.Scheduler = "StepLR"
+   config.lr = 0.001
+   config.step_size = 10  # Decay every 10 epochs
+   config.gamma = 0.1     # Multiply lr by 0.1
 
-C++ Implementation
-------------------
+RMSprop
+~~~~~~~
 
-The optimizer module has a C++ backend (``optimizer.cxx``) that:
+.. code-block:: python
 
-- Integrates with LibTorch optimizers
-- Provides efficient parameter updates
-- Handles distributed training
-- Manages optimizer state
+   config = OptimizerConfig()
+   config.Optimizer = "RMSprop"
+   config.lr = 0.001
+   config.alpha = 0.99
+   config.eps = 1e-8
+   config.weight_decay = 0
+   config.momentum = 0
+   config.centered = False
 
 See Also
 --------
