@@ -6,22 +6,52 @@ The modules package contains specialized algorithms and functionality built on t
 Overview
 --------
 
-Modules are located in ``src/AnalysisG/modules/`` and provide:
+Modules are located in ``src/AnalysisG/modules/`` and provide the C++ backend implementation for:
 
+- Template classes (event, particle, graph, selection, model, metric)
+- Analysis execution engine
 - Optimizer algorithms for training
 - Plotting utilities beyond core plotting
 - Evaluation metrics
 - Neutrino reconstruction algorithms
+- I/O operations
+- Data structures and utilities
 
 All modules integrate seamlessly with the core Analysis framework.
 
-Available Modules
------------------
+Core Template Implementations
+------------------------------
+
+These modules implement the core template classes that users extend.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
+
+   modules/analysis
+   modules/event
+   modules/particle
+   modules/graph
+   modules/selection
+
+Analysis Components
+-------------------
+
+Components for data handling and training.
+
+.. toctree::
+   :maxdepth: 2
 
    modules/optimizer
+   modules/lossfx
+
+Specialized Analysis Modules
+----------------------------
+
+Modules for specific analysis tasks.
+
+.. toctree::
+   :maxdepth: 2
+
    modules/metrics  
    modules/nusol
    modules/plotting
@@ -47,3 +77,4 @@ See Also
 
 * :doc:`core` - Core API documentation
 * :doc:`pyc` - PyC high-performance package
+
