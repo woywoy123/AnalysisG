@@ -190,27 +190,6 @@ class debug:
         #vis.add_hyperbolic(self.Z2_mm.SxSy, "Z2- (--)", domain = (-3, 3))
         #vis.compile2D() #"test")
         
-        # ----------------------- THIS SECTION IS A PROOF OF CONCEPT ------------------------ #
-        # -> Claim: Leptonic top decay is analytically solvable without external constraints
-        # -> This claim asserts the following: Given a bjet and lepton, mW, mT, mNu and its corresponding 4-vector can be analytically derived
-        # -> There is no need for external constraints at all, no mass assumptions, no MET constraints, it is purely based on a single bjet and lepton pair
-        # -> The code below only uses truth information for the following purposes:
-        # => Closure testing: Ensures that the algorithm is indeed working as expected.
-        # => To serve as a mechanism to identify patterns that prove the algorithm is indeed correct. 
-        # => Truth filtering is only used to remove distracting ellipses which otherwise would burry extremely important information
-        # => It is not used for anything else; not W-boson masses, Top-masses or neutrino masses unless it serves the purpose of closure testing 
-        #
-        # -> Fundamentals of the algorithm:
-        # => Hyperbolic field lines are preserved under lorentz transformations, it is impossible for a line to become a circle in any reference frame 
-        # => Although angles are generally not preserved, the hyperbolic asymptotes are; These are the Sx and Sy parameters.
-        # => DeltaG^2 is the point where the two pencil functions are equally valued, but do not reside on the same hyperbolic sheet 
-        # => Infact they generate a special symmetry group; The Klein Four Symmetry group 
-        # => Running the code below will prove that the conic of two ellipsoids has a much greater meaning than simple ellipses 
-        # => The current status is being able to find the correct translation and rotation for which the ellipses become asymptotic and orthogonal 
-        # => Part of the challenge is to get all points to degenerate to the center and effectively become a single closed solution
-        # => Rather than dealing with the complex algebraic derivation (mostly done already, with possibly some minor sign convention errors, which dont really 
-        # => matter at this stage given that this will be resolved one the code has been formalized.
-
         def chi2(tru, cand): return (sum((tru - cand.sol_pts)**2)**0.5)*0.001
         def best(tru, lst, dct): 
             for i in lst: dct[chi2(tru, i)] = i
@@ -271,29 +250,25 @@ class debug:
                 B   = sum([k**2 for k in vx])
                 s   = AxB / (A * B)
                 lp[i].rz = - math.asin(s)
-                ztx = lp[i].Rz.dot(ux.reshape((3, 1)))
+                ztx = lp[i].Rz.T.dot(ux.reshape((3, 1)))
                 ztx = ztx.T.reshape(3)
                 lp[i].ry = - math.atan2(ztx[-1], ztx[0])
-                ztx = lp[i].Ry.dot(ztx.reshape((3, 1))).T.reshape(3)
-                lp[i].rx =  - math.atan2(ztx[-1], ztx[1])
+                ztx = lp[i].Ry.T.dot(ztx.reshape((3, 1))).T.reshape(3)
+                lp[i].rx =  -math.atan2(ztx[-1], ztx[1])
+
 
         for i in range(0, len(lp) if len(lp) < 12 else 12):
             HxP = self.HR_tilde(lp[i].x0,  lp[i].y0, lp[i].sol_pts[-1], lp[i].sign1)
-
-            HxP = HxP.T.dot(lp[i].Rz)
-            ar = np.array(([[0., 0.], [0., 0.], [0., 0.]]))
             hx = HxP[:,2].reshape(3, 1)
-            Tr = np.concatenate((ar,hx), -1)
-            HxP = lp[i].Ry.dot((HxP - Tr))
-            HxP = lp[i].Rx.T.dot(HxP) + lp[i].Rz * math.tan(lp[i].rz) * Tr
-            sol_pts = lp[i].Rz.dot(lp[i].sol_pts.reshape((3, 1)))
-            sol_pts = lp[i].Ry.dot(sol_pts)
-            sol_pts = lp[i].Rx.dot(sol_pts)
+            ar = np.array(([[1., 0.], [0., 1.], [0., 0.]]))
 
-        
+            dp = np.diag([self.delta(+1), self.delta(-1), - self.delta(-1) * self.delta(+1)])
+
+            #HxP     = lp[i].Rz.T.dot(HxP - np.concatenate((ar,hx), -1)).dot(lp[i].Rz.T) 
+            sol_pts = HxP[:,2].reshape(3, 1)
+            HxP  = (dp.T).T.dot(np.linalg.inv(HxP - dp)).dot(dp)
             pkt.add_ellipse(HxP, "H[PMPM]" + str(i), sol_pts)
-            pkt.add_line(lp[i], "L[PMPM]" + str(i), sol_pts)
-        pkt.compile2D_Proj() #None, False)
+        pkt.compile2D_Proj(None, True) #None, False)
     
         return 
         data = ref.solution
