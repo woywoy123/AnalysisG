@@ -1,0 +1,30 @@
+/**
+ * @mainpage AnalysisG Documentation
+ *
+ * @section intro Introduction
+ *
+ * AnalysisG is a Graph Neural Network Analysis Framework for High Energy Physics.
+ * It provides tools for building and training graph neural networks on particle
+ * physics collision data stored in ROOT files.
+ *
+ * @section structure Project Structure
+ *
+ * The source code is organized into the following modules under `src/AnalysisG`:
+ *
+ * - **core** - Core data structures and base classes
+ * - **events** - Event data model and ROOT file I/O
+ * - **graphs** - Graph construction algorithms
+ * - **metrics** - Performance metrics and evaluation tools
+ * - **models** - GNN model implementations
+ * - **modules** - High-level analysis modules
+ * - **selections** - Event selection and filtering
+ * - **templates** - Reusable template classes
+ *
+ * @section usage Usage
+ *
+ * See the project README and the individual module documentation for details.
+ *
+ * @section license License
+ *
+ * This project is licensed under the terms described in the LICENSE file.
+ */
