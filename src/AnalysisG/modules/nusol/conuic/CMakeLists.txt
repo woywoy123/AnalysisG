@@ -1,11 +1,23 @@
 set(HEADER_FILES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuix/branches.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuix/variables.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/variables.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/constants.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/branches.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/angular.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/atomics.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/pencil.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/factor.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/base.h
 )
 
 set(SOURCE_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/variables.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/constants.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/branches.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/angular.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/atomics.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/pencil.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/factor.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/base.cxx
 )
 
 add_library(srconuic ${SOURCE_FILES})
@@ -26,7 +38,7 @@ set(SOURCE_FILES
 )
 
 add_library(rconuic ${SOURCE_FILES})
-target_include_directories(rconuic PRIVATE include/conuix)
+target_include_directories(rconuic PRIVATE include/conuic)
 target_include_directories(rconuic PUBLIC include)
 
 target_link_libraries(rconuic  PRIVATE cstructs rnusol srconuic ccommon)

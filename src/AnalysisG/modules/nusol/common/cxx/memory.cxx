@@ -65,5 +65,11 @@ long double _m_12(long double**  M){return M[0][0] * M[2][1] - M[0][1] * M[2][0]
 long double _m_20(long double**  M){return M[0][1] * M[1][2] - M[0][2] * M[1][1];}
 long double _m_21(long double**  M){return M[0][0] * M[1][2] - M[0][2] * M[1][0];}
 long double _m_22(long double**  M){return M[0][0] * M[1][1] - M[0][1] * M[1][0];}
-long double _det( long double**  v){return v[0][0] * _m_00(v) - v[0][1] * _m_01(v) + v[0][2] * _m_02(v);}
 
+long double _det3( long double** v){
+    return v[0][0] * _m_00(v) - v[0][1] * _m_01(v) + v[0][2] * _m_02(v);
+}
+
+long double _det2( long double**  v){
+    return v[0][0] * v[1][1] - v[1][0] * v[0][1];
+}

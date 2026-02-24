@@ -55,9 +55,9 @@ std::vector<particle_template*> nusol::solve(){
 
     if (this -> params -> mode == nusol_enum::conuic){
         this -> C_nunu = new conuiac(this -> params); 
-        return this -> C_nunu -> solve(); 
+        //this -> C_nunu -> solve(); 
     }
-
+    
     this -> M_nunu = new conuix( this -> params);    
     this -> D_nunu = new ellipse(this -> params);
     this -> D_nunu -> prepare(this -> params -> mt, this -> params -> mw, this -> M_nunu -> cnx); 

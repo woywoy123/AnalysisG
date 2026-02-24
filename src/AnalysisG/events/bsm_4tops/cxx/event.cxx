@@ -155,11 +155,11 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
 
+
+    this -> debug_strings();
 //    if (this -> debug_mode){this -> debug_strings();}
 //    if (!this -> reconstruct_nunu){return;}
 //    return; 
-
-
 
     double phi_ = this -> phi; //std::atan2(mety, metx);
     double met_ = this -> met; //std::sqrt(metx * metx + mety * mety); 
@@ -169,8 +169,6 @@ void bsm_4tops::CompileEvent(){
             0.0001,// mobius violation factor
             0.5 // tolerance
     ); 
-
-    abort(); 
 
     // fetching the reconstructed neutrinos and checking their truth mapping to the tops.
     for (int x(0); x < nux.size(); ++x){

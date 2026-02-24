@@ -1,22 +1,24 @@
 #ifndef H_BRANCHES_CONUIC
 #define H_BRANCHES_CONUIC
 
-struct kinematic_c;
-class particle_template; 
+#include <conuic/angular.h>
+#include <common/matrix.h>
+#include <string>
 
-long double angles(particle_template* jet, particle_template* lep, kinematic_c* data); 
-long double omega(long double sign, kinematic_c* data); 
-long double Omega(int sign, kinematic_c* data); 
+struct branches_t {
+    branches_t(); 
+    branches_t(long double p_, long double m_, std::string name_); 
+    branches_t(angular_t   p_, angular_t   m_, std::string name_); 
 
-long double pencil(int sign, kinematic_c* data); 
+    ~branches_t(); 
+    angular_t   Apair(int sign);  
+    long double pair(int sign);  
 
+    long double p = 0;
+    long double m = 0;
+    angular_t pA, mA; 
 
-//long double delta(int sign, kinematic_c* data); 
-
-long double  signs(int sign, long double  v1, long double  v2);
-long double* signs(int sign, long double* v1, long double* v2);
-
+    std::string name = ""; 
+};
 
 #endif
-
-

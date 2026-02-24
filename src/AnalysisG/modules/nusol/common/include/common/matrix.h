@@ -4,6 +4,8 @@
 struct matrix_t {
     public:
         matrix_t(int _r = 3, int _c = 3); 
+        matrix_t(const matrix_t& o); 
+
         ~matrix_t();
         matrix_t dot(const matrix_t& o);
         matrix_t T() const;
@@ -31,14 +33,14 @@ struct matrix_t {
         void print(int p = 9);
 
     private:
+        friend matrix_t operator*(long double s, const matrix_t& o); 
+
         int r = -1; 
         int c = -1;
         long double** data = nullptr; 
 }; 
 
-
-
-
+matrix_t operator*(long double s, const matrix_t& o);
 
 
 #endif

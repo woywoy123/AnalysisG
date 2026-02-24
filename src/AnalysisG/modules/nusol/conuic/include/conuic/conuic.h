@@ -5,6 +5,7 @@
 #include <complex>
 #include <math.h>
 
+struct kinematic_c; 
 class particle_template; 
 
 class conuiac {
@@ -14,10 +15,10 @@ class conuiac {
 
         ~conuiac(); 
         std::vector<particle_template*> solve(); 
-
+        
     private:
-        particle_template* _jet = nullptr; 
-        particle_template* _lep = nullptr; 
+        std::vector<kinematic_c*> kins = {}; 
+        nusol_t* params = nullptr;
 }; 
 
 

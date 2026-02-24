@@ -51,6 +51,8 @@ void particle_template::get_P(double* val, particle_template* prt){
 
 void particle_template::get_beta(double* val, particle_template* prt){ 
     particle_t* pl = &prt -> data; 
-    double p_ = pl -> mass * pl -> mass / (pl -> e * pl -> e);
-    *val = (pl -> e) ? std::sqrt(p_ / (pl -> e * pl-> e)) : -1;
+    double m = pl -> mass;
+    double e = pl -> e; 
+    double p_ = 1 - m * m / (e * e); 
+    *val = std::sqrt(std::abs(p_)) * ( (p_ > 0) ? 1 : -1 ); 
 }

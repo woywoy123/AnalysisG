@@ -42,7 +42,8 @@ long double _m_12(long double**  M);
 long double _m_20(long double**  M); 
 long double _m_21(long double**  M); 
 long double _m_22(long double**  M); 
-long double _det( long double**  v); 
+long double _det3( long double**  v); 
+long double _det2( long double**  v); 
 
 
 #endif

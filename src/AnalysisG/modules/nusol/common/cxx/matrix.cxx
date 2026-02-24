@@ -9,6 +9,13 @@ matrix_t::matrix_t(int _r, int _c){
     this -> data = alloc(this -> r, this -> c); 
 }
 
+matrix_t::matrix_t(const matrix_t& o){
+    this -> r = o.r; this -> c = o.c; 
+    this -> data = alloc(this -> r, this -> c); 
+    copy(o.data, this -> data, this -> r, this -> c); 
+}
+
+
 matrix_t::~matrix_t(){
     this -> data = flush(this -> data, this -> r); 
 }
@@ -88,6 +95,11 @@ matrix_t matrix_t::operator-(const matrix_t& o){
     return mx;
 }
 
+matrix_t operator*(long double s, const matrix_t& o){
+    matrix_t mx(o.r, o.c); 
+    opm(mx.data, o.data, o.r, o.c, s); 
+    return mx;
+}
 
 matrix_t matrix_t::operator*(long double s) const {
     matrix_t mx(this -> r, this -> c); 
@@ -112,20 +124,35 @@ matrix_t matrix_t::cross(const matrix_t& o){
 }
 
 long double matrix_t::det(){
-    return _det(this -> data);
+    if (this -> c == 3 && this -> r == 3){
+        return _det3(this -> data);
+    }
+    if (this -> c == 2 && this -> r == 2){
+        return _det2(this -> data);
+    }
+    return 0; 
 }
 
 matrix_t matrix_t::coef(){
     matrix_t out(this -> r, this -> c); 
-    out.data[0][0] =   _m_00(this -> data); 
-    out.data[1][0] = - _m_10(this -> data); 
-    out.data[2][0] =   _m_20(this -> data);
-    out.data[0][1] = - _m_01(this -> data); 
-    out.data[1][1] =   _m_11(this -> data); 
-    out.data[2][1] = - _m_21(this -> data);
-    out.data[0][2] =   _m_02(this -> data); 
-    out.data[1][2] = - _m_12(this -> data); 
-    out.data[2][2] =   _m_22(this -> data);
+    if (this -> c == 3 && this -> r == 3){
+        out.data[0][0] =   _m_00(this -> data); 
+        out.data[1][0] = - _m_10(this -> data); 
+        out.data[2][0] =   _m_20(this -> data);
+        out.data[0][1] = - _m_01(this -> data); 
+        out.data[1][1] =   _m_11(this -> data); 
+        out.data[2][1] = - _m_21(this -> data);
+        out.data[0][2] =   _m_02(this -> data); 
+        out.data[1][2] = - _m_12(this -> data); 
+        out.data[2][2] =   _m_22(this -> data);
+    }
+
+    if (this -> c == 2 && this -> r == 2){
+        out.data[0][0] =   this -> data[1][1]; 
+        out.data[1][0] = - this -> data[1][0]; 
+        out.data[0][1] = - this -> data[0][1]; 
+        out.data[1][1] =   this -> data[0][0]; 
+    }
     return out; 
 }
 
@@ -136,6 +163,13 @@ matrix_t matrix_t::inv(){
         matrix_t d = this -> coef() * det_;
         return d.T();
     }; 
+    auto inv2x2 =[this]() -> matrix_t{
+        long double det_ = this -> det();
+        det_ = (!det_) ? 0.0 : 1.0/det_; 
+        return this -> coef() * det_;
+    }; 
+    
+    if (this -> c == 2 && this -> r == 2){return inv2x2();}
     if (this -> c == 3 && this -> r == 3){return inv3x3();}
     return matrix_t(this -> c, this -> r); 
 }
