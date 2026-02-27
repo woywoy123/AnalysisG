@@ -10,115 +10,27 @@
  * @brief Optimizer and learning-rate-scheduler configuration.
  */
 
-/**
- * @fn optimizer_params_t.optimizer_params_t()
- * @brief Default constructor.
- */
 
-/**
- * @var string optimizer_params_t.optimizer
- * @brief Optimizer name (e.g. @c "adam", @c "sgd", @c "adagrad").
- */
 
-/**
- * @var string optimizer_params_t.scheduler
- * @brief Scheduler name (e.g. @c "step", @c "cosine").
- */
 
-/**
- * @var double optimizer_params_t.gamma
- * @brief Learning rate decay factor for step scheduler.
- */
 
-/**
- * @var unsigned int optimizer_params_t.step_size
- * @brief Number of epochs between learning rate decays.
- */
 
-/**
- * @var double optimizer_params_t.lr
- * @brief Initial learning rate.
- */
 
-/**
- * @var double optimizer_params_t.lr_decay
- * @brief Learning rate decay value.
- */
 
-/**
- * @var double optimizer_params_t.weight_decay
- * @brief L2 regularisation coefficient.
- */
 
-/**
- * @var double optimizer_params_t.initial_accumulator_value
- * @brief Initial accumulator for Adagrad.
- */
 
-/**
- * @var double optimizer_params_t.eps
- * @brief Epsilon for numerical stability (Adam, RMSprop).
- */
 
-/**
- * @var double optimizer_params_t.tolerance_grad
- * @brief Gradient tolerance for LBFGS.
- */
 
-/**
- * @var double optimizer_params_t.tolerance_change
- * @brief Parameter-change tolerance for LBFGS.
- */
 
-/**
- * @var double optimizer_params_t.alpha
- * @brief Smoothing constant for RMSprop.
- */
 
-/**
- * @var double optimizer_params_t.momentum
- * @brief SGD / RMSprop momentum.
- */
 
-/**
- * @var double optimizer_params_t.dampening
- * @brief Momentum dampening for SGD.
- */
 
-/**
- * @var bool optimizer_params_t.amsgrad
- * @brief Enable AMSGrad variant of Adam.
- */
 
-/**
- * @var bool optimizer_params_t.centered
- * @brief Centered RMSprop.
- */
 
-/**
- * @var bool optimizer_params_t.nesterov
- * @brief Nesterov SGD.
- */
 
-/**
- * @var int optimizer_params_t.max_iter
- * @brief Maximum LBFGS iterations.
- */
 
-/**
- * @var int optimizer_params_t.max_eval
- * @brief Maximum function evaluations for LBFGS.
- */
 
-/**
- * @var int optimizer_params_t.history_size
- * @brief LBFGS history size.
- */
 
-/**
- * @var vector[float] optimizer_params_t.beta_hack
- * @brief Adam β₁ and β₂ coefficients (override).
- */
 
 /**
  * @class OptimizerConfig

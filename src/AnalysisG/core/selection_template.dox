@@ -10,90 +10,21 @@
  * @brief C++ base class for user-defined event selections.
  */
 
-/**
- * @fn selection_template.selection_template()
- * @brief Default constructor.
- */
 
-/**
- * @var string selection_template.name
- * @brief Selection name.
- */
 
-/**
- * @var string selection_template.hash
- * @brief Unique hash.
- */
 
-/**
- * @var string selection_template.tree
- * @brief Source ROOT tree.
- */
 
-/**
- * @var double selection_template.index
- * @brief Sequential event index.
- */
 
-/**
- * @fn selection_template* selection_template.build(event_template*)
- * @brief Build the selection from an event.
- * @return Pointer to @c this (or a new instance).
- */
 
-/**
- * @fn bool selection_template.selection(event_template*)
- * @brief Apply the event selection cut.
- * @return @c true if the event passes.
- */
 
-/**
- * @fn bool selection_template.strategy(event_template*)
- * @brief Apply an additional strategy after selection.
- * @return @c true on success.
- */
 
-/**
- * @fn void selection_template.merge(selection_template*)
- * @brief Merge another selection's statistics into this one.
- */
 
-/**
- * @fn void selection_template.sum(vector[particle_template*]* ch, particle_template** out)
- * @brief Sum the four-momenta of all particles in @p ch.
- * @param ch  Particle list.
- * @param out Output summed particle.
- */
 
-/**
- * @fn particle_template* selection_template.sum(map[string, particle_template*]* ch)
- * @brief Sum particles from a hash-keyed map.
- */
 
-/**
- * @fn vector[map[string, float]] selection_template.reverse_hash(vector[string]* hashes)
- * @brief Look up metadata for a list of particle hashes.
- */
 
-/**
- * @fn bool selection_template.CompileEvent()
- * @brief Finalise the selection after all data is loaded.
- */
 
-/**
- * @fn bool selection_template.operator==(selection_template& p)
- * @brief Hash-based equality.
- */
 
-/**
- * @var map[string, map[string, float]] selection_template.passed_weights
- * @brief Per-event weights for passed events, keyed by hash and variable.
- */
 
-/**
- * @var map[string, meta_t] selection_template.matched_meta
- * @brief Matched metadata structs keyed by sample name.
- */
 
 /**
  * @class SelectionTemplate

@@ -11,25 +11,9 @@
  * @brief C++ metadata manager.
  */
 
-/**
- * @fn meta.meta()
- * @brief Default constructor.
- */
 
-/**
- * @fn string meta.hash(string)
- * @brief Return the hash of the given string.
- */
 
-/**
- * @var meta_t meta.meta_data
- * @brief Stored metadata struct.
- */
 
-/**
- * @var string meta.metacache_path
- * @brief Filesystem path for the metadata cache.
- */
 
 /**
  * @class Meta
@@ -42,25 +26,9 @@
  * @details Caches matched @c Meta objects and their metadata dicts.
  */
 
-/**
- * @var Meta MetaLookup.meta
- * @brief Currently selected @c Meta instance.
- */
 
-/**
- * @var dict MetaLookup.matched
- * @brief Dict of matched metadata keyed by DSID string.
- */
 
-/**
- * @var dict MetaLookup.metadata
- * @brief Full metadata dict.
- */
 
-/**
- * @var float MetaLookup.luminosity
- * @brief Integrated luminosity for cross-section scaling.
- */
 
 /**
  * @cdef Meta MetaLookup.__find__(self, str inpt)

@@ -92,68 +92,7 @@
  */
 
 /**
- * @var std::vector<std::vector<std::vector<double>>>* bsc_t::vvv_d
- * @brief Pointer to depth-3 double data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<long>>>* bsc_t::vvv_l
- * @brief Pointer to depth-3 long data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<float>>>* bsc_t::vvv_f
- * @brief Pointer to depth-3 float data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<int>>>* bsc_t::vvv_i
- * @brief Pointer to depth-3 int data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<bool>>>* bsc_t::vvv_b
- * @brief Pointer to depth-3 bool data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<char>>>* bsc_t::vvv_c
- * @brief Pointer to depth-3 char data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<unsigned long long>>>* bsc_t::vvv_ull
- * @brief Pointer to depth-3 unsigned long long data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<std::vector<unsigned int>>>* bsc_t::vvv_ui
- * @brief Pointer to depth-3 unsigned int data, or @c nullptr.
- */
-
-/**
- * @var std::vector<std::vector<double>>* bsc_t::vv_d
- * @brief Pointer to depth-2 double data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<long>>* bsc_t::vv_l
- * @brief Pointer to depth-2 long data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<float>>* bsc_t::vv_f
- * @brief Pointer to depth-2 float data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<int>>* bsc_t::vv_i
- * @brief Pointer to depth-2 int data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<bool>>* bsc_t::vv_b
- * @brief Pointer to depth-2 bool data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<char>>* bsc_t::vv_c
- * @brief Pointer to depth-2 char data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<unsigned long long>>* bsc_t::vv_ull
- * @brief Pointer to depth-2 unsigned long long data, or @c nullptr.
- */
-/**
- * @var std::vector<std::vector<unsigned int>>* bsc_t::vv_ui
+ * @var bsc_t::vv_ui
  * @brief Pointer to depth-2 unsigned int data, or @c nullptr.
  */
 

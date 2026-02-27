@@ -37,22 +37,22 @@
  */
 
 /**
- * @var std::vector<std::vector<double>> roc_t::tpr_
+ * @var roc_t::tpr_
  * @brief True positive rate (recall) values; one vector per threshold sweep.
  */
 
 /**
- * @var std::vector<std::vector<double>> roc_t::fpr_
+ * @var roc_t::fpr_
  * @brief False positive rate values; one vector per threshold sweep.
  */
 
 /**
- * @var std::vector<std::vector<int>>* roc_t::truth
+ * @var roc_t::truth
  * @brief Pointer to the ground-truth label arrays (not owned).
  */
 
 /**
- * @var std::vector<std::vector<double>>* roc_t::scores
+ * @var roc_t::scores
  * @brief Pointer to the classifier score arrays (not owned).
  */
 

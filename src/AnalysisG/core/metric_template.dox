@@ -11,25 +11,9 @@
  * @brief C++ metric evaluation base class (inherits @c tools, @c notification).
  */
 
-/**
- * @fn metric_template.metric_template()
- * @brief Default constructor.
- */
 
-/**
- * @var string metric_template.name
- * @brief Metric name.
- */
 
-/**
- * @var map[string, string] metric_template.run_names
- * @brief Map of model run name → output label.
- */
 
-/**
- * @var vector[string] metric_template.variables
- * @brief List of variable names to evaluate.
- */
 
 /**
  * @cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* epochs)

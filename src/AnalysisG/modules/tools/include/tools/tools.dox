@@ -192,14 +192,6 @@
  * @return Decoded string.
  */
 
-/**
- * @fn template<typename G> static std::vector<std::vector<G>> tools::discretize(std::vector<G>* v, int N)
- * @brief Partition a vector into consecutive chunks of size at most @p N.
- * @tparam G Element type.
- * @param v Pointer to the source vector.
- * @param N Maximum chunk size.
- * @return Vector of chunks.
- */
 
 /**
  * @fn template<typename g> static g tools::max(std::vector<g>* inpt)

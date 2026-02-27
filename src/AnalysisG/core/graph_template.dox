@@ -10,62 +10,16 @@
  * @brief C++ base class for user-defined graph constructors.
  */
 
-/**
- * @fn graph_template.graph_template()
- * @brief Default constructor.
- */
 
-/**
- * @var string graph_template.tree
- * @brief Source ROOT tree name.
- */
 
-/**
- * @var string graph_template.name
- * @brief Graph class name.
- */
 
-/**
- * @var string graph_template.hash
- * @brief Unique graph hash.
- */
 
-/**
- * @var double graph_template.weight
- * @brief Graph weight.
- */
 
-/**
- * @var long graph_template.index
- * @brief Sequential graph index.
- */
 
-/**
- * @var bool graph_template.preselection
- * @brief If @c true, apply pre-selection before building the graph.
- */
 
-/**
- * @fn graph_template* graph_template.build(event_template*)
- * @brief Build a graph from an event.
- * @param ev Pointer to the source event.
- * @return Pointer to the constructed graph (may be @c this).
- */
 
-/**
- * @fn bool graph_template.operator==(graph_template& p)
- * @brief Hash-based equality.
- */
 
-/**
- * @fn void graph_template.CompileEvent()
- * @brief Finalise the graph after all node/edge data is set.
- */
 
-/**
- * @fn void graph_template.PreSelection()
- * @brief Apply pre-selection logic; sets @c preselection flag.
- */
 
 /**
  * @class GraphTemplate

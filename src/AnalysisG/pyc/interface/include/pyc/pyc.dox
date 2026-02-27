@@ -137,13 +137,6 @@
  * @return {px, py, pz, e}.
  */
 
-/**
- * @fn template<typename g> std::vector<std::vector<double>> pyc::to_pmc(std::vector<g*>* p)
- * @brief Convert a particle list to a 2D Cartesian four-momentum array.
- * @tparam g Particle type.
- * @param p Pointer to the particle list.
- * @return [[px, py, pz, e], …].
- */
 
 /**
  * @namespace pyc::transform

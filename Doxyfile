@@ -179,7 +179,7 @@ RECURSIVE              = YES
 # odeRK class, which Breathe then renders twice and Sphinx reports as
 # duplicate C++ declarations.
 EXCLUDE                = src/AnalysisG/templates \
-                         src/AnalysisG/modules/nusol/tmp/odeRK.h
+                         src/AnalysisG/modules/nusol/tmp/interface.cxx
 
 # EXCLUDE_PATTERNS: Patterns for files/directories to skip
 # Excludes:

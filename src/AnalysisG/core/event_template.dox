@@ -11,67 +11,17 @@
  * @brief C++ base class for user-defined event constructors.
  */
 
-/**
- * @fn event_template.event_template()
- * @brief Default constructor.
- */
 
-/**
- * @var vector[string] event_template.trees
- * @brief ROOT tree names to read.
- */
 
-/**
- * @var vector[string] event_template.branches
- * @brief ROOT branch names to read.
- */
 
-/**
- * @var vector[string] event_template.leaves
- * @brief ROOT leaf names to read.
- */
 
-/**
- * @var string event_template.tree
- * @brief Active tree name.
- */
 
-/**
- * @var string event_template.name
- * @brief Event class name.
- */
 
-/**
- * @var string event_template.hash
- * @brief Unique event hash.
- */
 
-/**
- * @var double event_template.weight
- * @brief Event weight.
- */
 
-/**
- * @var double event_template.index
- * @brief Sequential event index.
- */
 
-/**
- * @fn map[string, event_template*] event_template.build_event(map[string, data_t*]* evnt)
- * @brief Construct event objects from the raw ROOT data map.
- * @param evnt Map of leaf name → @c data_t*.
- * @return Map of hash → @c event_template* for all built events.
- */
 
-/**
- * @fn void event_template.CompileEvent()
- * @brief Finalise the event after all data is loaded.
- */
 
-/**
- * @fn bool event_template.operator==(event_template& p)
- * @brief Hash-based equality test.
- */
 
 /**
  * @class EventTemplate

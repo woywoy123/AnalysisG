@@ -6,10 +6,6 @@
  *          dispatches to either the ellipse or Conuix solver.
  */
 
-/**
- * @enum nusol_enum
- * @brief Selects the neutrino reconstruction algorithm.
- */
 
 /**
  * @var nusol_enum::ellipse
@@ -78,7 +74,7 @@
  */
 
 /**
- * @var std::vector<std::pair<particle_template*, particle_template*>>* nusol_t::phys_pairs
+ * @var nusol_t::phys_pairs
  * @brief Pointer to a list of pre-specified (b, lepton) pairs.  If @c nullptr,
  *        all combinations are tried.
  */
@@ -97,7 +93,7 @@
  */
 
 /**
- * @fn std::vector<particle_template*> nusol::solve()
+ * @fn nusol::solve()
  * @brief Run the reconstruction and return reconstructed neutrino candidates.
  * @return Vector of dynamically allocated @c particle_template objects
  *         (caller takes ownership).

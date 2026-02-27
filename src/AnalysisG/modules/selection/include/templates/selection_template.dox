@@ -151,7 +151,7 @@
  */
 
 /**
- * @fn std::vector<std::map<std::string, float>> selection_template::reverse_hash(std::vector<std::string>* hashes)
+ * @fn selection_template::reverse_hash(std::vector<std::string>* hashes)
  * @brief Reverse-look up kinematic attributes for a list of event hashes.
  * @param hashes Pointer to a list of event hashes.
  * @return Vector of attribute maps, one per hash.

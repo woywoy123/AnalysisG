@@ -15,15 +15,6 @@
  * @return @c true on success.
  */
 
-/**
- * @fn template<typename G> std::vector<std::vector<G>> chunking(std::vector<G>* v, int N)
- * @brief Split flat vector @p v into consecutive chunks of at most @p N
- *        elements.
- * @tparam G Element type.
- * @param v Pointer to the source vector.
- * @param N Chunk size.
- * @return Vector of chunk vectors.
- */
 
 /**
  * @fn template<typename g> void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>*, int)

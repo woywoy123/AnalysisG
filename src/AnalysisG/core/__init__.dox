@@ -7,65 +7,16 @@
  *          objects, and vice versa.
  */
 
-/**
- * @fn cdef string enc(str val)
- * @brief Encode a Python @c str to a @c std::string.
- * @param val Python string.
- * @return @c std::string.
- */
 
-/**
- * @fn cdef str env(string val)
- * @brief Decode a @c std::string to a Python @c str.
- * @param val C++ string.
- * @return Python string.
- */
 
-/**
- * @fn cdef list env_vec(vector[string]* inpt)
- * @brief Convert a @c vector<string> to a Python list of strings.
- */
 
-/**
- * @fn cdef vector[string] enc_list(list inpt)
- * @brief Convert a Python list of strings to @c vector<string>.
- */
 
-/**
- * @fn cdef list as_list(vector[base_types]* inp)
- * @brief Convert a typed @c vector to a Python list.
- * @tparam base_types Fused type (int, float, double, bool, string).
- */
 
-/**
- * @fn cdef dict as_dict(map[string, vector[base_types]]* inpt)
- * @brief Convert a @c map<string, vector<T>> to a Python dict.
- */
 
-/**
- * @fn cdef void as_map(dict inpt, map[string, base_types]* out)
- * @brief Convert a Python dict to a @c map<string, T>.
- */
 
-/**
- * @fn cdef void as_umap(dict inpt, unordered_map[string, base_types]* out)
- * @brief Convert a Python dict to an @c unordered_map<string, T>.
- */
 
-/**
- * @fn cdef dict as_dict_dict(map[string, map[string, vector[base_types]]]* inpt)
- * @brief Convert a two-level nested map to a Python nested dict.
- */
 
-/**
- * @fn cdef dict as_basic_dict(map[string, base_types]* inpt)
- * @brief Convert a @c map<string, T> to a Python dict.
- */
 
-/**
- * @fn cdef dict as_basic_dict_dict(map[string, map[string, base_types]]* inpt)
- * @brief Convert a two-level @c map<string, map<string, T>> to a Python dict.
- */
 
 /**
  * @class Tools

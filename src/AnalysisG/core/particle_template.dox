@@ -12,195 +12,43 @@
  * @brief C++ particle with four-momentum, PDG ID, and family links.
  */
 
-/**
- * @fn particle_template.particle_template()
- * @brief Default constructor.
- */
 
-/**
- * @fn particle_template.particle_template(particle_t* p)
- * @brief Construct from a @c particle_t struct.
- */
 
-/**
- * @fn particle_template.particle_template(particle_template* p, bool dump)
- * @brief Copy from another particle; @p dump controls deep copy.
- */
 
-/**
- * @fn particle_template.particle_template(double px, double py, double pz, double e)
- * @brief Construct from Cartesian four-momentum.
- */
 
-/**
- * @fn particle_template.particle_template(double px, double py, double pz)
- * @brief Construct from Cartesian three-momentum (massless, E = |p|).
- */
 
-/**
- * @fn void particle_template.add_leaf(string key, string leaf)
- * @brief Associate a ROOT tree leaf name with key @p key.
- */
 
-/**
- * @fn double particle_template.DeltaR(particle_template* p)
- * @brief Compute ΔR = √(Δη² + Δφ²) to particle @p p.
- */
 
-/**
- * @fn particle_template* particle_template.operator+(particle_template* p)
- * @brief Return a new particle that is the four-momentum sum.
- */
 
-/**
- * @fn void particle_template.iadd(particle_template* p)
- * @brief Add particle @p p's four-momentum in place.
- */
 
-/**
- * @fn bool particle_template.operator==(particle_template& p)
- * @brief Hash-based equality test.
- */
 
-/**
- * @fn bool particle_template.register_parent(particle_template* p)
- * @brief Register @p p as a parent.  Returns @c false if already registered.
- */
 
-/**
- * @fn bool particle_template.register_child(particle_template* p)
- * @brief Register @p p as a child.
- */
 
-/**
- * @fn map[string, map[string, particle_t]] particle_template.__reduce__()
- * @brief Serialise the particle to a nested map (for pickling).
- */
 
-/**
- * @fn void particle_template.to_polar()
- * @brief Convert the stored four-momentum to polar representation.
- */
 
-/**
- * @fn void particle_template.to_cartesian()
- * @brief Convert the stored four-momentum to Cartesian representation.
- */
 
-/**
- * @var double particle_template.mass
- * @brief Invariant mass.
- */
 
-/**
- * @var double particle_template.e
- * @brief Energy.
- */
 
-/**
- * @var double particle_template.pt
- * @brief Transverse momentum.
- */
 
-/**
- * @var double particle_template.eta
- * @brief Pseudorapidity.
- */
 
-/**
- * @var double particle_template.phi
- * @brief Azimuthal angle.
- */
 
-/**
- * @var double particle_template.px
- * @brief x-momentum.
- */
 
-/**
- * @var double particle_template.py
- * @brief y-momentum.
- */
 
-/**
- * @var double particle_template.pz
- * @brief z-momentum.
- */
 
-/**
- * @var int particle_template.pdgid
- * @brief PDG particle ID.
- */
 
-/**
- * @var string particle_template.hash
- * @brief Unique string hash for this particle instance.
- */
 
-/**
- * @var string particle_template.type
- * @brief Particle type string.
- */
 
-/**
- * @var string particle_template.symbol
- * @brief Particle symbol (e.g. "e-", "μ+").
- */
 
-/**
- * @var double particle_template.charge
- * @brief Electric charge.
- */
 
-/**
- * @var bool particle_template.is_lep
- * @brief @c true if this particle is a lepton.
- */
 
-/**
- * @var bool particle_template.is_nu
- * @brief @c true if this particle is a neutrino.
- */
 
-/**
- * @var bool particle_template.is_b
- * @brief @c true if this particle is a b-quark/jet.
- */
 
-/**
- * @var bool particle_template.is_add
- * @brief @c true if this particle is an additional (spectator) particle.
- */
 
-/**
- * @var bool particle_template.lep_decay
- * @brief @c true if this particle came from a leptonic decay.
- */
 
-/**
- * @var bool particle_template._is_serial
- * @brief Internal serialisation flag.
- */
 
-/**
- * @var map[string, particle_template*] particle_template.parents
- * @brief Parent particles keyed by their hash.
- */
 
-/**
- * @var map[string, particle_template*] particle_template.children
- * @brief Child particles keyed by their hash.
- */
 
-/**
- * @var map[string, string] particle_template.leaves
- * @brief ROOT leaf name map.
- */
 
-/**
- * @var particle_t particle_template.data
- * @brief Raw @c particle_t struct backing this instance.
- */
 
 /**
  * @class ParticleTemplate

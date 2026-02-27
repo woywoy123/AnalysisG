@@ -10,65 +10,17 @@
  * @brief C++ base class for GNN models.
  */
 
-/**
- * @fn model_template.model_template()
- * @brief Default constructor.
- */
 
-/**
- * @var map[string, string] model_template.o_graph
- * @brief Output graph-level feature name → type map.
- */
 
-/**
- * @var map[string, string] model_template.o_node
- * @brief Output node-level feature name → type map.
- */
 
-/**
- * @var map[string, string] model_template.o_edge
- * @brief Output edge-level feature name → type map.
- */
 
-/**
- * @var vector[string] model_template.i_graph
- * @brief Input graph-level feature names.
- */
 
-/**
- * @var vector[string] model_template.i_node
- * @brief Input node-level feature names.
- */
 
-/**
- * @var vector[string] model_template.i_edge
- * @brief Input edge-level feature names.
- */
 
-/**
- * @var string model_template.device
- * @brief PyTorch device string (e.g. @c "cuda:0", @c "cpu").
- */
 
-/**
- * @var string model_template.name
- * @brief Model class name.
- */
 
-/**
- * @var string model_template.weight_name
- * @brief Filename stem for saved model weights.
- */
 
-/**
- * @var string model_template.tree_name
- * @brief ROOT tree name used for graph data.
- */
 
-/**
- * @var string model_template.model_checkpoint_path
- * @brief Directory path for saving/loading model checkpoints.
- */
 
 /**
  * @class ModelTemplate

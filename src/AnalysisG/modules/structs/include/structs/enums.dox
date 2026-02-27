@@ -5,15 +5,6 @@
  *        modes, and particle attributes.
  */
 
-/**
- * @enum data_enum
- * @brief Identifies the concrete C++ type of a stored data element.
- * @details The naming convention encodes depth:
- *   - plain name  → primitive (@c double, @c float, …)
- *   - @c v_X      → @c std::vector<X>
- *   - @c vv_X     → @c std::vector<std::vector<X>>
- *   - @c vvv_X    → @c std::vector<std::vector<std::vector<X>>>
- */
 
 /**
  * @var data_enum::d
@@ -153,10 +144,6 @@
  */
 
 /**
- * @enum opt_enum
- * @brief Identifies the PyTorch optimizer algorithm.
- */
-/**
  * @var opt_enum::adam
  * @brief Adam optimizer.
  */
@@ -186,10 +173,6 @@
  */
 
 /**
- * @enum mlp_init
- * @brief Weight-initialisation schemes for @c torch::nn::Sequential modules.
- */
-/**
  * @var mlp_init::uniform
  * @brief Uniform random initialisation.
  */
@@ -214,10 +197,6 @@
  * @brief Kaiming (He) normal initialisation.
  */
 
-/**
- * @enum loss_enum
- * @brief Identifies the PyTorch loss function to use.
- */
 /**
  * @var loss_enum::bce
  * @brief Binary cross-entropy loss.
@@ -304,10 +283,6 @@
  */
 
 /**
- * @enum scheduler_enum
- * @brief Identifies the learning-rate scheduler.
- */
-/**
  * @var scheduler_enum::steplr
  * @brief Step-based learning-rate decay (StepLR).
  */
@@ -324,10 +299,6 @@
  * @brief Sentinel value indicating no valid scheduler was selected.
  */
 
-/**
- * @enum graph_enum
- * @brief Identifies which tensor slot of a @c graph_t object is being accessed.
- */
 /**
  * @var graph_enum::data_graph
  * @brief Input feature tensor at graph level.
@@ -386,10 +357,6 @@
  */
 
 /**
- * @enum mode_enum
- * @brief Identifies the training phase.
- */
-/**
  * @var mode_enum::training
  * @brief Model is in training mode.
  */
@@ -402,11 +369,6 @@
  * @brief Model is in evaluation (test/inference) mode.
  */
 
-/**
- * @enum particle_enum
- * @brief Identifies which kinematic or metadata attribute of a particle to
- *        read or write.
- */
 /**
  * @var particle_enum::index
  * @brief Particle index in the event.
