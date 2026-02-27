@@ -8,5 +8,16 @@ types within AnalysisG events.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``particle_template.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/particle/include/templates/particle_template.dox
+   :language: c
+   :caption:
+

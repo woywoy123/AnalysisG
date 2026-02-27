@@ -8,5 +8,16 @@ and is the base for all user-defined GNN model definitions.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``model_template.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/model/include/templates/model_template.dox
+   :language: c
+   :caption:
+

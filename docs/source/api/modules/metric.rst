@@ -8,5 +8,16 @@ evaluation metrics.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``metric_template.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/metric/include/templates/metric_template.dox
+   :language: c
+   :caption:
+

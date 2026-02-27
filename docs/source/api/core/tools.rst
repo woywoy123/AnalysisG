@@ -7,3 +7,15 @@ The ``Tools`` Cython class wraps the C++ ``tools`` utility base class.
    :project: AnalysisG
    :members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``tools.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/core/tools.dox
+   :language: c
+   :caption:
+

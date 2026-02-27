@@ -17,3 +17,15 @@ for reconstructed neutrinos.
    :project: AnalysisG
    :members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``pyc.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/pyc/interface/include/pyc/pyc.dox
+   :language: c
+   :caption:
+

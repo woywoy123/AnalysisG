@@ -9,5 +9,16 @@ objects into a complete analysis pipeline.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``analysis.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/analysis/include/AnalysisG/analysis.dox
+   :language: c
+   :caption:
+

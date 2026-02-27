@@ -48,7 +48,7 @@ breathe_projects = {
     "AnalysisG": _doxygen_xml,
 }
 breathe_default_project = "AnalysisG"
-breathe_default_members = ("members", "undoc-members", "private-members")
+breathe_default_members = ("members", "undoc-members")
 
 # Suppress Breathe warnings when the XML is absent (e.g. before running
 # ``doxygen Doxyfile`` locally).  On Read the Docs the pre_build step always

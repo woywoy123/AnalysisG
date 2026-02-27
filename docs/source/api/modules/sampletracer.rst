@@ -8,5 +8,16 @@ event population pipeline, and coordinates multi-threaded file reading.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``sampletracer.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/sampletracer/include/generators/sampletracer.dox
+   :language: c
+   :caption:
+

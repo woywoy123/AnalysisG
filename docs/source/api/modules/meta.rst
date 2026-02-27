@@ -8,5 +8,16 @@ lookup and data-scraping for ATLAS datasets.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``meta.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/meta/include/meta/meta.dox
+   :language: c
+   :caption:
+

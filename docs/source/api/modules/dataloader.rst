@@ -8,5 +8,16 @@ manages batched data delivery to GNN training loops.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``dataloader.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/dataloader/include/generators/dataloader.dox
+   :language: c
+   :caption:
+

@@ -8,5 +8,16 @@ as a base class throughout the framework.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``tools.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/tools/include/tools/tools.dox
+   :language: c
+   :caption:
+

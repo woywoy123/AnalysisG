@@ -8,5 +8,16 @@ n-tuples to be read with minimal boilerplate.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``io.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/io/include/io/io.dox
+   :language: c
+   :caption:
+

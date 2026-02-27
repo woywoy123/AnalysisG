@@ -13,3 +13,15 @@ azimuthal angle :math:`\phi`, invariant mass :math:`m`, and
    :project: AnalysisG
    :members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``physics.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/pyc/physics/include/physics/physics.dox
+   :language: c
+   :caption:
+

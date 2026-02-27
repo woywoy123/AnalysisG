@@ -8,5 +8,16 @@ and global attributes) used for GNN training and inference.
    :project: AnalysisG
    :members:
    :protected-members:
-   :private-members:
    :undoc-members:
+
+Doxygen Source
+--------------
+
+The documentation above is derived from the following ``.dox`` annotation file(s):
+
+``graph_template.dox``
+
+.. literalinclude:: ../../../../src/AnalysisG/modules/graph/include/templates/graph_template.dox
+   :language: c
+   :caption:
+
