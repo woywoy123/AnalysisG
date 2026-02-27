@@ -222,7 +222,7 @@
 /**
  * @fn void lossfx::to(torch::TensorOptions*)
  * @brief Move all internal tensors to the specified device.
- * @param opt Device options.
+ * @param op Device options.
  */
 
 /**

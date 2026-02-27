@@ -5,10 +5,7 @@
  *          console output (success, warning, failure, info) and progress bars.
  */
 
-/**
- * @cdef cppclass notification
- * @brief C++ logging and progress-bar base class.
- */
+
 
 
 

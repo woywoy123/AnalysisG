@@ -5,10 +5,7 @@
  *          Geometric-compatible graphs from physics events.
  */
 
-/**
- * @cdef cppclass graph_template
- * @brief C++ base class for user-defined graph constructors.
- */
+
 
 
 

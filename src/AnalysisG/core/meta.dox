@@ -6,10 +6,7 @@
  *          the local ROOT file headers.
  */
 
-/**
- * @cdef cppclass meta
- * @brief C++ metadata manager.
- */
+
 
 
 
@@ -30,10 +27,7 @@
 
 
 
-/**
- * @cdef Meta MetaLookup.__find__(self, str inpt)
- * @brief Internal lookup by dataset name/DSID string.
- */
+
 
 /**
  * @class Data

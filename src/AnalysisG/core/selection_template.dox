@@ -5,10 +5,7 @@
  *          physics events and accumulate per-event statistics.
  */
 
-/**
- * @cdef cppclass selection_template
- * @brief C++ base class for user-defined event selections.
- */
+
 
 
 

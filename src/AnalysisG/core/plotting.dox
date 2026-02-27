@@ -7,10 +7,7 @@
  *          provides Python-level histogram classes.
  */
 
-/**
- * @cdef cppclass plotting
- * @brief C++ plotting base class (inherits @c notification, @c tools).
- */
+
 
 
 

@@ -23,7 +23,10 @@
 /**
  * @fn torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses, bool null)
  * @brief Variant that returns only the H-perp matrix (or null mask).
- * @param null If @c true, return a boolean validity mask.
+ * @param pmc_b  [N, 4] b-quark Cartesian momenta.
+ * @param pmc_mu [N, 4] lepton Cartesian momenta.
+ * @param masses [N, 3] mass constraints (mT, mW, mN) in MeV.
+ * @param null   If @c true, return a boolean validity mask.
  */
 
 /**
@@ -66,6 +69,14 @@
 /**
  * @fn std::map<std::string, torch::Tensor> nusol_::NuNu(torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2, torch::Tensor* met_xy, double null, torch::Tensor* m1, torch::Tensor* m2, const double step, const double tolerance, const unsigned int timeout)
  * @brief Di-neutrino reconstruction with iterative mass-line refinement.
+ * @param pmc_b1    [N, 4] first b-quark momenta.
+ * @param pmc_b2    [N, 4] second b-quark momenta.
+ * @param pmc_mu1   [N, 4] first lepton momenta.
+ * @param pmc_mu2   [N, 4] second lepton momenta.
+ * @param met_xy    [N, 2] MET x/y.
+ * @param null      Near-zero tolerance.
+ * @param m1        [N, 3] mass constraints for first top.
+ * @param m2        [N, 3] mass constraints for second top.
  * @param step      Mass line step size.
  * @param tolerance Convergence tolerance.
  * @param timeout   Maximum iterations.
@@ -79,5 +90,10 @@
  * @param pmc        [N, 4] four-momenta.
  * @param pid        [N] PDG IDs.
  * @param met_xy     [B, 2] MET.
+ * @param mT         Top mass constraint (MeV or GeV depending on @p gev).
+ * @param mW         W mass constraint (MeV or GeV depending on @p gev).
+ * @param null       Near-zero tolerance.
+ * @param perturb    Mass-line perturbation size.
+ * @param steps      Number of mass-line steps.
  * @param gev        If @c true, treat inputs/outputs as GeV.
  */

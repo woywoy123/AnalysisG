@@ -14,10 +14,10 @@
  */
 
 /**
- * @fn void Conuix::get_psi_theta_mapping(base_t* bs, thetapsi_t* msp)
+ * @fn void Conuix::get_psi_theta_mapping(base_t* base, thetapsi_t* msp)
  * @brief Compute the ψ–θ mapping coefficients from the base kinematic
  *        constants.
- * @param bs  Pointer to the base constants.
+ * @param base  Pointer to the base constants.
  * @param msp Output mapping struct.
  */
 
@@ -47,16 +47,16 @@
  */
 
 /**
- * @fn void Conuix::get_sx(base_t* bs, Sx_t* sx)
+ * @fn void Conuix::get_sx(base_t* base, Sx_t* sx)
  * @brief Compute the S_x shift coefficients.
- * @param bs Base constants.
+ * @param base Base constants.
  * @param sx Output @c Sx_t struct.
  */
 
 /**
- * @fn void Conuix::get_sy(base_t* bs, Sy_t* sy)
+ * @fn void Conuix::get_sy(base_t* base, Sy_t* sy)
  * @brief Compute the S_y shift coefficients.
- * @param bs Base constants.
+ * @param base Base constants.
  * @param sy Output @c Sy_t struct.
  */
 

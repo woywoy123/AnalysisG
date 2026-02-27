@@ -115,9 +115,9 @@
 
 /**
  * @fn void container::add_meta_data(meta*, std::string)
- * @brief Associate metadata @p m with filename @p filename.
- * @param m        Pointer to the metadata.
- * @param filename File path.
+ * @brief Associate metadata with a filename.
+ * @param data     Pointer to the metadata.
+ * @param fname    File path.
  */
 
 /**

@@ -7,10 +7,7 @@
  *          association.
  */
 
-/**
- * @cdef cppclass particle_template
- * @brief C++ particle with four-momentum, PDG ID, and family links.
- */
+
 
 
 

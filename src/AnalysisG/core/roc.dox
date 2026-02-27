@@ -20,10 +20,7 @@
 
 
 
-/**
- * @cdef cppclass roc
- * @brief C++ ROC curve builder (inherits @c plotting).
- */
+
 
 
 

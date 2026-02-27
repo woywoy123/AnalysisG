@@ -6,10 +6,7 @@
  *          underlying @c io* pointer.
  */
 
-/**
- * @cdef cppclass io
- * @brief C++ I/O class for HDF5 and ROOT data (inherits @c notification).
- */
+
 
 
 

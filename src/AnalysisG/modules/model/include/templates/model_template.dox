@@ -82,7 +82,7 @@
 /**
  * @fn void model_template::initialize(optimizer_params_t*)
  * @brief Build and attach the optimizer with the given hyper-parameters.
- * @param params Optimizer configuration.
+ * @param op_params Optimizer configuration.
  */
 
 /**
@@ -128,37 +128,37 @@
 /**
  * @fn void model_template::prediction_graph_feature(std::string, torch::Tensor)
  * @brief Store a prediction tensor at graph level.
- * @param name   Feature name.
- * @param tensor Prediction tensor.
+ * @param key    Feature name.
+ * @param pred   Prediction tensor.
  */
 
 /**
  * @fn void model_template::prediction_node_feature(std::string, torch::Tensor)
  * @brief Store a prediction tensor at node level.
- * @param name   Feature name.
- * @param tensor Prediction tensor.
+ * @param key    Feature name.
+ * @param pred   Prediction tensor.
  */
 
 /**
  * @fn void model_template::prediction_edge_feature(std::string, torch::Tensor)
  * @brief Store a prediction tensor at edge level.
- * @param name   Feature name.
- * @param tensor Prediction tensor.
+ * @param key    Feature name.
+ * @param pred   Prediction tensor.
  */
 
 /**
  * @fn void model_template::prediction_extra(std::string, torch::Tensor)
  * @brief Store a miscellaneous prediction tensor.
- * @param name   Feature name.
- * @param tensor Prediction tensor.
+ * @param key    Feature name.
+ * @param pred   Prediction tensor.
  */
 
 /**
  * @fn torch::Tensor* model_template::compute_loss(std::string, graph_enum)
  * @brief Compute the loss for the named output feature at the given graph
  *        level.
- * @param name Feature name.
- * @param grx  Graph level (@c graph_enum::pred_graph/node/edge).
+ * @param pred Feature name.
+ * @param feat  Graph level (@c graph_enum::pred_graph/node/edge).
  * @return Pointer to the computed loss tensor.
  */
 

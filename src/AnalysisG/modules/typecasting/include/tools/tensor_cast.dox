@@ -84,7 +84,6 @@
  * @tparam g Leaf primitive type.
  * @param _data Source nested vector.
  * @param _op   Scalar type for the tensor (e.g. @c torch::kFloat32).
- * @param       Unused tag value of type @p g.
  * @param op    Tensor options (device, dtype overridden by @p _op).
  * @return Padded @c torch::Tensor with dimensions derived from @p _data.
  */

@@ -14,11 +14,11 @@
  */
 
 /**
- * @fn long double** flush(long double** dmx, const int dim_j)
- * @brief Free the 2D array @p dmx (which has @p dim_j columns) and return
+ * @fn long double** flush(long double** dmx, const int dim_i)
+ * @brief Free the 2D array @p dmx (which has @p dim_i rows) and return
  *        @c nullptr.
  * @param dmx   Array to free.
- * @param dim_j Number of columns.
+ * @param dim_i Number of rows.
  * @return @c nullptr.
  */
 

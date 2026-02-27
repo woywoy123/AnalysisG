@@ -16,17 +16,17 @@
  */
 
 /**
- * @fn void registerInclude(std::string name, bool is_abs)
+ * @fn void registerInclude(std::string pth, bool is_abs)
  * @brief Register a header path with the ROOT dictionary builder.
- * @param name   Header file name or path.
- * @param is_abs If @c true, treat @p name as an absolute path.
+ * @param pth    Header file name or path.
+ * @param is_abs If @c true, treat @p pth as an absolute path.
  */
 
 /**
- * @fn void buildDict(std::string name, std::string incl)
+ * @fn void buildDict(std::string _name, std::string _shrt)
  * @brief Build a ROOT dictionary for the given class.
- * @param name Class name.
- * @param incl Include path.
+ * @param _name  Class name.
+ * @param _shrt  Include path.
  */
 
 /**
@@ -80,7 +80,7 @@
 /**
  * @fn data_enum bsc_t::root_type_translate(std::string*)
  * @brief Translate a ROOT leaf-type string to the corresponding @c data_enum.
- * @param s Pointer to the ROOT type string (e.g. @c "D" for double).
+ * @param root_str Pointer to the ROOT type string (e.g. @c "D" for double).
  * @return Corresponding @c data_enum value.
  */
 

@@ -6,10 +6,7 @@
  *          event.
  */
 
-/**
- * @cdef cppclass event_template
- * @brief C++ base class for user-defined event constructors.
- */
+
 
 
 

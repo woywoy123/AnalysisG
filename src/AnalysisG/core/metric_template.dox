@@ -6,24 +6,13 @@
  *          @c notification) used for ROOT-based model metric computation.
  */
 
-/**
- * @cdef cppclass metric_template
- * @brief C++ metric evaluation base class (inherits @c tools, @c notification).
- */
 
 
 
 
 
-/**
- * @cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* epochs)
- * @brief Test whether file @p fname matches any of the given k-fold and epoch
- *        filter lists.
- * @param fname   File name to test.
- * @param kfolds  Accepted k-fold suffixes (empty = accept all).
- * @param epochs  Accepted epoch substrings (empty = accept all).
- * @return @c true if the file matches the filters.
- */
+
+
 
 /**
  * @class MetricTemplate

@@ -7,12 +7,7 @@
  *          owns the underlying C++ @c analysis pointer.
  */
 
-/**
- * @cdef cppclass analysis
- * @brief C++ analysis orchestrator (inherits @c notification).
- * @details Manages sample loading, event/graph/selection/metric template
- *          registration, model training, and thread attachment.
- */
+
 
 
 

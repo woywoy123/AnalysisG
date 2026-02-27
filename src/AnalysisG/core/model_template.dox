@@ -5,10 +5,7 @@
  *          output feature maps and model bookkeeping paths.
  */
 
-/**
- * @cdef cppclass model_template
- * @brief C++ base class for GNN models.
- */
+
 
 
 

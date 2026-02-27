@@ -5,10 +5,7 @@
  *          registering models with the @c analysis class.
  */
 
-/**
- * @cdef cppclass optimizer_params_t
- * @brief Optimizer and learning-rate-scheduler configuration.
- */
+
 
 
 

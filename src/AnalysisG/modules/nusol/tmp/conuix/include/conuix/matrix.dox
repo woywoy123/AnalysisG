@@ -47,7 +47,6 @@
 /**
  * @fn void matrix_t::print(int p)
  * @brief Print to stdout.
- * @param p Decimal precision.
  */
 
 /**
