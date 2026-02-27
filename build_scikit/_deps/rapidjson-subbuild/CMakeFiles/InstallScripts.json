@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/runner/work/AnalysisG/AnalysisG/build_scikit/_deps/rapidjson-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

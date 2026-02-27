@@ -13,7 +13,7 @@
  * @details Inherits @c tools.  Provides the machinery for reading one or more
  *          ROOT TTrees into typed particle containers.  Users subclass
  *          @c event_template, call
- *          @c register_particle<ParticleType>(&myMap) for each particle type
+ *          @c register_particle(&this->myMap) for each particle type
  *          they want populated, and override @c build (to perform custom
  *          filling from @c element_t) and @c CompileEvent (to compute derived
  *          quantities).

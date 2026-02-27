@@ -1,0 +1,188 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:9 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    searched_directories:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/uname"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/uname"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/uname"
+      - "/snap/bin/uname"
+      - "/home/runner/.local/bin/uname"
+      - "/opt/pipx_bin/uname"
+      - "/home/runner/.cargo/bin/uname"
+      - "/home/runner/.config/composer/vendor/bin/uname"
+      - "/usr/local/.ghcup/bin/uname"
+      - "/home/runner/.dotnet/tools/uname"
+      - "/usr/local/sbin/uname"
+      - "/usr/local/bin/uname"
+      - "/usr/sbin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:9 (project)"
+    message: |
+      The system is: Linux - 6.14.0-1017-azure - x86_64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompiler.cmake:54 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:39 (_cmake_find_compiler)"
+      - "CMakeLists.txt:9 (project)"
+    mode: "program"
+    variable: "CMAKE_CUDA_COMPILER"
+    description: "CUDA compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "nvcc"
+    candidate_directories:
+      - "/usr/bin/"
+    searched_directories:
+      - "/usr/bin/nvcc"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:1303 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:99 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:9 (project)"
+    message: |
+      Checking whether the CUDA compiler is NVIDIA using "" did not match "nvcc: [^
+      ]+ Cuda compiler driver":
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:1303 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:99 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:9 (project)"
+    message: |
+      Checking whether the CUDA compiler is Clang using "" did not match "(clang version)":
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/Internal/CMakeCUDAFindToolkit.cmake:15 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:109 (cmake_cuda_find_toolkit)"
+      - "CMakeLists.txt:9 (project)"
+    mode: "program"
+    variable: "_CUDA_NVCC_EXECUTABLE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "nvcc"
+      - "nvcc.exe"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+...

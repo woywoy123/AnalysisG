@@ -1,0 +1,7 @@
+# This is a generated file and its contents are an internal implementation detail.
+# The patch step will be re-executed if anything in this file changes.
+# No other meaning or use of this file is supported.
+
+command (connected)=/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/cmake;-Dcan_fetch=YES;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;/home/runner/work/AnalysisG/AnalysisG/build_scikit/_deps/rapidjson-subbuild/rapidjson-populate-prefix/tmp/rapidjson-populate-gitupdate.cmake
+command (disconnected)=/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/cmake;-Dcan_fetch=NO;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;/home/runner/work/AnalysisG/AnalysisG/build_scikit/_deps/rapidjson-subbuild/rapidjson-populate-prefix/tmp/rapidjson-populate-gitupdate.cmake
+work_dir=/home/runner/work/AnalysisG/AnalysisG/build_scikit/_deps/rapidjson-src

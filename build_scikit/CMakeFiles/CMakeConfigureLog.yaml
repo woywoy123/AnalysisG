@@ -1,0 +1,2201 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/"
+      - "/usr/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    searched_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/uname"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/uname"
+      - "/usr/local/lib/python3.12/dist-packages/uname"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/uname"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/uname"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/uname"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/uname"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/uname"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/uname"
+      - "/snap/bin/uname"
+      - "/home/runner/.local/bin/uname"
+      - "/opt/pipx_bin/uname"
+      - "/home/runner/.cargo/bin/uname"
+      - "/home/runner/.config/composer/vendor/bin/uname"
+      - "/usr/local/.ghcup/bin/uname"
+      - "/home/runner/.dotnet/tools/uname"
+      - "/usr/local/sbin/uname"
+      - "/usr/local/bin/uname"
+      - "/usr/sbin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      The system is: Linux - 6.14.0-1017-azure - x86_64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER"
+    description: "CXX compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "/usr/bin/x86_64-linux-gnu-g++"
+    candidate_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/"
+      - "/usr/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-g++"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/"
+    found: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/x86_64-linux-gnu-g++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/4.2.1/CompilerIdCXX/a.out
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-ar"
+      - "ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-ar"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-ranlib"
+      - "ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-ranlib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-strip"
+      - "strip"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-strip"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-ld"
+      - "ld"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-ld"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-nm"
+      - "nm"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-nm"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-objdump"
+      - "objdump"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-objdump"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-objcopy"
+      - "objcopy"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-objcopy"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-readelf"
+      - "readelf"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-readelf"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-dlltool"
+      - "dlltool"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    searched_directories:
+      - "/usr/bin/x86_64-linux-gnu-dlltool"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/x86_64-linux-gnu-dlltool"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/x86_64-linux-gnu-dlltool"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/x86_64-linux-gnu-dlltool"
+      - "/snap/bin/x86_64-linux-gnu-dlltool"
+      - "/home/runner/.local/bin/x86_64-linux-gnu-dlltool"
+      - "/opt/pipx_bin/x86_64-linux-gnu-dlltool"
+      - "/home/runner/.cargo/bin/x86_64-linux-gnu-dlltool"
+      - "/home/runner/.config/composer/vendor/bin/x86_64-linux-gnu-dlltool"
+      - "/usr/local/.ghcup/bin/x86_64-linux-gnu-dlltool"
+      - "/home/runner/.dotnet/tools/x86_64-linux-gnu-dlltool"
+      - "/usr/local/sbin/x86_64-linux-gnu-dlltool"
+      - "/usr/local/bin/x86_64-linux-gnu-dlltool"
+      - "/usr/sbin/x86_64-linux-gnu-dlltool"
+      - "/sbin/x86_64-linux-gnu-dlltool"
+      - "/bin/x86_64-linux-gnu-dlltool"
+      - "/usr/games/x86_64-linux-gnu-dlltool"
+      - "/usr/local/games/x86_64-linux-gnu-dlltool"
+      - "/usr/bin/dlltool"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/dlltool"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/dlltool"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/dlltool"
+      - "/snap/bin/dlltool"
+      - "/home/runner/.local/bin/dlltool"
+      - "/opt/pipx_bin/dlltool"
+      - "/home/runner/.cargo/bin/dlltool"
+      - "/home/runner/.config/composer/vendor/bin/dlltool"
+      - "/usr/local/.ghcup/bin/dlltool"
+      - "/home/runner/.dotnet/tools/dlltool"
+      - "/usr/local/sbin/dlltool"
+      - "/usr/local/bin/dlltool"
+      - "/usr/sbin/dlltool"
+      - "/sbin/dlltool"
+      - "/bin/dlltool"
+      - "/usr/games/dlltool"
+      - "/usr/local/games/dlltool"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-addr2line"
+      - "addr2line"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    found: "/usr/bin/x86_64-linux-gnu-addr2line"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:206 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-tapi"
+      - "tapi"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    searched_directories:
+      - "/usr/bin/x86_64-linux-gnu-tapi"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/x86_64-linux-gnu-tapi"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/x86_64-linux-gnu-tapi"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/x86_64-linux-gnu-tapi"
+      - "/snap/bin/x86_64-linux-gnu-tapi"
+      - "/home/runner/.local/bin/x86_64-linux-gnu-tapi"
+      - "/opt/pipx_bin/x86_64-linux-gnu-tapi"
+      - "/home/runner/.cargo/bin/x86_64-linux-gnu-tapi"
+      - "/home/runner/.config/composer/vendor/bin/x86_64-linux-gnu-tapi"
+      - "/usr/local/.ghcup/bin/x86_64-linux-gnu-tapi"
+      - "/home/runner/.dotnet/tools/x86_64-linux-gnu-tapi"
+      - "/usr/local/sbin/x86_64-linux-gnu-tapi"
+      - "/usr/local/bin/x86_64-linux-gnu-tapi"
+      - "/usr/sbin/x86_64-linux-gnu-tapi"
+      - "/sbin/x86_64-linux-gnu-tapi"
+      - "/bin/x86_64-linux-gnu-tapi"
+      - "/usr/games/x86_64-linux-gnu-tapi"
+      - "/usr/local/games/x86_64-linux-gnu-tapi"
+      - "/usr/bin/tapi"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/tapi"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/tapi"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/tapi"
+      - "/snap/bin/tapi"
+      - "/home/runner/.local/bin/tapi"
+      - "/opt/pipx_bin/tapi"
+      - "/home/runner/.cargo/bin/tapi"
+      - "/home/runner/.config/composer/vendor/bin/tapi"
+      - "/usr/local/.ghcup/bin/tapi"
+      - "/home/runner/.dotnet/tools/tapi"
+      - "/usr/local/sbin/tapi"
+      - "/usr/local/bin/tapi"
+      - "/usr/sbin/tapi"
+      - "/sbin/tapi"
+      - "/bin/tapi"
+      - "/usr/games/tapi"
+      - "/usr/local/games/tapi"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_AR"
+    description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-gcc-ar-13.3"
+      - "x86_64-linux-gnu-gcc-ar-13"
+      - "x86_64-linux-gnu-gcc-ar13"
+      - "x86_64-linux-gnu-gcc-ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    searched_directories:
+      - "/usr/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/snap/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/home/runner/.local/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/opt/pipx_bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/home/runner/.cargo/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/home/runner/.config/composer/vendor/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/usr/local/.ghcup/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/home/runner/.dotnet/tools/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/usr/local/sbin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/usr/local/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/usr/sbin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/sbin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/bin/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/usr/games/x86_64-linux-gnu-gcc-ar-13.3"
+      - "/usr/local/games/x86_64-linux-gnu-gcc-ar-13.3"
+    found: "/usr/bin/x86_64-linux-gnu-gcc-ar-13"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:4 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_RANLIB"
+    description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "x86_64-linux-gnu-gcc-ranlib-13"
+      - "x86_64-linux-gnu-gcc-ranlib13"
+      - "x86_64-linux-gnu-gcc-ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+    searched_directories:
+      - "/usr/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/snap/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/home/runner/.local/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/opt/pipx_bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/home/runner/.cargo/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/home/runner/.config/composer/vendor/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/usr/local/.ghcup/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/home/runner/.dotnet/tools/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/usr/local/sbin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/usr/local/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/usr/sbin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/sbin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/bin/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/usr/games/x86_64-linux-gnu-gcc-ranlib-13.3"
+      - "/usr/local/games/x86_64-linux-gnu-gcc-ranlib-13.3"
+    found: "/usr/bin/x86_64-linux-gnu-gcc-ranlib-13"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/CMakeScratch/TryCompile-3kicpw"
+      binary: "/home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/CMakeScratch/TryCompile-3kicpw"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/CMakeScratch/TryCompile-3kicpw'
+        
+        Run Build Command(s): /usr/local/bin/ninja -v cmTC_8e6d0
+        [1/2] /usr/bin/x86_64-linux-gnu-g++   -v -o CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -c /tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/x86_64-linux-gnu-g++
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04.1' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-gcn/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_8e6d0.dir/'
+         /usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_8e6d0.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cczWeb4l.s
+        GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04.1) version 13.3.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 13.3.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.26-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/13"
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/include-fixed/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/include/c++/13
+         /usr/include/x86_64-linux-gnu/c++/13
+         /usr/include/c++/13/backward
+         /usr/lib/gcc/x86_64-linux-gnu/13/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        Compiler executable checksum: 7896445e4990772fdae9dc0659a99266
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_8e6d0.dir/'
+         as -v --64 -o CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o /tmp/cczWeb4l.s
+        GNU assembler version 2.42 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42
+        COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.'
+        [2/2] : && /usr/bin/x86_64-linux-gnu-g++  -v -Wl,-v CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_8e6d0   && :
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/x86_64-linux-gnu-g++
+        COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04.1' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c,ada,c++,go,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-gcn/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 
+        COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8e6d0' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_8e6d0.'
+         /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccDf688n.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_8e6d0 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+        collect2 version 13.3.0
+        /usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccDf688n.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_8e6d0 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o
+        GNU ld (GNU Binutils for Ubuntu) 2.42
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8e6d0' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_8e6d0.'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/include/c++/13]
+          add: [/usr/include/x86_64-linux-gnu/c++/13]
+          add: [/usr/include/c++/13/backward]
+          add: [/usr/lib/gcc/x86_64-linux-gnu/13/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/include/c++/13] ==> [/usr/include/c++/13]
+        collapse include dir [/usr/include/x86_64-linux-gnu/c++/13] ==> [/usr/include/x86_64-linux-gnu/c++/13]
+        collapse include dir [/usr/include/c++/13/backward] ==> [/usr/include/c++/13/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/13/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/13/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/13;/usr/include/x86_64-linux-gnu/c++/13;/usr/include/c++/13/backward;/usr/lib/gcc/x86_64-linux-gnu/13/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/CMakeScratch/TryCompile-3kicpw']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/local/bin/ninja -v cmTC_8e6d0]
+        ignore line: [[1/2] /usr/bin/x86_64-linux-gnu-g++   -v -o CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -c /tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/x86_64-linux-gnu-g++]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04.1' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-nvptx/usr amdgcn-amdhsa=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-gcn/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_8e6d0.dir/']
+        ignore line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_8e6d0.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/cczWeb4l.s]
+        ignore line: [GNU C++17 (Ubuntu 13.3.0-6ubuntu2~24.04.1) version 13.3.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 13.3.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.26-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/13"]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/include-fixed/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/13/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/include/c++/13]
+        ignore line: [ /usr/include/x86_64-linux-gnu/c++/13]
+        ignore line: [ /usr/include/c++/13/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/13/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: 7896445e4990772fdae9dc0659a99266]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_8e6d0.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o /tmp/cczWeb4l.s]
+        ignore line: [GNU assembler version 2.42 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.42]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [[2/2] : && /usr/bin/x86_64-linux-gnu-g++  -v -Wl -v CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_8e6d0   && :]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/x86_64-linux-gnu-g++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 13.3.0-6ubuntu2~24.04.1' --with-bugurl=file:///usr/share/doc/gcc-13/README.Bugs --enable-languages=c ada c++ go d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-13 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/libexec --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-libstdcxx-backtrace --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-nvptx/usr amdgcn-amdhsa=/build/gcc-13-EldibY/gcc-13-13.3.0/debian/tmp-gcn/usr --enable-offload-defaulted --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1) ]
+        ignore line: [COMPILER_PATH=/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/13/:/usr/libexec/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/13/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/13/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_8e6d0' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_8e6d0.']
+        link line: [ /usr/libexec/gcc/x86_64-linux-gnu/13/collect2 -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccDf688n.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_8e6d0 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/libexec/gcc/x86_64-linux-gnu/13/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccDf688n.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_8e6d0] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/13] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/13]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/13/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../..]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+        ignore line: [collect2 version 13.3.0]
+        ignore line: [/usr/bin/ld -plugin /usr/libexec/gcc/x86_64-linux-gnu/13/liblto_plugin.so -plugin-opt=/usr/libexec/gcc/x86_64-linux-gnu/13/lto-wrapper -plugin-opt=-fresolution=/tmp/ccDf688n.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_8e6d0 /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/13 -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/13/../../.. -v CMakeFiles/cmTC_8e6d0.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o]
+        linker tool for 'CXX': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/13] ==> [/usr/lib/gcc/x86_64-linux-gnu/13]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/13/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/13;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:4 (project)"
+    message: |
+      Running the CXX compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils for Ubuntu) 2.42
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:2482 (find_package)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:2372 (__FetchContent_MakeAvailable_find_package)"
+      - "CMakeLists.txt:31 (FetchContent_MakeAvailable)"
+    name: "rapidjson"
+    configs:
+      -
+        filename: "rapidjsonConfig.cmake"
+        kind: "cmake"
+      -
+        filename: "rapidjson-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "optional"
+      quiet: true
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "rapidjson"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "/home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/pkgRedirects/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/work/AnalysisG/AnalysisG/build_scikit/CMakeFiles/pkgRedirects/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/lib/python3.12/dist-packages/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/lib/python3.12/dist-packages/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/work/_temp/ghcca-node/node/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/work/_temp/ghcca-node/node/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/snap/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/snap/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/.local/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/.local/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/pipx_bin/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/pipx_bin/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/.cargo/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/.cargo/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/.ghcup/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/.ghcup/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/.dotnet/tools/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/runner/.dotnet/tools/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/games/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/games/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/games/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/games/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/tmp1k3euf_a/wheel/platlib/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/tmp/tmp1k3euf_a/wheel/platlib/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/rapidjsonConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/rapidjson-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found: null
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data"
+        - "/tmp/tmp1k3euf_a/wheel/platlib"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FindGit.cmake:111 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:1884 (find_package)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:1619 (__FetchContent_populateSubbuild)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:2155:EVAL:2 (__FetchContent_doPopulation)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:2155 (cmake_language)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/FetchContent.cmake:2394 (__FetchContent_Populate)"
+      - "CMakeLists.txt:31 (FetchContent_MakeAvailable)"
+    mode: "program"
+    variable: "GIT_EXECUTABLE"
+    description: "Git command line client"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "git"
+    candidate_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/"
+      - "/usr/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/bin/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/sbin/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+    searched_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/git"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/git"
+      - "/usr/local/lib/python3.12/dist-packages/git"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/git"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/git"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/git"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/git"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/git"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/git"
+      - "/snap/bin/git"
+      - "/home/runner/.local/bin/git"
+      - "/opt/pipx_bin/git"
+      - "/home/runner/.cargo/bin/git"
+      - "/home/runner/.config/composer/vendor/bin/git"
+      - "/usr/local/.ghcup/bin/git"
+      - "/home/runner/.dotnet/tools/git"
+      - "/usr/local/sbin/git"
+      - "/usr/local/bin/git"
+      - "/usr/sbin/git"
+    found: "/usr/bin/git"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data"
+        - "/tmp/tmp1k3euf_a/wheel/platlib"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "build_scikit/_deps/rapidjson-src/CMakeLists.txt:49 (find_program)"
+    mode: "program"
+    variable: "CCACHE_FOUND"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ccache"
+    candidate_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/"
+      - "/usr/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/bin/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/sbin/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+    searched_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/ccache"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/ccache"
+      - "/usr/local/lib/python3.12/dist-packages/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/ccache"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/ccache"
+      - "/snap/bin/ccache"
+      - "/home/runner/.local/bin/ccache"
+      - "/opt/pipx_bin/ccache"
+      - "/home/runner/.cargo/bin/ccache"
+      - "/home/runner/.config/composer/vendor/bin/ccache"
+      - "/usr/local/.ghcup/bin/ccache"
+      - "/home/runner/.dotnet/tools/ccache"
+      - "/usr/local/sbin/ccache"
+      - "/usr/local/bin/ccache"
+      - "/usr/sbin/ccache"
+      - "/usr/bin/ccache"
+      - "/sbin/ccache"
+      - "/bin/ccache"
+      - "/usr/games/ccache"
+      - "/usr/local/games/ccache"
+      - "/usr/local/bin/ccache"
+      - "/usr/local/sbin/ccache"
+      - "/usr/local/ccache"
+      - "/usr/bin/ccache"
+      - "/usr/sbin/ccache"
+      - "/usr/ccache"
+      - "/bin/ccache"
+      - "/sbin/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/sbin/ccache"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/ccache"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/bin/ccache"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/sbin/ccache"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/ccache"
+      - "/usr/X11R6/bin/ccache"
+      - "/usr/X11R6/sbin/ccache"
+      - "/usr/X11R6/ccache"
+      - "/usr/pkg/bin/ccache"
+      - "/usr/pkg/sbin/ccache"
+      - "/usr/pkg/ccache"
+      - "/opt/bin/ccache"
+      - "/opt/sbin/ccache"
+      - "/opt/ccache"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data"
+        - "/tmp/tmp1k3euf_a/wheel/platlib"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "build_scikit/_deps/rapidjson-src/CMakeLists.txt:58 (find_program)"
+    mode: "program"
+    variable: "VALGRIND_FOUND"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "valgrind"
+    candidate_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/"
+      - "/usr/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/"
+      - "/snap/bin/"
+      - "/home/runner/.local/bin/"
+      - "/opt/pipx_bin/"
+      - "/home/runner/.cargo/bin/"
+      - "/home/runner/.config/composer/vendor/bin/"
+      - "/usr/local/.ghcup/bin/"
+      - "/home/runner/.dotnet/tools/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/sbin/"
+      - "/usr/bin/"
+      - "/sbin/"
+      - "/bin/"
+      - "/usr/games/"
+      - "/usr/local/games/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/sbin/"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/bin/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/sbin/"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+    searched_directories:
+      - "/usr/local/lib/python3.12/dist-packages/bin/valgrind"
+      - "/usr/local/lib/python3.12/dist-packages/sbin/valgrind"
+      - "/usr/local/lib/python3.12/dist-packages/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/bin/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/sbin/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/normal/local/bin/valgrind"
+      - "/home/runner/work/_temp/ghcca-node/node/bin/valgrind"
+      - "/snap/bin/valgrind"
+      - "/home/runner/.local/bin/valgrind"
+      - "/opt/pipx_bin/valgrind"
+      - "/home/runner/.cargo/bin/valgrind"
+      - "/home/runner/.config/composer/vendor/bin/valgrind"
+      - "/usr/local/.ghcup/bin/valgrind"
+      - "/home/runner/.dotnet/tools/valgrind"
+      - "/usr/local/sbin/valgrind"
+      - "/usr/local/bin/valgrind"
+      - "/usr/sbin/valgrind"
+      - "/usr/bin/valgrind"
+      - "/sbin/valgrind"
+      - "/bin/valgrind"
+      - "/usr/games/valgrind"
+      - "/usr/local/games/valgrind"
+      - "/usr/local/bin/valgrind"
+      - "/usr/local/sbin/valgrind"
+      - "/usr/local/valgrind"
+      - "/usr/bin/valgrind"
+      - "/usr/sbin/valgrind"
+      - "/usr/valgrind"
+      - "/bin/valgrind"
+      - "/sbin/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/sbin/valgrind"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/valgrind"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/bin/valgrind"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/sbin/valgrind"
+      - "/tmp/tmp1k3euf_a/wheel/platlib/valgrind"
+      - "/usr/X11R6/bin/valgrind"
+      - "/usr/X11R6/sbin/valgrind"
+      - "/usr/X11R6/valgrind"
+      - "/usr/pkg/bin/valgrind"
+      - "/usr/pkg/sbin/valgrind"
+      - "/usr/pkg/valgrind"
+      - "/opt/bin/valgrind"
+      - "/opt/sbin/valgrind"
+      - "/opt/valgrind"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data"
+        - "/tmp/tmp1k3euf_a/wheel/platlib"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CheckLanguage.cmake:164 (message)"
+      - "CMakeLists.txt:35 (check_language)"
+    checks:
+      - "Looking for a CUDA compiler"
+    message: |
+      Looking for a CUDA compiler failed with the following output:
+      CMake Error at /tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/Internal/CMakeCUDAFindToolkit.cmake:104 (message):
+        Failed to find nvcc.
+      
+        Compiler requires the CUDA toolkit.  Please set the CUDAToolkit_ROOT
+        variable.
+      Call Stack (most recent call first):
+        /tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:109 (cmake_cuda_find_toolkit)
+        CMakeLists.txt:9 (project)
+      
+      
+      -- Configuring incomplete, errors occurred!
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:1303 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:99 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:36 (enable_language)"
+    message: |
+      Checking whether the CUDA compiler is NVIDIA using "" did not match "nvcc: [^
+      ]+ Cuda compiler driver":
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCompilerId.cmake:1303 (message)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:99 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:36 (enable_language)"
+    message: |
+      Checking whether the CUDA compiler is Clang using "" did not match "(clang version)":
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/Internal/CMakeCUDAFindToolkit.cmake:15 (find_program)"
+      - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/share/cmake-4.2/Modules/CMakeDetermineCUDACompiler.cmake:109 (cmake_cuda_find_toolkit)"
+      - "CMakeLists.txt:36 (enable_language)"
+    mode: "program"
+    variable: "_CUDA_NVCC_EXECUTABLE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "nvcc"
+      - "nvcc.exe"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/usr/local/lib/python3.12/dist-packages"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages"
+      ENV{PATH}:
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/bin"
+        - "/tmp/pip-build-env-bpiw1u18/normal/local/bin"
+        - "/home/runner/work/_temp/ghcca-node/node/bin"
+        - "/snap/bin"
+        - "/home/runner/.local/bin"
+        - "/opt/pipx_bin"
+        - "/home/runner/.cargo/bin"
+        - "/home/runner/.config/composer/vendor/bin"
+        - "/usr/local/.ghcup/bin"
+        - "/home/runner/.dotnet/tools"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/tmp/tmp1k3euf_a/wheel/platlib"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data"
+        - "/tmp/tmp1k3euf_a/wheel/platlib"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+...

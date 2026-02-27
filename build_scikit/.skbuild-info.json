@@ -1,0 +1,8 @@
+{
+  "source_dir": "/home/runner/work/AnalysisG/AnalysisG",
+  "build_dir": "/home/runner/work/AnalysisG/AnalysisG/build_scikit",
+  "cmake_path": "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/cmake/data/bin/cmake",
+  "skbuild_path": "/tmp/pip-build-env-bpiw1u18/overlay/local/lib/python3.12/dist-packages/scikit_build_core",
+  "skbuild_version": "0.12.1",
+  "python_executable": "/usr/bin/python3"
+}

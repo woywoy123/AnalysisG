@@ -71,33 +71,117 @@ A typical AnalysisG analysis follows these steps:
    ``this->type`` to a unique string, call ``add_leaf("key", "root_branch")``
    for each ROOT leaf, call ``apply_type_prefix()``, and override
    ``build(std::map<std::string, particle_template*>* prt, element_t* el)``
-   to populate the output map with heap-allocated instances.
+   to populate the output map with heap-allocated instances.  The ``assign_vector``
+   helper allocates one typed instance per ROOT-entry row and fills its kinematics::
+
+     // particle header (my_particle.h)
+     #include <templates/particle_template.h>
+     class Top : public particle_template {
+     public:
+         Top();
+         particle_template* clone() override;
+         void build(std::map<std::string, particle_template*>* prt,
+                    element_t* el) override;
+         int from_res = 0;
+     };
+
+     // particle source (my_particle.cxx)
+     Top::Top() : particle_template() {
+         this->type = "top";
+         this->add_leaf("pt",       "_pt");
+         this->add_leaf("eta",      "_eta");
+         this->add_leaf("phi",      "_phi");
+         this->add_leaf("e",        "_e");
+         this->add_leaf("index",    "_index");
+         this->add_leaf("from_res", "_FromRes");
+         this->apply_type_prefix();
+     }
+     particle_template* Top::clone(){return new Top();}
+     void Top::build(std::map<std::string, particle_template*>* prt,
+                     element_t* el){
+         std::vector<Top*> out;
+         assign_vector(&out, el);
+         std::vector<int> _from_res;
+         el->get("from_res", &_from_res);
+         for (size_t i = 0; i < out.size(); ++i){
+             out[i]->from_res = _from_res[i];
+             (*prt)[std::string(out[i]->hash)] = out[i];
+         }
+     }
 
 2. **Define events** — subclass :class:`event_template`, set ``this->name``,
-   call ``register_particle<MyParticle>(&m_jets)`` for each particle
-   collection, set ``this->trees = {"nominal"}``, and override ``build`` /
-   ``CompileEvent`` to populate public particle vectors from the private maps.
+   add ROOT-leaf mappings with ``add_leaf``, register each concrete particle
+   class via ``register_particle(&this->m_<collection>)``, set
+   ``this->trees``, and override ``build`` / ``CompileEvent``.
+   ``build`` reads scalar event quantities; ``CompileEvent`` copies private
+   ``std::map`` entries into the public ``std::vector<particle_template*>``
+   members and builds any inter-particle associations::
+
+     // event header (my_event.h)
+     #include <templates/event_template.h>
+     #include "my_particle.h"
+     class MyEvent : public event_template {
+     public:
+         MyEvent();
+         event_template* clone() override;
+         void build(element_t* el) override;
+         void CompileEvent() override;
+         std::vector<particle_template*> Tops = {};
+         float met = 0;
+     private:
+         std::map<std::string, Top*> m_tops = {};
+     };
+
+     // event source (my_event.cxx)
+     MyEvent::MyEvent(){
+         this->name = "my_event";
+         this->trees = {"nominal"};
+         this->add_leaf("met", "met_met");
+         this->register_particle(&this->m_tops);
+     }
+     event_template* MyEvent::clone(){return new MyEvent();}
+     void MyEvent::build(element_t* el){el->get("met", &this->met);}
+     void MyEvent::CompileEvent(){
+         std::map<std::string, Top*>::iterator it;
+         for (it = m_tops.begin(); it != m_tops.end(); ++it)
+             this->Tops.push_back(it->second);
+     }
 
 3. **Define graphs** — subclass :class:`graph_template`, set ``this->name``,
    and override ``CompileEvent``.  Inside ``CompileEvent`` call
    ``get_event<MyEvent>()`` to retrieve the populated event object, pass a
    particle collection to ``define_particle_nodes``, then register feature
-   functions::
+   functions.
 
-     // standalone feature functions follow the signature:
-     //   void fn_name(OutputType* out, ParticleOrEventType* in)
-     void pt(double* o, particle_template* p){*o = p->pt;}
-     void signal(bool* o, MyEvent* ev){*o = ev->truth_signal;}
-     void same_top(int* o, std::tuple<particle_template*, particle_template*>* e_ij){
-         *o = std::get<0>(*e_ij)->index == std::get<1>(*e_ij)->index;
+   Feature functions are plain C++ functions with the signature
+   ``void fn(OutputType* out, ParticleOrEventType* in)``; for edge features
+   the second argument is ``std::tuple<O*, O*>*``::
+
+     // graph feature functions (my_features.cxx)
+     // node feature: pT of each particle
+     void node_pt(double* o, particle_template* p){*o = p->pt;}
+
+     // graph-level truth label: 1 if the event contains >=1 resonance top
+     void is_signal(bool* o, MyEvent* ev){
+         for (size_t i = 0; i < ev->Tops.size(); ++i){
+             if (((Top*)ev->Tops[i])->from_res){*o = true; return;}
+         }
+         *o = false;
      }
 
+     // edge truth label: 1 if both endpoints share the same top index
+     void same_top(int* o,
+                   std::tuple<particle_template*, particle_template*>* e_ij){
+         *o = (std::get<0>(*e_ij)->index == std::get<1>(*e_ij)->index) ? 1 : 0;
+     }
+
+     // graph CompileEvent
      void MyGraph::CompileEvent(){
          MyEvent* ev = this->get_event<MyEvent>();
-         this->define_particle_nodes(&ev->Jets);
+         this->define_particle_nodes(&ev->Tops);
 
-         this->add_graph_truth_feature<bool, MyEvent>(ev, signal, "signal");
-         this->add_node_data_feature<double, particle_template>(pt, "pt");
+         this->add_graph_truth_feature<bool, MyEvent>(ev, is_signal, "signal");
+         this->add_node_data_feature<double, particle_template>(node_pt, "pt");
          this->add_edge_truth_feature<int, particle_template>(same_top, "top_edge");
      }
 
@@ -124,25 +208,35 @@ A typical AnalysisG analysis follows these steps:
       ana.AddModel(MyModel(), op, "run1")
       ana.Start()
 
-``pyc`` kernels are exposed as PyTorch custom operators and can be called
-directly after loading the shared library:
-
-.. code-block:: python
+``pyc`` kernels are exposed as PyTorch custom operators registered under the
+``tpyc`` (CPU) or ``cupyc`` (CUDA) namespace.  After loading the shared
+library the operators are available as ``torch.ops.<ns>.<name>``.
+The ``separate`` variants take one tensor per kinematic component; the
+``combined`` variants take a single Nx4 tensor.  Both variants return a
+2-D tensor (NxK)::
 
    import torch
-   torch.ops.load_library("libtpyc.so")   # CPU build
-   # torch.ops.load_library("libcupyc.so") # CUDA build
+   torch.ops.load_library("/path/to/build/libtpyc.so")   # CPU build
+   # torch.ops.load_library("/path/to/build/libcupyc.so") # CUDA build
 
-   pt  = torch.tensor([100.0]).double()
-   eta = torch.tensor([1.5]).double()
-   phi = torch.tensor([0.5]).double()
-   e   = torch.tensor([120.0]).double()
+   # Two particles: polar coordinates stacked as Nx4 (pt, eta, phi, E)
+   pmu = torch.tensor([[207050.75, 0.562, 2.263, 296197.3],
+                        [100000.00, 1.200, 0.500, 115000.0]],
+                       dtype=torch.float64)
 
-   # polar (pT, eta, phi, E) -> Cartesian (px, py, pz, E)
-   pmc = torch.ops.tpyc.transform_separate_pxpypze(pt, eta, phi, e)
+   # --- separate variant: pass each column individually ---
+   pmc_sep = torch.ops.tpyc.transform_separate_pxpypze(
+       pmu[:, 0],   # pt
+       pmu[:, 1],   # eta
+       pmu[:, 2],   # phi
+       pmu[:, 3],   # E
+   )   # returns Nx4: (px, py, pz, E)
 
-   # compute invariant mass from Cartesian four-momentum
-   m   = torch.ops.tpyc.physics_cartesian_combined_m(pmc)
+   # --- combined variant: pass the Nx4 polar tensor directly ---
+   pmc_comb = torch.ops.tpyc.transform_combined_pxpypze(pmu)
+
+   # Invariant mass from Cartesian four-momentum (Nx4 input -> Nx1 output)
+   mass = torch.ops.tpyc.physics_cartesian_combined_m(pmc_comb)
 
 Languages and Technologies
 --------------------------
