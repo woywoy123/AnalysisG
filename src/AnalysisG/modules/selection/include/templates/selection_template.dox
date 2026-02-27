@@ -9,7 +9,21 @@
 /**
  * @class selection_template
  * @brief Base class for user-defined event selections.
- * @details Inherits @c tools.
+ * @details Inherits @c tools.  Users subclass @c selection_template and
+ *          override @c selection(event_template*) to return @c false for
+ *          events that should be dropped, and optionally override
+ *          @c strategy(event_template*) for secondary logic.  Results from
+ *          parallel threads are recombined via @c merge.
+ *
+ *          Output ROOT branches are written with the @c write overloads;
+ *          particle attribute batches are dispatched through @c switch_board.
+ *
+ *          The @c sum, @c vectorize, @c upcast, @c downcast, @c make_unique,
+ *          @c contains, and @c get_leptonics template helpers simplify common
+ *          particle-collection operations inside the selection body.  The
+ *          @c safe_delete helper avoids double-deletion of particles created
+ *          by @c sum.  The @c reverse_hash method enables kinematic lookups
+ *          from a list of event hashes.
  */
 
 /**
@@ -191,4 +205,116 @@
 /**
  * @var std::map<std::string, meta_t> selection_template::matched_meta
  * @brief Per-hash matched metadata.
+ */
+
+/**
+ * @fn template<typename g, typename k> void selection_template::sum(std::vector<g*>* ch, k** out)
+ * @brief Accumulate the four-momenta of all unique particles in @p ch into a
+ *        newly heap-allocated @c k and store it in @p out.  Duplicate
+ *        particles (same hash) are counted only once.  The resulting particle
+ *        is marked with @c _is_marked = @c true and registered in the
+ *        selection's internal deferred deletion list, so callers must not
+ *        delete it manually; use @c safe_delete on the original @p ch
+ *        elements to free only the unmarked particles.
+ * @tparam g Input particle type derived from @c particle_template.
+ * @tparam k Output particle type derived from @c particle_template.
+ * @param ch  Pointer to the source particle vector.
+ * @param out Address of a pointer that will receive the allocated sum particle.
+ */
+
+/**
+ * @fn template<typename g> void selection_template::safe_delete(std::vector<g*>* particles)
+ * @brief Delete all particles in @p particles whose @c _is_marked flag is
+ *        @c false, and set those pointers to @c nullptr.  Particles created
+ *        by @c sum have @c _is_marked @c = @c true and are therefore skipped.
+ * @tparam g Particle type.
+ * @param particles Pointer to the vector of particles to conditionally free.
+ */
+
+/**
+ * @fn template<typename g> g* selection_template::sum(std::map<std::string, g*>* ch)
+ * @brief Accumulate all values in the map @p ch into a single new particle and
+ *        return a pointer to it.  Internally converts the map to a vector and
+ *        delegates to the two-argument @c sum overload.
+ * @tparam g Particle type derived from @c particle_template.
+ * @param ch Pointer to the source particle map (keyed by hash).
+ * @return Pointer to the allocated sum particle.  The particle is marked with
+ *         @c _is_marked and registered in the selection's internal deferred
+ *         deletion list; it must not be freed manually.
+ */
+
+/**
+ * @fn template<typename g> float selection_template::sum(std::vector<g*>* ch)
+ * @brief Compute the invariant mass (in GeV) of the combined four-momentum of
+ *        all particles in @p ch.
+ * @tparam g Particle type derived from @c particle_template.
+ * @param ch Pointer to the source particle vector.
+ * @return Invariant mass in GeV (@c mass / 1000).
+ */
+
+/**
+ * @fn template<typename g> std::vector<g*> selection_template::vectorize(std::map<std::string, g*>* in)
+ * @brief Convert a hash-keyed particle map to a flat vector of particle
+ *        pointers in map-iteration order.
+ * @tparam g Particle type.
+ * @param in Pointer to the input map.
+ * @return Vector of pointers to the map's values.
+ */
+
+/**
+ * @fn template<typename g> std::vector<g*> selection_template::make_unique(std::vector<g*>* inpt)
+ * @brief Return a de-duplicated copy of @p inpt where each particle hash
+ *        appears at most once.  The last occurrence wins when duplicates are
+ *        found.
+ * @tparam g Particle type.
+ * @param inpt Pointer to the input vector.
+ * @return Vector of unique-hash particle pointers.
+ */
+
+/**
+ * @fn template<typename g> void selection_template::downcast(std::vector<g*>* inpt, std::vector<particle_template*>* out)
+ * @brief Append all pointers in @p inpt to @p out after casting each to
+ *        @c particle_template*.
+ * @tparam g Particle type derived from @c particle_template.
+ * @param inpt Pointer to the source typed vector.
+ * @param out  Pointer to the output base-class vector.
+ */
+
+/**
+ * @fn template<typename o, typename g> void selection_template::upcast(std::map<std::string, o*>* inpt, std::vector<g*>* out)
+ * @brief Append all values from @p inpt to @p out after casting each from
+ *        @c o* to @c g*.
+ * @tparam o Source derived type.
+ * @tparam g Target base (or other derived) type.
+ * @param inpt Pointer to the source map.
+ * @param out  Pointer to the output vector.
+ */
+
+/**
+ * @fn template<typename o, typename g> void selection_template::upcast(std::vector<o*>* inpt, std::vector<g*>* out)
+ * @brief Append all elements from vector @p inpt to @p out after casting
+ *        each from @c o* to @c g*.
+ * @tparam o Source derived type.
+ * @tparam g Target base (or other derived) type.
+ * @param inpt Pointer to the source vector.
+ * @param out  Pointer to the output vector.
+ */
+
+/**
+ * @fn template<typename g> void selection_template::get_leptonics(std::map<std::string, g*> inpt, std::vector<particle_template*>* out)
+ * @brief Append to @p out all particles from @p inpt whose @c is_lep or
+ *        @c is_nu flag is @c true.
+ * @tparam g Particle type derived from @c particle_template.
+ * @param inpt Source particle map (passed by value).
+ * @param out  Pointer to the output vector of lepton/neutrino pointers.
+ */
+
+/**
+ * @fn template<typename g, typename j> bool selection_template::contains(std::vector<g*>* inpt, j* pcheck)
+ * @brief Test whether any element of @p inpt has the same @c hash as @p pcheck.
+ * @tparam g Element type with a @c hash member.
+ * @tparam j Query type with a @c hash member.
+ * @param inpt   Pointer to the vector to search.
+ * @param pcheck Pointer to the particle to look for.
+ * @return @c true if a matching hash is found.
  */

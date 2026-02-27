@@ -62,6 +62,46 @@ Core Modules
    * - **pyc**
      - Self-contained C++/CUDA sub-package for HEP-specific kernels.
 
+Usage Workflow
+--------------
+
+A typical AnalysisG analysis follows these steps:
+
+1. **Define particles** — subclass :class:`particle_template` and call
+   ``add_leaf("pt")`` for each ROOT leaf.
+
+2. **Define events** — subclass :class:`event_template`, call
+   ``register_particle<MyParticle>(&jets)``, then override ``CompileEvent``
+   to derive quantities from the populated collections.
+
+3. **Define graphs** — subclass :class:`graph_template`, call
+   ``define_particle_nodes(&jets)`` and add features with
+   ``add_node_data_feature<double, MyParticle>(&MyParticle::get_pt, "pt")``.
+
+4. **Define selections** *(optional)* — subclass :class:`selection_template`
+   and implement ``selection`` / ``strategy``.
+
+5. **Wire up the pipeline**::
+
+     analysis ana;
+     ana.m_settings.output_path = "./output";
+     ana.m_settings.epochs = 20;
+     ana.add_samples("./data/sample.root", "ttbar");
+     ana.add_event_template(new MyEvent(), "ttbar");
+     ana.add_graph_template(new MyGraph(), "ttbar");
+     ana.add_model(new MyModel(), &opt_params, "run1");
+     ana.start();
+
+``pyc`` kernels can be called independently of the framework:
+
+.. code-block:: python
+
+   import torch
+   from AnalysisG.pyc import transform
+
+   pmc  = torch.tensor([[10.0, 5.0, 3.0, 12.0]])  # [N, 4] (px, py, pz, E)
+   pmu  = transform.separate.PxPyPzE(pmc)           # -> (pT, eta, phi, E)
+
 Languages and Technologies
 --------------------------
 

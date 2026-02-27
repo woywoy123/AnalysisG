@@ -45,6 +45,37 @@
  *
  * @section build_sec Building the Documentation
  *
+ * @section architecture_sec Architecture Overview
+ *
+ * The framework follows a pipeline architecture:
+ *
+ * 1. **I/O Layer**: @c io and @c sampletracer read ROOT files via
+ *    @c data_t/@c element_t, producing @c event_template objects populated
+ *    with @c particle_template collections.
+ *
+ * 2. **Graph Layer**: @c graph_template transforms event objects into
+ *    @c graph_t instances containing PyTorch tensors.  The topology predicate
+ *    and feature getters are defined by the user in @c CompileEvent().
+ *
+ * 3. **Selection Layer**: @c selection_template receives the same events and
+ *    applies user-defined cuts, optionally writing output ROOT branches.
+ *
+ * 4. **Training Layer**: @c dataloader batches @c graph_t objects;
+ *    @c model_template subclasses implement the GNN forward pass and loss
+ *    computation; @c optimizer wraps the PyTorch optimiser/scheduler;
+ *    k-fold cross-validation is coordinated by @c analysis.
+ *
+ * 5. **Metrics Layer**: @c metric_template and @c metrics accumulate
+ *    per-epoch loss, accuracy, and invariant-mass histograms.
+ *
+ * 6. **Utility Layer**: @c notification (coloured logging), @c tools
+ *    (filesystem/strings/math), and @c cproperty (computed property
+ *    mechanism) are inherited throughout.
+ *
+ * The @c analysis class is the top-level orchestrator that chains all
+ * layers together.
+ *
+ *
  * @code{.sh}
  * # Generate Doxygen XML (from the repository root)
  * doxygen Doxyfile

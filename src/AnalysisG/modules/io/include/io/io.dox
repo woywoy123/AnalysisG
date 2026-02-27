@@ -9,7 +9,26 @@
 /**
  * @class io
  * @brief Combined HDF5 and ROOT I/O interface.
- * @details Inherits @c tools and @c notification.
+ * @details Inherits @c tools and @c notification.  Provides two independent
+ *          I/O subsystems:
+ *
+ *          **HDF5 subsystem** — @c start/@c end open and close an HDF5 file;
+ *          the @c write and @c read template overloads serialise or
+ *          deserialise vectors and scalars to/from named HDF5 datasets.
+ *          @c dataset_names lists existing datasets in the open file.
+ *
+ *          **ROOT subsystem** — @c root_begin/@c root_end open and close the
+ *          registered ROOT files; @c scan_keys traverses the TTree/branch/leaf
+ *          hierarchy and populates the @c keys, @c tree_data, @c branch_data,
+ *          and @c leaf_data maps.  @c root_size returns the number of entries
+ *          per TTree.  @c trigger_pcm loads ROOT PCM dictionaries.
+ *          @c get_data returns the internal @c data_t map that the
+ *          @c event_template machinery reads from.
+ *
+ *          @c import_settings copies relevant fields from a @c settings_t
+ *          (metacache path, sum-of-weights name, trees/branches/leaves lists).
+ *          The @c meta_data map associates each open file with its @c meta
+ *          object.
  */
 
 /**

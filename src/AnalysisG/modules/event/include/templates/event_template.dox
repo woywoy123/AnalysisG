@@ -10,7 +10,23 @@
 /**
  * @class event_template
  * @brief Base class for user-defined physics events.
- * @details Inherits @c tools.
+ * @details Inherits @c tools.  Provides the machinery for reading one or more
+ *          ROOT TTrees into typed particle containers.  Users subclass
+ *          @c event_template, call
+ *          @c register_particle<ParticleType>(&myMap) for each particle type
+ *          they want populated, and override @c build (to perform custom
+ *          filling from @c element_t) and @c CompileEvent (to compute derived
+ *          quantities).
+ *
+ *          The @c trees and @c branches properties declare which ROOT TTrees
+ *          and TBranches to open.  Individual leaves are registered with
+ *          @c add_leaf.  The public maps @c m_trees, @c m_branches, @c m_leaves
+ *          mirror these registrations.
+ *
+ *          Neutrino reconstruction is available via @c multi_neutrino, which
+ *          calls the NuSol analytical solver.  Equality is based on the event
+ *          @c hash cproperty.  @c deregister_particle cleans up dynamically
+ *          allocated particles to avoid memory leaks at the end of each event.
  */
 
 /**

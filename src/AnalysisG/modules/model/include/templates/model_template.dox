@@ -11,7 +11,26 @@
 /**
  * @class model_template
  * @brief Base class for Graph Neural Network models.
- * @details Inherits @c notification and @c tools.
+ * @details Inherits @c notification and @c tools.  Users subclass
+ *          @c model_template, register @c torch::nn::Sequential modules with
+ *          @c register_module (optionally with a weight-initialisation
+ *          scheme), declare input features in the @c i_graph/@c i_node/@c i_edge
+ *          cproperties, declare output targets in @c o_graph/@c o_node/@c o_edge,
+ *          and override @c forward(graph_t*) to implement the GNN computation.
+ *
+ *          Inside @c forward, call @c prediction_graph_feature,
+ *          @c prediction_node_feature, @c prediction_edge_feature, or
+ *          @c prediction_extra to store output tensors, then call
+ *          @c compute_loss to accumulate losses into @c _losses.  The public
+ *          @c clone() method must be overridden to return a new
+ *          default-constructed subclass instance.
+ *
+ *          @c save_state/@c restore_state persist and reload weights from
+ *          @c model_checkpoint_path.  The @c device and @c device_index
+ *          cproperties control the CUDA device; set them before calling
+ *          @c initialize.  Friend declarations allow @c analysis, @c optimizer,
+ *          @c dataloader, @c metrics, @c metric_template, and the @c graph_t
+ *          struct to access private training state.
  */
 
 /**

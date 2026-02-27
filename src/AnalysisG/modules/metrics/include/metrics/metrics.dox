@@ -10,6 +10,13 @@
  * @struct analytics_t
  * @brief Per-epoch, per-model histogram container for loss, accuracy, and
  *        invariant-mass distributions.
+ * @details Aggregates all ROOT histogram objects (@c TH1F) for one registered
+ *          model over all epochs.  Histograms are indexed by @c mode_enum
+ *          (training / validation / evaluation) and feature name.  Separate
+ *          maps are kept for graph-level, node-level, and edge-level loss and
+ *          accuracy, plus predicted and truth invariant-mass distributions.
+ *          @c purge() calls @c destroy() on each map and then deletes the
+ *          @c report.  Owned by @c metrics and indexed by k-fold.
  */
 
 /**
@@ -82,7 +89,20 @@
  * @class metrics
  * @brief Registers model outputs, accumulates histograms epoch by epoch, and
  *        writes loss/accuracy/mass plots.
- * @details Inherits @c tools and @c notification.
+ * @details Inherits @c tools and @c notification.  Central tracker for GNN
+ *          training metrics.  Each @c model_template is registered with
+ *          @c register_model, which allocates an @c analytics_t and a
+ *          @c model_report in the internal @c registry, keyed by k-fold.
+ *
+ *          Each time @c capture is called (once per epoch per mode), it scans
+ *          the model's current output/loss tensors and fills the appropriate
+ *          @c TH1F histograms in the @c analytics_t.  The @c dump_plots,
+ *          @c dump_loss_plots, @c dump_accuracy_plots, and @c dump_mass_plots
+ *          methods produce ROOT canvases written to @c output_path.
+ *
+ *          The @c m_settings member is copied from the top-level @c analysis
+ *          settings and controls histogram binning (@c nbins, @c max_range,
+ *          @c logy) and which k-fold indices to process.
  */
 
 /**

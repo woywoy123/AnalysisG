@@ -12,7 +12,27 @@
  * @class particle_template
  * @brief Base class for physics particles.  Wraps @c particle_t and exposes
  *        kinematic and identification properties via @c cproperty.
- * @details Inherits @c tools.
+ * @details Inherits @c tools.  All kinematic properties (@c e, @c pt,
+ *          @c eta, @c phi, @c px, @c py, @c pz, @c mass, @c P, @c beta) are
+ *          exposed as @c cproperty<double, particle_template> objects backed by
+ *          static getter/setter callbacks that keep the Cartesian and polar
+ *          representations of the four-momentum internally consistent via
+ *          @c to_cartesian() and @c to_polar().  Particle metadata (@c pdgid,
+ *          @c symbol, @c charge, @c hash, @c is_b, @c is_lep, @c is_nu,
+ *          @c is_add, @c lep_decay) is similarly wrapped.
+ *
+ *          Parent–child decay-chain relationships are maintained through
+ *          @c register_parent/@c register_child and the @c parents/@c children
+ *          cproperty maps keyed by particle hash.  Users subclass
+ *          @c particle_template, set the @c type property, call @c add_leaf
+ *          for each ROOT leaf to read, and override @c build to populate
+ *          custom attributes.  The @c clone() method must also be overridden
+ *          to return a new default-constructed instance of the subclass.
+ *
+ *          Four-momentum arithmetic is supported via @c operator+ (returns a
+ *          new particle of the same derived type), @c operator+=, and @c iadd.
+ *          Angular separation is provided by @c DeltaR.  Serialisation for
+ *          Cython pickling is exposed via @c __reduce__.
  */
 
 /**

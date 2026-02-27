@@ -10,7 +10,32 @@
 /**
  * @class plotting
  * @brief Base class for plot configuration.
- * @details Inherits @c tools and @c notification.
+ * @details Inherits @c tools and @c notification.  Acts as a data-holding base
+ *          that centralises all configurable plotting attributes so that
+ *          derived classes such as @c roc need only set the relevant fields.
+ *
+ *          The **I/O fields** (@c output_path, @c filename, @c extension)
+ *          control where the figure is saved.  @c build_path() assembles the
+ *          full output path from these fields.
+ *
+ *          The **axis fields** (@c x_min, @c x_max, @c y_min, @c y_max,
+ *          @c x_bins, @c y_bins, @c x_logarithmic, @c y_logarithmic,
+ *          @c x_step, @c y_step, @c variable_x_bins, @c variable_y_bins)
+ *          configure histogram ranges and binning.
+ *
+ *          The **cosmetic fields** (@c style, @c title, @c xtitle, @c ytitle,
+ *          @c histfill, @c overflow, @c marker, @c hatch, @c linestyle,
+ *          @c color, @c colors, @c stack, @c density, @c line_width,
+ *          @c cap_size, @c alpha, @c use_latex, @c dpi, @c xscaling,
+ *          @c yscaling, @c auto_scale, @c font_size, @c axis_size,
+ *          @c legend_size, @c title_size) govern visual appearance.
+ *
+ *          The **data containers** (@c x_data, @c y_data, @c y_error_up,
+ *          @c y_error_down, @c x_labels, @c y_labels, @c weights,
+ *          @c cross_section, @c integrated_luminosity) hold the raw values
+ *          and normalisation constants.  @c get_max/@c get_min query extrema,
+ *          @c sum_of_weights returns the total weight, and @c mean_stdev
+ *          computes the mean and standard deviation.
  */
 
 /**

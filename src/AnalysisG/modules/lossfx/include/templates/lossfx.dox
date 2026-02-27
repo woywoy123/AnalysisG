@@ -100,7 +100,26 @@
 /**
  * @class lossfx
  * @brief Manages a PyTorch loss function, optimizer, and LR scheduler.
- * @details Inherits @c tools and @c notification.
+ * @details Inherits @c tools and @c notification.  Encapsulates the full set
+ *          of PyTorch loss functions (BCE, cross-entropy, MSE, Huber, KL-div,
+ *          NLL, Poisson-NLL, triplet-margin, and many more) behind a
+ *          unified @c loss(pred, truth) interface.
+ *
+ *          A @c lossfx is constructed either with the default constructor or
+ *          with a variable name and a loss-configuration string (e.g.
+ *          @c "cross_entropy-mean") that @c interpret parses internally.
+ *          @c build_loss_function builds the selected PyTorch loss object
+ *          decorated with options from @c lss_cfg (reduction, smoothing,
+ *          margin, etc.) using the @c _dress_* free-function templates.
+ *
+ *          @c build_optimizer constructs one of six supported PyTorch
+ *          optimisers (Adam, Adagrad, AdamW, LBFGS, RMSprop, SGD) from an
+ *          @c optimizer_params_t.  @c build_scheduler attaches a StepLR or
+ *          ReduceLROnPlateau scheduler.  @c step() advances both the
+ *          optimizer and the scheduler by one step.
+ *
+ *          @c weight_init applies a named weight-initialisation scheme
+ *          (@c mlp_init) to a @c torch::nn::Sequential module.
  */
 
 /**

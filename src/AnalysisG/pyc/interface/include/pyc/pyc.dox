@@ -10,8 +10,19 @@
 
 /**
  * @class neutrino
- * @brief Lightweight particle_template subclass for reconstructed neutrinos.
- * @details Inherits @c particle_template.
+ * @brief Lightweight @c particle_template subclass for reconstructed neutrinos.
+ * @details Inherits @c particle_template and extends it with reconstruction
+ *          metadata: the minimum chi² penalty (@c min), the indices of the
+ *          lepton and b-quark used in the reconstruction (@c l_idx, @c b_idx),
+ *          pointers back to those particles (@c lepton, @c bquark), a vector of
+ *          alternative neutrino solutions (@c alternatives), the top-quark node
+ *          indices from a combinatorial reconstruction (@c top_index), and a
+ *          flag indicating whether the solution comes from a resonance decay
+ *          (@c from_res).
+ *
+ *          Instances are typically created by @c nusol_::Nu,
+ *          @c nusol_::NuNu, or @c nusol_::combinatorial and returned through
+ *          the @c pyc::nusol API.
  */
 
 /**
@@ -70,6 +81,31 @@
 /**
  * @namespace pyc
  * @brief Top-level namespace for tensor-based HEP utilities.
+ * @details Provides fully batched @c torch::Tensor implementations of common
+ *          HEP operations organised in five sub-namespaces:
+ *
+ *          - @c pyc::transform — Cartesian ↔ polar four-momentum coordinate
+ *            transforms, each available in a @c separate (individual-tensor)
+ *            and a @c combined (stacked [N,4]) variant.
+ *
+ *          - @c pyc::physics — Relativistic kinematic scalars: |p|², |p|, β²,
+ *            β, m², m, mT², mT, θ, ΔR.
+ *
+ *          - @c pyc::operators — Edge and node aggregation: single-counting
+ *            node/edge sums, unique-edge intersection, and related set
+ *            operations useful for graph-level readout.
+ *
+ *          - @c pyc::nusol — Analytical single-neutrino (@c Nu) and
+ *            double-neutrino (@c NuNu, @c combinatorial) reconstruction via
+ *            conic intersection, optionally with iterative mass-line scanning.
+ *
+ *          - @c pyc::graph — Batched graph-level utilities (edge-index
+ *            construction, node/edge counting, etc.).
+ *
+ *          The utility functions @c std_to_dict (two overloads), @c tensorize
+ *          (four overloads), @c as_pmc, and @c to_pmc are also members of
+ *          @c pyc and are used to convert between STL containers and
+ *          @c torch::Tensor / @c torch::Dict.
  */
 
 /**

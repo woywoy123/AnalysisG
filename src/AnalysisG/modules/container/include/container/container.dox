@@ -8,6 +8,15 @@
 /**
  * @struct entry_t
  * @brief Holds all graph, event, and selection objects for one event hash.
+ * @details Acts as the central per-event record inside a @c container.  For
+ *          a given event hash it stores the exported @c graph_t objects
+ *          (@c m_data), the @c graph_template instances that produced them
+ *          (@c m_graph), the associated @c event_template objects (@c m_event),
+ *          and the @c selection_template instances that ran on those events
+ *          (@c m_selection).  The @c has_event, @c has_graph, and
+ *          @c has_selection predicates guard against inserting duplicate
+ *          template types.  @c destroy cleans up all owned pointers and the
+ *          typed @c destroy<g> template handles individual sub-vectors.
  */
 
 /**
@@ -77,7 +86,21 @@
 /**
  * @class container
  * @brief Manages all @c entry_t objects for one ROOT file.
- * @details Inherits @c tools.
+ * @details Inherits @c tools.  Acts as the per-file bookkeeping layer between
+ *          the @c io subsystem and the @c dataloader.  Event, graph, and
+ *          selection templates are registered via @c add_event_template,
+ *          @c add_graph_template, and @c add_selection_template; @c compile
+ *          then iterates over the @c random_access map and builds all graphs
+ *          and selections in parallel across @p thrd threads, advancing the
+ *          progress counter @p len.
+ *
+ *          @c populate_dataloader transfers the compiled @c graph_t objects to
+ *          the provided @c dataloader.  @c fill_selections collects merged
+ *          selection results.  @c get_events returns events filtered by label.
+ *
+ *          The @c filename, @c output_path, and @c label members (not owned)
+ *          are set by the calling @c analysis instance before @c compile is
+ *          invoked.
  */
 
 /**

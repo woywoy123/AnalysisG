@@ -27,9 +27,29 @@
  * @tparam T Value type stored by the property.
  * @tparam G Owner class type.  A pointer to the owner is passed to the
  *            setter/getter so they can read or update related state.
- * @details When the property is assigned, the setter callback (if registered)
- *          is invoked.  When the property is read (via implicit conversion or
- *          address-of), the getter callback (if registered) is invoked.
+ * @details Wraps a value of type @c T and optionally calls user-provided
+ *          static (or std::function) setter and getter functions on
+ *          assignment and conversion.
+ *
+ *          **Registration** — @c set_setter/@c set_getter register the
+ *          callbacks; @c set_object sets the owner pointer that is passed as
+ *          the second argument to each callback.
+ *
+ *          **Assignment** — @c operator=(const T& val) stores the value and,
+ *          if a setter is registered, immediately calls
+ *          @c setter(&data, obj).  This allows side-effects such as keeping
+ *          Cartesian and polar four-momentum consistent in
+ *          @c particle_template.
+ *
+ *          **Reading** — the implicit conversion @c operator T() and the
+ *          address-of @c operator&() both invoke @c getter(&data, obj) if
+ *          registered before returning the value.  This allows lazy
+ *          computation of derived quantities such as @c hash or @c mass.
+ *
+ *          The @c clear() method resets @c data to @c T() only when a getter
+ *          is registered (indicating the value is always computed on demand).
+ *          The comparison operators @c operator== and @c operator!= test
+ *          against the stored @c data without invoking any callback.
  */
 
 /**

@@ -16,7 +16,23 @@
 /**
  * @class analysis
  * @brief Top-level pipeline class.
- * @details Inherits @c notification and @c tools.
+ * @details Inherits @c notification and @c tools.  The main framework
+ *          entry-point.  Internally holds a @c sampletracer, a @c dataloader,
+ *          an @c io reader, and per-run @c optimizer/@c model_report objects.
+ *
+ *          The typical usage pattern is:
+ *          (1) call @c add_samples for each ROOT input file or directory;
+ *          (2) register templates via @c add_event_template,
+ *          @c add_graph_template, @c add_selection_template,
+ *          @c add_metric_template, and @c add_model;
+ *          (3) configure @c m_settings;
+ *          (4) call @c attach_threads and @c start.
+ *
+ *          The private pipeline stages are @c build_events, @c build_graphs,
+ *          @c build_selections, @c build_model_session, @c build_inference,
+ *          @c build_metric, and @c build_metric_folds, executed in order.
+ *          Progress is monitored without blocking via @c progress(),
+ *          @c progress_mode(), @c progress_report(), and @c is_complete().
  */
 
 /**

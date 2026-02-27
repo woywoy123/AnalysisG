@@ -8,6 +8,12 @@
 /**
  * @struct roc_t
  * @brief Stores the ROC curve data for one class and one k-fold.
+ * @details Aggregates the ground-truth label arrays (@c truth) and classifier
+ *          score arrays (@c scores) together with the computed true-positive
+ *          rate (@c tpr_), false-positive rate (@c fpr_), and area-under-curve
+ *          values (@c _auc) for a specific class index (@c cls) and k-fold
+ *          (@c kfold).  The @c truth and @c scores pointers are not owned by
+ *          this struct.
  */
 
 /**
@@ -53,7 +59,13 @@
 /**
  * @class roc
  * @brief Computes ROC curves from classifier scores and truth labels.
- * @details Inherits @c plotting.
+ * @details Inherits @c plotting.  Accumulates per-model, per-fold score and
+ *          label data via @c build_ROC, then exposes the computed @c roc_t
+ *          objects through @c get_ROC.  The @c roc_data and @c labels maps
+ *          hold the raw inputs keyed by model name and k-fold index.
+ *          Internally the class allocates two-dimensional score/label
+ *          matrices using the private @c generate helper.  All allocated
+ *          @c roc_t objects are freed in the destructor.
  */
 
 /**

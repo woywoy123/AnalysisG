@@ -59,9 +59,24 @@
 /**
  * @class metric_template
  * @brief Base class for user-defined post-training metrics.
- * @details Inherits @c tools and @c notification.  Users override
- *          @c define_variables, @c define_metric, @c event, @c batch, and
- *          @c end.
+ * @details Inherits @c tools and @c notification.  Users subclass
+ *          @c metric_template, override @c define_variables to declare which
+ *          graph features are required (populating @c variables), override
+ *          @c define_metric to perform per-graph setup given a @c metric_t
+ *          accessor, and override @c event, @c batch, and @c end to compute
+ *          per-event, per-batch, and final-epoch metrics respectively.
+ *
+ *          Output ROOT branches are written via @c register_output (first
+ *          call; creates the file) and @c write (subsequent calls; optionally
+ *          fills the TTree entry).  The @c sum and @c make_unique template
+ *          helpers mirror those of @c selection_template.
+ *          @c make_particle reconstructs @c particle_template objects from
+ *          bulk kinematic arrays.
+ *
+ *          The framework links models to metric templates at the @c analysis
+ *          level; @c analysis then calls @c define, @c execute, and related
+ *          private methods to drive the evaluation.  Friend @c analysis has
+ *          full access to private state.
  */
 
 /**

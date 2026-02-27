@@ -9,9 +9,29 @@
 /**
  * @class notification
  * @brief Logging and progress-bar helper class.
- * @details Encapsulates coloured stdout messages (success, warning, failure,
- *          info) and several overloaded progress-bar helpers.  Classes that
- *          inherit from @c notification gain these capabilities directly.
+ * @details Provides four severity levels of coloured stdout messages:
+ *          success (green, ANSI 32), warning (yellow, ANSI 33), failure
+ *          (red, ANSI 31), and info (white, ANSI 37).  The ANSI colour codes
+ *          are configurable at runtime via the public integer members
+ *          @c _success, @c _warning, @c _failure, and @c _info.  Bold output
+ *          is controlled by the @c bold flag; all output can be suppressed
+ *          completely by setting @c shush @c = @c true.
+ *
+ *          In addition to message logging, @c notification supplies several
+ *          progress-bar helpers for displaying multi-threaded progress:
+ *          the @c progressbar overloads accept either a single fraction or
+ *          per-thread vectors of counts and labels; the static variants
+ *          @c progressbar1, @c progressbar2, and @c progressbar3 are
+ *          available as thread targets; @c running polls active threads and
+ *          updates the bars; @c monitor blocks until all threads finish.
+ *
+ *          The private @c caller integer is initialised from
+ *          @c std::this_thread::get_id() so that each thread's messages can
+ *          be attributed to the correct caller.  Classes that inherit from
+ *          @c notification — including @c tools, @c model_template,
+ *          @c dataloader, @c optimizer, @c metrics, @c metric_template,
+ *          @c lossfx, @c io, @c meta, and @c analysis — gain all of these
+ *          capabilities without qualification.
  */
 
 /**

@@ -10,7 +10,23 @@
 /**
  * @class meta
  * @brief Dataset metadata manager.
- * @details Inherits @c tools and @c notification.
+ * @details Inherits @c tools and @c notification.  Manages an @c meta_t struct
+ *          whose fields cover the full set of ATLAS AMI metadata attributes:
+ *          physics identifiers (@c dsid, @c DatasetName, @c generators, etc.),
+ *          cross-section values in nb/pb/fb, event counts, file GUIDs, and
+ *          k-factor/generator-filter efficiency.
+ *
+ *          All attributes are exposed as @c cproperty objects with read-only
+ *          getter callbacks backed by the @c meta_data struct.  Metadata is
+ *          populated by one of three routes: @c parse_json (AMI JSON string),
+ *          @c scan_data (ROOT TObject scan for run/event numbers and SOW),
+ *          or @c scan_sow (dedicated sum-of-weights scan).
+ *
+ *          K-fold fold assignments are stored as @c folds_t records; the
+ *          @c get_tags method looks up the fold for a given event hash.  The
+ *          @c compiler private method finalises the metadata after parsing.
+ *          Friend class @c analysis has access to private compilation
+ *          helpers.
  */
 
 /**

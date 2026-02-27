@@ -10,6 +10,19 @@
  * @struct model_report
  * @brief Stores and formats the training progress of a single epoch for one
  *        k-fold.
+ * @details Tracks per-epoch, per-mode (training / validation / evaluation)
+ *          loss and accuracy values at graph, node, and edge level, indexed
+ *          by feature name.  The @c current_lr vector records the learning
+ *          rate of each parameter group at the end of the epoch.
+ *
+ *          @c is_complete is set to @c true when the epoch loop finishes;
+ *          @c waiting_plot points to the @c metrics object that is waiting
+ *          to dump plots for this epoch (or @c nullptr).  @c progress tracks
+ *          fractional completion within an epoch; @c iters and @c num_evnt
+ *          count gradient updates and processed events respectively.
+ *
+ *          @c print() formats all maps as a multi-line human-readable string.
+ *          @c prx() formats one individual map with a given title prefix.
  */
 
 /**

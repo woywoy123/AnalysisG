@@ -12,7 +12,23 @@
  * @class dataloader
  * @brief Manages graph datasets for k-fold cross-validation and mini-batch
  *        construction.
- * @details Inherits @c notification and @c tools.
+ * @details Inherits @c notification and @c tools.  Manages the complete
+ *          lifecycle of @c graph_t data: ingesting graphs via @c extract_data,
+ *          building stratified k-fold training/validation splits with
+ *          @c generate_kfold_set, assembling mini-batches via @c build_batch,
+ *          and transferring tensors to one or more CUDA devices via the
+ *          @c datatransfer overloads.
+ *
+ *          Serialisation to HDF5 graph-cache files is provided by
+ *          @c dump_graphs; the complementary @c restore_graphs overloads
+ *          reload graphs from single files or whole directories in parallel.
+ *          The k-fold assignment itself can be saved and reloaded with
+ *          @c dump_dataset/@c restore_dataset so that folds are reproducible
+ *          across runs.
+ *
+ *          When CUDA is enabled, @c start_cuda_server launches a background
+ *          thread that monitors GPU memory usage.  Friend class @c analysis
+ *          has access to private configuration members such as @c setting.
  */
 
 /**

@@ -9,7 +9,22 @@
 /**
  * @class optimizer
  * @brief Drives the training, validation, and evaluation loops.
- * @details Inherits @c tools and @c notification.
+ * @details Inherits @c tools and @c notification.  Receives a @c dataloader
+ *          and a (model, optimizer-params) tuple via @c import_dataloader and
+ *          @c import_model_sessions respectively.  For each k-fold it
+ *          instantiates a separate copy of the model (stored in
+ *          @c kfold_sessions) and registers a @c model_report in @c reports.
+ *
+ *          @c launch_model(k) runs all training, validation, and evaluation
+ *          epochs for fold @p k, delegating to @c training_loop,
+ *          @c validation_loop, and @c evaluation_loop.  Each loop iterates
+ *          over the corresponding split from @c dataloader, calls
+ *          @c model_template::forward, accumulates losses in @c _losses, and
+ *          updates the @c model_report.  The @c metrics object is notified
+ *          after each epoch so it can capture histograms.
+ *
+ *          The @c m_settings member controls epochs, batch size, k-folds,
+ *          and which phases (training/validation/evaluation) to run.
  */
 
 /**

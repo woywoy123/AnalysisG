@@ -38,10 +38,16 @@
 /**
  * @struct bsc_t
  * @brief Type-erased data container that stores a single typed pointer.
- * @details @c bsc_t holds one pointer for each supported data type.  Exactly
- *          one pointer should be non-null at any time; the active type is
- *          recorded in the @c type member.  The class is the base of
- *          @c data_t and @c variable_t.
+ * @details @c bsc_t holds one pointer for each supported data type (scalars,
+ *          vectors, 2-deep nested vectors, and 3-deep nested vectors of all
+ *          the numeric types declared in @c data_enum).  Exactly one pointer
+ *          should be non-null at any time; the active type is recorded in the
+ *          @c type member.  The @c index member controls which element of a
+ *          vector-typed buffer is returned by the @c element() accessors.
+ *          @c flush_buffer() either zeros or deletes the active pointer
+ *          depending on the @c clear flag.  The class is the base of
+ *          @c data_t (read buffer for ROOT branches) and @c variable_t (write
+ *          buffer for output ROOT branches).
  */
 
 /**

@@ -10,8 +10,18 @@
  * @struct graph_t
  * @brief Runtime container for a single graph's input features, truth labels,
  *        edge index, and device-resident tensors.
- * @details Tensors are stored in per-device caches.  Friends @c graph_template
- *          and @c dataloader have access to private members.
+ * @details Stores input features (@c data_graph/@c data_node/@c data_edge),
+ *          truth labels (@c truth_graph/@c truth_node/@c truth_edge), a COO
+ *          edge-index tensor, an event-weight tensor, and a batch-index tensor.
+ *          All tensors are cached per CUDA device index (in the @c dev_* maps)
+ *          so that multi-GPU training can transfer data without repeated
+ *          host-to-device copies.
+ *
+ *          The @c has_feature(graph_enum, name, dev) method is the unified
+ *          lookup entry-point for all feature categories.  Friends
+ *          @c graph_template and @c dataloader have write access to the private
+ *          tensor storage.  The @c in_use counter is managed by @c dataloader
+ *          to implement a simple object pool.
  */
 
 /**
@@ -216,9 +226,20 @@
  * @class graph_template
  * @brief Base class for user-defined graph objects that build GNN input
  *        features from particle collections.
- * @details Inherits @c tools.  Users override @c CompileEvent and
- *          @c PreSelection and use the @c add_*_feature family of methods to
- *          register tensors.
+ * @details Inherits @c tools.  Users subclass @c graph_template, override
+ *          @c CompileEvent to call the @c add_*_feature template methods to
+ *          register feature tensors, optionally override @c PreSelection to
+ *          discard graphs before feature computation, and override @c clone
+ *          to return a new empty instance.
+ *
+ *          @c define_particle_nodes registers the particle collection that
+ *          forms the graph nodes.  @c define_topology sets the
+ *          edge-connectivity predicate — any two-particle function returning
+ *          @c bool is accepted; the default @c fulltopo connects every pair.
+ *
+ *          The @c add_*_truth_feature methods name the tensor with a @c "T-"
+ *          prefix; @c add_*_data_feature uses @c "D-".  @c get_event<G>()
+ *          provides typed access to the underlying @c event_template.
  */
 
 /**

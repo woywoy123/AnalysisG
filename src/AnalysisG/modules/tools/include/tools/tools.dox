@@ -10,8 +10,28 @@
 /**
  * @class tools
  * @brief Collection of static utility functions for I/O, strings, and containers.
- * @details All methods are static; the class exists primarily as a mixin base
- *          so that derived classes can call the helpers without qualification.
+ * @details All methods are static, so the class can be used either standalone
+ *          or as a mixin base class.
+ *
+ *          The **I/O group** (@c create_path, @c delete_path, @c is_file,
+ *          @c rename, @c absolute_path, @c ls) wraps POSIX/STL filesystem
+ *          operations to create, delete, rename, and list paths.
+ *
+ *          The **string group** (@c to_string, @c replace, @c has_string,
+ *          @c ends_with, @c has_value, @c split, @c hash, @c lower,
+ *          @c encode64/@c decode64) provides parsing, searching, and Base-64
+ *          codec utilities.
+ *
+ *          The **container/math group** (@c discretize, @c max, @c min,
+ *          @c sum, @c put, @c unique_key) provides generic template algorithms
+ *          for slicing vectors into fixed-size chunks, computing extrema,
+ *          gathering elements by index vector, and deduplicating keys across
+ *          two vectors.
+ *
+ *          Derived classes such as @c notification, @c model_template,
+ *          @c dataloader, @c particle_template, @c event_template,
+ *          @c graph_template, and @c selection_template inherit these
+ *          utilities to avoid code duplication.
  */
 
 /**
