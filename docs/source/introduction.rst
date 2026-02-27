@@ -67,40 +67,82 @@ Usage Workflow
 
 A typical AnalysisG analysis follows these steps:
 
-1. **Define particles** — subclass :class:`particle_template` and call
-   ``add_leaf("pt")`` for each ROOT leaf.
+1. **Define particles** — subclass :class:`particle_template`, set
+   ``this->type`` to a unique string, call ``add_leaf("key", "root_branch")``
+   for each ROOT leaf, call ``apply_type_prefix()``, and override
+   ``build(std::map<std::string, particle_template*>* prt, element_t* el)``
+   to populate the output map with heap-allocated instances.
 
-2. **Define events** — subclass :class:`event_template`, call
-   ``register_particle<MyParticle>(&jets)``, then override ``CompileEvent``
-   to derive quantities from the populated collections.
+2. **Define events** — subclass :class:`event_template`, set ``this->name``,
+   call ``register_particle<MyParticle>(&m_jets)`` for each particle
+   collection, set ``this->trees = {"nominal"}``, and override ``build`` /
+   ``CompileEvent`` to populate public particle vectors from the private maps.
 
-3. **Define graphs** — subclass :class:`graph_template`, call
-   ``define_particle_nodes(&jets)`` and add features with
-   ``add_node_data_feature<double, MyParticle>(&MyParticle::get_pt, "pt")``.
+3. **Define graphs** — subclass :class:`graph_template`, set ``this->name``,
+   and override ``CompileEvent``.  Inside ``CompileEvent`` call
+   ``get_event<MyEvent>()`` to retrieve the populated event object, pass a
+   particle collection to ``define_particle_nodes``, then register feature
+   functions::
+
+     // standalone feature functions follow the signature:
+     //   void fn_name(OutputType* out, ParticleOrEventType* in)
+     void pt(double* o, particle_template* p){*o = p->pt;}
+     void signal(bool* o, MyEvent* ev){*o = ev->truth_signal;}
+     void same_top(int* o, std::tuple<particle_template*, particle_template*>* e_ij){
+         *o = std::get<0>(*e_ij)->index == std::get<1>(*e_ij)->index;
+     }
+
+     void MyGraph::CompileEvent(){
+         MyEvent* ev = this->get_event<MyEvent>();
+         this->define_particle_nodes(&ev->Jets);
+
+         this->add_graph_truth_feature<bool, MyEvent>(ev, signal, "signal");
+         this->add_node_data_feature<double, particle_template>(pt, "pt");
+         this->add_edge_truth_feature<int, particle_template>(same_top, "top_edge");
+     }
 
 4. **Define selections** *(optional)* — subclass :class:`selection_template`
    and implement ``selection`` / ``strategy``.
 
-5. **Wire up the pipeline**::
+5. **Wire up the pipeline** (Python interface):
 
-     analysis ana;
-     ana.m_settings.output_path = "./output";
-     ana.m_settings.epochs = 20;
-     ana.add_samples("./data/sample.root", "ttbar");
-     ana.add_event_template(new MyEvent(), "ttbar");
-     ana.add_graph_template(new MyGraph(), "ttbar");
-     ana.add_model(new MyModel(), &opt_params, "run1");
-     ana.start();
+   .. code-block:: python
 
-``pyc`` kernels can be called independently of the framework:
+      from AnalysisG import Analysis
+      from AnalysisG.core.lossfx import OptimizerConfig
+
+      op = OptimizerConfig()
+      op.Optimizer = "adam"
+      op.lr = 1e-3
+
+      ana = Analysis()
+      ana.OutputPath = "./output"
+      ana.Epochs     = 20
+      ana.AddSamples("./data/sample.root", "ttbar")
+      ana.AddEvent(MyEvent(), "ttbar")
+      ana.AddGraph(MyGraph(), "ttbar")
+      ana.AddModel(MyModel(), op, "run1")
+      ana.Start()
+
+``pyc`` kernels are exposed as PyTorch custom operators and can be called
+directly after loading the shared library:
 
 .. code-block:: python
 
    import torch
-   from AnalysisG.pyc import transform
+   torch.ops.load_library("libtpyc.so")   # CPU build
+   # torch.ops.load_library("libcupyc.so") # CUDA build
 
-   pmc  = torch.tensor([[10.0, 5.0, 3.0, 12.0]])  # [N, 4] (px, py, pz, E)
-   pmu  = transform.separate.PxPyPzE(pmc)           # -> (pT, eta, phi, E)
+   pt  = torch.tensor([100.0]).double()
+   eta = torch.tensor([1.5]).double()
+   phi = torch.tensor([0.5]).double()
+   e   = torch.tensor([120.0]).double()
+
+   # polar (pT, eta, phi, E) -> Cartesian (px, py, pz, E)
+   pmc = torch.ops.tpyc.transform_separate_pxpypze(pt, eta, phi, e)
+
+   # compute invariant mass from Cartesian four-momentum
+   m   = torch.ops.tpyc.physics_cartesian_combined_m(pmc)
 
 Languages and Technologies
 --------------------------
