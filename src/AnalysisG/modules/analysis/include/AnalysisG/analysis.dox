@@ -106,7 +106,7 @@
  */
 
 /**
- * @fn std::map<std::string, std::vector<float>> analysis::progress()
+ * @fn analysis::progress()
  * @brief Return per-run fractional progress values.
  * @return Map of run name to progress vector.
  */

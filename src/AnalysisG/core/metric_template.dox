@@ -1,6 +1,6 @@
 /**
- * @file metric_template.pxd
- * @brief Cython declaration file for the @c metric_template C++ class and
+ * @file metric_template.h
+ * @brief C++ declaration for the @c metric_template class and
  *        the @c finder helper function.
  * @details Wraps the @c metric_template class (inheriting @c tools and
  *          @c notification) used for ROOT-based model metric computation.

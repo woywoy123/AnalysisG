@@ -95,11 +95,11 @@
  */
 
 /**
- * @var std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc::roc_data
+ * @var roc::roc_data
  * @brief Accumulated score data keyed by model name and k-fold.
  */
 
 /**
- * @var std::map<std::string, std::map<int, std::vector<std::vector<int>>*>> roc::labels
+ * @var roc::labels
  * @brief Accumulated truth-label data keyed by model name and k-fold.
  */

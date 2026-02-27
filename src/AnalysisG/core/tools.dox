@@ -1,8 +1,7 @@
 /**
- * @file tools.pxd
- * @brief Cython declaration file for the @c tools C++ utility class and the
- *        @c merge_data / @c sum_data helper functions.
- * @details Provides the Cython-level import of @c tools (file system, string,
+ * @file tools.h
+ * @brief C++ utility class and the @c merge_data / @c sum_data helper functions.
+ * @details Provides the @c tools (file system, string,
  *          math helpers) and the full set of @c merge_data and @c sum_data
  *          overloads used to merge C++ containers across threads/events.
  */

@@ -52,32 +52,32 @@
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, float>> model_report::loss_graph
+ * @var model_report::loss_graph
  * @brief Graph-level loss values keyed by mode then feature name.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, float>> model_report::loss_node
+ * @var model_report::loss_node
  * @brief Node-level loss values keyed by mode then feature name.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, float>> model_report::loss_edge
+ * @var model_report::loss_edge
  * @brief Edge-level loss values keyed by mode then feature name.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, float>> model_report::accuracy_graph
+ * @var model_report::accuracy_graph
  * @brief Graph-level accuracy values keyed by mode then feature name.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, float>> model_report::accuracy_node
+ * @var model_report::accuracy_node
  * @brief Node-level accuracy values keyed by mode then feature name.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, float>> model_report::accuracy_edge
+ * @var model_report::accuracy_edge
  * @brief Edge-level accuracy values keyed by mode then feature name.
  */
 

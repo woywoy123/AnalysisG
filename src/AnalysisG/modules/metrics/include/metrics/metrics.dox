@@ -35,42 +35,42 @@
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::loss_graph
+ * @var analytics_t::loss_graph
  * @brief Per-mode, per-feature graph-level loss histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::loss_node
+ * @var analytics_t::loss_node
  * @brief Per-mode, per-feature node-level loss histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::loss_edge
+ * @var analytics_t::loss_edge
  * @brief Per-mode, per-feature edge-level loss histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::accuracy_graph
+ * @var analytics_t::accuracy_graph
  * @brief Per-mode, per-feature graph-level accuracy histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::accuracy_node
+ * @var analytics_t::accuracy_node
  * @brief Per-mode, per-feature node-level accuracy histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::accuracy_edge
+ * @var analytics_t::accuracy_edge
  * @brief Per-mode, per-feature edge-level accuracy histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::pred_mass_edge
+ * @var analytics_t::pred_mass_edge
  * @brief Per-mode, per-variable predicted invariant-mass histograms.
  */
 
 /**
- * @var std::map<mode_enum, std::map<std::string, TH1F*>> analytics_t::truth_mass_edge
+ * @var analytics_t::truth_mass_edge
  * @brief Per-mode, per-variable ground-truth invariant-mass histograms.
  */
 

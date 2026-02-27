@@ -269,7 +269,7 @@
  */
 
 /**
- * @fn std::map<std::string, std::map<std::string, particle_t>> particle_template::__reduce__()
+ * @fn particle_template::__reduce__()
  * @brief Serialise this particle to a map of maps (used by Cython pickling).
  * @return Nested map representation.
  */

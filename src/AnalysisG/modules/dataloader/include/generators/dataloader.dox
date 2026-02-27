@@ -77,7 +77,7 @@
  */
 
 /**
- * @fn std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference()
+ * @fn dataloader::get_inference()
  * @brief Return all graphs keyed by source filename for inference.
  * @return Pointer to the inference data map.
  */

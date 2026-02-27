@@ -180,46 +180,46 @@
  */
 
 /**
- * @var std::map<std::string, TFile*> io::files_open
+ * @var io::files_open
  * @brief Map of file path to open @c TFile.
  */
 
 /**
- * @var std::map<std::string, meta*> io::meta_data
+ * @var io::meta_data
  * @brief Map of file path to associated metadata.
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, TTree*>> io::tree_data
+ * @var io::tree_data
  * @brief Two-level map: filename → tree name → @c TTree pointer.
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, long>> io::tree_entries
+ * @var io::tree_entries
  * @brief Two-level map: filename → tree name → entry count.
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, TBranch*>> io::branch_data
+ * @var io::branch_data
  * @brief Two-level map: branch path → branch name → @c TBranch pointer.
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, TLeaf*>> io::leaf_data
+ * @var io::leaf_data
  * @brief Two-level map: filename → leaf name → @c TLeaf pointer.
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, std::string>> io::leaf_typed
+ * @var io::leaf_typed
  * @brief Two-level map: filename → leaf name → ROOT type string.
  */
 
 /**
- * @var std::map<std::string, bool> io::root_files
+ * @var io::root_files
  * @brief Map of file path to whether it is a ROOT file.
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> io::keys
+ * @var io::keys
  * @brief Hierarchical key index: file → tree → branch → leaf names.
  */

@@ -198,12 +198,12 @@
  */
 
 /**
- * @var std::map<std::string, std::map<std::string, float>> selection_template::passed_weights
+ * @var selection_template::passed_weights
  * @brief Map of passed event hashes to their per-variable weight maps.
  */
 
 /**
- * @var std::map<std::string, meta_t> selection_template::matched_meta
+ * @var selection_template::matched_meta
  * @brief Per-hash matched metadata.
  */
 
