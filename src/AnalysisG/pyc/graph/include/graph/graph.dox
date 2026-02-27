@@ -1,0 +1,40 @@
+/**
+ * @file graph.h (pyc)
+ * @brief Internal CUDA/C++ implementation of graph aggregation operators.
+ * @details Declares the @c graph_ namespace with low-level tensor-based graph
+ *          aggregation functions.  These are wrapped by the public @c pyc::graph
+ *          API declared in @c pyc.h.
+ */
+
+/**
+ * @namespace graph_
+ * @brief Internal namespace for CUDA-accelerated graph aggregation.
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> graph_::unique_aggregation(torch::Tensor* cluster_map, torch::Tensor* features)
+ * @brief Sum @p features within each unique cluster in @p cluster_map.
+ * @param cluster_map [N] integer cluster assignments.
+ * @param features    [N, D] node features.
+ * @return Map with keys @c "clusters" and @c "cluster_map".
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> graph_::edge_aggregation(torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature)
+ * @brief Aggregate @p node_feature along source edges, weighted by
+ *        @p prediction.
+ * @param edge_index   [2, E] COO edge index.
+ * @param prediction   [E] or [E, C] edge weights/predictions.
+ * @param node_feature [N, D] node features.
+ * @return Map containing @c "nodes" and @c "node_map".
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> graph_::node_aggregation(torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature)
+ * @brief Aggregate @p node_feature along destination edges, weighted by
+ *        @p prediction.
+ * @param edge_index   [2, E] COO edge index.
+ * @param prediction   [E] or [E, C] edge weights/predictions.
+ * @param node_feature [N, D] node features.
+ * @return Map containing @c "nodes" and @c "node_map".
+ */

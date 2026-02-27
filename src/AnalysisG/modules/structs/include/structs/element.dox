@@ -1,0 +1,256 @@
+/**
+ * @file element.h
+ * @brief ROOT TTree reading structs: @c data_t, @c element_t, @c write_t,
+ *        and @c writer.
+ * @details Provides the low-level machinery to iterate over ROOT TTree events,
+ *          read typed branch data into @c bsc_t-derived buffers, and write
+ *          typed data back to new ROOT TTree branches.
+ */
+
+/**
+ * @struct data_t
+ * @brief Represents a single ROOT branch/leaf with its associated metadata
+ *        and typed data buffer.
+ * @details Inherits @c bsc_t to store the branch data in a type-safe way.
+ *          A @c data_t instance keeps references to the @c TFile, @c TTree,
+ *          @c TBranch, and @c TLeaf it reads from and iterates over events
+ *          via @c next().
+ */
+
+/**
+ * @fn data_t::data_t()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn data_t::~data_t()
+ * @brief Destructor.  Releases the typed data buffer.
+ */
+
+/**
+ * @var std::string data_t::leaf_name
+ * @brief Name of the ROOT TLeaf.
+ */
+
+/**
+ * @var std::string data_t::branch_name
+ * @brief Name of the ROOT TBranch.
+ */
+
+/**
+ * @var std::string data_t::tree_name
+ * @brief Name of the ROOT TTree.
+ */
+
+/**
+ * @var std::string data_t::leaf_type
+ * @brief ROOT leaf type string (e.g. @c "D" for double, @c "F" for float).
+ */
+
+/**
+ * @var std::string data_t::path
+ * @brief File path from which this branch is read.
+ */
+
+/**
+ * @var std::string* data_t::fname
+ * @brief Pointer to the current filename (not owned).
+ */
+
+/**
+ * @var TLeaf* data_t::leaf
+ * @brief Pointer to the associated ROOT TLeaf object.
+ */
+
+/**
+ * @var TBranch* data_t::branch
+ * @brief Pointer to the associated ROOT TBranch object.
+ */
+
+/**
+ * @var TTree* data_t::tree
+ * @brief Pointer to the ROOT TTree that contains this branch.
+ */
+
+/**
+ * @var TFile* data_t::file
+ * @brief Pointer to the ROOT TFile.
+ */
+
+/**
+ * @var int data_t::file_index
+ * @brief Index into the @c files_s / @c files_i / @c files_t arrays for
+ *        multi-file iteration.
+ */
+
+/**
+ * @var std::vector<std::string>* data_t::files_s
+ * @brief Pointer to the list of file paths for multi-file reading.
+ */
+
+/**
+ * @var std::vector<long>* data_t::files_i
+ * @brief Pointer to per-file event counts.
+ */
+
+/**
+ * @var std::vector<TFile*>* data_t::files_t
+ * @brief Pointer to the list of open TFile objects.
+ */
+
+/**
+ * @fn void data_t::initialize()
+ * @brief Open the ROOT file and prepare the branch for reading.
+ */
+
+/**
+ * @fn void data_t::flush()
+ * @brief Clear the internal data buffer.
+ */
+
+/**
+ * @fn bool data_t::next()
+ * @brief Advance to the next event entry.
+ * @return @c true if a next entry was found; @c false at end of file.
+ */
+
+/**
+ * @struct element_t
+ * @brief Aggregates all @c data_t branches for one event, providing a
+ *        named-key access interface.
+ */
+
+/**
+ * @var std::string element_t::tree
+ * @brief Name of the ROOT TTree this element belongs to.
+ */
+
+/**
+ * @fn bool element_t::next()
+ * @brief Advance all branches to the next event.
+ * @return @c true if successful.
+ */
+
+/**
+ * @fn void element_t::set_meta()
+ * @brief Update metadata (filename, event index) from the active branches.
+ */
+
+/**
+ * @var long element_t::event_index
+ * @brief Sequential event index (default -1 = not yet set).
+ */
+
+/**
+ * @var std::string element_t::filename
+ * @brief Path of the file currently being read.
+ */
+
+/**
+ * @fn bool element_t::boundary()
+ * @brief Check whether the current entry is on a file boundary.
+ * @return @c true if the current entry is the first of a new file.
+ */
+
+/**
+ * @fn template<typename g> bool element_t::get(std::string key, g* var)
+ * @brief Retrieve the value stored under @p key and place it in @p var.
+ * @tparam g Target type; must match the leaf type or an abort is triggered.
+ * @param key  Leaf/branch name used as the lookup key.
+ * @param var  Pointer to the variable to fill.
+ * @return @c true on success; aborts on type mismatch.
+ */
+
+/**
+ * @var std::map<std::string, data_t*> element_t::handle
+ * @brief Map of branch/leaf names to their @c data_t objects.
+ */
+
+/**
+ * @struct write_t
+ * @brief Groups a ROOT @c TFile, @c TTree, and @c meta_t pointer together
+ *        with a map of named @c variable_t write buffers.
+ */
+
+/**
+ * @var TFile* write_t::file
+ * @brief Output ROOT TFile.
+ */
+
+/**
+ * @var TTree* write_t::tree
+ * @brief Output ROOT TTree.
+ */
+
+/**
+ * @var meta_t* write_t::mtx
+ * @brief Pointer to the metadata for this file.
+ */
+
+/**
+ * @var std::map<std::string, variable_t*>* write_t::data
+ * @brief Map of variable names to their @c variable_t write buffers.
+ */
+
+/**
+ * @fn variable_t* write_t::process(std::string* name)
+ * @brief Look up or create the @c variable_t for @p name.
+ * @param name Variable name.
+ * @return Pointer to the corresponding @c variable_t.
+ */
+
+/**
+ * @fn void write_t::write()
+ * @brief Fill the current TTree entry from all registered @c variable_t
+ *        buffers.
+ */
+
+/**
+ * @fn void write_t::create(std::string tr_name, std::string path)
+ * @brief Open the output ROOT file at @p path and create a TTree named
+ *        @p tr_name.
+ * @param tr_name TTree name.
+ * @param path    Output file path.
+ */
+
+/**
+ * @fn void write_t::close()
+ * @brief Write and close the output ROOT file.
+ */
+
+/**
+ * @struct writer
+ * @brief High-level helper that manages multiple @c write_t objects keyed by
+ *        TTree name.
+ */
+
+/**
+ * @fn writer::writer()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn writer::~writer()
+ * @brief Destructor.  Closes all open files.
+ */
+
+/**
+ * @fn void writer::create(std::string* pth)
+ * @brief Open the output ROOT file at the given path.
+ * @param pth Pointer to the file path string.
+ */
+
+/**
+ * @fn void writer::write(std::string* tree)
+ * @brief Fill one TTree entry for the tree named @p tree.
+ * @param tree Pointer to the TTree name.
+ */
+
+/**
+ * @fn template<typename g> void writer::process(std::string* tree, std::string* name, g* t)
+ * @brief Write value @p t to branch @p name in TTree @p tree.
+ * @tparam g Value type.
+ * @param tree Pointer to the TTree name.
+ * @param name Pointer to the branch/variable name.
+ * @param t    Pointer to the value to write.
+ */

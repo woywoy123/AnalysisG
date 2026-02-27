@@ -1,0 +1,166 @@
+/**
+ * @file multisol.h (tmp)
+ * @brief Single b–lepton neutrino ellipse surface with full analytic
+ *        derivatives.
+ * @details Declares supporting structs (@c multisol_t, @c rev_t, @c mass_t,
+ *          @c geo_t) and the @c multisol class, which computes the H-tilde
+ *          and H matrices along with their first- and second-order derivatives
+ *          with respect to the τ and φ parameters.
+ */
+
+/**
+ * @struct multisol_t
+ * @brief Pre-computed constants for the neutrino hyperbola surface.
+ */
+
+/**
+ * @struct rev_t
+ * @brief Stores (u, v, u', v') coordinates and the corresponding (t, z)
+ *        parameters for a reverse mapping.
+ */
+
+/**
+ * @struct mass_t
+ * @brief Stores the reconstructed top mass @c mt, W mass @c mw, and the
+ *        shift parameters @c sx/@c sy at a given (t, z).
+ */
+
+/**
+ * @struct geo_t
+ * @brief Plane / line intersection geometry for ellipse-ellipse intersections.
+ */
+
+/**
+ * @fn geo_t::~geo_t()
+ * @brief Destructor.  Deletes owned @c nu1 and @c nu2 sub-geometries.
+ */
+
+/**
+ * @var vec3 geo_t::perp1
+ * @brief First perpendicular basis vector of the neutrino plane.
+ */
+
+/**
+ * @var vec3 geo_t::perp2
+ * @brief Second perpendicular basis vector of the neutrino plane.
+ */
+
+/**
+ * @var vec3 geo_t::center
+ * @brief Centre of the neutrino ellipse.
+ */
+
+/**
+ * @var vec3 geo_t::r0
+ * @brief Line base point (for ellipse-ellipse intersection line L(s)=r0+s·d).
+ */
+
+/**
+ * @var vec3 geo_t::d
+ * @brief Line direction vector.
+ */
+
+/**
+ * @var bool geo_t::valid
+ * @brief @c true if a valid intersection was found.
+ */
+
+/**
+ * @class multisol
+ * @brief Analytic neutrino ellipse surface with first- and second-order
+ *        derivatives.
+ */
+
+/**
+ * @fn multisol::multisol(particle_template* b, particle_template* l)
+ * @brief Construct the surface for the given b–lepton pair.
+ * @param b Pointer to the b-quark.
+ * @param l Pointer to the lepton.
+ */
+
+/**
+ * @fn multisol::~multisol()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn void multisol::make_rt()
+ * @brief Compute and cache the lab-frame rotation matrix.
+ */
+
+/**
+ * @fn matrix multisol::H_tilde(double t, double z)
+ * @brief Return the H̃ matrix at (t, z).
+ */
+
+/**
+ * @fn matrix multisol::dHdt_tilde(double t, double z)
+ * @brief Return ∂H̃/∂t at (t, z).
+ */
+
+/**
+ * @fn matrix multisol::H(double t, double z)
+ * @brief Return the lab-frame H matrix at (t, z).
+ */
+
+/**
+ * @fn matrix multisol::dHdt(double t, double z)
+ * @brief Return ∂H/∂t.
+ */
+
+/**
+ * @fn matrix multisol::d2Hdt2(double t, double z)
+ * @brief Return ∂²H/∂t².
+ */
+
+/**
+ * @fn vec3 multisol::v(double t, double z, double phi)
+ * @brief Evaluate the neutrino four-momentum on the ellipse at (t, z, φ).
+ */
+
+/**
+ * @fn vec3 multisol::dv_dt(double t, double z, double phi)
+ * @brief Return ∂v/∂t.
+ */
+
+/**
+ * @fn vec3 multisol::dv_dphi(double t, double z, double phi)
+ * @brief Return ∂v/∂φ.
+ */
+
+/**
+ * @fn vec3 multisol::d2v_dt_dphi(double t, double z, double phi)
+ * @brief Return ∂²v/(∂t ∂φ).
+ */
+
+/**
+ * @fn geo_t multisol::geometry(double t, double z)
+ * @brief Compute the plane geometry (basis vectors, centre) at (t, z).
+ */
+
+/**
+ * @fn geo_t multisol::intersection(multisol* nu, double t1, double z1, double t2, double z2)
+ * @brief Find the intersection geometry of this surface with @p nu.
+ */
+
+/**
+ * @fn bool multisol::eigenvalues(double t, double z, vec3* real, vec3* imag)
+ * @brief Compute eigenvalues at (t, z) to check for real solutions.
+ * @return @c true if at least one real positive eigenvalue is found.
+ */
+
+/**
+ * @fn double multisol::dp_dt()
+ * @brief Find the t* where dP(λ_c, t*)/dt = 0.
+ * @return Optimal t value.
+ */
+
+/**
+ * @fn mass_t multisol::masses(double t, double z)
+ * @brief Compute the reconstructed masses at (t, z).
+ */
+
+/**
+ * @fn rev_t multisol::translate(double sx, double sy)
+ * @brief Translate from (S_x, S_y) to (u, v, u', v', t, z).
+ */

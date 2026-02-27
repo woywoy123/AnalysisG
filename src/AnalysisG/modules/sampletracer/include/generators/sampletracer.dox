@@ -1,0 +1,94 @@
+/**
+ * @file sampletracer.h
+ * @brief Multi-file sample manager.
+ * @details @c sampletracer inherits @c tools and @c notification and manages
+ *          a set of per-file @c container objects, coordinates multi-threaded
+ *          object compilation, and transfers data to the @c dataloader.
+ */
+
+/**
+ * @class sampletracer
+ * @brief Manages multiple per-file containers and coordinates event/graph
+ *        compilation.
+ * @details Inherits @c tools and @c notification.
+ */
+
+/**
+ * @fn sampletracer::sampletracer()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn sampletracer::~sampletracer()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn bool sampletracer::add_meta_data(meta* meta_, std::string filename)
+ * @brief Register metadata @p meta_ for the file @p filename.
+ * @param meta_    Pointer to the metadata.
+ * @param filename File path.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn meta* sampletracer::get_meta_data(std::string filename)
+ * @brief Retrieve the metadata for @p filename.
+ * @param filename File path.
+ * @return Pointer to the @c meta object, or @c nullptr if not found.
+ */
+
+/**
+ * @fn std::vector<event_template*> sampletracer::get_events(std::string label)
+ * @brief Return all compiled events with the given label across all files.
+ * @param label Event label to filter by.
+ * @return Vector of event pointers.
+ */
+
+/**
+ * @fn void sampletracer::fill_selections(std::map<std::string, selection_template*>* inpt)
+ * @brief Merge selection results from all containers into @p inpt.
+ * @param inpt Output map of selection name to merged @c selection_template.
+ */
+
+/**
+ * @fn bool sampletracer::add_event(event_template* ev, std::string label)
+ * @brief Register an event template with @p label for all files.
+ * @param ev    Pointer to the event template.
+ * @param label Label string.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn bool sampletracer::add_graph(graph_template* gr, std::string label)
+ * @brief Register a graph template for all files.
+ * @param gr    Pointer to the graph template.
+ * @param label Label string.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn bool sampletracer::add_selection(selection_template* sel)
+ * @brief Register a selection template for all files.
+ * @param sel Pointer to the selection.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void sampletracer::populate_dataloader(dataloader* dl)
+ * @brief Transfer all compiled graph data to the dataloader.
+ * @param dl Pointer to the dataloader.
+ */
+
+/**
+ * @fn void sampletracer::compile_objects(int threads, int intrath)
+ * @brief Compile all events, graphs, and selections across all files using
+ *        @p threads parallel workers.
+ * @param threads Number of parallel threads.
+ * @param intrath Number of intra-operation threads for PyTorch.
+ */
+
+/**
+ * @var std::string* sampletracer::output_path
+ * @brief Pointer to the output directory (not owned).
+ */

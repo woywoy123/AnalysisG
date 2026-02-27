@@ -1,0 +1,134 @@
+/**
+ * @file _odeRK.h (tmp/multisol)
+ * @brief Runge-Kutta 4 (RK4) integrator for di-neutrino ellipse alignment.
+ * @details Declares @c ellipse_t (state vector per neutrino), @c recon_t
+ *          (reconstruction result), and @c odeRK (the RK4 integrator that
+ *          simultaneously evolves all neutrino ellipses and searches for the
+ *          t values that minimise the MET residual).
+ */
+
+/**
+ * @struct ellipse_t
+ * @brief State vector for one neutrino ellipse at a given (t, z).
+ */
+
+/**
+ * @var vec3 ellipse_t::A
+ * @brief Ellipse basis vector A.
+ */
+
+/**
+ * @var vec3 ellipse_t::B
+ * @brief Ellipse basis vector B.
+ */
+
+/**
+ * @var vec3 ellipse_t::C
+ * @brief Ellipse centre vector C.
+ */
+
+/**
+ * @var double ellipse_t::t
+ * @brief Current t parameter.
+ */
+
+/**
+ * @var double ellipse_t::z
+ * @brief Current z parameter (default 1.0).
+ */
+
+/**
+ * @struct recon_t
+ * @brief Reconstruction result for a single di-neutrino configuration.
+ */
+
+/**
+ * @var bool recon_t::is_valid
+ * @brief @c true if a valid solution was found.
+ */
+
+/**
+ * @var double recon_t::residual
+ * @brief MET residual (lower = better; default -1 = not computed).
+ */
+
+/**
+ * @var std::vector<double> recon_t::t
+ * @brief Optimal t values for each neutrino.
+ */
+
+/**
+ * @var std::vector<double> recon_t::z
+ * @brief Optimal z values for each neutrino.
+ */
+
+/**
+ * @var std::vector<double> recon_t::phi
+ * @brief Optimal φ values for each neutrino.
+ */
+
+/**
+ * @fn ellipse_t operator+(const ellipse_t& a, const ellipse_t& b)
+ * @brief Element-wise addition of two ellipse state vectors.
+ */
+
+/**
+ * @fn ellipse_t operator*(const ellipse_t& a, double s)
+ * @brief Scale an ellipse state vector.
+ */
+
+/**
+ * @class odeRK
+ * @brief RK4 integrator for multi-neutrino ellipse alignment.
+ * @details Inherits @c tools.
+ */
+
+/**
+ * @fn odeRK::odeRK(std::vector<multisol*>* sols, vec3 met, int iter, double step)
+ * @brief Construct the integrator.
+ * @param sols Pointer to the list of @c multisol surfaces to integrate.
+ * @param met  MET three-vector.
+ * @param iter Maximum number of RK4 steps.
+ * @param step Step size Δt.
+ */
+
+/**
+ * @fn odeRK::~odeRK()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn void odeRK::solve()
+ * @brief Run the full RK4 integration and populate @c _state.
+ */
+
+/**
+ * @fn void odeRK::rk4(double dt)
+ * @brief Perform one RK4 step with step size @p dt.
+ * @param dt Step size.
+ */
+
+/**
+ * @fn void odeRK::update_t()
+ * @brief Update all t parameters from the current state.
+ */
+
+/**
+ * @fn double odeRK::solve_z_phi()
+ * @brief Solve for the z and φ parameters that minimise the MET residual.
+ * @return Residual at the solution.
+ */
+
+/**
+ * @fn double odeRK::residual(std::vector<double> wg, std::vector<double> phx)
+ * @brief Evaluate the MET residual for the given angles.
+ * @param wg  Weights / z values.
+ * @param phx φ values.
+ * @return Residual.
+ */
+
+/**
+ * @fn std::vector<ellipse_t> odeRK::derivative(const std::vector<ellipse_t>& dS)
+ * @brief Compute the time derivative of the state @p dS.
+ * @return Derivative state.
+ */

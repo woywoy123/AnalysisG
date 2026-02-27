@@ -1,0 +1,222 @@
+/**
+ * @file lossfx.h
+ * @brief Loss-function factory, optimizer builder, and weight initialiser.
+ * @details @c lossfx inherits @c tools and @c notification and manages a
+ *          PyTorch loss function, optimizer, and LR scheduler.  Free function
+ *          templates in this header handle loss-option decoration.
+ */
+
+/**
+ * @fn template<typename g, typename go> g* generate_ops(g* imp, go* opx, bool dx)
+ * @brief Allocate a new loss/optimizer options object.
+ * @tparam g  Options type to create.
+ * @tparam go Source options type.
+ * @param imp Unused import object.
+ * @param opx Source options to copy if @p dx is @c false.
+ * @param dx  If @c true, create a default-constructed object.
+ * @return Pointer to the new options object.
+ */
+
+/**
+ * @fn template<typename g> void _dress_reduction(g* imx, loss_opt* params)
+ * @brief Apply the reduction mode (mean/sum/none) from @p params to @p imx.
+ * @tparam g Loss options type.
+ * @param imx    Options object to modify.
+ * @param params Source options.
+ */
+
+/**
+ * @fn template<typename g> void _dress_batch(g* imx, loss_opt* params)
+ * @brief Apply batch-mean reduction if requested.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_ignore(g* imx, loss_opt* params)
+ * @brief Apply the ignore_index option if not default.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_smoothing(g* imx, loss_opt* params)
+ * @brief Apply label_smoothing if non-zero.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_margin(g* imx, loss_opt* params)
+ * @brief Apply margin if non-zero.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_blank(g* imx, loss_opt* params)
+ * @brief Apply blank token index if non-zero.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_zero(g* imx, loss_opt* params)
+ * @brief Apply zero_infinity if set.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_swap(g* imx, loss_opt* params)
+ * @brief Apply swap option if set.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_eps(g* imx, loss_opt* params)
+ * @brief Apply epsilon if non-zero.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_beta(g* imx, loss_opt* params)
+ * @brief Apply beta if non-zero.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_full(g* imx, loss_opt* params)
+ * @brief Apply full option if set.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_target(g* imx, loss_opt* params)
+ * @brief Apply log_target if set.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @fn template<typename g> void _dress_delta(g* imx, loss_opt* params)
+ * @brief Apply delta if non-zero.
+ * @tparam g Loss options type.
+ */
+
+/**
+ * @class lossfx
+ * @brief Manages a PyTorch loss function, optimizer, and LR scheduler.
+ * @details Inherits @c tools and @c notification.
+ */
+
+/**
+ * @fn lossfx::lossfx()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn lossfx::lossfx(std::string var, std::string enx)
+ * @brief Construct and immediately parse @p enx as a loss configuration string.
+ * @param var Variable name associated with this loss.
+ * @param enx Loss configuration string (e.g. @c "cross_entropy-mean").
+ */
+
+/**
+ * @fn lossfx::~lossfx()
+ * @brief Destructor.  Frees all owned loss, optimizer, and scheduler objects.
+ */
+
+/**
+ * @fn loss_enum lossfx::loss_string(std::string name)
+ * @brief Convert a loss name string to its @c loss_enum value.
+ * @param name Loss name (e.g. @c "mse").
+ * @return Corresponding @c loss_enum, or @c invalid_loss.
+ */
+
+/**
+ * @fn opt_enum lossfx::optim_string(std::string name)
+ * @brief Convert an optimizer name string to @c opt_enum.
+ * @param name Optimizer name string.
+ * @return Corresponding @c opt_enum.
+ */
+
+/**
+ * @fn scheduler_enum lossfx::scheduler_string(std::string name)
+ * @brief Convert a scheduler name string to @c scheduler_enum.
+ * @param name Scheduler name string.
+ * @return Corresponding @c scheduler_enum.
+ */
+
+/**
+ * @fn void lossfx::loss_opt_string(std::string name)
+ * @brief Parse and apply a combined loss-option string.
+ * @param name Combined string such as @c "cross_entropy-mean-label_smoothing=0.1".
+ */
+
+/**
+ * @fn torch::Tensor lossfx::loss(torch::Tensor* pred, torch::Tensor* truth)
+ * @brief Compute the loss using the pre-built loss function.
+ * @param pred  Prediction tensor.
+ * @param truth Ground-truth tensor.
+ * @return Scalar loss tensor.
+ */
+
+/**
+ * @fn torch::Tensor lossfx::loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss)
+ * @brief Compute the loss using the specified loss type (bypasses the
+ *        pre-built function).
+ * @param pred  Prediction tensor.
+ * @param truth Ground-truth tensor.
+ * @param lss   Loss type.
+ * @return Scalar loss tensor.
+ */
+
+/**
+ * @fn void lossfx::weight_init(torch::nn::Sequential* data, mlp_init method)
+ * @brief Initialise the weights of a Sequential module using the given scheme.
+ * @param data   Pointer to the module.
+ * @param method Initialisation method.
+ */
+
+/**
+ * @fn torch::optim::Optimizer* lossfx::build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params)
+ * @brief Construct and return a PyTorch optimizer.
+ * @param op     Hyper-parameter configuration.
+ * @param params Tensors to optimise.
+ * @return Pointer to the created optimizer (caller takes ownership).
+ */
+
+/**
+ * @fn void lossfx::build_scheduler(optimizer_params_t* op, torch::optim::Optimizer* opx)
+ * @brief Attach a learning-rate scheduler to the given optimizer.
+ * @param op  Scheduler configuration (type and hyper-parameters).
+ * @param opx Optimizer to schedule.
+ */
+
+/**
+ * @fn bool lossfx::build_loss_function(loss_enum lss)
+ * @brief Build the loss function for the specified type.
+ * @param lss Loss type.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn bool lossfx::build_loss_function()
+ * @brief Build the loss function from @c lss_cfg.fx.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void lossfx::to(torch::TensorOptions*)
+ * @brief Move all internal tensors to the specified device.
+ * @param opt Device options.
+ */
+
+/**
+ * @fn void lossfx::step()
+ * @brief Perform one optimizer step and update the LR scheduler.
+ */
+
+/**
+ * @var std::string lossfx::variable
+ * @brief Name of the output variable this loss is associated with.
+ */
+
+/**
+ * @var loss_opt lossfx::lss_cfg
+ * @brief Loss configuration options.
+ */

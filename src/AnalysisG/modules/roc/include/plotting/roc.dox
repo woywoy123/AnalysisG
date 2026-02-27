@@ -1,0 +1,93 @@
+/**
+ * @file roc.h
+ * @brief ROC curve computation and storage.
+ * @details Declares @c roc_t (per-class ROC data) and @c roc (the computation
+ *          class that inherits @c plotting).
+ */
+
+/**
+ * @struct roc_t
+ * @brief Stores the ROC curve data for one class and one k-fold.
+ */
+
+/**
+ * @var int roc_t::cls
+ * @brief Class index.
+ */
+
+/**
+ * @var int roc_t::kfold
+ * @brief K-fold index.
+ */
+
+/**
+ * @var std::string roc_t::model
+ * @brief Name of the model that produced this ROC curve.
+ */
+
+/**
+ * @var std::vector<double> roc_t::_auc
+ * @brief Area under the ROC curve for each threshold sweep.
+ */
+
+/**
+ * @var std::vector<std::vector<double>> roc_t::tpr_
+ * @brief True positive rate (recall) values; one vector per threshold sweep.
+ */
+
+/**
+ * @var std::vector<std::vector<double>> roc_t::fpr_
+ * @brief False positive rate values; one vector per threshold sweep.
+ */
+
+/**
+ * @var std::vector<std::vector<int>>* roc_t::truth
+ * @brief Pointer to the ground-truth label arrays (not owned).
+ */
+
+/**
+ * @var std::vector<std::vector<double>>* roc_t::scores
+ * @brief Pointer to the classifier score arrays (not owned).
+ */
+
+/**
+ * @class roc
+ * @brief Computes ROC curves from classifier scores and truth labels.
+ * @details Inherits @c plotting.
+ */
+
+/**
+ * @fn roc::roc()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn roc::~roc()
+ * @brief Destructor.  Frees all owned @c roc_t objects.
+ */
+
+/**
+ * @fn void roc::build_ROC(std::string name, int kfold, std::vector<int>* label, std::vector<std::vector<double>>* scores)
+ * @brief Compute ROC curves for the classifier output @p scores against
+ *        ground-truth labels @p label.
+ * @param name   Model/run name.
+ * @param kfold  K-fold index.
+ * @param label  Pointer to the flat vector of ground-truth class labels.
+ * @param scores Pointer to the per-class score matrix.
+ */
+
+/**
+ * @fn std::vector<roc_t*> roc::get_ROC()
+ * @brief Return all computed @c roc_t objects.
+ * @return Vector of pointers to @c roc_t objects.
+ */
+
+/**
+ * @var std::map<std::string, std::map<int, std::vector<std::vector<double>>*>> roc::roc_data
+ * @brief Accumulated score data keyed by model name and k-fold.
+ */
+
+/**
+ * @var std::map<std::string, std::map<int, std::vector<std::vector<int>>*>> roc::labels
+ * @brief Accumulated truth-label data keyed by model name and k-fold.
+ */

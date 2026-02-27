@@ -1,0 +1,254 @@
+/**
+ * @file structs.pxd
+ * @brief Cython declaration file for core data structs used throughout
+ *        @c AnalysisG.
+ * @details Wraps @c particle_t, @c meta_t, @c weights_t, @c settings_t,
+ *          @c data_enum, and @c data_t, and provides the @c switch_board
+ *          helper for reading typed leaf data.
+ */
+
+/**
+ * @struct particle_t
+ * @brief Raw particle kinematics and classification flags.
+ */
+
+/**
+ * @var double particle_t.e
+ * @brief Energy.
+ */
+
+/**
+ * @var double particle_t.mass
+ * @brief Invariant mass.
+ */
+
+/**
+ * @var double particle_t.px
+ * @brief x-momentum.
+ */
+
+/**
+ * @var double particle_t.py
+ * @brief y-momentum.
+ */
+
+/**
+ * @var double particle_t.pz
+ * @brief z-momentum.
+ */
+
+/**
+ * @var double particle_t.pt
+ * @brief Transverse momentum.
+ */
+
+/**
+ * @var double particle_t.eta
+ * @brief Pseudorapidity.
+ */
+
+/**
+ * @var double particle_t.phi
+ * @brief Azimuthal angle.
+ */
+
+/**
+ * @var bool particle_t.cartesian
+ * @brief @c true if the momentum is in Cartesian representation.
+ */
+
+/**
+ * @var bool particle_t.polar
+ * @brief @c true if the momentum is in polar representation.
+ */
+
+/**
+ * @var double particle_t.charge
+ * @brief Electric charge.
+ */
+
+/**
+ * @var int particle_t.pdgid
+ * @brief PDG particle ID.
+ */
+
+/**
+ * @var int particle_t.index
+ * @brief Sequential index within the event.
+ */
+
+/**
+ * @var string particle_t.type
+ * @brief Type string.
+ */
+
+/**
+ * @var string particle_t.hash
+ * @brief Unique hash.
+ */
+
+/**
+ * @var string particle_t.symbol
+ * @brief Particle symbol.
+ */
+
+/**
+ * @var vector[int] particle_t.lepdef
+ * @brief Lepton definition PDG codes.
+ */
+
+/**
+ * @var vector[int] particle_t.nudef
+ * @brief Neutrino definition PDG codes.
+ */
+
+/**
+ * @var map[string, bool] particle_t.children
+ * @brief Child particle hashes.
+ */
+
+/**
+ * @var map[string, bool] particle_t.parents
+ * @brief Parent particle hashes.
+ */
+
+/**
+ * @struct weights_t
+ * @brief Sample weighting information from AMI.
+ */
+
+/**
+ * @var int weights_t.dsid
+ * @brief Dataset ID.
+ */
+
+/**
+ * @var bool weights_t.isAFII
+ * @brief @c true for AFII fast simulation.
+ */
+
+/**
+ * @var string weights_t.generator
+ * @brief Generator name string.
+ */
+
+/**
+ * @var float weights_t.total_events_weighted
+ * @brief Total weighted events in the sample.
+ */
+
+/**
+ * @var float weights_t.total_events
+ * @brief Total unweighted events.
+ */
+
+/**
+ * @var map[string, float] weights_t.hist_data
+ * @brief Additional histogram data keyed by name.
+ */
+
+/**
+ * @struct meta_t
+ * @brief Full dataset metadata struct.
+ * @details Stores AMI metadata, cross-section, luminosity, and provenance
+ *          information for a single dataset.
+ */
+
+/**
+ * @var unsigned int meta_t.dsid
+ * @brief Dataset ID.
+ */
+
+/**
+ * @var bool meta_t.isMC
+ * @brief @c true if this is a Monte Carlo sample.
+ */
+
+/**
+ * @var double meta_t.crossSection
+ * @brief Cross-section in pb.
+ */
+
+/**
+ * @var string meta_t.DatasetName
+ * @brief AMI dataset name.
+ */
+
+/**
+ * @struct settings_t
+ * @brief Global analysis run settings.
+ */
+
+/**
+ * @var string settings_t.output_path
+ * @brief Root output directory.
+ */
+
+/**
+ * @var string settings_t.run_name
+ * @brief Name tag for this analysis run.
+ */
+
+/**
+ * @var int settings_t.epochs
+ * @brief Number of training epochs.
+ */
+
+/**
+ * @var int settings_t.kfolds
+ * @brief Number of k-fold cross-validation folds.
+ */
+
+/**
+ * @var int settings_t.batch_size
+ * @brief Mini-batch size.
+ */
+
+/**
+ * @var bool settings_t.training
+ * @brief Enable training mode.
+ */
+
+/**
+ * @var bool settings_t.evaluation
+ * @brief Enable evaluation mode.
+ */
+
+/**
+ * @enum data_enum
+ * @brief Encodes the C++ type of a ROOT leaf.
+ * @details Values cover scalar and vector types up to three levels of nesting
+ *          for unsigned long long, unsigned int, double, long, float, int,
+ *          bool, and char.
+ */
+
+/**
+ * @cdef cppclass data_t
+ * @brief Wrapper around a ROOT leaf with typed read-back methods.
+ */
+
+/**
+ * @fn void data_t.flush()
+ * @brief Reset internal buffers.
+ */
+
+/**
+ * @fn bool data_t.next()
+ * @brief Advance to the next event entry.
+ * @return @c true if there is another entry.
+ */
+
+/**
+ * @fn bool data_t.element(...)
+ * @brief Read the current entry into the provided buffer.
+ * @details Overloaded for all supported C++ types and nesting levels.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn cdef dict switch_board(data_t* data)
+ * @brief Dispatch @c data.element() to the correct typed overload and return
+ *        the result as a Python object.
+ * @param data Pointer to a @c data_t leaf reader.
+ * @return Python scalar or list.
+ */

@@ -1,0 +1,37 @@
+/**
+ * @file tools.pxd
+ * @brief Cython declaration file for the @c tools C++ utility class and the
+ *        @c merge_data / @c sum_data helper functions.
+ * @details Provides the Cython-level import of @c tools (file system, string,
+ *          math helpers) and the full set of @c merge_data and @c sum_data
+ *          overloads used to merge C++ containers across threads/events.
+ */
+
+/**
+ * @cdef cppclass tools
+ * @brief C++ utility base class.
+ * @details Provides:
+ *          - File system utilities: @c create_path, @c delete_path,
+ *            @c is_file, @c rename, @c absolute_path, @c ls.
+ *          - String utilities: @c replace, @c has_string, @c ends_with,
+ *            @c has_value, @c split, @c hash, @c encode64, @c decode64.
+ *          - Math utilities: @c max, @c min, @c sum.
+ *          - Data partitioning: @c discretize.
+ */
+
+/**
+ * @fn void merge_data(map[string, vector[T]]* out, map[string, vector[T]]* p2)
+ * @brief Merge map @p p2 into @p out by concatenating vectors.
+ * @tparam T int, float, double, or bool.
+ */
+
+/**
+ * @fn void sum_data(vector[T]* out, vector[T]* p2)
+ * @brief Element-wise addition of @p p2 into @p out.
+ * @tparam T int, float, double, or bool.
+ */
+
+/**
+ * @class Tools
+ * @brief Python wrapper for @c tools.
+ */

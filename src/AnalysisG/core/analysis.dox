@@ -1,0 +1,92 @@
+/**
+ * @file analysis.pxd
+ * @brief Cython declaration file for the @c analysis C++ class.
+ * @details Wraps the @c analysis class (which inherits @c notification) and
+ *          exposes its sample/template registration, model training, and
+ *          progress-reporting interface.  The Cython wrapper class @c Analysis
+ *          owns the underlying C++ @c analysis pointer.
+ */
+
+/**
+ * @cdef cppclass analysis
+ * @brief C++ analysis orchestrator (inherits @c notification).
+ * @details Manages sample loading, event/graph/selection/metric template
+ *          registration, model training, and thread attachment.
+ */
+
+/**
+ * @fn analysis.add_samples(string path, string label)
+ * @brief Register a data sample from @p path with an identifying @p label.
+ */
+
+/**
+ * @fn analysis.add_selection_template(selection_template* ev)
+ * @brief Register a selection template.
+ */
+
+/**
+ * @fn analysis.add_event_template(event_template* ev, string label)
+ * @brief Register an event template with @p label.
+ */
+
+/**
+ * @fn analysis.add_graph_template(graph_template* ev, string label)
+ * @brief Register a graph-building template with @p label.
+ */
+
+/**
+ * @fn analysis.add_metric_template(metric_template* ev, model_template* mdl)
+ * @brief Register a metric template bound to a model.
+ */
+
+/**
+ * @fn analysis.add_model(model_template* model, optimizer_params_t* op, string run_name)
+ * @brief Register a model with optimizer parameters and a run name.
+ */
+
+/**
+ * @fn analysis.start()
+ * @brief Start the analysis pipeline.
+ */
+
+/**
+ * @fn analysis.attach_threads()
+ * @brief Attach worker threads.
+ */
+
+/**
+ * @fn map[string, vector[float]] analysis.progress()
+ * @brief Return training progress (loss curves, etc.).
+ */
+
+/**
+ * @fn map[string, string] analysis.progress_mode()
+ * @brief Return the current processing mode per run.
+ */
+
+/**
+ * @fn map[string, string] analysis.progress_report()
+ * @brief Return a human-readable progress report.
+ */
+
+/**
+ * @fn map[string, bool] analysis.is_complete()
+ * @brief Return completion status for each registered run.
+ */
+
+/**
+ * @var map[string, meta*] analysis.meta_data
+ * @brief Map of sample label to @c meta object.
+ */
+
+/**
+ * @var settings_t analysis.m_settings
+ * @brief Global analysis settings.
+ */
+
+/**
+ * @class Analysis
+ * @brief Python-level wrapper for @c analysis.
+ * @details Holds Python lists of registered templates/models and the
+ *          underlying @c analysis* pointer.
+ */

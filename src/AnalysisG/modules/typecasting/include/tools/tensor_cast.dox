@@ -1,0 +1,90 @@
+/**
+ * @file tensor_cast.h
+ * @brief Template utilities for converting nested C++ vectors to
+ *        @c torch::Tensor objects with padding.
+ * @details Provides a family of recursive template functions that determine
+ *          the maximum dimension of a ragged nested vector, pad shorter rows
+ *          with sentinel values, flatten the data into a contiguous array, and
+ *          wrap it in a @c torch::Tensor.
+ */
+
+/**
+ * @fn template<typename g> void scout_dim(g*, int*)
+ * @brief Base case: scalar — does nothing.
+ * @tparam g Scalar type.
+ */
+
+/**
+ * @fn template<typename g> void nulls(g* d, int*)
+ * @brief Base case: fill scalar sentinel — sets @p d to -1.
+ * @tparam g Scalar type.
+ * @param d Pointer to the scalar to reset.
+ */
+
+/**
+ * @fn template<typename g> bool standard(g*, int*)
+ * @brief Base case: scalar is already "standard" — returns @c true.
+ * @tparam g Scalar type.
+ */
+
+/**
+ * @fn template<typename G, typename g> void as_primitive(G* data, std::vector<g>* lin, std::vector<signed long>*, unsigned int)
+ * @brief Base case: append scalar @p data to the linearised vector @p lin.
+ * @tparam G Source type.
+ * @tparam g Target primitive type.
+ * @param data Pointer to the scalar.
+ * @param lin  Linear output buffer.
+ */
+
+/**
+ * @fn template<typename G> void scout_dim(const std::vector<G>* vec, int* mx_dim)
+ * @brief Determine the maximum length at the first nesting level of @p vec.
+ * @tparam G Element type (may itself be a vector for deeper nesting).
+ * @param vec    Pointer to the vector to inspect.
+ * @param mx_dim Running maximum dimension; updated in place.
+ */
+
+/**
+ * @fn template<typename g> void nulls(const std::vector<g>* d, int* mx_dim)
+ * @brief Pad the vector @p d with default-constructed elements until it
+ *        reaches @p mx_dim entries.
+ * @tparam g Element type.
+ * @param d      Pointer to the vector to pad.
+ * @param mx_dim Target size.
+ */
+
+/**
+ * @fn template<typename g> bool standard(const std::vector<g>* vec, int* mx_dim)
+ * @brief Recursively ensure that @p vec and all sub-vectors are padded to
+ *        @p mx_dim.
+ * @tparam g Element type.
+ * @param vec    Pointer to the vector to normalise.
+ * @param mx_dim Target size.
+ * @return Always @c false (padding was applied).
+ */
+
+/**
+ * @fn template<typename G, typename g> static void as_primitive(std::vector<G>* data, std::vector<g>* linear, std::vector<signed long>* dims, unsigned int depth)
+ * @brief Recursively flatten the nested vector @p data into @p linear and
+ *        record the dimension sizes in @p dims.
+ * @tparam G Outer element type (a vector type for intermediate levels).
+ * @tparam g Leaf primitive type.
+ * @param data   Source nested vector.
+ * @param linear Output flat buffer.
+ * @param dims   Output dimension size record.
+ * @param depth  Current recursion depth (default 0).
+ */
+
+/**
+ * @fn template<typename G, typename g> static torch::Tensor build_tensor(std::vector<G>* _data, at::ScalarType _op, g, torch::TensorOptions* op)
+ * @brief Convert a (possibly ragged) nested vector to a padded
+ *        @c torch::Tensor.
+ * @details Calls @c scout_dim, @c standard, and @c as_primitive internally.
+ * @tparam G Outer element type.
+ * @tparam g Leaf primitive type.
+ * @param _data Source nested vector.
+ * @param _op   Scalar type for the tensor (e.g. @c torch::kFloat32).
+ * @param       Unused tag value of type @p g.
+ * @param op    Tensor options (device, dtype overridden by @p _op).
+ * @return Padded @c torch::Tensor with dimensions derived from @p _data.
+ */

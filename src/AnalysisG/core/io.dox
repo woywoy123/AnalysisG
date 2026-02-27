@@ -1,0 +1,137 @@
+/**
+ * @file io.pxd
+ * @brief Cython declaration file for the @c io C++ class.
+ * @details Wraps the @c io class (inheriting @c notification) which provides
+ *          both HDF5 and ROOT file I/O.  The Python wrapper @c IO owns the
+ *          underlying @c io* pointer.
+ */
+
+/**
+ * @cdef cppclass io
+ * @brief C++ I/O class for HDF5 and ROOT data (inherits @c notification).
+ */
+
+/**
+ * @fn bool io.start(string filename, string read_write)
+ * @brief Open a HDF5 file.
+ * @param filename   Path to the file.
+ * @param read_write @c "r" or @c "w".
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void io.end()
+ * @brief Close the currently open HDF5 file.
+ */
+
+/**
+ * @fn vector[string] io.dataset_names()
+ * @brief Return the list of dataset names in the open HDF5 file.
+ */
+
+/**
+ * @fn bool io.has_dataset_name(string name)
+ * @brief Test whether a dataset with @p name exists.
+ */
+
+/**
+ * @fn map[string, long] io.root_size()
+ * @brief Return the number of entries per tree in registered ROOT files.
+ */
+
+/**
+ * @fn void io.check_root_file_paths()
+ * @brief Validate all registered ROOT file paths.
+ */
+
+/**
+ * @fn bool io.scan_keys()
+ * @brief Scan all registered ROOT files for tree/branch/leaf keys.
+ */
+
+/**
+ * @fn void io.root_begin()
+ * @brief Initialise the ROOT event loop.
+ */
+
+/**
+ * @fn void io.root_end()
+ * @brief Finalise the ROOT event loop and free resources.
+ */
+
+/**
+ * @fn void io.trigger_pcm()
+ * @brief Trigger reading of the next event entry.
+ */
+
+/**
+ * @fn map[string, data_t*]* io.get_data()
+ * @brief Return the current event's leaf data map.
+ */
+
+/**
+ * @var string io.current_working_path
+ * @brief Current working directory path.
+ */
+
+/**
+ * @var string io.sow_name
+ * @brief Sum-of-weights histogram name.
+ */
+
+/**
+ * @var bool io.enable_pyami
+ * @brief Enable AMI metadata fetching.
+ */
+
+/**
+ * @var vector[string] io.trees
+ * @brief ROOT tree names to read.
+ */
+
+/**
+ * @var vector[string] io.branches
+ * @brief ROOT branch names to read.
+ */
+
+/**
+ * @var vector[string] io.leaves
+ * @brief ROOT leaf names to read.
+ */
+
+/**
+ * @var map[string, bool] io.root_files
+ * @brief Map of ROOT file path → validity flag.
+ */
+
+/**
+ * @var map[string, meta*] io.meta_data
+ * @brief Map of sample label → @c meta object.
+ */
+
+/**
+ * @var map[string, map[string, long]] io.tree_entries
+ * @brief Entry counts per file per tree.
+ */
+
+/**
+ * @var map[string, map[string, string]] io.leaf_typed
+ * @brief Leaf name → type string per tree.
+ */
+
+/**
+ * @var map[string, map[string, map[string, vector[string]]]] io.keys
+ * @brief Nested map: file → tree → branch → leaves.
+ */
+
+/**
+ * @var string io.metacache_path
+ * @brief Filesystem path for the metadata cache.
+ */
+
+/**
+ * @class IO
+ * @brief Python wrapper for @c io.
+ * @details Provides @c MetaData, @c ScanKeys, @c begin, and @c end as
+ *          public cpdef methods.
+ */

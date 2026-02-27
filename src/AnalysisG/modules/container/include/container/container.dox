@@ -1,0 +1,198 @@
+/**
+ * @file container.h
+ * @brief Per-file event/graph/selection entry container.
+ * @details Declares @c entry_t (a single keyed entry holding all object types
+ *          for one event hash) and @c container (the per-file manager).
+ */
+
+/**
+ * @struct entry_t
+ * @brief Holds all graph, event, and selection objects for one event hash.
+ */
+
+/**
+ * @var std::string entry_t::hash
+ * @brief Unique event hash.
+ */
+
+/**
+ * @var std::vector<graph_t*> entry_t::m_data
+ * @brief Exported graph data objects.
+ */
+
+/**
+ * @var std::vector<graph_template*> entry_t::m_graph
+ * @brief Graph template objects for this entry.
+ */
+
+/**
+ * @var std::vector<event_template*> entry_t::m_event
+ * @brief Event template objects for this entry.
+ */
+
+/**
+ * @var std::vector<selection_template*> entry_t::m_selection
+ * @brief Selection template objects for this entry.
+ */
+
+/**
+ * @fn void entry_t::init()
+ * @brief Initialise the entry (called after construction).
+ */
+
+/**
+ * @fn void entry_t::destroy()
+ * @brief Delete all owned objects.
+ */
+
+/**
+ * @fn bool entry_t::has_event(event_template* ev)
+ * @brief Check whether an event of the same type as @p ev is already stored.
+ * @param ev Pointer to the event to check.
+ * @return @c true if a matching event exists.
+ */
+
+/**
+ * @fn bool entry_t::has_graph(graph_template* gr)
+ * @brief Check whether a graph of the same type as @p gr is already stored.
+ * @param gr Pointer to the graph to check.
+ * @return @c true if a matching graph exists.
+ */
+
+/**
+ * @fn bool entry_t::has_selection(selection_template* sel)
+ * @brief Check whether a selection of the same type as @p sel is already
+ *        stored.
+ * @param sel Pointer to the selection to check.
+ * @return @c true if a matching selection exists.
+ */
+
+/**
+ * @fn template<typename g> void entry_t::destroy(std::vector<g*>* c)
+ * @brief Delete all objects in @p c and clear the vector.
+ * @tparam g Object type.
+ * @param c Vector to clear.
+ */
+
+/**
+ * @class container
+ * @brief Manages all @c entry_t objects for one ROOT file.
+ * @details Inherits @c tools.
+ */
+
+/**
+ * @fn container::container()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn container::~container()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn void container::add_meta_data(meta*, std::string)
+ * @brief Associate metadata @p m with filename @p filename.
+ * @param m        Pointer to the metadata.
+ * @param filename File path.
+ */
+
+/**
+ * @fn meta* container::get_meta_data()
+ * @brief Return the associated metadata pointer.
+ * @return Pointer to @c meta_data.
+ */
+
+/**
+ * @fn bool container::add_selection_template(selection_template*)
+ * @brief Register a selection template for this container.
+ * @param sel Pointer to the selection.
+ * @return @c true if added successfully.
+ */
+
+/**
+ * @fn bool container::add_event_template(event_template*, std::string label)
+ * @brief Register an event template with the given label.
+ * @param ev    Pointer to the event template.
+ * @param label Event label string.
+ * @return @c true if added.
+ */
+
+/**
+ * @fn bool container::add_graph_template(graph_template*, std::string label)
+ * @brief Register a graph template with the given label.
+ * @param gr    Pointer to the graph template.
+ * @param label Graph label string.
+ * @return @c true if added.
+ */
+
+/**
+ * @fn void container::fill_selections(std::map<std::string, selection_template*>* inpt)
+ * @brief Fill @p inpt with merged selection results from this container.
+ * @param inpt Output map.
+ */
+
+/**
+ * @fn void container::get_events(std::vector<event_template*>*, std::string label)
+ * @brief Return all events with the given label.
+ * @param out   Output vector.
+ * @param label Label to filter by.
+ */
+
+/**
+ * @fn void container::populate_dataloader(dataloader* dl)
+ * @brief Transfer all compiled graph data to the dataloader.
+ * @param dl Pointer to the dataloader.
+ */
+
+/**
+ * @fn void container::compile(size_t* len, int threadIdx, int thrd)
+ * @brief Build all graphs and selections using thread @p threadIdx of @p thrd
+ *        total threads.
+ * @param len       Pointer to the progress counter.
+ * @param threadIdx Index of this thread.
+ * @param thrd      Total number of threads.
+ */
+
+/**
+ * @fn size_t container::len()
+ * @brief Return the number of unique event hashes (entries) in this container.
+ * @return Entry count.
+ */
+
+/**
+ * @fn entry_t* container::add_entry(std::string hash)
+ * @brief Get or create an @c entry_t for the given hash.
+ * @param hash Event hash.
+ * @return Pointer to the entry.
+ */
+
+/**
+ * @var meta* container::meta_data
+ * @brief Pointer to the associated metadata object.
+ */
+
+/**
+ * @var std::string* container::filename
+ * @brief Pointer to the associated file path (not owned).
+ */
+
+/**
+ * @var std::string* container::output_path
+ * @brief Pointer to the output directory (not owned).
+ */
+
+/**
+ * @var std::string container::label
+ * @brief Label identifying this container.
+ */
+
+/**
+ * @var std::map<std::string, entry_t> container::random_access
+ * @brief Map of event hash to @c entry_t.
+ */
+
+/**
+ * @var std::map<std::string, selection_template*>* container::merged
+ * @brief Pointer to the merged selection map (not owned).
+ */

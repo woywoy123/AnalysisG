@@ -1,0 +1,262 @@
+/**
+ * @file model_template.h
+ * @brief Base class for GNN models in AnalysisG.
+ * @details @c model_template inherits both @c notification and @c tools, and
+ *          provides the training loop infrastructure (forward pass, loss
+ *          computation, checkpoint save/restore).  Users subclass
+ *          @c model_template and override @c forward and optionally
+ *          @c train_sequence and @c clone.
+ */
+
+/**
+ * @class model_template
+ * @brief Base class for Graph Neural Network models.
+ * @details Inherits @c notification and @c tools.
+ */
+
+/**
+ * @fn model_template::model_template()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn virtual model_template::~model_template()
+ * @brief Virtual destructor.
+ */
+
+/**
+ * @var cproperty<int, model_template> model_template::device_index
+ * @brief CUDA device index; -1 = CPU, ≥0 = GPU.
+ */
+
+/**
+ * @var cproperty<std::string, model_template> model_template::name
+ * @brief Model name.
+ */
+
+/**
+ * @var cproperty<std::string, model_template> model_template::device
+ * @brief PyTorch device string (e.g. @c "cpu" or @c "cuda:0").
+ */
+
+/**
+ * @var int model_template::kfold
+ * @brief Current k-fold index.
+ */
+
+/**
+ * @var int model_template::epoch
+ * @brief Current epoch number.
+ */
+
+/**
+ * @var bool model_template::is_mc
+ * @brief @c true if the training dataset is Monte Carlo simulation.
+ */
+
+/**
+ * @var bool model_template::use_pkl
+ * @brief If @c true, use pickle-based checkpointing.
+ */
+
+/**
+ * @var bool model_template::inference_mode
+ * @brief @c true when running inference only (no gradient computation).
+ */
+
+/**
+ * @var bool model_template::enable_anomaly
+ * @brief Enable PyTorch anomaly detection.
+ */
+
+/**
+ * @var bool model_template::retain_graph
+ * @brief If @c true, retain the computation graph after @c backward().
+ */
+
+/**
+ * @var std::string model_template::model_checkpoint_path
+ * @brief Directory where model checkpoints are written.
+ */
+
+/**
+ * @var std::string model_template::weight_name
+ * @brief ROOT leaf name for the event weight (default @c "event_weight").
+ */
+
+/**
+ * @var std::string model_template::tree_name
+ * @brief ROOT TTree name (default @c "nominal").
+ */
+
+/**
+ * @var std::vector<torch::Tensor*> model_template::_losses
+ * @brief Accumulated loss tensors to back-propagate.
+ */
+
+/**
+ * @var torch::optim::Optimizer* model_template::m_optim
+ * @brief Pointer to the active PyTorch optimizer (not owned by the model
+ *        after initialisation).
+ */
+
+/**
+ * @var cproperty<std::map<std::string,std::string>, std::map<std::string,std::tuple<torch::Tensor*,lossfx*>>> model_template::o_graph
+ * @brief Output feature name to loss-function name mapping (graph level).
+ */
+
+/**
+ * @var cproperty<std::map<std::string,std::string>, std::map<std::string,std::tuple<torch::Tensor*,lossfx*>>> model_template::o_node
+ * @brief Output feature name to loss-function name mapping (node level).
+ */
+
+/**
+ * @var cproperty<std::map<std::string,std::string>, std::map<std::string,std::tuple<torch::Tensor*,lossfx*>>> model_template::o_edge
+ * @brief Output feature name to loss-function name mapping (edge level).
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, std::map<std::string,torch::Tensor*>> model_template::i_graph
+ * @brief Names of required input graph-level features.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, std::map<std::string,torch::Tensor*>> model_template::i_node
+ * @brief Names of required input node-level features.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, std::map<std::string,torch::Tensor*>> model_template::i_edge
+ * @brief Names of required input edge-level features.
+ */
+
+/**
+ * @fn virtual model_template* model_template::clone()
+ * @brief Create a default-constructed clone.  Override in subclasses.
+ * @return New model instance.
+ */
+
+/**
+ * @fn virtual void model_template::forward(graph_t* data)
+ * @brief Execute one forward pass.  Override in subclasses to implement the
+ *        model computation.
+ * @param data Pointer to the input graph.
+ */
+
+/**
+ * @fn virtual void model_template::train_sequence(bool mode)
+ * @brief Switch the model between training and evaluation modes.
+ * @param mode @c true = training, @c false = evaluation.
+ */
+
+/**
+ * @fn void model_template::check_features(graph_t*)
+ * @brief Verify that all declared input features are present in @p data.
+ * @param data Input graph.
+ */
+
+/**
+ * @fn void model_template::set_optimizer(std::string name)
+ * @brief Select the optimizer by name string.
+ * @param name Optimizer name (e.g. @c "adam").
+ */
+
+/**
+ * @fn void model_template::initialize(optimizer_params_t*)
+ * @brief Build and attach the optimizer with the given hyper-parameters.
+ * @param params Optimizer configuration.
+ */
+
+/**
+ * @fn void model_template::clone_settings(model_settings_t* setd)
+ * @brief Populate @p setd from the current model configuration.
+ * @param setd Output settings struct.
+ */
+
+/**
+ * @fn void model_template::import_settings(model_settings_t* setd)
+ * @brief Apply the settings from @p setd to this model.
+ * @param setd Settings to import.
+ */
+
+/**
+ * @fn void model_template::forward(graph_t* data, bool train)
+ * @brief Forward pass with explicit mode selection.
+ * @param data  Input graph.
+ * @param train @c true = training mode.
+ */
+
+/**
+ * @fn void model_template::forward(std::vector<graph_t*> data, bool train)
+ * @brief Batched forward pass.
+ * @param data  Batch of input graphs.
+ * @param train @c true = training mode.
+ */
+
+/**
+ * @fn void model_template::register_module(torch::nn::Sequential* data)
+ * @brief Register a @c Sequential module so its parameters participate in
+ *        optimisation.
+ * @param data Pointer to the module.
+ */
+
+/**
+ * @fn void model_template::register_module(torch::nn::Sequential* data, mlp_init weight_init)
+ * @brief Register a @c Sequential module and apply weight initialisation.
+ * @param data        Pointer to the module.
+ * @param weight_init Initialisation scheme.
+ */
+
+/**
+ * @fn void model_template::prediction_graph_feature(std::string, torch::Tensor)
+ * @brief Store a prediction tensor at graph level.
+ * @param name   Feature name.
+ * @param tensor Prediction tensor.
+ */
+
+/**
+ * @fn void model_template::prediction_node_feature(std::string, torch::Tensor)
+ * @brief Store a prediction tensor at node level.
+ * @param name   Feature name.
+ * @param tensor Prediction tensor.
+ */
+
+/**
+ * @fn void model_template::prediction_edge_feature(std::string, torch::Tensor)
+ * @brief Store a prediction tensor at edge level.
+ * @param name   Feature name.
+ * @param tensor Prediction tensor.
+ */
+
+/**
+ * @fn void model_template::prediction_extra(std::string, torch::Tensor)
+ * @brief Store a miscellaneous prediction tensor.
+ * @param name   Feature name.
+ * @param tensor Prediction tensor.
+ */
+
+/**
+ * @fn torch::Tensor* model_template::compute_loss(std::string, graph_enum)
+ * @brief Compute the loss for the named output feature at the given graph
+ *        level.
+ * @param name Feature name.
+ * @param grx  Graph level (@c graph_enum::pred_graph/node/edge).
+ * @return Pointer to the computed loss tensor.
+ */
+
+/**
+ * @fn void model_template::evaluation_mode(bool mode)
+ * @brief Toggle evaluation mode (disables gradient computation).
+ * @param mode @c true = evaluation mode (default).
+ */
+
+/**
+ * @fn void model_template::save_state()
+ * @brief Save the current model weights to @c model_checkpoint_path.
+ */
+
+/**
+ * @fn bool model_template::restore_state()
+ * @brief Load model weights from @c model_checkpoint_path.
+ * @return @c true on success.
+ */

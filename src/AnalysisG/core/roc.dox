@@ -1,0 +1,89 @@
+/**
+ * @file roc.pxd
+ * @brief Cython declaration file for the @c roc C++ class and the @c roc_t
+ *        struct.
+ * @details Wraps the @c roc class (inheriting @c plotting) that computes and
+ *          stores Receiver-Operating-Characteristic curves, and the Python
+ *          wrapper @c ROC (inheriting @c TLine).
+ */
+
+/**
+ * @struct roc_t
+ * @brief Holds the data for one ROC curve (one class, one k-fold, one model).
+ */
+
+/**
+ * @var int roc_t.cls
+ * @brief Class index.
+ */
+
+/**
+ * @var int roc_t.kfold
+ * @brief K-fold index.
+ */
+
+/**
+ * @var string roc_t.model
+ * @brief Model identifier.
+ */
+
+/**
+ * @var vector[double] roc_t._auc
+ * @brief Area-under-curve values across bootstrap resamples.
+ */
+
+/**
+ * @var vector[vector[double]] roc_t.tpr_
+ * @brief True positive rate curves.
+ */
+
+/**
+ * @var vector[vector[double]] roc_t.fpr_
+ * @brief False positive rate curves.
+ */
+
+/**
+ * @var vector[vector[int]]* roc_t.truth
+ * @brief Pointer to truth label arrays.
+ */
+
+/**
+ * @var vector[vector[double]]* roc_t.scores
+ * @brief Pointer to classifier score arrays.
+ */
+
+/**
+ * @cdef cppclass roc
+ * @brief C++ ROC curve builder (inherits @c plotting).
+ */
+
+/**
+ * @fn void roc.build_ROC(string name, int kfold, vector[int]* label, vector[vector[double]]* scores)
+ * @brief Compute ROC curves from truth labels and classifier scores.
+ * @param name   Model/run name.
+ * @param kfold  K-fold index.
+ * @param label  Truth label vector.
+ * @param scores Per-class score matrix.
+ */
+
+/**
+ * @fn vector[roc_t*] roc.get_ROC()
+ * @brief Return all computed @c roc_t objects.
+ */
+
+/**
+ * @var map[string, map[int, vector[vector[double]]*]] roc.roc_data
+ * @brief Stored ROC score data.
+ */
+
+/**
+ * @var map[string, map[int, vector[vector[int]]*]] roc.labels
+ * @brief Stored truth labels.
+ */
+
+/**
+ * @class ROC
+ * @brief Python ROC curve plotter (inherits @c TLine).
+ * @details Builds ROC lines from the C++ @c roc object and exposes the @c auc
+ *          dict.
+ */

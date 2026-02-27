@@ -1,0 +1,26 @@
+/**
+ * @file conuix.h (tmp/conuix)
+ * @brief Temporary variant of the Conuix single-pair solver.
+ * @details @c conics wraps @c nusol_t and forward-declares the conics-based
+ *          reconstruction engine.
+ *
+ * @note This is a transitional header kept during development. Refer to
+ *       @c modules/nusol/conuix/include/conuix/conuix.h for the production
+ *       version.
+ */
+
+/**
+ * @class conics
+ * @brief Transitional Conuix/conics solver stub.
+ */
+
+/**
+ * @fn conics::conics(nusol_t* parameters)
+ * @brief Construct with @c nusol_t parameters.
+ * @param parameters Pointer to the run parameters.
+ */
+
+/**
+ * @fn conics::~conics()
+ * @brief Destructor.
+ */

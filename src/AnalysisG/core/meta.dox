@@ -1,0 +1,79 @@
+/**
+ * @file meta.pxd
+ * @brief Cython declaration file for the @c meta C++ class and associated
+ *        Python helpers @c Meta, @c MetaLookup, @c Data, and @c ami_client.
+ * @details Wraps the @c meta class that caches dataset metadata from AMI and
+ *          the local ROOT file headers.
+ */
+
+/**
+ * @cdef cppclass meta
+ * @brief C++ metadata manager.
+ */
+
+/**
+ * @fn meta.meta()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn string meta.hash(string)
+ * @brief Return the hash of the given string.
+ */
+
+/**
+ * @var meta_t meta.meta_data
+ * @brief Stored metadata struct.
+ */
+
+/**
+ * @var string meta.metacache_path
+ * @brief Filesystem path for the metadata cache.
+ */
+
+/**
+ * @class Meta
+ * @brief Python wrapper for @c meta.
+ */
+
+/**
+ * @class MetaLookup
+ * @brief Provides dataset lookup and luminosity weighting.
+ * @details Caches matched @c Meta objects and their metadata dicts.
+ */
+
+/**
+ * @var Meta MetaLookup.meta
+ * @brief Currently selected @c Meta instance.
+ */
+
+/**
+ * @var dict MetaLookup.matched
+ * @brief Dict of matched metadata keyed by DSID string.
+ */
+
+/**
+ * @var dict MetaLookup.metadata
+ * @brief Full metadata dict.
+ */
+
+/**
+ * @var float MetaLookup.luminosity
+ * @brief Integrated luminosity for cross-section scaling.
+ */
+
+/**
+ * @cdef Meta MetaLookup.__find__(self, str inpt)
+ * @brief Internal lookup by dataset name/DSID string.
+ */
+
+/**
+ * @class Data
+ * @brief Aggregates event data arrays and computes sum-of-weights.
+ */
+
+/**
+ * @class ami_client
+ * @brief Python client for fetching metadata from AMI.
+ * @details Provides cache load/save and metadata dressing for @c Meta objects.
+ */

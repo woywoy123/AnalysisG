@@ -1,0 +1,171 @@
+/**
+ * @file settings.h
+ * @brief Top-level configuration struct for an AnalysisG run.
+ * @details @c settings_t is passed to the @c analysis class and propagated
+ *          to the dataloader, optimizer, and I/O subsystems.
+ */
+
+/**
+ * @struct settings_t
+ * @brief Aggregated run configuration covering I/O paths, ML hyperparameters,
+ *        and plotting settings.
+ */
+
+/**
+ * @var std::string settings_t::output_path
+ * @brief Root output directory for plots, models, and selection files
+ *        (default @c "./ProjectName").
+ */
+
+/**
+ * @var std::string settings_t::run_name
+ * @brief Optional tag appended to output directories for this run.
+ */
+
+/**
+ * @var std::string settings_t::sow_name
+ * @brief Name of the sum-of-weights histogram in the ROOT file.
+ */
+
+/**
+ * @var std::string settings_t::metacache_path
+ * @brief Path to the directory used for caching AMI metadata (default @c "./").
+ */
+
+/**
+ * @var bool settings_t::fetch_meta
+ * @brief If @c true, query AMI for dataset metadata; otherwise use cache.
+ */
+
+/**
+ * @var bool settings_t::pretagevents
+ * @brief If @c true, pre-tag events before building graphs.
+ */
+
+/**
+ * @var int settings_t::epochs
+ * @brief Number of training epochs (default 10).
+ */
+
+/**
+ * @var int settings_t::kfolds
+ * @brief Number of k-fold splits (default 10).
+ */
+
+/**
+ * @var int settings_t::batch_size
+ * @brief Minibatch size for training (default 1).
+ */
+
+/**
+ * @var std::vector<int> settings_t::kfold
+ * @brief Explicit list of k-fold indices to run; empty means run all.
+ */
+
+/**
+ * @var int settings_t::num_examples
+ * @brief Number of example graphs displayed during progress reporting
+ *        (default 3).
+ */
+
+/**
+ * @var float settings_t::train_size
+ * @brief Percentage of data used for training (default 50).
+ */
+
+/**
+ * @var bool settings_t::training
+ * @brief Enable the training phase (default @c true).
+ */
+
+/**
+ * @var bool settings_t::validation
+ * @brief Enable the validation phase (default @c true).
+ */
+
+/**
+ * @var bool settings_t::evaluation
+ * @brief Enable the evaluation phase (default @c true).
+ */
+
+/**
+ * @var bool settings_t::continue_training
+ * @brief If @c true, resume training from the last saved checkpoint (default
+ *        @c true).
+ */
+
+/**
+ * @var std::string settings_t::training_dataset
+ * @brief Path to a pre-built graph dataset for training.
+ */
+
+/**
+ * @var std::string settings_t::graph_cache
+ * @brief Path to a graph cache directory.
+ */
+
+/**
+ * @var std::string settings_t::var_pt
+ * @brief Leaf name of the transverse-momentum variable (default @c "pt").
+ */
+
+/**
+ * @var std::string settings_t::var_eta
+ * @brief Leaf name of the pseudorapidity variable (default @c "eta").
+ */
+
+/**
+ * @var std::string settings_t::var_phi
+ * @brief Leaf name of the azimuthal angle variable (default @c "phi").
+ */
+
+/**
+ * @var std::string settings_t::var_energy
+ * @brief Leaf name of the energy variable (default @c "energy").
+ */
+
+/**
+ * @var std::vector<std::string> settings_t::targets
+ * @brief List of variable names to use as training targets.
+ */
+
+/**
+ * @var int settings_t::nbins
+ * @brief Number of histogram bins (default 400).
+ */
+
+/**
+ * @var int settings_t::max_range
+ * @brief Maximum axis range for mass histograms (default 400 GeV).
+ */
+
+/**
+ * @var bool settings_t::logy
+ * @brief Use logarithmic y-axis on histograms (default @c false).
+ */
+
+/**
+ * @var int settings_t::threads
+ * @brief Number of parallel worker threads (default 10).
+ */
+
+/**
+ * @var int settings_t::intra_th
+ * @brief Number of intra-op threads for PyTorch (default -1 = use system
+ *        default).
+ */
+
+/**
+ * @var bool settings_t::debug_mode
+ * @brief Enable verbose debug output (default @c false).
+ */
+
+/**
+ * @var bool settings_t::build_cache
+ * @brief If @c true, build and save a local graph cache (default @c false).
+ */
+
+/**
+ * @var bool settings_t::selection_root
+ * @brief If @c true, write selection output to ROOT files (default @c false).
+ */

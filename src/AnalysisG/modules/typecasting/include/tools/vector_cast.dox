@@ -1,0 +1,143 @@
+/**
+ * @file vector_cast.h
+ * @brief Template utilities for converting @c torch::Tensor back to typed
+ *        C++ vectors, plus the @c variable_t ROOT branch writer.
+ * @details Provides @c tensor_to_vector (reverse of @c build_tensor),
+ *          @c chunking (split vector into fixed-size chunks), and
+ *          @c variable_t (typed branch writer for ROOT TTrees).
+ */
+
+/**
+ * @fn bool _transfer(torch::Tensor* data, torch::Tensor* cpux)
+ * @brief Copy @p data to the pinned-memory CPU tensor @p cpux.
+ * @param data  Source tensor (any device).
+ * @param cpux  Destination CPU tensor.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn template<typename G> std::vector<std::vector<G>> chunking(std::vector<G>* v, int N)
+ * @brief Split flat vector @p v into consecutive chunks of at most @p N
+ *        elements.
+ * @tparam G Element type.
+ * @param v Pointer to the source vector.
+ * @param N Chunk size.
+ * @return Vector of chunk vectors.
+ */
+
+/**
+ * @fn template<typename g> void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>*, int)
+ * @brief Base case: append chunk @p chnks to @p trgt.
+ * @tparam g Element type.
+ * @param trgt  Destination vector.
+ * @param chnks Source chunk.
+ */
+
+/**
+ * @fn template<typename G, typename g> void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<signed long>* dims, int next_dim)
+ * @brief Recursively re-chunk a flat vector according to the dimension sizes
+ *        in @p dims and append the result to @p trgt.
+ * @tparam G Outer element type (a vector type).
+ * @tparam g Leaf primitive type.
+ * @param trgt     Destination nested vector.
+ * @param chnks    Flat input data.
+ * @param dims     Dimension sizes from the original tensor.
+ * @param next_dim Current dimension index.
+ */
+
+/**
+ * @fn template<typename G, typename g> bool tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g)
+ * @brief Transfer tensor @p data to CPU, reshape it, and fill @p out.
+ * @tparam G Output element type (may be nested).
+ * @tparam g Leaf primitive type.
+ * @param data Source tensor.
+ * @param out  Output vector.
+ * @param dims Dimension sizes.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn std::vector<signed long> tensor_size(torch::Tensor* inpt)
+ * @brief Return the sizes of all dimensions of @p inpt as a signed long vector.
+ * @param inpt Pointer to the tensor.
+ * @return Dimension size vector.
+ */
+
+/**
+ * @fn template<typename g> void tensor_to_vector(torch::Tensor* data, std::vector<g>* out)
+ * @brief Convenience overload: infer dimensions from @p data and fill @p out.
+ * @tparam g Output element type.
+ * @param data Source tensor.
+ * @param out  Output vector.
+ */
+
+/**
+ * @struct variable_t
+ * @brief Typed ROOT TBranch write buffer derived from @c bsc_t.
+ * @details Stores a typed pointer and creates/fills a @c TBranch on the first
+ *          write.  Supports both tensor data (via @c build_switch) and raw
+ *          typed pointers.
+ */
+
+/**
+ * @fn variable_t::variable_t()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn variable_t::variable_t(bool use_external)
+ * @brief Construct with an explicit flag for external buffer management.
+ * @param use_external If @c true, data pointers are managed externally.
+ */
+
+/**
+ * @fn variable_t::~variable_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn void variable_t::create_meta(meta_t* mt)
+ * @brief Associate metadata @p mt with this variable for the ROOT file.
+ * @param mt Pointer to the metadata struct.
+ */
+
+/**
+ * @fn void variable_t::build_switch(size_t s, torch::Tensor* tx)
+ * @brief Select the appropriate typed @c process overload based on the
+ *        tensor's dtype and call it.
+ * @param s  Branch index hint.
+ * @param tx Pointer to the tensor to write.
+ */
+
+/**
+ * @fn void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr)
+ * @brief Write @p data to the ROOT branch named @p varname in tree @p tr.
+ * @param data    Source tensor.
+ * @param varname Branch name.
+ * @param tr      Root TTree.
+ */
+
+/**
+ * @fn void variable_t::process(std::vector<std::vector<float>>* data, std::string* varname, TTree* tr)
+ * @brief Write a 2D float vector to the ROOT branch.
+ */
+
+/**
+ * @fn void variable_t::process(std::vector<float>* data, std::string* varname, TTree* tr)
+ * @brief Write a 1D float vector to the ROOT branch.
+ */
+
+/**
+ * @fn void variable_t::process(float* data, std::string* varname, TTree* tr)
+ * @brief Write a scalar float to the ROOT branch.
+ */
+
+/**
+ * @var std::string variable_t::variable_name
+ * @brief ROOT branch name.
+ */
+
+/**
+ * @var bool variable_t::failed_branch
+ * @brief @c true if @c TTree::Branch returned a null pointer.
+ */

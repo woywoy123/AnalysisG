@@ -1,0 +1,153 @@
+/**
+ * @file event_template.h
+ * @brief Base class for user-defined physics event objects.
+ * @details @c event_template inherits @c tools and provides the
+ *          infrastructure for reading ROOT TTree data into typed particle
+ *          containers.  Users subclass @c event_template and override
+ *          @c build and @c CompileEvent.
+ */
+
+/**
+ * @class event_template
+ * @brief Base class for user-defined physics events.
+ * @details Inherits @c tools.
+ */
+
+/**
+ * @fn event_template::event_template()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn virtual event_template::~event_template()
+ * @brief Virtual destructor.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, event_template> event_template::trees
+ * @brief Names of the ROOT TTrees this event reads from.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, event_template> event_template::branches
+ * @brief Names of the ROOT TBranches this event reads.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, event_template> event_template::leaves
+ * @brief Read-only list of all registered leaf names.
+ */
+
+/**
+ * @fn void event_template::add_leaf(std::string key, std::string leaf)
+ * @brief Register an additional ROOT leaf under the given key.
+ * @param key  Lookup key.
+ * @param leaf ROOT leaf name (defaults to @p key if empty).
+ */
+
+/**
+ * @var cproperty<std::string, event_template> event_template::name
+ * @brief Human-readable event type name.
+ */
+
+/**
+ * @var cproperty<std::string, event_template> event_template::hash
+ * @brief Unique event hash (computed from event content).
+ */
+
+/**
+ * @var cproperty<std::string, event_template> event_template::tree
+ * @brief Active ROOT TTree name.
+ */
+
+/**
+ * @var cproperty<double, event_template> event_template::weight
+ * @brief Event weight (default 1.0).
+ */
+
+/**
+ * @var cproperty<long, event_template> event_template::index
+ * @brief Sequential event index within the current file.
+ */
+
+/**
+ * @fn virtual event_template* event_template::clone()
+ * @brief Create an empty clone of this event type.  Override in subclasses.
+ * @return Pointer to a new instance.
+ */
+
+/**
+ * @fn virtual void event_template::build(element_t* el)
+ * @brief Populate all registered particles from the current @c element_t
+ *        entry.  Override in subclasses to perform custom filling.
+ * @param el Element iterator pointing at the current ROOT event.
+ */
+
+/**
+ * @fn virtual void event_template::CompileEvent()
+ * @brief Post-processing hook called after @c build.  Override to compute
+ *        derived quantities.
+ */
+
+/**
+ * @fn std::vector<particle_template*> event_template::multi_neutrino(std::vector<particle_template*>* targets, double phi, double met, double mt, double mw, double violation, double limit)
+ * @brief Solve for the neutrino four-momentum given a set of top/W decay
+ *        products.
+ * @param targets   Input particles (e.g. b-jets and leptons).
+ * @param phi       MET azimuthal angle.
+ * @param met       Missing transverse energy in MeV.
+ * @param mt        Top quark mass constraint in MeV (default 172.68 GeV).
+ * @param mw        W boson mass constraint in MeV (default 80.385 GeV).
+ * @param violation Allowed mass-constraint violation (default 1e-4).
+ * @param limit     Maximum ΔR tolerance (default 0.1).
+ * @return Vector of reconstructed neutrino candidates.
+ */
+
+/**
+ * @fn std::map<std::string, event_template*> event_template::build_event(std::map<std::string, data_t*>* evnt)
+ * @brief Build a map of event objects (keyed by TTree name) from raw ROOT
+ *        branch data.
+ * @param evnt Map of branch names to @c data_t objects.
+ * @return Map of TTree name to fully populated @c event_template.
+ */
+
+/**
+ * @fn template<typename G> void event_template::register_particle(std::map<std::string, G*>* object)
+ * @brief Register a particle type so that @c build fills the given map.
+ * @tparam G Particle type derived from @c particle_template.
+ * @param object Pointer to the map that will be populated during @c build.
+ */
+
+/**
+ * @fn template<typename G> void event_template::deregister_particle(std::map<std::string, G*>* object)
+ * @brief Delete all particles in @p object and clear the map.
+ * @tparam G Particle type.
+ * @param object Map to clear.
+ */
+
+/**
+ * @fn bool event_template::operator==(event_template& p)
+ * @brief Equality comparison based on event hash.
+ * @param p Other event.
+ * @return @c true if hashes are equal.
+ */
+
+/**
+ * @var event_t event_template::data
+ * @brief Underlying @c event_t plain-data struct.
+ */
+
+/**
+ * @var meta* event_template::meta_data
+ * @brief Pointer to the dataset metadata object (not owned).
+ */
+
+/**
+ * @var std::string event_template::filename
+ * @brief Path of the file from which this event was read.
+ */
+
+/**
+ * @fn void event_template::flush_particles()
+ * @brief Delete all dynamically allocated particles and clear their maps.
+ */

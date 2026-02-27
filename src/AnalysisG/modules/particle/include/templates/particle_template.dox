@@ -1,0 +1,283 @@
+/**
+ * @file particle_template.h
+ * @brief Base class for physics particle objects with kinematic properties.
+ * @details @c particle_template inherits @c tools and provides computed
+ *          kinematic properties (energy, pT, η, φ, px, py, pz, mass, P, β)
+ *          as @c cproperty objects with getter/setter callbacks that keep
+ *          Cartesian and polar representations consistent.  Users subclass
+ *          @c particle_template and override @c build and @c clone.
+ */
+
+/**
+ * @class particle_template
+ * @brief Base class for physics particles.  Wraps @c particle_t and exposes
+ *        kinematic and identification properties via @c cproperty.
+ * @details Inherits @c tools.
+ */
+
+/**
+ * @fn particle_template::particle_template()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn virtual particle_template::~particle_template()
+ * @brief Virtual destructor.
+ */
+
+/**
+ * @fn explicit particle_template::particle_template(particle_t* p)
+ * @brief Construct from an existing @c particle_t data struct.
+ * @param p Pointer to a raw @c particle_t.
+ */
+
+/**
+ * @fn explicit particle_template::particle_template(particle_template* p, bool dump)
+ * @brief Copy-construct from another @c particle_template.
+ * @param p    Source particle.
+ * @param dump If @c true, copy the leaf map as well.
+ */
+
+/**
+ * @fn explicit particle_template::particle_template(double px, double py, double pz, double e)
+ * @brief Construct from Cartesian four-momentum.
+ * @param px x-momentum in MeV.
+ * @param py y-momentum in MeV.
+ * @param pz z-momentum in MeV.
+ * @param e  Energy in MeV.
+ */
+
+/**
+ * @fn explicit particle_template::particle_template(double px, double py, double pz)
+ * @brief Construct from Cartesian three-momentum (massless).
+ * @param px x-momentum in MeV.
+ * @param py y-momentum in MeV.
+ * @param pz z-momentum in MeV.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::e
+ * @brief Energy in MeV.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::pt
+ * @brief Transverse momentum.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::eta
+ * @brief Pseudorapidity.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::phi
+ * @brief Azimuthal angle in radians.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::px
+ * @brief Cartesian x-momentum.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::py
+ * @brief Cartesian y-momentum.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::pz
+ * @brief Cartesian z-momentum.
+ */
+
+/**
+ * @fn void particle_template::to_cartesian()
+ * @brief Convert polar (pt, eta, phi, e) to Cartesian (px, py, pz, e).
+ */
+
+/**
+ * @fn void particle_template::to_polar()
+ * @brief Convert Cartesian (px, py, pz, e) to polar (pt, eta, phi, e).
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::mass
+ * @brief Invariant mass in MeV (computed on demand).
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::P
+ * @brief Total three-momentum magnitude (read-only, computed on demand).
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::beta
+ * @brief Relativistic β = |p|/E (read-only, computed on demand).
+ */
+
+/**
+ * @var cproperty<int, particle_template> particle_template::pdgid
+ * @brief PDG Monte Carlo particle identifier.
+ */
+
+/**
+ * @var cproperty<std::string, particle_template> particle_template::symbol
+ * @brief Text symbol for the particle.
+ */
+
+/**
+ * @var cproperty<double, particle_template> particle_template::charge
+ * @brief Electric charge.
+ */
+
+/**
+ * @var cproperty<std::string, particle_template> particle_template::hash
+ * @brief Unique hash string (read-only, derived from kinematic data).
+ */
+
+/**
+ * @fn bool particle_template::is(std::vector<int> p)
+ * @brief Test whether this particle's PDG ID is in list @p p.
+ * @param p List of PDG IDs to match against.
+ * @return @c true if a match is found.
+ */
+
+/**
+ * @var cproperty<bool, particle_template> particle_template::is_b
+ * @brief @c true if this is a b-quark or b-hadron.
+ */
+
+/**
+ * @var cproperty<bool, particle_template> particle_template::is_lep
+ * @brief @c true if this is a charged lepton.
+ */
+
+/**
+ * @var cproperty<bool, particle_template> particle_template::is_nu
+ * @brief @c true if this is a neutrino.
+ */
+
+/**
+ * @var cproperty<bool, particle_template> particle_template::is_add
+ * @brief @c true for additional/other classification.
+ */
+
+/**
+ * @var cproperty<bool, particle_template> particle_template::lep_decay
+ * @brief @c true if this particle decays leptonically.
+ */
+
+/**
+ * @var cproperty<std::map<std::string, particle_template*>, particle_template> particle_template::parents
+ * @brief Map of parent particle hashes to @c particle_template pointers.
+ */
+
+/**
+ * @var cproperty<std::map<std::string, particle_template*>, particle_template> particle_template::children
+ * @brief Map of child particle hashes to @c particle_template pointers.
+ */
+
+/**
+ * @var cproperty<std::string, particle_template> particle_template::type
+ * @brief Particle type label string.
+ */
+
+/**
+ * @var cproperty<int, particle_template> particle_template::index
+ * @brief Index of this particle in its event container.
+ */
+
+/**
+ * @fn double particle_template::DeltaR(particle_template* p)
+ * @brief Compute the angular separation ΔR between this particle and @p p.
+ * @param p Other particle.
+ * @return ΔR = √(Δη² + Δφ²).
+ */
+
+/**
+ * @fn bool particle_template::operator==(particle_template& p)
+ * @brief Equality comparison based on particle hash.
+ * @param p Other particle.
+ * @return @c true if the hashes are equal.
+ */
+
+/**
+ * @fn template<typename g> g particle_template::operator+(g& p)
+ * @brief Four-momentum addition.  Returns a new @c g with combined momenta.
+ * @tparam g A type derived from @c particle_template.
+ * @param p Other particle.
+ * @return Sum particle.
+ */
+
+/**
+ * @fn void particle_template::operator+=(particle_template* p)
+ * @brief In-place four-momentum addition.
+ * @param p Particle to add.
+ */
+
+/**
+ * @fn void particle_template::iadd(particle_template* p)
+ * @brief Low-level in-place four-momentum addition (used by @c operator+=).
+ * @param p Particle to add.
+ */
+
+/**
+ * @fn bool particle_template::register_parent(particle_template* p)
+ * @brief Register @p p as a parent of this particle.
+ * @param p Parent particle.
+ * @return @c true if added (not already present).
+ */
+
+/**
+ * @fn bool particle_template::register_child(particle_template* p)
+ * @brief Register @p p as a child of this particle.
+ * @param p Child particle.
+ * @return @c true if added (not already present).
+ */
+
+/**
+ * @fn void particle_template::add_leaf(std::string key, std::string leaf)
+ * @brief Register a ROOT leaf name to read into this particle under the
+ *        given key.
+ * @param key  Property key in the particle.
+ * @param leaf ROOT leaf name; defaults to @p key if empty.
+ */
+
+/**
+ * @fn void particle_template::apply_type_prefix()
+ * @brief Prepend the @c type string to all registered leaf keys.
+ */
+
+/**
+ * @fn std::map<std::string, std::map<std::string, particle_t>> particle_template::__reduce__()
+ * @brief Serialise this particle to a map of maps (used by Cython pickling).
+ * @return Nested map representation.
+ */
+
+/**
+ * @fn virtual void particle_template::build(std::map<std::string, particle_template*>* event, element_t* el)
+ * @brief Populate this particle from a ROOT event.  Override in subclasses.
+ * @param event Map of other particles in the event.
+ * @param el    Element iterator pointing at the current event entry.
+ */
+
+/**
+ * @fn virtual particle_template* particle_template::clone()
+ * @brief Create a default-constructed clone.  Override in subclasses.
+ * @return Pointer to a new instance.
+ */
+
+/**
+ * @var particle_t particle_template::data
+ * @brief Underlying plain-data struct storing all kinematic values.
+ */
+
+/**
+ * @var bool particle_template::_is_serial
+ * @brief Internal flag indicating this object was created by deserialisation.
+ */
+
+/**
+ * @var bool particle_template::_is_marked
+ * @brief Internal flag used by @c selection_template::sum to avoid double-deletion.
+ */

@@ -1,0 +1,83 @@
+/**
+ * @file nusol.h (pyc)
+ * @brief Internal CUDA/C++ implementation of tensor-based neutrino
+ *        reconstruction.
+ * @details Declares the @c nusol_ namespace.  These functions are wrapped by
+ *          the public @c pyc::nusol API in @c pyc.h.
+ */
+
+/**
+ * @namespace nusol_
+ * @brief Internal namespace for batched neutrino reconstruction.
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)
+ * @brief Compute the H̃ and N matrices for a batched (b, lepton) input.
+ * @param pmc_b  [N, 4] b-quark Cartesian momenta.
+ * @param pmc_mu [N, 4] lepton Cartesian momenta.
+ * @param masses [N, 3] mass constraints (mT, mW, mN) in MeV.
+ * @return Map with keys including @c "H_perp_pmc_", @c "N_".
+ */
+
+/**
+ * @fn torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses, bool null)
+ * @brief Variant that returns only the H-perp matrix (or null mask).
+ * @param null If @c true, return a boolean validity mask.
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, double mT, double mW, double mN)
+ * @brief Scalar-mass overload of @c BaseMatrix.
+ */
+
+/**
+ * @fn torch::Tensor nusol_::Hperp(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses)
+ * @brief Compute the H⊥ matrix.
+ * @return [N, 3, 3].
+ */
+
+/**
+ * @fn std::tuple<torch::Tensor, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B, double nulls)
+ * @brief Compute conic intersection for a batch of (A, B) conic pairs.
+ * @param A     [N, 3, 3] first conic.
+ * @param B     [N, 3, 3] second conic.
+ * @param nulls Near-zero tolerance.
+ * @return (solutions [N, 4, 3], valid_mask [N]).
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> nusol_::Nu(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* met_xy, torch::Tensor* masses, torch::Tensor* sigma, double null)
+ * @brief Single-neutrino reconstruction.
+ * @param pmc_b  [N, 4] b-quark momenta.
+ * @param pmc_mu [N, 4] lepton momenta.
+ * @param met_xy [N, 2] MET x/y.
+ * @param masses [N, 3] mass constraints.
+ * @param sigma  [N, 2, 2] MET covariance.
+ * @param null   Tolerance.
+ * @return Map with @c "NuX", @c "NuY", @c "NuZ", @c "chi2", …
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> nusol_::NuNu(torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2, torch::Tensor* met_xy, double null, torch::Tensor* m1, torch::Tensor* m2)
+ * @brief Di-neutrino reconstruction (no iteration).
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> nusol_::NuNu(torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2, torch::Tensor* met_xy, double null, torch::Tensor* m1, torch::Tensor* m2, const double step, const double tolerance, const unsigned int timeout)
+ * @brief Di-neutrino reconstruction with iterative mass-line refinement.
+ * @param step      Mass line step size.
+ * @param tolerance Convergence tolerance.
+ * @param timeout   Maximum iterations.
+ */
+
+/**
+ * @fn std::map<std::string, torch::Tensor> nusol_::combinatorial(torch::Tensor* edge_index, torch::Tensor* batch, torch::Tensor* pmc, torch::Tensor* pid, torch::Tensor* met_xy, double mT, double mW, double null, double perturb, long steps, bool gev)
+ * @brief Combinatorial di-neutrino reconstruction.
+ * @param edge_index [2, E] COO.
+ * @param batch      [N] node-to-graph assignments.
+ * @param pmc        [N, 4] four-momenta.
+ * @param pid        [N] PDG IDs.
+ * @param met_xy     [B, 2] MET.
+ * @param gev        If @c true, treat inputs/outputs as GeV.
+ */

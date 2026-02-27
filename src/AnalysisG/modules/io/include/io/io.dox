@@ -1,0 +1,206 @@
+/**
+ * @file io.h
+ * @brief HDF5 and ROOT file I/O class.
+ * @details @c io inherits @c tools and @c notification and provides template
+ *          methods for reading and writing typed arrays to HDF5 datasets, plus
+ *          ROOT TTree scanning utilities.
+ */
+
+/**
+ * @class io
+ * @brief Combined HDF5 and ROOT I/O interface.
+ * @details Inherits @c tools and @c notification.
+ */
+
+/**
+ * @fn io::io()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn io::~io()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn template<typename g> void io::write(std::vector<g>* inpt, std::string set_name)
+ * @brief Write a vector of @c g to an HDF5 dataset named @p set_name.
+ * @tparam g Element type (must be trivially copyable).
+ * @param inpt     Pointer to the vector to write.
+ * @param set_name HDF5 dataset name.
+ */
+
+/**
+ * @fn template<typename g> void io::write(g* inpt, std::string set_name)
+ * @brief Write a single scalar @c g to an HDF5 dataset.
+ * @tparam g Scalar type.
+ * @param inpt     Pointer to the scalar.
+ * @param set_name HDF5 dataset name.
+ */
+
+/**
+ * @fn template<typename g> void io::read(std::vector<g>* outpt, std::string set_name)
+ * @brief Read an HDF5 dataset named @p set_name into a vector.
+ * @tparam g Element type.
+ * @param outpt    Output vector.
+ * @param set_name HDF5 dataset name.
+ */
+
+/**
+ * @fn template<typename g> void io::read(g* out, std::string set_name)
+ * @brief Read a scalar from an HDF5 dataset.
+ * @tparam g Scalar type.
+ * @param out      Output scalar.
+ * @param set_name HDF5 dataset name.
+ */
+
+/**
+ * @fn void io::read(graph_hdf5_w* out, std::string set_name)
+ * @brief Read a @c graph_hdf5_w compound record from HDF5.
+ * @param out      Output struct.
+ * @param set_name HDF5 dataset name.
+ */
+
+/**
+ * @fn bool io::start(std::string filename, std::string read_write)
+ * @brief Open an HDF5 file.
+ * @param filename   Path to the HDF5 file.
+ * @param read_write Open mode: @c "r" for read, @c "rw" for read-write,
+ *                   @c "w" for write (creates new).
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void io::end()
+ * @brief Close the currently open HDF5 file.
+ */
+
+/**
+ * @fn std::vector<std::string> io::dataset_names()
+ * @brief List all dataset names in the open HDF5 file.
+ * @return Vector of dataset names.
+ */
+
+/**
+ * @fn std::map<std::string, long> io::root_size()
+ * @brief Return the number of entries in each ROOT TTree.
+ * @return Map of TTree name to entry count.
+ */
+
+/**
+ * @fn void io::check_root_file_paths()
+ * @brief Verify that all registered ROOT file paths are accessible.
+ */
+
+/**
+ * @fn bool io::scan_keys()
+ * @brief Scan the open ROOT file for all TTree/branch/leaf keys.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void io::root_begin()
+ * @brief Open all registered ROOT files.
+ */
+
+/**
+ * @fn void io::root_end()
+ * @brief Close all open ROOT files.
+ */
+
+/**
+ * @fn void io::trigger_pcm()
+ * @brief Trigger ROOT PCM dictionary loading for registered types.
+ */
+
+/**
+ * @fn void io::import_settings(settings_t* params)
+ * @brief Apply run settings from @p params.
+ * @param params Pointer to the settings struct.
+ */
+
+/**
+ * @fn std::map<std::string, data_t*>* io::get_data()
+ * @brief Return the map of leaf/branch names to their @c data_t objects.
+ * @return Pointer to the internal map.
+ */
+
+/**
+ * @var bool io::enable_pyami
+ * @brief If @c true, use PyAMI for metadata queries (default @c true).
+ */
+
+/**
+ * @var std::string io::metacache_path
+ * @brief Path to the metadata cache directory (default @c "./").
+ */
+
+/**
+ * @var std::string io::current_working_path
+ * @brief Current working directory (default @c ".").
+ */
+
+/**
+ * @var std::string io::sow_name
+ * @brief Name of the sum-of-weights histogram.
+ */
+
+/**
+ * @var std::vector<std::string> io::trees
+ * @brief List of TTree names to read.
+ */
+
+/**
+ * @var std::vector<std::string> io::branches
+ * @brief List of TBranch names to read.
+ */
+
+/**
+ * @var std::vector<std::string> io::leaves
+ * @brief List of TLeaf names to read.
+ */
+
+/**
+ * @var std::map<std::string, TFile*> io::files_open
+ * @brief Map of file path to open @c TFile.
+ */
+
+/**
+ * @var std::map<std::string, meta*> io::meta_data
+ * @brief Map of file path to associated metadata.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, TTree*>> io::tree_data
+ * @brief Two-level map: filename → tree name → @c TTree pointer.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, long>> io::tree_entries
+ * @brief Two-level map: filename → tree name → entry count.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, TBranch*>> io::branch_data
+ * @brief Two-level map: branch path → branch name → @c TBranch pointer.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, TLeaf*>> io::leaf_data
+ * @brief Two-level map: filename → leaf name → @c TLeaf pointer.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::string>> io::leaf_typed
+ * @brief Two-level map: filename → leaf name → ROOT type string.
+ */
+
+/**
+ * @var std::map<std::string, bool> io::root_files
+ * @brief Map of file path to whether it is a ROOT file.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> io::keys
+ * @brief Hierarchical key index: file → tree → branch → leaf names.
+ */

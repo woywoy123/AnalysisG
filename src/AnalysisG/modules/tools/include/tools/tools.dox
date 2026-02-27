@@ -1,0 +1,233 @@
+/**
+ * @file tools.h
+ * @brief Static utility functions for file I/O, string manipulation, and
+ *        container helpers.
+ * @details The @c tools class provides a collection of static helper methods
+ *          used throughout AnalysisG.  It is inherited by many framework
+ *          classes to expose these utilities directly.
+ */
+
+/**
+ * @class tools
+ * @brief Collection of static utility functions for I/O, strings, and containers.
+ * @details All methods are static; the class exists primarily as a mixin base
+ *          so that derived classes can call the helpers without qualification.
+ */
+
+/**
+ * @fn tools::tools()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn tools::~tools()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn static void tools::create_path(std::string path)
+ * @brief Create a directory (and all missing parents) on the filesystem.
+ * @param path Directory path to create.
+ */
+
+/**
+ * @fn static void tools::delete_path(std::string path)
+ * @brief Delete a file or directory at the given path.
+ * @param path Path to delete.
+ */
+
+/**
+ * @fn static bool tools::is_file(std::string path)
+ * @brief Test whether a path refers to a regular file.
+ * @param path Path to test.
+ * @return @c true if the path is a regular file.
+ */
+
+/**
+ * @fn static void tools::rename(std::string start, std::string target)
+ * @brief Rename or move a file.
+ * @param start  Source path.
+ * @param target Destination path.
+ */
+
+/**
+ * @fn static std::string tools::absolute_path(std::string path)
+ * @brief Resolve a relative path to an absolute path.
+ * @param path Input path.
+ * @return Absolute filesystem path.
+ */
+
+/**
+ * @fn static std::vector<std::string> tools::ls(std::string path, std::string ext)
+ * @brief List directory contents, optionally filtered by file extension.
+ * @param path Directory to list.
+ * @param ext  If non-empty, return only entries whose name ends with @p ext.
+ * @return Vector of matching entry names (not full paths).
+ */
+
+/**
+ * @fn static std::string tools::to_string(double val)
+ * @brief Convert a @c double to its string representation.
+ * @param val Value to convert.
+ * @return String representation.
+ */
+
+/**
+ * @fn static std::string tools::to_string(double val, int prec)
+ * @brief Convert a @c double to a string with the given decimal precision.
+ * @param val  Value to convert.
+ * @param prec Number of decimal digits.
+ * @return Formatted string.
+ */
+
+/**
+ * @fn static void tools::replace(std::string* in, std::string repl_str, std::string repl_with)
+ * @brief Replace all occurrences of @p repl_str with @p repl_with inside @p in.
+ * @param in        String to modify in place.
+ * @param repl_str  Substring to replace.
+ * @param repl_with Replacement string.
+ */
+
+/**
+ * @fn static bool tools::has_string(std::string* inpt, std::string trg)
+ * @brief Test whether @p inpt contains the substring @p trg.
+ * @param inpt Input string.
+ * @param trg  Substring to search for.
+ * @return @c true if found.
+ */
+
+/**
+ * @fn static bool tools::ends_with(std::string* inpt, std::string val)
+ * @brief Test whether @p inpt ends with the suffix @p val.
+ * @param inpt Input string.
+ * @param val  Suffix to check.
+ * @return @c true if @p inpt ends with @p val.
+ */
+
+/**
+ * @fn static bool tools::has_value(std::vector<std::string>* data, std::string trg)
+ * @brief Test whether vector @p data contains the string @p trg.
+ * @param data Vector of strings to search.
+ * @param trg  String to look for.
+ * @return @c true if found.
+ */
+
+/**
+ * @fn static std::vector<std::string> tools::split(std::string in, std::string delim)
+ * @brief Split a string by a delimiter substring.
+ * @param in    Input string.
+ * @param delim Delimiter.
+ * @return Vector of substrings.
+ */
+
+/**
+ * @fn static std::vector<std::string> tools::split(std::string in, size_t n)
+ * @brief Split a string into chunks of at most @p n characters.
+ * @param in Input string.
+ * @param n  Maximum chunk size.
+ * @return Vector of string chunks.
+ */
+
+/**
+ * @fn static std::string tools::hash(std::string input, int len)
+ * @brief Compute a short hash string from @p input.
+ * @param input Source string to hash.
+ * @param len   Desired output length (default 18).
+ * @return Hash string of length @p len.
+ */
+
+/**
+ * @fn static std::string tools::lower(std::string* s)
+ * @brief Return a lower-case copy of the string pointed to by @p s.
+ * @param s Pointer to input string.
+ * @return Lower-case version.
+ */
+
+/**
+ * @fn static std::string tools::encode64(std::string* data)
+ * @brief Base-64 encode a std::string.
+ * @param data Pointer to the string to encode.
+ * @return Base-64 encoded string.
+ */
+
+/**
+ * @fn static std::string tools::encode64(unsigned char const* data, unsigned int len)
+ * @brief Base-64 encode a raw byte array.
+ * @param data Pointer to the bytes.
+ * @param len  Number of bytes.
+ * @return Base-64 encoded string.
+ */
+
+/**
+ * @fn static std::string tools::decode64(std::string* inpt)
+ * @brief Base-64 decode a string pointed to by @p inpt.
+ * @param inpt Pointer to the base-64 encoded string.
+ * @return Decoded string.
+ */
+
+/**
+ * @fn static std::string tools::decode64(std::string const& s)
+ * @brief Base-64 decode a string.
+ * @param s Base-64 encoded string.
+ * @return Decoded string.
+ */
+
+/**
+ * @fn template<typename G> static std::vector<std::vector<G>> tools::discretize(std::vector<G>* v, int N)
+ * @brief Partition a vector into consecutive chunks of size at most @p N.
+ * @tparam G Element type.
+ * @param v Pointer to the source vector.
+ * @param N Maximum chunk size.
+ * @return Vector of chunks.
+ */
+
+/**
+ * @fn template<typename g> static g tools::max(std::vector<g>* inpt)
+ * @brief Return the maximum element of a vector.
+ * @tparam g Element type (must support @c <=).
+ * @param inpt Pointer to the vector.
+ * @return Maximum value found.
+ */
+
+/**
+ * @fn template<typename g> static g tools::min(std::vector<g>* inpt)
+ * @brief Return the minimum element of a vector.
+ * @tparam g Element type (must support @c >=).
+ * @param inpt Pointer to the vector.
+ * @return Minimum value found.
+ */
+
+/**
+ * @fn template<typename g> static g tools::sum(std::vector<g>* inpt)
+ * @brief Compute the sum of all elements in a vector.
+ * @tparam g Element type (must support @c +=).
+ * @param inpt Pointer to the vector.
+ * @return Sum of elements.
+ */
+
+/**
+ * @fn template<typename g> static std::vector<g*> tools::put(std::vector<g*>* src, std::vector<int>* trg)
+ * @brief Gather elements from @p src at indices given by @p trg.
+ * @tparam g Element type.
+ * @param src Source pointer vector.
+ * @param trg Indices to select.
+ * @return Vector of selected pointers.
+ */
+
+/**
+ * @fn template<typename g> static void tools::put(std::vector<g*>* out, std::vector<g*>* src, std::vector<int>* trg)
+ * @brief Gather elements from @p src at indices given by @p trg into @p out,
+ *        marking each selected element as in-use.
+ * @tparam g Element type (must have an @c in_use member).
+ * @param out Output vector (cleared before filling).
+ * @param src Source pointer vector.
+ * @param trg Indices to select.
+ */
+
+/**
+ * @fn template<typename g> static void tools::unique_key(std::vector<g>* inx, std::vector<g>* oth)
+ * @brief Append to @p oth any keys from @p inx that are not already present.
+ * @tparam g Key type (must be usable as a @c std::map key).
+ * @param inx New keys to consider.
+ * @param oth Existing key collection, extended in place.
+ */

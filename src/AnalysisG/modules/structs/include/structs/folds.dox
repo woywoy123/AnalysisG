@@ -1,0 +1,180 @@
+/**
+ * @file folds.h
+ * @brief Structs for k-fold cross-validation bookkeeping and HDF5 graph
+ *        serialisation.
+ * @details Declares @c folds_t, @c graph_hdf5, and @c graph_hdf5_w.
+ */
+
+/**
+ * @struct folds_t
+ * @brief Associates an event hash with its k-fold split membership.
+ */
+
+/**
+ * @var int folds_t::k
+ * @brief K-fold index to which this event belongs (default -1 = unset).
+ */
+
+/**
+ * @var bool folds_t::is_train
+ * @brief @c true if this event is assigned to the training set.
+ */
+
+/**
+ * @var bool folds_t::is_valid
+ * @brief @c true if this event is assigned to the validation set.
+ */
+
+/**
+ * @var bool folds_t::is_eval
+ * @brief @c true if this event is assigned to the evaluation (test) set.
+ */
+
+/**
+ * @var char* folds_t::hash
+ * @brief Null-terminated C string holding the event hash.
+ */
+
+/**
+ * @fn void folds_t::flush_data()
+ * @brief Free the heap-allocated @c hash string and set it to @c nullptr.
+ */
+
+/**
+ * @struct graph_hdf5
+ * @brief std::string-based representation of a serialised graph for HDF5 I/O.
+ * @details All tensor and map data are encoded as base-64 strings.
+ */
+
+/**
+ * @var int graph_hdf5::num_nodes
+ * @brief Number of nodes in the graph.
+ */
+
+/**
+ * @var double graph_hdf5::event_weight
+ * @brief Event weight.
+ */
+
+/**
+ * @var long graph_hdf5::event_index
+ * @brief Global event index.
+ */
+
+/**
+ * @var std::string graph_hdf5::hash
+ * @brief Event hash.
+ */
+
+/**
+ * @var std::string graph_hdf5::filename
+ * @brief Source file path.
+ */
+
+/**
+ * @var std::string graph_hdf5::edge_index
+ * @brief Serialised edge-index tensor.
+ */
+
+/**
+ * @var std::string graph_hdf5::data_map_graph
+ * @brief Serialised data-feature name-to-index map (graph level).
+ */
+
+/**
+ * @var std::string graph_hdf5::data_map_node
+ * @brief Serialised data-feature name-to-index map (node level).
+ */
+
+/**
+ * @var std::string graph_hdf5::data_map_edge
+ * @brief Serialised data-feature name-to-index map (edge level).
+ */
+
+/**
+ * @var std::string graph_hdf5::truth_map_graph
+ * @brief Serialised truth-feature name-to-index map (graph level).
+ */
+
+/**
+ * @var std::string graph_hdf5::truth_map_node
+ * @brief Serialised truth-feature name-to-index map (node level).
+ */
+
+/**
+ * @var std::string graph_hdf5::truth_map_edge
+ * @brief Serialised truth-feature name-to-index map (edge level).
+ */
+
+/**
+ * @var std::string graph_hdf5::data_graph
+ * @brief Serialised data-feature tensors (graph level).
+ */
+
+/**
+ * @var std::string graph_hdf5::data_node
+ * @brief Serialised data-feature tensors (node level).
+ */
+
+/**
+ * @var std::string graph_hdf5::data_edge
+ * @brief Serialised data-feature tensors (edge level).
+ */
+
+/**
+ * @var std::string graph_hdf5::truth_graph
+ * @brief Serialised truth-label tensors (graph level).
+ */
+
+/**
+ * @var std::string graph_hdf5::truth_node
+ * @brief Serialised truth-label tensors (node level).
+ */
+
+/**
+ * @var std::string graph_hdf5::truth_edge
+ * @brief Serialised truth-label tensors (edge level).
+ */
+
+/**
+ * @struct graph_hdf5_w
+ * @brief C-string (@c char*) variant of @c graph_hdf5 used for direct HDF5
+ *        write operations.
+ * @details All string fields are heap-allocated null-terminated C strings.
+ *          Call @c flush_data() to release them.
+ */
+
+/**
+ * @var int graph_hdf5_w::num_nodes
+ * @brief Number of nodes in the graph.
+ */
+
+/**
+ * @var double graph_hdf5_w::event_weight
+ * @brief Event weight.
+ */
+
+/**
+ * @var long graph_hdf5_w::event_index
+ * @brief Global event index.
+ */
+
+/**
+ * @var char* graph_hdf5_w::hash
+ * @brief Null-terminated event hash string.
+ */
+
+/**
+ * @var char* graph_hdf5_w::filename
+ * @brief Null-terminated source file path.
+ */
+
+/**
+ * @var char* graph_hdf5_w::edge_index
+ * @brief Null-terminated serialised edge-index tensor.
+ */
+
+/**
+ * @fn void graph_hdf5_w::flush_data()
+ * @brief Free all heap-allocated @c char* members and set them to @c nullptr.
+ */

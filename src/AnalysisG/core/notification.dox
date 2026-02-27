@@ -1,0 +1,93 @@
+/**
+ * @file notification.pxd
+ * @brief Cython declaration file for the @c notification C++ class.
+ * @details Wraps the @c notification base class that provides structured
+ *          console output (success, warning, failure, info) and progress bars.
+ */
+
+/**
+ * @cdef cppclass notification
+ * @brief C++ logging and progress-bar base class.
+ */
+
+/**
+ * @fn void notification.success(string)
+ * @brief Print a success message.
+ */
+
+/**
+ * @fn void notification.warning(string)
+ * @brief Print a warning message.
+ */
+
+/**
+ * @fn void notification.failure(string)
+ * @brief Print a failure/error message.
+ */
+
+/**
+ * @fn void notification.info(string)
+ * @brief Print an informational message.
+ */
+
+/**
+ * @fn void notification.progressbar(float prg, string title)
+ * @brief Display a single progress bar.
+ * @param prg   Progress in [0, 1].
+ * @param title Bar label.
+ */
+
+/**
+ * @fn void notification.progressbar1(vector[unsigned long long]* threads, unsigned long long* l, string* title)
+ * @brief Multi-thread progress bar variant 1.
+ */
+
+/**
+ * @fn void notification.progressbar2(vector[unsigned long long]* threads, unsigned long long* l, string* title)
+ * @brief Multi-thread progress bar variant 2.
+ */
+
+/**
+ * @fn void notification.progressbar3(vector[unsigned long long]* threads, vector[unsigned long long]* l, vector[string*]* title)
+ * @brief Multi-thread progress bar with per-thread titles.
+ */
+
+/**
+ * @var string notification.prefix
+ * @brief Message prefix prepended to all output lines.
+ */
+
+/**
+ * @var int notification._warning
+ * @brief Warning message count.
+ */
+
+/**
+ * @var int notification._failure
+ * @brief Failure message count.
+ */
+
+/**
+ * @var int notification._success
+ * @brief Success message count.
+ */
+
+/**
+ * @var int notification._info
+ * @brief Info message count.
+ */
+
+/**
+ * @var bool notification.bold
+ * @brief Use bold formatting.
+ */
+
+/**
+ * @var bool notification.shush
+ * @brief If @c true, suppress all output.
+ */
+
+/**
+ * @class Notification
+ * @brief Python wrapper for @c notification.
+ */
