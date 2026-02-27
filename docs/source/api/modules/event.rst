@@ -1,0 +1,12 @@
+Event Template
+==============
+
+The ``event_template`` class is the base for all user-defined event types,
+managing the particle collections and ROOT branch/leaf mappings.
+
+.. doxygenclass:: event_template
+   :project: AnalysisG
+   :members:
+   :protected-members:
+   :private-members:
+   :undoc-members:
