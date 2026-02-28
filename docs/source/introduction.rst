@@ -99,13 +99,24 @@ A typical AnalysisG analysis follows these steps:
      particle_template* Top::clone(){return new Top();}
      void Top::build(std::map<std::string, particle_template*>* prt,
                      element_t* el){
-         std::vector<Top*> out;
-         assign_vector(&out, el);
-         std::vector<int> _from_res;
+         // Retrieve per-particle branch vectors from the ROOT entry
+         std::vector<float> _pt, _eta, _phi, _e;
+         std::vector<int>   _index, _from_res;
+         el->get("pt",       &_pt);
+         el->get("eta",      &_eta);
+         el->get("phi",      &_phi);
+         el->get("e",        &_e);
+         el->get("index",    &_index);
          el->get("from_res", &_from_res);
-         for (size_t i = 0; i < out.size(); ++i){
-             out[i]->from_res = _from_res[i];
-             (*prt)[std::string(out[i]->hash)] = out[i];
+         for (size_t i = 0; i < _pt.size(); ++i){
+             Top* t   = new Top();
+             t->pt    = _pt[i];
+             t->eta   = _eta[i];
+             t->phi   = _phi[i];
+             t->e     = _e[i];
+             t->index = _index[i];
+             t->from_res = _from_res[i];
+             (*prt)[std::string(t->hash)] = t;
          }
      }
 
