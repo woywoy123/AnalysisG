@@ -138,26 +138,3 @@
  * - `Alpha` (float) — Opacity of the line (0.0–1.0).
  */
 
-/**
- * @class BasePlotting
- * @brief Python base wrapper for @c plotting — Doxygen index entry.
- * @details Owns a @c plotting* and the Matplotlib figure/axes objects.
- */
-
-/**
- * @class TH1F
- * @brief 1D histogram Python wrapper (inherits @c BasePlotting) — Doxygen index entry.
- * @details Manages a list of @c TH1F histograms and a stacking/scaling
- *          factory.
- */
-
-/**
- * @class TH2F
- * @brief 2D histogram Python wrapper (inherits @c BasePlotting) — Doxygen index entry.
- */
-
-/**
- * @class TLine
- * @brief Line-graph Python wrapper (inherits @c BasePlotting) — Doxygen index entry.
- * @details Supports error shading and multiple overlaid lines.
- */

@@ -7,15 +7,3 @@ Cython wrapper for the C++ loss function registry.
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``lossfx.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/core/lossfx.dox
-   :language: c
-   :caption:
-

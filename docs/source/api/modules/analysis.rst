@@ -10,15 +10,3 @@ objects into a complete analysis pipeline.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``analysis.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/analysis/include/AnalysisG/analysis.dox
-   :language: c
-   :caption:
-

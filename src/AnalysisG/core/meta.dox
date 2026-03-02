@@ -142,37 +142,3 @@
  * lookups for the same DSID do not require a network round trip.
  */
 
-
-/**
- * @class Meta
- * @brief Python wrapper for @c meta — kept for Doxygen class index.
- */
-
-/**
- * @class MetaLookup
- * @brief Provides dataset lookup and luminosity weighting — Doxygen index entry.
- * @details Caches matched @c Meta objects and their metadata dicts.
- */
-
-/**
- * @class Data
- * @brief Aggregates event data arrays and computes sum-of-weights — Doxygen index entry.
- */
-
-/**
- * @class ami_client
- * @brief Python client for fetching metadata from AMI — Doxygen index entry.
- * @details Provides cache load/save and metadata dressing for @c Meta objects.
- */
-
-
-/**
- * @class Data
- * @brief Aggregates event data arrays and computes sum-of-weights — Doxygen index entry.
- */
-
-/**
- * @class ami_client
- * @brief Python client for fetching metadata from AMI — Doxygen index entry.
- * @details Provides cache load/save and metadata dressing for @c Meta objects.
- */

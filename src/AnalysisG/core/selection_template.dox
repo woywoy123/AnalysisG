@@ -38,22 +38,3 @@
  * - `GetMetaData` (dict[str, Meta]) — Dictionary mapping event hashes to the
  *   corresponding `Meta` objects collected during the analysis run.
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @class SelectionTemplate
- * @brief Python wrapper for @c selection_template — kept for Doxygen class index.
- * @details Also exposes @c root_leaves as a public Python dict.
- */

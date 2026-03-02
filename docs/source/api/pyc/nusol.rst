@@ -9,15 +9,3 @@ in CUDA/C++ in the ``nusol_`` internal namespace, exposed via
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``nusol.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/pyc/nusol/include/nusol/nusol.dox
-   :language: c
-   :caption:
-

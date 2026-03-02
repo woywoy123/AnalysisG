@@ -54,10 +54,3 @@
  * - `Keys` (dict) — Nested dict `{file: {tree: {branch: [leaf, ...]}}}` of
  *   all keys found in the open ROOT files; calls `ScanKeys()` automatically.
  */
-
-/**
- * @class IO
- * @brief Python wrapper for @c io — kept for Doxygen class index.
- * @details Provides @c MetaData, @c ScanKeys, @c begin, and @c end as
- *          public cpdef methods.
- */

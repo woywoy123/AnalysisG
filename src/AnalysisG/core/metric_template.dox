@@ -32,12 +32,3 @@
  *   lists of leaf names; `root_fx` must map tree names (or `tree.leaf` keys)
  *   to callables `f(self, data, meta)`.
  */
-
-
-
-
-/**
- * @class MetricTemplate
- * @brief Python wrapper for @c metric_template — kept for Doxygen class index.
- * @details Also exposes @c root_leaves and @c root_fx as public Python dicts.
- */

@@ -9,15 +9,3 @@ event data during analysis.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``container.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/container/include/container/container.dox
-   :language: c
-   :caption:
-

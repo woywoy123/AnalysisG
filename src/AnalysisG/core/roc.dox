@@ -42,19 +42,3 @@
  * - `xBins` (int) — Number of interpolation points on the false-positive-rate
  *   axis (default inherited from `plotting::x_bins`).
  */
-
-
-
-
-
-
-
-
-
-
-/**
- * @class ROC
- * @brief Python ROC curve plotter (inherits @c TLine) — kept for Doxygen class index.
- * @details Builds ROC lines from the C++ @c roc object and exposes the @c auc
- *          dict.
- */

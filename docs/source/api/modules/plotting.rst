@@ -9,15 +9,3 @@ provide an object-oriented syntax for defining publication-quality plots.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``plotting.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/plotting/include/plotting/plotting.dox
-   :language: c
-   :caption:
-

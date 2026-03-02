@@ -9,15 +9,3 @@ as a base class throughout the framework.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``tools.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/tools/include/tools/tools.dox
-   :language: c
-   :caption:
-

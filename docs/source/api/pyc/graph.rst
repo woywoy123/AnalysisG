@@ -9,15 +9,3 @@ namespace and exposed via ``pyc::graph``.
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``graph.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/pyc/graph/include/graph/graph.dox
-   :language: c
-   :caption:
-

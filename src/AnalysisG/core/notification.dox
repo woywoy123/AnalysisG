@@ -30,8 +30,3 @@
  * - `_success`, `_warning`, `_failure`, `_info` (int) — Counters for the
  *   number of messages of each type emitted since construction.
  */
-
-/**
- * @class Notification
- * @brief Python wrapper for @c notification — kept for Doxygen class index.
- */

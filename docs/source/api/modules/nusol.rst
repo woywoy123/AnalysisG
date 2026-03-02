@@ -32,33 +32,3 @@ ODE Runge–Kutta Solver
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``mtx.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/nusol/ellipse/include/ellipse/mtx.dox
-   :language: c
-   :caption:
-
-``conuix.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/nusol/conuix/include/conuix/conuix.dox
-   :language: c
-   :caption:
-
-``conuic.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.dox
-   :language: c
-   :caption:
-
-``_odeRK.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/nusol/tmp/multisol/include/multisol/_odeRK.dox
-   :language: c
-   :caption:
-

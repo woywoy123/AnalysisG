@@ -9,15 +9,3 @@ during GNN training.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``lossfx.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/lossfx/include/templates/lossfx.dox
-   :language: c
-   :caption:
-

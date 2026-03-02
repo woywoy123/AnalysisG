@@ -54,8 +54,3 @@
  * - `initial_accumulator_value` (float) — Starting value for the sum of
  *   squared gradients accumulator.
  */
-
-/**
- * @class OptimizerConfig
- * @brief Python wrapper for @c optimizer_params_t — kept for Doxygen class index.
- */

@@ -37,17 +37,3 @@
  * - `Name` (str) — Name of the event class as registered with the C++
  *   backend (derived from `event_template::name`).
  */
-
-
-
-
-
-
-
-
-
-
-/**
- * @class EventTemplate
- * @brief Python wrapper for @c event_template — kept for Doxygen class index.
- */

@@ -29,16 +29,3 @@
  * - `PreSelection` (bool) — If True the graph passes the pre-selection gate
  *   and will be included in the cache; set to False to discard the event.
  */
-
-
-
-
-
-
-
-
-
-/**
- * @class GraphTemplate
- * @brief Python wrapper for @c graph_template — kept for Doxygen class index.
- */

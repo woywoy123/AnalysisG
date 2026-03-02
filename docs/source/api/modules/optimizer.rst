@@ -9,15 +9,3 @@ wraps PyTorch optimisers and learning-rate schedulers for GNN training.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``optimizer.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/optimizer/include/generators/optimizer.dox
-   :language: c
-   :caption:
-

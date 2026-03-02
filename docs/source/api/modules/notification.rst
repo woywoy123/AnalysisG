@@ -9,15 +9,3 @@ utilities used throughout the framework.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``notification.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/notification/include/notification/notification.dox
-   :language: c
-   :caption:
-

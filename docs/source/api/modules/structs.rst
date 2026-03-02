@@ -46,33 +46,3 @@ Structs
 .. doxygenstruct:: roc_t
    :project: AnalysisG
    :members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``enums.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/structs/include/structs/enums.dox
-   :language: c
-   :caption:
-
-``report.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/structs/include/structs/report.dox
-   :language: c
-   :caption:
-
-``property.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/structs/include/structs/property.dox
-   :language: c
-   :caption:
-
-``settings.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/structs/include/structs/settings.dox
-   :language: c
-   :caption:
-

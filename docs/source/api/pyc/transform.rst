@@ -9,15 +9,3 @@ exposed via ``pyc::transform``.
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``transform.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/pyc/transform/include/transform/transform.dox
-   :language: c
-   :caption:
-

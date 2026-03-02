@@ -9,15 +9,3 @@ event-selection algorithms.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``selection_template.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/selection/include/templates/selection_template.dox
-   :language: c
-   :caption:
-

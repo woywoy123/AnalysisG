@@ -37,19 +37,3 @@
  *   this property also sets the internal `rename` flag so that the custom
  *   name is persisted.
  */
-
-
-
-
-
-
-
-
-
-
-/**
- * @class ModelTemplate
- * @brief Python wrapper for @c model_template — kept for Doxygen class index.
- * @details Provides @c conv and @c cond helper methods to bridge Python dicts
- *          and C++ @c map<string, string>.
- */

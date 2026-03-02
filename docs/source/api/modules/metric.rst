@@ -9,15 +9,3 @@ evaluation metrics.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``metric_template.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/metric/include/templates/metric_template.dox
-   :language: c
-   :caption:
-

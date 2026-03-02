@@ -9,15 +9,3 @@ computation and visualisation utilities.
    :members:
    :protected-members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``roc.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/modules/roc/include/plotting/roc.dox
-   :language: c
-   :caption:
-

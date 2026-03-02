@@ -8,15 +8,3 @@ to Python.
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``analysis.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/core/analysis.dox
-   :language: c
-   :caption:
-

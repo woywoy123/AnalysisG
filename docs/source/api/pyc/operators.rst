@@ -9,15 +9,3 @@ helpers) in the ``operators_`` internal namespace, exposed via
    :project: AnalysisG
    :members:
    :undoc-members:
-
-.. rubric:: Doxygen Source
-
-
-The documentation above is derived from the following ``.dox`` annotation file(s):
-
-``operators.dox``
-
-.. literalinclude:: ../../../../src/AnalysisG/pyc/operators/include/operators/operators.dox
-   :language: c
-   :caption:
-
