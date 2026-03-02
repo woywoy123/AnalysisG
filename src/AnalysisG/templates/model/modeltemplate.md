@@ -47,13 +47,14 @@ The C++ Source Code
    
        // fetch the input data of the model.
        // If the variable is not available, this will return a nullptr.
-       torch::Tensor graph = data -> get_data_graph("graph") -> clone(); 
-       torch::Tensor node  = data -> get_data_node("node") -> clone();
-       torch::Tensor edge  = data -> get_data_edge("edge") -> clone(); 
-       torch::Tensor edge_index = data -> edge_index -> clone(); 
+       // Note: the second argument is always `this` (selects the correct device tensor).
+       torch::Tensor graph = data -> get_data_graph("graph", this) -> clone(); 
+       torch::Tensor node  = data -> get_data_node("node", this) -> clone();
+       torch::Tensor edge  = data -> get_data_edge("edge", this) -> clone(); 
+       torch::Tensor edge_index = data -> get_edge_index(this) -> clone(); 
    
        // output the prediction weights for edges, nodes, graphs.
-       this -> prediction_graph_feature("..."; <some-tensor>); 
+       this -> prediction_graph_feature("...", <some-tensor>); 
        this -> prediction_node_feature("...", <some-tensor>);
        this -> prediction_edge_feature("...", <some-tensor>); 
        if (!this -> inference_mode){return;} // skips any variables not avaliable during inference time.

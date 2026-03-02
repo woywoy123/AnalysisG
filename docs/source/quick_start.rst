@@ -1,13 +1,19 @@
 Quick Start
 ===========
 
-A typical AnalysisG analysis follows five steps:
-define particles → define an event → define a graph → (optionally) define
-selections and models → run the pipeline via the Python :class:`Analysis` class.
+A complete AnalysisG analysis follows this workflow:
 
-All examples below are derived from the
-`bsm_4tops <https://github.com/woywoy123/AnalysisG/tree/master/truth-studies/bsm_4tops>`_
-reference analysis included in the repository.
+1. Write C++ particle, event, and graph classes.
+2. Write thin Cython (`.pxd` / `.pyx`) wrappers to expose them to Python.
+3. Compile with ``scikit-build-core`` (``pip install .``).
+4. Import the compiled Cython classes and run the pipeline via
+   the Python :class:`Analysis` class.
+
+All examples below reflect the patterns used in the
+`bsm_4tops <https://github.com/woywoy123/AnalysisG/tree/master/src/AnalysisG/events/bsm_4tops>`_
+and
+`grift <https://github.com/woywoy123/AnalysisG/tree/master/src/AnalysisG/models/grift>`_
+reference implementations included in the repository.
 
 Step 1 — Define Particles
 --------------------------
@@ -186,26 +192,195 @@ Feature functions are plain C++ free functions:
        this->add_edge_truth_feature<int, particle_template>(same_top, "same_top");
    }
 
-Step 4 — Define Selections *(optional)*
+Step 4 — Define a Model *(optional)*
+--------------------------------------
+
+Subclass :cpp:class:`model_template` and override
+:cpp:func:`model_template::forward`.  Inside ``forward``, fetch tensors
+from the ``graph_t`` object with ``data->get_data_*(name, this)`` (the
+second argument is always ``this`` — the model pointer used to select the
+correct device tensor) and write predictions with
+``prediction_*_feature(name, tensor)``.
+
+Register PyTorch sub-modules with
+:cpp:func:`model_template::register_module` in the constructor.
+
+**Header** (``my_model.h``):
+
+.. code-block:: cpp
+
+   #include <templates/model_template.h>
+
+   class MyModel : public model_template {
+   public:
+       MyModel();
+       ~MyModel();
+       model_template* clone() override;
+       void forward(graph_t* data) override;
+
+       torch::nn::Sequential* node_mlp = nullptr;
+   };
+
+**Source** (``my_model.cxx``):
+
+.. code-block:: cpp
+
+   #include "my_model.h"
+
+   MyModel::MyModel() {
+       this->node_mlp = new torch::nn::Sequential({
+           {"l1", torch::nn::Linear(4, 64)},
+           {"r1", torch::nn::ReLU()},
+           {"l2", torch::nn::Linear(64, 1)}
+       });
+       this->register_module(this->node_mlp);
+   }
+
+   MyModel::~MyModel() {}
+   model_template* MyModel::clone() { return new MyModel(); }
+
+   void MyModel::forward(graph_t* data) {
+       // Fetch input tensors — second arg is always `this` (selects device)
+       torch::Tensor node_pt  = data->get_data_node("pt",  this)->clone();
+       torch::Tensor node_eta = data->get_data_node("eta", this)->clone();
+       torch::Tensor met      = data->get_data_graph("met", this)->clone();
+       torch::Tensor edge_idx = data->get_edge_index(this)->to(torch::kLong);
+
+       torch::Tensor feats = torch::cat({node_pt, node_eta, met.expand_as(node_pt),
+                                         met.expand_as(node_pt)}, -1);
+       torch::Tensor out = (*node_mlp)->forward(feats);
+
+       // Write predictions back to the graph object
+       this->prediction_node_feature("top_node", out);
+
+       // prediction_extra is only written during inference (not training)
+       if (!this->inference_mode) { return; }
+       this->prediction_extra("node_score", torch::sigmoid(out));
+   }
+
+Step 5 — Define Selections *(optional)*
 -----------------------------------------
 
 Subclass :cpp:class:`selection_template` and implement
 :cpp:func:`selection_template::selection` and optionally
 :cpp:func:`selection_template::strategy` for per-event logic and aggregate
-post-processing.
+post-processing.  See ``selectiontemplate.md`` in the templates directory for
+a complete C++ + Cython example.
 
-Step 5 — Run the Pipeline (Python)
-------------------------------------
+Step 6 — Cython Interfaces
+----------------------------
 
-Wire all user-defined components together via the Python :class:`Analysis`
-class:
+Every C++ class that is passed to the Python :class:`Analysis` API must be
+wrapped in a thin Cython layer.  Particles are built internally by the
+framework and do not need a Python-facing Cython class — only events, graphs,
+models, and selections do.
+
+**Event** (``my_event.pxd`` + ``my_event.pyx``):
+
+.. code-block:: cython
+
+   # my_event.pxd
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.event_template cimport event_template, EventTemplate
+
+   cdef extern from "<my_module/my_event.h>":
+       cdef cppclass MyEvent(event_template):
+           MyEvent() except+
+
+   cdef class PyMyEvent(EventTemplate):
+       cdef MyEvent* tt
+
+.. code-block:: cython
+
+   # my_event.pyx
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.event_template cimport EventTemplate
+   from my_event cimport MyEvent
+
+   cdef class PyMyEvent(EventTemplate):
+       def __cinit__(self):
+           self.tt  = new MyEvent()
+           self.ptr = <event_template*>(self.tt)   # cast to base pointer
+       def __init__(self): pass
+       def __dealloc__(self): del self.tt
+
+**Graph** (``my_graph.pxd`` + ``my_graph.pyx``):
+
+.. code-block:: cython
+
+   # my_graph.pxd
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.graph_template cimport graph_template, GraphTemplate
+
+   cdef extern from "<my_module/my_graph.h>":
+       cdef cppclass MyGraphCpp(graph_template):
+           MyGraphCpp() except+
+
+   cdef class PyMyGraph(GraphTemplate): pass
+
+.. code-block:: cython
+
+   # my_graph.pyx
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.graph_template cimport GraphTemplate
+   from my_graph cimport MyGraphCpp
+
+   cdef class PyMyGraph(GraphTemplate):
+       def __cinit__(self): self.ptr = new MyGraphCpp()
+       def __init__(self): pass
+       def __dealloc__(self): del self.ptr
+
+**Model** (``my_model.pxd`` + ``my_model.pyx``):
+
+.. code-block:: cython
+
+   # my_model.pxd
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.model_template cimport model_template, ModelTemplate
+
+   cdef extern from "<my_module/my_model.h>":
+       cdef cppclass MyModel(model_template):
+           MyModel() except+
+
+   cdef class PyMyModel(ModelTemplate): pass
+
+.. code-block:: cython
+
+   # my_model.pyx
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.model_template cimport ModelTemplate
+   from my_model cimport MyModel
+
+   cdef class PyMyModel(ModelTemplate):
+       def __cinit__(self): self.nn_ptr = new MyModel()
+       def __init__(self): pass
+       def __dealloc__(self): del self.nn_ptr
+
+Step 7 — Run the Pipeline (Python)
+-------------------------------------
+
+After compiling with ``pip install .``, import the generated Cython classes
+and wire them together via the Python :class:`Analysis` class:
 
 .. code-block:: python
 
    from AnalysisG import Analysis
    from AnalysisG.core.lossfx import OptimizerConfig
+   from my_module import PyMyEvent, PyMyGraph, PyMyModel  # compiled Cython classes
 
-   # --- optional: configure optimiser ---
+   # --- configure optimiser ---
    op = OptimizerConfig()
    op.Optimizer = "adam"
    op.lr = 1e-3
@@ -219,9 +394,9 @@ class:
    ana.Threads     = 4
 
    ana.AddSamples("./data/ttbar.root", "ttbar")
-   ana.AddEvent(MyEvent(),   "ttbar")
-   ana.AddGraph(MyGraph(),   "ttbar")
-   ana.AddModel(MyModel(), op, "run1")
+   ana.AddEvent(PyMyEvent(), "ttbar")
+   ana.AddGraph(PyMyGraph(), "ttbar")
+   ana.AddModel(PyMyModel(), op, "run1")
 
    ana.Start()
 
@@ -230,14 +405,16 @@ Using pyc CUDA Kernels
 
 The ``pyc`` sub-package registers HEP-specific kernels as PyTorch custom
 operators under the ``tpyc`` (CPU) or ``cupyc`` (CUDA) namespaces.
+After building the project the shared library is located at
+``<build_dir>/pyc/interface/lib{tpyc|cupyc}.so``.
 
 .. code-block:: python
 
    import torch
 
-   # Load the shared library built alongside the package
-   torch.ops.load_library("/path/to/build/libtpyc.so")   # CPU
-   # torch.ops.load_library("/path/to/build/libcupyc.so") # CUDA
+   # Load the shared library (path relative to your build directory)
+   torch.ops.load_library("build/pyc/interface/libtpyc.so")   # CPU
+   # torch.ops.load_library("build/pyc/interface/libcupyc.so") # CUDA
 
    # Nx4 tensor in polar coordinates (pt, eta, phi, E) — float64
    pmu = torch.tensor(
@@ -246,7 +423,7 @@ operators under the ``tpyc`` (CPU) or ``cupyc`` (CUDA) namespaces.
        dtype=torch.float64
    )
 
-   # Convert to Cartesian (px, py, pz, E) — Nx4 result
+   # Convert cylindrical (pt, eta, phi, E) → Cartesian (px, py, pz, E) — Nx4 result
    pmc = torch.ops.tpyc.transform_combined_pxpypze(pmu)
 
    # Invariant mass from Cartesian four-momentum — Nx1 result

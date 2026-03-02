@@ -62,6 +62,9 @@ A simple code implementation would look structurally as below:
         event_name* event = this -> get_event<event_name>(); 
         std::vector<particle_template*> particles = event -> some_var_with_particles; 
        
+        // Register particle nodes first — must be called before any feature functions.
+        this -> define_particle_nodes(&particles);
+
         // ------ define a prior topology or leave this out for a fully connected graph ----- //
         // for instance, if the target particle is a top, then no two b-jets can share the same top.
         auto bias_topology = [](particle_template* p1, particle_template* p2){return p1 -> is_b != p2 -> is_b;};
@@ -74,8 +77,8 @@ A simple code implementation would look structurally as below:
 
         // ----- observables --------- //
         this -> add_graph_data_feature<double, event_name>(event, some_other_graph_fx, "some-other-data"); 
-        this -> add_graph_data_feature<double, particle_template>(some_other_node_fx, "pt"); 
-        this -> add_graph_data_feature<double, particle_template>(some_other_edge_fx, "delta-pt"); 
+        this -> add_node_data_feature<double, particle_template>(some_other_node_fx, "pt"); 
+        this -> add_edge_data_feature<double, particle_template>(some_other_edge_fx, "delta-pt"); 
 
         // The class also allows for access to event data that relates to the origin root file.
         std::string root_file_path = this -> filename; 
