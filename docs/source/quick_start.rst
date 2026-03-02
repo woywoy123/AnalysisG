@@ -17,6 +17,14 @@ branch names with :cpp:func:`particle_template::add_leaf`, and override
 :cpp:func:`particle_template::build` to allocate typed instances from a ROOT
 entry.
 
+.. note::
+   The second argument of ``add_leaf(key, suffix)`` is an *underscore-prefixed
+   suffix* of the ROOT branch name.  Calling :cpp:func:`particle_template::apply_type_prefix`
+   afterwards prepends ``this->type`` to every suffix, so ``add_leaf("pt", "_pt")``
+   with ``this->type = "top"`` resolves to the ROOT branch ``"top_pt"``.
+   Do **not** pre-include the type prefix in the suffix: that would create a
+   doubled prefix (e.g. ``"toptop_pt"``).
+
 **Header** (``my_particle.h``):
 
 .. code-block:: cpp
@@ -40,13 +48,15 @@ entry.
 
    Top::Top() : particle_template() {
        this->type = "top";
-       this->add_leaf("pt",       "top_pt");
-       this->add_leaf("eta",      "top_eta");
-       this->add_leaf("phi",      "top_phi");
-       this->add_leaf("e",        "top_e");
-       this->add_leaf("index",    "top_index");
-       this->add_leaf("from_res", "top_FromRes");
-       this->apply_type_prefix();
+       // Second argument is the ROOT branch suffix; apply_type_prefix()
+       // prepends this->type so "_pt" becomes the branch "top_pt", etc.
+       this->add_leaf("pt",       "_pt");
+       this->add_leaf("eta",      "_eta");
+       this->add_leaf("phi",      "_phi");
+       this->add_leaf("e",        "_e");
+       this->add_leaf("index",    "_index");
+       this->add_leaf("from_res", "_FromRes");
+       this->apply_type_prefix();   // leaves now map to "top_pt", "top_eta", ...
    }
 
    particle_template* Top::clone() { return new Top(); }  // Required factory method

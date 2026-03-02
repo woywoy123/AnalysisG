@@ -259,13 +259,22 @@
  * @fn void particle_template::add_leaf(std::string key, std::string leaf)
  * @brief Register a ROOT leaf name to read into this particle under the
  *        given key.
- * @param key  Property key in the particle.
- * @param leaf ROOT leaf name; defaults to @p key if empty.
+ * @param key  Internal property key used by @c element_t::get.
+ * @param leaf ROOT branch suffix.  Use an underscore prefix (e.g. @c "_pt")
+ *             when @c apply_type_prefix() will be called afterwards; the
+ *             method then prepends @c this->type to produce the full branch
+ *             name (e.g. @c "top_pt" when @c type="top").  Defaults to
+ *             @p key if empty.
  */
 
 /**
  * @fn void particle_template::apply_type_prefix()
- * @brief Prepend the @c type string to all registered leaf keys.
+ * @brief Prepend @c this->type to every registered leaf suffix.
+ * @details Call this once at the end of the constructor, after all
+ *          @c add_leaf calls, to resolve the final ROOT branch names.
+ *          For example, if @c type is @c "top" and a leaf was registered
+ *          as @c add_leaf("pt", "_pt"), after @c apply_type_prefix() the
+ *          framework will read the ROOT branch @c "top_pt".
  */
 
 /**

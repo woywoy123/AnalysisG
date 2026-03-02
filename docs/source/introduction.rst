@@ -52,7 +52,7 @@ Core Modules
    * - **Plotting**
      - Wrapper around boost_histograms and mpl-hep for plot definitions.
    * - **io**
-     - Cython interface to CERN ROOT for reading n-tuples in 3 lines.
+     - C++ class (inheriting ``tools`` + ``notification``) for reading CERN ROOT n-tuples and HDF5 files.
    * - **MetaData**
      - DSID search and data-scraping via a modified PyAMI interface.
    * - **Analysis**
