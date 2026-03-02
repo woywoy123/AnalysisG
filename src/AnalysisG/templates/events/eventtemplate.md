@@ -83,7 +83,7 @@ Below is a simple example of what an event might look like:
         // downcast to parent particle template
         std::map<std::string, custom_particle_v2*>::iterator itr2 = this -> m_some_particles.begin(); 
         for (; itr2 != this -> m_some_particles.end(); ++itr2){
-            this -> some_particles.push_back((particle_template*)itr -> second); 
+            this -> some_particles.push_back((particle_template*)itr2 -> second); 
         }
    }
 ```
