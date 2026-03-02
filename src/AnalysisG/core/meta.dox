@@ -39,8 +39,8 @@
  * - `kfactor` (float) — K-factor applied to the cross-section.
  * - `completion` (float) — Dataset processing completion fraction (0–100).
  * - `beam_energy` (float) — Beam energy in GeV.
- * - `crossSection` (float) — Cross-section in fb (stored in pb internally;
- *   getter multiplies by 10⁶).
+ * - `crossSection` (float) — Cross-section scaled by 10^6 from the raw
+ *   stored value (e.g. stored in nb, returned as fb). *   getter multiplies by 10⁶).
  * - `crossSection_mean` (float) — Mean cross-section in pb.
  * - `totalSize` (float) — Total dataset size in bytes.
  * - `nFiles` (int) — Number of files in the dataset.
@@ -101,7 +101,9 @@
  * **Read-only derived properties (valid after a successful `__call__`):**
  * - `DatasetName` (str) — Dataset name of the matched `Meta`.
  * - `CrossSection` (float) — Cross-section of the matched `Meta`.
- * - `ExpectedEvents` (float) — `CrossSection × luminosity`.
+ * - `ExpectedEvents` (float) — Expected number of events computed as
+ *   `CrossSection × luminosity` where both values must be in consistent
+ *   units (cross-section in fb, luminosity in fb⁻¹).
  * - `SumOfWeights` — Sum of weights (always 1 in current implementation).
  * - `GenerateData` (Data) — Return a new `Data` instance linked to this
  *   lookup for weight rescaling.

@@ -1,8 +1,9 @@
 I/O Module
 ==========
 
-The ``io`` class is a Cython interface to CERN ROOT that allows ROOT
-n-tuples to be read with minimal boilerplate.
+The ``io`` class inherits from ``tools`` and ``notification`` and provides
+the low-level C++ interface for reading CERN ROOT n-tuples and writing or
+reading graph data from HDF5 files.
 
 .. doxygenclass:: io
    :project: AnalysisG

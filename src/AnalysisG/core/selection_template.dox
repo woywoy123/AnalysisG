@@ -32,7 +32,7 @@
  *   file/path and process each entry through the callbacks registered in
  *   `root_leaves`; calls `Postprocessing()` when finished.
  *
- * **Read-only property:**
+ * **Read-only properties:**
  * - `PassedWeights` (dict[str, dict[str, float]]) — Nested dictionary of
  *   per-file, per-event weights for events that passed the selection.
  * - `GetMetaData` (dict[str, Meta]) — Dictionary mapping event hashes to the

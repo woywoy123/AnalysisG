@@ -1,5 +1,5 @@
 /**
- * @file odeRK.h (tmp)
+ * @file odeRK.dox
  * @brief Runge-Kutta 4 ODE integrator for multi-neutrino ellipse alignment
  *        (root-level tmp variant).
  * @details Identical in interface to the version in

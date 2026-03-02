@@ -27,7 +27,7 @@
  *   enabled).
  *
  * **Style properties (read/write):**
- * - `Hatch` (str) — Matplotlib hatch pattern string (e.g. `"/"`, `"\\\\"`).
+ * - `Hatch` (str) — Matplotlib hatch pattern string (e.g. `"/"`, `"x"`).
  * - `DPI` (int) — Dots per inch for the saved figure; set to 800
  *   automatically in ATLAS style.
  * - `Style` (str) — Plot style name; `"ATLAS"` activates the mplhep ATLAS

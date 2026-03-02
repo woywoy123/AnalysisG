@@ -35,7 +35,7 @@
  *
  * **Read/write properties:**
  * - `Verbose` (bool) — If True, print informational messages; maps to
- *   `!io::shush`.
+ *   the inverse of the internal @c shush flag.
  * - `EnablePyAMI` (bool) — If True, fetch missing metadata from AMI during
  *   `MetaData()`.
  * - `MetaCachePath` (str) — Path to the HDF5 file used to cache AMI
