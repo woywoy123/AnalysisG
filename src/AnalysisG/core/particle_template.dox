@@ -7,49 +7,60 @@
  *          association.
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * @class ParticleTemplate
  * @brief Python wrapper for @c particle_template.
- * @details Manages ownership, key tracking, parent/child lists, and
- *          provides @c clone and @c DeltaR as public cpdef methods.
+ * @details Manages ownership of the underlying @c particle_template* pointer,
+ *          tracks parent/child particle lists, and provides @c clone and
+ *          @c DeltaR as public `cpdef` methods.  Subclass this to define
+ *          physics particles that are built from ROOT branches.
+ *
+ * **cpdef methods (callable from Python):**
+ * - `clone() -> ParticleTemplate` — Return a shallow copy with the same
+ *   `Type` string; the clone owns its own `particle_template*`.
+ * - `DeltaR(other: ParticleTemplate) -> float` — Compute the angular
+ *   distance ΔR = √(Δη² + Δφ²) between this particle and `other`.
+ *
+ * **Special methods:**
+ * - `__add__(other: ParticleTemplate) -> ParticleTemplate` — Return a new
+ *   particle whose 4-momentum is the sum; children/parents are merged.
+ * - `__iadd__(other: ParticleTemplate) -> ParticleTemplate` — Add `other`'s
+ *   4-momentum in place; children/parents are merged.
+ * - `__eq__(other) -> bool` — True if both pointers point to equivalent
+ *   `particle_template` instances.
+ * - `__reduce__() -> tuple` — Pickle support; recursively serialises the
+ *   decay tree.
+ * - `is_self(inpt) -> bool` — Return True if `inpt` is a `ParticleTemplate`
+ *   or a subclass instance.
+ *
+ * **Kinematic properties (read/write unless noted):**
+ * - `hash` (str, read-only) — Unique 8-character hex identifier.
+ * - `index` (int) — Sequential event index; also accepts a branch name str.
+ * - `px` (float) — x-component of 3-momentum [MeV].
+ * - `py` (float) — y-component of 3-momentum [MeV].
+ * - `pz` (float) — z-component of 3-momentum [MeV].
+ * - `pt` (float) — Transverse momentum [MeV].
+ * - `eta` (float) — Pseudorapidity.
+ * - `phi` (float) — Azimuthal angle [rad].
+ * - `e` (float) — Energy [MeV].
+ * - `Mass` (float) — Invariant mass [MeV].
+ * - `charge` (float) — Electric charge.
+ * - `pdgid` (int) — PDG Monte-Carlo particle ID.
+ * - `symbol` (str) — Human-readable particle symbol (e.g. `"e-"`).
+ * - `Type` (str) — User-defined particle type string (used by `clone`).
+ * - `lepdef` (list[int]) — PDG IDs considered leptonic for `is_lep`.
+ * - `nudef` (list[int]) — PDG IDs considered neutrino-like for `is_nu`.
+ *
+ * **Classification flags (read-only, computed by C++):**
+ * - `is_lep` (bool) — True if `|pdgid|` is in `lepdef`.
+ * - `is_nu` (bool) — True if `|pdgid|` is in `nudef`.
+ * - `is_b` (bool) — True if this is a b-quark/hadron.
+ * - `is_add` (bool) — True if flagged as an additional particle.
+ * - `LeptonicDecay` (bool) — True if the decay chain contains a lepton.
+ *
+ * **Decay-tree properties (read/write):**
+ * - `Children` (list[ParticleTemplate]) — Immediate decay products.
+ *   Setting to an empty list clears the children map.
+ * - `Parents` (list[ParticleTemplate]) — Immediate parent particles.
+ *   Setting to an empty list clears the parents map.
  */

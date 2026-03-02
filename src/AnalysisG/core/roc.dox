@@ -12,10 +12,36 @@
  * @brief Holds the data for one ROC curve (one class, one k-fold, one model).
  */
 
-
-
-
-
+/**
+ * @class ROC
+ * @brief Python ROC curve plotter (inherits @c TLine).
+ * @details Computes multi-class ROC curves with k-fold averaging using
+ *          `sklearn.metrics.roc_curve` and `auc`.  Each class produces one
+ *          output plot file named `<Filename>_cls-<i>`.
+ *
+ * **Input data properties (write-only; setters populate the C++ roc object):**
+ * - `Scores` (list | dict | tuple) — Predicted probability scores.
+ *   - `list`: 2-D list of shape `[events, classes]`, model name `"name"`.
+ *   - `dict[str, list]`: per-model score lists; key is the run name.
+ *   - `dict[str, tuple(int, list)]`: per-model with kfold index.
+ *   - `tuple(str, int, list)`: `(run_name, kfold, scores)`.
+ * - `Truth` (list | dict | tuple) — Ground-truth integer class labels.
+ *   Accepts the same shapes as `Scores` but with `list[int]` payloads.
+ *
+ * **Read-only properties:**
+ * - `AUC` (dict) — Nested dict `{run_name: {kfold: {class: auc}, "cls::i::avg": float, "cls::i::stdev": float}}`
+ *   populated after `SaveFigure()`.
+ * - `Titles` (list[TLine]) — Alias for `Lines`; the overlaid `TLine`
+ *   objects representing individual ROC curves.
+ *
+ * **Redirect properties (write triggers a warning):**
+ * - `xData` — Use `Scores` instead; writing logs a warning.
+ * - `yData` — Use `Truth` instead; writing logs a warning.
+ *
+ * **Overridden property:**
+ * - `xBins` (int) — Number of interpolation points on the false-positive-rate
+ *   axis (default inherited from `plotting::x_bins`).
+ */
 
 
 
@@ -28,7 +54,7 @@
 
 /**
  * @class ROC
- * @brief Python ROC curve plotter (inherits @c TLine).
+ * @brief Python ROC curve plotter (inherits @c TLine) — kept for Doxygen class index.
  * @details Builds ROC lines from the C++ @c roc object and exposes the @c auc
  *          dict.
  */

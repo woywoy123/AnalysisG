@@ -6,34 +6,58 @@
  *          underlying @c io* pointer.
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * @class IO
  * @brief Python wrapper for @c io.
+ * @details `IO` is an iterable that reads ROOT files tree by tree and yields
+ *          one Python dict per event.  It also exposes metadata discovery
+ *          through PyAMI integration.
+ *
+ * **Constructor:**
+ * - `IO(root=[])` — Accepts a list of paths or a single path string to
+ *   pre-populate `Files`.
+ *
+ * **Iteration protocol:**
+ * - `__iter__()` — Open the ROOT files and return the iterator.
+ * - `__next__()` — Yield the next event as a dict of leaf → value mappings
+ *   plus a `"filename"` key; raises `StopIteration` when all events are read.
+ * - `__len__()` — Return the maximum number of entries across all open trees.
+ *
+ * **cpdef methods (callable from Python):**
+ * - `MetaData() -> dict[str, Meta]` — Scan metadata from all open files and
+ *   return a dict mapping file path to `Meta` objects (calls PyAMI if
+ *   `EnablePyAMI` is True).
+ * - `ScanKeys()` — Populate the internal key cache by scanning all open ROOT
+ *   files; results are accessible via the `Keys` property.
+ * - `begin()` — Explicitly open the ROOT files for iteration (called
+ *   automatically by `__iter__`).
+ * - `end()` — Close all open ROOT files and free resources.
+ *
+ * **Read/write properties:**
+ * - `Verbose` (bool) — If True, print informational messages; maps to
+ *   `!io::shush`.
+ * - `EnablePyAMI` (bool) — If True, fetch missing metadata from AMI during
+ *   `MetaData()`.
+ * - `MetaCachePath` (str) — Path to the HDF5 file used to cache AMI
+ *   metadata lookups.
+ * - `SumOfWeightsTreeName` (str) — Name of the ROOT tree that contains
+ *   sum-of-weights information used for normalisation.
+ * - `Trees` (list[str]) — Tree names to iterate; accepts a str or list.
+ * - `Branches` (list[str]) — Branch names to read; accepts a str or list.
+ * - `Leaves` (list[str]) — Specific leaf names to read; accepts a str or
+ *   list.
+ * - `Files` (list[str]) — Validated ROOT file paths.  Setting this property
+ *   triggers path validation; only paths that exist are returned by the
+ *   getter.
+ *
+ * **Read-only property:**
+ * - `Keys` (dict) — Nested dict `{file: {tree: {branch: [leaf, ...]}}}` of
+ *   all keys found in the open ROOT files; calls `ScanKeys()` automatically.
+ */
+
+/**
+ * @class IO
+ * @brief Python wrapper for @c io — kept for Doxygen class index.
  * @details Provides @c MetaData, @c ScanKeys, @c begin, and @c end as
  *          public cpdef methods.
  */

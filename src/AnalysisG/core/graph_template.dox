@@ -5,10 +5,30 @@
  *          Geometric-compatible graphs from physics events.
  */
 
-
-
-
-
+/**
+ * @class GraphTemplate
+ * @brief Python wrapper for @c graph_template.
+ * @details Subclass this to define a graph structure built from physics events.
+ *          The C++ engine calls the subclass constructor for every event
+ *          passing the pre-selection and stores the resulting graph in the
+ *          cache.
+ *
+ * **Special methods:**
+ * - `is_self(inpt) -> bool` — Return True if `inpt` is a `GraphTemplate`
+ *   or a subclass instance.
+ * - `__eq__(other) -> bool` — True when both wrap equivalent
+ *   `graph_template` instances (C++ equality operator).
+ * - `__hash__() -> int` — Integer hash derived from the first 8 hex digits
+ *   of the internal hash string.
+ *
+ * **Read-only properties:**
+ * - `index` (int) — Sequential index of this graph within the dataset.
+ * - `Tree` (str) — Name of the ROOT tree from which this graph was built.
+ *
+ * **Read/write property:**
+ * - `PreSelection` (bool) — If True the graph passes the pre-selection gate
+ *   and will be included in the cache; set to False to discard the event.
+ */
 
 
 
@@ -20,5 +40,5 @@
 
 /**
  * @class GraphTemplate
- * @brief Python wrapper for @c graph_template.
+ * @brief Python wrapper for @c graph_template — kept for Doxygen class index.
  */

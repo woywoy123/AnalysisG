@@ -6,36 +6,173 @@
  *          the local ROOT file headers.
  */
 
-
-
-
-
-
-
 /**
  * @class Meta
  * @brief Python wrapper for @c meta.
+ * @details Stores ATLAS dataset metadata fetched from AMI or derived from the
+ *          ROOT file headers.  Instances are created automatically by the
+ *          analysis framework; you can also create them manually and call
+ *          `FetchMeta` to populate them.
+ *
+ * **Methods:**
+ * - `FetchMeta(dsid: int, amitag: str)` — Set `dsid`/`amitag` and trigger a
+ *   live AMI lookup to populate all metadata fields.
+ * - `expected_events(lumi: float = 140.1) -> float` — Return the expected
+ *   number of events: `crossSection × lumi`.
+ * - `GetSumOfWeights(name: str) -> float` — Return the sum of weights for
+ *   the named sub-sample; returns 1 if unavailable.
+ * - `hash(val: str) -> str` — Return the hash of `val` as managed by the
+ *   underlying `meta` object.
+ *
+ * **ATLAS metadata properties (read/write):**
+ * - `MetaCachePath` (str) — Path to the HDF5 cache file used to persist AMI
+ *   lookups.
+ * - `SumOfWeights` — Raw `misc` map from the C++ `meta_t` struct.
+ * - `dsid` (int) — Dataset identifier (DSID).
+ * - `amitag` (str) — AMI processing tag (e.g. `"r13829_r13726_p6026"`).
+ * - `generators` (str) — Generator string (e.g. `"Pythia8 Herwig7"`).
+ * - `isMC` (bool) — True for Monte-Carlo samples.
+ * - `derivationFormat` (str) — ATLAS derivation format (e.g. `"TOPQ1"`).
+ * - `eventNumber` (float) — Current event number.
+ * - `ecmEnergy` (float) — Centre-of-mass energy in GeV.
+ * - `genFiltEff` (float) — Generator filter efficiency.
+ * - `kfactor` (float) — K-factor applied to the cross-section.
+ * - `completion` (float) — Dataset processing completion fraction (0–100).
+ * - `beam_energy` (float) — Beam energy in GeV.
+ * - `crossSection` (float) — Cross-section in fb (stored in pb internally;
+ *   getter multiplies by 10⁶).
+ * - `crossSection_mean` (float) — Mean cross-section in pb.
+ * - `totalSize` (float) — Total dataset size in bytes.
+ * - `nFiles` (int) — Number of files in the dataset.
+ * - `run_number` (list[int]) — Run numbers associated with the dataset.
+ * - `totalEvents` (int) — Total number of events in the dataset.
+ * - `datasetNumber` (int) — Secondary dataset number.
+ * - `identifier` (str) — AMI logical identifier string.
+ * - `prodsysStatus` (str) — Production system status string.
+ * - `dataType` (str) — Data type string (e.g. `"DAOD_TOPQ1"`).
+ * - `version` (str) — Dataset version tag.
+ * - `PDF` (str) — PDF set used for generation.
+ * - `AtlasRelease` (str) — ATLAS software release.
+ * - `principalPhysicsGroup` (str) — Primary physics group owning the sample.
+ * - `physicsShort` (str) — Short physics description.
+ * - `generatorName` (str) — Generator name.
+ * - `geometryVersion` (str) — Geometry version tag.
+ * - `conditionsTag` (str) — Conditions database tag.
+ * - `generatorTune` (str) — Generator tune (e.g. `"A14"`).
+ * - `amiStatus` (str) — AMI status string.
+ * - `beamType` (str) — Beam type (e.g. `"collisions"`).
+ * - `productionStep` (str) — Production step name.
+ * - `projectName` (str) — Project name.
+ * - `statsAlgorithm` (str) — Statistics algorithm used.
+ * - `genFilterNames` (str) — Generator filter names.
+ * - `file_type` (str) — File type string.
+ * - `DatasetName` (str) — Logical dataset name.
+ * - `logicalDatasetName` (str) — Full logical dataset name from AMI.
+ * - `event_index` (int) — Index of the current event.
+ * - `keywords` (list[str]) — AMI keyword list.
+ * - `weights` (list[str]) — Generator weight names.
+ * - `keyword` (list[str]) — Secondary keyword list.
+ * - `found` (bool) — True if the AMI lookup succeeded.
+ * - `sample_name` (str) — Short sample name.
+ * - `campaign` (str) — MC campaign tag (e.g. `"mc21a"`).
+ *
+ * **Read-only compound properties:**
+ * - `config` (dict[str, str]) — Miscellaneous configuration key/value pairs.
+ * - `Files` (dict[int, str]) — Map from sequential index to input file path.
+ * - `fileGUID` (dict[str, str]) — Map from LFN to file GUID.
+ * - `events` (dict[str, int]) — Map from LFN to number of events.
+ * - `fileSize` (dict[str, int]) — Map from LFN to file size in bytes.
  */
 
 /**
  * @class MetaLookup
  * @brief Provides dataset lookup and luminosity weighting.
- * @details Caches matched @c Meta objects and their metadata dicts.
+ * @details Caches matched @c Meta objects and their metadata dicts.  Used
+ *          as the return type of `Analysis.GetMetaData`.
+ *
+ * **Constructor:**
+ * - `MetaLookup(data: MetaLookup = None)` — Optionally copy the metadata
+ *   dict from another `MetaLookup`.
+ *
+ * **Callable interface:**
+ * - `__call__(inpt: str | bytes) -> MetaLookup` — Look up the `Meta` object
+ *   whose hash matches `inpt`; caches the result in `matched`.
+ *
+ * **Read-only derived properties (valid after a successful `__call__`):**
+ * - `DatasetName` (str) — Dataset name of the matched `Meta`.
+ * - `CrossSection` (float) — Cross-section of the matched `Meta`.
+ * - `ExpectedEvents` (float) — `CrossSection × luminosity`.
+ * - `SumOfWeights` — Sum of weights (always 1 in current implementation).
+ * - `GenerateData` (Data) — Return a new `Data` instance linked to this
+ *   lookup for weight rescaling.
+ *
+ * **Attributes:**
+ * - `metadata` (dict[str, Meta]) — All registered `Meta` objects keyed by
+ *   `"<hash>-<DatasetName>"`.
+ * - `luminosity` (float) — Integrated luminosity in fb⁻¹ (default 140.1).
  */
-
-
-
-
-
-
 
 /**
  * @class Data
- * @brief Aggregates event data arrays and computes sum-of-weights.
+ * @brief Aggregates event data arrays and computes sum-of-weights rescaling.
+ * @details Linked to a `MetaLookup`; collects per-file data and weight arrays
+ *          and rescales them by `ExpectedEvents / SumOfWeights` when the
+ *          `weights` property is read.
+ *
+ * **Properties (read/write):**
+ * - `data` (vector[float], read / dict setter) — Concatenated data array;
+ *   assigning a dict `{filename: values}` populates the internal data map.
+ * - `weights` (vector[float], read / dict setter) — Rescaled concatenated
+ *   weight vector; assigning a dict `{filename: weights}` populates the
+ *   internal weight map.
+ *
+ * **Operator support:**
+ * - `__add__(other: Data) -> Data` — Merge weight and data maps from `other`.
+ * - `__radd__(other) -> Data` — Allows `sum([d1, d2, ...])`.
  */
 
 /**
  * @class ami_client
  * @brief Python client for fetching metadata from AMI.
+ * @details Wraps a `pyAMI.client.Client` with an unverified HTTPS connection
+ *          context and provides cache load/save and metadata dressing for
+ *          `Meta` objects.  Constructed automatically during `Meta.FetchMeta`.
+ *
+ * The class uses HDF5 (via h5py) to cache raw AMI responses so that repeated
+ * lookups for the same DSID do not require a network round trip.
+ */
+
+
+/**
+ * @class Meta
+ * @brief Python wrapper for @c meta — kept for Doxygen class index.
+ */
+
+/**
+ * @class MetaLookup
+ * @brief Provides dataset lookup and luminosity weighting — Doxygen index entry.
+ * @details Caches matched @c Meta objects and their metadata dicts.
+ */
+
+/**
+ * @class Data
+ * @brief Aggregates event data arrays and computes sum-of-weights — Doxygen index entry.
+ */
+
+/**
+ * @class ami_client
+ * @brief Python client for fetching metadata from AMI — Doxygen index entry.
+ * @details Provides cache load/save and metadata dressing for @c Meta objects.
+ */
+
+
+/**
+ * @class Data
+ * @brief Aggregates event data arrays and computes sum-of-weights — Doxygen index entry.
+ */
+
+/**
+ * @class ami_client
+ * @brief Python client for fetching metadata from AMI — Doxygen index entry.
  * @details Provides cache load/save and metadata dressing for @c Meta objects.
  */

@@ -7,83 +7,157 @@
  *          provides Python-level histogram classes.
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * @class BasePlotting
  * @brief Python base wrapper for @c plotting.
- * @details Owns a @c plotting* and the Matplotlib figure/axes objects.
+ * @details Owns a `plotting*` and the Matplotlib figure/axes objects.
+ *          All plotting classes inherit from this and share the styling
+ *          properties listed below.  Call `SaveFigure()` to produce the
+ *          output file.
+ *
+ * **Serialisation methods:**
+ * - `dump(path: str = "", name: str = "")` — Pickle to
+ *   `<OutputDirectory>/<Filename>.pkl`.
+ * - `load(path: str = "", name: str = "") -> BasePlotting | None` — Unpickle
+ *   a previously saved instance.
+ *
+ * **Rendering method:**
+ * - `SaveFigure()` — Apply all style settings, compile the plot via
+ *   `__compile__`, and write the figure to disk (PNG or PGF when LaTeX is
+ *   enabled).
+ *
+ * **Style properties (read/write):**
+ * - `Hatch` (str) — Matplotlib hatch pattern string (e.g. `"/"`, `"\\\\"`).
+ * - `DPI` (int) — Dots per inch for the saved figure; set to 800
+ *   automatically in ATLAS style.
+ * - `Style` (str) — Plot style name; `"ATLAS"` activates the mplhep ATLAS
+ *   style sheet.
+ * - `CapSize` (float) — Cap size for error-bar ends.
+ * - `ErrorBars` (bool) — If True draw symmetric error bars on histograms.
+ * - `Filename` (str) — Base filename (without extension) of the output file.
+ * - `OutputDirectory` (str) — Directory in which the figure is saved.
+ * - `FontSize` (float) — Base font size for all text elements.
+ * - `AxisSize` (float) — Font size used for axis tick labels.
+ * - `LegendSize` (float) — Font size used for the legend.
+ * - `TitleSize` (float) — Font size used for the figure title.
+ * - `UseLateX` (bool) — Render text through LuaLaTeX; also saves a `.pgf`
+ *   alongside the PNG.
+ * - `xScaling` (float) — Figure width scaling factor (inches).
+ * - `yScaling` (float) — Figure height scaling factor (inches).
+ * - `AutoScaling` (bool) — Let Matplotlib autoscale the axes.
+ * - `LineStyle` (str) — Matplotlib linestyle string (e.g. `"-"`, `"--"`).
+ * - `Title` (str) — Figure title; if `ShowCount` is True and data exist the
+ *   total count is appended automatically.
+ * - `xTitle` (str) — x-axis label.
+ * - `yTitle` (str) — y-axis label.  The placeholder `<units>` is replaced
+ *   with the computed bin width during rendering.
+ * - `xLogarithmic` (bool) — Use a log scale on the x-axis.
+ * - `yLogarithmic` (bool) — Use a log scale on the y-axis.
+ * - `xStep` (float) — Fixed tick spacing on the x-axis; 0 disables.
+ * - `yStep` (float) — Fixed tick spacing on the y-axis; 0 disables.
+ * - `xMin` (float) — Lower bound of the x-axis range.
+ * - `yMin` (float) — Lower bound of the y-axis range.
+ * - `xMax` (float) — Upper bound of the x-axis range.
+ * - `yMax` (float) — Upper bound of the y-axis range.
+ * - `Overflow` (str | int) — Overflow handling strategy: `"none"`, `"sum"`,
+ *   or an integer (0 → `"none"`, non-zero → `"sum"`).
+ * - `Color` (str) — Hex colour string for this histogram; a random colour is
+ *   generated on first read if none has been set.
+ * - `Colors` (list[str]) — List of colours when drawing multiple series.
  */
 
 /**
  * @class TH1F
  * @brief 1D histogram Python wrapper (inherits @c BasePlotting).
+ * @details Manages a primary data array and an optional list of overlay
+ *          histograms with stacking, scaling, and comparison support.
+ *
+ * **Data properties (read/write):**
+ * - `xData` (list[float]) — Raw data values to be histogrammed.
+ * - `xBins` (int | list[float]) — Number of uniform bins (int) or explicit
+ *   bin-edge list (variable binning).
+ * - `Weights` (list[float]) — Per-event weights aligned with `xData`.
+ * - `CrossSection` (float) — Process cross-section in pb; used with
+ *   `IntegratedLuminosity` to scale yields.
+ * - `IntegratedLuminosity` (float) — Integrated luminosity in fb⁻¹.
+ * - `HistFill` (str) — Histogram fill style passed to `hep.histplot`
+ *   (e.g. `"fill"`, `"step"`, `"errorbar"`).
+ * - `Stacked` (bool) — If True overlay histograms are drawn stacked.
+ * - `LineWidth` (float) — Line width for histogram outlines.
+ * - `Alpha` (float) — Opacity of the histogram fill (0.0–1.0).
+ * - `Density` (bool) — If True normalise to unit area before plotting.
+ * - `Marker` (str) — Matplotlib marker style for errorbar plots.
+ * - `xLabels` (dict[str, float]) — Categorical x-axis labels mapped to bin
+ *   weights (enables string-category histograms).
+ * - `ShowCount` (bool) — Append the total event count to the histogram title.
+ *
+ * **Read-only property:**
+ * - `counts` (numpy.ndarray | list) — Bin counts of the compiled histogram.
+ *
+ * **Methods:**
+ * - `FX(val=None)` — Set the comparison function used when a reference
+ *   histogram is present: `"ratio"` (default), `"chi2"`, or a custom
+ *   callable `f(H1, H2, ax, ...)`.
+ * - `KStest(hist: TH1F) -> tuple` — Perform a two-sample Kolmogorov–Smirnov
+ *   test between this histogram's data and `hist`'s data within the current
+ *   axis range; returns `(statistic, p-value)`.
+ */
+
+/**
+ * @class TH2F
+ * @brief 2D histogram Python wrapper (inherits @c BasePlotting).
+ * @details Renders a 2D colour-map histogram using `hep.hist2dplot`.
+ *
+ * **Data properties (read/write):**
+ * - `xBins` (int | list[float]) — x-axis binning (uniform int or variable
+ *   edge list).
+ * - `yBins` (int | list[float]) — y-axis binning (uniform int or variable
+ *   edge list).
+ * - `xLabels` (dict[str, float]) — Categorical x-axis labels.
+ * - `yLabels` (dict[str, float]) — Categorical y-axis labels.
+ * - `xData` (list[float]) — x-coordinate values.
+ * - `yData` (list[float]) — y-coordinate values.
+ * - `Weights` (list[float]) — Per-entry weights.
+ */
+
+/**
+ * @class TLine
+ * @brief Line-graph Python wrapper (inherits @c BasePlotting).
+ * @details Supports error shading and multiple overlaid lines.  Typically
+ *          used for ROC curves, efficiency curves, and training histories.
+ *
+ * **Data properties (read/write):**
+ * - `xData` (list[float]) — x-coordinate values for the primary line.
+ * - `yData` (list[float]) — y-coordinate values for the primary line.
+ * - `Marker` (str) — Matplotlib marker style.
+ * - `yDataUp` (list[float]) — Upper error-band boundary aligned with
+ *   `xData`.
+ * - `yDataDown` (list[float]) — Lower error-band boundary aligned with
+ *   `xData`.
+ * - `LineWidth` (float) — Width of the drawn line.
+ * - `Alpha` (float) — Opacity of the line (0.0–1.0).
+ */
+
+/**
+ * @class BasePlotting
+ * @brief Python base wrapper for @c plotting — Doxygen index entry.
+ * @details Owns a @c plotting* and the Matplotlib figure/axes objects.
+ */
+
+/**
+ * @class TH1F
+ * @brief 1D histogram Python wrapper (inherits @c BasePlotting) — Doxygen index entry.
  * @details Manages a list of @c TH1F histograms and a stacking/scaling
  *          factory.
  */
 
 /**
  * @class TH2F
- * @brief 2D histogram Python wrapper (inherits @c BasePlotting).
+ * @brief 2D histogram Python wrapper (inherits @c BasePlotting) — Doxygen index entry.
  */
 
 /**
  * @class TLine
- * @brief Line-graph Python wrapper (inherits @c BasePlotting).
+ * @brief Line-graph Python wrapper (inherits @c BasePlotting) — Doxygen index entry.
  * @details Supports error shading and multiple overlaid lines.
  */

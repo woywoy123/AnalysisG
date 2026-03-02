@@ -33,4 +33,39 @@
 /**
  * @class Tools
  * @brief Python wrapper for @c tools.
+ * @details Exposes the C++ `tools` utility class to Python.  Every method
+ *          is a thin Cython wrapper around the corresponding C++ member.
+ *
+ * **File-system methods:**
+ * - `create_path(pth: str)` — Create the directory tree at `pth` (equivalent
+ *   to `mkdir -p`).
+ * - `delete_path(pth: str)` — Recursively remove the directory tree at `pth`.
+ * - `is_file(pth: str) -> bool` — Return True if `pth` refers to an existing
+ *   regular file.
+ * - `rename(src: str, dst: str)` — Rename/move `src` to `dst`.
+ * - `abs(pth: str) -> str` — Return the absolute (canonical) path of `pth`.
+ * - `ls(pth: str, ext: str) -> list[str]` — List all files under `pth` whose
+ *   names end with `ext`; returns a sorted list of absolute paths.
+ *
+ * **String utility methods:**
+ * - `replace(val: str, rpl: str, rpwl: str) -> str` — Replace all occurrences
+ *   of `rpl` in `val` with `rpwl` and return the result.
+ * - `has_substring(val: str, rpl: str) -> bool` — Return True if `rpl` is a
+ *   substring of `val`.
+ * - `ends_with(val: str, rpl: str) -> bool` — Return True if `val` ends with
+ *   the suffix `rpl`.
+ * - `has_value(data: list[str], trg: str) -> bool` — Return True if `trg` is
+ *   present in the string vector `data`.
+ * - `split(data: str, trg: int | str) -> list[str]` — Split `data` into
+ *   chunks of length `trg` (int) or on the delimiter string `trg` (str).
+ *
+ * **Hashing / encoding methods:**
+ * - `hash(data: str, lx: int = 8) -> str` — Return an `lx`-character hex
+ *   hash of `data`.
+ * - `encode64(data: str) -> str` — Base-64 encode `data`.
+ * - `decode64(data: str) -> str` — Base-64 decode `data`.
+ *
+ * **Data-partitioning method:**
+ * - `discretize(data: list[str | int], lx: int) -> list` — Partition `data`
+ *   into `lx` approximately equal groups; accepts a list of strings or ints.
  */
