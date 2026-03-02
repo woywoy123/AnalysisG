@@ -8,8 +8,8 @@ The ``Notification`` Cython class wraps the C++ ``notification`` logging class.
    :members:
    :undoc-members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

@@ -18,8 +18,8 @@ Cython wrappers for ATLAS AMI dataset lookup.
    :members:
    :undoc-members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

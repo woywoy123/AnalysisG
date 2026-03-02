@@ -8,8 +8,8 @@ The ``IO`` Cython class wraps the C++ ROOT I/O interface.
    :members:
    :undoc-members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

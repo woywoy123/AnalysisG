@@ -8,8 +8,8 @@ The ``MetricTemplate`` Cython class wraps the C++ ``metric_template``.
    :members:
    :undoc-members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

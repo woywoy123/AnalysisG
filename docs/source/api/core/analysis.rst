@@ -9,8 +9,8 @@ to Python.
    :members:
    :undoc-members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

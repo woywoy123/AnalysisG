@@ -8,8 +8,8 @@ The ``ROC`` Cython class wraps the C++ ``roc`` ROC-curve class.
    :members:
    :undoc-members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

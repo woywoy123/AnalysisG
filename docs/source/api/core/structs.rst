@@ -6,8 +6,8 @@ Cython-level wrappers for the C++ framework struct and enum types.
 .. doxygenfile:: structs.pxd
    :project: AnalysisG
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

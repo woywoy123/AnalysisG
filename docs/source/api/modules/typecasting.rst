@@ -22,8 +22,8 @@ tensors, and for merging containers across threads.
    :project: AnalysisG
    :members:
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 

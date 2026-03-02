@@ -7,8 +7,8 @@ kernels.
 .. doxygenfile:: utils.h
    :project: AnalysisG
 
-Doxygen Source
---------------
+.. rubric:: Doxygen Source
+
 
 The documentation above is derived from the following ``.dox`` annotation file(s):
 
