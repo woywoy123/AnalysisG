@@ -23,9 +23,10 @@
  *   of the internal hash string.
  *
  * **Read/write properties:**
- * - `index` (int | str) — Event index within the tree; if a string is
- *   assigned it is stored as a leaf name for later branch mapping.
- * - `weight` (float | str) — Per-event weight; string assignment stores a
+ * - `index` (float) — Event index within the tree; assigning a string stores a
+ *   leaf name for later ROOT branch mapping (the float value remains 0.0 until
+ *   data is read from ROOT).
+ * - `weight` (float) — Per-event weight; string assignment stores a
  *   leaf name.
  * - `Tree` (str) — Primary tree name this event is built from.
  * - `Trees` (list[str]) — All tree names to read; accepts a single string

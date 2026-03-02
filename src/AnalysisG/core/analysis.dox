@@ -53,7 +53,7 @@
  * - `NumExamples` (int) — Number of training examples per epoch.
  * - `TrainingDataset` (str) — Path to the HDF5 file used as training dataset
  *   (`.h5` is appended automatically if missing).
- * - `TrainSize` (float) — Fraction of data used for training (0.0–1.0).
+ * - `TrainSize` (float) — Percentage of data used for training (0–100, default 50).
  * - `Training` (bool) — Enable the training phase.
  * - `Validation` (bool) — Enable the validation phase.
  * - `Evaluation` (bool) — Enable the evaluation phase.

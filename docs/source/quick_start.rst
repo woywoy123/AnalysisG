@@ -390,7 +390,7 @@ and wire them together via the Python :class:`Analysis` class:
    ana.OutputPath  = "./output"
    ana.Epochs      = 20
    ana.kFolds      = 10
-   ana.TrainSize   = 0.8
+   ana.TrainSize   = 80   # percentage: 80 % of graphs used for training
    ana.Threads     = 4
 
    ana.AddSamples("./data/ttbar.root", "ttbar")
