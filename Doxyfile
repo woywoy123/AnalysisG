@@ -376,7 +376,7 @@ EXTERNAL_GROUPS        = YES
 # YES enables all graph generation features below
 # Requires 'dot' command to be available in PATH
 # Install with: apt-get install graphviz
-HAVE_DOT               = YES
+HAVE_DOT               = NO
 
 # CLASS_GRAPH: Generate inheritance diagrams for classes
 # YES creates visual class hierarchy diagrams
