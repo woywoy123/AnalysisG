@@ -44,14 +44,17 @@ html_show_sourcelink = False
 # When conf.py is executed from docs/source/ we walk two levels up.
 _repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 _doxygen_xml = os.path.join(_repo_root, "doxygen-docs", "xml")
+_doxygen_xml_index = os.path.join(_doxygen_xml, "index.xml")
 breathe_projects = {
     "AnalysisG": _doxygen_xml,
 }
 breathe_default_project = "AnalysisG"
 breathe_default_members = ("members", "undoc-members")
 
-# Suppress Breathe warnings when the XML is absent (e.g. before running
-# ``doxygen Doxyfile`` locally).  On Read the Docs the pre_build step always
-# generates the XML before Sphinx runs, so this is only a local-build aid.
-if not os.path.isdir(_doxygen_xml):
-    suppress_warnings = ["breathe"]
+# On Read the Docs the pre_build step runs ``doxygen Doxyfile`` before Sphinx,
+# so the XML is always present.  When building locally without having run
+# doxygen first, remove breathe from extensions entirely to avoid a hard
+# MTimeError exception that would abort the build.
+if not os.path.isfile(_doxygen_xml_index):
+    extensions = [e for e in extensions if e != "breathe"]
+    suppress_warnings = ["app.add_node", "app.add_directive"]
