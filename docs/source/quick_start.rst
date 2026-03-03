@@ -48,6 +48,14 @@ entry.
        int status   = 0;
    };
 
+.. note::
+   ``assign_vector`` is a **user-defined** template helper (not part of the
+   core framework).  It is defined in
+   ``bsm_4tops/include/bsm_4tops/particles.h`` as a convenience for filling
+   the standard kinematic fields from ``element_t``.  You can copy it from
+   that reference implementation or write the equivalent loop directly using
+   ``element_t::get()``.
+
 **Source** (``my_particle.cxx``):
 
 .. code-block:: cpp
@@ -74,16 +82,23 @@ entry.
 
    void Top::build(std::map<std::string, particle_template*>* prt,
                    element_t* el) {
-       // assign_vector populates pt/eta/phi/e/index/pdgid from branch data
-       std::vector<Top*> out;
-       assign_vector(&out, el);
-
-       std::vector<int> _from_res, _status;
+       // Use element_t::get() to read branch data directly (no helper needed)
+       std::vector<float> _pt, _eta, _phi, _e;
+       std::vector<int>   _index, _pdgid, _from_res, _status;
+       el->get("pt",       &_pt);
+       el->get("eta",      &_eta);
+       el->get("phi",      &_phi);
+       el->get("e",        &_e);
+       el->get("index",    &_index);
+       el->get("pdgid",    &_pdgid);
        el->get("from_res", &_from_res);
        el->get("status",   &_status);
 
-       for (int x = 0; x < (int)out.size(); ++x) {
-           Top* t    = out[x];
+       for (int x = 0; x < (int)_pt.size(); ++x) {
+           Top* t    = new Top();
+           t->pt     = _pt[x];   t->eta = _eta[x];
+           t->phi    = _phi[x];  t->e   = _e[x];
+           t->index  = _index[x]; t->pdgid = _pdgid[x];
            t->from_res = _from_res[x];
            t->status   = _status[x];
            (*prt)[std::string(t->hash)] = t;
@@ -98,6 +113,11 @@ Subclass :cpp:class:`event_template`, declare the particle maps, set
 ``add_leaf``, register particle maps with
 :cpp:func:`event_template::register_particle`, and override
 :cpp:func:`event_template::build` / :cpp:func:`event_template::CompileEvent`.
+
+.. note::
+   ``sort_by_index`` and ``vectorize`` are **user-defined** private template
+   methods (not in ``event_template``).  They are defined in the header below,
+   following the pattern in ``bsm_4tops/include/bsm_4tops/event.h``.
 
 **Header** (``my_event.h``):
 
@@ -118,6 +138,22 @@ Subclass :cpp:class:`event_template`, declare the particle maps, set
        float met = 0;
    private:
        std::map<std::string, Top*> m_tops = {};
+
+       // User-defined utility: sort particles by their index field
+       template <typename G>
+       std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt) {
+           std::map<int, G*> data;
+           for (auto ix = ipt->begin(); ix != ipt->end(); ++ix)
+               data[int(ix->second->index)] = ix->second;
+           return data;
+       }
+
+       // User-defined utility: flatten index-keyed map into a vector
+       template <typename m, typename G>
+       void vectorize(std::map<m, G*>* ipt, std::vector<particle_template*>* vec) {
+           for (auto ix = ipt->begin(); ix != ipt->end(); ++ix)
+               vec->push_back(ix->second);
+       }
    };
 
 **Source** (``my_event.cxx``):
@@ -438,14 +474,19 @@ format ``b'tree.branch.leaf'``.
    from AnalysisG.core.io import IO
 
    reader = IO()
-   reader.Files = ["test/samples/dilepton/DAOD_TOPQ1.21955717._000001.root"]
+   reader.Files  = ["test/samples/dilepton/DAOD_TOPQ1.21955717._000001.root"]
+   reader.Trees  = ["nominal"]
+   reader.Leaves = ["jet_pt"]
+   reader.ScanKeys()          # build the internal key index before iterating
 
    n_events = 0
    n_jets   = 0
    for entry in reader:
+       key = b'nominal.jet_pt.jet_pt'
+       if key not in entry:
+           continue
        n_events += 1
-       jets = entry.get(b'nominal.jet_pt.jet_pt', [])
-       n_jets += len(jets)
+       n_jets   += len(entry[key])
 
    print(f"Events : {n_events}")   # 1098
    print(f"Jets   : {n_jets}")     # 8161
