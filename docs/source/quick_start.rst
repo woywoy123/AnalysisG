@@ -40,10 +40,12 @@ entry.
    class Top : public particle_template {
    public:
        Top();
-       particle_template* clone() override;  // Returns a new heap-allocated Top instance
+       ~Top();
+       particle_template* clone() override;  // Required factory method
        void build(std::map<std::string, particle_template*>* prt,
                   element_t* el) override;
        int from_res = 0;
+       int status   = 0;
    };
 
 **Source** (``my_particle.cxx``):
@@ -55,36 +57,35 @@ entry.
    Top::Top() : particle_template() {
        this->type = "top";
        // Second argument is the ROOT branch suffix; apply_type_prefix()
-       // prepends this->type so "_pt" becomes the branch "top_pt", etc.
+       // prepends this->type, so "_pt" resolves to the branch "top_pt".
        this->add_leaf("pt",       "_pt");
        this->add_leaf("eta",      "_eta");
        this->add_leaf("phi",      "_phi");
        this->add_leaf("e",        "_e");
        this->add_leaf("index",    "_index");
+       this->add_leaf("pdgid",    "_pdgid");
        this->add_leaf("from_res", "_FromRes");
-       this->apply_type_prefix();   // leaves now map to "top_pt", "top_eta", ...
+       this->add_leaf("status",   "_status");
+       this->apply_type_prefix();   // leaves now map to "top_pt", "top_eta", …
    }
 
-   particle_template* Top::clone() { return new Top(); }  // Required factory method
+   Top::~Top() {}
+   particle_template* Top::clone() { return (particle_template*)new Top(); }
 
    void Top::build(std::map<std::string, particle_template*>* prt,
                    element_t* el) {
-       std::vector<float> _pt, _eta, _phi, _e;
-       std::vector<int>   _index, _from_res;
-       el->get("pt",       &_pt);
-       el->get("eta",      &_eta);
-       el->get("phi",      &_phi);
-       el->get("e",        &_e);
-       el->get("index",    &_index);
+       // assign_vector populates pt/eta/phi/e/index/pdgid from branch data
+       std::vector<Top*> out;
+       assign_vector(&out, el);
+
+       std::vector<int> _from_res, _status;
        el->get("from_res", &_from_res);
-       for (size_t i = 0; i < _pt.size(); ++i) {
-           Top* t    = new Top();
-           t->pt     = _pt[i];
-           t->eta    = _eta[i];
-           t->phi    = _phi[i];
-           t->e      = _e[i];
-           t->index  = _index[i];
-           t->from_res = _from_res[i];
+       el->get("status",   &_status);
+
+       for (int x = 0; x < (int)out.size(); ++x) {
+           Top* t    = out[x];
+           t->from_res = _from_res[x];
+           t->status   = _status[x];
            (*prt)[std::string(t->hash)] = t;
        }
    }
@@ -92,8 +93,9 @@ entry.
 Step 2 — Define an Event
 -------------------------
 
-Subclass :cpp:class:`event_template`, declare the particle collections, set
-``this->trees`` (ROOT tree names), register particle maps with
+Subclass :cpp:class:`event_template`, declare the particle maps, set
+``this->trees`` (ROOT tree names), register scalar branch names with
+``add_leaf``, register particle maps with
 :cpp:func:`event_template::register_particle`, and override
 :cpp:func:`event_template::build` / :cpp:func:`event_template::CompileEvent`.
 
@@ -107,7 +109,8 @@ Subclass :cpp:class:`event_template`, declare the particle collections, set
    class MyEvent : public event_template {
    public:
        MyEvent();
-       event_template* clone() override;  // Required factory method for event creation
+       ~MyEvent();
+       event_template* clone() override;  // Required factory method
        void build(element_t* el) override;
        void CompileEvent() override;
 
@@ -130,31 +133,41 @@ Subclass :cpp:class:`event_template`, declare the particle collections, set
        this->register_particle(&this->m_tops);
    }
 
-   event_template* MyEvent::clone() { return new MyEvent(); }  // Required factory method
+   MyEvent::~MyEvent() {}
+   event_template* MyEvent::clone() { return new MyEvent(); }
 
    void MyEvent::build(element_t* el) {
        el->get("met", &this->met);
    }
 
    void MyEvent::CompileEvent() {
-       for (auto& [key, top] : m_tops)  // extract particle pointers from hash-keyed map
-           this->Tops.push_back(top);
+       // Sort into index-keyed map then vectorise
+       std::map<int, Top*> sorted = this->sort_by_index(&this->m_tops);
+       this->vectorize(&sorted, &this->Tops);
    }
 
 Step 3 — Define a Graph
 ------------------------
 
-Subclass :cpp:class:`graph_template`, override
+Subclass :cpp:class:`graph_template` and override
 :cpp:func:`graph_template::CompileEvent`.  Inside ``CompileEvent``:
 
-* Retrieve the event with :cpp:func:`graph_template::get_event`.
-* Pass a particle collection to :cpp:func:`graph_template::define_particle_nodes`.
-* Register feature functions via the ``add_*_feature`` family.
+* Retrieve the typed event with :cpp:func:`graph_template::get_event`.
+* Pass a particle vector to :cpp:func:`graph_template::define_particle_nodes`
+  to set up nodes (one node per particle).
+* Register feature functions via the ``add_*_feature`` family:
 
-Feature functions are plain C++ free functions:
+  * ``add_node_data_feature<T, P>(fn, name)`` — per-node input feature
+  * ``add_node_truth_feature<T, P>(fn, name)`` — per-node truth label
+  * ``add_edge_data_feature<T, P>(fn, name)`` — per-edge input feature
+  * ``add_edge_truth_feature<T, P>(fn, name)`` — per-edge truth label
+  * ``add_graph_data_feature<T, Ev>(ev, fn, name)`` — graph-level input
+  * ``add_graph_truth_feature<T, Ev>(ev, fn, name)`` — graph-level truth
 
-* **Node/graph features**: ``void fn(OutputType* out, InputType* in)``
-* **Edge features**: ``void fn(OutputType* out, std::tuple<P*, P*>* edge)``
+Feature functions are free (non-member) functions with signatures:
+
+* Node/graph features: ``void fn(OutputType* out, InputType* in)``
+* Edge features: ``void fn(OutputType* out, std::tuple<P*, P*>* edge)``
 
 **Graph source** (``my_graph.cxx``):
 
@@ -164,21 +177,21 @@ Feature functions are plain C++ free functions:
    #include "my_event.h"
    #include "my_particle.h"
 
-   // --- feature functions (free functions, not class members) ---
+   // --- feature functions ---
 
-   // node feature: transverse momentum of each particle
+   // node feature: transverse momentum
    void node_pt(double* out, particle_template* p) { *out = p->pt; }
 
-   // graph-level truth label: 1 if ≥1 top quark is from a resonance
-   void is_signal(bool* out, MyEvent* ev) {
+   // graph-level truth: 1 if ≥1 top is from a resonance
+   void signal_event(bool* out, MyEvent* ev) {
+       *out = false;
        for (auto* p : ev->Tops) {
            if (static_cast<Top*>(p)->from_res) { *out = true; return; }
        }
-       *out = false;
    }
 
-   // edge truth label: 1 if both endpoints share the same top-quark index
-   void same_top(int* out, std::tuple<particle_template*, particle_template*>* e) {
+   // edge truth: 1 if both endpoints share the same top-quark index
+   void top_edge(int* out, std::tuple<particle_template*, particle_template*>* e) {
        *out = (std::get<0>(*e)->index == std::get<1>(*e)->index) ? 1 : 0;
    }
 
@@ -187,93 +200,18 @@ Feature functions are plain C++ free functions:
        MyEvent* ev = this->get_event<MyEvent>();
        this->define_particle_nodes(&ev->Tops);
 
-       this->add_graph_truth_feature<bool, MyEvent>(ev, is_signal, "signal");
+       this->add_graph_truth_feature<bool, MyEvent>(ev, signal_event, "signal");
        this->add_node_data_feature<double, particle_template>(node_pt, "pt");
-       this->add_edge_truth_feature<int, particle_template>(same_top, "same_top");
+       this->add_edge_truth_feature<int,   particle_template>(top_edge, "top_edge");
    }
 
-Step 4 — Define a Model *(optional)*
---------------------------------------
-
-Subclass :cpp:class:`model_template` and override
-:cpp:func:`model_template::forward`.  Inside ``forward``, fetch tensors
-from the ``graph_t`` object with ``data->get_data_*(name, this)`` (the
-second argument is always ``this`` — the model pointer used to select the
-correct device tensor) and write predictions with
-``prediction_*_feature(name, tensor)``.
-
-Register PyTorch sub-modules with
-:cpp:func:`model_template::register_module` in the constructor.
-
-**Header** (``my_model.h``):
-
-.. code-block:: cpp
-
-   #include <templates/model_template.h>
-
-   class MyModel : public model_template {
-   public:
-       MyModel();
-       ~MyModel();
-       model_template* clone() override;
-       void forward(graph_t* data) override;
-
-       torch::nn::Sequential* node_mlp = nullptr;
-   };
-
-**Source** (``my_model.cxx``):
-
-.. code-block:: cpp
-
-   #include "my_model.h"
-
-   MyModel::MyModel() {
-       this->node_mlp = new torch::nn::Sequential({
-           {"l1", torch::nn::Linear(4, 64)},
-           {"r1", torch::nn::ReLU()},
-           {"l2", torch::nn::Linear(64, 1)}
-       });
-       this->register_module(this->node_mlp);
-   }
-
-   MyModel::~MyModel() {}
-   model_template* MyModel::clone() { return new MyModel(); }
-
-   void MyModel::forward(graph_t* data) {
-       // Fetch input tensors — second arg is always `this` (selects device)
-       torch::Tensor node_pt  = data->get_data_node("pt",  this)->clone();
-       torch::Tensor node_eta = data->get_data_node("eta", this)->clone();
-       torch::Tensor met      = data->get_data_graph("met", this)->clone();
-       torch::Tensor edge_idx = data->get_edge_index(this)->to(torch::kLong);
-
-       torch::Tensor feats = torch::cat({node_pt, node_eta, met.expand_as(node_pt),
-                                         met.expand_as(node_pt)}, -1);
-       torch::Tensor out = (*node_mlp)->forward(feats);
-
-       // Write predictions back to the graph object
-       this->prediction_node_feature("top_node", out);
-
-       // prediction_extra is only written during inference (not training)
-       if (!this->inference_mode) { return; }
-       this->prediction_extra("node_score", torch::sigmoid(out));
-   }
-
-Step 5 — Define Selections *(optional)*
------------------------------------------
-
-Subclass :cpp:class:`selection_template` and implement
-:cpp:func:`selection_template::selection` and optionally
-:cpp:func:`selection_template::strategy` for per-event logic and aggregate
-post-processing.  See ``selectiontemplate.md`` in the templates directory for
-a complete C++ + Cython example.
-
-Step 6 — Cython Interfaces
+Step 4 — Cython Interfaces
 ----------------------------
 
-Every C++ class that is passed to the Python :class:`Analysis` API must be
-wrapped in a thin Cython layer.  Particles are built internally by the
-framework and do not need a Python-facing Cython class — only events, graphs,
-models, and selections do.
+Every C++ class passed to the Python :class:`Analysis` API must be wrapped in
+a thin Cython layer.  Particles are constructed internally by the framework
+and do not need a Python-facing wrapper — only events, graphs, models, and
+selections do.
 
 **Event** (``my_event.pxd`` + ``my_event.pyx``):
 
@@ -286,11 +224,11 @@ models, and selections do.
    from AnalysisG.core.event_template cimport event_template, EventTemplate
 
    cdef extern from "<my_module/my_event.h>":
-       cdef cppclass MyEvent(event_template):
-           MyEvent() except+
+       cdef cppclass MyEventCpp(event_template):
+           MyEventCpp() except+
 
    cdef class PyMyEvent(EventTemplate):
-       cdef MyEvent* tt
+       cdef MyEventCpp* tt
 
 .. code-block:: cython
 
@@ -299,11 +237,11 @@ models, and selections do.
    # cython: language_level=3
 
    from AnalysisG.core.event_template cimport EventTemplate
-   from my_event cimport MyEvent
+   from my_event cimport MyEventCpp
 
    cdef class PyMyEvent(EventTemplate):
        def __cinit__(self):
-           self.tt  = new MyEvent()
+           self.tt  = new MyEventCpp()
            self.ptr = <event_template*>(self.tt)   # cast to base pointer
        def __init__(self): pass
        def __dealloc__(self): del self.tt
@@ -349,8 +287,8 @@ models, and selections do.
    from AnalysisG.core.model_template cimport model_template, ModelTemplate
 
    cdef extern from "<my_module/my_model.h>":
-       cdef cppclass MyModel(model_template):
-           MyModel() except+
+       cdef cppclass MyModelCpp(model_template):
+           MyModelCpp() except+
 
    cdef class PyMyModel(ModelTemplate): pass
 
@@ -361,18 +299,84 @@ models, and selections do.
    # cython: language_level=3
 
    from AnalysisG.core.model_template cimport ModelTemplate
-   from my_model cimport MyModel
+   from my_model cimport MyModelCpp
 
    cdef class PyMyModel(ModelTemplate):
-       def __cinit__(self): self.nn_ptr = new MyModel()
+       def __cinit__(self): self.nn_ptr = new MyModelCpp()
        def __init__(self): pass
        def __dealloc__(self): del self.nn_ptr
 
-Step 7 — Run the Pipeline (Python)
+Step 5 — Define a Model *(optional)*
+--------------------------------------
+
+Subclass :cpp:class:`model_template` and override
+:cpp:func:`model_template::forward`.  Inside ``forward``, fetch tensors from
+the ``graph_t`` object with ``data->get_data_*(name, this)`` (the second
+argument is always ``this`` — the model pointer used to select the correct
+device) and write predictions with ``prediction_*_feature(name, tensor)``.
+
+Register PyTorch sub-modules with
+:cpp:func:`model_template::register_module` in the constructor.
+
+**Header** (``my_model.h``):
+
+.. code-block:: cpp
+
+   #include <templates/model_template.h>
+
+   class MyModel : public model_template {
+   public:
+       MyModel();
+       ~MyModel();
+       model_template* clone() override;
+       void forward(graph_t* data) override;
+
+       torch::nn::Sequential* node_mlp = nullptr;
+   };
+
+**Source** (``my_model.cxx``):
+
+.. code-block:: cpp
+
+   #include "my_model.h"
+
+   MyModel::MyModel() {
+       this->node_mlp = new torch::nn::Sequential({
+           {"l1", torch::nn::Linear(4, 64)},
+           {"r1", torch::nn::ReLU()},
+           {"l2", torch::nn::Linear(64, 1)}
+       });
+       this->register_module(this->node_mlp);
+   }
+
+   MyModel::~MyModel() {}
+   model_template* MyModel::clone() { return new MyModel(); }
+
+   void MyModel::forward(graph_t* data) {
+       // Fetch input tensors — second arg is always `this` (selects device)
+       torch::Tensor node_pt  = data->get_data_node("pt",    this)->clone();
+       torch::Tensor node_eta = data->get_data_node("eta",   this)->clone();
+       torch::Tensor met      = data->get_data_graph("met",  this)->clone();
+       torch::Tensor edge_idx = data->get_edge_index(this)->to(torch::kLong);
+
+       torch::Tensor feats = torch::cat(
+           {node_pt, node_eta, met.expand_as(node_pt), met.expand_as(node_pt)}, -1);
+       torch::Tensor out = (*node_mlp)->forward(feats);
+
+       // Write node-level prediction
+       this->prediction_node_feature("top_node", out);
+
+       // Extra output only written during inference
+       if (!this->inference_mode) { return; }
+       this->prediction_extra("node_score", torch::sigmoid(out));
+   }
+
+Step 6 — Run the Pipeline (Python)
 -------------------------------------
 
 After compiling with ``pip install .``, import the generated Cython classes
-and wire them together via the Python :class:`Analysis` class:
+and wire them together via the Python :class:`Analysis` class.  All property
+values shown below are verified defaults or typical overrides.
 
 .. code-block:: python
 
@@ -380,18 +384,28 @@ and wire them together via the Python :class:`Analysis` class:
    from AnalysisG.core.lossfx import OptimizerConfig
    from my_module import PyMyEvent, PyMyGraph, PyMyModel  # compiled Cython classes
 
-   # --- configure optimiser ---
+   # --- configure optimizer ---
    op = OptimizerConfig()
-   op.Optimizer = "adam"
-   op.lr = 1e-3
+   op.Optimizer    = "Adam"   # "Adam", "SGD", "RMSprop", "Adagrad", "LBFGS"
+   op.Scheduler    = "StepLR" # "StepLR", "CyclicLR", "ExponentialLR"
+   op.lr           = 1e-3
+   op.weight_decay = 1e-4
+   op.step_size    = 10       # epochs between LR decay steps
+   op.gamma        = 0.1      # multiplicative decay factor
 
    # --- build pipeline ---
    ana = Analysis()
-   ana.OutputPath  = "./output"
-   ana.Epochs      = 20
-   ana.kFolds      = 10
-   ana.TrainSize   = 80   # percentage: 80 % of graphs used for training
-   ana.Threads     = 4
+   ana.OutputPath  = "./output"    # default: './ProjectName'
+   ana.Epochs      = 20            # default: 10
+   ana.kFolds      = 5             # default: 10  (number of folds)
+   ana.kFold       = []            # default: []  ([] = run all folds)
+   ana.TrainSize   = 80.0          # percentage 0–100 (default: 50.0)
+   ana.BatchSize   = 32            # default: 1
+   ana.Threads     = 4             # default: 10
+   ana.BuildCache  = True          # build the graph HDF5 cache
+   ana.Training    = True          # enable training phase (default: True)
+   ana.Validation  = True          # enable validation phase (default: True)
+   ana.Evaluation  = True          # enable evaluation phase (default: True)
 
    ana.AddSamples("./data/ttbar.root", "ttbar")
    ana.AddEvent(PyMyEvent(), "ttbar")
@@ -399,6 +413,51 @@ and wire them together via the Python :class:`Analysis` class:
    ana.AddModel(PyMyModel(), op, "run1")
 
    ana.Start()
+
+Step 7 — Define Selections *(optional)*
+-----------------------------------------
+
+Subclass :cpp:class:`selection_template` and implement
+:cpp:func:`selection_template::selection` for per-event logic.  Optional
+overrides include:
+
+* ``strategy()`` — aggregate post-processing over all passed events
+* ``Postprocessing()`` — finalise and serialise results
+* ``InterpretROOT()`` — re-read results from a ROOT output file
+* ``dump()`` / ``load()`` — pickle serialisation
+
+Counting Jets with IO
+-----------------------
+
+The :class:`IO` class can be used independently to inspect ROOT files without
+running the full pipeline.  Keys in the yielded dict are ``bytes`` in the
+format ``b'tree.branch.leaf'``.
+
+.. code-block:: python
+
+   from AnalysisG.core.io import IO
+
+   reader = IO()
+   reader.Files = ["test/samples/dilepton/DAOD_TOPQ1.21955717._000001.root"]
+
+   n_events = 0
+   n_jets   = 0
+   for entry in reader:
+       n_events += 1
+       jets = entry.get(b'nominal.jet_pt.jet_pt', [])
+       n_jets += len(jets)
+
+   print(f"Events : {n_events}")   # 1098
+   print(f"Jets   : {n_jets}")     # 8161
+   print(f"Avg    : {n_jets / n_events:.2f} jets/event")  # 7.43
+
+.. note::
+   **Verified output** from the dilepton test sample
+   (``DAOD_TOPQ1.21955717._000001.root``, tree ``nominal``):
+
+   * Events: **1,098**
+   * Total jets (``b'nominal.jet_pt.jet_pt'``): **8,161**
+   * Average jets per event: **7.43** (min 4, max 14)
 
 Using pyc CUDA Kernels
 -----------------------

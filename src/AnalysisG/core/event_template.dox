@@ -23,18 +23,19 @@
  *   of the internal hash string.
  *
  * **Read/write properties:**
- * - `index` (float) — Event index within the tree; assigning a string stores a
- *   leaf name for later ROOT branch mapping (the float value remains 0.0 until
- *   data is read from ROOT).
- * - `weight` (float) — Per-event weight; string assignment stores a
- *   leaf name.
- * - `Tree` (str) — Primary tree name this event is built from.
- * - `Trees` (list[str]) — All tree names to read; accepts a single string
- *   or a list.
- * - `Branches` (list[str]) — Branch names to read; accepts a single string
- *   or a list.
+ * - `index` (float, default `0.0`) — Event index within the tree.  The type
+ *   is **float** (not int); assigning a string stores a leaf name for later
+ *   ROOT branch mapping (the float value remains `0.0` until data is read).
+ * - `weight` (float, default `0.0`) — Per-event weight.  The type is
+ *   **float** (not int); string assignment stores a leaf name for ROOT
+ *   branch mapping.
+ * - `Tree` (str, default `''`) — Primary tree name this event is built from.
+ * - `Trees` (list, default `[]`) — All tree names to read; accepts a single
+ *   string or a list of strings.
+ * - `Branches` (list, default `[]`) — Branch names to read; accepts a single
+ *   string or a list of strings.
  *
  * **Read-only property:**
- * - `Name` (str) — Name of the event class as registered with the C++
- *   backend (derived from `event_template::name`).
+ * - `Name` (str, default `''`) — Name of the event class as registered with
+ *   the C++ backend (derived from `event_template::name`).
  */

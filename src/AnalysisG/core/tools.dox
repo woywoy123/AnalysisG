@@ -12,10 +12,9 @@
  * @details Provides:
  *          - File system utilities: @c create_path, @c delete_path,
  *            @c is_file, @c rename, @c absolute_path, @c ls.
- *          - String utilities: @c replace, @c has_string, @c ends_with,
+ *          - String utilities: @c replace, @c has_substring, @c ends_with,
  *            @c has_value, @c split, @c hash, @c encode64, @c decode64.
- *          - Math utilities: @c max, @c min, @c sum.
- *          - Data partitioning: @c discretize.
+ *          - Math utilities: @c abs, @c discretize.
  */
 
 /**
@@ -37,40 +36,41 @@
  *          is a thin Cython wrapper around the corresponding C++ member.
  *
  * **File-system methods:**
- * - `create_path(pth: str)` — Create the directory tree at `pth` (equivalent
- *   to `mkdir -p`).
- * - `delete_path(pth: str)` — Recursively remove the directory tree at `pth`.
- * - `is_file(pth: str) -> bool` — Return True if `pth` refers to an existing
- *   regular file.
- * - `rename(src: str, dst: str)` — Rename/move `src` to `dst`.
- * - `abs(pth: str) -> str` — Return the absolute (canonical) path of `pth`.
- * - `ls(pth: str, ext: str) -> list[str]` — List all files under `pth` whose
- *   names end with `ext`; returns a sorted list of absolute paths.
+ * - `create_path(path: str) -> bool` — Create the directory tree at `path`
+ *   (equivalent to `mkdir -p`); returns True on success.
+ * - `delete_path(path: str) -> bool` — Recursively remove the directory tree
+ *   at `path`; returns True on success.
+ * - `is_file(path: str) -> bool` — Return True if `path` refers to an
+ *   existing regular file.
+ * - `rename(src: str, dst: str) -> bool` — Rename/move `src` to `dst`;
+ *   returns True on success.
+ * - `ls(path: str) -> list` — List all files under `path`; returns a sorted
+ *   list of paths.
  *
  * **String utility methods:**
- * - `replace(val: str, rpl: str, rpwl: str) -> str` — Replace all occurrences
- *   of `rpl` in `val` with `rpwl` and return the result.
- * - `has_substring(val: str, rpl: str) -> bool` — Return True if `rpl` is a
- *   substring of `val`.
- * - `ends_with(val: str, rpl: str) -> bool` — Return True if `val` ends with
- *   the suffix `rpl`.
- * - `has_value(data: list[str], trg: str) -> bool` — Return True if `trg` is
- *   present in the string vector `data`.
- * - `split(data: str, trg: int | str) -> list[str]` — Split `data` into
- *   chunks of length `trg` (int) or on the delimiter string `trg` (str).
+ * - `replace(s: str, old: str, new: str) -> str` — Replace all occurrences
+ *   of `old` in `s` with `new` and return the result.
+ * - `has_substring(s: str, sub: str) -> bool` — Return True if `sub` is a
+ *   substring of `s`.
+ * - `ends_with(s: str, suffix: str) -> bool` — Return True if `s` ends with
+ *   the string `suffix`.
+ * - `has_value(container, val) -> bool` — Return True if `val` is present in
+ *   `container`.
+ * - `split(s: str, delim: str) -> list` — Split `s` on the delimiter string
+ *   `delim` and return the resulting list of substrings.
  *
  * **Hashing / encoding methods:**
- * - `hash(data: str, lx: int = 8) -> str` — Return a hex hash of `data`
- *   using `std::hash<std::string>`.  Formats as `"0x" + hex_digits` (e.g.
- *   `"0x181021084a9123e3"`, 18 chars for a 64-bit hash), then appends
- *   `abs(result_len - lx)` zero characters regardless of whether
- *   `result_len` is greater or less than `lx`.  With the Cython default
- *   `lx=8` a 64-bit hash produces a 28-character output
- *   (`0x26553298fdbe39c80000000000`).
- * - `encode64(data: str) -> str` — Base-64 encode `data`.
- * - `decode64(data: str) -> str` — Base-64 decode `data`.
+ * - `hash(data: str, lx: int = 0) -> str` — Return a hex hash of `data`
+ *   using `std::hash<std::string>`, formatted as `"0x" + 16 hex digits`
+ *   (e.g. `"0x181021084a9123e3"`, 18 chars for a 64-bit hash).  When
+ *   `lx = 0` the result is zero-padded to at least 36 characters.  When
+ *   `lx > 0` and the raw result is shorter than `lx` characters, it is
+ *   zero-padded to exactly `lx` characters.
+ * - `encode64(s: str) -> str` — Base-64 encode `s`.
+ * - `decode64(s: str) -> str` — Base-64 decode `s`.
  *
- * **Data-partitioning method:**
- * - `discretize(data: list[str | int], lx: int) -> list` — Partition `data`
- *   into `lx` approximately equal groups; accepts a list of strings or ints.
+ * **Data-partitioning / math methods:**
+ * - `discretize(val: float, bins: int) -> int` — Map a continuous value into
+ *   one of `bins` integer buckets.
+ * - `abs(val) -> float` — Return the absolute value of `val`.
  */

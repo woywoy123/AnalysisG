@@ -10,47 +10,53 @@
  * @brief Python wrapper for @c optimizer_params_t.
  * @details Pass an `OptimizerConfig` instance to `Analysis.AddModel` to
  *          configure the PyTorch optimizer and learning-rate scheduler for a
- *          model training run.
+ *          model training run.  All properties default to zero/empty/false
+ *          unless noted.
  *
  * **Optimizer/scheduler selection (read/write):**
- * - `Optimizer` (str) — Name of the PyTorch optimizer to use
- *   (e.g. `"Adam"`, `"SGD"`, `"Adagrad"`, `"LBFGS"`, `"RMSprop"`).
- * - `Scheduler` (str) — Name of the learning-rate scheduler
- *   (e.g. `"StepLR"`).
+ * - `Optimizer` (str, default `''`) — Name of the PyTorch optimizer to use.
+ *   Supported values: `"Adam"`, `"SGD"`, `"RMSprop"`, `"Adagrad"`,
+ *   `"LBFGS"`.
+ * - `Scheduler` (str, default `''`) — Name of the learning-rate scheduler.
+ *   Supported values: `"StepLR"`, `"CyclicLR"`, `"ExponentialLR"`.
  *
  * **Scheduler parameters:**
- * - `step_size` (int) — Number of epochs between learning-rate decay steps
- *   (`StepLR`).
- * - `gamma` (float) — Multiplicative decay factor applied at each scheduler
- *   step.
+ * - `step_size` (int, default `1`) — Number of epochs between learning-rate
+ *   decay steps (`StepLR`).
+ * - `gamma` (float, default `0.1`) — Multiplicative decay factor applied at
+ *   each scheduler step.
  *
  * **Common optimizer hyper-parameters:**
- * - `lr` (float) — Initial learning rate.
- * - `lr_decay` (float) — Learning-rate decay coefficient (Adagrad).
- * - `weight_decay` (float) — L2 weight-decay / regularisation coefficient.
- * - `eps` (float) — Term added to the denominator for numerical stability
- *   (Adam, RMSprop, Adagrad).
- * - `alpha` (float) — Smoothing constant (RMSprop).
- * - `momentum` (float) — Momentum factor (SGD, RMSprop).
- * - `dampening` (float) — Dampening for momentum (SGD).
- * - `betas` (tuple[float, float]) — Coefficients for computing running
- *   averages of gradient and its square (Adam); stored as a 2-element
- *   vector internally.
- * - `amsgrad` (bool) — Use the AMSGrad variant of Adam.
- * - `centered` (bool) — Compute centered RMSprop (normalise gradient by
- *   estimated variance).
- * - `nesterov` (bool) — Enable Nesterov momentum (SGD).
+ * - `lr` (float, default `0.0`) — Initial learning rate.
+ * - `lr_decay` (float, default `0.0`) — Learning-rate decay coefficient
+ *   (Adagrad).
+ * - `weight_decay` (float, default `0.0`) — L2 weight-decay / regularisation
+ *   coefficient.
+ * - `eps` (float, default `0.0`) — Term added to the denominator for
+ *   numerical stability (Adam, RMSprop, Adagrad).
+ * - `alpha` (float, default `0.0`) — Smoothing constant (RMSprop).
+ * - `momentum` (float, default `0.0`) — Momentum factor (SGD, RMSprop).
+ * - `dampening` (float, default `0.0`) — Dampening for momentum (SGD).
+ * - `betas` (list, default `[]`) — Two-element list of coefficients for
+ *   computing running averages of gradient and its square (Adam).
+ * - `amsgrad` (bool, default `False`) — Use the AMSGrad variant of Adam.
+ * - `centered` (bool, default `False`) — Compute centered RMSprop
+ *   (normalise gradient by estimated variance).
+ * - `nesterov` (bool, default `False`) — Enable Nesterov momentum (SGD).
  *
  * **LBFGS-specific parameters:**
- * - `max_iter` (int) — Maximum number of iterations per optimisation step.
- * - `max_eval` (int) — Maximum number of function evaluations per step.
- * - `tolerance_grad` (float) — Termination tolerance on the gradient norm.
- * - `tolerance_change` (float) — Termination tolerance on function/parameter
- *   change.
- * - `history_size` (int) — Size of the history used to approximate the
- *   Hessian inverse.
+ * - `max_iter` (int, default `0`) — Maximum number of iterations per
+ *   optimisation step.
+ * - `max_eval` (int, default `0`) — Maximum number of function evaluations
+ *   per step.
+ * - `tolerance_grad` (float, default `0.0`) — Termination tolerance on the
+ *   gradient norm.
+ * - `tolerance_change` (float, default `0.0`) — Termination tolerance on
+ *   function/parameter change.
+ * - `history_size` (int, default `0`) — Size of the history used to
+ *   approximate the Hessian inverse.
  *
  * **Adagrad-specific parameter:**
- * - `initial_accumulator_value` (float) — Starting value for the sum of
- *   squared gradients accumulator.
+ * - `initial_accumulator_value` (float, default `0.0`) — Starting value for
+ *   the sum of squared gradients accumulator.
  */
