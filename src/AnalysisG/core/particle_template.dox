@@ -34,7 +34,9 @@
  *   or a subclass instance.
  *
  * **Kinematic properties (read/write unless noted):**
- * - `hash` (str, read-only) — Unique 8-character hex identifier.
+ * - `hash` (str, read-only) — Unique hex hash identifier derived from the
+ *   particle's internal state via `std::hash<std::string>` formatted as
+ *   `"0x" + hex_digits` (typically 18 characters).
  * - `index` (int) — Sequential event index; also accepts a branch name str.
  * - `px` (float) — x-component of 3-momentum [MeV].
  * - `py` (float) — y-component of 3-momentum [MeV].

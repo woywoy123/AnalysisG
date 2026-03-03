@@ -57,7 +57,7 @@ The C++ Source Code
        this -> prediction_graph_feature("...", <some-tensor>); 
        this -> prediction_node_feature("...", <some-tensor>);
        this -> prediction_edge_feature("...", <some-tensor>); 
-       if (!this -> inference_mode){return;} // skips any variables not avaliable during inference time.
+       if (!this -> inference_mode){return;} // skips any variables not available during inference time.
        this -> prediction_extra("...", <some-tensor>);  // Any variables that should be dumped during the inference.
    }
    

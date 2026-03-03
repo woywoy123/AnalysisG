@@ -60,8 +60,12 @@
  *   chunks of length `trg` (int) or on the delimiter string `trg` (str).
  *
  * **Hashing / encoding methods:**
- * - `hash(data: str, lx: int = 8) -> str` — Return an `lx`-character hex
- *   hash of `data`.
+ * - `hash(data: str, lx: int = 8) -> str` — Return a hex hash of `data`
+ *   using `std::hash<std::string>`.  Internally formats as `"0x" + hex_digits`
+ *   (e.g. `"0x181021084a9123e3"`, 18 chars for a 64-bit hash); if the result
+ *   is shorter than `lx` it is zero-padded to `lx` characters, otherwise it
+ *   is zero-padded further by `result_len - lx` zeros.  Typical output length
+ *   is 18–28 characters.
  * - `encode64(data: str) -> str` — Base-64 encode `data`.
  * - `decode64(data: str) -> str` — Base-64 decode `data`.
  *

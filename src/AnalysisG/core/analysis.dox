@@ -48,7 +48,7 @@
  * - `SumOfWeightsTreeName` (str) — Name of the ROOT tree containing
  *   sum-of-weights information.
  * - `kFolds` (int) — Total number of k-folds used for cross-validation.
- * - `kFold` (int | list[int]) — Which k-fold(s) to use for the current run.
+ * - `kFold` (list[int]) — Which k-fold index/indices to use; setting an int is automatically wrapped in a list.
  * - `Epochs` (int) — Number of training epochs.
  * - `NumExamples` (int) — Number of training examples per epoch.
  * - `TrainingDataset` (str) — Path to the HDF5 file used as training dataset
