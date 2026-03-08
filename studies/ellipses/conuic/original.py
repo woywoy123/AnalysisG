@@ -13,9 +13,13 @@ def R(axis, angle):
 
 
 class NuSol(object):
-    def __init__(self, b, mu, wbs, top, nu):
+    def __init__(self, b, mu, nu):
         self._b = b
         self._mu = mu
+
+        wbs = mu + nu
+        top = wbs + b
+
         self.mW2 = wbs.mass ** 2 
         self.mT2 = top.mass ** 2 
         self.mN2 = nu.mass ** 2  

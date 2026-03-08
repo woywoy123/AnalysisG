@@ -1,3 +1,58 @@
+-------------- new event ---------------- 
+ met: 258695.0625 phi: 2.6709
+---------- Truth ------------------- 
+ neutrinos::::: 
+px: -285106.1628 py: -18484.1080 pz: 75518.8017 e: 295516.9688 top-index: 0
+px: 176103.9100 py: 98098.7484 pz: 82607.5771 e: 217853.0781 top-index: 1
+px: -137874.7488 py: 103787.4894 pz: 16010.6459 e: 173313.6719 top-index: 2
+px: 28934.8318 py: -86417.2731 pz: -74203.6135 e: 117521.6875 top-index: 3
+------------ leptons ------------- 
+hash of lepton: 0x8aa45eefe0eaed34 top-index: 1
+hash of lepton: 0x9722a75bb24c0493 top-index: 3
+------------- b jets ------------- 
+hash of b-jet: 0x4dda9852b218a9ca top-index:0
+hash of b-jet: 0x791626d00b92e24c top-index:1
+hash of b-jet: 0xff24aa0b7162d3f1 top-index:2
+hash of b-jet: 0xd8b00f419928d57a top-index:3
+-------- Detector Objects -------- 
+ px: -25971.0952 py: -11836.4239 pz: 37560.0808 e: 47298.2773 h: 0x3835b55a018c6c16
+ px: 1763.0405 py: 32687.8094 pz: 40117.5863 e: 52287.9258 h: 0x4dda9852b218a9ca
+ px: 317335.0935 py: 26396.5905 pz: 57354.7981 e: 323998.2500 h: 0x791626d00b92e24c
+ px: -61539.1068 py: -97552.9422 pz: -228393.7026 e: 256157.8594 h: 0xd8b00f419928d57a
+ px: -77600.8279 py: 148857.1586 pz: 75650.4695 e: 184535.2188 h: 0xff24aa0b7162d3f1
+ px: 101034.2006 py: 1715.6181 pz: 72918.7182 e: 124611.3672 h: 0x8aa45eefe0eaed34
+ px: -32049.9758 py: -215090.0986 pz: -278676.3367 e: 353484.7188 h: 0x9722a75bb24c0493
+-------------- new event ----------------
+ met: 166462.4688 phi: 0.8855
+---------- Truth -------------------
+ neutrinos:::::
+px: -6057.3629 py: 4106.8935 pz: 6792.9055 e: 9985.0781 top-index: 0
+px: 87990.6943 py: 438.9321 pz: 255934.5241 e: 270638.2188 top-index: 1
+px: 13955.1295 py: -16115.0860 pz: -7006.2506 e: 22439.4570 top-index: 3
+------------ leptons -------------
+hash of lepton: 0xbc841194a01ee4fe top-index: 0
+hash of lepton: 0x3d7c7616b907f1fa top-index: 1
+hash of lepton: 0x8ef09fe405a54cec top-index: 3
+------------- b jets -------------
+hash of b-jet: 0x9543171847f3a125 top-index:0
+hash of b-jet: 0xf518a62c399a5a5d top-index:1
+hash of b-jet: 0x212c8a0d4e182296 top-index:1
+hash of b-jet: 0xb2701df081464bff top-index:1
+hash of b-jet: 0xf518a62c399a5a5d top-index:2
+hash of b-jet: 0x212c8a0d4e182296 top-index:2
+hash of b-jet: 0xb2701df081464bff top-index:2
+-------- Detector Objects --------
+ px: 74.0964 py: 54234.8088 pz: -86544.6904 e: 102345.6875 h: 0x130175fbaa0eebaf
+ px: -386120.8932 py: -645754.0277 pz: 51969.4339 e: 754579.3750 h: 0x1657db39ad4fad05
+ px: 244084.4430 py: 349510.7703 pz: -815391.7237 e: 920348.1250 h: 0x210c630cdb8eb83a
+ px: 76820.3370 py: 92648.8202 pz: 83702.6132 e: 148090.0312 h: 0x212c8a0d4e182296
+ px: -37711.2983 py: 733.8329 pz: -126387.0518 e: 132083.0312 h: 0x2e5810a7e2b3b30e
+ px: -123379.7431 py: -21780.0643 pz: -177960.2798 e: 218141.8125 h: 0x9543171847f3a125
+ px: -20034.6839 py: 54230.0341 pz: 84104.2548 e: 102793.7500 h: 0xb2701df081464bff
+ px: 107024.0257 py: 98568.7974 pz: 425671.8977 e: 450077.0625 h: 0xf518a62c399a5a5d
+ px: -26175.5369 py: -104858.1952 pz: -157867.8601 e: 191318.2500 h: 0xbc841194a01ee4fe
+ px: 17275.1961 py: 45121.5010 pz: 199062.1334 e: 204841.6875 h: 0x3d7c7616b907f1fa
+ px: 56711.5966 py: -64633.8829 pz: -306245.4094 e: 318088.0312 h: 0x8ef09fe405a54cec
 -------------- new event ----------------
  met: 229751.6875 phi: -1.5444
 ---------- Truth -------------------

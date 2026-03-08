@@ -1,158 +1,122 @@
-import sympy as sp
+import math
 
-def symbol(name): return sp.symbols(name, real = True, positive = True)
-def symbols(lst): return [symbol(i) for i in lst]
+def quadratic_matrix(beta_mu, beta_b, cos_theta, sin_theta):
+    # ω and Ω for the two branches
+    w_plus  = omega(beta_mu, beta_b, cos_theta, sin_theta, +1)
+    w_minus = omega(beta_mu, beta_b, cos_theta, sin_theta, -1)
+    O_plus  = Omega(w_plus,  beta_mu)
+    O_minus = Omega(w_minus, beta_mu)
 
-class particle:
-    def __init__(self, name):
-        self.name   = name
-        self.p      = symbol("p_"    + name)
-        self.mass   = symbol("m_"    + name)
-        self.beta   = symbol("beta_" + name)
-        self.energy = symbol("E_"    + name)
+    # matrix entries (Eqs. (3) in the earlier derivation)
+    beta2 = beta_mu**2
+    A11 = (beta2 - w_plus**2)  / (O_plus**2)
+    A22 = -(beta2 - w_minus**2) / (O_minus**2)
+    A12 = 0.5 * (w_plus + w_minus) * (1.0/(O_plus**2) + 1.0/(O_minus**2))
 
-def energy(m, p): return sp.sqrt(m ** 2 + p ** 2)
-def mass(e, p): return sp.sqrt(e ** 2 - p ** 2)
-def pmu(m, e):  return sp.sqrt(e ** 2 - m ** 2)
+    return A11, A12, A22, w_plus, w_minus, O_plus, O_minus
 
-def beta(m, p): return sp.sqrt(1 - ( m / energy(m, p) ) ** 2)
-def beta_mass_energy(prt): return beta(prt.mass, pmu(prt.mass, prt.energy))
+def eigenvalues_2x2_symmetric(A11, A12, A22):
+    """Eigenvalues of a 2×2 symmetric matrix."""
+    trace = A11 + A22
+    det   = A11 * A22 - A12**2
+    # λ = trace/2 ± sqrt( (trace/2)² - det )
+    # For a symmetric matrix this is equivalent to:
+    # λ = (trace ± sqrt((A11-A22)² + 4 A12²)) / 2
+    disc = (A11 - A22)**2 + 4 * A12**2
+    sqrt_disc = math.sqrt(disc)
+    lambda1 = (trace + sqrt_disc) / 2.0
+    lambda2 = (trace - sqrt_disc) / 2.0
+    return lambda1, lambda2
 
-def x1k(Sx, Sy, w, O): return Sx - (Sx - w * Sy) / O**2
-def y1k(Sx, Sy, w, O): return Sy - (Sx - w * Sy)* w / O**2
-def grad(y11, y22, x11, x22): return sp.simplify((y11 - y22)/(x11 - x22))
+def rotation_angle_2x2_symmetric(A11, A12, A22):
+    """
+    Angle θ such that the orthogonal matrix
+        R = [[cosθ, -sinθ],
+             [sinθ,  cosθ]]
+    diagonalises the symmetric matrix A.
+    """
+    # tan(2θ) = 2 A12 / (A11 - A22)
+    numerator = 2.0 * A12
+    denominator = A11 - A22
+    if abs(denominator) < 1e-15:
+        # matrix is already diagonal in the ±45° directions
+        return math.copysign(math.pi/4.0, numerator)
+    tan_2theta = numerator / denominator
+    theta = 0.5 * math.atan(tan_2theta)
+    return theta
 
-def roots(tpsi, tnh, pmu, m_mu, m_nu, s):
-    a = pmu * tpsi 
-    b = sp.sqrt(pmu**2 * tpsi ** 2 + tpsi * (tpsi + tnh) * (m_mu ** 2 - m_nu **2))
-    return (a + s * b) / (tpsi + tnh)
+def eigenvectors_from_angle(theta):
+    """
+    Eigenvectors of a 2×2 symmetric matrix given the rotation angle θ.
+    The eigenvectors are the columns of the rotation matrix:
+        v1 = ( cosθ, sinθ)
+        v2 = (-sinθ, cosθ)
+    """
+    c, s = math.cos(theta), math.sin(theta)
+    v1 = (c, s)
+    v2 = (-s, c)
+    return v1, v2
 
-def omega(mu, bq, s, theta): return (1 / sp.sin(theta)) * ( s * mu.beta / bq.beta - sp.cos(theta))
+def check_diagonalisation(A11, A12, A22, theta, lambda1, lambda2):
+    """Sanity check: verify that R^T A R is diagonal."""
+    c, s = math.cos(theta), math.sin(theta)
+    # R^T A R
+    R11 = c*A11 + s*A12
+    R12 = c*A12 + s*A22
+    R21 = -s*A11 + c*A12
+    R22 = -s*A12 + c*A22
+    diag1 = c*R11 + s*R12
+    diag2 = -s*R21 + c*R22
+    off1  = -s*R11 + c*R12
+    off2  = c*R21 + s*R22
+    # off‑diagonal elements should be ~0
+    return diag1, diag2, off1, off2
 
-class pairs:
-    def __init__(self, Sx, tpsi, name, s):
-        self.Sx = sp.simplify(Sx)
-        self.Sy = sp.simplify(Sx / tpsi)
-        self.name = name
-        self._Sx = symbol("Sx^" + s)
-        self._Sy = symbol("Sy^" + s)
+# --------------------------------------------------------------------
+# Example using your kinematic values
+# (replace these with your actual data)
+beta_mu  = 0.999999989207358   # data.b_mu
+beta_b   = 0.80                # data.b_b   (example – you must supply the real value)
+cos_theta = math.cos(30.0 * math.pi/180.0)   # data.theta.cos
+sin_theta = math.sin(30.0 * math.pi/180.0)   # data.theta.sin
 
+# 1. Build the quadratic‑form matrix
+A11, A12, A22, w_plus, w_minus, O_plus, O_minus = quadratic_matrix(
+    beta_mu, beta_b, cos_theta, sin_theta
+)
 
-SxP, SyP, SxM, SyM, op, om, wm, wp = symbols(["Sx^+", "Sy^+", "Sx^-", "Sy^-", "O+", "O-", "w+", "w-"])
-psip, psim, theta = symbols(["psi^+", "psi^-", "theta"])
+print("ω⁺  =", w_plus)
+print("ω⁻  =", w_minus)
+print("Ω⁺  =", O_plus)
+print("Ω⁻  =", O_minus)
+print("\nQuadratic‑form matrix A:")
+print("  A11 =", A11)
+print("  A12 =", A12)
+print("  A22 =", A22)
+print("  A = [[{:.8f}, {:.8f}],".format(A11, A12))
+print("       [{:.8f}, {:.8f}]]".format(A12, A22))
 
-mu = particle("mu")
-nu = particle("nu")
-bq = particle("bq")
+# 2. Eigenvalues
+lambda1, lambda2 = eigenvalues_2x2_symmetric(A11, A12, A22)
+print("\nEigenvalues of A:")
+print("  λ₁ =", lambda1)
+print("  λ₂ =", lambda2)
 
-tpsi_p, tpsi_m = sp.tan(psip), sp.tan(psim)
+# 3. Rotation angle that diagonalises A
+theta = rotation_angle_2x2_symmetric(A11, A12, A22)
+print("\nRotation angle θ that diagonalises A:")
+print("  θ = {:.6f} rad".format(theta))
+print("    = {:.6f}°".format(theta * 180.0 / math.pi))
 
-_op = sp.sqrt(wp ** 2 - sp.tan(psip) * sp.tan(psim))
-_om = sp.sqrt(wm ** 2 - sp.tan(psip) * sp.tan(psim))
+# 4. Corresponding eigenvectors
+v1, v2 = eigenvectors_from_angle(theta)
+print("\nEigenvectors (unit vectors):")
+print("  v₁ = ({:.6f}, {:.6f})".format(v1[0], v1[1]))
+print("  v₂ = ({:.6f}, {:.6f})".format(v2[0], v2[1]))
 
-
-psx = {}
-psx["Sp_Mp"]  = pairs((mu.p * tpsi_p) / (tpsi_p + sp.tan(theta)), tpsi_p, "S-max+", "+")
-psx["Sp_rpp"] = pairs(roots(tpsi_p, sp.tan(theta), mu.p, mu.mass, nu.mass, +1), tpsi_p, "root ++", "+")
-psx["Sp_rpm"] = pairs(roots(tpsi_p, sp.tan(theta), mu.p, mu.mass, nu.mass, -1), tpsi_p, "root +-", "+")
-psx["Sp_rmp"] = pairs(roots(tpsi_m, sp.tan(theta), mu.p, mu.mass, nu.mass, +1), tpsi_m, "root -+", "+")
-psx["Sp_rmm"] = pairs(roots(tpsi_m, sp.tan(theta), mu.p, mu.mass, nu.mass, -1), tpsi_m, "root --", "+")
-
-msx = {}
-msx["Sm_rpp"] = pairs(roots(tpsi_p, sp.tan(theta), mu.p, mu.mass, nu.mass, +1), tpsi_p, "root ++", "-")
-msx["Sm_rpm"] = pairs(roots(tpsi_p, sp.tan(theta), mu.p, mu.mass, nu.mass, -1), tpsi_p, "root +-", "-")
-msx["Sm_rmp"] = pairs(roots(tpsi_m, sp.tan(theta), mu.p, mu.mass, nu.mass, +1), tpsi_m, "root -+", "-")
-msx["Sm_rmm"] = pairs(roots(tpsi_m, sp.tan(theta), mu.p, mu.mass, nu.mass, -1), tpsi_m, "root --", "-")
-msx["Sm_Mm"] = pairs((mu.p * tpsi_m) / (tpsi_m + sp.tan(theta)), tpsi_m, "S-max-", "-")
-
-
-_tpsi_p = (1 - mu.beta ** 2 - wp * wm + sp.sqrt( ((_op * _om)**2)))/ (wp + wm)
-_tpsi_m = (1 - mu.beta ** 2 - wp * wm - sp.sqrt( ((_op * _om)**2)))/ (wp + wm)
-
-x1pp = x1k(SxP, SyP, wp, _op)
-y1pp = y1k(SxP, SyP, wp, _op)
-
-x1pm = x1k(SxP, SyP, wm, _om)
-y1pm = y1k(SxP, SyP, wm, _om)
-
-x1mp = x1k(SxM, SyM, wp, _op)
-y1mp = y1k(SxM, SyM, wp, _op)
-
-x1mm = x1k(SxM, SyM, wm, _om)
-y1mm = y1k(SxM, SyM, wm, _om)
-
-
-lst = {}
-lst["M_pppm"] = grad(y1pp, y1pm, x1pp, x1pm)
-lst["M_mppp"] = grad(y1mp, y1pp, x1mp, x1pp)
-
-lst["M_ppmp"] = grad(y1pp, y1mp, x1pp, x1mp)
-lst["M_pmpp"] = grad(y1pm, y1pp, x1pm, x1pp)
-
-lst["M_pmpm"] = grad(y1pm, y1pm, x1pm, x1pm)
-lst["M_mpmp"] = grad(y1mp, y1mp, x1mp, x1mp)
-
-lst["M_mppm"] = grad(y1mp, y1pm, x1mp, x1pm)
-lst["M_pmmp"] = grad(y1pm, y1mp, x1pm, x1mp)
-
-lst["M_pmmm"] = grad(y1pm, y1mm, x1pm, x1mm)
-lst["M_mmmp"] = grad(y1mm, y1mp, x1mm, x1mp)
-
-lst["M_mmpm"] = grad(y1mm, y1pm, x1mm, x1pm)
-lst["M_mpmm"] = grad(y1mp, y1mm, x1pm, x1mm)
-
-lst["M_mmpp"] = grad(y1mm, y1pp, x1mm, x1pp)
-lst["M_ppmm"] = grad(y1pp, y1mm, x1pp, x1mm)
-
-wp_ = omega(mu, bq, +1, theta)
-wm_ = omega(mu, bq, -1, theta)
-
-class expressions:
-
-    def __init__(self, name, i, j):
-        self.name = name
-        self.y_x = i + " | "+ j
-        self.SxSy = {}
-        self.expression = None
-
-unique = {}
-for i in lst:
-    for j in lst:
-        if sp.simplify(lst[i] - lst[j]) == 0: continue
-        eq = lst[i]
-        sp.pprint(sp.simplify(lst[i]))
-        for p in psx:
-            for m in msx:
-                exp = eq.subs(psx[p]._Sx, psx[p].Sx).subs(msx[m]._Sx, msx[m].Sx)
-                exp = exp.subs(psx[p]._Sy, psx[p].Sy).subs(msx[m]._Sy, msx[m].Sy)
-                print("----------------" + i + " -> " + j + " @ (" + p + ") -> (" + m + ") -----------------------")
-                exp = sp.simplify(exp.subs(wp, wp_).subs(wm, wm_))
-
-                id = str(hash(exp))
-                if id in unique:
-                    idx = str(hash(psx[p].Sx + msx[m].Sx))
-                    unique[id].SxSy[idx] = [psx[p], msx[m]]
-                    continue
-                unique[id] = expressions(i + " -> " + j + " @ (" + p + ") -> (" + m + ")", i, j)
-                idx = str(hash(psx[p].Sx + msx[m].Sx))
-                unique[id].SxSy[idx] = [psx[p], msx[m]]
-                unique[id].expression = exp
-                sp.pprint(exp)
-
-
-
-
-
-
-
-            
-                
-
-
-
-
-
-
-
-
-
+# 5. Quick sanity check (optional)
+diag1, diag2, off1, off2 = check_diagonalisation(A11, A12, A22, theta, lambda1, lambda2)
+print("\nSanity check – after rotation:")
+print("  diag1 ≈ λ₁ = {:.6f}".format(diag1))
+print("  diag2 ≈ λ₂ = {:.6f}".format(diag2))
+print("  off‑diagonal terms = {:.2e}, {:.2e}".format(off1, off2))

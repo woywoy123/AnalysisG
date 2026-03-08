@@ -114,8 +114,6 @@ class packet:
         self.pts_iter = itertools.cycle(self.pts_)
     
     def add_ellipse(self, H, name, pts=None, enable=False):
-        if pts is not None and enable: pts = self.instance.rz.T.dot(pts)
-        if H   is not None and enable:   H = self.instance.rz.T.dot(H)
         self.reco.append(ellipse(None, None, name, H, pts, None))
 
     def add_hyperbolic(self, fx, name, pts=None, domain=(-10, 10)):  # Wider default domain
@@ -156,7 +154,8 @@ class packet:
         return combined
     
     def _get_symmetric_limits(self, values, margin=0.15):
-        if not values: return -1, 1  # Default if no values
+#        return -1e6, 1e6
+        #if not values: return -1, 1  # Default if no values
         max_abs = max(abs(min(values)), abs(max(values)))
         limit = max_abs * (1 + margin)
         if max_abs > 1e7: return -1e7, 1e7
@@ -423,7 +422,7 @@ class packet:
             ax.set_ylim(y_lim[0], y_lim[1])
 
     def compile2D_Proj(self, save=None, show_inset=True):
-        self.fig, self.ax = plt.subplots(1, 3, figsize=(30, 15))
+        self.fig, self.ax = plt.subplots(1, 3, figsize=(20, 8))
         
         # Assign styles once
         self._assign_styles()
