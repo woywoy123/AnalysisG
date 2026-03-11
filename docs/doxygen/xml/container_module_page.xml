@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="container_module_page" kind="page">
+    <compoundname>container_module_page</compoundname>
+    <title>Container Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="container_module_page_1container_module_intro">
+<title>Introduction</title><para>The <computeroutput>container</computeroutput> module provides the data structures for holding and managing the various objects created during the analysis, such as events, graphs, and selections. It is designed to handle the data in a structured and efficient way, especially in a multi-threaded environment.</para>
+</sect1>
+<sect1 id="container_module_page_1container_class">
+<title>The container Class</title><para>The <computeroutput>container</computeroutput> class is the main data holder for a single input file. It stores all the events, graphs, and selections associated with that file.</para>
+<sect2 id="container_module_page_1container_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>container()</computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~container()</computeroutput>: The destructor cleans up all the allocated memory, including the meta data, event templates, graph templates, and selection templates.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="container_module_page_1container_methods_add">
+<title>Adding Objects</title><para><itemizedlist>
+<listitem><para><computeroutput>void add_meta_data(meta* data, std::string fname)</computeroutput>: Adds the meta data for the file.</para>
+</listitem><listitem><para><computeroutput>entry_t* add_entry(std::string hash)</computeroutput>: Adds a new <computeroutput>entry_t</computeroutput> to the container, identified by a hash.</para>
+</listitem><listitem><para><computeroutput>bool add_event_template(event_template* ev, std::string _label)</computeroutput>: Adds an event template to the container.</para>
+</listitem><listitem><para><computeroutput>bool add_graph_template(graph_template* gr, std::string _label)</computeroutput>: Adds a graph template to the container.</para>
+</listitem><listitem><para><computeroutput>bool add_selection_template(selection_template* sel)</computeroutput>: Adds a selection template to the container.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="container_module_page_1container_methods_access">
+<title>Accessing Objects</title><para><itemizedlist>
+<listitem><para><computeroutput>void get_events(std::vector&lt;event_template*&gt;* out, std::string label)</computeroutput>: Retrieves all the events with a specific label.</para>
+</listitem><listitem><para><computeroutput>meta* get_meta_data()</computeroutput>: Returns the meta data associated with the container.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="container_module_page_1container_methods_processing">
+<title>Processing</title><para><itemizedlist>
+<listitem><para><computeroutput>void compile(size_t* l, int threadIdx)</computeroutput>: This is the core processing method of the container. It iterates through all the entries and:<itemizedlist>
+<listitem><para>Compiles the events.</para>
+</listitem><listitem><para>Compiles and merges the selections, and writes them to output files if specified.</para>
+</listitem><listitem><para>Compiles the graphs and exports them to <computeroutput>graph_t</computeroutput> objects.</para>
+</listitem><listitem><para>Cleans up the memory used by the templates.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>void fill_selections(std::map&lt;std::string, selection_template*&gt;* inpt)</computeroutput>: Merges the results of the selections from this container into a global map of selections.</para>
+</listitem><listitem><para><computeroutput>void populate_dataloader(dataloader* dl)</computeroutput>: Populates a <computeroutput>dataloader</computeroutput> with the <computeroutput>graph_t</computeroutput> objects created during the <computeroutput>compile</computeroutput> step.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="container_module_page_1entry_t_struct">
+<title>The entry_t Struct</title><para>The <computeroutput>entry_t</computeroutput> struct is a simple data holder for a single event hash. It stores the event, graph, and selection templates that are associated with that hash.</para>
+<sect2 id="container_module_page_1entry_t_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void init()</computeroutput>: Initializes the vectors for storing the templates.</para>
+</listitem><listitem><para><computeroutput>void destroy()</computeroutput>: Deletes all the templates stored in the entry.</para>
+</listitem><listitem><para><computeroutput>bool has_event(event_template* ev)</computeroutput>: Checks if an event template with the same name and tree already exists. If not, it adds the template to the entry.</para>
+</listitem><listitem><para><computeroutput>bool has_graph(graph_template* gr)</computeroutput>: Checks for and adds a graph template.</para>
+</listitem><listitem><para><computeroutput>bool has_selection(selection_template* sel)</computeroutput>: Checks for and adds a selection template.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="container_module_page_1entry_t_members">
+<title>Members</title><para><itemizedlist>
+<listitem><para><computeroutput>std::string hash</computeroutput>: The hash of the event.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;event_template*&gt; m_event</computeroutput>: A vector of event templates.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;graph_template*&gt; m_graph</computeroutput>: A vector of graph templates.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;selection_template*&gt; m_selection</computeroutput>: A vector of selection templates.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;graph_t*&gt; m_data</computeroutput>: A vector of <computeroutput>graph_t</computeroutput> objects created from the graph templates. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/container/container.dox"/>
+  </compounddef>
+</doxygen>

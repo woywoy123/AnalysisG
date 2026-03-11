@@ -1,0 +1,87 @@
+/**
+ * @file selection_template.dox
+ * @brief Detailed documentation for the SelectionTemplate Cython class.
+ *
+ * @page SelectionTemplate_page SelectionTemplate
+ *
+ * @section SelectionTemplate_intro Introduction
+ * The `SelectionTemplate` class, implemented in Cython, serves as a foundational base for defining and applying event selections within the AnalysisG framework. It provides robust mechanisms for interpreting data from ROOT files, managing event weights, and associating metadata. This class is designed to be inherited by specific selection implementations, offering common functionalities for data processing and filtering, with a strong emphasis on performance through its C++ backend.
+ *
+ * @section SelectionTemplate_class The SelectionTemplate Class
+ * `SelectionTemplate` is a `cdef class`, indicating its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types, which is crucial for efficient processing of large datasets in high-energy physics. It encapsulates a pointer (`self.ptr`) to a C++ `selection_template` object, managing its lifecycle and exposing its parameters and functionalities as Python properties and methods.
+ *
+ * @subsection SelectionTemplate_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. If the instance is not `SelectionTemplate` itself (i.e., it's a subclass), it returns immediately. Otherwise, it initializes `self.root_leaves` as an empty dictionary and a new C++ `selection_template` object, assigning its pointer to `self.ptr`.
+ *
+ * - `__init__(self, inpt = None)`:
+ *   The Python initializer. If `inpt` (a dictionary) is provided, it attempts to set various attributes of `self` from `inpt["data"]`. It also initializes `self.ptr.passed_weights` and `self.ptr.matched_meta` from `inpt["weights"]` and `inpt["meta"]` respectively, converting them from Python types to C++ maps.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. If the instance is not `SelectionTemplate` itself, it returns. Otherwise, it deallocates the C++ `selection_template` object pointed to by `self.ptr`, ensuring proper memory management.
+ *
+ * @subsection SelectionTemplate_special_methods Special Methods
+ * - `__hash__(self)`:
+ *   Computes a hash value for the selection object. It converts the first 8 characters of the C++ object's hash string to an integer.
+ *
+ * - `__name__(self)`:
+ *   Returns the name of the underlying C++ selection object as a Python string, using the `env` utility function for conversion.
+ *
+ * - `__reduce__(self)`:
+ *   Implements the `__reduce__` protocol for pickling `SelectionTemplate` objects, allowing them to be serialized and deserialized. It captures non-callable attributes, `passed_weights`, and `matched_meta`.
+ *
+ * @subsection SelectionTemplate_internal_methods Internal Methods
+ * - `cdef void transform_dict_keys(self)`:
+ *   An empty placeholder method. This is intended to be overridden by subclasses to perform any necessary transformations on dictionary keys, for example, to match specific naming conventions or data structures.
+ *
+ * @subsection SelectionTemplate_methods Methods
+ * - `dump(self, str path = "./pkl-data", str name = "")`:
+ *   Saves the current `SelectionTemplate` object to a pickle file.
+ *   @param path The directory path to save the file. Defaults to "./pkl-data".
+ *   @param name The filename (without extension). Defaults to `self.ptr.name`.
+ *
+ * - `load(self, str path = "./pkl-data", str name = "")`:
+ *   Loads a `SelectionTemplate` object from a pickle file.
+ *   @param path The directory path to load from. Defaults to "./pkl-data".
+ *   @param name The filename (without extension). Defaults to `self.ptr.name`.
+ *   @return The loaded `SelectionTemplate` object or `None` if loading fails.
+ *
+ * - `HashToWeightFile(self, hash_)`:
+ *   Converts a given hash (or list/dictionary of hashes) to a list of tuples, where each tuple contains a filename and its associated weight. This method uses the underlying C++ `reverse_hash` functionality.
+ *   @param hash_ A string, list of strings, or dictionary of strings representing hashes.
+ *   @return A list of (filename, weight) tuples.
+ *
+ * - `Postprocessing(self)`:
+ *   An empty placeholder method intended to be overridden by subclasses for any post-processing steps required after data interpretation and selection.
+ *
+ * - `InterpretROOT(self, str path, str tree)`:
+ *   The core method for interpreting and processing data from ROOT files based on defined `root_leaves`.
+ *   - **Configuration Check**: Verifies that `self.root_leaves` (a dictionary mapping leaf names to functions) is properly set. If not, it prints an error and returns `self`.
+ *   - **IO Setup**: Initializes an `IO` object (from `AnalysisG.core.io`) with the provided `path` and `tree`, and the specified `root_leaves`. Verbosity is set to `False`.
+ *   - **Data Iteration**: Iterates through the `IO` object, processing each event.
+ *   - **Leaf Association**: Dynamically associates leaf names from the ROOT file with the functions defined in `self.root_leaves`.
+ *   - **Function Application**: Applies the user-defined functions (from `self.root_leaves.values()`) to the extracted data for each event.
+ *   - **Postprocessing Call**: After processing all events, it calls `self.Postprocessing()`.
+ *   @param path The path to the ROOT file(s).
+ *   @param tree The name of the ROOT tree to read from.
+ *   @return `self` for method chaining.
+ *
+ * @subsection SelectionTemplate_properties Properties
+ * These properties provide controlled access to the data managed by the `SelectionTemplate`.
+ *
+ * - `@property PassedWeights`:
+ *   Retrieves a nested dictionary representing the weights that have passed the selection criteria. The C++ map is converted to a Python dictionary using `as_basic_dict_dict`.
+ *
+ * - `@property GetMetaData`:
+ *   Retrieves a dictionary of `Meta` objects associated with the selected events. It iterates through `self.ptr.matched_meta` (a C++ map of strings to `meta_t` structs) and converts each `meta_t` into a Python `Meta` object.
+ *
+ * @section SelectionTemplate_cpp_interaction C++ Interaction
+ * The `SelectionTemplate` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class SelectionTemplate`: Declares `SelectionTemplate` as a Cython extension type.
+ * - `cdef selection_template *ptr`: A C++ pointer to a `selection_template` object, managed by the Cython class.
+ * - `from libcpp cimport string, map, pair, vector`: Imports C++ standard library types.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, including `env`, `enc`, `as_basic_dict_dict`, and `tools().ends_with`.
+ * - `from AnalysisG.core.meta cimport *`: Imports C++ declarations for `meta_t` and the Python `Meta` class.
+ * - `from AnalysisG.core.io import IO`: Imports the Python `IO` class for ROOT file handling.
+ * - `pathlib`, `pickle`: Python libraries used for path manipulation and object serialization.
+ */

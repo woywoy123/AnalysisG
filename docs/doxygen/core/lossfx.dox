@@ -1,0 +1,89 @@
+/**
+ * @file lossfx.dox
+ * @brief Detailed documentation for the OptimizerConfig Cython class.
+ *
+ * @page OptimizerConfig_page OptimizerConfig
+ *
+ * @section OptimizerConfig_intro Introduction
+ * The `OptimizerConfig` class, implemented in Cython, serves as a configuration container for various optimization parameters within the AnalysisG framework. It provides a structured and efficient way to define and manage settings for different optimizers, leveraging an underlying C++ `optimizer_params_t` structure for high-performance access and manipulation. This class is crucial for fine-tuning the training process of machine learning models by allowing precise control over optimizer behavior.
+ *
+ * @section OptimizerConfig_class The OptimizerConfig Class
+ * `OptimizerConfig` is a `cdef class`, indicating its implementation as a Cython extension type. This design choice enables direct and optimized interaction with C++ data structures, which is beneficial for performance-critical applications. It encapsulates a pointer (`self.params`) to a C++ `optimizer_params_t` object, managing its lifecycle and exposing its parameters as Python properties.
+ *
+ * @subsection OptimizerConfig_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `optimizer_params_t` object and assigns its pointer to `self.params`.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer, intentionally left empty as primary initialization is handled by `__cinit__`.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `optimizer_params_t` object pointed to by `self.params`, ensuring proper memory management.
+ *
+ * @subsection OptimizerConfig_properties Properties
+ * These properties provide controlled access to the various parameters of the encapsulated C++ `optimizer_params_t` object. Each property has a getter and a setter, allowing for both retrieval and modification of the optimizer's configuration.
+ *
+ * - `@property Optimizer -> str`:
+ *   Gets and sets the name of the optimizer (e.g., "Adam", "SGD").
+ *
+ * - `@property lr -> double`:
+ *   Gets and sets the learning rate for the optimizer.
+ *
+ * - `@property lr_decay -> double`:
+ *   Gets and sets the learning rate decay factor.
+ *
+ * - `@property weight_decay -> double`:
+ *   Gets and sets the weight decay (L2 penalty) for regularization.
+ *
+ * - `@property initial_accumulator_value -> double`:
+ *   Gets and sets the initial value for the accumulators in optimizers like Adagrad.
+ *
+ * - `@property eps -> double`:
+ *   Gets and sets a small constant for numerical stability (e.g., in Adam, Adagrad).
+ *
+ * - `@property tolerance_grad -> double`:
+ *   Gets and sets the tolerance for the gradient in some optimizers.
+ *
+ * - `@property tolerance_change -> double`:
+ *   Gets and sets the tolerance for change in some optimizers.
+ *
+ * - `@property alpha -> double`:
+ *   Gets and sets the alpha parameter, often used in RMSprop.
+ *
+ * - `@property momentum -> double`:
+ *   Gets and sets the momentum factor, used in optimizers like SGD with momentum.
+ *
+ * - `@property dampening -> double`:
+ *   Gets and sets the dampening factor for momentum.
+ *
+ * - `@property amsgrad -> bool`:
+ *   Gets and sets whether to use the AMSGrad variant of Adam.
+ *
+ * - `@property centered -> bool`:
+ *   Gets and sets whether to use the centered RMSprop, which estimates the variance of the gradient.
+ *
+ * - `@property nesterov -> bool`:
+ *   Gets and sets whether to use Nesterov momentum.
+ *
+ * - `@property max_iter -> int`:
+ *   Gets and sets the maximum number of iterations for some optimizers.
+ *
+ * - `@property max_eval -> int`:
+ *   Gets and sets the maximum number of function evaluations for some optimizers.
+ *
+ * - `@property history_size -> int`:
+ *   Gets and sets the history size for optimizers like L-BFGS.
+ *
+ * - `@property betas -> tuple`:
+ *   Gets and sets the beta parameters (e.g., `(beta1, beta2)` for Adam). The setter expects a Python tuple of two floats, which are then converted to a C++ `vector<float>`.
+ *
+ * @section OptimizerConfig_cpp_interaction C++ Interaction
+ * The `OptimizerConfig` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class OptimizerConfig`: Declares `OptimizerConfig` as a Cython extension type.
+ * - `cdef optimizer_params_t *params`: A C++ pointer to an `optimizer_params_t` object, managed by the Cython class.
+ * - `from libcpp cimport float`: Imports the C++ `float` type.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, likely including `env` and `enc` for string conversions.
+ * - `from AnalysisG.core.lossfx cimport *`: Imports C++ declarations from `lossfx.pxd`, which defines `optimizer_params_t`.
+ * - `env(self.params.optimizer)` and `enc(val)`: These functions handle the conversion between C++ `std::string` and Python `str`.
+ * - `vector[float](val[0], val[1])`: Demonstrates conversion of Python tuple to C++ `std::vector<float>`.
+ */

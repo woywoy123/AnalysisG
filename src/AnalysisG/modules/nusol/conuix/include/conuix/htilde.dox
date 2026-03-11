@@ -1,0 +1,69 @@
+/**
+ * @file htilde.h (conuix)
+ * @brief H-tilde matrix helper functions for the Conuix solver.
+ * @details Provides the @c Conuix namespace functions that compute the
+ *          kinematic, rotation, base, pencil, Sx, Sy, and H-matrix
+ *          sub-structures.
+ */
+
+/**
+ * @fn void Conuix::get_kinematic(particle_template* ptr, kinematic_t* kin)
+ * @brief Fill @p kin with the kinematic constants of particle @p ptr.
+ * @param ptr Pointer to the particle.
+ * @param kin Output kinematic struct.
+ */
+
+/**
+ * @fn void Conuix::get_psi_theta_mapping(base_t* base, thetapsi_t* msp)
+ * @brief Compute the ψ–θ mapping coefficients from the base kinematic
+ *        constants.
+ * @param base  Pointer to the base constants.
+ * @param msp Output mapping struct.
+ */
+
+/**
+ * @fn void Conuix::get_rotation(particle_template* jet, particle_template* lep, rotation_t* rot)
+ * @brief Compute the lab-frame rotation matrix for the (b-jet, lepton) pair.
+ * @param jet Pointer to the b-jet.
+ * @param lep Pointer to the lepton.
+ * @param rot Output rotation struct.
+ */
+
+/**
+ * @fn void Conuix::get_base(kinematic_t* jet, kinematic_t* lep, base_t* bs)
+ * @brief Compute the base kinematic constants from jet and lepton kinematics.
+ * @param jet Jet kinematics.
+ * @param lep Lepton kinematics.
+ * @param bs  Output base struct.
+ */
+
+/**
+ * @fn void Conuix::get_pencil(kinematic_t* lep, kinematic_t* nu, base_t* base, pencil_t* pen)
+ * @brief Compute the pencil polynomial coefficients.
+ * @param lep  Lepton kinematics.
+ * @param nu   Neutrino kinematics.
+ * @param base Base constants.
+ * @param pen  Output pencil struct.
+ */
+
+/**
+ * @fn void Conuix::get_sx(base_t* base, Sx_t* sx)
+ * @brief Compute the S_x shift coefficients.
+ * @param base Base constants.
+ * @param sx Output @c Sx_t struct.
+ */
+
+/**
+ * @fn void Conuix::get_sy(base_t* base, Sy_t* sy)
+ * @brief Compute the S_y shift coefficients.
+ * @param base Base constants.
+ * @param sy Output @c Sy_t struct.
+ */
+
+/**
+ * @fn void Conuix::get_hmatrix(base_t* base, rotation_t* rot, H_matrix_t* H)
+ * @brief Compute the H̄ and H matrices from base constants and the rotation.
+ * @param base Base constants.
+ * @param rot  Rotation.
+ * @param H    Output H-matrix struct.
+ */

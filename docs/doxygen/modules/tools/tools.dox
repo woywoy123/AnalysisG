@@ -1,0 +1,39 @@
+
+/**
+ * @file tools.dox
+ * @brief Detailed documentation for the tools module.
+ *
+ * @page tools_module_page Tools Module
+ *
+ * @section tools_module_intro Introduction
+ * The `tools` module provides a collection of utility functions for file system operations, string manipulation, and data encoding/decoding.
+ *
+ * @section tools_class The tools Class
+ * The `tools` class is the main component of this module, providing a set of static methods for various tasks.
+ *
+ * @subsection tools_methods_io File System Operations
+ * - `void create_path(std::string input_path)`: Creates a directory path.
+ * - `void rename(std::string start, std::string target)`: Renames a file or directory.
+ * - `void delete_path(std::string input_path)`: Deletes a file or directory.
+ * - `bool is_file(std::string path)`: Checks if a path points to an existing file.
+ * - `std::vector<std::string> ls(std::string path, std::string ext = "")`: Lists the files in a directory, with an optional extension filter.
+ * - `std::string absolute_path(std::string path)`: Returns the absolute path of a given path.
+ *
+ * @subsection tools_methods_string String Manipulation
+ * - `void replace(std::string* in, std::string to_repl, std::string repl_w)`: Replaces all occurrences of a substring in a string.
+ * - `std::vector<std::string> split(std::string inpt, std::string search)`: Splits a string by a delimiter.
+ * - `std::vector<std::string> split(std::string in, size_t n)`: Splits a string into chunks of a given size.
+ * - `std::string hash(std::string input, int len = 18)`: Computes a hash of a string.
+ * - `std::string to_string(double val)`: Converts a double to a string.
+ * - `std::string to_string(double val, int prec)`: Converts a double to a string with a specified precision.
+ * - `bool has_string(std::string* inpt, std::string trg)`: Checks if a string contains a substring.
+ * - `bool ends_with(std::string* inpt, std::string val)`: Checks if a string ends with a given value.
+ * - `bool has_value(std::vector<std::string>* data, std::string trg)`: Checks if a vector of strings contains a given value.
+ * - `std::string lower(std::string* in)`: Converts a string to lowercase.
+ *
+ * @subsection tools_methods_encoding Base64 Encoding/Decoding
+ * - `std::string encode64(std::string* data)`: Encodes a string using Base64.
+ * - `std::string encode64(unsigned char const* bytes_to_encode, unsigned int in_len)`: Encodes a byte array using Base64.
+ * - `std::string decode64(std::string* inpt)`: Decodes a Base64-encoded string.
+ * - `std::string decode64(std::string const& encoded_string)`: Decodes a Base64-encoded string.
+ */

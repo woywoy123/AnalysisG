@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="Node_page" kind="page">
+    <compoundname>Node_page</compoundname>
+    <title>Node</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="Node_page_1Node_intro">
+<title>Introduction</title><para>The <computeroutput>Node</computeroutput> class is a fundamental component of the graph data structure within the |g-framework|. It represents a single vertex in a graph and is designed to be highly flexible and extensible. Each node can store a variety of attributes, including physics properties (e.g., momentum, energy), detector information, and machine learning features.</para>
+</sect1>
+<sect1 id="Node_page_1Node_class">
+<title>The Node Class</title><para>The <computeroutput>Node</computeroutput> class provides a comprehensive interface for creating, manipulating, and querying nodes in a graph.</para>
+<sect2 id="Node_page_1Node_attributes">
+<title>Attributes</title><para>A <computeroutput>Node</computeroutput> object can have the following attributes:<itemizedlist>
+<listitem><para><bold>id</bold>: A unique identifier for the node within the graph.</para>
+</listitem><listitem><para><bold>features</bold>: A map of key-value pairs representing the node&apos;s features. These can be of any type and are used to store information such as particle properties, detector measurements, or any other relevant data.</para>
+</listitem><listitem><para><bold>edges</bold>: A list of <computeroutput>Edge</computeroutput> objects connected to this node.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="Node_page_1Node_methods">
+<title>Methods</title><para>The <computeroutput>Node</computeroutput> class provides the following methods:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>Node(int id)</computeroutput>: Constructor that creates a new <computeroutput>Node</computeroutput> with the given ID.</para>
+</listitem><listitem><para><computeroutput>int get_id() const</computeroutput>: Returns the ID of the node.</para>
+</listitem><listitem><para><computeroutput>void add_feature(const std::string&amp; key, const boost::any&amp; value)</computeroutput>: Adds a feature to the node.</para>
+</listitem><listitem><para><computeroutput>boost::any get_feature(const std::string&amp; key) const</computeroutput>: Retrieves a feature from the node.</para>
+</listitem><listitem><para><computeroutput>void add_edge(Edge* edge)</computeroutput>: Adds an edge to the node.</para>
+</listitem><listitem><para><computeroutput>const std::vector&lt;Edge*&gt;&amp; get_edges() const</computeroutput>: Returns the list of edges connected to the node.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="Node_page_1Node_example">
+<title>Example Usage</title><para><programlisting filename=".cpp"><codeline><highlight class="comment">//<sp/>Create<sp/>a<sp/>new<sp/>node<sp/>with<sp/>ID<sp/>1</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Node<sp/>node1(1);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>some<sp/>features<sp/>to<sp/>the<sp/>node</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">node1.add_feature(</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">,<sp/>50.0);</highlight></codeline>
+<codeline><highlight class="normal">node1.add_feature(</highlight><highlight class="stringliteral">&quot;eta&quot;</highlight><highlight class="normal">,<sp/>1.2);</highlight></codeline>
+<codeline><highlight class="normal">node1.add_feature(</highlight><highlight class="stringliteral">&quot;phi&quot;</highlight><highlight class="normal">,<sp/>0.5);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Get<sp/>a<sp/>feature<sp/>from<sp/>the<sp/>node</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>pt<sp/>=<sp/>boost::any_cast&lt;double&gt;(node1.get_feature(</highlight><highlight class="stringliteral">&quot;pt&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Create<sp/>another<sp/>node<sp/>and<sp/>an<sp/>edge<sp/>to<sp/>connect<sp/>them</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Node<sp/>node2(2);</highlight></codeline>
+<codeline><highlight class="normal">Edge<sp/>edge(&amp;node1,<sp/>&amp;node2);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>the<sp/>edge<sp/>to<sp/>both<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">node1.add_edge(&amp;edge);</highlight></codeline>
+<codeline><highlight class="normal">node2.add_edge(&amp;edge);</highlight></codeline>
+</programlisting> </para>
+</sect1>
+    </detaileddescription>
+    <location file="core/node.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="AccuracyMetric_page" kind="page">
+    <compoundname>AccuracyMetric_page</compoundname>
+    <title>Accuracy Metric</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="AccuracyMetric_page_1AccuracyMetric_intro">
+<title>Introduction</title><para>The <computeroutput>AccuracyMetric</computeroutput> class, implemented in Cython, is a specialized metric within the AnalysisG framework designed for comprehensive evaluation of model accuracy, particularly in the context of event-level predictions. It extends the <computeroutput>MetricTemplate</computeroutput> class, providing tailored functionalities for handling prediction scores, truth labels, and generating Receiver Operating Characteristic (ROC) curves. This class is crucial for assessing the performance of machine learning models in high-energy physics analyses.</para>
+</sect1>
+<sect1 id="AccuracyMetric_page_1AccuracyMetric_external_declarations">
+<title>External C++ Function Declarations</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void merge_data(vector[plt_roc_t*]* oux, vector[plt_roc_t*]* inx) except+ nogil</computeroutput>: An external C++ function (declared in <computeroutput>&lt;tools/merge_cast.h&gt;</computeroutput>) used for merging vectors of <computeroutput>plt_roc_t*</computeroutput> objects. The <computeroutput>except+ nogil</computeroutput> indicates that this function can release the GIL and can raise C++ exceptions that are converted to Python exceptions.</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="AccuracyMetric_page_1AccuracyMetric_helper_functions">
+<title>Helper Functions (C-style)</title><para>These functions are implemented as C-style functions in Cython for performance optimization.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>cdef tuple mx_index(vector[double]* sc)</computeroutput>: Finds the index and value of the maximum element within a C++ <computeroutput>std::vector&lt;double&gt;</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a C++ <computeroutput>std::vector&lt;double&gt;</computeroutput> representing scores. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Python tuple <computeroutput>(index, max_score)</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef void get_data(AccuracyMetric vl, dict data, dict meta)</computeroutput>: A callback function used by <computeroutput>MetricTemplate.InterpretROOT</computeroutput> to extract and store accuracy-related data from event data.<itemizedlist>
+<listitem><para>It identifies the processing mode (training, validation, evaluation) from the <computeroutput>data</computeroutput> dictionary.</para>
+</listitem><listitem><para>Extracts <computeroutput>ntops</computeroutput> (number of true tops) and <computeroutput>score</computeroutput> (prediction scores).</para>
+</listitem><listitem><para>Stores <computeroutput>ntops_truth</computeroutput>, <computeroutput>edge_scores</computeroutput>, and <computeroutput>ntop_score</computeroutput> into the <computeroutput>AccuracyMetric</computeroutput> object&apos;s internal C++ structures, organized by mode, epoch, model, and k-fold. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>AccuracyMetric</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Python dictionary containing event data. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>meta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A Python dictionary containing metadata (e.g., epoch, kfold, model_name).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>cdef vector[plt_roc_t*] make_roc(plt_roc_t* out, modelx_t* inx)</computeroutput>: Prepares data for ROC curve generation. It iterates through the <computeroutput>ntops_truth</computeroutput> and <computeroutput>ntop_score</computeroutput> data within a <computeroutput>modelx_t</computeroutput> structure, creating <computeroutput>plt_roc_t</computeroutput> objects that encapsulate the scores and truth labels for each model and k-fold. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>out</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a <computeroutput>plt_roc_t</computeroutput> object (used as a base for model and variable names). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>inx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a <computeroutput>modelx_t</computeroutput> object containing collected model data. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A C++ <computeroutput>std::vector</computeroutput> of <computeroutput>plt_roc_t*</computeroutput> objects, each representing a set of scores and truth for a specific ROC curve.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="AccuracyMetric_page_1AccuracyMetric_class">
+<title>The AccuracyMetric Class</title><para><computeroutput>AccuracyMetric</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>MetricTemplate</computeroutput>. It specializes in collecting and processing data relevant to classification accuracy, particularly for generating ROC curves.</para>
+<sect2 id="AccuracyMetric_page_1AccuracyMetric_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent.<itemizedlist>
+<listitem><para>Initializes <computeroutput>self.root_leaves</computeroutput> to specify which branches from ROOT files should be read for accuracy metrics (e.g., &quot;ntop_truth&quot;, &quot;ntop_scores&quot;, &quot;edge&quot; for training, validation, and evaluation modes).</para>
+</listitem><listitem><para>Initializes <computeroutput>self.root_fx</computeroutput> to map these branches to the <computeroutput>get_data</computeroutput> helper function for processing.</para>
+</listitem><listitem><para>Initializes a new C++ <computeroutput>accuracy_metric</computeroutput> object and assigns its pointer to <computeroutput>self.mtx</computeroutput>. It then upcasts <computeroutput>self.mtx</computeroutput> to an <computeroutput>accuracy_metric*</computeroutput> and assigns it to <computeroutput>self.mtr</computeroutput> for specialized access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="AccuracyMetric_page_1AccuracyMetric_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>Postprocessing(self)</computeroutput>: This method is called after all data has been interpreted from ROOT files. It orchestrates the generation and plotting of ROC curves.<itemizedlist>
+<listitem><para><bold>Data Aggregation</bold>: Iterates through <computeroutput>self.event_level</computeroutput> (a C++ map containing collected event data), aggregating data by epoch and model.</para>
+</listitem><listitem><para><bold>ROC Data Preparation</bold>: For each epoch and model, it calls <computeroutput>make_roc</computeroutput> to create <computeroutput>plt_roc_t</computeroutput> objects containing scores and truth labels.</para>
+</listitem><listitem><para><bold>Parallel ROC Building</bold>: Uses <computeroutput>cython.parallel.prange</computeroutput> to parallelize the process of building ROC data in the C++ backend. For each epoch, it creates an <computeroutput>ROC</computeroutput> object (from <computeroutput>AnalysisG.core.plotting</computeroutput>) and uses its <computeroutput>build_ROC</computeroutput> method to populate it with scores and truth.</para>
+</listitem><listitem><para><bold>Plotting</bold>: Finally, it calls <computeroutput>rxc.__compile__()</computeroutput> on each <computeroutput>ROC</computeroutput> object to generate and save the ROC curve plots.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="AccuracyMetric_page_1AccuracyMetric_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>AccuracyMetric</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class AccuracyMetric</computeroutput>: Declares <computeroutput>AccuracyMetric</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef accuracy_metric *mtr</computeroutput>: A C++ pointer to an <computeroutput>accuracy_metric</computeroutput> object, which is the specialized C++ backend for accuracy calculations.</para>
+</listitem><listitem><para><computeroutput>cdef plt_roc_t*</computeroutput>, <computeroutput>cdef modelx_t*</computeroutput>: Pointers to C++ structs used for organizing ROC plotting data and model-specific data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, including <computeroutput>has_string</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.metric_template cimport MetricTemplate</computeroutput>: Imports the base <computeroutput>MetricTemplate</computeroutput> class, from which <computeroutput>AccuracyMetric</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from cython.parallel import prange</computeroutput>: Enables parallel execution of loops, leveraging multiple CPU cores for faster processing.</para>
+</listitem><listitem><para><computeroutput>ROC rxc</computeroutput>: An instance of the <computeroutput>ROC</computeroutput> class from <computeroutput>AnalysisG.core.plotting</computeroutput>, used for generating ROC curve plots. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="metrics/accuracy/metric_accuracy.dox"/>
+  </compounddef>
+</doxygen>

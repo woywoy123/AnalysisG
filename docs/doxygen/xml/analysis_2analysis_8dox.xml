@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="analysis_2analysis_8dox" kind="file" language="C++">
+    <compoundname>analysis.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the analysis class and its related build processes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>analysis.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>analysis<sp/>class<sp/>and<sp/>its<sp/>related<sp/>build<sp/>processes.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>analysis_module_page<sp/>Analysis<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>analysis_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`analysis`<sp/>module<sp/>is<sp/>the<sp/>central<sp/>hub<sp/>of<sp/>the<sp/>|g-framework|.<sp/>It<sp/>orchestrates<sp/>the<sp/>entire<sp/>analysis<sp/>workflow,<sp/>from<sp/>reading<sp/>data<sp/>and<sp/>building<sp/>events<sp/>to<sp/>constructing<sp/>graphs,<sp/>training<sp/>models,<sp/>and<sp/>running<sp/>inference.<sp/>This<sp/>page<sp/>provides<sp/>a<sp/>detailed<sp/>overview<sp/>of<sp/>the<sp/>`analysis`<sp/>class<sp/>and<sp/>its<sp/>various<sp/>components.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>analysis_class<sp/>The<sp/>analysis<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`analysis`<sp/>class<sp/>manages<sp/>the<sp/>overall<sp/>analysis<sp/>session.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`analysis()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>analysis<sp/>environment.<sp/>This<sp/>includes<sp/>setting<sp/>up<sp/>the<sp/>sample<sp/>tracer,<sp/>data<sp/>loader,<sp/>and<sp/>I/O<sp/>reader.<sp/>It<sp/>also<sp/>builds<sp/>the<sp/>necessary<sp/>PCM<sp/>(Pre-Compiled<sp/>Module)<sp/>files<sp/>for<sp/>ROOT.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~analysis()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>all<sp/>the<sp/>resources<sp/>allocated<sp/>during<sp/>the<sp/>analysis<sp/>session,<sp/>including<sp/>flushing<sp/>data<sp/>from<sp/>the<sp/>k-fold<sp/>tags,<sp/>deleting<sp/>the<sp/>trainer<sp/>instances,<sp/>and<sp/>cleaning<sp/>up<sp/>the<sp/>loader,<sp/>tracer,<sp/>and<sp/>reader.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_methods_setup<sp/>Setup<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_samples(std::string<sp/>path,<sp/>std::string<sp/>label)`:<sp/>Adds<sp/>a<sp/>sample<sp/>to<sp/>the<sp/>analysis,<sp/>specifying<sp/>the<sp/>path<sp/>to<sp/>the<sp/>data<sp/>and<sp/>a<sp/>label.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_event_template(event_template*<sp/>ev,<sp/>std::string<sp/>label)`:<sp/>Adds<sp/>an<sp/>event<sp/>template<sp/>to<sp/>be<sp/>used<sp/>for<sp/>a<sp/>specific<sp/>sample<sp/>label.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_graph_template(graph_template*<sp/>ev,<sp/>std::string<sp/>label)`:<sp/>Adds<sp/>a<sp/>graph<sp/>template<sp/>to<sp/>be<sp/>used<sp/>for<sp/>a<sp/>specific<sp/>sample<sp/>label.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_selection_template(selection_template*<sp/>sel)`:<sp/>Adds<sp/>a<sp/>selection<sp/>template<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_metric_template(metric_template*<sp/>mx,<sp/>model_template*<sp/>mdl)`:<sp/>Adds<sp/>a<sp/>metric<sp/>template<sp/>and<sp/>links<sp/>it<sp/>to<sp/>a<sp/>model.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_model(model_template*<sp/>model,<sp/>optimizer_params_t*<sp/>op,<sp/>std::string<sp/>run_name)`:<sp/>Adds<sp/>a<sp/>model<sp/>for<sp/>training,<sp/>along<sp/>with<sp/>its<sp/>optimizer<sp/>parameters<sp/>and<sp/>a<sp/>run<sp/>name.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_model(model_template*<sp/>model,<sp/>std::string<sp/>run_name)`:<sp/>Adds<sp/>a<sp/>model<sp/>for<sp/>inference.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_methods_execution<sp/>Execution<sp/>Methods</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>start()`:<sp/>This<sp/>is<sp/>the<sp/>main<sp/>entry<sp/>point<sp/>for<sp/>running<sp/>the<sp/>analysis.<sp/>It<sp/>orchestrates<sp/>the<sp/>entire<sp/>workflow,<sp/>including:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Checking<sp/>the<sp/>cache<sp/>for<sp/>pre-built<sp/>graphs.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>events<sp/>from<sp/>the<sp/>input<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>graphs<sp/>from<sp/>the<sp/>events.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>selections.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>the<sp/>data<sp/>loader.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>and<sp/>running<sp/>the<sp/>metric<sp/>calculations.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>and<sp/>running<sp/>the<sp/>model<sp/>training<sp/>sessions.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Building<sp/>and<sp/>running<sp/>the<sp/>model<sp/>inference.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build_project()`:<sp/>Sets<sp/>up<sp/>the<sp/>output<sp/>directory<sp/>structure<sp/>for<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>check_cache()`:<sp/>Checks<sp/>for<sp/>cached<sp/>graph<sp/>files<sp/>to<sp/>avoid<sp/>rebuilding<sp/>them.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>fetchtags()`:<sp/>Fetches<sp/>the<sp/>k-fold<sp/>tags<sp/>from<sp/>a<sp/>pre-existing<sp/>file.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@section<sp/>analysis_build_processes<sp/>Build<sp/>Processes</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>The<sp/>`analysis`<sp/>class<sp/>is<sp/>composed<sp/>of<sp/>several<sp/>build<sp/>processes,<sp/>each<sp/>implemented<sp/>in<sp/>a<sp/>separate<sp/>file.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_event_build<sp/>Event<sp/>Building<sp/>(`event_build.cxx`)</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_events()`:<sp/>This<sp/>method<sp/>is<sp/>responsible<sp/>for<sp/>reading<sp/>the<sp/>input<sp/>ROOT<sp/>files<sp/>and<sp/>constructing<sp/>the<sp/>`event_template`<sp/>objects.<sp/>It<sp/>uses<sp/>a<sp/>multi-threaded<sp/>approach<sp/>to<sp/>process<sp/>the<sp/>files<sp/>in<sp/>parallel.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_graph_build<sp/>Graph<sp/>Building<sp/>(`graph_build.cxx`)</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_graphs()`:<sp/>This<sp/>method<sp/>takes<sp/>the<sp/>`event_template`<sp/>objects<sp/>and<sp/>uses<sp/>the<sp/>registered<sp/>`graph_template`s<sp/>to<sp/>construct<sp/>the<sp/>graph<sp/>representations<sp/>of<sp/>the<sp/>events.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_dataloader(bool<sp/>training)`:<sp/>This<sp/>method<sp/>populates<sp/>the<sp/>`dataloader`<sp/>with<sp/>the<sp/>constructed<sp/>graphs<sp/>and,<sp/>if<sp/>in<sp/>training<sp/>mode,<sp/>generates<sp/>the<sp/>test<sp/>and<sp/>k-fold<sp/>sets.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_selection_build<sp/>Selection<sp/>Building<sp/>(`selection_build.cxx`)</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_selections()`:<sp/>This<sp/>method<sp/>applies<sp/>the<sp/>registered<sp/>`selection_template`s<sp/>to<sp/>the<sp/>events<sp/>to<sp/>perform<sp/>event<sp/>selections.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_metric_build<sp/>Metric<sp/>Building<sp/>(`metric_build.cxx`)</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_metric_folds()`:<sp/>Determines<sp/>the<sp/>k-folds<sp/>to<sp/>be<sp/>used<sp/>for<sp/>the<sp/>metric<sp/>calculations.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>analysis::build_metric()`:<sp/>Orchestrates<sp/>the<sp/>calculation<sp/>of<sp/>the<sp/>metrics.<sp/>It<sp/>batches<sp/>the<sp/>data,<sp/>transfers<sp/>it<sp/>to<sp/>the<sp/>appropriate<sp/>devices,<sp/>and<sp/>runs<sp/>the<sp/>metric<sp/>calculations<sp/>in<sp/>parallel.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_optimizer_build<sp/>Optimizer<sp/>and<sp/>Model<sp/>Building<sp/>(`optimizer_build.cxx`)</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_model_session()`:<sp/>Sets<sp/>up<sp/>the<sp/>model<sp/>training<sp/>sessions,<sp/>including<sp/>initializing<sp/>the<sp/>optimizers<sp/>and<sp/>distributing<sp/>the<sp/>data<sp/>for<sp/>k-fold<sp/>cross-validation.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>std::vector&lt;float&gt;&gt;<sp/>analysis::progress()`:<sp/>Returns<sp/>the<sp/>training<sp/>progress<sp/>of<sp/>all<sp/>models.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>std::string&gt;<sp/>analysis::progress_mode()`:<sp/>Returns<sp/>the<sp/>current<sp/>training<sp/>mode<sp/>of<sp/>all<sp/>models.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>std::string&gt;<sp/>analysis::progress_report()`:<sp/>Returns<sp/>a<sp/>detailed<sp/>progress<sp/>report<sp/>for<sp/>all<sp/>models.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>bool&gt;<sp/>analysis::is_complete()`:<sp/>Checks<sp/>if<sp/>the<sp/>training<sp/>is<sp/>complete<sp/>for<sp/>all<sp/>models.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::attach_threads()`:<sp/>Attaches<sp/>the<sp/>training<sp/>threads<sp/>for<sp/>parallel<sp/>execution.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_inference_build<sp/>Inference<sp/>Building<sp/>(`inference_build.cxx`)</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::build_inference()`:<sp/>This<sp/>method<sp/>runs<sp/>the<sp/>inference<sp/>using<sp/>the<sp/>trained<sp/>models.<sp/>It<sp/>batches<sp/>the<sp/>data,<sp/>transfers<sp/>it<sp/>to<sp/>the<sp/>appropriate<sp/>devices,<sp/>and<sp/>runs<sp/>the<sp/>inference<sp/>in<sp/>parallel.<sp/>The<sp/>results<sp/>are<sp/>written<sp/>to<sp/>output<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>analysis_methods<sp/>Other<sp/>Methods<sp/>(`methods.cxx`)</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>contains<sp/>various<sp/>helper<sp/>methods<sp/>used<sp/>by<sp/>the<sp/>`analysis`<sp/>class,<sp/>such<sp/>as:</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::initialize_loop(...)`:<sp/>Initializes<sp/>the<sp/>training<sp/>loop<sp/>for<sp/>a<sp/>given<sp/>model<sp/>and<sp/>k-fold.</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>analysis::add_content(...)`:<sp/>A<sp/>helper<sp/>function<sp/>for<sp/>adding<sp/>data<sp/>to<sp/>the<sp/>output<sp/>ROOT<sp/>tree.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::execution(...)`:<sp/>The<sp/>main<sp/>execution<sp/>function<sp/>for<sp/>running<sp/>inference<sp/>on<sp/>a<sp/>batch<sp/>of<sp/>data.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>analysis::execution_metric(...)`:<sp/>The<sp/>main<sp/>execution<sp/>function<sp/>for<sp/>running<sp/>a<sp/>metric<sp/>calculation.</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/analysis/analysis.dox"/>
+  </compounddef>
+</doxygen>

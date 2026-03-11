@@ -1,0 +1,187 @@
+/**
+ * @file tools.dox
+ * @brief Detailed documentation for the tools.pyx Cython module, providing a collection of utility functions for string manipulation, type conversion, and file system operations.
+ *
+ * @page ToolsModule_page Tools Module
+ *
+ * @section ToolsModule_intro Introduction
+ * The `tools.pyx` module is a vital utility component within the AnalysisG framework, offering a suite of high-performance functions implemented in Cython. These functions are designed to bridge the gap between Python and C++ data types, facilitate efficient string manipulation, and provide convenient file system operations. This module is extensively used across the framework to ensure seamless interaction between Python-level logic and underlying C++ functionalities.
+ *
+ * @section ToolsModule_helper_functions Helper Functions (C-style)
+ * These functions are implemented as C-style functions in Cython for maximum performance and direct interaction with C++ types.
+ *
+ * - `cdef string enc(str val)`:
+ *   Encodes a Python `str` object into a C++ `std::string` (UTF-8 encoding).
+ *   @param val The Python string to encode.
+ *   @return A C++ `std::string`.
+ *
+ * - `cdef str env(string val)`:
+ *   Decodes a C++ `std::string` object into a Python `str` (UTF-8 decoding).
+ *   @param val The C++ `std::string` to decode.
+ *   @return A Python `str`.
+ *
+ * - `cdef list env_vec(vector[string]* inpt)`:
+ *   Converts a C++ `std::vector<std::string>` (passed as a pointer) into a Python `list` of `str` objects.
+ *   @param inpt A pointer to a C++ `std::vector<std::string>`.
+ *   @return A Python `list` of `str`.
+ *
+ * - `cdef vector[string] enc_list(list inpt)`:
+ *   Converts a Python `list` of `str` objects into a C++ `std::vector<std::string>`.
+ *   @param inpt A Python `list` of `str`.
+ *   @return A C++ `std::vector<std::string>`.
+ *
+ * - `cdef dict as_basic_dist_dict_f(map[string, map[float, base_types]]* inpt)`:
+ *   Converts a nested C++ `std::map<std::string, std::map<float, base_types>>` to a Python dictionary.
+ *   @param inpt A pointer to the C++ map.
+ *   @return A Python `dict`.
+ *
+ * - `cdef list as_list(vector[base_types]* inp)`:
+ *   Converts a C++ `std::vector<base_types>` (passed as a pointer) into a Python `list`.
+ *   @param inp A pointer to the C++ `std::vector<base_types>`.
+ *   @return A Python `list`.
+ *
+ * - `cdef dict as_basic_dict(map[string, base_types]* inpt)`:
+ *   Converts a C++ `std::map<std::string, base_types>` (passed as a pointer) into a Python `dict`.
+ *   @param inpt A pointer to the C++ `std::map`.
+ *   @return A Python `dict`.
+ *
+ * - `cdef dict as_basic_udict(unordered_map[string, base_types]* inpt)`:
+ *   Converts a C++ `std::unordered_map<std::string, base_types>` (passed as a pointer) into a Python `dict`.
+ *   @param inpt A pointer to the C++ `std::unordered_map`.
+ *   @return A Python `dict`.
+ *
+ * - `cdef dict as_basic_dict_dict(map[string, map[string, base_types]]* inpt)`:
+ *   Converts a nested C++ `std::map<std::string, std::map<std::string, base_types>>` (passed as a pointer) into a Python `dict`.
+ *   @param inpt A pointer to the nested C++ `std::map`.
+ *   @return A Python `dict`.
+ *
+ * - `cdef dict as_dict(map[string, vector[base_types]]* inpt)`:
+ *   Converts a C++ `std::map<std::string, std::vector<base_types>>` (passed as a pointer) into a Python `dict`.
+ *   @param inpt A pointer to the C++ `std::map`.
+ *   @return A Python `dict`.
+ *
+ * - `cdef dict as_dict_dict(map[string, map[string, vector[base_types]]]* inpt)`:
+ *   Converts a nested C++ `std::map<std::string, std::map<std::string, std::vector<base_types>>>` (passed as a pointer) into a Python `dict`.
+ *   @param inpt A pointer to the nested C++ `std::map`.
+ *   @return A Python `dict`.
+ *
+ * - `cdef dict as_dict_dict_dict(map[string, map[string, map[string, vector[base_types]]]]* inpt)`:
+ *   Converts a triple-nested C++ `std::map<std::string, std::map<std::string, std::map<std::string, std::vector<base_types>>>>` (passed as a pointer) into a Python `dict`.
+ *   @param inpt A pointer to the triple-nested C++ `std::map`.
+ *   @return A Python `dict`.
+ *
+ * - `cdef void as_map(dict inpt, map[string, base_types]* out)`:
+ *   Converts a Python `dict` into a C++ `std::map<std::string, base_types>` (passed as a pointer `out`). Handles conversion of string values to C++ `std::string`.
+ *   @param inpt The Python `dict` to convert.
+ *   @param out A pointer to the C++ `std::map` to populate.
+ *
+ * - `cdef void as_umap(dict inpt, unordered_map[string, base_types]* out)`:
+ *   Converts a Python `dict` into a C++ `std::unordered_map<std::string, base_types>` (passed as a pointer `out`). Handles conversion of string values to C++ `std::string`.
+ *   @param inpt The Python `dict` to convert.
+ *   @param out A pointer to the C++ `std::unordered_map` to populate.
+ *
+ * @section ToolsModule_Tools_class The Tools Class
+ * `Tools` is a `cdef class` that acts as a Python wrapper for a collection of C++ utility functions, providing convenient access to file system operations, string manipulations, and data processing utilities.
+ *
+ * @subsection Tools_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   Initializes a new C++ `tools` object and assigns its pointer to `self.ptr`.
+ *
+ * - `__init__(self)`:
+ *   The Python initializer, intentionally left empty.
+ *
+ * - `__dealloc__(self)`:
+ *   Deallocates the C++ `tools` object pointed to by `self.ptr`.
+ *
+ * @subsection Tools_methods Methods
+ * - `create_path(self, str pth)`:
+ *   Creates a directory path, including any necessary parent directories.
+ *   @param pth The path to create.
+ *
+ * - `delete_path(self, str pth)`:
+ *   Deletes a file or an empty directory.
+ *   @param pth The path to delete.
+ *
+ * - `is_file(self, str pth)`:
+ *   Checks if a given path corresponds to an existing file.
+ *   @param pth The path to check.
+ *   @return `True` if it's a file, `False` otherwise.
+ *
+ * - `rename(self, str src, str dst)`:
+ *   Renames or moves a file or directory from `src` to `dst`.
+ *   @param src The source path.
+ *   @param dst The destination path.
+ *
+ * - `abs(self, str pth)`:
+ *   Returns the absolute path for a given path.
+ *   @param pth The path to resolve.
+ *   @return The absolute path as a Python string.
+ *
+ * - `ls(self, str pth, str ext)`:
+ *   Lists files in a directory matching a given extension.
+ *   @param pth The directory path.
+ *   @param ext The file extension to filter by (e.g., ".root").
+ *   @return A Python list of matching file paths.
+ *
+ * - `replace(self, str val, str rpl, str rpwl)`:
+ *   Replaces occurrences of a substring `rpl` with `rpwl` within the string `val`.
+ *   @param val The original string.
+ *   @param rpl The substring to replace.
+ *   @param rpwl The replacement substring.
+ *   @return The modified string.
+ *
+ * - `has_substring(self, str val, str rpl)`:
+ *   Checks if a string `val` contains a substring `rpl`.
+ *   @param val The string to search within.
+ *   @param rpl The substring to search for.
+ *   @return `True` if `rpl` is found, `False` otherwise.
+ *
+ * - `ends_with(self, str val, str rpl)`:
+ *   Checks if a string `val` ends with a substring `rpl`.
+ *   @param val The string to check.
+ *   @param rpl The suffix to check for.
+ *   @return `True` if `val` ends with `rpl`, `False` otherwise.
+ *
+ * - `has_value(self, list data, str trg)`:
+ *   Checks if a list of strings `data` contains a target string `trg`.
+ *   @param data A Python list of strings.
+ *   @param trg The target string to search for.
+ *   @return `True` if `trg` is found in `data`, `False` otherwise.
+ *
+ * - `split(self, str data, trg)`:
+ *   Splits a string `data` by a delimiter `trg` (which can be a string or an integer for splitting at a specific index).
+ *   @param data The string to split.
+ *   @param trg The delimiter (string) or index (int) to split by.
+ *   @return A Python list of substrings.
+ *
+ * - `hash(self, str data, int lx = 8)`:
+ *   Computes a hash for the given string `data`.
+ *   @param data The string to hash.
+ *   @param lx The length of the hash string to return (default 8).
+ *   @return The hash as a Python string.
+ *
+ * - `encode64(self, str data)`:
+ *   Base64 encodes a string.
+ *   @param data The string to encode.
+ *   @return The base64 encoded string.
+ *
+ * - `decode64(self, str data)`:
+ *   Base64 decodes a string.
+ *   @param data The string to decode.
+ *   @return The base64 decoded string.
+ *
+ * - `discretize(self, list data, int lx)`:
+ *   Discretizes a list of data (strings or integers).
+ *   @param data A Python list of strings or integers.
+ *   @param lx The discretization parameter.
+ *   @return A discretized list.
+ *
+ * @section ToolsModule_cpp_interaction C++ Interaction
+ * The `tools.pyx` module extensively uses Cython's capabilities for seamless C++ integration:
+ * - `cdef class Tools`: Declares `Tools` as a Cython extension type.
+ * - `cdef tools *ptr`: A C++ pointer to a `tools` object, managed by the Cython class.
+ * - `from libcpp cimport bool, int, map, pair, string, vector`: Imports C++ standard library types.
+ * - `from libcpp.unordered_map cimport unordered_map`: Imports C++ `std::unordered_map`.
+ * - `from AnalysisG.core.tools cimport *`: Imports the C++ `tools` class declaration and `base_types` from its `.pxd` file.
+ * - `cython.operator.dereference as dref`: Used to dereference C++ pointers.
+ */

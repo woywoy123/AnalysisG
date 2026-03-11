@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="dataloader_8dox" kind="file" language="C++">
+    <compoundname>dataloader.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the dataloader module. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>dataloader.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>dataloader<sp/>module.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>dataloader_module_page<sp/>Dataloader<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>dataloader_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`dataloader`<sp/>module<sp/>is<sp/>responsible<sp/>for<sp/>managing<sp/>the<sp/>graph<sp/>data,<sp/>including<sp/>loading,<sp/>caching,<sp/>batching,<sp/>and<sp/>splitting<sp/>it<sp/>into<sp/>training,<sp/>validation,<sp/>and<sp/>test<sp/>sets.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>dataloader_class<sp/>The<sp/>dataloader<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`dataloader`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>dataloader_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`dataloader()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>data<sp/>structures<sp/>for<sp/>storing<sp/>the<sp/>graphs<sp/>and<sp/>their<sp/>indices.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~dataloader()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>all<sp/>the<sp/>allocated<sp/>memory,<sp/>including<sp/>the<sp/>graph<sp/>objects,<sp/>data<sp/>maps,<sp/>and<sp/>k-fold<sp/>sets.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>dataloader_methods_data<sp/>Data<sp/>Handling</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>extract_data(graph_t*<sp/>gr)`:<sp/>Adds<sp/>a<sp/>`graph_t`<sp/>object<sp/>to<sp/>the<sp/>dataset.<sp/>It<sp/>also<sp/>performs<sp/>a<sp/>cleaning<sp/>step<sp/>to<sp/>avoid<sp/>duplicating<sp/>the<sp/>data<sp/>maps.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>datatransfer(torch::TensorOptions*<sp/>op,<sp/>size_t*<sp/>num_ev,<sp/>size_t*<sp/>cur_evnt)`:<sp/>Transfers<sp/>the<sp/>graph<sp/>data<sp/>to<sp/>a<sp/>specific<sp/>device<sp/>(e.g.,<sp/>a<sp/>GPU).</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>datatransfer(std::map&lt;int,<sp/>torch::TensorOptions*&gt;*<sp/>ops)`:<sp/>Transfers<sp/>the<sp/>graph<sp/>data<sp/>to<sp/>multiple<sp/>devices<sp/>in<sp/>parallel.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>dataloader_methods_batching<sp/>Batching</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;graph_t*&gt;*<sp/>build_batch(std::vector&lt;graph_t*&gt;*<sp/>data,<sp/>model_template*<sp/>mdl,<sp/>model_report*<sp/>rep)`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>method<sp/>for<sp/>creating<sp/>batches<sp/>of<sp/>graphs.<sp/>It<sp/>takes<sp/>a<sp/>vector<sp/>of<sp/>`graph_t`<sp/>objects<sp/>and<sp/>a<sp/>model<sp/>template,<sp/>and<sp/>returns<sp/>a<sp/>vector<sp/>of<sp/>batched<sp/>graphs.<sp/>The<sp/>batching<sp/>process<sp/>involves<sp/>concatenating<sp/>the<sp/>node<sp/>and<sp/>edge<sp/>features<sp/>of<sp/>the<sp/>individual<sp/>graphs<sp/>into<sp/>larger<sp/>tensors.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>dataloader_methods_dataset<sp/>Dataset<sp/>Management</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>generate_kfold_set(int<sp/>k)`:<sp/>Splits<sp/>the<sp/>training<sp/>set<sp/>into<sp/>`k`<sp/>folds<sp/>for<sp/>cross-validation.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>generate_test_set(float<sp/>percentage)`:<sp/>Splits<sp/>the<sp/>entire<sp/>dataset<sp/>into<sp/>a<sp/>training<sp/>set<sp/>and<sp/>a<sp/>test<sp/>set.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;graph_t*&gt;*<sp/>get_k_train_set(int<sp/>k)`:<sp/>Returns<sp/>the<sp/>training<sp/>set<sp/>for<sp/>a<sp/>specific<sp/>k-fold.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;graph_t*&gt;*<sp/>get_k_validation_set(int<sp/>k)`:<sp/>Returns<sp/>the<sp/>validation<sp/>set<sp/>for<sp/>a<sp/>specific<sp/>k-fold.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;graph_t*&gt;*<sp/>get_test_set()`:<sp/>Returns<sp/>the<sp/>test<sp/>set.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>std::vector&lt;graph_t*&gt;&gt;*<sp/>get_inference()`:<sp/>Returns<sp/>the<sp/>dataset<sp/>organized<sp/>by<sp/>filename<sp/>for<sp/>inference.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>dump_dataset(std::string<sp/>path)`:<sp/>Saves<sp/>the<sp/>k-fold<sp/>information<sp/>to<sp/>a<sp/>file.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>restore_dataset(std::string<sp/>path)`:<sp/>Restores<sp/>the<sp/>k-fold<sp/>information<sp/>from<sp/>a<sp/>file.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>dataloader_methods_cache<sp/>Caching</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>dump_graphs(std::string<sp/>path,<sp/>int<sp/>threads)`:<sp/>Serializes<sp/>the<sp/>graph<sp/>objects<sp/>and<sp/>saves<sp/>them<sp/>to<sp/>HDF5<sp/>files<sp/>for<sp/>caching.<sp/>This<sp/>is<sp/>a<sp/>multi-threaded<sp/>process.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>restore_graphs(std::vector&lt;std::string&gt;<sp/>path,<sp/>int<sp/>threads)`:<sp/>Restores<sp/>the<sp/>graph<sp/>objects<sp/>from<sp/>HDF5<sp/>cache<sp/>files.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>restore_graphs(std::string<sp/>path,<sp/>int<sp/>threads)`:<sp/>A<sp/>convenience<sp/>method<sp/>to<sp/>restore<sp/>graphs<sp/>from<sp/>a<sp/>directory<sp/>of<sp/>HDF5<sp/>files.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>dataloader_methods_cuda<sp/>CUDA<sp/>Memory<sp/>Management</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>cuda_memory_server()`:<sp/>A<sp/>server<sp/>that<sp/>runs<sp/>in<sp/>a<sp/>separate<sp/>thread<sp/>to<sp/>monitor<sp/>and<sp/>manage<sp/>CUDA<sp/>memory<sp/>usage.<sp/>It<sp/>offloads<sp/>graph<sp/>data<sp/>from<sp/>the<sp/>GPU<sp/>to<sp/>the<sp/>CPU<sp/>when<sp/>the<sp/>GPU<sp/>memory<sp/>is<sp/>close<sp/>to<sp/>full.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>start_cuda_server()`:<sp/>Starts<sp/>the<sp/>CUDA<sp/>memory<sp/>server.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/dataloader/dataloader.dox"/>
+  </compounddef>
+</doxygen>

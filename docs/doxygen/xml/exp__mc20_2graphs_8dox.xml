@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="exp__mc20_2graphs_8dox" kind="file" language="C++">
+    <compoundname>graphs.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the graph classes in the exp_mc20 analysis. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>graphs.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>graph<sp/>classes<sp/>in<sp/>the<sp/>exp_mc20<sp/>analysis.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>exp_mc20_graphs_page<sp/>exp_mc20<sp/>Graphs</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>This<sp/>page<sp/>provides<sp/>detailed<sp/>documentation<sp/>for<sp/>the<sp/>various<sp/>graph<sp/>classes<sp/>used<sp/>in<sp/>the<sp/>`exp_mc20`<sp/>analysis.<sp/>These<sp/>classes<sp/>inherit<sp/>from<sp/>`graph_template`<sp/>and<sp/>define<sp/>the<sp/>specific<sp/>nodes<sp/>and<sp/>features<sp/>used<sp/>to<sp/>represent<sp/>the<sp/>event<sp/>as<sp/>a<sp/>graph.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>exp_mc20_graphs_graph_jets<sp/>Graph<sp/>of<sp/>Reconstructed<sp/>Jets</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_jets`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>reconstructed<sp/>jets<sp/>and<sp/>leptonic<sp/>top<sp/>decay<sp/>products.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>exp_mc20_graphs_graph_jets_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_jets()`:<sp/>Initializes<sp/>the<sp/>graph<sp/>name<sp/>to<sp/>&quot;graph_jets&quot;.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>exp_mc20_graphs_graph_jets_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`graph_jets`<sp/>graph.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>Defines<sp/>the<sp/>graph<sp/>structure<sp/>and<sp/>features.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>are<sp/>the<sp/>reconstructed<sp/>jets<sp/>and<sp/>the<sp/>leptonic/neutrino<sp/>decay<sp/>products<sp/>of<sp/>the<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Graph<sp/>Truth<sp/>Features**:<sp/>`signal`,<sp/>`n_lep`,<sp/>`ntops`.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Node<sp/>Truth<sp/>Features**:<sp/>`top_node`,<sp/>`res_node`.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Edge<sp/>Truth<sp/>Features**:<sp/>`res_edge`,<sp/>`top_edge`.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Graph<sp/>Data<sp/>Features**:<sp/>`met`,<sp/>`phi`,<sp/>`num_jets`,<sp/>`num_leps`,<sp/>`weight`,<sp/>`event_number`.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Node<sp/>Data<sp/>Features**:<sp/>`pt`,<sp/>`eta`,<sp/>`phi`,<sp/>`energy`,<sp/>`is_lep`,<sp/>`is_b`.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@section<sp/>exp_mc20_graphs_graph_jets_nonu<sp/>Graph<sp/>of<sp/>Reconstructed<sp/>Jets<sp/>(No<sp/>Neutrinos)</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_jets_nonu`<sp/>class<sp/>is<sp/>similar<sp/>to<sp/>`graph_jets`,<sp/>but<sp/>excludes<sp/>neutrinos<sp/>from<sp/>the<sp/>graph<sp/>nodes.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>exp_mc20_graphs_graph_jets_nonu_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>The<sp/>nodes<sp/>are<sp/>the<sp/>reconstructed<sp/>jets<sp/>and<sp/>the<sp/>leptonic<sp/>(non-neutrino)<sp/>decay<sp/>products<sp/>of<sp/>the<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Neutrino<sp/>Information**:<sp/>The<sp/>`double_neutrino()`<sp/>method<sp/>is<sp/>called<sp/>to<sp/>add<sp/>information<sp/>about<sp/>the<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@section<sp/>exp_mc20_graphs_graph_jets_detector_lep<sp/>Graph<sp/>of<sp/>Detector<sp/>Objects<sp/>(with<sp/>Neutrinos)</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_jets_detector_lep`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>all<sp/>detector-level<sp/>objects<sp/>(jets,<sp/>electrons,<sp/>muons)<sp/>and<sp/>truth<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>exp_mc20_graphs_graph_jets_detector_lep_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>Reconstructed<sp/>jets,<sp/>electrons,<sp/>muons,<sp/>and<sp/>truth<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@section<sp/>exp_mc20_graphs_graph_detector<sp/>Graph<sp/>of<sp/>Detector<sp/>Objects</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_detector`<sp/>class<sp/>constructs<sp/>a<sp/>graph<sp/>using<sp/>all<sp/>detector-level<sp/>objects<sp/>(jets,<sp/>electrons,<sp/>muons).</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>exp_mc20_graphs_graph_detector_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Nodes**:<sp/>Reconstructed<sp/>jets,<sp/>electrons,<sp/>and<sp/>muons.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Neutrino<sp/>Information**:<sp/>The<sp/>`double_neutrino()`<sp/>method<sp/>is<sp/>called<sp/>to<sp/>add<sp/>information<sp/>about<sp/>the<sp/>neutrinos.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="graphs/exp_mc20/graphs.dox"/>
+  </compounddef>
+</doxygen>

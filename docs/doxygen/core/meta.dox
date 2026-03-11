@@ -1,0 +1,315 @@
+/**
+ * @file meta.dox
+ * @brief Detailed documentation for the meta.pyx Cython module, encompassing metadata management, PyAMI integration, and data handling.
+ *
+ * @page MetaModule_page Meta Module
+ *
+ * @section MetaModule_intro Introduction
+ * The `meta.pyx` module is a cornerstone of the AnalysisG framework, providing sophisticated mechanisms for managing experimental metadata, particularly in the context of high-energy physics. It integrates with the ATLAS Metadata Interface (PyAMI) for fetching dataset information, implements robust caching using HDF5 (`h5py`), and defines classes for metadata lookup, data processing, and a core metadata container. This module is crucial for enriching raw event data with contextual information necessary for physics analysis.
+ *
+ * @section MetaModule_httpx_class The httpx Class
+ * `httpx` is a custom HTTP client built upon `pyAMI.httpclient.HttpClient`. It extends the base functionality to handle HTTPS connections with client certificates, essential for secure communication with PyAMI services.
+ *
+ * @subsection httpx_methods Methods
+ * - `__init__(self, config)`:
+ *   Initializes the `httpx` client with a given configuration object, typically containing certificate and key file paths.
+ *
+ * - `connect(self, endpoint)`:
+ *   Establishes an HTTPS connection to the specified `endpoint`. It configures the connection with host, port, and loads the client certificate chain for authentication.
+ *
+ * @section MetaModule_atlas_class The atlas Class
+ * `atlas` is a specialized PyAMI client, inheriting from `pyAMI.client.Client`. It is configured to connect to the "atlas-replica" service and attempts to authenticate using the custom `httpx` client.
+ *
+ * @subsection atlas_methods Methods
+ * - `__init__(self)`:
+ *   Initializes the `atlas` client. It sets up the `httpClient` using `httpx` and checks for successful authentication. If authentication fails, a message is printed to the console.
+ *
+ * @section MetaModule_ami_client_class The ami_client Class
+ * `ami_client` is a Cython `cdef class` responsible for orchestrating interactions with PyAMI, managing a local cache of metadata, and "dressing" `Meta` objects with fetched information.
+ *
+ * @subsection ami_client_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   Initializes an `atlas` client for PyAMI communication and a `notification` object (`self.nf`) for logging, setting its prefix to "PyAMI-MetaScan".
+ *
+ * - `__init__(self)`:
+ *   Sets the default `type_` for PyAMI queries to "DAOD_TOPQ1".
+ *
+ * - `__dealloc__(self)`:
+ *   Deallocates the `notification` object.
+ *
+ * @subsection ami_client_methods Methods
+ * - `cdef bool loadcache(self, Meta obj)`:
+ *   Attempts to load cached metadata from an HDF5 file specified by `obj.MetaCachePath`. It reads dataset IDs (`dsids`), data mappings (`datas`), and info (`infos`) for a given `dsid` from the cache. If the cache file doesn't exist or is corrupted, it attempts to create a new one.
+ *   @param obj A `Meta` object containing the `dsid` and `MetaCachePath`.
+ *   @return `True` if cached data was successfully loaded, `False` otherwise.
+ *
+ * - `cdef void savecache(self, Meta obj)`:
+ *   Saves the current `dsids`, `datas`, and `infos` to the HDF5 cache file. Data is serialized using `pickle` and base64 encoded before storage.
+ *   @param obj A `Meta` object containing the `dsid` and `MetaCachePath`.
+ *
+ * - `cdef void dressmeta(self, Meta obj, str dset_name)`:
+ *   Populates the `Meta` object `obj` with detailed information fetched from PyAMI for a specific dataset (`dset_name`). It extracts various attributes like `events`, `logicalDatasetName`, `crossSection`, `kfactor`, `weights`, etc., and sets them as properties of the `Meta` object.
+ *   @param obj The `Meta` object to be dressed with information.
+ *   @param dset_name The logical dataset name for which to fetch metadata.
+ *
+ * - `cdef void list_datasets(self, Meta obj)`:
+ *   The primary method for fetching and caching dataset metadata from PyAMI.
+ *   - It first checks if the `atlas` client is authenticated.
+ *   - It attempts to `loadcache`. If a cache hit occurs, it uses the cached data.
+ *   - If no cache hit, it queries PyAMI using `pyAMI_atlas.api.list_datasets` and `pyAMI_atlas.api.get_file` to retrieve dataset and file-level metadata. It includes a retry mechanism with re-authentication if PyAMI calls fail.
+ *   - It then iterates through the fetched datasets, checking for `amitag` matches and populating `self.datas` and `self.infos`.
+ *   - If the `Meta` object is not yet "found" (i.e., fully dressed), it attempts to `dressmeta` using the fetched information.
+ *   - Includes a fallback strategy to match files if the initial `amitag` matching is insufficient.
+ *   - Finally, if new data was fetched (not a cache hit), it calls `savecache`.
+ *   @param obj The `Meta` object to populate with dataset information.
+ *
+ * @section MetaModule_MetaLookup_class The MetaLookup Class
+ * `MetaLookup` is a Cython `cdef class` that provides a mechanism to efficiently look up `Meta` objects based on input strings (e.g., file paths or dataset identifiers).
+ *
+ * @subsection MetaLookup_cinit_dealloc Constructors
+ * - `__cinit__(self)`:
+ *   Initializes `self.metadata` and `self.matched` as empty dictionaries. Sets `self.meta` to `None` and `self.luminosity` to a default value of 140.1.
+ *
+ * - `__init__(self, MetaLookup data = None)`:
+ *   If an existing `MetaLookup` object `data` is provided, it copies its `metadata`.
+ *
+ * @subsection MetaLookup_methods Methods
+ * - `cdef Meta __find__(self, str inpt)`:
+ *   Internal method to find a `Meta` object. It first checks `self.matched` for a direct hit. If not found, it iterates through `self.metadata` and uses the `Meta.hash` method to find a match.
+ *   @param inpt The input string (e.g., file path) to search for.
+ *   @return The matching `Meta` object or `None` if not found.
+ *
+ * - `__call__(self, inpt)`:
+ *   Allows the `MetaLookup` object to be called like a function. It converts the input to a string (if bytes) and then calls `__find__` to locate the relevant `Meta` object, setting `self.meta`.
+ *   @param inpt The input (string or bytes) to look up.
+ *   @return `self` for method chaining.
+ *
+ * @subsection MetaLookup_properties Properties
+ * These properties provide access to attributes of the currently selected `Meta` object (`self.meta`).
+ *
+ * - `@property DatasetName`:
+ *   Returns the dataset name from `self.meta`.
+ *
+ * - `@property CrossSection`:
+ *   Returns the cross-section from `self.meta`.
+ *
+ * - `@property ExpectedEvents`:
+ *   Calculates and returns the expected number of events based on the cross-section and `self.luminosity`.
+ *
+ * - `@property SumOfWeights`:
+ *   Returns the sum of weights from `self.meta`.
+ *
+ * - `@property GenerateData`:
+ *   Returns a new `Data` object initialized with `self`.
+ *
+ * @section MetaModule_Data_class The Data Class
+ * `Data` is a Cython `cdef class` designed to encapsulate and process event data, particularly for handling event weights and scaling.
+ *
+ * @subsection Data_cinit_dealloc Constructors
+ * - `__cinit__(self)`:
+ *   Empty Cython constructor.
+ *
+ * - `__init__(self, mtl)`:
+ *   Initializes the `Data` object with a `MetaLookup` instance (`mtl`).
+ *
+ * @subsection Data_methods Methods
+ * - `__add__(self, Data other)`:
+ *   Implements the addition operator for `Data` objects. It combines weights and data from `other` into `self`.
+ *
+ * - `__radd__(self, other)`:
+ *   Implements reverse addition. If `other` is not an integer, it calls `__add__`. Otherwise, it generates a new `Data` object from `self._meta` and adds `self` to it.
+ *
+ * - `cdef void __populate__(self, dict inpt, map[string, vector[float]]* ptx)`:
+ *   Internal method to populate a C++ map (`ptx`) with data from a Python dictionary `inpt`. It also updates `self.sumofweights` and `self.expected_events` based on the associated `Meta` object.
+ *
+ * - `cdef void __rescale__(self, vector[float]* ptx)`:
+ *   Internal method to rescale weights. It calculates a scaling factor based on `expected_events` and `sumofweights`, then applies it to a C++ vector of floats (`ptx`).
+ *
+ * @subsection Data_properties Properties
+ * - `@property weights`:
+ *   Gets the rescaled weights as a C++ vector of floats.
+ *   - `@weights.setter weights(self, dict val)`: Sets the weights by populating `self._weights` using `__populate__`.
+ *
+ * - `@property data`:
+ *   Gets the processed data as a C++ vector of floats.
+ *   - `@data.setter data(self, dict val)`: Sets the data by populating `self._data` using `__populate__`.
+ *
+ * @section MetaModule_Meta_class The Meta Class
+ * `Meta` is a core Cython `cdef class` that serves as a container for detailed metadata associated with a dataset or event. It provides properties for various ATLAS-specific metadata fields and methods for fetching and managing this information.
+ *
+ * @subsection Meta_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   Initializes a new C++ `meta` object (`self.ptr`) and sets `self.loaded` to `False`.
+ *
+ * - `__init__(self, inpt = None)`:
+ *   If `inpt` (a dictionary) is provided, it attempts to set various attributes of `self` from `inpt`. It also initializes `self.ptr.meta_data` and `self.ptr.metacache_path` from `inpt`.
+ *
+ * - `__dealloc__(self)`:
+ *   Deallocates the C++ `meta` object pointed to by `self.ptr`.
+ *
+ * @subsection Meta_methods Methods
+ * - `cdef __meta__(self, meta* _meta)`:
+ *   Internal method to fetch and apply metadata. It creates an `ami_client` and calls `ami.list_datasets(self)` to populate `self` with metadata. It also handles the transfer of `misc` weights.
+ *
+ * - `__reduce__(self)`:
+ *   Implements the `__reduce__` protocol for pickling `Meta` objects, allowing them to be serialized and deserialized.
+ *
+ * - `__str__(self)`:
+ *   Provides a string representation of the `Meta` object, listing its attributes and their values.
+ *
+ * - `expected_events(self, float lumi = 140.1)`:
+ *   Calculates the expected number of events based on the dataset's cross-section and a given luminosity.
+ *   @param lumi The luminosity in fb^-1.
+ *   @return The expected number of events.
+ *
+ * - `GetSumOfWeights(self, str name)`:
+ *   Retrieves the sum of processed events weighted for a given name from `self.ptr.meta_data.misc`. Returns 1 if not found or zero.
+ *   @param name The name of the weight.
+ *   @return The sum of weights.
+ *
+ * - `FetchMeta(self, int dsid, str amitag)`:
+ *   Initiates the fetching of metadata for a given dataset ID (`dsid`) and AMI tag (`amitag`) by calling `__meta__`.
+ *   @param dsid The dataset ID.
+ *   @param amitag The AMI tag.
+ *
+ * - `hash(self, str val)`:
+ *   Returns a hash string for the given input `val` using the underlying C++ `meta` object's hash function.
+ *
+ * @subsection Meta_properties Properties
+ * These properties provide controlled access to the various metadata fields.
+ *
+ * - `@property MetaCachePath`:
+ *   Gets and sets the path to the metadata cache file.
+ *
+ * - `@property SumOfWeights`:
+ *   Returns the `misc` weights map from the underlying C++ `meta_data`.
+ *
+ * - `@property dsid -> int`:
+ *   Gets and sets the dataset ID.
+ *
+ * - `@property amitag -> str`:
+ *   Gets and sets the AMI tag.
+ *
+ * - `@property generators -> str`:
+ *   Gets and sets the generator names, handling string formatting.
+ *
+ * - `@property isMC -> bool`:
+ *   Gets and sets whether the dataset is Monte Carlo.
+ *
+ * - `@property derivationFormat -> str`:
+ *   Gets and sets the derivation format (e.g., "DAOD_TOPQ1").
+ *
+ * - `@property eventNumber -> double`:
+ *   Gets and sets the event number.
+ *
+ * - `@property ecmEnergy -> float`:
+ *   Gets and sets the center-of-mass energy.
+ *
+ * - `@property genFiltEff -> float`:
+ *   Gets and sets the generator filter efficiency.
+ *
+ * - `@property kfactor -> float`:
+ *   Gets and sets the k-factor.
+ *
+ * - `@property completion -> float`:
+ *   Gets and sets the completion percentage.
+ *
+ * - `@property beam_energy -> float`:
+ *   Gets and sets the beam energy.
+ *
+ * - `@property crossSection -> float`:
+ *   Gets and sets the cross-section in microbarns, handling unit conversion.
+ *
+ * - `@property generatorName -> str`:
+ *   Gets and sets the generator name.
+ *
+ * - `@property geometryVersion -> str`:
+ *   Gets and sets the geometry version.
+ *
+ * - `@property conditionsTag -> str`:
+ *   Gets and sets the conditions tag.
+ *
+ * - `@property generatorTune -> str`:
+ *   Gets and sets the generator tune.
+ *
+ * - `@property amiStatus -> str`:
+ *   Gets and sets the AMI status.
+ *
+ * - `@property beamType -> str`:
+ *   Gets and sets the beam type.
+ *
+ * - `@property productionStep -> str`:
+ *   Gets and sets the production step.
+ *
+ * - `@property projectName -> str`:
+ *   Gets and sets the project name.
+ *
+ * - `@property statsAlgorithm -> str`:
+ *   Gets and sets the statistics algorithm.
+ *
+ * - `@property crossSection_mean -> float`:
+ *   Gets and sets the mean cross-section.
+ *
+ * - `@property file_type -> str`:
+ *   Gets and sets the file type.
+ *
+ * - `@property genFilterNames -> str`:
+ *   Gets and sets the generator filter names.
+ *
+ * - `@property run_number -> int`:
+ *   Gets and sets the run number.
+ *
+ * - `@property principalPhysicsGroup -> str`:
+ *   Gets and sets the principal physics group.
+ *
+ * - `@property DatasetName -> str`:
+ *   Gets and sets the logical dataset name.
+ *
+ * - `@property keywords -> list`:
+ *   Gets and sets a list of keywords associated with the dataset.
+ *
+ * - `@property keyword -> list`:
+ *   Gets and sets a list of single keywords associated with the dataset.
+ *
+ * - `@property fileSize -> list`:
+ *   Gets and sets a list of file sizes.
+ *
+ * - `@property fileGUID -> list`:
+ *   Gets and sets a list of file GUIDs.
+ *
+ * - `@property found -> bool`:
+ *   Gets and sets a boolean indicating if the metadata was successfully found.
+ *
+ * - `@property Files -> dict`:
+ *   Gets and sets a dictionary of files associated with the dataset.
+ *
+ * - `@property totalEvents -> int`:
+ *   Gets and sets the total number of events.
+ *
+ * - `@property totalSize -> int`:
+ *   Gets and sets the total size of the dataset.
+ *
+ * - `@property nFiles -> int`:
+ *   Gets and sets the number of files in the dataset.
+ *
+ * - `@property dataType -> str`:
+ *   Gets and sets the data type.
+ *
+ * - `@property prodsysStatus -> str`:
+ *   Gets and sets the production system status.
+ *
+ * - `@property identifier -> str`:
+ *   Gets and sets the identifier.
+ *
+ * @section MetaModule_cpp_interaction C++ Interaction
+ * The `meta.pyx` module extensively uses Cython's capabilities for seamless C++ integration:
+ * - `cdef class ...`: Declares classes as Cython extension types.
+ * - `cdef meta_t *ptr`, `cdef weights_t`: Pointers to C++ structs.
+ * - `from libcpp cimport ...`: Imports C++ standard library types.
+ * - `from AnalysisG.core.structs cimport meta_t, weights_t`: Imports C++ struct declarations from `.pxd` files.
+ * - `from AnalysisG.core.tools cimport *`, `from AnalysisG.core.meta cimport *`, `from AnalysisG.core.notification cimport *`: Imports C++ declarations from corresponding `.pxd` files.
+ * - `cython.parallel.prange`: Used for parallel processing.
+ * - `cython.operator.dereference as deref`: Used to dereference C++ pointers.
+ * - `env`, `enc`, `tools().decode64`, `tools().encode64`: Utility functions for converting between Python and C++ data types and for base64 encoding/decoding.
+ * - `pyAMI.client`, `pyAMI.httpclient`, `pyAMI_atlas.api`, `http.client`, `pickle`, `h5py`: Python libraries used for external interactions (PyAMI, HDF5 caching, serialization).
+ */

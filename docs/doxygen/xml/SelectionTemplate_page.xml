@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="SelectionTemplate_page" kind="page">
+    <compoundname>SelectionTemplate_page</compoundname>
+    <title>SelectionTemplate</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="SelectionTemplate_page_1SelectionTemplate_intro">
+<title>Introduction</title><para>The <computeroutput>SelectionTemplate</computeroutput> class, implemented in Cython, serves as a foundational base for defining and applying event selections within the AnalysisG framework. It provides robust mechanisms for interpreting data from ROOT files, managing event weights, and associating metadata. This class is designed to be inherited by specific selection implementations, offering common functionalities for data processing and filtering, with a strong emphasis on performance through its C++ backend.</para>
+</sect1>
+<sect1 id="SelectionTemplate_page_1SelectionTemplate_class">
+<title>The SelectionTemplate Class</title><para><computeroutput>SelectionTemplate</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types, which is crucial for efficient processing of large datasets in high-energy physics. It encapsulates a pointer (<computeroutput>self.ptr</computeroutput>) to a C++ <computeroutput>selection_template</computeroutput> object, managing its lifecycle and exposing its parameters and functionalities as Python properties and methods.</para>
+<sect2 id="SelectionTemplate_page_1SelectionTemplate_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. If the instance is not <computeroutput>SelectionTemplate</computeroutput> itself (i.e., it&apos;s a subclass), it returns immediately. Otherwise, it initializes <computeroutput>self.root_leaves</computeroutput> as an empty dictionary and a new C++ <computeroutput>selection_template</computeroutput> object, assigning its pointer to <computeroutput>self.ptr</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: The Python initializer. If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt[&quot;data&quot;]</computeroutput>. It also initializes <computeroutput>self.ptr.passed_weights</computeroutput> and <computeroutput>self.ptr.matched_meta</computeroutput> from <computeroutput>inpt[&quot;weights&quot;]</computeroutput> and <computeroutput>inpt[&quot;meta&quot;]</computeroutput> respectively, converting them from Python types to C++ maps.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. If the instance is not <computeroutput>SelectionTemplate</computeroutput> itself, it returns. Otherwise, it deallocates the C++ <computeroutput>selection_template</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SelectionTemplate_page_1SelectionTemplate_special_methods">
+<title>Special Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__hash__(self)</computeroutput>: Computes a hash value for the selection object. It converts the first 8 characters of the C++ object&apos;s hash string to an integer.</para>
+</listitem><listitem><para><computeroutput>__name__(self)</computeroutput>: Returns the name of the underlying C++ selection object as a Python string, using the <computeroutput>env</computeroutput> utility function for conversion.</para>
+</listitem><listitem><para><computeroutput>__reduce__(self)</computeroutput>: Implements the <computeroutput>__reduce__</computeroutput> protocol for pickling <computeroutput>SelectionTemplate</computeroutput> objects, allowing them to be serialized and deserialized. It captures non-callable attributes, <computeroutput>passed_weights</computeroutput>, and <computeroutput>matched_meta</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SelectionTemplate_page_1SelectionTemplate_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: An empty placeholder method. This is intended to be overridden by subclasses to perform any necessary transformations on dictionary keys, for example, to match specific naming conventions or data structures.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SelectionTemplate_page_1SelectionTemplate_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>dump(self, str path = &quot;./pkl-data&quot;, str name = &quot;&quot;)</computeroutput>: Saves the current <computeroutput>SelectionTemplate</computeroutput> object to a pickle file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to save the file. Defaults to &quot;./pkl-data&quot;. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filename (without extension). Defaults to <computeroutput>self.ptr.name</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>load(self, str path = &quot;./pkl-data&quot;, str name = &quot;&quot;)</computeroutput>: Loads a <computeroutput>SelectionTemplate</computeroutput> object from a pickle file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to load from. Defaults to &quot;./pkl-data&quot;. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filename (without extension). Defaults to <computeroutput>self.ptr.name</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The loaded <computeroutput>SelectionTemplate</computeroutput> object or <computeroutput>None</computeroutput> if loading fails.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>HashToWeightFile(self, hash_)</computeroutput>: Converts a given hash (or list/dictionary of hashes) to a list of tuples, where each tuple contains a filename and its associated weight. This method uses the underlying C++ <computeroutput>reverse_hash</computeroutput> functionality. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>hash_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A string, list of strings, or dictionary of strings representing hashes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A list of (filename, weight) tuples.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>Postprocessing(self)</computeroutput>: An empty placeholder method intended to be overridden by subclasses for any post-processing steps required after data interpretation and selection.</para>
+</listitem><listitem><para><computeroutput>InterpretROOT(self, str path, str tree)</computeroutput>: The core method for interpreting and processing data from ROOT files based on defined <computeroutput>root_leaves</computeroutput>.<itemizedlist>
+<listitem><para><bold>Configuration Check</bold>: Verifies that <computeroutput>self.root_leaves</computeroutput> (a dictionary mapping leaf names to functions) is properly set. If not, it prints an error and returns <computeroutput>self</computeroutput>.</para>
+</listitem><listitem><para><bold>IO Setup</bold>: Initializes an <computeroutput>IO</computeroutput> object (from <computeroutput>AnalysisG.core.io</computeroutput>) with the provided <computeroutput>path</computeroutput> and <computeroutput>tree</computeroutput>, and the specified <computeroutput>root_leaves</computeroutput>. Verbosity is set to <computeroutput>False</computeroutput>.</para>
+</listitem><listitem><para><bold>Data Iteration</bold>: Iterates through the <computeroutput>IO</computeroutput> object, processing each event.</para>
+</listitem><listitem><para><bold>Leaf Association</bold>: Dynamically associates leaf names from the ROOT file with the functions defined in <computeroutput>self.root_leaves</computeroutput>.</para>
+</listitem><listitem><para><bold>Function Application</bold>: Applies the user-defined functions (from <computeroutput>self.root_leaves.values()</computeroutput>) to the extracted data for each event.</para>
+</listitem><listitem><para><bold>Postprocessing Call</bold>: After processing all events, it calls <computeroutput>self.Postprocessing()</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The path to the ROOT file(s). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tree</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the ROOT tree to read from. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>self</computeroutput> for method chaining.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="SelectionTemplate_page_1SelectionTemplate_properties">
+<title>Properties</title><para>These properties provide controlled access to the data managed by the <computeroutput>SelectionTemplate</computeroutput>.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property PassedWeights</computeroutput>: Retrieves a nested dictionary representing the weights that have passed the selection criteria. The C++ map is converted to a Python dictionary using <computeroutput>as_basic_dict_dict</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property GetMetaData</computeroutput>: Retrieves a dictionary of <computeroutput>Meta</computeroutput> objects associated with the selected events. It iterates through <computeroutput>self.ptr.matched_meta</computeroutput> (a C++ map of strings to <computeroutput>meta_t</computeroutput> structs) and converts each <computeroutput>meta_t</computeroutput> into a Python <computeroutput>Meta</computeroutput> object.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="SelectionTemplate_page_1SelectionTemplate_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>SelectionTemplate</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class SelectionTemplate</computeroutput>: Declares <computeroutput>SelectionTemplate</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef selection_template *ptr</computeroutput>: A C++ pointer to a <computeroutput>selection_template</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport string, map, pair, vector</computeroutput>: Imports C++ standard library types.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, including <computeroutput>env</computeroutput>, <computeroutput>enc</computeroutput>, <computeroutput>as_basic_dict_dict</computeroutput>, and <computeroutput>tools().ends_with</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.meta cimport *</computeroutput>: Imports C++ declarations for <computeroutput>meta_t</computeroutput> and the Python <computeroutput>Meta</computeroutput> class.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.io import IO</computeroutput>: Imports the Python <computeroutput>IO</computeroutput> class for ROOT file handling.</para>
+</listitem><listitem><para><computeroutput>pathlib</computeroutput>, <computeroutput>pickle</computeroutput>: Python libraries used for path manipulation and object serialization. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/selection_template.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,343 @@
+/**
+ * @file plotting.h
+ * @brief Base class for plot configuration and data storage.
+ * @details @c plotting inherits @c tools and @c notification and holds all
+ *          settings (axis ranges, labels, cosmetics, scaling) and data
+ *          containers (x/y data, weights, error bars) needed by derived
+ *          plotting classes such as @c roc.
+ */
+
+/**
+ * @class plotting
+ * @brief Base class for plot configuration.
+ * @details Inherits @c tools and @c notification.  Acts as a data-holding base
+ *          that centralises all configurable plotting attributes so that
+ *          derived classes such as @c roc need only set the relevant fields.
+ *
+ *          The **I/O fields** (@c output_path, @c filename, @c extension)
+ *          control where the figure is saved.  @c build_path() assembles the
+ *          full output path from these fields.
+ *
+ *          The **axis fields** (@c x_min, @c x_max, @c y_min, @c y_max,
+ *          @c x_bins, @c y_bins, @c x_logarithmic, @c y_logarithmic,
+ *          @c x_step, @c y_step, @c variable_x_bins, @c variable_y_bins)
+ *          configure histogram ranges and binning.
+ *
+ *          The **cosmetic fields** (@c style, @c title, @c xtitle, @c ytitle,
+ *          @c histfill, @c overflow, @c marker, @c hatch, @c linestyle,
+ *          @c color, @c colors, @c stack, @c density, @c line_width,
+ *          @c cap_size, @c alpha, @c use_latex, @c dpi, @c xscaling,
+ *          @c yscaling, @c auto_scale, @c font_size, @c axis_size,
+ *          @c legend_size, @c title_size) govern visual appearance.
+ *
+ *          The **data containers** (@c x_data, @c y_data, @c y_error_up,
+ *          @c y_error_down, @c x_labels, @c y_labels, @c weights,
+ *          @c cross_section, @c integrated_luminosity) hold the raw values
+ *          and normalisation constants.  @c get_max/@c get_min query extrema,
+ *          @c sum_of_weights returns the total weight, and @c mean_stdev
+ *          computes the mean and standard deviation.
+ */
+
+/**
+ * @fn plotting::plotting()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn plotting::~plotting()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn std::string plotting::build_path()
+ * @brief Construct the full output file path from @c output_path and
+ *        @c filename.
+ * @return Full path string.
+ */
+
+/**
+ * @fn float plotting::get_max(std::string dim)
+ * @brief Get the maximum value along the axis named @p dim.
+ * @param dim Axis name (@c "x" or @c "y").
+ * @return Maximum value.
+ */
+
+/**
+ * @fn float plotting::get_min(std::string dim)
+ * @brief Get the minimum value along the axis named @p dim.
+ * @param dim Axis name.
+ * @return Minimum value.
+ */
+
+/**
+ * @fn float plotting::sum_of_weights()
+ * @brief Return the sum of all entries in @c weights.
+ * @return Sum.
+ */
+
+/**
+ * @fn void plotting::build_error()
+ * @brief Compute error bars from the current data and weights.
+ */
+
+/**
+ * @fn std::tuple<float,float> plotting::mean_stdev(std::vector<float>* data)
+ * @brief Compute mean and standard deviation of @p data.
+ * @param data Pointer to data vector.
+ * @return Tuple (mean, stdev).
+ */
+
+/**
+ * @var std::string plotting::extension
+ * @brief File extension for saved figures (default @c ".pdf").
+ */
+
+/**
+ * @var std::string plotting::filename
+ * @brief Output file name without extension (default @c "untitled").
+ */
+
+/**
+ * @var std::string plotting::output_path
+ * @brief Output directory (default @c "./Figures").
+ */
+
+/**
+ * @var float plotting::x_min
+ * @brief Minimum x-axis value.
+ */
+
+/**
+ * @var float plotting::y_min
+ * @brief Minimum y-axis value.
+ */
+
+/**
+ * @var float plotting::x_max
+ * @brief Maximum x-axis value.
+ */
+
+/**
+ * @var float plotting::y_max
+ * @brief Maximum y-axis value.
+ */
+
+/**
+ * @var int plotting::x_bins
+ * @brief Number of bins on the x-axis (default 100).
+ */
+
+/**
+ * @var int plotting::y_bins
+ * @brief Number of bins on the y-axis (default 100).
+ */
+
+/**
+ * @var bool plotting::errors
+ * @brief If @c true, draw error bars.
+ */
+
+/**
+ * @var bool plotting::counts
+ * @brief If @c true, display bin counts rather than density.
+ */
+
+/**
+ * @var std::string plotting::style
+ * @brief Plot style (default @c "ROOT").
+ */
+
+/**
+ * @var std::string plotting::title
+ * @brief Plot title (default @c "untitled").
+ */
+
+/**
+ * @var std::string plotting::ytitle
+ * @brief y-axis label (default @c "y-axis").
+ */
+
+/**
+ * @var std::string plotting::xtitle
+ * @brief x-axis label (default @c "x-axis").
+ */
+
+/**
+ * @var std::string plotting::histfill
+ * @brief Histogram fill style (default @c "fill").
+ */
+
+/**
+ * @var std::string plotting::overflow
+ * @brief Overflow-bin handling (default @c "sum").
+ */
+
+/**
+ * @var std::string plotting::marker
+ * @brief Marker style string (default @c ".").
+ */
+
+/**
+ * @var std::string plotting::hatch
+ * @brief Hatch pattern string.
+ */
+
+/**
+ * @var std::string plotting::linestyle
+ * @brief Line style string (default @c "-").
+ */
+
+/**
+ * @var std::string plotting::color
+ * @brief Single colour string for the plot.
+ */
+
+/**
+ * @var std::vector<std::string> plotting::colors
+ * @brief List of colour strings for multi-histogram plots.
+ */
+
+/**
+ * @var bool plotting::stack
+ * @brief If @c true, stack histograms.
+ */
+
+/**
+ * @var bool plotting::density
+ * @brief If @c true, normalise histograms to unit area.
+ */
+
+/**
+ * @var bool plotting::x_logarithmic
+ * @brief Logarithmic x-axis.
+ */
+
+/**
+ * @var bool plotting::y_logarithmic
+ * @brief Logarithmic y-axis.
+ */
+
+/**
+ * @var float plotting::line_width
+ * @brief Line width (default 0.1).
+ */
+
+/**
+ * @var float plotting::cap_size
+ * @brief Error-bar cap size (default 1.0).
+ */
+
+/**
+ * @var float plotting::alpha
+ * @brief Fill transparency (default 0.4).
+ */
+
+/**
+ * @var float plotting::x_step
+ * @brief Tick spacing on the x-axis (-1 = automatic).
+ */
+
+/**
+ * @var float plotting::y_step
+ * @brief Tick spacing on the y-axis (-1 = automatic).
+ */
+
+/**
+ * @var float plotting::font_size
+ * @brief General font size (default 10).
+ */
+
+/**
+ * @var float plotting::axis_size
+ * @brief Axis label font size (default 12.5).
+ */
+
+/**
+ * @var float plotting::legend_size
+ * @brief Legend font size (default 10).
+ */
+
+/**
+ * @var float plotting::title_size
+ * @brief Title font size (default 10).
+ */
+
+/**
+ * @var bool plotting::use_latex
+ * @brief Use LaTeX rendering for labels (default @c true).
+ */
+
+/**
+ * @var int plotting::dpi
+ * @brief Figure resolution in DPI (default 400).
+ */
+
+/**
+ * @var float plotting::xscaling
+ * @brief Figure width scaling factor (default 1.25 × 6.4).
+ */
+
+/**
+ * @var float plotting::yscaling
+ * @brief Figure height scaling factor (default 1.25 × 4.8).
+ */
+
+/**
+ * @var bool plotting::auto_scale
+ * @brief Automatically scale figure dimensions (default @c true).
+ */
+
+/**
+ * @var std::vector<float> plotting::x_data
+ * @brief x-axis data points.
+ */
+
+/**
+ * @var std::vector<float> plotting::y_data
+ * @brief y-axis data points.
+ */
+
+/**
+ * @var std::vector<float> plotting::y_error_up
+ * @brief Upward y error bars.
+ */
+
+/**
+ * @var std::vector<float> plotting::y_error_down
+ * @brief Downward y error bars.
+ */
+
+/**
+ * @var std::unordered_map<std::string, float> plotting::x_labels
+ * @brief Map of bin labels to x positions.
+ */
+
+/**
+ * @var std::unordered_map<std::string, float> plotting::y_labels
+ * @brief Map of bin labels to y positions.
+ */
+
+/**
+ * @var std::vector<float> plotting::variable_x_bins
+ * @brief Variable-width bin edges on the x-axis.
+ */
+
+/**
+ * @var std::vector<float> plotting::variable_y_bins
+ * @brief Variable-width bin edges on the y-axis.
+ */
+
+/**
+ * @var std::vector<float> plotting::weights
+ * @brief Per-entry weights.
+ */
+
+/**
+ * @var float plotting::cross_section
+ * @brief Cross section for normalisation (default -1 = not set).
+ */
+
+/**
+ * @var float plotting::integrated_luminosity
+ * @brief Integrated luminosity in fb⁻¹ (default 140.1).
+ */

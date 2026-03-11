@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="EventGNN_page" kind="page">
+    <compoundname>EventGNN_page</compoundname>
+    <title>EventGNN</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="EventGNN_page_1EventGNN_intro">
+<title>Introduction</title><para>The <computeroutput>EventGNN</computeroutput> class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to Graph Neural Network (GNN) applications. It inherits from the generic <computeroutput>EventTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant for GNN processing. This class provides a high-performance interface to an underlying C++ event object tailored for GNN-based analyses.</para>
+</sect1>
+<sect1 id="EventGNN_page_1EventGNN_class">
+<title>The EventGNN Class</title><para><computeroutput>EventGNN</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>EventTemplate</computeroutput>, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ <computeroutput>gnn_event</computeroutput> object, which likely contains specific data members and methods pertinent to GNN events.</para>
+<sect2 id="EventGNN_page_1EventGNN_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>gnn_event</computeroutput> object and assigns its pointer to <computeroutput>self.ev</computeroutput>. It then upcasts <computeroutput>self.ev</computeroutput> to an <computeroutput>event_template*</computeroutput> and assigns it to <computeroutput>self.ptr</computeroutput>, allowing <computeroutput>EventGNN</computeroutput> to be treated as a generic <computeroutput>EventTemplate</computeroutput> while still managing its specialized C++ object.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>gnn_event</computeroutput> object pointed to by <computeroutput>self.ev</computeroutput>, ensuring proper memory management for the specialized event data. Note that <computeroutput>self.ptr</computeroutput> is not directly deleted here, as it points to <computeroutput>self.ev</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="EventGNN_page_1EventGNN_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>EventGNN</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class EventGNN</computeroutput>: Declares <computeroutput>EventGNN</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef gnn_event *ev</computeroutput>: A C++ pointer to a <computeroutput>gnn_event</computeroutput> object, which is the specialized C++ representation of a GNN event.</para>
+</listitem><listitem><para><computeroutput>self.ptr = &lt;event_template*&gt;(self.ev)</computeroutput>: This line demonstrates C++ upcasting, where a pointer to a derived class (<computeroutput>gnn_event</computeroutput>) is assigned to a pointer to its base class (<computeroutput>event_template</computeroutput>). This allows <computeroutput>EventGNN</computeroutput> to fulfill the <computeroutput>EventTemplate</computeroutput> interface while internally managing its specific <computeroutput>gnn_event</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.event_template cimport EventTemplate</computeroutput>: Imports the base <computeroutput>EventTemplate</computeroutput> class, from which <computeroutput>EventGNN</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.events.gnn.event_gnn cimport *</computeroutput>: Imports the C++ <computeroutput>gnn_event</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="events/gnn/event_gnn.dox"/>
+  </compounddef>
+</doxygen>

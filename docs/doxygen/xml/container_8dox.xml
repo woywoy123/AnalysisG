@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="container_8dox" kind="file" language="C++">
+    <compoundname>container.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the container and entry_t classes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>container.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>container<sp/>and<sp/>entry_t<sp/>classes.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>container_module_page<sp/>Container<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>container_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`container`<sp/>module<sp/>provides<sp/>the<sp/>data<sp/>structures<sp/>for<sp/>holding<sp/>and<sp/>managing<sp/>the<sp/>various<sp/>objects<sp/>created<sp/>during<sp/>the<sp/>analysis,<sp/>such<sp/>as<sp/>events,<sp/>graphs,<sp/>and<sp/>selections.<sp/>It<sp/>is<sp/>designed<sp/>to<sp/>handle<sp/>the<sp/>data<sp/>in<sp/>a<sp/>structured<sp/>and<sp/>efficient<sp/>way,<sp/>especially<sp/>in<sp/>a<sp/>multi-threaded<sp/>environment.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>container_class<sp/>The<sp/>container<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`container`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>data<sp/>holder<sp/>for<sp/>a<sp/>single<sp/>input<sp/>file.<sp/>It<sp/>stores<sp/>all<sp/>the<sp/>events,<sp/>graphs,<sp/>and<sp/>selections<sp/>associated<sp/>with<sp/>that<sp/>file.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>container_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`container()`:<sp/>The<sp/>constructor.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~container()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>all<sp/>the<sp/>allocated<sp/>memory,<sp/>including<sp/>the<sp/>meta<sp/>data,<sp/>event<sp/>templates,<sp/>graph<sp/>templates,<sp/>and<sp/>selection<sp/>templates.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>container_methods_add<sp/>Adding<sp/>Objects</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_meta_data(meta*<sp/>data,<sp/>std::string<sp/>fname)`:<sp/>Adds<sp/>the<sp/>meta<sp/>data<sp/>for<sp/>the<sp/>file.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`entry_t*<sp/>add_entry(std::string<sp/>hash)`:<sp/>Adds<sp/>a<sp/>new<sp/>`entry_t`<sp/>to<sp/>the<sp/>container,<sp/>identified<sp/>by<sp/>a<sp/>hash.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_event_template(event_template*<sp/>ev,<sp/>std::string<sp/>_label)`:<sp/>Adds<sp/>an<sp/>event<sp/>template<sp/>to<sp/>the<sp/>container.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_graph_template(graph_template*<sp/>gr,<sp/>std::string<sp/>_label)`:<sp/>Adds<sp/>a<sp/>graph<sp/>template<sp/>to<sp/>the<sp/>container.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_selection_template(selection_template*<sp/>sel)`:<sp/>Adds<sp/>a<sp/>selection<sp/>template<sp/>to<sp/>the<sp/>container.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>container_methods_access<sp/>Accessing<sp/>Objects</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>get_events(std::vector&lt;event_template*&gt;*<sp/>out,<sp/>std::string<sp/>label)`:<sp/>Retrieves<sp/>all<sp/>the<sp/>events<sp/>with<sp/>a<sp/>specific<sp/>label.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`meta*<sp/>get_meta_data()`:<sp/>Returns<sp/>the<sp/>meta<sp/>data<sp/>associated<sp/>with<sp/>the<sp/>container.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>container_methods_processing<sp/>Processing</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>compile(size_t*<sp/>l,<sp/>int<sp/>threadIdx)`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>processing<sp/>method<sp/>of<sp/>the<sp/>container.<sp/>It<sp/>iterates<sp/>through<sp/>all<sp/>the<sp/>entries<sp/>and:</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Compiles<sp/>the<sp/>events.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Compiles<sp/>and<sp/>merges<sp/>the<sp/>selections,<sp/>and<sp/>writes<sp/>them<sp/>to<sp/>output<sp/>files<sp/>if<sp/>specified.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Compiles<sp/>the<sp/>graphs<sp/>and<sp/>exports<sp/>them<sp/>to<sp/>`graph_t`<sp/>objects.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Cleans<sp/>up<sp/>the<sp/>memory<sp/>used<sp/>by<sp/>the<sp/>templates.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>fill_selections(std::map&lt;std::string,<sp/>selection_template*&gt;*<sp/>inpt)`:<sp/>Merges<sp/>the<sp/>results<sp/>of<sp/>the<sp/>selections<sp/>from<sp/>this<sp/>container<sp/>into<sp/>a<sp/>global<sp/>map<sp/>of<sp/>selections.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>populate_dataloader(dataloader*<sp/>dl)`:<sp/>Populates<sp/>a<sp/>`dataloader`<sp/>with<sp/>the<sp/>`graph_t`<sp/>objects<sp/>created<sp/>during<sp/>the<sp/>`compile`<sp/>step.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@section<sp/>entry_t_struct<sp/>The<sp/>entry_t<sp/>Struct</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>The<sp/>`entry_t`<sp/>struct<sp/>is<sp/>a<sp/>simple<sp/>data<sp/>holder<sp/>for<sp/>a<sp/>single<sp/>event<sp/>hash.<sp/>It<sp/>stores<sp/>the<sp/>event,<sp/>graph,<sp/>and<sp/>selection<sp/>templates<sp/>that<sp/>are<sp/>associated<sp/>with<sp/>that<sp/>hash.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>entry_t_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>init()`:<sp/>Initializes<sp/>the<sp/>vectors<sp/>for<sp/>storing<sp/>the<sp/>templates.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>destroy()`:<sp/>Deletes<sp/>all<sp/>the<sp/>templates<sp/>stored<sp/>in<sp/>the<sp/>entry.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>has_event(event_template*<sp/>ev)`:<sp/>Checks<sp/>if<sp/>an<sp/>event<sp/>template<sp/>with<sp/>the<sp/>same<sp/>name<sp/>and<sp/>tree<sp/>already<sp/>exists.<sp/>If<sp/>not,<sp/>it<sp/>adds<sp/>the<sp/>template<sp/>to<sp/>the<sp/>entry.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>has_graph(graph_template*<sp/>gr)`:<sp/>Checks<sp/>for<sp/>and<sp/>adds<sp/>a<sp/>graph<sp/>template.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>has_selection(selection_template*<sp/>sel)`:<sp/>Checks<sp/>for<sp/>and<sp/>adds<sp/>a<sp/>selection<sp/>template.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>entry_t_members<sp/>Members</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>hash`:<sp/>The<sp/>hash<sp/>of<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;event_template*&gt;<sp/>m_event`:<sp/>A<sp/>vector<sp/>of<sp/>event<sp/>templates.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;graph_template*&gt;<sp/>m_graph`:<sp/>A<sp/>vector<sp/>of<sp/>graph<sp/>templates.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;selection_template*&gt;<sp/>m_selection`:<sp/>A<sp/>vector<sp/>of<sp/>selection<sp/>templates.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;graph_t*&gt;<sp/>m_data`:<sp/>A<sp/>vector<sp/>of<sp/>`graph_t`<sp/>objects<sp/>created<sp/>from<sp/>the<sp/>graph<sp/>templates.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/container/container.dox"/>
+  </compounddef>
+</doxygen>

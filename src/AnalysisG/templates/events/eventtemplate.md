@@ -59,8 +59,8 @@ Below is a simple example of what an event might look like:
         this -> trees = {"some-tree"}; 
 
         // register the event particles that the framework should fetch data for 
-        this -> register_particles(&this -> m_some_objects); 
-        this -> register_particles(&this -> m_some_particles); 
+        this -> register_particle(&this -> m_some_objects); 
+        this -> register_particle(&this -> m_some_particles); 
    }
 
    event_name::~event_name(){}
@@ -83,7 +83,7 @@ Below is a simple example of what an event might look like:
         // downcast to parent particle template
         std::map<std::string, custom_particle_v2*>::iterator itr2 = this -> m_some_particles.begin(); 
         for (; itr2 != this -> m_some_particles.end(); ++itr2){
-            this -> some_particles.push_back((particle_template*)itr -> second); 
+            this -> some_particles.push_back((particle_template*)itr2 -> second); 
         }
    }
 ```

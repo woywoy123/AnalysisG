@@ -1,0 +1,39 @@
+/**
+ * @file model_template.pxd
+ * @brief Cython declaration file for the @c model_template C++ class.
+ * @details Wraps the model base class that defines graph/node/edge input and
+ *          output feature maps and model bookkeeping paths.
+ */
+
+/**
+ * @class ModelTemplate
+ * @brief Python wrapper for @c model_template.
+ * @details Subclass this (typically alongside a PyTorch `torch.nn.Module`)
+ *          to define a GNN model.  The C++ backend uses the feature maps and
+ *          path fields to manage training and checkpointing.
+ *          Internal helpers `conv` and `cond` bridge Python dicts and
+ *          C++ `map<string, string>`.
+ *
+ * **Input feature-map properties (read/write):**
+ * - `i_graph` (list[str]) — Names of graph-level input features.
+ * - `i_node` (list[str]) — Names of node-level input features.
+ * - `i_edge` (list[str]) — Names of edge-level input features.
+ *
+ * **Output feature-map properties (read/write, dict[str, str]):**
+ * - `o_graph` (dict[str, str]) — Mapping from output graph feature name to
+ *   target variable name.
+ * - `o_node` (dict[str, str]) — Mapping from output node feature name to
+ *   target variable name.
+ * - `o_edge` (dict[str, str]) — Mapping from output edge feature name to
+ *   target variable name.
+ *
+ * **Bookkeeping properties (read/write):**
+ * - `device` (str) — PyTorch device string (e.g. `"cpu"`, `"cuda:0"`).
+ * - `checkpoint_path` (str) — Directory in which model checkpoints are
+ *   saved and loaded.
+ * - `weight_name` (str) — Filename prefix for saved weight files.
+ * - `tree_name` (str) — ROOT tree name used when writing inference output.
+ * - `name` (str) — Model name; defaults to the Python class name.  Setting
+ *   this property also sets the internal `rename` flag so that the custom
+ *   name is persisted.
+ */

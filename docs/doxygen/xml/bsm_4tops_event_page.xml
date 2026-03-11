@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="bsm_4tops_event_page" kind="page">
+    <compoundname>bsm_4tops_event_page</compoundname>
+    <title>bsm_4tops Event</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="bsm_4tops_event_page_1bsm_4tops_event_intro">
+<title>Introduction</title><para>The <computeroutput>bsm_4tops</computeroutput> class is a specialization of the <computeroutput>event_template</computeroutput> and is designed to handle events from the 4-top-quark analysis (BSM). It defines the structure of the event, including the particles and their relationships, and provides methods for building and compiling the event from the input data.</para>
+</sect1>
+<sect1 id="bsm_4tops_event_page_1bsm_4tops_event_class">
+<title>The bsm_4tops Class</title><para>The <computeroutput>bsm_4tops</computeroutput> class inherits from <computeroutput>event_template</computeroutput> and implements its virtual methods to provide event-specific functionality.</para>
+<sect2 id="bsm_4tops_event_page_1bsm_4tops_event_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>bsm_4tops()</computeroutput>: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.</para>
+</listitem><listitem><para><computeroutput>~bsm_4tops()</computeroutput>: The destructor cleans up any resources allocated by the event.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="bsm_4tops_event_page_1bsm_4tops_event_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>event_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>bsm_4tops</computeroutput> event. This is used by the framework to create copies of the event for parallel processing.</para>
+</listitem><listitem><para><computeroutput>void build(element_t* el)</computeroutput>: Populates the event&apos;s data members (event number, pile-up, missing transverse energy, etc.) from the input data element.</para>
+</listitem><listitem><para><computeroutput>void CompileEvent()</computeroutput>: This is the core method of the class. It reconstructs the event by linking the various particles together. This includes:<itemizedlist>
+<listitem><para>Sorting the particles by their index.</para>
+</listitem><listitem><para>Associating top children with their parent tops.</para>
+</listitem><listitem><para>Linking truth jets to their constituent tops.</para>
+</listitem><listitem><para>Matching truth jet partons to truth jets and top children.</para>
+</listitem><listitem><para>Linking reconstructed jets to their constituent tops.</para>
+</listitem><listitem><para>Matching reconstructed jet partons to jets and top children.</para>
+</listitem><listitem><para>Matching leptons (electrons and muons) to their corresponding top children.</para>
+</listitem><listitem><para>Vectorizing the particle collections for easier access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="bsm_4tops_event_page_1bsm_4tops_event_particles">
+<title>Particle Collections</title><para>The <computeroutput>bsm_4tops</computeroutput> event contains the following particle collections:<itemizedlist>
+<listitem><para><computeroutput>m_Tops</computeroutput>: A map of top quarks in the event.</para>
+</listitem><listitem><para><computeroutput>m_Children</computeroutput>: A map of the decay products of the top quarks.</para>
+</listitem><listitem><para><computeroutput>m_TruthJets</computeroutput>: A map of truth-level jets.</para>
+</listitem><listitem><para><computeroutput>m_TruthJetParton</computeroutput>: A map of partons associated with truth jets.</para>
+</listitem><listitem><para><computeroutput>m_Jets</computeroutput>: A map of reconstructed jets.</para>
+</listitem><listitem><para><computeroutput>m_JetParton</computeroutput>: A map of partons associated with reconstructed jets.</para>
+</listitem><listitem><para><computeroutput>m_Electrons</computeroutput>: A map of electrons in the event.</para>
+</listitem><listitem><para><computeroutput>m_Muons</computeroutput>: A map of muons in the event.</para>
+</listitem></itemizedlist>
+</para>
+<para>After <computeroutput>CompileEvent()</computeroutput> is called, these maps are used to populate the following vector collections for easier access:<itemizedlist>
+<listitem><para><computeroutput>Tops</computeroutput></para>
+</listitem><listitem><para><computeroutput>Children</computeroutput></para>
+</listitem><listitem><para><computeroutput>TruthJets</computeroutput></para>
+</listitem><listitem><para><computeroutput>Jets</computeroutput></para>
+</listitem><listitem><para><computeroutput>Electrons</computeroutput></para>
+</listitem><listitem><para><computeroutput>Muons</computeroutput></para>
+</listitem><listitem><para><computeroutput>DetectorObjects</computeroutput> (a combined collection of jets, muons, and electrons) </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/bsm_4tops/event.dox"/>
+  </compounddef>
+</doxygen>

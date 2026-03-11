@@ -1,0 +1,12 @@
+/**
+ * @file graph.dox
+ * @brief Detailed documentation for the graph module within the AnalysisG.pyc framework, including its CUDA kernel implementations for graph operations.
+ *
+ * @page graph_page graph
+ *
+ * @section graph_intro Introduction
+ * The `graph` module provides high-performance functionalities for graph-related operations and data structures, optimized with Cython and accelerated using CUDA kernels. This module is crucial for efficiently processing and manipulating graph representations of data within the AnalysisG framework, particularly for tasks requiring significant computational resources.
+ *
+ * @section graph_contents Contents
+ * This module contains optimized graph processing functions and data structures, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ */

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="Edge_page" kind="page">
+    <compoundname>Edge_page</compoundname>
+    <title>Edge</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="Edge_page_1Edge_intro">
+<title>Introduction</title><para>The <computeroutput>Edge</computeroutput> class represents a connection between two <computeroutput>Node</computeroutput> objects in a graph. It is a fundamental component of the graph data structure within the |g-framework| and is used to model relationships and interactions between nodes.</para>
+</sect1>
+<sect1 id="Edge_page_1Edge_class">
+<title>The Edge Class</title><para>The <computeroutput>Edge</computeroutput> class provides a simple yet powerful interface for creating and managing edges in a graph.</para>
+<sect2 id="Edge_page_1Edge_attributes">
+<title>Attributes</title><para>An <computeroutput>Edge</computeroutput> object can have the following attributes:<itemizedlist>
+<listitem><para><bold>source</bold>: A pointer to the source <computeroutput>Node</computeroutput> of the edge.</para>
+</listitem><listitem><para><bold>destination</bold>: A pointer to the destination <computeroutput>Node</computeroutput> of the edge.</para>
+</listitem><listitem><para><bold>weight</bold>: A numerical value representing the weight or strength of the connection. Defaults to 1.0.</para>
+</listitem><listitem><para><bold>features</bold>: A map of key-value pairs representing the edge&apos;s features.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="Edge_page_1Edge_methods">
+<title>Methods</title><para>The <computeroutput>Edge</computeroutput> class provides the following methods:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>Edge(Node* source, Node* destination, double weight = 1.0)</computeroutput>: Constructor that creates a new <computeroutput>Edge</computeroutput> connecting the given source and destination nodes.</para>
+</listitem><listitem><para><computeroutput>Node* get_source() const</computeroutput>: Returns the source node of the edge.</para>
+</listitem><listitem><para><computeroutput>Node* get_destination() const</computeroutput>: Returns the destination node of the edge.</para>
+</listitem><listitem><para><computeroutput>double get_weight() const</computeroutput>: Returns the weight of the edge.</para>
+</listitem><listitem><para><computeroutput>void set_weight(double weight)</computeroutput>: Sets the weight of the edge.</para>
+</listitem><listitem><para><computeroutput>void add_feature(const std::string&amp; key, const boost::any&amp; value)</computeroutput>: Adds a feature to the edge.</para>
+</listitem><listitem><para><computeroutput>boost::any get_feature(const std::string&amp; key) const</computeroutput>: Retrieves a feature from the edge.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="Edge_page_1Edge_example">
+<title>Example Usage</title><para><programlisting filename=".cpp"><codeline><highlight class="comment">//<sp/>Create<sp/>two<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Node<sp/>node1(1);</highlight></codeline>
+<codeline><highlight class="normal">Node<sp/>node2(2);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Create<sp/>an<sp/>edge<sp/>connecting<sp/>the<sp/>two<sp/>nodes<sp/>with<sp/>a<sp/>weight<sp/>of<sp/>0.5</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Edge<sp/>edge(&amp;node1,<sp/>&amp;node2,<sp/>0.5);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>the<sp/>edge<sp/>to<sp/>the<sp/>nodes</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">node1.add_edge(&amp;edge);</highlight></codeline>
+<codeline><highlight class="normal">node2.add_edge(&amp;edge);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Get<sp/>the<sp/>source<sp/>and<sp/>destination<sp/>nodes<sp/>from<sp/>the<sp/>edge</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Node*<sp/>source<sp/>=<sp/>edge.get_source();</highlight></codeline>
+<codeline><highlight class="normal">Node*<sp/>destination<sp/>=<sp/>edge.get_destination();</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Get<sp/>the<sp/>weight<sp/>of<sp/>the<sp/>edge</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>weight<sp/>=<sp/>edge.get_weight();</highlight></codeline>
+</programlisting> </para>
+</sect1>
+    </detaileddescription>
+    <location file="core/edge.dox"/>
+  </compounddef>
+</doxygen>

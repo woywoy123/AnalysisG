@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="bsm__4tops_2particles_8dox" kind="file" language="C++">
+    <compoundname>particles.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the particles in the bsm_4tops event. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>particles.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>particles<sp/>in<sp/>the<sp/>bsm_4tops<sp/>event.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>bsm_4tops_particles_page<sp/>bsm_4tops<sp/>Particles</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>This<sp/>page<sp/>provides<sp/>detailed<sp/>documentation<sp/>for<sp/>the<sp/>various<sp/>particle<sp/>classes<sp/>used<sp/>in<sp/>the<sp/>`bsm_4tops`<sp/>event.<sp/>These<sp/>classes<sp/>inherit<sp/>from<sp/>`particle_template`<sp/>and<sp/>define<sp/>the<sp/>specific<sp/>properties<sp/>and<sp/>behaviors<sp/>of<sp/>each<sp/>particle<sp/>type.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_top<sp/>Top</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>The<sp/>`top`<sp/>class<sp/>represents<sp/>a<sp/>top<sp/>quark<sp/>in<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_top_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`top()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;top&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves<sp/>to<sp/>be<sp/>read<sp/>from<sp/>the<sp/>input<sp/>tree.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_top_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`top`<sp/>particle.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`top`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_top_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>top<sp/>quark<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`status`:<sp/>The<sp/>status<sp/>code<sp/>of<sp/>the<sp/>top<sp/>quark<sp/>from<sp/>the<sp/>Monte<sp/>Carlo<sp/>truth<sp/>record.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`TruthJets`:<sp/>A<sp/>vector<sp/>of<sp/>`truthjet`<sp/>pointers<sp/>that<sp/>are<sp/>associated<sp/>with<sp/>this<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`Jets`:<sp/>A<sp/>vector<sp/>of<sp/>`jet`<sp/>pointers<sp/>that<sp/>are<sp/>associated<sp/>with<sp/>this<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_children<sp/>Top<sp/>Children</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>The<sp/>`top_children`<sp/>class<sp/>represents<sp/>the<sp/>decay<sp/>products<sp/>of<sp/>a<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_children_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_children()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;children&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.<sp/>It<sp/>also<sp/>sets<sp/>up<sp/>a<sp/>getter<sp/>function<sp/>for<sp/>the<sp/>`from_res`<sp/>attribute.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_children_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>get_from_res(bool*<sp/>val,<sp/>top_children*<sp/>prt)`:<sp/>A<sp/>static<sp/>method<sp/>that<sp/>determines<sp/>if<sp/>the<sp/>top<sp/>child<sp/>originates<sp/>from<sp/>a<sp/>resonant<sp/>top<sp/>quark<sp/>by<sp/>checking<sp/>its<sp/>parent<sp/>particles.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`top_children`<sp/>particle.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`top_children`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_children_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>parent<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`is_lep`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>child<sp/>is<sp/>a<sp/>lepton.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>child<sp/>originates<sp/>from<sp/>a<sp/>resonance<sp/>(obtained<sp/>via<sp/>the<sp/>`get_from_res`<sp/>getter).</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_truthjet<sp/>Truth<sp/>Jets</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>The<sp/>`truthjet`<sp/>class<sp/>represents<sp/>a<sp/>truth-level<sp/>jet.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_truthjet_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`truthjet()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;truthjets&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.<sp/>It<sp/>also<sp/>sets<sp/>up<sp/>a<sp/>getter<sp/>for<sp/>the<sp/>`from_res`<sp/>attribute.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_truthjet_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>get_from_res(bool*<sp/>val,<sp/>truthjet*<sp/>prt)`:<sp/>A<sp/>static<sp/>method<sp/>that<sp/>determines<sp/>if<sp/>the<sp/>truth<sp/>jet<sp/>originates<sp/>from<sp/>a<sp/>resonant<sp/>top<sp/>quark<sp/>by<sp/>checking<sp/>its<sp/>associated<sp/>tops.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`truthjet`<sp/>particle.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`truthjet`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_truthjet_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>A<sp/>vector<sp/>of<sp/>indices<sp/>of<sp/>the<sp/>associated<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_quark_count`:<sp/>The<sp/>number<sp/>of<sp/>top<sp/>quarks<sp/>associated<sp/>with<sp/>the<sp/>jet.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>-<sp/>`w_boson_count`:<sp/>The<sp/>number<sp/>of<sp/>W<sp/>bosons<sp/>associated<sp/>with<sp/>the<sp/>jet.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>-<sp/>`Parton`:<sp/>A<sp/>vector<sp/>of<sp/>`truthjetparton`<sp/>pointers<sp/>that<sp/>are<sp/>constituents<sp/>of<sp/>this<sp/>truth<sp/>jet.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>-<sp/>`Tops`:<sp/>A<sp/>vector<sp/>of<sp/>`top`<sp/>pointers<sp/>that<sp/>this<sp/>truth<sp/>jet<sp/>is<sp/>associated<sp/>with.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>jet<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_truthjetparton<sp/>Truth<sp/>Jet<sp/>Partons</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/>The<sp/>`truthjetparton`<sp/>class<sp/>represents<sp/>a<sp/>parton<sp/>associated<sp/>with<sp/>a<sp/>truth<sp/>jet.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_truthjetparton_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/>-<sp/>`truthjetparton()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;TJparton&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_truthjetparton_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`truthjetparton`<sp/>particle.</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`truthjetparton`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_truthjetparton_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>-<sp/>`truthjet_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>parent<sp/>truth<sp/>jet.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/>-<sp/>`topchild_index`:<sp/>A<sp/>vector<sp/>of<sp/>indices<sp/>of<sp/>the<sp/>associated<sp/>top<sp/>children.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_jet<sp/>Jets</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/>The<sp/>`jet`<sp/>class<sp/>represents<sp/>a<sp/>reconstructed<sp/>jet.</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_jet_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*<sp/>-<sp/>`jet()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;jet&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves,<sp/>including<sp/>various<sp/>b-tagging<sp/>discriminants.<sp/>It<sp/>also<sp/>sets<sp/>up<sp/>a<sp/>getter<sp/>for<sp/>the<sp/>`from_res`<sp/>attribute.</highlight></codeline>
+<codeline lineno="80"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="81"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_jet_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="82"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>get_from_res(bool*<sp/>val,<sp/>jet*<sp/>prt)`:<sp/>A<sp/>static<sp/>method<sp/>that<sp/>determines<sp/>if<sp/>the<sp/>jet<sp/>originates<sp/>from<sp/>a<sp/>resonant<sp/>top<sp/>quark<sp/>by<sp/>checking<sp/>its<sp/>associated<sp/>tops.</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`jet`<sp/>particle.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`jet`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_jet_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>A<sp/>vector<sp/>of<sp/>indices<sp/>of<sp/>the<sp/>associated<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/>-<sp/>`btag_DL1r_60`,<sp/>`btag_DL1_60`,<sp/>etc.:<sp/>Boolean<sp/>flags<sp/>for<sp/>different<sp/>b-tagging<sp/>working<sp/>points.</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*<sp/>-<sp/>`DL1_b`,<sp/>`DL1_c`,<sp/>`DL1_u`,<sp/>etc.:<sp/>The<sp/>values<sp/>of<sp/>the<sp/>DL1<sp/>and<sp/>DL1r<sp/>b-tagging<sp/>discriminants.</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/>-<sp/>`is_b`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>jet<sp/>is<sp/>b-tagged<sp/>(using<sp/>the<sp/>DL1r<sp/>85%<sp/>working<sp/>point).</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/>-<sp/>`Parton`:<sp/>A<sp/>vector<sp/>of<sp/>`jetparton`<sp/>pointers<sp/>that<sp/>are<sp/>constituents<sp/>of<sp/>this<sp/>jet.</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/>-<sp/>`Tops`:<sp/>A<sp/>vector<sp/>of<sp/>`top`<sp/>pointers<sp/>that<sp/>this<sp/>jet<sp/>is<sp/>associated<sp/>with.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>if<sp/>the<sp/>jet<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_jetparton<sp/>Jet<sp/>Partons</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/>The<sp/>`jetparton`<sp/>class<sp/>represents<sp/>a<sp/>parton<sp/>associated<sp/>with<sp/>a<sp/>reconstructed<sp/>jet.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="98"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_jetparton_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="99"><highlight class="comment"><sp/>*<sp/>-<sp/>`jetparton()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;Jparton&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.</highlight></codeline>
+<codeline lineno="100"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_jetparton_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`jetparton`<sp/>particle.</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`jetparton`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_jetparton_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*<sp/>-<sp/>`jet_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>parent<sp/>jet.</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/>-<sp/>`topchild_index`:<sp/>A<sp/>vector<sp/>of<sp/>indices<sp/>of<sp/>the<sp/>associated<sp/>top<sp/>children.</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_electron<sp/>Electron</highlight></codeline>
+<codeline lineno="110"><highlight class="comment"><sp/>*<sp/>The<sp/>`electron`<sp/>class<sp/>represents<sp/>a<sp/>reconstructed<sp/>electron.</highlight></codeline>
+<codeline lineno="111"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="112"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_electron_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/>-<sp/>`electron()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;el&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_electron_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`electron`<sp/>particle.</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`electron`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsp_4tops_particles_electron_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>indicating<sp/>if<sp/>the<sp/>electron<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>parent<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsm_4tops_particles_muon<sp/>Muon</highlight></codeline>
+<codeline lineno="124"><highlight class="comment"><sp/>*<sp/>The<sp/>`muon`<sp/>class<sp/>represents<sp/>a<sp/>reconstructed<sp/>muon.</highlight></codeline>
+<codeline lineno="125"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="126"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_muon_ctor<sp/>Constructor</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/>-<sp/>`muon()`:<sp/>Initializes<sp/>the<sp/>particle<sp/>type<sp/>to<sp/>&quot;mu&quot;<sp/>and<sp/>defines<sp/>the<sp/>data<sp/>leaves.</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsm_4tops_particles_muon_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/>-<sp/>`particle_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`muon`<sp/>particle.</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(std::map&lt;std::string,<sp/>particle_template*&gt;*<sp/>prt,<sp/>element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>`muon`<sp/>particle&apos;s<sp/>properties<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsp_4tops_particles_muon_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/>-<sp/>`from_res`:<sp/>A<sp/>boolean<sp/>indicating<sp/>if<sp/>the<sp/>muon<sp/>originates<sp/>from<sp/>a<sp/>resonance.</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/>-<sp/>`top_index`:<sp/>The<sp/>index<sp/>of<sp/>the<sp/>parent<sp/>top<sp/>quark.</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="events/bsm_4tops/particles.dox"/>
+  </compounddef>
+</doxygen>

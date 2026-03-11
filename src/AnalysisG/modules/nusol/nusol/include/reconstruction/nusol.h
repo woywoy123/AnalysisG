@@ -11,6 +11,7 @@ class conuix;
 class nuelx; 
 class mtx; 
 
+/** @brief Selects the neutrino reconstruction algorithm. */
 enum class nusol_enum {
     ellipse,  // https://arxiv.org/pdf/1305.1878
     conuix,   // generalized n-neutrino approach

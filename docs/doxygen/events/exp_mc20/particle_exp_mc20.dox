@@ -1,0 +1,62 @@
+/**
+ * @file particle_exp_mc20.dox
+ * @brief Detailed documentation for specialized particle classes within the AnalysisG framework for experimental MC20 events.
+ *
+ * @page ExpMC20Particles_page ExpMC20 Particles
+ *
+ * @section ExpMC20Particles_intro Introduction
+ * The `particle_exp_mc20.pyx` module defines a collection of specialized particle classes tailored for experimental Monte Carlo 20 (MC20) events within the AnalysisG framework. These classes, including `Top`, `Child`, `PhysicsDetector`, `PhysicsTruth`, `Electron`, `Muon`, and `Jet`, all inherit from the generic `ParticleTemplate`. They encapsulate specific C++ particle types, providing a high-performance and Python-friendly interface to detailed particle information relevant to MC20 analyses.
+ *
+ * @section ExpMC20Particles_classes Specialized Particle Classes
+ * Each class below is a `cdef class`, indicating its implementation as a Cython extension type. They all inherit from `ParticleTemplate`, gaining its base functionalities for kinematic, quantum, and relational properties. Their primary role is to wrap a specific C++ particle object, allowing for specialized data access and manipulation.
+ *
+ * @subsection ExpMC20Particles_Top_class Top Class
+ * - **Introduction**: Represents a top quark particle in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `top` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `top` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Particles_Child_class Child Class
+ * - **Introduction**: Represents a child particle in a decay chain within experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `child` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `child` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Particles_PhysicsDetector_class PhysicsDetector Class
+ * - **Introduction**: Represents a particle as observed by the detector (reconstructed level) in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `physics_detector` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `physics_detector` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Particles_PhysicsTruth_class PhysicsTruth Class
+ * - **Introduction**: Represents a truth-level particle (from simulation) in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `physics_truth` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `physics_truth` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Particles_Electron_class Electron Class
+ * - **Introduction**: Represents an electron particle in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `electron` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `electron` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Particles_Muon_class Muon Class
+ * - **Introduction**: Represents a muon particle in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `muon` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `muon` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Particles_Jet_class Jet Class
+ * - **Introduction**: Represents a jet particle in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `jet` object and assigns its pointer to `self.p`. It then upcasts `self.p` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `jet` object via `self.ptr`.
+ *
+ * @section ExpMC20Particles_cpp_interaction C++ Interaction
+ * All classes in this module leverage Cython's capabilities for seamless C++ integration:
+ * - `cdef class ...`: Declares each class as a Cython extension type.
+ * - `cdef <cpp_type> *p`: A C++ pointer to a specific particle type (e.g., `top*`, `electron*`), managed by the Cython class.
+ * - `self.ptr = <particle_template*>(self.p)`: This line demonstrates C++ upcasting, where a pointer to a derived class (e.g., `top*`) is assigned to a pointer to its base class (`particle_template*`). This allows the specialized particle classes to fulfill the `ParticleTemplate` interface while internally managing their specific C++ particle data.
+ * - `from AnalysisG.events.exp_mc20.particle_exp_mc20 cimport *`: Imports the C++ particle class declarations from their `.pxd` file.
+ * - `from AnalysisG.core.particle_template cimport ParticleTemplate`: Imports the base `ParticleTemplate` class, from which all these specialized classes inherit.
+ */

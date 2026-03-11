@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="Graph_page" kind="page">
+    <compoundname>Graph_page</compoundname>
+    <title>Graph</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="Graph_page_1Graph_intro">
+<title>Introduction</title><para>The <computeroutput>Graph</computeroutput> class is a central component of the |g-framework|, representing a graph data structure composed of <computeroutput>Node</computeroutput> and <computeroutput>Edge</computeroutput> objects. It provides a comprehensive set of tools for building, manipulating, and analyzing complex graph structures in the context of high-energy physics analysis.</para>
+</sect1>
+<sect1 id="Graph_page_1Graph_class">
+<title>The Graph Class</title><para>The <computeroutput>Graph</computeroutput> class is designed to be a flexible and efficient container for graph-based data.</para>
+<sect2 id="Graph_page_1Graph_attributes">
+<title>Attributes</title><para>A <computeroutput>Graph</computeroutput> object can have the following attributes:<itemizedlist>
+<listitem><para><bold>nodes</bold>: A list of <computeroutput>Node</computeroutput> objects in the graph.</para>
+</listitem><listitem><para><bold>edges</bold>: A list of <computeroutput>Edge</computeroutput> objects in the graph.</para>
+</listitem><listitem><para><bold>features</bold>: A map of key-value pairs representing the graph&apos;s global features.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="Graph_page_1Graph_methods">
+<title>Methods</title><para>The <computeroutput>Graph</computeroutput> class provides the following methods:</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>Graph()</computeroutput>: Default constructor that creates an empty <computeroutput>Graph</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>void add_node(Node* node)</computeroutput>: Adds a node to the graph.</para>
+</listitem><listitem><para><computeroutput>void add_edge(Edge* edge)</computeroutput>: Adds an edge to the graph.</para>
+</listitem><listitem><para><computeroutput>const std::vector&lt;Node*&gt;&amp; get_nodes() const</computeroutput>: Returns the list of nodes in the graph.</para>
+</listitem><listitem><para><computeroutput>const std::vector&lt;Edge*&gt;&amp; get_edges() const</computeroutput>: Returns the list of edges in the graph.</para>
+</listitem><listitem><para><computeroutput>Node* get_node(int id) const</computeroutput>: Retrieves a node from the graph by its ID.</para>
+</listitem><listitem><para><computeroutput>void add_feature(const std::string&amp; key, const boost::any&amp; value)</computeroutput>: Adds a global feature to the graph.</para>
+</listitem><listitem><para><computeroutput>boost::any get_feature(const std::string&amp; key) const</computeroutput>: Retrieves a global feature from the graph.</para>
+</listitem><listitem><para><computeroutput>void apply_transform(const std::function&lt;void(Graph*)&gt;&amp; transform_func)</computeroutput>: Applies a transformation function to the graph.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="Graph_page_1Graph_algorithms">
+<title>Graph Algorithms</title><para>The <computeroutput>Graph</computeroutput> class also provides implementations of common graph algorithms, such as:<itemizedlist>
+<listitem><para><bold>Breadth-First Search (BFS)</bold>: <computeroutput>std::vector&lt;Node*&gt; bfs(Node* start_node)</computeroutput></para>
+</listitem><listitem><para><bold>Depth-First Search (DFS)</bold>: <computeroutput>std::vector&lt;Node*&gt; dfs(Node* start_node)</computeroutput></para>
+</listitem><listitem><para><bold>Dijkstra&apos;s Algorithm</bold>: <computeroutput>std::map&lt;Node*, double&gt; dijkstra(Node* start_node)</computeroutput></para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="Graph_page_1Graph_example">
+<title>Example Usage</title><para><programlisting filename=".cpp"><codeline><highlight class="comment">//<sp/>Create<sp/>a<sp/>new<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Graph<sp/>graph;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Create<sp/>and<sp/>add<sp/>nodes<sp/>to<sp/>the<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Node<sp/>node1(1);</highlight></codeline>
+<codeline><highlight class="normal">Node<sp/>node2(2);</highlight></codeline>
+<codeline><highlight class="normal">graph.add_node(&amp;node1);</highlight></codeline>
+<codeline><highlight class="normal">graph.add_node(&amp;node2);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Create<sp/>and<sp/>add<sp/>an<sp/>edge<sp/>to<sp/>the<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">Edge<sp/>edge(&amp;node1,<sp/>&amp;node2);</highlight></codeline>
+<codeline><highlight class="normal">graph.add_edge(&amp;edge);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Add<sp/>a<sp/>global<sp/>feature<sp/>to<sp/>the<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">graph.add_feature(</highlight><highlight class="stringliteral">&quot;event_number&quot;</highlight><highlight class="normal">,<sp/>12345);</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Perform<sp/>a<sp/>Breadth-First<sp/>Search<sp/>starting<sp/>from<sp/>node1</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal">std::vector&lt;Node*&gt;<sp/>bfs_result<sp/>=<sp/>graph.bfs(&amp;node1);</highlight></codeline>
+</programlisting> </para>
+</sect1>
+    </detaileddescription>
+    <location file="core/graph.dox"/>
+  </compounddef>
+</doxygen>

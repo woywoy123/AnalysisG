@@ -1,0 +1,131 @@
+/**
+ * @file struct.h (conuix)
+ * @brief Kinematic intermediate structs and the @c atomics_t master cache for
+ *        the Conuix neutrino solver.
+ * @details Declares the @c Conuix namespace structs and the @c atomics_t
+ *          struct that pre-computes all kinematic constants required by
+ *          @c conuic.
+ */
+
+/**
+ * @namespace Conuix
+ * @brief Internal namespace for Conuix kinematic sub-structs.
+ */
+
+/**
+ * @struct Conuix::debug
+ * @brief Debug base class providing a @c print method and per-variable output.
+ */
+
+/**
+ * @struct Conuix::kinematic_t
+ * @brief Compact kinematics for one particle (β, mass, energy).
+ */
+
+/**
+ * @struct Conuix::rotation_t
+ * @brief Rotation from the decay frame to the lab frame (φ, θ, R^T).
+ */
+
+/**
+ * @struct Conuix::base_t
+ * @brief Base kinematic constants used to construct the pencil of conics.
+ * @details Stores the (ω, Ω, β, cos/sin, …) constants shared by all
+ *          subsequent pencil evaluations.
+ */
+
+/**
+ * @struct Conuix::thetapsi_t
+ * @brief Maps between the θ and ψ parameterisations.
+ */
+
+/**
+ * @struct Conuix::pencil_t
+ * @brief Pencil-of-conics polynomial coefficients.
+ */
+
+/**
+ * @struct Conuix::Sx_t
+ * @brief Polynomial coefficients for the S_x shift.
+ */
+
+/**
+ * @struct Conuix::Sy_t
+ * @brief Polynomial coefficients for the S_y shift.
+ */
+
+/**
+ * @struct Conuix::H_matrix_t
+ * @brief H̄ and H matrix components (tau-independent, sin, cos parts).
+ */
+
+/**
+ * @struct Conuix::Mobius_t
+ * @brief Möbius transform coefficients and the τ* minimiser.
+ * @details The Möbius transform maps the conic pencil parameter λ to the
+ *          neutrino parameter τ.  @c Mobius_t stores the four Möbius
+ *          coefficients (a, b, c, d), the eigenvalues, and the result of
+ *          the τ* minimisation.
+ */
+
+/**
+ * @fn long double Conuix::cos_theta(particle_template* jet, particle_template* lep)
+ * @brief Compute the cosine of the angle between the b-jet and lepton
+ *        three-momenta.
+ * @param jet Pointer to the b-jet.
+ * @param lep Pointer to the lepton.
+ * @return cos θ.
+ */
+
+/**
+ * @struct atomics_t
+ * @brief Master cache struct that pre-computes all kinematic constants for a
+ *        single (b-jet, lepton) pair needed by the Conuix solver.
+ * @details Inherits @c Conuix::debug.
+ */
+
+/**
+ * @fn atomics_t::atomics_t(particle_template* jet, particle_template* lep, double m_nu)
+ * @brief Construct and pre-compute all constants.
+ * @param jet  Pointer to the b-jet.
+ * @param lep  Pointer to the lepton.
+ * @param m_nu Neutrino mass hypothesis (default 0).
+ */
+
+/**
+ * @fn atomics_t::~atomics_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn long double atomics_t::x1(long double Z, long double t)
+ * @brief Evaluate the x₁ neutrino coordinate.
+ */
+
+/**
+ * @fn long double atomics_t::y1(long double Z, long double t)
+ * @brief Evaluate the y₁ neutrino coordinate.
+ */
+
+/**
+ * @fn bool atomics_t::GetTauZ(long double sx, long double sy, long double* z, long double* t)
+ * @brief Invert (S_x, S_y) → (τ, Z).
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void atomics_t::masses(long double Z, long double t, std::complex<long double>* mw, std::complex<long double>* mt)
+ * @brief Compute the W and top masses corresponding to (Z, τ).
+ * @param Z   Z parameter.
+ * @param t   τ parameter.
+ * @param mw  Output W mass.
+ * @param mt  Output top mass.
+ */
+
+/**
+ * @fn void atomics_t::eigenvector(long double tau, matrix_t* vstar, long double* theta_s)
+ * @brief Compute the eigenvector at @p tau and its associated angle.
+ * @param tau      τ value.
+ * @param vstar    Output eigenvector.
+ * @param theta_s  Output angle.
+ */

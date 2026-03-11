@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="pagerank_8dox" kind="file" language="C++">
+    <compoundname>pagerank.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the pagerank_metric class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>pagerank.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>pagerank_metric<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>pagerank_metric_page<sp/>PageRank<sp/>Metric</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>pagerank_metric_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`pagerank_metric`<sp/>class<sp/>is<sp/>a<sp/>specialization<sp/>of<sp/>the<sp/>`metric_template`<sp/>and<sp/>is<sp/>designed<sp/>to<sp/>perform<sp/>PageRank<sp/>calculations<sp/>on<sp/>graph<sp/>structures.<sp/>Although<sp/>the<sp/>metric<sp/>implementation<sp/>is<sp/>incomplete,<sp/>this<sp/>documentation<sp/>describes<sp/>the<sp/>core<sp/>PageRank<sp/>algorithm<sp/>implemented<sp/>in<sp/>the<sp/>class.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>pagerank_metric_class<sp/>The<sp/>pagerank_metric<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`pagerank_metric`<sp/>class<sp/>inherits<sp/>from<sp/>`metric_template`.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>pagerank_metric_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`pagerank_metric()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>metric<sp/>name<sp/>to<sp/>&quot;pagerank&quot;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~pagerank_metric()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>pagerank_metric_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`pagerank_metric*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`pagerank_metric`.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>pagerank(std::map&lt;int,<sp/>std::map&lt;std::string,<sp/>std::string&gt;&gt;*<sp/>clust,<sp/>std::map&lt;int,<sp/>std::map&lt;int,<sp/>float&gt;&gt;*<sp/>bin_data)`:<sp/>This<sp/>method<sp/>implements<sp/>the<sp/>PageRank<sp/>algorithm.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>pagerank_metric_pagerank_algo<sp/>PageRank<sp/>Algorithm</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>The<sp/>`pagerank`<sp/>method<sp/>takes<sp/>a<sp/>cluster<sp/>of<sp/>nodes<sp/>(`clust`)<sp/>and<sp/>a<sp/>matrix<sp/>of<sp/>binary<sp/>edge<sp/>data<sp/>(`bin_data`)<sp/>as<sp/>input<sp/>and<sp/>calculates<sp/>the<sp/>PageRank<sp/>for<sp/>each<sp/>node<sp/>in<sp/>the<sp/>cluster.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>The<sp/>algorithm<sp/>proceeds<sp/>as<sp/>follows:</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>1.<sp/>**Initialization**:</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>The<sp/>damping<sp/>factor<sp/>`alpha`<sp/>is<sp/>set<sp/>to<sp/>0.85.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>The<sp/>transition<sp/>matrix<sp/>`Mij`<sp/>is<sp/>constructed<sp/>from<sp/>`bin_data`.<sp/>The<sp/>matrix<sp/>is<sp/>normalized<sp/>such<sp/>that<sp/>the<sp/>columns<sp/>sum<sp/>to<sp/>1.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>The<sp/>initial<sp/>PageRank<sp/>vector<sp/>`pr_`<sp/>is<sp/>initialized<sp/>with<sp/>the<sp/>diagonal<sp/>elements<sp/>of<sp/>`bin_data`,<sp/>representing<sp/>self-links.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>2.<sp/>**Iteration**:</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>The<sp/>algorithm<sp/>iteratively<sp/>updates<sp/>the<sp/>PageRank<sp/>vector<sp/>`PR`<sp/>until<sp/>convergence.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>In<sp/>each<sp/>iteration,<sp/>the<sp/>new<sp/>PageRank<sp/>`pr_`<sp/>is<sp/>calculated<sp/>as:<sp/>`pr_[i]<sp/>=<sp/>alpha<sp/>*<sp/>sum(Mij[i][j]<sp/>*<sp/>PR[j])<sp/>+<sp/>(1<sp/>-<sp/>alpha)<sp/>/<sp/>n_nodes`.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>The<sp/>convergence<sp/>is<sp/>checked<sp/>by<sp/>comparing<sp/>the<sp/>norm<sp/>of<sp/>the<sp/>difference<sp/>between<sp/>the<sp/>new<sp/>and<sp/>old<sp/>PageRank<sp/>vectors.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>3.<sp/>**Final<sp/>Scores**:</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/>-<sp/>After<sp/>convergence,<sp/>the<sp/>final<sp/>PageRank<sp/>scores<sp/>are<sp/>calculated<sp/>based<sp/>on<sp/>the<sp/>contributions<sp/>from<sp/>the<sp/>other<sp/>nodes<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>@note<sp/>The<sp/>`define_metric`,<sp/>`event`,<sp/>`batch`,<sp/>and<sp/>`end`<sp/>methods<sp/>are<sp/>currently<sp/>not<sp/>implemented.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="metrics/pagerank/pagerank.dox"/>
+  </compounddef>
+</doxygen>

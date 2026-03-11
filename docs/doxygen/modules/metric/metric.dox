@@ -1,0 +1,47 @@
+
+/**
+ * @file metric.dox
+ * @brief Detailed documentation for the metric_template and metric_t classes.
+ *
+ * @page metric_module_page Metric Module
+ *
+ * @section metric_module_intro Introduction
+ * The `metric` module provides the base template for defining and calculating metrics in the |g-framework|. It is designed to be flexible and extensible, allowing users to implement their own custom metrics.
+ *
+ * @section metric_template_class The metric_template Class
+ * The `metric_template` class is an abstract base class that defines the interface for all metric classes.
+ *
+ * @subsection metric_template_ctor Constructor and Destructor
+ * - `metric_template()`: The constructor initializes the properties of the metric, such as `name`, `run_names`, and `variables`.
+ * - `~metric_template()`: The destructor.
+ *
+ * @subsection metric_template_methods_virtual Virtual Methods
+ * - `metric_template* clone()`: Creates a copy of the metric object.
+ * - `void define_metric(metric_t* mtx)`: This is the core method for calculating the metric. It is intended to be overridden by derived classes.
+ * - `void define_variables()`: This method is used to register the output variables for the metric.
+ * - `void event()`: This method is called for each event.
+ * - `void batch()`: This method is called for each batch of events.
+ * - `void end()`: This method is called at the end of the processing.
+ *
+ * @subsection metric_template_methods_linking Linking
+ * - `bool link(model_template* mdl)`: Links a model to the metric.
+ * - `void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx)`: Links a batch of data to the metric.
+ *
+ * @subsection metric_template_methods_execution Execution
+ * - `void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg)`: This method orchestrates the execution of the metric calculation. It iterates through the data, calls the `define_metric` method, and writes the results to an output file.
+ * - `void define(std::vector<metric_t*>* vr, std::vector<size_t>* num, std::vector<std::string*>* title, size_t* offset)`: This method prepares the metric for execution by creating `metric_t` objects for each model, epoch, and k-fold.
+ *
+ * @section metric_t_struct The metric_t Struct
+ * The `metric_t` struct is a data container that holds all the necessary information for calculating a metric for a specific model, epoch, and k-fold.
+ *
+ * @subsection metric_t_members Members
+ * - `model_template* mdlx`: A pointer to the model template.
+ * - `std::string* pth`: The path to the model checkpoint.
+ * - `std::map<graph_enum, std::vector<std::string>>* vars`: A map of the required variables for the metric.
+ * - `std::map<graph_enum, std::vector<variable_t*>>* handl`: A map of the variable handlers.
+ * - `int kfold`, `int epoch`, `int device`, `int index`: The k-fold, epoch, device, and index of the metric.
+ * - `mode_enum train_mode`: The training mode (training, validation, or evaluation).
+ *
+ * @subsection metric_t_methods Methods
+ * - `template <typename T> T get(graph_enum, std::string)`: A template method for retrieving a variable from the metric.
+ */

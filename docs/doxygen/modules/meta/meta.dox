@@ -1,0 +1,35 @@
+
+/**
+ * @file meta.dox
+ * @brief Detailed documentation for the meta class.
+ *
+ * @page meta_module_page Meta Module
+ *
+ * @section meta_module_intro Introduction
+ * The `meta` module provides a class for storing and accessing metadata associated with a physics analysis dataset. This includes information about the dataset, such as its name, DSID, cross-section, and the number of events, as well as information about the individual files in the dataset.
+ *
+ * @section meta_class The meta Class
+ * The `meta` class is the main component of this module.
+ *
+ * @subsection meta_ctor Constructor and Destructor
+ * - `meta()`: The constructor initializes the properties of the `meta` object by setting up their respective getters.
+ * - `~meta()`: The destructor.
+ *
+ * @subsection meta_methods_parsing Parsing Metadata
+ * - `void parse_json(std::string inpt)`: Parses a JSON string containing metadata and populates the `meta_data` struct.
+ * - `void compiler()`: A helper method for `parse_json` that extracts the metadata from the parsed JSON document.
+ * - `void scan_data(TObject* obj)`: Scans a ROOT object (e.g., a `TTree` or `TH1F`) and extracts metadata from it.
+ * - `void scan_sow(TObject* obj)`: A helper method for `scan_data` that specifically handles the extraction of sum-of-weights information.
+ *
+ * @subsection meta_methods_access Accessing Metadata
+ * The `meta` class provides a large number of getter methods for accessing the various metadata fields. These getters are implemented as `property` objects, which allows for a clean and consistent interface. Some examples include:
+ * - `get_isMC(bool* val, meta* m)`
+ * - `get_cross_section_nb(double* val, meta* m)`
+ * - `get_dsid(unsigned int* val, meta* m)`
+ * - `get_DatasetName(std::string* val, meta* m)`
+ * - `get_sum_of_weights(double* val, meta* m)`
+ *
+ * @subsection meta_structs The meta_t and weights_t Structs
+ * - **meta_t**: This struct holds the metadata for a single dataset. It contains a large number of fields for storing information such as the dataset name, DSID, cross-section, number of events, etc.
+ * - **weights_t**: This struct is used to store sum-of-weights information.
+ */

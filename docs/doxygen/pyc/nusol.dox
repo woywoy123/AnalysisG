@@ -1,0 +1,12 @@
+/**
+ * @file nusol.dox
+ * @brief Detailed documentation for the nusol module within the AnalysisG.pyc framework, including its CUDA kernel implementations for neutrino solver utilities.
+ *
+ * @page nusol_page nusol
+ *
+ * @section nusol_intro Introduction
+ * The `nusol` module provides high-performance neutrino solver utilities, optimized with Cython and accelerated using CUDA kernels. This module is critical for complex physics analyses requiring efficient and accurate neutrino kinematic reconstruction, leveraging GPU capabilities for rapid calculations.
+ *
+ * @section nusol_contents Contents
+ * This module contains optimized neutrino solver functions and related utilities, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ */

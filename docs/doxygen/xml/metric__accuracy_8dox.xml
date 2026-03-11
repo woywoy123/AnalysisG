@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="metric__accuracy_8dox" kind="file" language="C++">
+    <compoundname>metric_accuracy.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the AccuracyMetric Cython class, specialized for calculating and visualizing accuracy-related metrics, particularly ROC curves, for event-level predictions. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>metric_accuracy.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>AccuracyMetric<sp/>Cython<sp/>class,<sp/>specialized<sp/>for<sp/>calculating<sp/>and<sp/>visualizing<sp/>accuracy-related<sp/>metrics,<sp/>particularly<sp/>ROC<sp/>curves,<sp/>for<sp/>event-level<sp/>predictions.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>AccuracyMetric_page<sp/>Accuracy<sp/>Metric</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>AccuracyMetric_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`AccuracyMetric`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>metric<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework<sp/>designed<sp/>for<sp/>comprehensive<sp/>evaluation<sp/>of<sp/>model<sp/>accuracy,<sp/>particularly<sp/>in<sp/>the<sp/>context<sp/>of<sp/>event-level<sp/>predictions.<sp/>It<sp/>extends<sp/>the<sp/>`MetricTemplate`<sp/>class,<sp/>providing<sp/>tailored<sp/>functionalities<sp/>for<sp/>handling<sp/>prediction<sp/>scores,<sp/>truth<sp/>labels,<sp/>and<sp/>generating<sp/>Receiver<sp/>Operating<sp/>Characteristic<sp/>(ROC)<sp/>curves.<sp/>This<sp/>class<sp/>is<sp/>crucial<sp/>for<sp/>assessing<sp/>the<sp/>performance<sp/>of<sp/>machine<sp/>learning<sp/>models<sp/>in<sp/>high-energy<sp/>physics<sp/>analyses.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>AccuracyMetric_external_declarations<sp/>External<sp/>C++<sp/>Function<sp/>Declarations</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>merge_data(vector[plt_roc_t*]*<sp/>oux,<sp/>vector[plt_roc_t*]*<sp/>inx)<sp/>except+<sp/>nogil`:</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/><sp/><sp/>An<sp/>external<sp/>C++<sp/>function<sp/>(declared<sp/>in<sp/>`&lt;tools/merge_cast.h&gt;`)<sp/>used<sp/>for<sp/>merging<sp/>vectors<sp/>of<sp/>`plt_roc_t*`<sp/>objects.<sp/>The<sp/>`except+<sp/>nogil`<sp/>indicates<sp/>that<sp/>this<sp/>function<sp/>can<sp/>release<sp/>the<sp/>GIL<sp/>and<sp/>can<sp/>raise<sp/>C++<sp/>exceptions<sp/>that<sp/>are<sp/>converted<sp/>to<sp/>Python<sp/>exceptions.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@section<sp/>AccuracyMetric_helper_functions<sp/>Helper<sp/>Functions<sp/>(C-style)</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>These<sp/>functions<sp/>are<sp/>implemented<sp/>as<sp/>C-style<sp/>functions<sp/>in<sp/>Cython<sp/>for<sp/>performance<sp/>optimization.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>tuple<sp/>mx_index(vector[double]*<sp/>sc)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Finds<sp/>the<sp/>index<sp/>and<sp/>value<sp/>of<sp/>the<sp/>maximum<sp/>element<sp/>within<sp/>a<sp/>C++<sp/>`std::vector&lt;double&gt;`.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>sc<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>C++<sp/>`std::vector&lt;double&gt;`<sp/>representing<sp/>scores.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>Python<sp/>tuple<sp/>`(index,<sp/>max_score)`.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>get_data(AccuracyMetric<sp/>vl,<sp/>dict<sp/>data,<sp/>dict<sp/>meta)`:</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/><sp/><sp/>A<sp/>callback<sp/>function<sp/>used<sp/>by<sp/>`MetricTemplate.InterpretROOT`<sp/>to<sp/>extract<sp/>and<sp/>store<sp/>accuracy-related<sp/>data<sp/>from<sp/>event<sp/>data.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>It<sp/>identifies<sp/>the<sp/>processing<sp/>mode<sp/>(training,<sp/>validation,<sp/>evaluation)<sp/>from<sp/>the<sp/>`data`<sp/>dictionary.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Extracts<sp/>`ntops`<sp/>(number<sp/>of<sp/>true<sp/>tops)<sp/>and<sp/>`score`<sp/>(prediction<sp/>scores).</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Stores<sp/>`ntops_truth`,<sp/>`edge_scores`,<sp/>and<sp/>`ntop_score`<sp/>into<sp/>the<sp/>`AccuracyMetric`<sp/>object&apos;s<sp/>internal<sp/>C++<sp/>structures,<sp/>organized<sp/>by<sp/>mode,<sp/>epoch,<sp/>model,<sp/>and<sp/>k-fold.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>vl<sp/>An<sp/>instance<sp/>of<sp/>`AccuracyMetric`.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>data<sp/>A<sp/>Python<sp/>dictionary<sp/>containing<sp/>event<sp/>data.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>meta<sp/>A<sp/>Python<sp/>dictionary<sp/>containing<sp/>metadata<sp/>(e.g.,<sp/>epoch,<sp/>kfold,<sp/>model_name).</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>vector[plt_roc_t*]<sp/>make_roc(plt_roc_t*<sp/>out,<sp/>modelx_t*<sp/>inx)`:</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Prepares<sp/>data<sp/>for<sp/>ROC<sp/>curve<sp/>generation.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>`ntops_truth`<sp/>and<sp/>`ntop_score`<sp/>data<sp/>within<sp/>a<sp/>`modelx_t`<sp/>structure,<sp/>creating<sp/>`plt_roc_t`<sp/>objects<sp/>that<sp/>encapsulate<sp/>the<sp/>scores<sp/>and<sp/>truth<sp/>labels<sp/>for<sp/>each<sp/>model<sp/>and<sp/>k-fold.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>out<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`plt_roc_t`<sp/>object<sp/>(used<sp/>as<sp/>a<sp/>base<sp/>for<sp/>model<sp/>and<sp/>variable<sp/>names).</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>inx<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`modelx_t`<sp/>object<sp/>containing<sp/>collected<sp/>model<sp/>data.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@return<sp/>A<sp/>C++<sp/>`std::vector`<sp/>of<sp/>`plt_roc_t*`<sp/>objects,<sp/>each<sp/>representing<sp/>a<sp/>set<sp/>of<sp/>scores<sp/>and<sp/>truth<sp/>for<sp/>a<sp/>specific<sp/>ROC<sp/>curve.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@section<sp/>AccuracyMetric_class<sp/>The<sp/>AccuracyMetric<sp/>Class</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>`AccuracyMetric`<sp/>is<sp/>a<sp/>`cdef<sp/>class`<sp/>that<sp/>inherits<sp/>from<sp/>`MetricTemplate`.<sp/>It<sp/>specializes<sp/>in<sp/>collecting<sp/>and<sp/>processing<sp/>data<sp/>relevant<sp/>to<sp/>classification<sp/>accuracy,<sp/>particularly<sp/>for<sp/>generating<sp/>ROC<sp/>curves.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>AccuracyMetric_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>`self.root_leaves`<sp/>to<sp/>specify<sp/>which<sp/>branches<sp/>from<sp/>ROOT<sp/>files<sp/>should<sp/>be<sp/>read<sp/>for<sp/>accuracy<sp/>metrics<sp/>(e.g.,<sp/>&quot;ntop_truth&quot;,<sp/>&quot;ntop_scores&quot;,<sp/>&quot;edge&quot;<sp/>for<sp/>training,<sp/>validation,<sp/>and<sp/>evaluation<sp/>modes).</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>`self.root_fx`<sp/>to<sp/>map<sp/>these<sp/>branches<sp/>to<sp/>the<sp/>`get_data`<sp/>helper<sp/>function<sp/>for<sp/>processing.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`accuracy_metric`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.mtx`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.mtx`<sp/>to<sp/>an<sp/>`accuracy_metric*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.mtr`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>AccuracyMetric_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>-<sp/>`Postprocessing(self)`:</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/><sp/><sp/>This<sp/>method<sp/>is<sp/>called<sp/>after<sp/>all<sp/>data<sp/>has<sp/>been<sp/>interpreted<sp/>from<sp/>ROOT<sp/>files.<sp/>It<sp/>orchestrates<sp/>the<sp/>generation<sp/>and<sp/>plotting<sp/>of<sp/>ROC<sp/>curves.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Data<sp/>Aggregation**:<sp/>Iterates<sp/>through<sp/>`self.event_level`<sp/>(a<sp/>C++<sp/>map<sp/>containing<sp/>collected<sp/>event<sp/>data),<sp/>aggregating<sp/>data<sp/>by<sp/>epoch<sp/>and<sp/>model.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**ROC<sp/>Data<sp/>Preparation**:<sp/>For<sp/>each<sp/>epoch<sp/>and<sp/>model,<sp/>it<sp/>calls<sp/>`make_roc`<sp/>to<sp/>create<sp/>`plt_roc_t`<sp/>objects<sp/>containing<sp/>scores<sp/>and<sp/>truth<sp/>labels.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Parallel<sp/>ROC<sp/>Building**:<sp/>Uses<sp/>`cython.parallel.prange`<sp/>to<sp/>parallelize<sp/>the<sp/>process<sp/>of<sp/>building<sp/>ROC<sp/>data<sp/>in<sp/>the<sp/>C++<sp/>backend.<sp/>For<sp/>each<sp/>epoch,<sp/>it<sp/>creates<sp/>an<sp/>`ROC`<sp/>object<sp/>(from<sp/>`AnalysisG.core.plotting`)<sp/>and<sp/>uses<sp/>its<sp/>`build_ROC`<sp/>method<sp/>to<sp/>populate<sp/>it<sp/>with<sp/>scores<sp/>and<sp/>truth.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>**Plotting**:<sp/>Finally,<sp/>it<sp/>calls<sp/>`rxc.__compile__()`<sp/>on<sp/>each<sp/>`ROC`<sp/>object<sp/>to<sp/>generate<sp/>and<sp/>save<sp/>the<sp/>ROC<sp/>curve<sp/>plots.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>@section<sp/>AccuracyMetric_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>The<sp/>`AccuracyMetric`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>AccuracyMetric`:<sp/>Declares<sp/>`AccuracyMetric`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>accuracy_metric<sp/>*mtr`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>an<sp/>`accuracy_metric`<sp/>object,<sp/>which<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>backend<sp/>for<sp/>accuracy<sp/>calculations.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>plt_roc_t*`,<sp/>`cdef<sp/>modelx_t*`:<sp/>Pointers<sp/>to<sp/>C++<sp/>structs<sp/>used<sp/>for<sp/>organizing<sp/>ROC<sp/>plotting<sp/>data<sp/>and<sp/>model-specific<sp/>data.</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`:<sp/>Imports<sp/>C++<sp/>declarations<sp/>from<sp/>`tools.pxd`,<sp/>including<sp/>`has_string`.</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.metric_template<sp/>cimport<sp/>MetricTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`MetricTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`AccuracyMetric`<sp/>inherits.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>cython.parallel<sp/>import<sp/>prange`:<sp/>Enables<sp/>parallel<sp/>execution<sp/>of<sp/>loops,<sp/>leveraging<sp/>multiple<sp/>CPU<sp/>cores<sp/>for<sp/>faster<sp/>processing.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>-<sp/>`ROC<sp/>rxc`:<sp/>An<sp/>instance<sp/>of<sp/>the<sp/>`ROC`<sp/>class<sp/>from<sp/>`AnalysisG.core.plotting`,<sp/>used<sp/>for<sp/>generating<sp/>ROC<sp/>curve<sp/>plots.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="metrics/accuracy/metric_accuracy.dox"/>
+  </compounddef>
+</doxygen>

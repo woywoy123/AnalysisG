@@ -1,0 +1,189 @@
+/**
+ * @file mtx.h
+ * @brief Compact double-precision matrix class for the ellipse neutrino solver.
+ * @details @c mtx provides basic linear algebra operations (transpose,
+ *          inverse, cofactor, eigenvalues, eigenvectors, trace, determinant,
+ *          dot product, cross product) on small dense matrices using a
+ *          heap-allocated 2D array.
+ */
+
+/**
+ * @class mtx
+ * @brief Dense real matrix with element-wise validity tracking.
+ */
+
+/**
+ * @fn mtx::mtx()
+ * @brief Default constructor (zero-sized).
+ */
+
+/**
+ * @fn mtx::mtx(int idx, int idy)
+ * @brief Construct an @p idx × @p idy matrix initialised to zero.
+ * @param idx Number of rows.
+ * @param idy Number of columns.
+ */
+
+/**
+ * @fn mtx::mtx(mtx* in)
+ * @brief Copy-construct from a pointer.
+ * @param in Source matrix.
+ */
+
+/**
+ * @fn mtx::mtx(mtx& in)
+ * @brief Copy-construct from a reference.
+ * @param in Source matrix.
+ */
+
+/**
+ * @fn mtx::~mtx()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn double mtx::trace()
+ * @brief Compute the matrix trace.
+ * @return Sum of diagonal elements.
+ */
+
+/**
+ * @fn double mtx::det()
+ * @brief Compute the matrix determinant.
+ * @return Determinant.
+ */
+
+/**
+ * @fn mtx mtx::copy()
+ * @brief Return a deep copy.
+ * @return Copy of @c *this.
+ */
+
+/**
+ * @fn void mtx::copy(const mtx* ipt, int idx, int idy)
+ * @brief Copy row @p idx (and optionally column @p idy) from @p ipt.
+ * @param ipt Source.
+ * @param idx Row index.
+ * @param idy Column index (-1 = all columns).
+ */
+
+/**
+ * @fn bool mtx::assign(int idx, int idy, double val, bool valid)
+ * @brief Set element @p (idx,idy) to @p val with validity flag @p valid.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn bool mtx::unique(int id1, int id2, double v1, double v2)
+ * @brief Set a pair of elements only if they are not already equal to @p v1
+ *        and @p v2 respectively.
+ * @return @c true if the assignment was performed.
+ */
+
+/**
+ * @fn mtx* mtx::cat(const mtx* v2)
+ * @brief Concatenate @p v2 as new columns to @c *this.
+ * @return Pointer to a new matrix (caller must delete).
+ */
+
+/**
+ * @fn mtx* mtx::slice(int idx)
+ * @brief Extract column @p idx as a column vector.
+ * @param idx Column index.
+ * @return Pointer to a new column-vector matrix.
+ */
+
+/**
+ * @fn mtx* mtx::eigenvalues()
+ * @brief Compute eigenvalues of a 3×3 matrix.
+ * @return Pointer to a 3×1 matrix of eigenvalues.
+ */
+
+/**
+ * @fn mtx* mtx::eigenvector()
+ * @brief Compute eigenvectors of a 3×3 matrix.
+ * @return Pointer to a 3×3 matrix whose columns are eigenvectors.
+ */
+
+/**
+ * @fn mtx mtx::T()
+ * @brief Return the transpose.
+ * @return Transposed matrix.
+ */
+
+/**
+ * @fn mtx mtx::inv()
+ * @brief Return the matrix inverse.
+ * @return Inverse.
+ */
+
+/**
+ * @fn mtx mtx::cof()
+ * @brief Return the cofactor matrix.
+ * @return Cofactor matrix.
+ */
+
+/**
+ * @fn mtx mtx::diag()
+ * @brief Return a diagonal matrix constructed from the diagonal of @c *this.
+ * @return Diagonal matrix.
+ */
+
+/**
+ * @fn mtx mtx::dot(const mtx& other)
+ * @brief Matrix-matrix product.
+ * @param other Right-hand factor.
+ * @return Product matrix.
+ */
+
+/**
+ * @fn mtx mtx::dot(const mtx* other)
+ * @brief Matrix-matrix product (pointer overload).
+ * @param other Pointer to the right-hand factor.
+ * @return Product matrix.
+ */
+
+/**
+ * @fn mtx mtx::cross(mtx* r1)
+ * @brief Cross product of two 3-vectors.
+ * @param r1 Second vector.
+ * @return Cross-product vector.
+ */
+
+/**
+ * @fn bool mtx::valid(int idx, int idy)
+ * @brief Test whether element @p (idx,idy) has a valid flag.
+ * @return @c true if valid.
+ */
+
+/**
+ * @fn void mtx::print(int prec, int width)
+ * @brief Print the matrix to stdout with @p prec decimal digits.
+ * @param prec  Decimal precision (default 6).
+ * @param width Column width (default 12).
+ */
+
+/**
+ * @var double** mtx::_m
+ * @brief Raw 2D array of matrix elements.
+ */
+
+/**
+ * @var bool** mtx::_b
+ * @brief Validity mask (same dimensions as @c _m).
+ */
+
+/**
+ * @var int mtx::dim_i
+ * @brief Number of rows.
+ */
+
+/**
+ * @var int mtx::dim_j
+ * @brief Number of columns.
+ */
+
+/**
+ * @var double mtx::tol
+ * @brief Numerical tolerance for near-zero tests (default 1e-9).
+ */

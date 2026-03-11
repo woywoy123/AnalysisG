@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="particle__gnn_8dox" kind="file" language="C++">
+    <compoundname>particle_gnn.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for specialized particle classes within the AnalysisG framework for Graph Neural Network (GNN) events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>particle_gnn.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>specialized<sp/>particle<sp/>classes<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework<sp/>for<sp/>Graph<sp/>Neural<sp/>Network<sp/>(GNN)<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>GNNParticles_page<sp/>GNN<sp/>Particles</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>GNNParticles_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`particle_gnn.pyx`<sp/>module<sp/>defines<sp/>a<sp/>collection<sp/>of<sp/>specialized<sp/>particle<sp/>classes<sp/>tailored<sp/>for<sp/>Graph<sp/>Neural<sp/>Network<sp/>(GNN)<sp/>applications<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>These<sp/>classes,<sp/>including<sp/>`Top`<sp/>and<sp/>`ZPrime`,<sp/>both<sp/>inherit<sp/>from<sp/>the<sp/>generic<sp/>`ParticleTemplate`.<sp/>They<sp/>encapsulate<sp/>specific<sp/>C++<sp/>particle<sp/>types,<sp/>providing<sp/>a<sp/>high-performance<sp/>and<sp/>Python-friendly<sp/>interface<sp/>to<sp/>detailed<sp/>particle<sp/>information<sp/>relevant<sp/>to<sp/>GNN-based<sp/>analyses.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>GNNParticles_classes<sp/>Specialized<sp/>Particle<sp/>Classes</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>Each<sp/>class<sp/>below<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>They<sp/>all<sp/>inherit<sp/>from<sp/>`ParticleTemplate`,<sp/>gaining<sp/>its<sp/>base<sp/>functionalities<sp/>for<sp/>kinematic,<sp/>quantum,<sp/>and<sp/>relational<sp/>properties.<sp/>Their<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>wrap<sp/>a<sp/>specific<sp/>C++<sp/>particle<sp/>object,<sp/>allowing<sp/>for<sp/>specialized<sp/>data<sp/>access<sp/>and<sp/>manipulation.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>GNNParticles_Top_class<sp/>Top<sp/>Class</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>**Introduction**:<sp/>Represents<sp/>a<sp/>top<sp/>quark<sp/>particle<sp/>in<sp/>GNN<sp/>events.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`top`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.prt`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.prt`<sp/>to<sp/>a<sp/>`particle_template*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>empty.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:<sp/>Deallocates<sp/>the<sp/>C++<sp/>`top`<sp/>object<sp/>via<sp/>`self.prt`.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>GNNParticles_ZPrime_class<sp/>ZPrime<sp/>Class</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>**Introduction**:<sp/>Represents<sp/>a<sp/>Z&apos;<sp/>boson<sp/>particle<sp/>in<sp/>GNN<sp/>events.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`zprime`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.prt`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.prt`<sp/>to<sp/>a<sp/>`particle_template*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.ptr`.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:<sp/>Python<sp/>initializer,<sp/>intentionally<sp/>empty.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:<sp/>Deallocates<sp/>the<sp/>C++<sp/>`zprime`<sp/>object<sp/>via<sp/>`self.prt`.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@section<sp/>GNNParticles_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>All<sp/>classes<sp/>in<sp/>this<sp/>module<sp/>leverage<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>...`:<sp/>Declares<sp/>each<sp/>class<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>&lt;cpp_type&gt;<sp/>*prt`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>specific<sp/>particle<sp/>type<sp/>(e.g.,<sp/>`top*`,<sp/>`zprime*`),<sp/>managed<sp/>by<sp/>the<sp/>Cython<sp/>class.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.ptr<sp/>=<sp/>&lt;particle_template*&gt;(self.prt)`:<sp/>This<sp/>line<sp/>demonstrates<sp/>C++<sp/>upcasting,<sp/>where<sp/>a<sp/>pointer<sp/>to<sp/>a<sp/>derived<sp/>class<sp/>(e.g.,<sp/>`top*`)<sp/>is<sp/>assigned<sp/>to<sp/>a<sp/>pointer<sp/>to<sp/>its<sp/>base<sp/>class<sp/>(`particle_template*`).<sp/>This<sp/>allows<sp/>the<sp/>specialized<sp/>particle<sp/>classes<sp/>to<sp/>fulfill<sp/>the<sp/>`ParticleTemplate`<sp/>interface<sp/>while<sp/>internally<sp/>managing<sp/>their<sp/>specific<sp/>C++<sp/>particle<sp/>data.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.events.gnn.particle_gnn<sp/>cimport<sp/>*`:<sp/>Imports<sp/>the<sp/>C++<sp/>particle<sp/>class<sp/>declarations<sp/>from<sp/>their<sp/>`.pxd`<sp/>file.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.particle_template<sp/>cimport<sp/>ParticleTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`ParticleTemplate`<sp/>class,<sp/>from<sp/>which<sp/>all<sp/>these<sp/>specialized<sp/>classes<sp/>inherit.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="events/gnn/particle_gnn.dox"/>
+  </compounddef>
+</doxygen>

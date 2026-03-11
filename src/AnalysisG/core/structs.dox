@@ -1,0 +1,77 @@
+/**
+ * @file structs.pxd
+ * @brief Cython declaration file for core data structs used throughout
+ *        @c AnalysisG.
+ * @details Wraps @c particle_t, @c meta_t, @c weights_t, @c settings_t,
+ *          @c data_enum, and @c data_t, and provides the @c switch_board
+ *          helper for reading typed leaf data.
+ */
+
+/**
+ * @struct particle_t
+ * @brief Raw particle kinematics and classification flags.
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @struct weights_t
+ * @brief Sample weighting information from AMI.
+ */
+
+
+
+
+
+
+
+/**
+ * @struct meta_t
+ * @brief Full dataset metadata struct.
+ * @details Stores AMI metadata, cross-section, luminosity, and provenance
+ *          information for a single dataset.
+ */
+
+
+
+
+
+/**
+ * @struct settings_t
+ * @brief Global analysis run settings.
+ */
+
+
+
+
+
+
+
+
+
+/**
+ * @cdef cppclass data_t
+ * @brief Wrapper around a ROOT leaf with typed read-back methods.
+ */
+
+
+
+

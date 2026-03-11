@@ -1,0 +1,119 @@
+/**
+ * @file particles.h
+ * @brief Plain-data struct for a physics particle.
+ * @details @c particle_t holds the raw kinematic and identification data for
+ *          one particle.  The @c particle_template class wraps this struct
+ *          and adds computed properties.
+ */
+
+/**
+ * @struct particle_t
+ * @brief Raw kinematic and identification data for a single particle.
+ */
+
+/**
+ * @var double particle_t::e
+ * @brief Energy in MeV (default -1e-15 to signal "unset").
+ */
+
+/**
+ * @var double particle_t::mass
+ * @brief Invariant mass in MeV (default -1).
+ */
+
+/**
+ * @var double particle_t::px
+ * @brief Cartesian x-component of three-momentum.
+ */
+
+/**
+ * @var double particle_t::py
+ * @brief Cartesian y-component of three-momentum.
+ */
+
+/**
+ * @var double particle_t::pz
+ * @brief Cartesian z-component of three-momentum.
+ */
+
+/**
+ * @var double particle_t::pt
+ * @brief Transverse momentum.
+ */
+
+/**
+ * @var double particle_t::eta
+ * @brief Pseudorapidity.
+ */
+
+/**
+ * @var double particle_t::phi
+ * @brief Azimuthal angle in radians.
+ */
+
+/**
+ * @var bool particle_t::cartesian
+ * @brief @c true if Cartesian (px, py, pz, e) coordinates are valid.
+ */
+
+/**
+ * @var bool particle_t::polar
+ * @brief @c true if polar (pt, eta, phi, e) coordinates are valid.
+ */
+
+/**
+ * @var double particle_t::charge
+ * @brief Electric charge.
+ */
+
+/**
+ * @var int particle_t::pdgid
+ * @brief PDG Monte Carlo particle identifier.
+ */
+
+/**
+ * @var int particle_t::index
+ * @brief Index of this particle within its parent event container.
+ */
+
+/**
+ * @var std::string particle_t::type
+ * @brief String label identifying the particle type (e.g. @c "top", @c "b").
+ */
+
+/**
+ * @var std::string particle_t::hash
+ * @brief Unique hash string for this particle instance.
+ */
+
+/**
+ * @var std::string particle_t::symbol
+ * @brief LaTeX-style or text symbol for the particle (e.g. @c "t", @c "b").
+ */
+
+/**
+ * @var std::vector<int> particle_t::lepdef
+ * @brief PDG IDs considered as leptons for @c is_lep classification (default
+ *        {11, 13, 15}).
+ */
+
+/**
+ * @var std::vector<int> particle_t::nudef
+ * @brief PDG IDs considered as neutrinos for @c is_nu classification (default
+ *        {12, 14, 16}).
+ */
+
+/**
+ * @var std::map<std::string, bool> particle_t::children
+ * @brief Map of child particle hashes to a presence flag.
+ */
+
+/**
+ * @var std::map<std::string, bool> particle_t::parents
+ * @brief Map of parent particle hashes to a presence flag.
+ */
+
+/**
+ * @var std::map<std::string, particle_template*>* particle_t::data_p
+ * @brief Pointer to the event-level particle map; used during event building.
+ */

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="pagerank_metric_page" kind="page">
+    <compoundname>pagerank_metric_page</compoundname>
+    <title>PageRank Metric</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="pagerank_metric_page_1pagerank_metric_intro">
+<title>Introduction</title><para>The <computeroutput>pagerank_metric</computeroutput> class is a specialization of the <computeroutput>metric_template</computeroutput> and is designed to perform PageRank calculations on graph structures. Although the metric implementation is incomplete, this documentation describes the core PageRank algorithm implemented in the class.</para>
+</sect1>
+<sect1 id="pagerank_metric_page_1pagerank_metric_class">
+<title>The pagerank_metric Class</title><para>The <computeroutput>pagerank_metric</computeroutput> class inherits from <computeroutput>metric_template</computeroutput>.</para>
+<sect2 id="pagerank_metric_page_1pagerank_metric_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>pagerank_metric()</computeroutput>: The constructor initializes the metric name to &quot;pagerank&quot;.</para>
+</listitem><listitem><para><computeroutput>~pagerank_metric()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="pagerank_metric_page_1pagerank_metric_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>pagerank_metric* clone()</computeroutput>: Creates a new instance of the <computeroutput>pagerank_metric</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>void pagerank(std::map&lt;int, std::map&lt;std::string, std::string&gt;&gt;* clust, std::map&lt;int, std::map&lt;int, float&gt;&gt;* bin_data)</computeroutput>: This method implements the PageRank algorithm.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="pagerank_metric_page_1pagerank_metric_pagerank_algo">
+<title>PageRank Algorithm</title><para>The <computeroutput>pagerank</computeroutput> method takes a cluster of nodes (<computeroutput>clust</computeroutput>) and a matrix of binary edge data (<computeroutput>bin_data</computeroutput>) as input and calculates the PageRank for each node in the cluster.</para>
+<para>The algorithm proceeds as follows:<orderedlist>
+<listitem><para><bold>Initialization</bold>:<itemizedlist>
+<listitem><para>The damping factor <computeroutput>alpha</computeroutput> is set to 0.85.</para>
+</listitem><listitem><para>The transition matrix <computeroutput>Mij</computeroutput> is constructed from <computeroutput>bin_data</computeroutput>. The matrix is normalized such that the columns sum to 1.</para>
+</listitem><listitem><para>The initial PageRank vector <computeroutput>pr_</computeroutput> is initialized with the diagonal elements of <computeroutput>bin_data</computeroutput>, representing self-links.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><bold>Iteration</bold>:<itemizedlist>
+<listitem><para>The algorithm iteratively updates the PageRank vector <computeroutput>PR</computeroutput> until convergence.</para>
+</listitem><listitem><para>In each iteration, the new PageRank <computeroutput>pr_</computeroutput> is calculated as: <computeroutput>pr_[i] = alpha * sum(Mij[i][j] * PR[j]) + (1 - alpha) / n_nodes</computeroutput>.</para>
+</listitem><listitem><para>The convergence is checked by comparing the norm of the difference between the new and old PageRank vectors.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><bold>Final Scores</bold>:<itemizedlist>
+<listitem><para>After convergence, the final PageRank scores are calculated based on the contributions from the other nodes in the graph.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></orderedlist>
+</para>
+<para><simplesect kind="note"><para>The <computeroutput>define_metric</computeroutput>, <computeroutput>event</computeroutput>, <computeroutput>batch</computeroutput>, and <computeroutput>end</computeroutput> methods are currently not implemented. </para>
+</simplesect>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="metrics/pagerank/pagerank.dox"/>
+  </compounddef>
+</doxygen>

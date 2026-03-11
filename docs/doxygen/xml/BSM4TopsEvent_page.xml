@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="BSM4TopsEvent_page" kind="page">
+    <compoundname>BSM4TopsEvent_page</compoundname>
+    <title>BSM4Tops Event</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="BSM4TopsEvent_page_1BSM4TopsEvent_intro">
+<title>Introduction</title><para>The <computeroutput>BSM4Tops</computeroutput> class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to Beyond Standard Model (BSM) 4-top quark production events. It inherits from the generic <computeroutput>EventTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant to this particular physics signature. This class provides a high-performance interface to an underlying C++ event object tailored for BSM 4-top analysis.</para>
+</sect1>
+<sect1 id="BSM4TopsEvent_page_1BSM4TopsEvent_class">
+<title>The BSM4Tops Class</title><para><computeroutput>BSM4Tops</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>EventTemplate</computeroutput>, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ <computeroutput>bsm_4tops</computeroutput> object, which likely contains specific data members and methods pertinent to BSM 4-top events.</para>
+<sect2 id="BSM4TopsEvent_page_1BSM4TopsEvent_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>bsm_4tops</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. This effectively sets up the specialized C++ backend for BSM 4-top events.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>bsm_4tops</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management for the specialized event data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="BSM4TopsEvent_page_1BSM4TopsEvent_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>BSM4Tops</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class BSM4Tops</computeroutput>: Declares <computeroutput>BSM4Tops</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef bsm_4tops *ptr</computeroutput>: A C++ pointer to a <computeroutput>bsm_4tops</computeroutput> object, managed by the Cython class. This <computeroutput>bsm_4tops</computeroutput> object is the specialized C++ representation of a BSM 4-top event.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.events.bsm_4tops.event_bsm_4tops cimport bsm_4tops</computeroutput>: Imports the C++ <computeroutput>bsm_4tops</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.event_template cimport EventTemplate</computeroutput>: Imports the base <computeroutput>EventTemplate</computeroutput> class, from which <computeroutput>BSM4Tops</computeroutput> inherits. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="events/bsm_4tops/event_bsm_4tops.dox"/>
+  </compounddef>
+</doxygen>

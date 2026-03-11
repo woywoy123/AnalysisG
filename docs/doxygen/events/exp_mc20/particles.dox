@@ -1,0 +1,105 @@
+
+/**
+ * @file particles.dox
+ * @brief Detailed documentation for the particles in the exp_mc20 event.
+ *
+ * @page exp_mc20_particles_page exp_mc20 Particles
+ *
+ * This page provides detailed documentation for the various particle classes used in the `exp_mc20` event. These classes inherit from `particle_template` and define the specific properties and behaviors of each particle type.
+ *
+ * @section exp_mc20_particles_top Top
+ * The `top` class represents a top quark in the event.
+ *
+ * @subsection exp_mc20_particles_top_ctor Constructor
+ * - `top()`: Initializes the particle type to "top" and defines the data leaves to be read from the input tree.
+ *
+ * @subsection exp_mc20_particles_top_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `top` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `top` particle's properties from the input data.
+ *
+ * @section exp_mc20_particles_child Child
+ * The `child` class represents a decay product of a top quark.
+ *
+ * @subsection exp_mc20_particles_child_ctor Constructor
+ * - `child()`: Initializes the particle type to "child" and defines the data leaves.
+ *
+ * @subsection exp_mc20_particles_child_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `child` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `child` particle's properties from the input data.
+ *
+ * @section exp_mc20_particles_physics_detector Physics Detector
+ * The `physics_detector` class represents a particle reconstructed at the detector level, with links to the truth level.
+ *
+ * @subsection exp_mc20_particles_physics_detector_ctor Constructor
+ * - `physics_detector()`: Initializes the particle type to "physdet" and defines the data leaves.
+ *
+ * @subsection exp_mc20_particles_physics_detector_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `physics_detector` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `physics_detector` particle's properties from the input data.
+ *
+ * @subsection exp_mc20_particles_physics_detector_attributes Attributes
+ * - `top_index`: A vector of indices of the associated top quarks.
+ * - `parton`: The true flavor of the particle.
+ *
+ * @section exp_mc20_particles_physics_truth Physics Truth
+ * The `physics_truth` class represents a particle at the truth level.
+ *
+ * @subsection exp_mc20_particles_physics_truth_ctor Constructor
+ * - `physics_truth()`: Initializes the particle type to "phystru" and defines the data leaves.
+ *
+ * @subsection exp_mc20_particles_physics_truth_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `physics_truth` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `physics_truth` particle's properties from the input data.
+ *
+ * @subsection exp_mc20_particles_physics_truth_attributes Attributes
+ * - `top_index`: A vector of indices of the associated top quarks.
+ * - `parton`: The parton truth label.
+ * - `type`: The type of the particle.
+ *
+ * @section exp_mc20_particles_jet Jet
+ * The `jet` class represents a reconstructed jet.
+ *
+ * @subsection exp_mc20_particles_jet_ctor Constructor
+ * - `jet()`: Initializes the particle type to "jet" and defines the data leaves.
+ *
+ * @subsection exp_mc20_particles_jet_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `jet` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `jet` particle's properties from the input data.
+ *
+ * @subsection exp_mc20_particles_jet_attributes Attributes
+ * - `flav`: The truth flavor of the jet.
+ *
+ * @section exp_mc20_particles_electron Electron
+ * The `electron` class represents a reconstructed electron.
+ *
+ * @subsection exp_mc20_particles_electron_ctor Constructor
+ * - `electron()`: Initializes the particle type to "el" and defines the data leaves.
+ *
+ * @subsection exp_mc20_particles_electron_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `electron` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `electron` particle's properties from the input data.
+ *
+ * @subsection exp_mc20_particles_electron_attributes Attributes
+ * - `is_tight`: A boolean flag indicating if the electron passes the tight selection criteria.
+ * - `d0sig`: The transverse impact parameter significance.
+ * - `delta_z0`: The longitudinal impact parameter.
+ * - `true_type`: The truth type of the electron.
+ * - `true_origin`: The truth origin of the electron.
+ *
+ * @section exp_mc20_particles_muon Muon
+ * The `muon` class represents a reconstructed muon.
+ *
+ * @subsection exp_mc20_particles_muon_ctor Constructor
+ * - `muon()`: Initializes the particle type to "mu" and defines the data leaves.
+ *
+ * @subsection exp_mc20_particles_muon_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `muon` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `muon` particle's properties from the input data.
+ *
+ * @subsection exp_mc20_particles_muon_attributes Attributes
+ * - `is_tight`: A boolean flag indicating if the muon passes the tight selection criteria.
+ * - `d0sig`: The transverse impact parameter significance.
+ * - `delta_z0`: The longitudinal impact parameter.
+ * - `true_type`: The truth type of the muon.
+ * - `true_origin`: The truth origin of the muon.
+ */

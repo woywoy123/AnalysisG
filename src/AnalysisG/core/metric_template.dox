@@ -1,0 +1,34 @@
+/**
+ * @file metric_template.h
+ * @brief C++ declaration for the @c metric_template class and
+ *        the @c finder helper function.
+ * @details Wraps the @c metric_template class (inheriting @c tools and
+ *          @c notification) used for ROOT-based model metric computation.
+ */
+
+/**
+ * @class MetricTemplate
+ * @brief Python wrapper for @c metric_template (inherits @c Tools).
+ * @details Subclass this alongside a model to define how its predictions are
+ *          evaluated against ROOT files.  The two public dicts `root_leaves`
+ *          and `root_fx` are used by `InterpretROOT` to locate data and
+ *          dispatch processing callbacks.
+ *
+ * **Configuration properties (read/write):**
+ * - `RunNames` (dict[str, str]) — Mapping from internal run-name keys to
+ *   human-readable labels, backed by `metric_template::run_names`.
+ * - `Variables` (list[str]) — List of variable names to track across epochs
+ *   and k-folds, backed by `metric_template::variables`.
+ *
+ * **Post-processing hook:**
+ * - `Postprocessing()` — Called after `InterpretROOT` finishes iterating
+ *   all events; override to compute summary statistics or produce plots.
+ *
+ * **ROOT interpretation method:**
+ * - `InterpretROOT(path: str, epochs: list[int] = [], kfolds: list[int] = []) -> MetricTemplate`
+ *   — Iterate over ROOT files under `path` (optionally filtered by epoch
+ *   and k-fold numbers), feed event data to the callbacks in `root_fx`, and
+ *   call `Postprocessing()` when done.  `root_leaves` must map tree names to
+ *   lists of leaf names; `root_fx` must map tree names (or `tree.leaf` keys)
+ *   to callables `f(self, data, meta)`.
+ */

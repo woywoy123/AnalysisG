@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ssml_mc20_jets_page" kind="page">
+    <compoundname>ssml_mc20_jets_page</compoundname>
+    <title>ssml_mc20 Jets</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This page provides detailed documentation for the jet classes used in the <computeroutput>ssml_mc20</computeroutput> event.</para>
+<sect1 id="ssml_mc20_jets_page_1ssml_mc20_jets_jet">
+<title>Jet</title><para>The <computeroutput>jet</computeroutput> class represents a reconstructed jet.</para>
+<sect2 id="ssml_mc20_jets_page_1ssml_mc20_jets_jet_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>jet()</computeroutput>: Initializes the particle type to &quot;jet&quot; and defines the data leaves to be read from the input tree, including b-tagging information. It also sets up a getter for the <computeroutput>from_res</computeroutput> attribute.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_jets_page_1ssml_mc20_jets_jet_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>jet</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>jet</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem><listitem><para><computeroutput>void get_from_res(bool* val, jet* el)</computeroutput>: A static method that determines if the jet originates from a resonant top quark by checking its parent particles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_jets_page_1ssml_mc20_jets_jet_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>btag_77</computeroutput>, <computeroutput>btag_85</computeroutput>, <computeroutput>btag_90</computeroutput>: Boolean flags for different b-tagging working points.</para>
+</listitem><listitem><para><computeroutput>sel_85</computeroutput>: A boolean flag for the 85% b-tagging selection.</para>
+</listitem><listitem><para><computeroutput>top_index</computeroutput>: The index of the associated truth top quark.</para>
+</listitem><listitem><para><computeroutput>from_res</computeroutput>: A boolean flag indicating if the jet originates from a resonance.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_jets_page_1ssml_mc20_jets_truthjet">
+<title>Truth Jet</title><para>The <computeroutput>truthjet</computeroutput> class represents a truth-level jet.</para>
+<sect2 id="ssml_mc20_jets_page_1ssml_mc20_jets_truthjet_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>truthjet()</computeroutput>: Initializes the particle type to &quot;truth_jet&quot; and defines the data leaves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_jets_page_1ssml_mc20_jets_truthjet_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>truthjet</computeroutput> particle.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the <computeroutput>truthjet</computeroutput> particle&apos;s properties from the input data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_jets_page_1ssml_mc20_jets_truthjet_attributes">
+<title>Attributes</title><para><itemizedlist>
+<listitem><para><computeroutput>top_index</computeroutput>: The index of the associated truth top quark. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="events/ssml_mc20/jets.dox"/>
+  </compounddef>
+</doxygen>

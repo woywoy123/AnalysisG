@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="accuracy_8dox" kind="file" language="C++">
+    <compoundname>accuracy.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the accuracy_metric class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>accuracy.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>accuracy_metric<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>accuracy_metric_page<sp/>Accuracy<sp/>Metric</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>accuracy_metric_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`accuracy_metric`<sp/>class<sp/>is<sp/>a<sp/>specialization<sp/>of<sp/>the<sp/>`metric_template`<sp/>and<sp/>is<sp/>designed<sp/>to<sp/>calculate<sp/>and<sp/>record<sp/>accuracy<sp/>metrics<sp/>for<sp/>GNN-based<sp/>analyses.<sp/>It<sp/>computes<sp/>the<sp/>accuracy<sp/>of<sp/>edge<sp/>predictions<sp/>and<sp/>the<sp/>classification<sp/>of<sp/>the<sp/>number<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>accuracy_metric_class<sp/>The<sp/>accuracy_metric<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`accuracy_metric`<sp/>class<sp/>inherits<sp/>from<sp/>`metric_template`<sp/>and<sp/>implements<sp/>its<sp/>virtual<sp/>methods<sp/>to<sp/>provide<sp/>metric-specific<sp/>functionality.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>accuracy_metric_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`accuracy_metric()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>metric<sp/>name<sp/>to<sp/>&quot;accuracy&quot;.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~accuracy_metric()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>accuracy_metric_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`accuracy_metric*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`accuracy_metric`.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define_variables()`:<sp/>Registers<sp/>the<sp/>output<sp/>variables<sp/>for<sp/>the<sp/>metric.<sp/>This<sp/>includes<sp/>event-wise<sp/>and<sp/>global<sp/>accuracies<sp/>for<sp/>edge<sp/>predictions<sp/>and<sp/>n-top<sp/>classification,<sp/>for<sp/>training,<sp/>validation,<sp/>and<sp/>evaluation<sp/>modes.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>event()`:<sp/>Writes<sp/>the<sp/>event-wise<sp/>metrics<sp/>to<sp/>the<sp/>output<sp/>file.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>batch()`:<sp/>This<sp/>method<sp/>is<sp/>not<sp/>used<sp/>in<sp/>this<sp/>metric.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>end()`:<sp/>This<sp/>method<sp/>is<sp/>called<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>processing.<sp/>It<sp/>calculates<sp/>the<sp/>final<sp/>global<sp/>accuracies<sp/>and<sp/>writes<sp/>them<sp/>to<sp/>the<sp/>output<sp/>file.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define_metric(metric_t*<sp/>mtx)`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>method<sp/>of<sp/>the<sp/>class.<sp/>It<sp/>takes<sp/>a<sp/>`metric_t`<sp/>object<sp/>containing<sp/>the<sp/>GNN<sp/>predictions<sp/>and<sp/>truth<sp/>information,<sp/>and<sp/>calculates<sp/>the<sp/>accuracies.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>accuracy_metric_calculation<sp/>Accuracy<sp/>Calculation</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>The<sp/>`define_metric`<sp/>method<sp/>performs<sp/>the<sp/>following<sp/>calculations:</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>**N-Top<sp/>Accuracy**:<sp/>It<sp/>compares<sp/>the<sp/>predicted<sp/>number<sp/>of<sp/>top<sp/>quarks<sp/>(the<sp/>index<sp/>with<sp/>the<sp/>highest<sp/>score<sp/>in<sp/>`ntop_scores`)<sp/>with<sp/>the<sp/>true<sp/>number<sp/>of<sp/>top<sp/>quarks<sp/>for<sp/>each<sp/>event<sp/>and<sp/>accumulates<sp/>the<sp/>results<sp/>in<sp/>a<sp/>confusion<sp/>matrix<sp/>(`ntop_accuracy`).</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>**Edge<sp/>Accuracy**:<sp/>For<sp/>each<sp/>edge<sp/>in<sp/>the<sp/>graph,<sp/>it<sp/>compares<sp/>the<sp/>predicted<sp/>edge<sp/>class<sp/>(based<sp/>on<sp/>`edge_sc`)<sp/>with<sp/>the<sp/>true<sp/>edge<sp/>class<sp/>(`edge_tr`)<sp/>and<sp/>calculates<sp/>the<sp/>event-wise<sp/>and<sp/>global<sp/>edge<sp/>accuracies.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>accuracy_metric_output<sp/>Output<sp/>Variables</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>The<sp/>metric<sp/>outputs<sp/>the<sp/>following<sp/>variables<sp/>to<sp/>a<sp/>ROOT<sp/>file:</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>**Event-wise**:</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`edge_accuracy`:<sp/>The<sp/>accuracy<sp/>of<sp/>edge<sp/>predictions<sp/>for<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`ntop_scores`:<sp/>The<sp/>predicted<sp/>scores<sp/>for<sp/>the<sp/>number<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`ntop_truth`:<sp/>The<sp/>true<sp/>number<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>**Global**:</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`global_edge_accuracy`:<sp/>The<sp/>overall<sp/>accuracy<sp/>of<sp/>edge<sp/>predictions.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`ntops_accuracy`:<sp/>A<sp/>vector<sp/>containing<sp/>the<sp/>accuracy<sp/>for<sp/>each<sp/>n-top<sp/>class.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="metrics/accuracy/accuracy.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,46 @@
+
+/**
+ * @file structs.dox
+ * @brief Detailed documentation for the various data structures used in the |g-framework|.
+ *
+ * @page structs_module_page Structs Module
+ *
+ * @section structs_module_intro Introduction
+ * The `structs` module provides a collection of data structures that are used throughout the |g-framework| for storing and managing data.
+ *
+ * @section bsc_t_class The bsc_t Class
+ * The `bsc_t` class is a base class for handling basic data types and their conversions.
+ *
+ * @subsection bsc_t_methods Methods
+ * - `data_enum root_type_translate(std::string* root_str)`: Translates a ROOT type string into a `data_enum` value.
+ * - `std::string as_string()`: Converts the current data type to a string representation.
+ * - `void flush_buffer()`: Flushes the data buffer.
+ * - `bool element(...)`: A set of overloaded methods for accessing the data in the buffer.
+ *
+ * @section element_t_struct The element_t Struct
+ * The `element_t` struct represents a single entry in a ROOT tree, providing access to the data in the leaves.
+ *
+ * @subsection element_t_methods Methods
+ * - `void set_meta()`: Sets the metadata for the event.
+ * - `bool next()`: Moves to the next event in the tree.
+ * - `bool boundary()`: Checks if the end of the tree has been reached.
+ *
+ * @section data_t_struct The data_t Struct
+ * The `data_t` struct is a data container for a single leaf in a ROOT tree.
+ *
+ * @subsection data_t_methods Methods
+ * - `void initialize()`: Initializes the data container by opening the ROOT file and setting up the tree and leaf pointers.
+ * - `bool next()`: Moves to the next event in the tree.
+ * - `void fetch_buffer()`: Fetches the data from the ROOT file into the buffer.
+ *
+ * @section optimizer_params_t_struct The optimizer_params_t Struct
+ * The `optimizer_params_t` struct holds the parameters for a PyTorch optimizer. It provides a set of properties for setting the various optimizer parameters, such as learning rate, weight decay, etc.
+ *
+ * @section other_structs Other Structs
+ * The module also defines several other structs for data storage and management:
+ * - `graph_hdf5_w`, `graph_hdf5`: Structs for serializing and deserializing graph data to and from HDF5 files.
+ * - `model_report`: A struct for storing the report of a model's training progress.
+ * - `folds_t`: A struct for storing k-fold information.
+ * - `write_t`, `writer`: Classes for writing data to ROOT files.
+ * - `variable_t`: A class for handling variables of different types.
+ */

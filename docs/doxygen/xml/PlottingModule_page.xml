@@ -1,0 +1,426 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="PlottingModule_page" kind="page">
+    <compoundname>PlottingModule_page</compoundname>
+    <title>Plotting Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="PlottingModule_page_1PlottingModule_intro">
+<title>Introduction</title><para>The <computeroutput>plotting.pyx</computeroutput> module is a powerful and flexible component of the AnalysisG framework, designed for generating high-quality scientific plots. It leverages Cython for performance optimization and integrates seamlessly with popular Python plotting libraries such as <computeroutput>matplotlib</computeroutput>, <computeroutput>mplhep</computeroutput> (for ATLAS-style plots), <computeroutput>boost_histogram</computeroutput> for efficient histogramming, and <computeroutput>numpy</computeroutput> for numerical operations. This module provides base classes for common plotting tasks (1D and 2D histograms, line plots, ROC curves) and includes utilities for histogram manipulation and statistical tests.</para>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_helper_functions">
+<title>Helper Functions</title><sect2 id="PlottingModule_page_1PlottingModule_ratio_function">
+<title>ratio(H1, H2, axis, ylabel = &quot;Ratio&quot;, normalize = False, yerror = False, this_hist = None)</title><para>Calculates and plots the ratio of two histograms. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>H1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The numerator histogram (boost_histogram object). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>H2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The denominator histogram (boost_histogram object). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>axis</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The matplotlib axis object to plot on. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ylabel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The label for the y-axis of the ratio plot. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>normalize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If <computeroutput>True</computeroutput>, normalizes both histograms before calculating the ratio. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>yerror</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If <computeroutput>True</computeroutput>, calculates and displays y-errors for the ratio. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>this_hist</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of a plotting class (e.g., <computeroutput>TH1F</computeroutput>) to inherit font size and other styling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A dictionary containing the ratio histogram, axis, color, histtype, markersize, and an <computeroutput>axhline</computeroutput> at 1.</para>
+</simplesect>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1PlottingModule_chi2_function">
+<title>chi2(H1, H2, axis, ylabel = &quot;Ratio&quot;, normalize = False, yerror = False, this_hist = None)</title><para>Calculates and plots a chi-squared-like difference between two histograms. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>H1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The observed histogram (boost_histogram object). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>H2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The expected histogram (boost_histogram object). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>axis</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The matplotlib axis object to plot on. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>ylabel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The label for the y-axis (though it&apos;s overridden by a specific chi-squared expression). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>normalize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If <computeroutput>True</computeroutput>, normalizes both histograms before calculating the difference. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>yerror</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If <computeroutput>True</computeroutput>, calculates and displays y-errors (currently set to 0). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>this_hist</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of a plotting class (e.g., <computeroutput>TH1F</computeroutput>) to inherit font size and other styling. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A dictionary containing the difference histogram, axis, color, marker, histtype, markersize, and an additional string with the calculated chi-squared value.</para>
+</simplesect>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_BasePlotting_class">
+<title>The BasePlotting Class</title><para><computeroutput>BasePlotting</computeroutput> is a <computeroutput>cdef class</computeroutput> that serves as the foundational class for all plotting objects within this module. It provides common functionalities such as figure initialization, plot resetting, saving figures, and managing various plot aesthetics and configurations.</para>
+<sect2 id="PlottingModule_page_1BasePlotting_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent. Initializes a new C++ <computeroutput>plotting</computeroutput> object (<computeroutput>self.ptr</computeroutput>) and sets up <computeroutput>matplotlib</computeroutput> (<computeroutput>self.matpl</computeroutput>). Initializes flags for axis limits.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: The Python initializer. If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>plotting</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1BasePlotting_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void __figure__(self, dict com = {&quot;nrows&quot; : 1, &quot;ncols&quot; : 1})</computeroutput>: Creates a new matplotlib figure and axes based on the provided configuration <computeroutput>com</computeroutput>. It sets the figure size and attempts to set autoscale on the axes.</para>
+</listitem><listitem><para><computeroutput>cdef void __resetplt__(self)</computeroutput>: Clears the current matplotlib figure, closes all figures, resets matplotlib&apos;s default runtime configuration parameters, and then calls <computeroutput>__figure__</computeroutput> to create a new default figure.</para>
+</listitem><listitem><para><computeroutput>cdef dict __compile__(self, bool raw = False)</computeroutput>: An abstract internal method intended to be overridden by subclasses. It&apos;s responsible for compiling the plot data and returning a dictionary of plotting parameters.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1BasePlotting_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__reduce__(self)</computeroutput>: Implements the <computeroutput>__reduce__</computeroutput> protocol for pickling <computeroutput>BasePlotting</computeroutput> objects, allowing them to be serialized and deserialized. It saves non-callable attributes.</para>
+</listitem><listitem><para><computeroutput>dump(self, str path = &quot;&quot;, str name = &quot;&quot;)</computeroutput>: Saves the current plotting object to a pickle file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to save the file. Defaults to <computeroutput>self.ptr.output_path</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filename (without extension). Defaults to <computeroutput>self.ptr.filename</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>load(self, str path = &quot;&quot;, str name = &quot;&quot;)</computeroutput>: Loads a plotting object from a pickle file. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>path</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The directory path to load from. Defaults to <computeroutput>self.ptr.output_path</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The filename (without extension). Defaults to <computeroutput>self.ptr.filename</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The loaded plotting object or <computeroutput>None</computeroutput> if loading fails.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>__add__(self, BasePlotting other)</computeroutput>: Implements the addition operator for <computeroutput>BasePlotting</computeroutput> objects. It concatenates the <computeroutput>x_data</computeroutput>, <computeroutput>y_data</computeroutput>, and <computeroutput>weights</computeroutput> from <computeroutput>other</computeroutput> into <computeroutput>self</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__radd__(self, other)</computeroutput>: Implements reverse addition. If <computeroutput>other</computeroutput> is not a <computeroutput>BasePlotting</computeroutput> instance, it creates a new <computeroutput>BasePlotting</computeroutput> object and adds <computeroutput>self</computeroutput> to it.</para>
+</listitem><listitem><para><computeroutput>cdef list __ticks__(self, float s, float e, float st)</computeroutput>: Internal helper to generate a list of tick values given a start, end, and step.</para>
+</listitem><listitem><para><computeroutput>SaveFigure(self)</computeroutput>: Generates and saves the plot to a file.<itemizedlist>
+<listitem><para>It first calls <computeroutput>__resetplt__</computeroutput>.</para>
+</listitem><listitem><para>If <computeroutput>self.Style</computeroutput> is &quot;ATLAS&quot;, it applies <computeroutput>mplhep.style.ATLAS</computeroutput> and sets <computeroutput>DPI</computeroutput> to 800.</para>
+</listitem><listitem><para>It configures <computeroutput>matplotlib.rcParams</computeroutput> with various font, axis, legend, and title sizes, and LaTeX settings if <computeroutput>UseLateX</computeroutput> is enabled.</para>
+</listitem><listitem><para>Calls <computeroutput>__compile__</computeroutput> to prepare the plot data.</para>
+</listitem><listitem><para>Sets plot titles, labels, and scales (logarithmic if specified).</para>
+</listitem><listitem><para>Configures x and y-axis ticks based on <computeroutput>xStep</computeroutput>, <computeroutput>yStep</computeroutput>, or <computeroutput>variable_x_bins</computeroutput>/<computeroutput>variable_y_bins</computeroutput>.</para>
+</listitem><listitem><para>Sets the figure size.</para>
+</listitem><listitem><para>Saves the figure in both its final format and a raw <computeroutput>.pgf</computeroutput> format (if LaTeX is used).</para>
+</listitem><listitem><para>Includes error handling for plotting failures.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1BasePlotting_properties">
+<title>Properties</title><para>These properties control the visual appearance and configuration of the plots.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property Hatch -&gt; str</computeroutput>: Gets and sets the hatch pattern for filled areas.</para>
+</listitem><listitem><para><computeroutput>@property DPI -&gt; int</computeroutput>: Gets and sets the dots per inch (resolution) for saved figures.</para>
+</listitem><listitem><para><computeroutput>@property Style -&gt; str</computeroutput>: Gets and sets the plotting style (e.g., &quot;ATLAS&quot;).</para>
+</listitem><listitem><para><computeroutput>@property CapSize -&gt; float</computeroutput>: Gets and sets the size of the error bar caps.</para>
+</listitem><listitem><para><computeroutput>@property ErrorBars -&gt; bool</computeroutput>: Gets and sets whether error bars should be displayed.</para>
+</listitem><listitem><para><computeroutput>@property Filename -&gt; str</computeroutput>: Gets and sets the base filename for saving plots.</para>
+</listitem><listitem><para><computeroutput>@property OutputDirectory -&gt; str</computeroutput>: Gets and sets the output directory path for saved plots.</para>
+</listitem><listitem><para><computeroutput>@property FontSize -&gt; float</computeroutput>: Gets and sets the base font size for text elements.</para>
+</listitem><listitem><para><computeroutput>@property AxisSize -&gt; float</computeroutput>: Gets and sets the font size for axis labels.</para>
+</listitem><listitem><para><computeroutput>@property LegendSize -&gt; float</computeroutput>: Gets and sets the font size for the legend.</para>
+</listitem><listitem><para><computeroutput>@property TitleSize -&gt; float</computeroutput>: Gets and sets the font size for the plot title.</para>
+</listitem><listitem><para><computeroutput>@property UseLateX -&gt; bool</computeroutput>: Gets and sets whether LaTeX rendering should be used for text.</para>
+</listitem><listitem><para><computeroutput>@property xScaling -&gt; float</computeroutput>: Gets and sets the scaling factor for the figure&apos;s width.</para>
+</listitem><listitem><para><computeroutput>@property yScaling -&gt; float</computeroutput>: Gets and sets the scaling factor for the figure&apos;s height.</para>
+</listitem><listitem><para><computeroutput>@property AutoScaling -&gt; bool</computeroutput>: Gets and sets whether axes should auto-scale.</para>
+</listitem><listitem><para><computeroutput>@property LineStyle -&gt; str</computeroutput>: Gets and sets the line style for plots.</para>
+</listitem><listitem><para><computeroutput>@property Title -&gt; str</computeroutput>: Gets and sets the main title of the plot. If <computeroutput>ShowCount</computeroutput> is true and data exists, it appends the sum of counts to the title.</para>
+</listitem><listitem><para><computeroutput>@property xTitle -&gt; str</computeroutput>: Gets and sets the label for the x-axis.</para>
+</listitem><listitem><para><computeroutput>@property yTitle -&gt; str</computeroutput>: Gets and sets the label for the y-axis. Supports <computeroutput>&lt;units&gt;</computeroutput> placeholder for bin width.</para>
+</listitem><listitem><para><computeroutput>@property xLogarithmic -&gt; bool</computeroutput>: Gets and sets whether the x-axis should be logarithmic.</para>
+</listitem><listitem><para><computeroutput>@property yLogarithmic -&gt; bool</computeroutput>: Gets and sets whether the y-axis should be logarithmic.</para>
+</listitem><listitem><para><computeroutput>@property xStep -&gt; float</computeroutput>: Gets and sets the step size for x-axis ticks.</para>
+</listitem><listitem><para><computeroutput>@property yStep -&gt; float</computeroutput>: Gets and sets the step size for y-axis ticks.</para>
+</listitem><listitem><para><computeroutput>@property xMin -&gt; float</computeroutput>: Gets and sets the minimum value for the x-axis. Setting this also sets <computeroutput>self.set_xmin = True</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property yMin -&gt; float</computeroutput>: Gets and sets the minimum value for the y-axis. Setting this also sets <computeroutput>self.set_ymin = True</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property xMax -&gt; float</computeroutput>: Gets and sets the maximum value for the x-axis. Setting this also sets <computeroutput>self.set_xmax = True</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property yMax -&gt; float</computeroutput>: Gets and sets the maximum value for the y-axis. Setting this also sets <computeroutput>self.set_ymax = True</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property Overflow -&gt; str</computeroutput>: Gets and sets how histogram overflow bins are handled (&quot;sum&quot; or &quot;none&quot;).</para>
+</listitem><listitem><para><computeroutput>@property Color -&gt; str</computeroutput>: Gets and sets the primary color for the plot. If not set, a random hex color is generated.</para>
+</listitem><listitem><para><computeroutput>@property Colors -&gt; list</computeroutput>: Gets and sets a list of colors to be used for multiple plots.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_TH1F_class">
+<title>The TH1F Class</title><para><computeroutput>TH1F</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>BasePlotting</computeroutput> and is designed to represent and plot 1D histograms.</para>
+<sect2 id="PlottingModule_page_1TH1F_cinit_dealloc">
+<title>Constructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;TH1F&quot;.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Histograms</computeroutput> and <computeroutput>self.Histogram</computeroutput>. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TH1F_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property xData -&gt; list</computeroutput>: Gets and sets the raw x-data for the histogram.</para>
+</listitem><listitem><para><computeroutput>@property xBins</computeroutput>: Gets and sets the number of bins for the x-axis (if regular binning) or a list of bin edges (if variable binning).</para>
+</listitem><listitem><para><computeroutput>@property CrossSection -&gt; float</computeroutput>: Gets and sets the cross-section value, used for scaling.</para>
+</listitem><listitem><para><computeroutput>@property IntegratedLuminosity -&gt; float</computeroutput>: Gets and sets the integrated luminosity, used for scaling.</para>
+</listitem><listitem><para><computeroutput>@property HistFill -&gt; str</computeroutput>: Gets and sets the histogram fill style (e.g., &quot;step&quot;, &quot;fill&quot;).</para>
+</listitem><listitem><para><computeroutput>@property Stacked -&gt; bool</computeroutput>: Gets and sets whether multiple histograms should be stacked.</para>
+</listitem><listitem><para><computeroutput>@property LineWidth -&gt; float</computeroutput>: Gets and sets the line width for histogram outlines.</para>
+</listitem><listitem><para><computeroutput>@property Alpha -&gt; float</computeroutput>: Gets and sets the transparency (alpha) value for filled histograms.</para>
+</listitem><listitem><para><computeroutput>@property Density -&gt; bool</computeroutput>: Gets and sets whether the histogram should be normalized to represent a probability density.</para>
+</listitem><listitem><para><computeroutput>@property counts -&gt; list</computeroutput>: Returns the counts (values) of the histogram after compilation.</para>
+</listitem><listitem><para><computeroutput>@property Marker -&gt; str</computeroutput>: Gets and sets the marker style for error bars or points.</para>
+</listitem><listitem><para><computeroutput>@property xLabels -&gt; dict</computeroutput>: Gets and sets a dictionary for custom x-axis labels (for categorical histograms).</para>
+</listitem><listitem><para><computeroutput>@property Weights -&gt; list</computeroutput>: Gets and sets a list of weights to be applied to the x-data during histogram filling.</para>
+</listitem><listitem><para><computeroutput>@property ShowCount -&gt; bool</computeroutput>: Gets and sets whether the total count should be displayed in the title.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TH1F_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>FX(self, val = None)</computeroutput>: Sets the function to be used for ratio or chi-squared plots. Accepts &quot;ratio&quot;, &quot;chi2&quot; (case-insensitive strings), or a callable function. Defaults to <computeroutput>ratio</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>KStest(self, TH1F hist)</computeroutput>: Performs a Kolmogorov-Smirnov (KS) test between the current histogram&apos;s data and another <computeroutput>TH1F</computeroutput> histogram. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>hist</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Another <computeroutput>TH1F</computeroutput> object for comparison. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The result of <computeroutput>scipy.stats.ks_2samp</computeroutput>.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TH1F_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = &quot;Uncertainty&quot;, str color = &quot;k&quot;)</computeroutput>: Internal method to plot error bands using <computeroutput>matplotlib.pyplot.fill_between</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef __get_error_seg__(self, plot, str label = &quot;Uncertainty&quot;, str color = &quot;k&quot;)</computeroutput>: Extracts error segment data from a matplotlib errorbar plot and calls <computeroutput>__error__</computeroutput> to draw the error band.</para>
+</listitem><listitem><para><computeroutput>cdef float scale_f(self)</computeroutput>: Calculates the scaling factor based on <computeroutput>CrossSection</computeroutput> and <computeroutput>IntegratedLuminosity</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef dict factory(self)</computeroutput>: Creates a dictionary of common plotting parameters for <computeroutput>mplhep.histplot</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef __build__(self)</computeroutput>: Constructs a <computeroutput>boost_histogram</computeroutput> object based on the configured <computeroutput>xData</computeroutput>, <computeroutput>xBins</computeroutput>, <computeroutput>xMin</computeroutput>, <computeroutput>xMax</computeroutput>, <computeroutput>xLabels</computeroutput>, <computeroutput>Weights</computeroutput>, <computeroutput>Density</computeroutput>, and <computeroutput>ApplyScaling</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef dict __compile__(self, bool raw = False)</computeroutput>: The core method for compiling and rendering 1D histograms.<itemizedlist>
+<listitem><para>Determines x and y-axis limits.</para>
+</listitem><listitem><para>Handles single histograms, multiple histograms, and stacked histograms.</para>
+</listitem><listitem><para>Integrates ratio/chi-squared plots if <computeroutput>Histogram</computeroutput> and <computeroutput>Histograms</computeroutput> are both present.</para>
+</listitem><listitem><para>Manages error bar plotting and legend generation.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_TH2F_class">
+<title>The TH2F Class</title><para><computeroutput>TH2F</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>BasePlotting</computeroutput> and is designed to represent and plot 2D histograms.</para>
+<sect2 id="PlottingModule_page_1TH2F_cinit_dealloc">
+<title>Constructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;TH2F&quot;.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Color</computeroutput> to &quot;plasma&quot;. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TH2F_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property yBins</computeroutput>: Gets and sets the number of bins for the y-axis (if regular binning) or a list of bin edges (if variable binning).</para>
+</listitem><listitem><para><computeroutput>@property xBins</computeroutput>: Gets and sets the number of bins for the x-axis (if regular binning) or a list of bin edges (if variable binning).</para>
+</listitem><listitem><para><computeroutput>@property xLabels -&gt; dict</computeroutput>: Gets and sets a dictionary for custom x-axis labels.</para>
+</listitem><listitem><para><computeroutput>@property yLabels -&gt; dict</computeroutput>: Gets and sets a dictionary for custom y-axis labels.</para>
+</listitem><listitem><para><computeroutput>@property xData -&gt; list</computeroutput>: Gets and sets the raw x-data for the 2D histogram.</para>
+</listitem><listitem><para><computeroutput>@property yData -&gt; list</computeroutput>: Gets and sets the raw y-data for the 2D histogram.</para>
+</listitem><listitem><para><computeroutput>@property Weights -&gt; list</computeroutput>: Gets and sets a list of weights to be applied to the data during histogram filling.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TH2F_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef __build__(self)</computeroutput>: Constructs a 2D <computeroutput>boost_histogram</computeroutput> object based on the configured <computeroutput>xData</computeroutput>, <computeroutput>yData</computeroutput>, <computeroutput>xBins</computeroutput>, <computeroutput>yBins</computeroutput>, <computeroutput>xMin</computeroutput>, <computeroutput>xMax</computeroutput>, <computeroutput>yMin</computeroutput>, <computeroutput>yMax</computeroutput>, and <computeroutput>Weights</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef dict __compile__(self, bool raw = False)</computeroutput>: The core method for compiling and rendering 2D histograms using <computeroutput>mplhep.hist2dplot</computeroutput>. It also configures the color bar and axis limits.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_TLine_class">
+<title>The TLine Class</title><para><computeroutput>TLine</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>BasePlotting</computeroutput> and is designed to represent and plot lines or scatter plots with optional error bars.</para>
+<sect2 id="PlottingModule_page_1TLine_cinit_dealloc">
+<title>Constructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;TLine&quot;.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Lines</computeroutput> and <computeroutput>self.Marker</computeroutput>. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TLine_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property xData -&gt; list</computeroutput>: Gets and sets the x-coordinates of the line/points.</para>
+</listitem><listitem><para><computeroutput>@property yData -&gt; list</computeroutput>: Gets and sets the y-coordinates of the line/points.</para>
+</listitem><listitem><para><computeroutput>@property Marker -&gt; str</computeroutput>: Gets and sets the marker style for points.</para>
+</listitem><listitem><para><computeroutput>@property yDataUp -&gt; list</computeroutput>: Gets and sets the upper error values for the y-coordinates.</para>
+</listitem><listitem><para><computeroutput>@property yDataDown -&gt; list</computeroutput>: Gets and sets the lower error values for the y-coordinates.</para>
+</listitem><listitem><para><computeroutput>@property LineWidth -&gt; float</computeroutput>: Gets and sets the width of the line.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1TLine_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void factory(self)</computeroutput>: Configures and plots a single line or scatter plot using <computeroutput>matplotlib.pyplot.plot</computeroutput> or <computeroutput>matplotlib.pyplot.errorbar</computeroutput>, based on <computeroutput>xData</computeroutput>, <computeroutput>yData</computeroutput>, <computeroutput>yDataUp</computeroutput>, <computeroutput>yDataDown</computeroutput>, <computeroutput>ErrorBars</computeroutput>, <computeroutput>LineStyle</computeroutput>, <computeroutput>Color</computeroutput>, <computeroutput>Marker</computeroutput>, <computeroutput>LineWidth</computeroutput>, <computeroutput>CapSize</computeroutput>, and <computeroutput>Title</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef dict __compile__(self, bool raw = False)</computeroutput>: The core method for compiling and rendering line plots.<itemizedlist>
+<listitem><para>Handles plotting of multiple <computeroutput>TLine</computeroutput> objects stored in <computeroutput>self.Lines</computeroutput>.</para>
+</listitem><listitem><para>Determines and sets x and y-axis limits.</para>
+</listitem><listitem><para>Configures legend and title.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_ROC_class">
+<title>The ROC Class</title><para><computeroutput>ROC</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>TLine</computeroutput> and is specifically designed for plotting Receiver Operating Characteristic (ROC) curves. It integrates with <computeroutput>sklearn.metrics</computeroutput> for ROC curve calculation and AUC (Area Under the Curve) computation.</para>
+<sect2 id="PlottingModule_page_1ROC_cinit_dealloc">
+<title>Constructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes <computeroutput>self.num_cls</computeroutput>, <computeroutput>self.inits</computeroutput>, <computeroutput>self.Binary</computeroutput>. Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;ROC Curve&quot;. Attempts to import <computeroutput>sklearn.metrics</computeroutput> and sets <computeroutput>self.inits</computeroutput> accordingly, issuing a warning if import fails.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Lines</computeroutput> and <computeroutput>self.auc</computeroutput>. Sets default <computeroutput>xTitle</computeroutput>, <computeroutput>yTitle</computeroutput>, <computeroutput>xMax</computeroutput>, <computeroutput>yMax</computeroutput>, <computeroutput>xMin</computeroutput>, <computeroutput>yMin</computeroutput> appropriate for ROC curves.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1ROC_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property Scores</computeroutput>: Sets the prediction scores for ROC curve calculation. Accepts various input formats (list of lists, dictionary mapping names/integers to lists/tuples). It calls <computeroutput>self.ptr.build_ROC</computeroutput> to pass data to the C++ backend.</para>
+</listitem><listitem><para><computeroutput>@property Truth</computeroutput>: Sets the true labels for ROC curve calculation. Accepts various input formats (list of integers, dictionary mapping names/integers to lists/tuples). It calls <computeroutput>self.ptr.build_ROC</computeroutput> to pass data to the C++ backend.</para>
+</listitem><listitem><para><computeroutput>@property Titles -&gt; list</computeroutput>: Gets and sets a list of titles for individual ROC curves.</para>
+</listitem><listitem><para><computeroutput>@property AUC -&gt; dict</computeroutput>: Returns a dictionary containing the calculated AUC values for each ROC curve.</para>
+</listitem><listitem><para><computeroutput>@property xData</computeroutput> (Overridden): Overrides the <computeroutput>xData</computeroutput> property from <computeroutput>TLine</computeroutput>. Issues a warning if used, suggesting <computeroutput>Scores</computeroutput> instead.</para>
+</listitem><listitem><para><computeroutput>@property yData</computeroutput> (Overridden): Overrides the <computeroutput>yData</computeroutput> property from <computeroutput>TLine</computeroutput>. Issues a warning if used, suggesting <computeroutput>Truth</computeroutput> instead.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PlottingModule_page_1ROC_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void factory(self)</computeroutput>: Overrides the <computeroutput>factory</computeroutput> method from <computeroutput>TLine</computeroutput>. It is intentionally left empty as ROC curve plotting is handled by <computeroutput>__compile__</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef dict __compile__(self, bool raw = False)</computeroutput>: The core method for compiling and rendering ROC curves.<itemizedlist>
+<listitem><para>Checks if <computeroutput>sklearn</computeroutput> was successfully imported and if <computeroutput>roc_data</computeroutput> is available from the C++ backend.</para>
+</listitem><listitem><para>Uses <computeroutput>sklearn.metrics.roc_curve</computeroutput> and <computeroutput>sklearn.metrics.auc</computeroutput> to calculate FPR, TPR, and AUC for each class.</para>
+</listitem><listitem><para>(Commented out in source) Intended to plot individual ROC curves using <computeroutput>TLine</computeroutput> objects and display AUC values.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PlottingModule_page_1PlottingModule_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>plotting.pyx</computeroutput> module extensively uses Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ...</computeroutput>: Declares classes as Cython extension types.</para>
+</listitem><listitem><para><computeroutput>cdef plotting *ptr</computeroutput>: A C++ pointer to a <computeroutput>plotting</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>from libcpp.string cimport string</computeroutput>, <computeroutput>from libcpp.vector cimport vector</computeroutput>, <computeroutput>from libcpp.map cimport map</computeroutput>, <computeroutput>from libcpp cimport bool, float</computeroutput>: Imports C++ standard library types.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports C++ declarations from <computeroutput>tools.pxd</computeroutput>, including <computeroutput>env</computeroutput>, <computeroutput>enc</computeroutput>, <computeroutput>env_vec</computeroutput>, <computeroutput>enc_list</computeroutput>, <computeroutput>as_basic_udict</computeroutput>, <computeroutput>as_umap</computeroutput>, <computeroutput>merge_data</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.plotting cimport plotting</computeroutput>: Imports the C++ <computeroutput>plotting</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>cython.operator.dereference as dref</computeroutput>: Used to dereference C++ pointers.</para>
+</listitem><listitem><para><computeroutput>scipy.stats</computeroutput>, <computeroutput>matplotlib.pyplot</computeroutput>, <computeroutput>boost_histogram</computeroutput>, <computeroutput>mplhep</computeroutput>, <computeroutput>numpy</computeroutput>, <computeroutput>random</computeroutput>, <computeroutput>pathlib</computeroutput>, <computeroutput>pickle</computeroutput>: Python libraries used for statistical tests, plotting, histogramming, numerical operations, random number generation, path manipulation, and object serialization. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/plotting.dox"/>
+  </compounddef>
+</doxygen>

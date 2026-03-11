@@ -1,0 +1,12 @@
+/**
+ * @file physics.dox
+ * @brief Detailed documentation for the physics module within the AnalysisG.pyc framework, including its CUDA kernel implementations for physics-related calculations.
+ *
+ * @page physics_page physics
+ *
+ * @section physics_intro Introduction
+ * The `physics` module provides high-performance functionalities for various physics-related calculations and constants, optimized with Cython and accelerated using CUDA kernels. This module ensures efficient and accurate computation of physical quantities, crucial for high-energy physics analyses within the AnalysisG framework.
+ *
+ * @section physics_contents Contents
+ * This module contains optimized physics calculation functions and constants, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ */

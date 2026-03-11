@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="GriftModel_page" kind="page">
+    <compoundname>GriftModel_page</compoundname>
+    <title>Grift Model</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="GriftModel_page_1GriftModel_intro">
+<title>Introduction</title><para>The <computeroutput>Grift</computeroutput> class, implemented in Cython, represents a specific implementation of a Graph Neural Network (GNN) model within the AnalysisG framework. It inherits from the generic <computeroutput>ModelTemplate</computeroutput> class, extending its functionalities to incorporate features and structures relevant to the Grift architecture. This class provides a high-performance interface to an underlying C++ GNN model, enabling efficient training and inference for graph-based data.</para>
+</sect1>
+<sect1 id="GriftModel_page_1GriftModel_class">
+<title>The Grift Class</title><para><computeroutput>Grift</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>ModelTemplate</computeroutput>, thereby gaining all the base functionalities for managing input/output graph features, device settings, and checkpoint paths. Its primary role is to encapsulate a C++ <computeroutput>grift</computeroutput> object, which likely contains the core GNN model logic and parameters.</para>
+<sect2 id="GriftModel_page_1GriftModel_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>grift</computeroutput> object and assigns its pointer to <computeroutput>self.rnn</computeroutput>. It then assigns <computeroutput>self.rnn</computeroutput> to <computeroutput>self.nn_ptr</computeroutput>, allowing <computeroutput>Grift</computeroutput> to be treated as a generic <computeroutput>ModelTemplate</computeroutput> while still managing its specialized C++ object.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by <computeroutput>__cinit__</computeroutput> and the underlying C++ object.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>grift</computeroutput> object pointed to by <computeroutput>self.rnn</computeroutput>, ensuring proper memory management for the specialized model.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="GriftModel_page_1GriftModel_properties">
+<title>Properties</title><para>These properties provide controlled access to specific parameters and configurations of the Grift GNN model.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property xrec -&gt; int</computeroutput>: Gets and sets the <computeroutput>_xrec</computeroutput> parameter of the underlying C++ <computeroutput>grift</computeroutput> object. This likely relates to the number of recurrent steps or input features.</para>
+</listitem><listitem><para><computeroutput>@property x -&gt; int</computeroutput>: Gets and sets the <computeroutput>_xin</computeroutput> parameter of the underlying C++ <computeroutput>grift</computeroutput> object. This likely relates to the input feature dimension.</para>
+</listitem><listitem><para><computeroutput>@property is_mc -&gt; bool</computeroutput>: Gets and sets the <computeroutput>is_mc</computeroutput> flag of the underlying C++ <computeroutput>grift</computeroutput> object. This likely indicates whether the model is processing Monte Carlo data.</para>
+</listitem><listitem><para><computeroutput>@property drop_out -&gt; double</computeroutput>: Gets and sets the <computeroutput>drop_out</computeroutput> rate of the underlying C++ <computeroutput>grift</computeroutput> object. This is a regularization parameter.</para>
+</listitem><listitem><para><computeroutput>@property PageRank -&gt; bool</computeroutput>: Gets and sets the <computeroutput>pagerank</computeroutput> flag of the underlying C++ <computeroutput>grift</computeroutput> object. This likely enables or disables PageRank-related features within the model.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="GriftModel_page_1GriftModel_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>Grift</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Grift</computeroutput>: Declares <computeroutput>Grift</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef grift *rnn</computeroutput>: A C++ pointer to a <computeroutput>grift</computeroutput> object, which is the specialized C++ implementation of the GNN model.</para>
+</listitem><listitem><para><computeroutput>self.nn_ptr = self.rnn</computeroutput>: This line demonstrates how the base <computeroutput>ModelTemplate</computeroutput>&apos;s C++ pointer (<computeroutput>nn_ptr</computeroutput>) is made to point to the specialized <computeroutput>grift</computeroutput> object, allowing <computeroutput>Grift</computeroutput> to fulfill the <computeroutput>ModelTemplate</computeroutput> interface.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.model_template cimport ModelTemplate</computeroutput>: Imports the base <computeroutput>ModelTemplate</computeroutput> class, from which <computeroutput>Grift</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.models.Grift.grift cimport *</computeroutput>: Imports the C++ <computeroutput>grift</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="models/Grift/grift.dox"/>
+  </compounddef>
+</doxygen>

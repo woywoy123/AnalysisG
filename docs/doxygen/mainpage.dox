@@ -1,0 +1,91 @@
+/**
+ * @mainpage AnalysisG — A Graph Neural Network Analysis Framework for High Energy Physics
+ *
+ * @section intro_sec Introduction
+ *
+ * **AnalysisG** is a high-performance analysis framework that translates
+ * CERN ROOT n-tuples into graph-structured data, trains and evaluates Graph
+ * Neural Networks (GNNs), and supports cut-based selections.  It is written
+ * in C++20 with CUDA extensions and exposed to Python via Cython.
+ *
+ * @section modules_sec Module Overview
+ *
+ * | Module | Description |
+ * |--------|-------------|
+ * | @ref notification | Coloured terminal logging and progress-bar utilities. |
+ * | @ref tools | File-system, string and math utility base class. |
+ * | @ref particle_template | Base for user-defined particle types. |
+ * | @ref event_template | Base for user-defined event types. |
+ * | @ref graph_template | Defines GNN edge/node/global features. |
+ * | @ref selection_template | Base for cut-based event selections. |
+ * | @ref metric_template | Base for ML evaluation metrics. |
+ * | @ref model_template | Base for GNN model definitions. |
+ * | @ref sampletracer | ROOT sample management and multi-threaded reading. |
+ * | @ref dataloader | Batched data delivery to GNN training loops. |
+ * | @ref optimizer | PyTorch optimiser and scheduler wrapper. |
+ * | @ref plotting | Object-oriented histogram and plot definitions. |
+ * | @ref roc | ROC-curve computation and visualisation. |
+ * | @ref lossfx | Named loss-function registry. |
+ * | @ref metrics | Epoch-level metric aggregation and reporting. |
+ * | @ref meta | DSID lookup and data-scraping via AMI. |
+ * | @ref io | Minimal-syntax CERN ROOT I/O interface. |
+ * | @ref analysis | Main analysis compiler / pipeline orchestrator. |
+ * | pyc | Self-contained C++/CUDA HEP kernels (ΔR, pT, η, φ, m, ν-reco, …). |
+ *
+ * @section pyc_sec Python CUDA (pyc) Sub-package
+ *
+ * The **pyc** sub-package provides fully batched CUDA/C++ implementations
+ * of common HEP operations via the LibTorch API:
+ *
+ * - **pyc::transform** — polar ↔ Cartesian coordinate transforms.
+ * - **pyc::physics** — relativistic kinematics (|p|², pT, η, φ, m, ΔR).
+ * - **pyc::operators** — edge/node aggregation operators.
+ * - **pyc::nusol** — analytical single and double neutrino reconstruction.
+ * - **pyc::graph** — graph-level batched operations.
+ *
+ * @section build_sec Building the Documentation
+ *
+ * @section architecture_sec Architecture Overview
+ *
+ * The framework follows a pipeline architecture:
+ *
+ * 1. **I/O Layer**: @c io and @c sampletracer read ROOT files via
+ *    @c data_t/@c element_t, producing @c event_template objects populated
+ *    with @c particle_template collections.
+ *
+ * 2. **Graph Layer**: @c graph_template transforms event objects into
+ *    @c graph_t instances containing PyTorch tensors.  The topology predicate
+ *    and feature getters are defined by the user in @c CompileEvent().
+ *
+ * 3. **Selection Layer**: @c selection_template receives the same events and
+ *    applies user-defined cuts, optionally writing output ROOT branches.
+ *
+ * 4. **Training Layer**: @c dataloader batches @c graph_t objects;
+ *    @c model_template subclasses implement the GNN forward pass and loss
+ *    computation; @c optimizer wraps the PyTorch optimiser/scheduler;
+ *    k-fold cross-validation is coordinated by @c analysis.
+ *
+ * 5. **Metrics Layer**: @c metric_template and @c metrics accumulate
+ *    per-epoch loss, accuracy, and invariant-mass histograms.
+ *
+ * 6. **Utility Layer**: @c notification (coloured logging), @c tools
+ *    (filesystem/strings/math), and @c cproperty (computed property
+ *    mechanism) are inherited throughout.
+ *
+ * The @c analysis class is the top-level orchestrator that chains all
+ * layers together.
+ *
+ *
+ * @code{.sh}
+ * # Generate Doxygen XML (from the repository root)
+ * doxygen Doxyfile
+ *
+ * # Build Sphinx HTML (Read the Docs style)
+ * cd docs && make html
+ * @endcode
+ *
+ * @section rtd_sec Read the Docs
+ *
+ * Documentation is hosted on Read the Docs and rebuilt automatically on
+ * every push.  The full pipeline is defined in `.readthedocs.yaml`.
+ */

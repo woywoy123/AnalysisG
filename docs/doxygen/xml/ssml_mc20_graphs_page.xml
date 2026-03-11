@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ssml_mc20_graphs_page" kind="page">
+    <compoundname>ssml_mc20_graphs_page</compoundname>
+    <title>ssml_mc20 Graphs</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>This page provides detailed documentation for the various graph classes used in the <computeroutput>ssml_mc20</computeroutput> analysis. These classes inherit from <computeroutput>graph_template</computeroutput> and define the specific nodes and features used to represent the event as a graph.</para>
+<sect1 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets">
+<title>Graph of Reconstructed Jets</title><para>The <computeroutput>graph_jets</computeroutput> class constructs a graph using reconstructed jets and truth-level top decay products.</para>
+<sect2 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets_ctor">
+<title>Constructor</title><para><itemizedlist>
+<listitem><para><computeroutput>graph_jets()</computeroutput>: Initializes the graph name to &quot;graph_jets&quot;.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>graph_template* clone()</computeroutput>: Creates a new instance of the <computeroutput>graph_jets</computeroutput> graph.</para>
+</listitem><listitem><para><computeroutput>void CompileEvent()</computeroutput>: Defines the graph structure and features.<itemizedlist>
+<listitem><para><bold>Nodes</bold>: The nodes are the reconstructed jets and the leptonic/neutrino decay products of the truth top quarks.</para>
+</listitem><listitem><para><bold>Graph Truth Features</bold>: <computeroutput>signal</computeroutput>, <computeroutput>n_lep</computeroutput>, <computeroutput>ntops</computeroutput>.</para>
+</listitem><listitem><para><bold>Node Truth Features</bold>: <computeroutput>top_node</computeroutput>, <computeroutput>res_node</computeroutput>.</para>
+</listitem><listitem><para><bold>Edge Truth Features</bold>: <computeroutput>res_edge</computeroutput>, <computeroutput>top_edge</computeroutput>.</para>
+</listitem><listitem><para><bold>Graph Data Features</bold>: <computeroutput>met</computeroutput>, <computeroutput>phi</computeroutput>, <computeroutput>num_jets</computeroutput>, <computeroutput>num_leps</computeroutput>, <computeroutput>weight</computeroutput>, <computeroutput>event_number</computeroutput>.</para>
+</listitem><listitem><para><bold>Node Data Features</bold>: <computeroutput>pt</computeroutput>, <computeroutput>eta</computeroutput>, <computeroutput>phi</computeroutput>, <computeroutput>energy</computeroutput>, <computeroutput>is_lep</computeroutput>, <computeroutput>is_b</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets_nonu">
+<title>Graph of Reconstructed Jets (No Neutrinos)</title><para>The <computeroutput>graph_jets_nonu</computeroutput> class is similar to <computeroutput>graph_jets</computeroutput>, but excludes neutrinos from the graph nodes.</para>
+<sect2 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets_nonu_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void CompileEvent()</computeroutput>:<itemizedlist>
+<listitem><para><bold>Nodes</bold>: The nodes are the reconstructed jets and the leptonic (non-neutrino) decay products of the truth top quarks.</para>
+</listitem><listitem><para><bold>Neutrino Information</bold>: The <computeroutput>double_neutrino()</computeroutput> method is called to add information about the neutrinos.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets_detector_lep">
+<title>Graph of Detector Objects (with Neutrinos)</title><para>The <computeroutput>graph_jets_detector_lep</computeroutput> class constructs a graph using all detector-level objects (jets, electrons, muons) and truth neutrinos.</para>
+<sect2 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_jets_detector_lep_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void CompileEvent()</computeroutput>:<itemizedlist>
+<listitem><para><bold>Nodes</bold>: Reconstructed jets, electrons, muons, and truth neutrinos from the top children.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_detector">
+<title>Graph of Detector Objects</title><para>The <computeroutput>graph_detector</computeroutput> class constructs a graph using all detector-level objects (jets, electrons, muons).</para>
+<sect2 id="ssml_mc20_graphs_page_1ssml_mc20_graphs_graph_detector_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void CompileEvent()</computeroutput>:<itemizedlist>
+<listitem><para><bold>Nodes</bold>: Reconstructed jets, electrons, and muons.</para>
+</listitem><listitem><para><bold>Neutrino Information</bold>: The <computeroutput>double_neutrino()</computeroutput> method is called to add information about the neutrinos. </para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="graphs/ssml_mc20/graphs.dox"/>
+  </compounddef>
+</doxygen>

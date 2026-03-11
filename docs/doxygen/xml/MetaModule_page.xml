@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="MetaModule_page" kind="page">
+    <compoundname>MetaModule_page</compoundname>
+    <title>Meta Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="MetaModule_page_1MetaModule_intro">
+<title>Introduction</title><para>The <computeroutput>meta.pyx</computeroutput> module is a cornerstone of the AnalysisG framework, providing sophisticated mechanisms for managing experimental metadata, particularly in the context of high-energy physics. It integrates with the ATLAS Metadata Interface (PyAMI) for fetching dataset information, implements robust caching using HDF5 (<computeroutput>h5py</computeroutput>), and defines classes for metadata lookup, data processing, and a core metadata container. This module is crucial for enriching raw event data with contextual information necessary for physics analysis.</para>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_httpx_class">
+<title>The httpx Class</title><para><computeroutput>httpx</computeroutput> is a custom HTTP client built upon <computeroutput>pyAMI.httpclient.HttpClient</computeroutput>. It extends the base functionality to handle HTTPS connections with client certificates, essential for secure communication with PyAMI services.</para>
+<sect2 id="MetaModule_page_1httpx_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__init__(self, config)</computeroutput>: Initializes the <computeroutput>httpx</computeroutput> client with a given configuration object, typically containing certificate and key file paths.</para>
+</listitem><listitem><para><computeroutput>connect(self, endpoint)</computeroutput>: Establishes an HTTPS connection to the specified <computeroutput>endpoint</computeroutput>. It configures the connection with host, port, and loads the client certificate chain for authentication.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_atlas_class">
+<title>The atlas Class</title><para><computeroutput>atlas</computeroutput> is a specialized PyAMI client, inheriting from <computeroutput>pyAMI.client.Client</computeroutput>. It is configured to connect to the &quot;atlas-replica&quot; service and attempts to authenticate using the custom <computeroutput>httpx</computeroutput> client.</para>
+<sect2 id="MetaModule_page_1atlas_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__init__(self)</computeroutput>: Initializes the <computeroutput>atlas</computeroutput> client. It sets up the <computeroutput>httpClient</computeroutput> using <computeroutput>httpx</computeroutput> and checks for successful authentication. If authentication fails, a message is printed to the console.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_ami_client_class">
+<title>The ami_client Class</title><para><computeroutput>ami_client</computeroutput> is a Cython <computeroutput>cdef class</computeroutput> responsible for orchestrating interactions with PyAMI, managing a local cache of metadata, and &quot;dressing&quot; <computeroutput>Meta</computeroutput> objects with fetched information.</para>
+<sect2 id="MetaModule_page_1ami_client_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes an <computeroutput>atlas</computeroutput> client for PyAMI communication and a <computeroutput>notification</computeroutput> object (<computeroutput>self.nf</computeroutput>) for logging, setting its prefix to &quot;PyAMI-MetaScan&quot;.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: Sets the default <computeroutput>type_</computeroutput> for PyAMI queries to &quot;DAOD_TOPQ1&quot;.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the <computeroutput>notification</computeroutput> object.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1ami_client_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef bool loadcache(self, Meta obj)</computeroutput>: Attempts to load cached metadata from an HDF5 file specified by <computeroutput>obj.MetaCachePath</computeroutput>. It reads dataset IDs (<computeroutput>dsids</computeroutput>), data mappings (<computeroutput>datas</computeroutput>), and info (<computeroutput>infos</computeroutput>) for a given <computeroutput>dsid</computeroutput> from the cache. If the cache file doesn&apos;t exist or is corrupted, it attempts to create a new one. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <computeroutput>Meta</computeroutput> object containing the <computeroutput>dsid</computeroutput> and <computeroutput>MetaCachePath</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>True</computeroutput> if cached data was successfully loaded, <computeroutput>False</computeroutput> otherwise.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>cdef void savecache(self, Meta obj)</computeroutput>: Saves the current <computeroutput>dsids</computeroutput>, <computeroutput>datas</computeroutput>, and <computeroutput>infos</computeroutput> to the HDF5 cache file. Data is serialized using <computeroutput>pickle</computeroutput> and base64 encoded before storage. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A <computeroutput>Meta</computeroutput> object containing the <computeroutput>dsid</computeroutput> and <computeroutput>MetaCachePath</computeroutput>.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>cdef void dressmeta(self, Meta obj, str dset_name)</computeroutput>: Populates the <computeroutput>Meta</computeroutput> object <computeroutput>obj</computeroutput> with detailed information fetched from PyAMI for a specific dataset (<computeroutput>dset_name</computeroutput>). It extracts various attributes like <computeroutput>events</computeroutput>, <computeroutput>logicalDatasetName</computeroutput>, <computeroutput>crossSection</computeroutput>, <computeroutput>kfactor</computeroutput>, <computeroutput>weights</computeroutput>, etc., and sets them as properties of the <computeroutput>Meta</computeroutput> object. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <computeroutput>Meta</computeroutput> object to be dressed with information. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dset_name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The logical dataset name for which to fetch metadata.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>cdef void list_datasets(self, Meta obj)</computeroutput>: The primary method for fetching and caching dataset metadata from PyAMI.<itemizedlist>
+<listitem><para>It first checks if the <computeroutput>atlas</computeroutput> client is authenticated.</para>
+</listitem><listitem><para>It attempts to <computeroutput>loadcache</computeroutput>. If a cache hit occurs, it uses the cached data.</para>
+</listitem><listitem><para>If no cache hit, it queries PyAMI using <computeroutput>pyAMI_atlas.api.list_datasets</computeroutput> and <computeroutput>pyAMI_atlas.api.get_file</computeroutput> to retrieve dataset and file-level metadata. It includes a retry mechanism with re-authentication if PyAMI calls fail.</para>
+</listitem><listitem><para>It then iterates through the fetched datasets, checking for <computeroutput>amitag</computeroutput> matches and populating <computeroutput>self.datas</computeroutput> and <computeroutput>self.infos</computeroutput>.</para>
+</listitem><listitem><para>If the <computeroutput>Meta</computeroutput> object is not yet &quot;found&quot; (i.e., fully dressed), it attempts to <computeroutput>dressmeta</computeroutput> using the fetched information.</para>
+</listitem><listitem><para>Includes a fallback strategy to match files if the initial <computeroutput>amitag</computeroutput> matching is insufficient.</para>
+</listitem><listitem><para>Finally, if new data was fetched (not a cache hit), it calls <computeroutput>savecache</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>obj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <computeroutput>Meta</computeroutput> object to populate with dataset information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_MetaLookup_class">
+<title>The MetaLookup Class</title><para><computeroutput>MetaLookup</computeroutput> is a Cython <computeroutput>cdef class</computeroutput> that provides a mechanism to efficiently look up <computeroutput>Meta</computeroutput> objects based on input strings (e.g., file paths or dataset identifiers).</para>
+<sect2 id="MetaModule_page_1MetaLookup_cinit_dealloc">
+<title>Constructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes <computeroutput>self.metadata</computeroutput> and <computeroutput>self.matched</computeroutput> as empty dictionaries. Sets <computeroutput>self.meta</computeroutput> to <computeroutput>None</computeroutput> and <computeroutput>self.luminosity</computeroutput> to a default value of 140.1.</para>
+</listitem><listitem><para><computeroutput>__init__(self, MetaLookup data = None)</computeroutput>: If an existing <computeroutput>MetaLookup</computeroutput> object <computeroutput>data</computeroutput> is provided, it copies its <computeroutput>metadata</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1MetaLookup_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef Meta __find__(self, str inpt)</computeroutput>: Internal method to find a <computeroutput>Meta</computeroutput> object. It first checks <computeroutput>self.matched</computeroutput> for a direct hit. If not found, it iterates through <computeroutput>self.metadata</computeroutput> and uses the <computeroutput>Meta.hash</computeroutput> method to find a match. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input string (e.g., file path) to search for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The matching <computeroutput>Meta</computeroutput> object or <computeroutput>None</computeroutput> if not found.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>__call__(self, inpt)</computeroutput>: Allows the <computeroutput>MetaLookup</computeroutput> object to be called like a function. It converts the input to a string (if bytes) and then calls <computeroutput>__find__</computeroutput> to locate the relevant <computeroutput>Meta</computeroutput> object, setting <computeroutput>self.meta</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>inpt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The input (string or bytes) to look up. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>self</computeroutput> for method chaining.</para>
+</simplesect>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1MetaLookup_properties">
+<title>Properties</title><para>These properties provide access to attributes of the currently selected <computeroutput>Meta</computeroutput> object (<computeroutput>self.meta</computeroutput>).</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property DatasetName</computeroutput>: Returns the dataset name from <computeroutput>self.meta</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property CrossSection</computeroutput>: Returns the cross-section from <computeroutput>self.meta</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property ExpectedEvents</computeroutput>: Calculates and returns the expected number of events based on the cross-section and <computeroutput>self.luminosity</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property SumOfWeights</computeroutput>: Returns the sum of weights from <computeroutput>self.meta</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property GenerateData</computeroutput>: Returns a new <computeroutput>Data</computeroutput> object initialized with <computeroutput>self</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_Data_class">
+<title>The Data Class</title><para><computeroutput>Data</computeroutput> is a Cython <computeroutput>cdef class</computeroutput> designed to encapsulate and process event data, particularly for handling event weights and scaling.</para>
+<sect2 id="MetaModule_page_1Data_cinit_dealloc">
+<title>Constructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Empty Cython constructor.</para>
+</listitem><listitem><para><computeroutput>__init__(self, mtl)</computeroutput>: Initializes the <computeroutput>Data</computeroutput> object with a <computeroutput>MetaLookup</computeroutput> instance (<computeroutput>mtl</computeroutput>).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1Data_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>__add__(self, Data other)</computeroutput>: Implements the addition operator for <computeroutput>Data</computeroutput> objects. It combines weights and data from <computeroutput>other</computeroutput> into <computeroutput>self</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__radd__(self, other)</computeroutput>: Implements reverse addition. If <computeroutput>other</computeroutput> is not an integer, it calls <computeroutput>__add__</computeroutput>. Otherwise, it generates a new <computeroutput>Data</computeroutput> object from <computeroutput>self._meta</computeroutput> and adds <computeroutput>self</computeroutput> to it.</para>
+</listitem><listitem><para><computeroutput>cdef void __populate__(self, dict inpt, map[string, vector[float]]* ptx)</computeroutput>: Internal method to populate a C++ map (<computeroutput>ptx</computeroutput>) with data from a Python dictionary <computeroutput>inpt</computeroutput>. It also updates <computeroutput>self.sumofweights</computeroutput> and <computeroutput>self.expected_events</computeroutput> based on the associated <computeroutput>Meta</computeroutput> object.</para>
+</listitem><listitem><para><computeroutput>cdef void __rescale__(self, vector[float]* ptx)</computeroutput>: Internal method to rescale weights. It calculates a scaling factor based on <computeroutput>expected_events</computeroutput> and <computeroutput>sumofweights</computeroutput>, then applies it to a C++ vector of floats (<computeroutput>ptx</computeroutput>).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1Data_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property weights</computeroutput>: Gets the rescaled weights as a C++ vector of floats.<itemizedlist>
+<listitem><para><computeroutput>@weights.setter weights(self, dict val)</computeroutput>: Sets the weights by populating <computeroutput>self._weights</computeroutput> using <computeroutput>__populate__</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>@property data</computeroutput>: Gets the processed data as a C++ vector of floats.<itemizedlist>
+<listitem><para><computeroutput>@data.setter data(self, dict val)</computeroutput>: Sets the data by populating <computeroutput>self._data</computeroutput> using <computeroutput>__populate__</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_Meta_class">
+<title>The Meta Class</title><para><computeroutput>Meta</computeroutput> is a core Cython <computeroutput>cdef class</computeroutput> that serves as a container for detailed metadata associated with a dataset or event. It provides properties for various ATLAS-specific metadata fields and methods for fetching and managing this information.</para>
+<sect2 id="MetaModule_page_1Meta_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: Initializes a new C++ <computeroutput>meta</computeroutput> object (<computeroutput>self.ptr</computeroutput>) and sets <computeroutput>self.loaded</computeroutput> to <computeroutput>False</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt</computeroutput>. It also initializes <computeroutput>self.ptr.meta_data</computeroutput> and <computeroutput>self.ptr.metacache_path</computeroutput> from <computeroutput>inpt</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>meta</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1Meta_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef __meta__(self, meta* _meta)</computeroutput>: Internal method to fetch and apply metadata. It creates an <computeroutput>ami_client</computeroutput> and calls <computeroutput>ami.list_datasets(self)</computeroutput> to populate <computeroutput>self</computeroutput> with metadata. It also handles the transfer of <computeroutput>misc</computeroutput> weights.</para>
+</listitem><listitem><para><computeroutput>__reduce__(self)</computeroutput>: Implements the <computeroutput>__reduce__</computeroutput> protocol for pickling <computeroutput>Meta</computeroutput> objects, allowing them to be serialized and deserialized.</para>
+</listitem><listitem><para><computeroutput>__str__(self)</computeroutput>: Provides a string representation of the <computeroutput>Meta</computeroutput> object, listing its attributes and their values.</para>
+</listitem><listitem><para><computeroutput>expected_events(self, float lumi = 140.1)</computeroutput>: Calculates the expected number of events based on the dataset&apos;s cross-section and a given luminosity. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>lumi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The luminosity in fb^-1. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The expected number of events.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>GetSumOfWeights(self, str name)</computeroutput>: Retrieves the sum of processed events weighted for a given name from <computeroutput>self.ptr.meta_data.misc</computeroutput>. Returns 1 if not found or zero. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the weight. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The sum of weights.</para>
+</simplesect>
+</para>
+</listitem><listitem><para><computeroutput>FetchMeta(self, int dsid, str amitag)</computeroutput>: Initiates the fetching of metadata for a given dataset ID (<computeroutput>dsid</computeroutput>) and AMI tag (<computeroutput>amitag</computeroutput>) by calling <computeroutput>__meta__</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dsid</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dataset ID. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>amitag</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The AMI tag.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>hash(self, str val)</computeroutput>: Returns a hash string for the given input <computeroutput>val</computeroutput> using the underlying C++ <computeroutput>meta</computeroutput> object&apos;s hash function.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MetaModule_page_1Meta_properties">
+<title>Properties</title><para>These properties provide controlled access to the various metadata fields.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>@property MetaCachePath</computeroutput>: Gets and sets the path to the metadata cache file.</para>
+</listitem><listitem><para><computeroutput>@property SumOfWeights</computeroutput>: Returns the <computeroutput>misc</computeroutput> weights map from the underlying C++ <computeroutput>meta_data</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>@property dsid -&gt; int</computeroutput>: Gets and sets the dataset ID.</para>
+</listitem><listitem><para><computeroutput>@property amitag -&gt; str</computeroutput>: Gets and sets the AMI tag.</para>
+</listitem><listitem><para><computeroutput>@property generators -&gt; str</computeroutput>: Gets and sets the generator names, handling string formatting.</para>
+</listitem><listitem><para><computeroutput>@property isMC -&gt; bool</computeroutput>: Gets and sets whether the dataset is Monte Carlo.</para>
+</listitem><listitem><para><computeroutput>@property derivationFormat -&gt; str</computeroutput>: Gets and sets the derivation format (e.g., &quot;DAOD_TOPQ1&quot;).</para>
+</listitem><listitem><para><computeroutput>@property eventNumber -&gt; double</computeroutput>: Gets and sets the event number.</para>
+</listitem><listitem><para><computeroutput>@property ecmEnergy -&gt; float</computeroutput>: Gets and sets the center-of-mass energy.</para>
+</listitem><listitem><para><computeroutput>@property genFiltEff -&gt; float</computeroutput>: Gets and sets the generator filter efficiency.</para>
+</listitem><listitem><para><computeroutput>@property kfactor -&gt; float</computeroutput>: Gets and sets the k-factor.</para>
+</listitem><listitem><para><computeroutput>@property completion -&gt; float</computeroutput>: Gets and sets the completion percentage.</para>
+</listitem><listitem><para><computeroutput>@property beam_energy -&gt; float</computeroutput>: Gets and sets the beam energy.</para>
+</listitem><listitem><para><computeroutput>@property crossSection -&gt; float</computeroutput>: Gets and sets the cross-section in microbarns, handling unit conversion.</para>
+</listitem><listitem><para><computeroutput>@property generatorName -&gt; str</computeroutput>: Gets and sets the generator name.</para>
+</listitem><listitem><para><computeroutput>@property geometryVersion -&gt; str</computeroutput>: Gets and sets the geometry version.</para>
+</listitem><listitem><para><computeroutput>@property conditionsTag -&gt; str</computeroutput>: Gets and sets the conditions tag.</para>
+</listitem><listitem><para><computeroutput>@property generatorTune -&gt; str</computeroutput>: Gets and sets the generator tune.</para>
+</listitem><listitem><para><computeroutput>@property amiStatus -&gt; str</computeroutput>: Gets and sets the AMI status.</para>
+</listitem><listitem><para><computeroutput>@property beamType -&gt; str</computeroutput>: Gets and sets the beam type.</para>
+</listitem><listitem><para><computeroutput>@property productionStep -&gt; str</computeroutput>: Gets and sets the production step.</para>
+</listitem><listitem><para><computeroutput>@property projectName -&gt; str</computeroutput>: Gets and sets the project name.</para>
+</listitem><listitem><para><computeroutput>@property statsAlgorithm -&gt; str</computeroutput>: Gets and sets the statistics algorithm.</para>
+</listitem><listitem><para><computeroutput>@property crossSection_mean -&gt; float</computeroutput>: Gets and sets the mean cross-section.</para>
+</listitem><listitem><para><computeroutput>@property file_type -&gt; str</computeroutput>: Gets and sets the file type.</para>
+</listitem><listitem><para><computeroutput>@property genFilterNames -&gt; str</computeroutput>: Gets and sets the generator filter names.</para>
+</listitem><listitem><para><computeroutput>@property run_number -&gt; int</computeroutput>: Gets and sets the run number.</para>
+</listitem><listitem><para><computeroutput>@property principalPhysicsGroup -&gt; str</computeroutput>: Gets and sets the principal physics group.</para>
+</listitem><listitem><para><computeroutput>@property DatasetName -&gt; str</computeroutput>: Gets and sets the logical dataset name.</para>
+</listitem><listitem><para><computeroutput>@property keywords -&gt; list</computeroutput>: Gets and sets a list of keywords associated with the dataset.</para>
+</listitem><listitem><para><computeroutput>@property keyword -&gt; list</computeroutput>: Gets and sets a list of single keywords associated with the dataset.</para>
+</listitem><listitem><para><computeroutput>@property fileSize -&gt; list</computeroutput>: Gets and sets a list of file sizes.</para>
+</listitem><listitem><para><computeroutput>@property fileGUID -&gt; list</computeroutput>: Gets and sets a list of file GUIDs.</para>
+</listitem><listitem><para><computeroutput>@property found -&gt; bool</computeroutput>: Gets and sets a boolean indicating if the metadata was successfully found.</para>
+</listitem><listitem><para><computeroutput>@property Files -&gt; dict</computeroutput>: Gets and sets a dictionary of files associated with the dataset.</para>
+</listitem><listitem><para><computeroutput>@property totalEvents -&gt; int</computeroutput>: Gets and sets the total number of events.</para>
+</listitem><listitem><para><computeroutput>@property totalSize -&gt; int</computeroutput>: Gets and sets the total size of the dataset.</para>
+</listitem><listitem><para><computeroutput>@property nFiles -&gt; int</computeroutput>: Gets and sets the number of files in the dataset.</para>
+</listitem><listitem><para><computeroutput>@property dataType -&gt; str</computeroutput>: Gets and sets the data type.</para>
+</listitem><listitem><para><computeroutput>@property prodsysStatus -&gt; str</computeroutput>: Gets and sets the production system status.</para>
+</listitem><listitem><para><computeroutput>@property identifier -&gt; str</computeroutput>: Gets and sets the identifier.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MetaModule_page_1MetaModule_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>meta.pyx</computeroutput> module extensively uses Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ...</computeroutput>: Declares classes as Cython extension types.</para>
+</listitem><listitem><para><computeroutput>cdef meta_t *ptr</computeroutput>, <computeroutput>cdef weights_t</computeroutput>: Pointers to C++ structs.</para>
+</listitem><listitem><para><computeroutput>from libcpp cimport ...</computeroutput>: Imports C++ standard library types.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.structs cimport meta_t, weights_t</computeroutput>: Imports C++ struct declarations from <computeroutput>.pxd</computeroutput> files.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>, <computeroutput>from AnalysisG.core.meta cimport *</computeroutput>, <computeroutput>from AnalysisG.core.notification cimport *</computeroutput>: Imports C++ declarations from corresponding <computeroutput>.pxd</computeroutput> files.</para>
+</listitem><listitem><para><computeroutput>cython.parallel.prange</computeroutput>: Used for parallel processing.</para>
+</listitem><listitem><para><computeroutput>cython.operator.dereference as deref</computeroutput>: Used to dereference C++ pointers.</para>
+</listitem><listitem><para><computeroutput>env</computeroutput>, <computeroutput>enc</computeroutput>, <computeroutput>tools().decode64</computeroutput>, <computeroutput>tools().encode64</computeroutput>: Utility functions for converting between Python and C++ data types and for base64 encoding/decoding.</para>
+</listitem><listitem><para><computeroutput>pyAMI.client</computeroutput>, <computeroutput>pyAMI.httpclient</computeroutput>, <computeroutput>pyAMI_atlas.api</computeroutput>, <computeroutput>http.client</computeroutput>, <computeroutput>pickle</computeroutput>, <computeroutput>h5py</computeroutput>: Python libraries used for external interactions (PyAMI, HDF5 caching, serialization). </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/meta.dox"/>
+  </compounddef>
+</doxygen>

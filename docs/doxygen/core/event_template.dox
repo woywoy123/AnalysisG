@@ -1,0 +1,75 @@
+/**
+ * @file event_template.dox
+ * @brief Detailed documentation for the EventTemplate Cython class.
+ *
+ * @page EventTemplate_page EventTemplate
+ *
+ * @section EventTemplate_intro Introduction
+ * The `EventTemplate` class is a Cython-implemented class within the AnalysisG framework, serving as a foundational template for event-based data structures. It provides a high-performance interface to an underlying C++ event object, enabling efficient data manipulation and access within the Python environment. This class is designed to be inherited by more specific event implementations, providing common functionalities for event indexing, weighting, and tree/branch management.
+ *
+ * @section EventTemplate_class The EventTemplate Class
+ * The `EventTemplate` is a `cdef class`, indicating it's a Cython extension type, allowing direct interaction with C++ objects and types for performance optimization. It encapsulates a pointer to a C++ `event_template` object, managing its lifecycle and exposing its properties and methods to Python.
+ *
+ * @subsection EventTemplate_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent. This method is called when the object is allocated. If the instance is not `EventTemplate` itself (i.e., it's a subclass), it returns immediately. Otherwise, it allocates a new C++ `event_template` object and assigns its pointer to `self.ptr`.
+ *
+ * - `__init__(self)`:
+ *   The Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent. This method is called when the object is deallocated. If the instance is not `EventTemplate` itself, it returns. Otherwise, it deallocates the C++ `event_template` object pointed to by `self.ptr`, preventing memory leaks.
+ *
+ * @subsection EventTemplate_special_methods Special Methods
+ * - `__name__(self)`:
+ *   Returns the name of the underlying C++ event object as a Python string. It uses the `env` utility function to convert a C++ string to a Python string.
+ *
+ * - `__hash__(self)`:
+ *   Computes a hash value for the event. It converts the first 8 characters of the C++ object's hash string to an integer.
+ *
+ * - `__eq__(self, other)`:
+ *   Compares two `EventTemplate` objects for equality. It first checks if `other` is an instance or subclass of `EventTemplate` using `is_self`. If so, it compares the underlying C++ `event_template` objects.
+ *
+ * - `is_self(self, inpt) -> bool`:
+ *   A utility method to check if the given input `inpt` is an instance of `EventTemplate` or a subclass thereof.
+ *
+ * @subsection EventTemplate_properties Properties
+ * The following properties provide controlled access to the underlying C++ `event_template`'s data members.
+ *
+ * - `@property index -> int`:
+ *   Retrieves the integer index of the event.
+ *   - `@index.setter index(self, val: Union[str, double])`:
+ *     Sets the index of the event. It attempts to set the C++ `index` directly. If a `TypeError` occurs (e.g., `val` is a string), it assumes `val` represents a leaf name and stores it in `self.ptr.leaves`.
+ *
+ * - `@property weight -> double`:
+ *   Retrieves the double-precision floating-point weight of the event.
+ *   - `@weight.setter weight(self, val: Union[str, double])`:
+ *     Sets the weight of the event. Similar to `index.setter`, it handles `TypeError` by storing `val` in `self.ptr.leaves`.
+ *
+ * - `@property Tree -> str`:
+ *   Retrieves the name of the primary ROOT tree associated with the event.
+ *   - `@Tree.setter Tree(self, str val)`:
+ *     Sets the name of the primary ROOT tree. It uses the `enc` utility function to convert the Python string `val` to a C++ string.
+ *
+ * - `@property Trees -> list`:
+ *   Retrieves a list of all ROOT tree names associated with the event.
+ *   - `@Trees.setter Trees(self, val: Union[str, list])`:
+ *     Sets the list of ROOT tree names. It can accept a single string or a list of strings. If a list, it iterates and calls the setter for each element.
+ *
+ * - `@property Branches -> list`:
+ *   Retrieves a list of all ROOT branch names associated with the event.
+ *   - `@Branches.setter Branches(self, val: Union[str, list])`:
+ *     Sets the list of ROOT branch names. Similar to `Trees.setter`, it handles single strings or lists of strings.
+ *
+ * - `@property Name`:
+ *   Retrieves the name of the underlying C++ event object. This appears to be a duplicate of `__name__` but exposed as a property.
+ *
+ * @section EventTemplate_cpp_interaction C++ Interaction
+ * The `EventTemplate` class heavily relies on Cython's ability to interact with C++.
+ * - `cdef class EventTemplate`: Declares `EventTemplate` as a Cython extension type.
+ * - `cdef event_template *ptr`: A C++ pointer to an `event_template` object, managed by the Cython class.
+ * - `from libcpp cimport int, vector`: Imports C++ primitive types and containers.
+ * - `from AnalysisG.core.event_template cimport *`: Imports C++ declarations from the corresponding `.pxd` file.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from the `tools.pxd` file, likely containing `env` and `enc` utility functions for string conversion.
+ * - `env(self.ptr.name)` and `enc(val)`: These functions (presumably from `AnalysisG.core.tools`) handle the conversion between C++ `std::string` and Python `str`.
+ */

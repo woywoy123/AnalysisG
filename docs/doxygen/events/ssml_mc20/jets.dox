@@ -1,0 +1,39 @@
+
+/**
+ * @file jets.dox
+ * @brief Detailed documentation for the jet classes in the ssml_mc20 event.
+ *
+ * @page ssml_mc20_jets_page ssml_mc20 Jets
+ *
+ * This page provides detailed documentation for the jet classes used in the `ssml_mc20` event.
+ *
+ * @section ssml_mc20_jets_jet Jet
+ * The `jet` class represents a reconstructed jet.
+ *
+ * @subsection ssml_mc20_jets_jet_ctor Constructor
+ * - `jet()`: Initializes the particle type to "jet" and defines the data leaves to be read from the input tree, including b-tagging information. It also sets up a getter for the `from_res` attribute.
+ *
+ * @subsection ssml_mc20_jets_jet_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `jet` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `jet` particle's properties from the input data.
+ * - `void get_from_res(bool* val, jet* el)`: A static method that determines if the jet originates from a resonant top quark by checking its parent particles.
+ *
+ * @subsection ssml_mc20_jets_jet_attributes Attributes
+ * - `btag_77`, `btag_85`, `btag_90`: Boolean flags for different b-tagging working points.
+ * - `sel_85`: A boolean flag for the 85% b-tagging selection.
+ * - `top_index`: The index of the associated truth top quark.
+ * - `from_res`: A boolean flag indicating if the jet originates from a resonance.
+ *
+ * @section ssml_mc20_jets_truthjet Truth Jet
+ * The `truthjet` class represents a truth-level jet.
+ *
+ * @subsection ssml_mc20_jets_truthjet_ctor Constructor
+ * - `truthjet()`: Initializes the particle type to "truth_jet" and defines the data leaves.
+ *
+ * @subsection ssml_mc20_jets_truthjet_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `truthjet` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `truthjet` particle's properties from the input data.
+ *
+ * @subsection ssml_mc20_jets_truthjet_attributes Attributes
+ * - `top_index`: The index of the associated truth top quark.
+ */

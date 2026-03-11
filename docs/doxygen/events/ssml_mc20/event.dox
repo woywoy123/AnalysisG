@@ -1,0 +1,53 @@
+
+/**
+ * @file event.dox
+ * @brief Detailed documentation for the ssml_mc20 event class.
+ *
+ * @page ssml_mc20_event_page ssml_mc20 Event
+ *
+ * @section ssml_mc20_event_intro Introduction
+ * The `ssml_mc20` class is a specialization of the `event_template` and is designed to handle events from the Same-Sign-Muon-Lepton analysis for Run 3 (MC20). It defines the structure of the event, including the particles and their relationships, and provides methods for building and compiling the event from the input data.
+ *
+ * @section ssml_mc20_event_class The ssml_mc20 Class
+ * The `ssml_mc20` class inherits from `event_template` and implements its virtual methods to provide event-specific functionality.
+ *
+ * @subsection ssml_mc20_event_ctor Constructor and Destructor
+ * - `ssml_mc20()`: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.
+ * - `~ssml_mc20()`: The destructor cleans up any resources allocated by the event.
+ *
+ * @subsection ssml_mc20_event_methods Methods
+ * - `event_template* clone()`: Creates a new instance of the `ssml_mc20` event.
+ * - `void build(element_t* el)`: Populates the event's data members (event number, weights, MET, etc.) from the input data element.
+ * - `void CompileEvent()`: This is the core method of the class. It reconstructs the event by linking the various particles together. This includes:
+ *   - Associating tops with their parent Z' boson.
+ *   - Linking partons to their corresponding jets, truth jets, muons, and electrons.
+ *   - Matching various particle collections (partons, electrons, muons, jets, truth jets) to their parent tops.
+ *   - Vectorizing the particle collections for easier access.
+ *
+ * @subsection ssml_mc20_event_attributes Event Attributes
+ * The `ssml_mc20` event contains a wide range of attributes, including:
+ * - **Event Information**: `eventNumber`, `event_category`.
+ * - **Weights**: `weight_mc`, `weight_pileup`, `weight_jvt_effSF`, `weight_lep_tightSF`, `weight_ftag_effSF`, `weight_beamspot`.
+ * - **Kinematic Variables**: `HT_all`, `met`, `phi`, `met_sum`.
+ * - **Selection Flags**: `pass_ssee`, `pass_ssem`, `pass_ssmm`, `pass_eem_zveto`, etc.
+ * - **Particle Counts**: `n_electrons`, `n_fjets`, `n_jets`, `n_leptons`, `n_muons`.
+ *
+ * @subsection ssml_mc20_event_particles Particle Collections
+ * The `ssml_mc20` event contains the following particle collections:
+ * - `m_zprime`: A map of Z' bosons.
+ * - `m_tops`: A map of top quarks.
+ * - `m_truthjets`: A map of truth jets.
+ * - `m_partons`: A map of partons.
+ * - `m_leptons`: A map of leptons.
+ * - `m_electrons`: A map of electrons.
+ * - `m_muons`: A map of muons.
+ * - `m_jets`: A map of jets.
+ *
+ * After `CompileEvent()` is called, these maps are used to populate the following vector collections for easier access:
+ * - `Tops`
+ * - `Zprime`
+ * - `Detector` (a combined collection of jets, muons, and electrons)
+ * - `Leptons` (a combined collection of muons and electrons)
+ * - `Leptsn` (a collection of `lepton` objects)
+ * - `Electrons`
+ */

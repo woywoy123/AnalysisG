@@ -1,0 +1,12 @@
+/**
+ * @file optimizer.h
+ * @brief Optimizer struct (renamed from model.h's optimizer_params_t context).
+ * @details This file is included transitively; the primary struct
+ *          @c optimizer_params_t and @c loss_opt are documented in
+ *          @c model.dox.  The @c optimizer.h header brings in @c structs/property.h
+ *          and @c structs/enums.h to make the full @c optimizer_params_t
+ *          definition available.
+ *
+ * @note The file is re-exported from @c structs/model.h — refer to model.dox
+ *       for the documentation of all types defined here.
+ */

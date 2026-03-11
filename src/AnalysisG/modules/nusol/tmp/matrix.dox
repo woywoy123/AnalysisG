@@ -1,0 +1,17 @@
+/**
+ * @file matrix.h (tmp)
+ * @brief Root-level tmp copy of the double-precision @c vec3/@c vec4/@c matrix
+ *        types.
+ * @details Identical in interface to the version in
+ *          @c tmp/multisol/include/multisol/matrix.h.  Refer to that file's
+ *          documentation for full details.
+ *
+ * @sa matrix.dox (tmp/multisol)
+ */
+
+/**
+ * @fn template<typename T> void safe(T** o)
+ * @brief If @p *o is non-null, delete it and set it to @c nullptr.
+ * @tparam T Object type.
+ * @param o Double pointer to the object.
+ */

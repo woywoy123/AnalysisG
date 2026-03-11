@@ -1,0 +1,40 @@
+
+/**
+ * @file accuracy.dox
+ * @brief Detailed documentation for the accuracy_metric class.
+ *
+ * @page accuracy_metric_page Accuracy Metric
+ *
+ * @section accuracy_metric_intro Introduction
+ * The `accuracy_metric` class is a specialization of the `metric_template` and is designed to calculate and record accuracy metrics for GNN-based analyses. It computes the accuracy of edge predictions and the classification of the number of top quarks.
+ *
+ * @section accuracy_metric_class The accuracy_metric Class
+ * The `accuracy_metric` class inherits from `metric_template` and implements its virtual methods to provide metric-specific functionality.
+ *
+ * @subsection accuracy_metric_ctor Constructor and Destructor
+ * - `accuracy_metric()`: The constructor initializes the metric name to "accuracy".
+ * - `~accuracy_metric()`: The destructor.
+ *
+ * @subsection accuracy_metric_methods Methods
+ * - `accuracy_metric* clone()`: Creates a new instance of the `accuracy_metric`.
+ * - `void define_variables()`: Registers the output variables for the metric. This includes event-wise and global accuracies for edge predictions and n-top classification, for training, validation, and evaluation modes.
+ * - `void event()`: Writes the event-wise metrics to the output file.
+ * - `void batch()`: This method is not used in this metric.
+ * - `void end()`: This method is called at the end of the processing. It calculates the final global accuracies and writes them to the output file.
+ * - `void define_metric(metric_t* mtx)`: This is the core method of the class. It takes a `metric_t` object containing the GNN predictions and truth information, and calculates the accuracies.
+ *
+ * @subsection accuracy_metric_calculation Accuracy Calculation
+ * The `define_metric` method performs the following calculations:
+ * - **N-Top Accuracy**: It compares the predicted number of top quarks (the index with the highest score in `ntop_scores`) with the true number of top quarks for each event and accumulates the results in a confusion matrix (`ntop_accuracy`).
+ * - **Edge Accuracy**: For each edge in the graph, it compares the predicted edge class (based on `edge_sc`) with the true edge class (`edge_tr`) and calculates the event-wise and global edge accuracies.
+ *
+ * @subsection accuracy_metric_output Output Variables
+ * The metric outputs the following variables to a ROOT file:
+ * - **Event-wise**:
+ *   - `edge_accuracy`: The accuracy of edge predictions for the event.
+ *   - `ntop_scores`: The predicted scores for the number of top quarks.
+ *   - `ntop_truth`: The true number of top quarks.
+ * - **Global**:
+ *   - `global_edge_accuracy`: The overall accuracy of edge predictions.
+ *   - `ntops_accuracy`: A vector containing the accuracy for each n-top class.
+ */
