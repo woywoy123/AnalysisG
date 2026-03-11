@@ -1,138 +1,93 @@
+from constants import *
 from atomics import *
-import cmath
-
-def AQuad(data, s1, s2, m_nu = None):
-    d = delta(data, s2)
-    w = omega(data, s1)
-    o = Omega(data, s1)
-    b, p, m = data.b_mu, data.p_mu, data.m_mu
-    if m_nu is None: m_nu = nu_mass(data, s1, s2)
-
-    a_ = ((b**2 - w **2 )* d ** 2 + 2 * w * d - (1 - b **2 ))/o**2
-    b_ = 2 * p * d 
-    c_ = m**2 - 2 * m_nu**2
-    r1 = (-b_ + complex(b_**2 - 4 * a_ * c_)**0.5)/(2 * a_)
-    r2 = (-b_ - complex(b_**2 - 4 * a_ * c_)**0.5)/(2 * a_)
-    return {"SP" : [m_nu, r1 / d, r1], "SM" : [m_nu, r2 / d, r2]}
-
-class data_t:
-    def __init__(self, jet, lep):
-        self.theta = angular_t(math.acos(costheta(jet, lep)))
-
-        self.m_mu = lep.mass
-        self.b_mu = lep.b
-        self.p_mu = lep.p
-        self.e_mu = lep.e
-        
-        self.m_b = jet.mass
-        self.b_b = jet.b
-        self.p_b = jet.p
- 
-        kp = (self.b_mu / self.b_b) + 1 
-        km = (self.b_mu / self.b_b) - 1 
-        psi = self.theta.alpha / 2
-        self.k_vector = np.array([kp, km]).reshape((2, 1))
-        
-        self.w_matrix = (1 / 2) * np.array([
-            [     math.tan(psi), 1 / math.tan(psi)],
-            [-1 / math.tan(psi),    -math.tan(psi)]
-        ])
+from classes import *
+from matrix import *
+import math
 
 class Z2_t:
     def __init__(self, data, sign, eps):
-        self.w = omega(data, sign)
-        self.o = Omega(data, sign)
-
-        self.b_mu = data.b_mu
-        self.psi = angular_t(math.atan(self.w))
-
-        self.a = (data.b_mu ** 2 - self.w ** 2) / self.o**2
-        self.b = 2 * self.w  / self.o**2
-        self.c = - (1 - data.b_mu**2) / self.o**2
-        self.d = 2 * data.p_mu
-        self.e = data.m_mu ** 2 
-
-        self.Sx0 = - (data.m_mu ** 2) / (data.p_mu)
-        self.Sy0 = - self.w * data.e_mu ** 2 / data.p_mu
-        self.Sz0 = self.Z2(self.Sx0, self.Sy0, 0) 
-
-        # ----------------- eigenvalues ------------- #
+        self.w     = omega(data, sign)
+        self.o     = Omega(data, sign)
+        self.b_mu  = data.b_mu
+        self.p_mu  = data.p_mu
         self.kappa = angular_t(math.atan(self.w))
-        self.ep = (data.b_mu / self.o)**2
-        self.em = -1
+        self.dt    = delta(data, eps)
 
-        self.data = data
-        self.xkp = sign
-        self.eps = eps # <---- hyperbolic branches
-    
-    def Z2(self, sx, sy, m_nu = None):
-        if m_nu is None: m_nu = self.Sz0 ** 0.5
-        ls = [self.a, self.b, self.c, self.d, self.e - m_nu**2]
+        self.xkp   = sign
+        self.eps   = eps 
+        self.data  = data
+        
+        self.ls  = Z2_coeffs(data, sign)
+        self.Sx0 = Sx0(data)
+        self.Sy0 = Sy0(data, sign) 
+
+    def Z2(self, sx, sy, m_nu = 0):
         Sp = [sx**2, sx*sy, sy**2, sx, 1]
-        return sum([i * j for i, j in zip(ls, Sp)])
+        return sum([i * j for i, j in zip(self.ls, Sp)]) - m_nu ** 2
 
-    def Sx(self, tau, m_nu = None):
-        tx = hyper_t(tau)
-        ep = math.sqrt(1 / self.ep)
-        if m_nu is None: m_nu = self.Sz0 ** 0.5
-        return m_nu * self.kappa.cos * (self.eps * ep * tx.cosh - self.kappa.tan * tx.sinh) + self.Sx0
+    def Sx(self, tau, phi, m_nu = 1, cosphi = False):
+        hx, kp = hyper_t(tau), self.kappa
+        cphi = cosphi if phi is not False else np.cos(phi)
+        sx = self.eps * self.o * kp.cos * hx.cosh - self.b_mu * cphi * kp.sin * hx.sinh
+        return (m_nu / self.b_mu) * sx + self.Sx0
 
-    def Sy(self, tau, m_nu = None):
-        tx = hyper_t(tau)
-        ep = math.sqrt(1 / self.ep)
-        if m_nu is None: m_nu = self.Sz0 ** 0.5
-        return m_nu * self.kappa.cos * (self.eps * ep * tx.cosh * self.kappa.tan + tx.sinh) + self.Sy0
+    def Sy(self, tau, phi, m_nu = 1, cosphi = False):
+        hx, kp = hyper_t(tau), self.kappa
+        cphi = cosphi if phi is not False else np.cos(phi)
+        sy = self.eps * self.o * kp.sin * hx.cosh + self.b_mu * cphi * kp.cos * hx.sinh
+        return (m_nu / self.b_mu) * sy + self.Sy0
 
-    def NuVec(self, tau, phi, m_nu = None):
-        hx, ax = hyper_t(tau), angular_t(phi)
-        Sx = self.eps * self.o * self.psi.cos * hx.cosh - self.b_mu * ax.cos * self.psi.sin * hx.sinh
-        Sy = self.eps * self.o * self.psi.sin * hx.cosh + self.b_mu * ax.cos * self.psi.cos * hx.sinh
-        Sx, Sy = (m_nu / self.b_mu) * Sx + self.Sx0, (m_nu / self.b_mu) * Sy + self.Sy0
-        Sz = self.eps * m_nu * hx.sinh * ax.sin
-        return [Sx, Sy, Sz] 
+    def Sz(self, tau, phi, m_nu = 1):
+        return self.eps * m_nu * np.sinh(tau) * np.sin(phi)
+
+    def x1(self, tau, phi, m_nu = 1, cosphi = False):
+        hx, kp = hyper_t(tau), self.kappa
+        kx = self.eps * self.b_mu * kp.cos * hx.cosh - self.o * kp.sin * np.cos(phi) * hx.sinh
+        return self.p_mu - (m_nu / self.o)*kx
+
+    def y1(self, tau, phi, m_nu = 1, cosphi = False):
+        hx, kp = hyper_t(tau), self.kappa
+        ky =  self.o * kp.cos * np.cos(phi) * hx.sinh - self.eps * kp.sin * self.b_mu * hx.cosh
+        return (m_nu / self.o)*ky
+
+    def S_M(self, Sx, Sy):
+        return H_matrix(self.data, self.xkp).dot(np.array([Sx.Sy]))
+
 
 class G2_t:
     def __init__(self, data):
-        self.w = branch_t(omega(data,+1), omega(data,-1))
-        self.o = branch_t(Omega(data,+1), Omega(data,-1))
-        self.G = branch_t(Gamma(data,+1), Gamma(data,-1))
+        self.w   = branch_t(omega(data,+1), omega(data,-1))
+        self.o   = branch_t(Omega(data,+1), Omega(data,-1))
+        self.G   = branch_t(Gamma(data,+1), Gamma(data,-1))
+        self.dt  = branch_t(delta(data,+1), delta(data,-1))
+        self.psi = branch_t(angular_t(math.atan(self.dt.p)), angular_t(math.atan(self.dt.m)))
+        
+        f = Gamma(data, +1) * Gamma(data, -1) / (self.psi.m.cos * self.psi.p.cos)
+        self.eig = branch_t(
+                - f * np.cos( (self.psi.p.alpha - self.psi.m.alpha) / 2 )**2,
+                  f * np.sin( (self.psi.p.alpha - self.psi.m.alpha) / 2 )**2
+        )
+        self.data = data
 
-        self.delta = branch_t(delta(data,+1), delta(data,-1))
-        self.psi   = branch_t(angular_t(math.atan(self.delta.p)), angular_t(math.atan(self.delta.m)))
-        self.phi   = angular_t((self.psi.p.alpha + self.psi.m.alpha)/2)
-        self.alpha = angular_t((self.psi.p.alpha - self.psi.m.alpha)/2)
+        self.MX = np.array([
+            [Mxy(data, +1, +1), Mxy(data, +1, -1)], 
+            [Mxy(data, -1, +1), Mxy(data, -1, -1)]
+        ])
+        self.ei, self.ev = np.linalg.eig(self.MX)
 
-        f = (self.G.m * self.G.p / (2 * self.psi.p.cos * self.psi.m.cos))
-        self.ep = f * (-math.cos(self.psi.p.alpha - self.psi.m.alpha) + 1)
-        self.em = f * (-math.cos(self.psi.p.alpha - self.psi.m.alpha) - 1)
-
-        self.det = - (self.G.m * self.G.p / 2)**2 * (math.sin(self.psi.p.alpha - self.psi.m.alpha)**2)
-        self.det =   self.det / (self.psi.p.cos**2 * self.psi.m.cos**2)
-
-    def Mobius(self, sx, sy):
-        return (sx - self.delta.m * sy) / (sx - self.delta.p*sy)
-
-    def G2(self, sx, sy):
-        return -self.G.m * self.G.p * (sx - self.delta.m * sy)*(sx - self.delta.p * sy)
-
-    def Sx(self, K, tau):
-        tx = hyper_t(tau)
-        r = ((K * self.psi.m.cos * self.psi.p.cos)/(self.G.m * self.G.p))**0.5
-        return r * ((self.phi.cos / self.alpha.sin) * tx.cosh - (self.phi.sin / self.alpha.cos) * tx.sinh)
-
-    def Sy(self, K, tau):
-        tx = hyper_t(tau)
-        r = ((K * self.psi.m.cos * self.psi.p.cos)/(self.G.m * self.G.p))**0.5
-        return r * ((self.phi.sin / self.alpha.sin) * tx.cosh + (self.phi.cos / self.alpha.cos) * tx.sinh)
-
-    def P0(self, tau, sign):
-        w = signs(self.wp, self.wm, sign)
-        o = signs(self.op, self.om, sign)
-        phi = math.atan(w)
-        alphap = o * math.sin(phi) + self.lep.b * math.cos(phi) * math.tanh(tau)
-        alpham = o * math.cos(phi) - self.lep.b * math.sin(phi) * math.tanh(tau)
-        return alpham  * self.lep.b * math.cos(phi) * math.sqrt(1 - math.tanh(tau)) + alphap / alpham
+    def dG2(self, Sx, Sy): 
+        return - self.G.m * self.G.p * (Sx - self.dt.p * Sy) * (Sx - self.dt.m * Sy)
 
 
+    def _Line(self, tau, eps, s1, s2, phi=False):
+        z2 = Z2_t(self.data, s1, s2)
+        cphi = cosphi(self.data, eps, np.atanh(eta_test(self.data, eps, s1, s2)), s1, s2) if phi is None else phi
+        m_nu = m_nuG(self.data, eps, np.atanh(eta_test(self.data, eps, s1, s2)), s1, s2)
+
+        # 1. Generate the quadric Sx, Sy coordinates
+        sx = z2.Sx(tau, cphi, m_nu, phi is not None)
+        sy = z2.Sy(tau, cphi, m_nu, phi is not None)
+
+        return H_tilde(sx, sy, complex(z2.Z2(sx, sy, m_nu)) ** 0.5, self.data, s1)
 
 

@@ -1,5 +1,5 @@
 from particle import *
-from atomics import *
+from constants import *
 import numpy as np
 import math
 from scipy.optimize import leastsq

@@ -43,11 +43,8 @@ class hyperbolic:
         self.domain = domain
 
     def compile(self, t_values=None):
-        if self.fx is None:
-            return
-        # Generate raw points
+        if self.fx is None: return
         self.raw_points = np.array([self.fx(t) for t in self.param_values])
-        # Points will be clipped later when we know the bounds
 
     def clip_to_bounds(self, bounds, margin_factor=1.2):
         """Clip hyperbolic curve to reasonable bounds based on ellipse data"""
@@ -78,12 +75,8 @@ class hyperbolic:
             (self.raw_points[:, 2] >= z_min_clip) & (self.raw_points[:, 2] <= z_max_clip)
         )
         
-        # Keep only points within bounds
         self.points = self.raw_points[mask]
-        
-        # If we have too few points, use the raw points (plot will be clipped by axis limits)
-        if len(self.points) < 10:
-            self.points = self.raw_points
+        if len(self.points) < 10: self.points = self.raw_points
 
 class packet:
     def __init__(self, truth=None, tru_pts=None, pts=1000, inst=None):
@@ -92,14 +85,8 @@ class packet:
         self.pts = pts
         self.instance = inst
         
-        # Better color scheme
-        self.cols = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
-                     "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"]
-        
-        # Line styles
+        self.cols = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"]
         self.style = ["-", "--", "-.", ":", (0, (3, 1, 1, 1))]
-        
-        # Markers
         self.pts_ = ["o", "s", "^", "v", "D", "P", "X"]
         
         # Create iterators
@@ -108,22 +95,20 @@ class packet:
         self.pts_iter = None
     
     def _reset_iterators(self):
-        """Reset the style iterators"""
         self.cols_iter = itertools.cycle(self.cols)
         self.style_iter = itertools.cycle(self.style)
         self.pts_iter = itertools.cycle(self.pts_)
     
-    def add_ellipse(self, H, name, pts=None, enable=False):
+    def add_ellipse(self, H, name, pts=None):
         self.reco.append(ellipse(None, None, name, H, pts, None))
 
-    def add_hyperbolic(self, fx, name, pts=None, domain=(-10, 10)):  # Wider default domain
+    def add_hyperbolic(self, fx, name, pts=None, domain=(-12, 12)):  # Wider default domain
         self.reco.append(hyperbolic(None, None, name, fx, domain, pts))
 
     def add_line(self, fx, name, pts=None, domain=(-10, 10)):
         self.reco.append(hyperbolic(None, None, name, fx, domain, pts))
     
     def _assign_styles(self):
-        """Assign consistent styles to all reconstruction objects"""
         if self.cols_iter is None: self._reset_iterators()
         for reco in self.reco:
             if reco.col is None: reco.col = next(self.cols_iter)
@@ -132,19 +117,13 @@ class packet:
                 reco.mrk_pts = next(self.pts_iter)
     
     def _get_combined_bounds(self):
-        """Get combined bounds from all ellipses (truth and reco)"""
         all_bounds = []
-        
-        # Add truth ellipse bounds
         if self.truth.bounds is not None: all_bounds.append(self.truth.bounds)
-        
-        # Add reco ellipse bounds
         for obj in self.reco:
             if isinstance(obj, ellipse) and obj.bounds is not None:
                 all_bounds.append(obj.bounds)
         if not all_bounds: return None
         
-        # Combine bounds
         combined = {
             'x': (min(b['x'][0] for b in all_bounds), max(b['x'][1] for b in all_bounds)),
             'y': (min(b['y'][0] for b in all_bounds), max(b['y'][1] for b in all_bounds)),
@@ -154,11 +133,9 @@ class packet:
         return combined
     
     def _get_symmetric_limits(self, values, margin=0.15):
-#        return -1e6, 1e6
-        #if not values: return -1, 1  # Default if no values
         max_abs = max(abs(min(values)), abs(max(values)))
         limit = max_abs * (1 + margin)
-        if max_abs > 1e7: return -1e7, 1e7
+        if max_abs > 1e6: return -1e6, 1e6
         return -limit, limit
     
     def _compute_distances_to_truth(self):
@@ -179,10 +156,10 @@ class packet:
             
             # Calculate Euclidean distance
             diff = truth_array - sol_array
-            dist = np.linalg.norm(diff)
+            dist = sum(diff ** 2) # np.linalg.norm(diff)
             
             # Also calculate relative distance
-            truth_magnitude = np.linalg.norm(truth_array)
+            truth_magnitude = sum(truth_array**2) #np.linalg.norm(truth_array)
             distances.append((i, obj.label, dist, dist / truth_magnitude * 100, obj.sol_pts, diff))
             if dist >= min_distance: continue
             min_distance = dist
@@ -190,7 +167,7 @@ class packet:
         return distances, closest_idx, min_distance
     
     def _format_distance(self, dist_mev):
-        return f"{dist_mev:.3f} MeV"
+        return f"{dist_mev*10**-6:.3f} GeV^2"
     
     def _add_distance_inset(self, ax, distances, closest_idx, min_distance):
         if distances is None or not distances: return
@@ -252,23 +229,17 @@ class packet:
         for obj in all_objects:
             if not isinstance(obj, ellipse): continue
             obj.compile(t_values)
-        
-        # Get combined bounds from ellipses
         ellipse_bounds = self._get_combined_bounds()
-        
-        # Now compile and clip hyperbolic curves
         for obj in all_objects:
             if not isinstance(obj, hyperbolic): continue 
             obj.compile()
             if ellipse_bounds is not None: obj.clip_to_bounds(ellipse_bounds)
             else: obj.points = obj.raw_points
-        
-        # Plot lines first
         for obj in all_objects:
             if obj.points is not None and len(obj.points) > 0:
                 self.ax.plot(obj.points[:, 0], obj.points[:, 1], obj.points[:, 2],
                            color=obj.col, linestyle=obj.line, linewidth=2,
-                           label=obj.label, alpha=0.8)
+                           label=obj.label, alpha=1.0)
         
         # Then markers on top
         for obj in all_objects:
@@ -344,21 +315,17 @@ class packet:
         self.ax = plt.axes()
         self.make_axis(self.ax, ("Sx", "Sy"))
       
-        # Assign styles
         self._assign_styles()
         
         t_values = np.linspace(0, 2 * np.pi, self.pts)
         all_objects = self.reco + [self.truth]
         
-        # First compile ellipses to get bounds
         for obj in all_objects:
-            if isinstance(obj, ellipse):
-                obj.compile(t_values)
+            if not isinstance(obj, ellipse): continue
+            obj.compile(t_values)
         
-        # Get combined bounds from ellipses
         ellipse_bounds = self._get_combined_bounds()
         
-        # Now compile and clip hyperbolic curves
         for obj in all_objects:
             if not isinstance(obj, hyperbolic): continue
             obj.compile()
@@ -371,7 +338,7 @@ class packet:
             if obj.points is not None and len(obj.points) > 0:
                 self.ax.plot(obj.points[:, 0], obj.points[:, 1],
                            color=obj.col, linestyle=obj.line,
-                           linewidth=2, label=obj.label, alpha=0.8)
+                           linewidth=3, label=obj.label, alpha=1.0)
             
             if obj.sol_pts is not None:
                 pt = np.array(obj.sol_pts).flatten()
@@ -454,7 +421,7 @@ class packet:
             for obj in all_objects:
                 if obj.points is not None and len(obj.points) > 0:
                     ax.plot(obj.points[:, x_idx], obj.points[:, y_idx],
-                           color=obj.col, linestyle=obj.line, linewidth=1.5,
+                           color=obj.col, linestyle=obj.line, linewidth=3,
                            alpha=0.8, label=obj.label if idx == 0 else "")
             
             for obj in all_objects:
@@ -463,7 +430,7 @@ class packet:
                     if len(pt) > max(x_idx, y_idx):
                         ax.scatter(pt[x_idx], pt[y_idx],
                                   marker=obj.mrk_pts, s=60, color=obj.col,
-                                  edgecolor='black', linewidth=1, zorder=5,
+                                  edgecolor='black', linewidth=3, zorder=5,
                                   label=f"{obj.label} (sol)" if idx == 0 else "")
             
             # Add distance inset only to first subplot
@@ -486,10 +453,8 @@ class packet:
                 if unique: ax.legend(*zip(*unique), loc='upper right', fontsize=9)
         
         plt.tight_layout(pad=2.0)
-        if save is not None:
-            plt.savefig(str(save) + ".pdf", dpi=300, bbox_inches='tight')
-        else:
-            plt.show()
+        if save is not None: plt.savefig(str(save) + ".pdf", dpi=300, bbox_inches='tight')
+        else: plt.show()
         plt.close()
 
     def make_axis(self, ax, dims=("x", "y")):
