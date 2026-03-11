@@ -1,0 +1,252 @@
+/**
+ * @file meta.h
+ * @brief Dataset metadata manager class.
+ * @details @c meta inherits @c tools and @c notification and manages an
+ *          @c meta_t struct, with @c cproperty accessors for all AMI and
+ *          analysis tracking attributes, k-fold fold assignments, and ROOT
+ *          sum-of-weights scanning.
+ */
+
+/**
+ * @class meta
+ * @brief Dataset metadata manager.
+ * @details Inherits @c tools and @c notification.  Manages an @c meta_t struct
+ *          whose fields cover the full set of ATLAS AMI metadata attributes:
+ *          physics identifiers (@c dsid, @c DatasetName, @c generators, etc.),
+ *          cross-section values in nb/pb/fb, event counts, file GUIDs, and
+ *          k-factor/generator-filter efficiency.
+ *
+ *          All attributes are exposed as @c cproperty objects with read-only
+ *          getter callbacks backed by the @c meta_data struct.  Metadata is
+ *          populated by one of three routes: @c parse_json (AMI JSON string),
+ *          @c scan_data (ROOT TObject scan for run/event numbers and SOW),
+ *          or @c scan_sow (dedicated sum-of-weights scan).
+ *
+ *          K-fold fold assignments are stored as @c folds_t records; the
+ *          @c get_tags method looks up the fold for a given event hash.  The
+ *          @c compiler private method finalises the metadata after parsing.
+ *          Friend class @c analysis has access to private compilation
+ *          helpers.
+ */
+
+/**
+ * @fn meta::meta()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn meta::~meta()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn const folds_t* meta::get_tags(std::string hash)
+ * @brief Look up the k-fold tags for an event identified by @p hash.
+ * @param hash Event hash.
+ * @return Pointer to the @c folds_t record, or @c nullptr if not found.
+ */
+
+/**
+ * @fn void meta::scan_data(TObject* obj)
+ * @brief Scan a ROOT @c TObject for metadata (event numbers, run numbers).
+ * @param obj Root TObject (usually a @c TTree or @c TH1F).
+ */
+
+/**
+ * @fn void meta::scan_sow(TObject* obj)
+ * @brief Scan a ROOT @c TObject for sum-of-weights metadata.
+ * @param obj Root TObject.
+ */
+
+/**
+ * @fn void meta::parse_json(std::string inpt)
+ * @brief Parse an AMI JSON metadata string and populate @c meta_data.
+ * @param inpt JSON string from AMI.
+ */
+
+/**
+ * @fn std::string meta::hash(std::string fname)
+ * @brief Compute a hash string for the file identified by @p fname.
+ * @param fname File path.
+ * @return Hash string.
+ */
+
+/**
+ * @var rapidjson::Document* meta::rpd
+ * @brief Pointer to the parsed RapidJSON document (may be @c nullptr).
+ */
+
+/**
+ * @var std::string meta::metacache_path
+ * @brief Path to the local metadata cache directory.
+ */
+
+/**
+ * @var meta_t meta::meta_data
+ * @brief Underlying metadata plain-data struct.
+ */
+
+/**
+ * @var cproperty<bool, meta> meta::isMC
+ * @brief @c true if this dataset is Monte Carlo.
+ */
+
+/**
+ * @var cproperty<bool, meta> meta::found
+ * @brief @c true if the dataset was found in AMI or the local cache.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::eventNumber
+ * @brief Current event number.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::event_index
+ * @brief Free-use event index.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::totalSize
+ * @brief Total dataset size in bytes.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::kfactor
+ * @brief QCD k-factor.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::ecmEnergy
+ * @brief Centre-of-mass energy in MeV.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::genFiltEff
+ * @brief Generator filter efficiency.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::completion
+ * @brief Processing completion fraction.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::beam_energy
+ * @brief Beam energy in MeV.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::cross_section_nb
+ * @brief Cross section in nb.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::cross_section_fb
+ * @brief Cross section in fb.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::cross_section_pb
+ * @brief Cross section in pb.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::campaign_luminosity
+ * @brief Integrated luminosity of the campaign in fb⁻¹.
+ */
+
+/**
+ * @var cproperty<double, meta> meta::sum_of_weights
+ * @brief Sum of event weights.
+ */
+
+/**
+ * @var cproperty<unsigned int, meta> meta::dsid
+ * @brief Dataset identifier.
+ */
+
+/**
+ * @var cproperty<unsigned int, meta> meta::nFiles
+ * @brief Number of files in the dataset.
+ */
+
+/**
+ * @var cproperty<unsigned int, meta> meta::totalEvents
+ * @brief Total event count.
+ */
+
+/**
+ * @var cproperty<unsigned int, meta> meta::datasetNumber
+ * @brief Numeric dataset number.
+ */
+
+/**
+ * @var cproperty<std::string, meta> meta::derivationFormat
+ * @brief ATLAS derivation format string.
+ */
+
+/**
+ * @var cproperty<std::string, meta> meta::AMITag
+ * @brief AMI tag string.
+ */
+
+/**
+ * @var cproperty<std::string, meta> meta::generators
+ * @brief Generator name string.
+ */
+
+/**
+ * @var cproperty<std::string, meta> meta::DatasetName
+ * @brief Full AMI logical dataset name.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, meta> meta::keywords
+ * @brief AMI keyword list.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, meta> meta::weights
+ * @brief Event weight names.
+ */
+
+/**
+ * @var cproperty<std::vector<int>, meta> meta::events
+ * @brief Per-file event counts.
+ */
+
+/**
+ * @var cproperty<std::vector<int>, meta> meta::run_number
+ * @brief Per-file run numbers.
+ */
+
+/**
+ * @var cproperty<std::vector<double>, meta> meta::fileSize
+ * @brief Per-file sizes in bytes.
+ */
+
+/**
+ * @var cproperty<std::map<int,int>, meta> meta::inputrange
+ * @brief Map of file index to event count.
+ */
+
+/**
+ * @var cproperty<std::map<int,std::string>, meta> meta::inputfiles
+ * @brief Map of integer index to file path.
+ */
+
+/**
+ * @var cproperty<std::map<std::string,int>, meta> meta::LFN
+ * @brief Map of logical file name to index.
+ */
+
+/**
+ * @var cproperty<std::map<std::string,weights_t>, meta> meta::misc
+ * @brief Supplementary per-tag weight data.
+ */
+
+/**
+ * @var cproperty<std::map<std::string,std::string>, meta> meta::config
+ * @brief Arbitrary key-value configuration map.
+ */

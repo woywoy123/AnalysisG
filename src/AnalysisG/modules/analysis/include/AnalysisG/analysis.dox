@@ -1,0 +1,140 @@
+/**
+ * @file analysis.h
+ * @brief Top-level pipeline orchestration class.
+ * @details @c analysis inherits @c notification and @c tools and ties together
+ *          the I/O, sample tracer, dataloader, optimizer, and metric
+ *          subsystems into a single unified pipeline.
+ */
+
+/**
+ * @fn template<typename g> void flush(std::map<std::string, g*>* data)
+ * @brief Delete all values in the pointer map and clear it.
+ * @tparam g Value type.
+ * @param data Pointer to the map to flush.
+ */
+
+/**
+ * @class analysis
+ * @brief Top-level pipeline class.
+ * @details Inherits @c notification and @c tools.  The main framework
+ *          entry-point.  Internally holds a @c sampletracer, a @c dataloader,
+ *          an @c io reader, and per-run @c optimizer/@c model_report objects.
+ *
+ *          The typical usage pattern is:
+ *          (1) call @c add_samples for each ROOT input file or directory;
+ *          (2) register templates via @c add_event_template,
+ *          @c add_graph_template, @c add_selection_template,
+ *          @c add_metric_template, and @c add_model;
+ *          (3) configure @c m_settings;
+ *          (4) call @c attach_threads and @c start.
+ *
+ *          The private pipeline stages are @c build_events, @c build_graphs,
+ *          @c build_selections, @c build_model_session, @c build_inference,
+ *          @c build_metric, and @c build_metric_folds, executed in order.
+ *          Progress is monitored without blocking via @c progress(),
+ *          @c progress_mode(), @c progress_report(), and @c is_complete().
+ */
+
+/**
+ * @fn analysis::analysis()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn analysis::~analysis()
+ * @brief Destructor.  Cleans up all owned sub-objects.
+ */
+
+/**
+ * @fn void analysis::add_samples(std::string path, std::string label)
+ * @brief Register a ROOT file or directory @p path with event label @p label.
+ * @param path  File or directory path.
+ * @param label Dataset label.
+ */
+
+/**
+ * @fn void analysis::add_selection_template(selection_template* sel)
+ * @brief Register a selection template.
+ * @param sel Pointer to the selection.
+ */
+
+/**
+ * @fn void analysis::add_event_template(event_template* ev, std::string label)
+ * @brief Register an event template with the given label.
+ * @param ev    Pointer to the event.
+ * @param label Event label.
+ */
+
+/**
+ * @fn void analysis::add_graph_template(graph_template* gr, std::string label)
+ * @brief Register a graph template with the given label.
+ * @param gr    Pointer to the graph.
+ * @param label Graph label.
+ */
+
+/**
+ * @fn void analysis::add_metric_template(metric_template* mx, model_template* mdl)
+ * @brief Register a metric template and link it to a model.
+ * @param mx  Pointer to the metric template.
+ * @param mdl Pointer to the model.
+ */
+
+/**
+ * @fn void analysis::add_model(model_template* model, optimizer_params_t* op, std::string run_name)
+ * @brief Register a model together with its optimizer configuration.
+ * @param model    Pointer to the model.
+ * @param op       Pointer to the optimizer parameters.
+ * @param run_name Human-readable run name.
+ */
+
+/**
+ * @fn void analysis::add_model(model_template* model, std::string run_name)
+ * @brief Register a model for inference only (no optimizer).
+ * @param model    Pointer to the model.
+ * @param run_name Run name.
+ */
+
+/**
+ * @fn void analysis::attach_threads()
+ * @brief Allocate and attach worker threads according to @c m_settings.threads.
+ */
+
+/**
+ * @fn void analysis::start()
+ * @brief Execute the complete analysis pipeline (events → graphs →
+ *        selections → training → metrics).
+ */
+
+/**
+ * @fn analysis::progress()
+ * @brief Return per-run fractional progress values.
+ * @return Map of run name to progress vector.
+ */
+
+/**
+ * @fn std::map<std::string, std::string> analysis::progress_mode()
+ * @brief Return the current mode string for each active run.
+ * @return Map of run name to mode string.
+ */
+
+/**
+ * @fn std::map<std::string, std::string> analysis::progress_report()
+ * @brief Return a formatted progress report string for each run.
+ * @return Map of run name to report string.
+ */
+
+/**
+ * @fn std::map<std::string, bool> analysis::is_complete()
+ * @brief Check whether each registered run has completed.
+ * @return Map of run name to completion flag.
+ */
+
+/**
+ * @var settings_t analysis::m_settings
+ * @brief Top-level run configuration.
+ */
+
+/**
+ * @var std::map<std::string, meta*> analysis::meta_data
+ * @brief Metadata objects keyed by file path.
+ */

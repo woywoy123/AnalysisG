@@ -1,0 +1,345 @@
+/**
+ * @file meta.h
+ * @brief Dataset metadata and per-sample weight structs.
+ * @details Declares @c weights_t (per-DSID weight information) and @c meta_t
+ *          (comprehensive dataset-level metadata covering AMI attributes,
+ *          cross sections, luminosity, file lists, and run-number ranges).
+ */
+
+/**
+ * @struct weights_t
+ * @brief Holds normalisation weights and statistics for a single dataset.
+ */
+
+/**
+ * @var int weights_t::dsid
+ * @brief Dataset identifier (DSID).
+ */
+
+/**
+ * @var bool weights_t::isAFII
+ * @brief @c true if the dataset uses ATLAS Fast II simulation.
+ */
+
+/**
+ * @var std::string weights_t::generator
+ * @brief Name of the Monte Carlo generator.
+ */
+
+/**
+ * @var std::string weights_t::ami_tag
+ * @brief AMI processing tag string.
+ */
+
+/**
+ * @var float weights_t::total_events_weighted
+ * @brief Sum of weights for all events in the dataset.
+ */
+
+/**
+ * @var float weights_t::total_events
+ * @brief Raw total event count.
+ */
+
+/**
+ * @var float weights_t::processed_events
+ * @brief Number of events processed.
+ */
+
+/**
+ * @var float weights_t::processed_events_weighted
+ * @brief Sum of weights for processed events.
+ */
+
+/**
+ * @var float weights_t::processed_events_weighted_squared
+ * @brief Sum of squared weights for processed events (for uncertainty
+ *        estimation).
+ */
+
+/**
+ * @var std::map<std::string, float> weights_t::hist_data
+ * @brief Histogram data keyed by variable name.
+ */
+
+/**
+ * @struct meta_t
+ * @brief Complete metadata for one Monte Carlo or data dataset.
+ * @details Aggregates ATLAS AnalysisBase tracking values, AMI attributes,
+ *          physics cross-section information, and ROOT file inventory.
+ */
+
+/**
+ * @var unsigned int meta_t::dsid
+ * @brief Dataset identifier.
+ */
+
+/**
+ * @var bool meta_t::isMC
+ * @brief @c true if the dataset is Monte Carlo simulation.
+ */
+
+/**
+ * @var std::string meta_t::derivationFormat
+ * @brief ATLAS derivation format string (e.g. @c "DAOD_PHYS").
+ */
+
+/**
+ * @var std::map<int, std::string> meta_t::inputfiles
+ * @brief Map of integer index to input file path.
+ */
+
+/**
+ * @var std::map<std::string, std::string> meta_t::config
+ * @brief Arbitrary key-value configuration map.
+ */
+
+/**
+ * @var std::string meta_t::AMITag
+ * @brief AMI tag string (e.g. @c "e8496_s3126_r12305_p5169").
+ */
+
+/**
+ * @var std::string meta_t::generators
+ * @brief Space-separated list of generator names.
+ */
+
+/**
+ * @var std::map<int, int> meta_t::inputrange
+ * @brief Map of file index to event count in that file.
+ */
+
+/**
+ * @var double meta_t::eventNumber
+ * @brief ROOT event number (reserved for ROOT-specific mapping).
+ */
+
+/**
+ * @var double meta_t::event_index
+ * @brief Free-use event index within the framework.
+ */
+
+/**
+ * @var bool meta_t::found
+ * @brief @c true if the dataset was found in AMI / the local cache.
+ */
+
+/**
+ * @var std::string meta_t::DatasetName
+ * @brief Full AMI logical dataset name.
+ */
+
+/**
+ * @var double meta_t::totalSize
+ * @brief Total dataset size in bytes.
+ */
+
+/**
+ * @var double meta_t::kfactor
+ * @brief QCD k-factor for the process.
+ */
+
+/**
+ * @var double meta_t::ecmEnergy
+ * @brief Centre-of-mass energy in MeV.
+ */
+
+/**
+ * @var double meta_t::genFiltEff
+ * @brief Generator filter efficiency.
+ */
+
+/**
+ * @var double meta_t::completion
+ * @brief Fraction of the dataset that has been processed.
+ */
+
+/**
+ * @var double meta_t::beam_energy
+ * @brief Beam energy in MeV.
+ */
+
+/**
+ * @var double meta_t::crossSection
+ * @brief Cross section in nb.
+ */
+
+/**
+ * @var double meta_t::crossSection_mean
+ * @brief Mean cross section (e.g. averaged over PDF members).
+ */
+
+/**
+ * @var double meta_t::campaign_luminosity
+ * @brief Integrated luminosity of the corresponding campaign in fb⁻¹.
+ */
+
+/**
+ * @var unsigned int meta_t::nFiles
+ * @brief Number of files in the dataset.
+ */
+
+/**
+ * @var unsigned int meta_t::totalEvents
+ * @brief Total number of events across all files.
+ */
+
+/**
+ * @var unsigned int meta_t::datasetNumber
+ * @brief Numeric dataset identifier (redundant with @c dsid for legacy use).
+ */
+
+/**
+ * @var std::string meta_t::identifier
+ * @brief Human-readable unique identifier string for the dataset.
+ */
+
+/**
+ * @var std::string meta_t::prodsysStatus
+ * @brief Production system status string.
+ */
+
+/**
+ * @var std::string meta_t::dataType
+ * @brief Data type string (e.g. @c "MC" or @c "DATA").
+ */
+
+/**
+ * @var std::string meta_t::version
+ * @brief Software version tag.
+ */
+
+/**
+ * @var std::string meta_t::PDF
+ * @brief PDF set used for generation.
+ */
+
+/**
+ * @var std::string meta_t::AtlasRelease
+ * @brief ATLAS software release string.
+ */
+
+/**
+ * @var std::string meta_t::principalPhysicsGroup
+ * @brief ATLAS physics group that owns the dataset.
+ */
+
+/**
+ * @var std::string meta_t::physicsShort
+ * @brief Short physics description tag.
+ */
+
+/**
+ * @var std::string meta_t::generatorName
+ * @brief Primary generator name.
+ */
+
+/**
+ * @var std::string meta_t::geometryVersion
+ * @brief ATLAS detector geometry version.
+ */
+
+/**
+ * @var std::string meta_t::conditionsTag
+ * @brief Conditions database tag.
+ */
+
+/**
+ * @var std::string meta_t::generatorTune
+ * @brief Generator tune identifier.
+ */
+
+/**
+ * @var std::string meta_t::amiStatus
+ * @brief AMI dataset status string.
+ */
+
+/**
+ * @var std::string meta_t::beamType
+ * @brief Beam type string (e.g. @c "collisions").
+ */
+
+/**
+ * @var std::string meta_t::productionStep
+ * @brief Production step label.
+ */
+
+/**
+ * @var std::string meta_t::projectName
+ * @brief ATLAS project name.
+ */
+
+/**
+ * @var std::string meta_t::statsAlgorithm
+ * @brief Statistics algorithm used.
+ */
+
+/**
+ * @var std::string meta_t::genFilterNames
+ * @brief Comma-separated generator filter names.
+ */
+
+/**
+ * @var std::string meta_t::file_type
+ * @brief File type identifier (e.g. @c "ROOT" or @c "HDF5").
+ */
+
+/**
+ * @var std::string meta_t::sample_name
+ * @brief Short sample name used in plots and outputs.
+ */
+
+/**
+ * @var std::string meta_t::logicalDatasetName
+ * @brief Full logical dataset name (LDN) in AMI.
+ */
+
+/**
+ * @var std::string meta_t::campaign
+ * @brief ATLAS MC campaign identifier (e.g. @c "mc21").
+ */
+
+/**
+ * @var std::vector<std::string> meta_t::keywords
+ * @brief List of AMI keyword strings.
+ */
+
+/**
+ * @var std::vector<std::string> meta_t::weights
+ * @brief Names of the event weights stored in the dataset.
+ */
+
+/**
+ * @var std::vector<std::string> meta_t::keyword
+ * @brief Additional keyword list (complementary to @c keywords).
+ */
+
+/**
+ * @var std::vector<int> meta_t::events
+ * @brief Per-file event counts.
+ */
+
+/**
+ * @var std::vector<int> meta_t::run_number
+ * @brief Per-file run numbers.
+ */
+
+/**
+ * @var std::vector<double> meta_t::fileSize
+ * @brief Per-file sizes in bytes.
+ */
+
+/**
+ * @var std::vector<std::string> meta_t::fileGUID
+ * @brief Per-file GUIDs.
+ */
+
+/**
+ * @var std::map<std::string, int> meta_t::LFN
+ * @brief Map of logical file name (LFN) to integer index.
+ */
+
+/**
+ * @var std::map<std::string, weights_t> meta_t::misc
+ * @brief Per-file or per-tag supplementary weight data.
+ */

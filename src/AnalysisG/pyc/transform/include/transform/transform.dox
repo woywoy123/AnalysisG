@@ -1,0 +1,114 @@
+/**
+ * @file transform.h (pyc)
+ * @brief Internal CUDA/C++ implementation of four-momentum coordinate
+ *        transforms.
+ * @details Declares the @c transform_ namespace.  These functions are wrapped
+ *          by the public @c pyc::transform API in @c pyc.h.
+ */
+
+/**
+ * @namespace transform_
+ * @brief Internal namespace for batched coordinate transforms.
+ */
+
+/**
+ * @fn torch::Tensor transform_::Px(torch::Tensor* pt, torch::Tensor* phi)
+ * @brief Compute px = pT cos φ.
+ * @param pt  [N] transverse momentum.
+ * @param phi [N] azimuthal angle.
+ * @return [N].
+ */
+
+/**
+ * @fn torch::Tensor transform_::Py(torch::Tensor* pt, torch::Tensor* phi)
+ * @brief Compute py = pT sin φ.
+ * @return [N].
+ */
+
+/**
+ * @fn torch::Tensor transform_::Pz(torch::Tensor* pt, torch::Tensor* eta)
+ * @brief Compute pz = pT sinh η.
+ * @param pt  [N].
+ * @param eta [N] pseudorapidity.
+ * @return [N].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PxPyPz(torch::Tensor* pt, torch::Tensor* eta, torch::Tensor* phi)
+ * @brief Compute (px, py, pz) and stack into [N, 3].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PxPyPzE(torch::Tensor* pt, torch::Tensor* eta, torch::Tensor* phi, torch::Tensor* energy)
+ * @brief Compute (px, py, pz, E) and stack into [N, 4].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PxPyPz(torch::Tensor* pmu)
+ * @brief Overload: extract (px, py, pz) from stacked [N, 4] polar tensor.
+ * @param pmu [N, 4] (pT, η, φ, E).
+ * @return [N, 3] (px, py, pz).
+ */
+
+/**
+ * @fn torch::Tensor transform_::PxPyPzE(torch::Tensor* pmu)
+ * @brief Overload: compute full Cartesian four-momentum from [N, 4] polar.
+ * @return [N, 4] (px, py, pz, E).
+ */
+
+/**
+ * @fn torch::Tensor transform_::Pt(torch::Tensor* px, torch::Tensor* py)
+ * @brief Compute pT = √(px² + py²).
+ * @return [N].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PtEta(torch::Tensor* pt, torch::Tensor* pz)
+ * @brief Compute (pT, η) and stack into [N, 2].
+ */
+
+/**
+ * @fn torch::Tensor transform_::Phi(torch::Tensor* pmc)
+ * @brief Compute φ = atan2(py, px) from stacked [N, 4] Cartesian tensor.
+ * @return [N].
+ */
+
+/**
+ * @fn torch::Tensor transform_::Phi(torch::Tensor* px, torch::Tensor* py)
+ * @brief Compute φ from individual px and py tensors.
+ */
+
+/**
+ * @fn torch::Tensor transform_::Eta(torch::Tensor* pmc)
+ * @brief Compute pseudorapidity from [N, 4] Cartesian tensor.
+ * @return [N].
+ */
+
+/**
+ * @fn torch::Tensor transform_::Eta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Compute pseudorapidity from individual components.
+ */
+
+/**
+ * @fn torch::Tensor transform_::PtEtaPhi(torch::Tensor* pmc)
+ * @brief Compute (pT, η, φ) from [N, 4] Cartesian tensor.
+ * @return [N, 3].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PtEtaPhiE(torch::Tensor* pmc)
+ * @brief Compute (pT, η, φ, E) from [N, 4] Cartesian tensor.
+ * @return [N, 4].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PtEtaPhi(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Compute (pT, η, φ) from individual components.
+ * @return [N, 3].
+ */
+
+/**
+ * @fn torch::Tensor transform_::PtEtaPhiE(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute (pT, η, φ, E) from individual components.
+ * @return [N, 4].
+ */

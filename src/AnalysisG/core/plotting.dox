@@ -1,0 +1,141 @@
+/**
+ * @file plotting.pxd
+ * @brief Cython declaration file for the plotting Python wrappers
+ *        @c TH1F, @c TH2F, @c TLine, and @c ROC.
+ * @details Wraps the @c plotting C++ class (inheriting @c notification and
+ *          @c tools) which manages per-histogram styling and data arrays.
+ *          The concrete Python classes @c TH1F, @c TH2F, @c TLine, and @c ROC
+ *          can be instantiated directly.  The underlying @c BasePlotting C++
+ *          class is not directly instantiable from Python.
+ */
+
+/**
+ * @class TH1F
+ * @brief 1D histogram Python wrapper.
+ * @details Manages a primary data array and an optional list of overlay
+ *          histograms with stacking, scaling, and comparison support.
+ *          Built on mplhep and boost-histogram.
+ *
+ * **Serialisation methods:**
+ * - `dump()` — Pickle this instance to `<OutputDirectory>/<Filename>.pkl`.
+ * - `load()` — Unpickle a previously saved instance.
+ *
+ * **Style properties (read/write):**
+ * - `Alpha` (float) — Opacity of the histogram fill (0.0–1.0).
+ * - `ApplyScaling` (bool) — Apply cross-section / luminosity scaling.
+ * - `AutoScaling` (bool) — Let Matplotlib autoscale the axes.
+ * - `AxisSize` (float) — Font size for axis tick labels.
+ * - `CapSize` (float) — Cap size for error-bar ends.
+ * - `Color` (str) — Hex colour string for this histogram.
+ * - `Colors` (list) — List of colours when drawing multiple series.
+ * - `CrossSection` (float) — Process cross-section in pb.
+ * - `DPI` (int) — Dots per inch for the saved figure.
+ * - `Density` (bool) — If True normalise to unit area before plotting.
+ * - `ErrorBars` (bool) — If True draw symmetric error bars.
+ * - `FX` — Comparison function: `"ratio"`, `"chi2"`, or a custom callable.
+ * - `Filename` (str) — Base filename (without extension) of the output file.
+ * - `FontSize` (float) — Base font size for all text elements.
+ * - `Hatch` (str) — Matplotlib hatch pattern string (e.g. `"/"`).
+ * - `HistFill` (str) — Histogram fill style (e.g. `"fill"`, `"step"`).
+ * - `Histogram` — Primary histogram data object.
+ * - `Histograms` (list) — List of overlay histogram objects.
+ * - `IntegratedLuminosity` (float) — Integrated luminosity in fb⁻¹.
+ * - `KStest` — Kolmogorov–Smirnov test method.
+ * - `LegendSize` (float) — Font size for the legend.
+ * - `LineStyle` (str) — Matplotlib linestyle string (e.g. `"-"`, `"--"`).
+ * - `LineWidth` (float) — Line width for histogram outlines.
+ * - `Marker` (str) — Matplotlib marker style for errorbar plots.
+ * - `OutputDirectory` (str) — Directory where the figure is saved.
+ * - `Overflow` (str) — Overflow handling: `"none"` or `"sum"`.
+ * - `SaveFigure` — Apply all styles and write the figure to disk.
+ * - `ShowCount` (bool) — Append the total event count to the title.
+ * - `Stacked` (bool) — If True overlay histograms are drawn stacked.
+ * - `Style` (str) — Plot style name; `"ATLAS"` activates mplhep ATLAS style.
+ * - `Title` (str) — Figure title.
+ * - `TitleSize` (float) — Font size for the figure title.
+ * - `UseLateX` (bool) — Render text through LuaLaTeX.
+ * - `Weights` (list) — Per-event weights aligned with `xData`.
+ * - `counts` (read-only) — Bin counts of the compiled histogram.
+ * - `xBins` (int or list) — Number of uniform bins or explicit bin-edge list.
+ * - `xData` (list) — Raw data values to be histogrammed.
+ * - `xLabels` (dict) — Categorical x-axis labels mapped to bin weights.
+ * - `xLogarithmic` (bool) — Use a log scale on the x-axis.
+ * - `xMax` (float) — Upper bound of the x-axis range.
+ * - `xMin` (float) — Lower bound of the x-axis range.
+ * - `xScaling` (float) — Figure width scaling factor (inches).
+ * - `xStep` (float) — Fixed tick spacing on the x-axis; 0 disables.
+ * - `xTitle` (str) — x-axis label.
+ * - `yLogarithmic` (bool) — Use a log scale on the y-axis.
+ * - `yMax` (float) — Upper bound of the y-axis range.
+ * - `yMin` (float) — Lower bound of the y-axis range.
+ * - `yScaling` (float) — Figure height scaling factor (inches).
+ * - `yStep` (float) — Fixed tick spacing on the y-axis; 0 disables.
+ * - `yTitle` (str) — y-axis label.
+ */
+
+/**
+ * @class TH2F
+ * @brief 2D histogram Python wrapper (extends TH1F).
+ * @details Renders a 2D colour-map histogram using `hep.hist2dplot`.
+ *          Inherits all @c TH1F properties and adds:
+ *
+ * - `yBins` (int or list) — y-axis binning (uniform int or variable edge list).
+ * - `yData` (list) — y-coordinate values.
+ * - `yLabels` (dict) — Categorical y-axis labels mapped to bin weights.
+ */
+
+/**
+ * @class TLine
+ * @brief Line-graph Python wrapper.
+ * @details Supports error shading and multiple overlaid lines.  Typically
+ *          used for efficiency curves and training histories.
+ *
+ * **Serialisation methods:**
+ * - `dump()` — Pickle this instance to `<OutputDirectory>/<Filename>.pkl`.
+ * - `load()` — Unpickle a previously saved instance.
+ *
+ * **Properties (read/write):**
+ * - `Alpha` (float) — Opacity of the line (0.0–1.0).
+ * - `ApplyScaling` (bool) — Apply cross-section / luminosity scaling.
+ * - `AutoScaling` (bool) — Let Matplotlib autoscale the axes.
+ * - `AxisSize` (float) — Font size for axis tick labels.
+ * - `CapSize` (float) — Cap size for error-bar ends.
+ * - `Color` (str) — Hex colour string for the primary line.
+ * - `Colors` (list) — List of colours when drawing multiple lines.
+ * - `DPI` (int) — Dots per inch for the saved figure.
+ * - `ErrorBars` (bool) — If True draw symmetric error bars.
+ * - `ErrorShade` (bool) — If True shade the region between `yDataDown` and
+ *   `yDataUp` instead of drawing discrete error bars.
+ * - `Filename` (str) — Base filename (without extension) of the output file.
+ * - `FontSize` (float) — Base font size for all text elements.
+ * - `Hatch` (str) — Matplotlib hatch pattern string.
+ * - `LegendSize` (float) — Font size for the legend.
+ * - `LineStyle` (str) — Matplotlib linestyle string (e.g. `"-"`, `"--"`).
+ * - `LineWidth` (float) — Width of the drawn line.
+ * - `Lines` (list) — List of overlay line data objects.
+ * - `Marker` (str) — Matplotlib marker style.
+ * - `OutputDirectory` (str) — Directory where the figure is saved.
+ * - `Overflow` (str) — Overflow handling: `"none"` or `"sum"`.
+ * - `SaveFigure` — Apply all styles and write the figure to disk.
+ * - `Style` (str) — Plot style name.
+ * - `Title` (str) — Figure title.
+ * - `TitleSize` (float) — Font size for the figure title.
+ * - `UseLateX` (bool) — Render text through LuaLaTeX.
+ * - `xData` (list) — x-coordinate values for the primary line.
+ * - `xLogarithmic` (bool) — Use a log scale on the x-axis.
+ * - `xMax` (float) — Upper bound of the x-axis range.
+ * - `xMin` (float) — Lower bound of the x-axis range.
+ * - `xScaling` (float) — Figure width scaling factor (inches).
+ * - `xStep` (float) — Fixed tick spacing on the x-axis; 0 disables.
+ * - `xTitle` (str) — x-axis label.
+ * - `yData` (list) — y-coordinate values for the primary line.
+ * - `yDataDown` (list) — Lower error-band boundary aligned with `xData`.
+ * - `yDataUp` (list) — Upper error-band boundary aligned with `xData`.
+ * - `yLogarithmic` (bool) — Use a log scale on the y-axis.
+ * - `yMax` (float) — Upper bound of the y-axis range.
+ * - `yMin` (float) — Lower bound of the y-axis range.
+ * - `yScaling` (float) — Figure height scaling factor (inches).
+ * - `yStep` (float) — Fixed tick spacing on the y-axis; 0 disables.
+ * - `yTitle` (str) — y-axis label.
+ */
+

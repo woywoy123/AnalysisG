@@ -11,9 +11,9 @@
 
 <particle-name>::~<particle-name>(){}
 
-particle_template* <particle-name>::clone(){return (event_template*)new <particle-name>();}
+particle_template* <particle-name>::clone(){return (particle_template*)new <particle-name>();}
 
-void build(std::map<std::string, particle_template*>* prt, element_t* el){
+void <particle-name>::build(std::map<std::string, particle_template*>* prt, element_t* el){
     // here the framework builds the particle and assigns values to the object.
     
     std::vector<float> some_kinematic = {}; 

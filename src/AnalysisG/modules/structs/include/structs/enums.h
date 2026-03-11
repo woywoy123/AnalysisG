@@ -2,6 +2,7 @@
 #define STRUCTS_ENUMS_H
 
 // ========= (0). add the type here v -- vector, vv -- vector<vector> ============ //
+/** @brief Identifies the concrete C++ type of a stored data element. */
 enum class data_enum {
 // vector<vector<vector<...>>> -> vvv_<X>
 // vector<vector<...>> -> vv_<X>
@@ -20,6 +21,7 @@ enum class data_enum {
 // ================================================================================ //
 
 // optimizers
+/** @brief Identifies the PyTorch optimizer algorithm. */
 enum class opt_enum {
     adam, 
     adagrad, 
@@ -30,6 +32,7 @@ enum class opt_enum {
     invalid_optimizer
 }; 
 
+/** @brief Weight-initialisation schemes for torch::nn::Sequential modules. */
 enum class mlp_init {
     uniform, 
     normal, 
@@ -41,6 +44,7 @@ enum class mlp_init {
 
 
 // loss functions
+/** @brief Identifies the PyTorch loss function to use. */
 enum class loss_enum {
     bce, 
     bce_with_logits, 
@@ -65,6 +69,7 @@ enum class loss_enum {
     invalid_loss
 };
 
+/** @brief Identifies the learning-rate scheduler. */
 enum class scheduler_enum{
     steplr,
     reducelronplateauscheduler,
@@ -72,6 +77,7 @@ enum class scheduler_enum{
     invalid_scheduler
 };
 
+/** @brief Identifies which tensor slot of a graph_t object is being accessed. */
 enum class graph_enum {
     data_graph , data_node , data_edge,
     truth_graph, truth_node, truth_edge,
@@ -79,10 +85,12 @@ enum class graph_enum {
     pred_graph, pred_node, pred_edge, pred_extra
 }; 
 
+/** @brief Identifies the training phase. */
 enum class mode_enum {
     training, validation, evaluation
 }; 
 
+/** @brief Identifies which kinematic or metadata attribute of a particle to read or write. */
 enum class particle_enum {
     index, pdgid, 
     pt, eta, phi, energy, px, pz, py, mass, charge, 

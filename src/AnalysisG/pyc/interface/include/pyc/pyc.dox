@@ -1,0 +1,408 @@
+/**
+ * @file pyc.h
+ * @brief Public C++/CUDA interface for tensor-based particle physics
+ *        computations exposed to Python via Cython.
+ * @details Declares the @c neutrino class and the @c pyc namespace, which
+ *          provides sub-namespaces @c transform, @c physics, @c operators,
+ *          @c nusol, and @c graph containing fully batched @c torch::Tensor
+ *          implementations of common HEP operations.
+ */
+
+/**
+ * @class neutrino
+ * @brief Lightweight @c particle_template subclass for reconstructed neutrinos.
+ * @details Inherits @c particle_template and extends it with reconstruction
+ *          metadata: the minimum chi² penalty (@c min), the indices of the
+ *          lepton and b-quark used in the reconstruction (@c l_idx, @c b_idx),
+ *          pointers back to those particles (@c lepton, @c bquark), a vector of
+ *          alternative neutrino solutions (@c alternatives), the top-quark node
+ *          indices from a combinatorial reconstruction (@c top_index), and a
+ *          flag indicating whether the solution comes from a resonance decay
+ *          (@c from_res).
+ *
+ *          Instances are typically created by @c nusol_::Nu,
+ *          @c nusol_::NuNu, or @c nusol_::combinatorial and returned through
+ *          the @c pyc::nusol API.
+ */
+
+/**
+ * @fn neutrino::neutrino()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn neutrino::neutrino(double px, double py, double pz)
+ * @brief Construct from Cartesian three-momentum.
+ * @param px x-momentum.
+ * @param py y-momentum.
+ * @param pz z-momentum.
+ */
+
+/**
+ * @var double neutrino::min
+ * @brief Minimum penalty value from the reconstruction.
+ */
+
+/**
+ * @var long neutrino::l_idx
+ * @brief Index of the lepton used in this neutrino's reconstruction.
+ */
+
+/**
+ * @var long neutrino::b_idx
+ * @brief Index of the b-jet used in this neutrino's reconstruction.
+ */
+
+/**
+ * @var particle_template* neutrino::bquark
+ * @brief Pointer to the associated b-quark.
+ */
+
+/**
+ * @var particle_template* neutrino::lepton
+ * @brief Pointer to the associated lepton.
+ */
+
+/**
+ * @var std::vector<neutrino*> neutrino::alternatives
+ * @brief Alternative neutrino solutions for this (b, l) pair.
+ */
+
+/**
+ * @var std::vector<int> neutrino::top_index
+ * @brief Per-solution top-quark index.
+ */
+
+/**
+ * @var bool neutrino::from_res
+ * @brief @c true if this neutrino came from a resonance.
+ */
+
+/**
+ * @namespace pyc
+ * @brief Top-level namespace for tensor-based HEP utilities.
+ * @details Provides fully batched @c torch::Tensor implementations of common
+ *          HEP operations organised in five sub-namespaces:
+ *
+ *          - @c pyc::transform — Cartesian ↔ polar four-momentum coordinate
+ *            transforms, each available in a @c separate (individual-tensor)
+ *            and a @c combined (stacked [N,4]) variant.
+ *
+ *          - @c pyc::physics — Relativistic kinematic scalars: |p|², |p|, β²,
+ *            β, m², m, mT², mT, θ, ΔR.
+ *
+ *          - @c pyc::operators — Edge and node aggregation: single-counting
+ *            node/edge sums, unique-edge intersection, and related set
+ *            operations useful for graph-level readout.
+ *
+ *          - @c pyc::nusol — Analytical single-neutrino (@c Nu) and
+ *            double-neutrino (@c NuNu, @c combinatorial) reconstruction via
+ *            conic intersection, optionally with iterative mass-line scanning.
+ *
+ *          - @c pyc::graph — Batched graph-level utilities (edge-index
+ *            construction, node/edge counting, etc.).
+ *
+ *          The utility functions @c std_to_dict (two overloads), @c tensorize
+ *          (four overloads), @c as_pmc, and @c to_pmc are also members of
+ *          @c pyc and are used to convert between STL containers and
+ *          @c torch::Tensor / @c torch::Dict.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::std_to_dict(std::map<std::string, torch::Tensor>* inpt)
+ * @brief Convert a @c std::map to a @c torch::Dict.
+ * @param inpt Input map.
+ * @return Equivalent @c torch::Dict.
+ */
+
+/**
+ * @fn torch::Tensor pyc::tensorize(std::vector<std::vector<double>>* inpt)
+ * @brief Convert a 2D double vector to a @c torch::Tensor.
+ * @param inpt Input 2D vector.
+ * @return Tensor of shape [N, D].
+ */
+
+/**
+ * @fn torch::Tensor pyc::tensorize(std::vector<double>* inpt)
+ * @brief Convert a flat double vector to a 1D tensor.
+ * @param inpt Input vector.
+ * @return 1D tensor.
+ */
+
+/**
+ * @fn template<typename g> std::vector<double> pyc::as_pmc(g* p)
+ * @brief Extract the Cartesian four-momentum of particle @p p.
+ * @tparam g Particle type with px, py, pz, e members.
+ * @param p Pointer to the particle.
+ * @return {px, py, pz, e}.
+ */
+
+
+/**
+ * @namespace pyc::transform
+ * @brief Coordinate transform functions (Cartesian ↔ polar).
+ */
+
+/**
+ * @namespace pyc::transform::separate
+ * @brief Overloads operating on individual component tensors.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::Pt(torch::Tensor px, torch::Tensor py)
+ * @brief Compute pT = √(px² + py²).
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * @brief Compute pseudorapidity.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::Phi(torch::Tensor px, torch::Tensor py)
+ * @brief Compute azimuthal angle φ = atan2(py, px).
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * @brief Compute (pT, η, φ) in one call.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::PtEtaPhiE(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+ * @brief Compute (pT, η, φ, E) in one call.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::Px(torch::Tensor pt, torch::Tensor phi)
+ * @brief Compute px = pT cos φ.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::Py(torch::Tensor pt, torch::Tensor phi)
+ * @brief Compute py = pT sin φ.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::Pz(torch::Tensor pt, torch::Tensor eta)
+ * @brief Compute pz = pT sinh η.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
+ * @brief Compute (px, py, pz) in one call.
+ */
+
+/**
+ * @fn torch::Tensor pyc::transform::separate::PxPyPzE(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
+ * @brief Compute (px, py, pz, E) in one call.
+ */
+
+/**
+ * @namespace pyc::transform::combined
+ * @brief Overloads operating on stacked [N, 4] or [N, 3] tensors.
+ */
+
+/**
+ * @namespace pyc::physics
+ * @brief Relativistic kinematics functions.
+ */
+
+/**
+ * @namespace pyc::physics::cartesian::separate
+ * @brief Kinematics from individual Cartesian component tensors.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * @brief Compute |p|² = px² + py² + pz².
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::P(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * @brief Compute |p|.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+ * @brief Compute β² = |p|²/E².
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+ * @brief Compute β = |p|/E.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+ * @brief Compute m² = E² - |p|².
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+ * @brief Compute invariant mass m.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::Mt2(torch::Tensor pz, torch::Tensor e)
+ * @brief Compute transverse mass squared.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::Mt(torch::Tensor pz, torch::Tensor e)
+ * @brief Compute transverse mass.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+ * @brief Compute polar angle θ.
+ */
+
+/**
+ * @fn torch::Tensor pyc::physics::cartesian::separate::DeltaR(torch::Tensor px1, torch::Tensor px2, torch::Tensor py1, torch::Tensor py2, torch::Tensor pz1, torch::Tensor pz2)
+ * @brief Compute ΔR between two particles.
+ */
+
+/**
+ * @namespace pyc::operators
+ * @brief Tensor-based matrix/vector operations.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::Dot(torch::Tensor v1, torch::Tensor v2)
+ * @brief Element-wise inner product.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::CosTheta(torch::Tensor v1, torch::Tensor v2)
+ * @brief Compute cos θ between two vectors.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::SinTheta(torch::Tensor v1, torch::Tensor v2)
+ * @brief Compute sin θ between two vectors.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::Rx(torch::Tensor angle)
+ * @brief Batched rotation matrix about x.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::Ry(torch::Tensor angle)
+ * @brief Batched rotation matrix about y.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::Rz(torch::Tensor angle)
+ * @brief Batched rotation matrix about z.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::RT(torch::Tensor pmc_b, torch::Tensor pmc_mu)
+ * @brief Compute the rotation from the b–lepton decay frame to the lab frame.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::CoFactors(torch::Tensor matrix)
+ * @brief Compute the cofactor matrix.
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::Determinant(torch::Tensor matrix)
+ * @brief Compute the determinant.
+ */
+
+/**
+ * @fn std::tuple<torch::Tensor, torch::Tensor> pyc::operators::Inverse(torch::Tensor matrix)
+ * @brief Compute the inverse and a validity mask.
+ * @return (inverse, valid_mask).
+ */
+
+/**
+ * @fn std::tuple<torch::Tensor, torch::Tensor> pyc::operators::Eigenvalue(torch::Tensor matrix)
+ * @brief Compute eigenvalues and a validity mask.
+ * @return (eigenvalues, valid_mask).
+ */
+
+/**
+ * @fn torch::Tensor pyc::operators::Cross(torch::Tensor mat1, torch::Tensor mat2)
+ * @brief Batched cross product.
+ */
+
+/**
+ * @namespace pyc::nusol
+ * @brief Tensor-based neutrino reconstruction.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
+ * @brief Compute the H̃ and related matrices for a (b, lepton) batch.
+ * @param pmc_b   [N, 4] b-quark four-momenta.
+ * @param pmc_mu  [N, 4] lepton four-momenta.
+ * @param masses  [N, 3] mass constraints (mT, mW, mN).
+ * @return Dict with keys @c "H_perp_pmc_", @c "N_", …
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::nusol::Nu(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, torch::Tensor masses, torch::Tensor sigma, double null)
+ * @brief Single-neutrino reconstruction.
+ * @param pmc_b  [N, 4] b-quark four-momenta.
+ * @param pmc_mu [N, 4] lepton four-momenta.
+ * @param met_xy [N, 2] missing transverse momentum.
+ * @param masses [N, 3] mass constraints.
+ * @param sigma  [N, 2, 2] MET covariance.
+ * @param null   Tolerance for near-zero tests.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::nusol::NuNu(torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2, torch::Tensor met_xy, torch::Tensor masses, double null, const double step, const double tolerance, const unsigned int timeout)
+ * @brief Di-neutrino reconstruction using the iterative NuNu solver.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::nusol::combinatorial(torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, double mT, double mW, double null, double perturb, long steps, bool gev)
+ * @brief Combinatorial di-neutrino reconstruction over all b–lepton pairs in
+ *        a batched graph.
+ * @param edge_index COO edge index.
+ * @param batch      Node-to-graph assignment.
+ * @param pmc        [N, 4] four-momenta.
+ * @param pid        [N] PDG particle IDs.
+ * @param met_xy     [B, 2] MET vectors.
+ * @param mT         Top-quark mass constraint (MeV, default 172.62 GeV).
+ * @param mW         W-boson mass constraint (MeV, default 80.385 GeV).
+ * @param null       Near-zero tolerance.
+ * @param perturb    MET perturbation magnitude.
+ * @param steps      Maximum solver steps.
+ * @param gev        If @c true, inputs/outputs are in GeV.
+ */
+
+/**
+ * @namespace pyc::graph
+ * @brief Graph-level aggregation and PageRank reconstruction.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::graph::edge_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature)
+ * @brief Aggregate node features along edges weighted by @p prediction.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::graph::node_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature)
+ * @brief Aggregate edge features to nodes weighted by @p prediction.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::graph::unique_aggregation(torch::Tensor cluster_map, torch::Tensor features)
+ * @brief Aggregate features within unique cluster assignments.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::graph::PageRank(torch::Tensor edge_index, torch::Tensor edge_scores, double alpha, double threshold, double norm_low, long timeout, long num_cls)
+ * @brief Batched personalised PageRank clustering.
+ */
+
+/**
+ * @fn torch::Dict<std::string, torch::Tensor> pyc::graph::PageRankReconstruction(torch::Tensor edge_index, torch::Tensor edge_scores, torch::Tensor pmc, double alpha, double threshold, double norm_low, long timeout, long num_cls)
+ * @brief PageRank clustering followed by four-momentum reconstruction.
+ */

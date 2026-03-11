@@ -1,0 +1,105 @@
+/**
+ * @file nusol.h (reconstruction)
+ * @brief Top-level neutrino reconstruction interface.
+ * @details Declares the @c nusol_t run-parameter struct, the @c nusol_enum
+ *          algorithm selector, and the @c nusol orchestration class that
+ *          dispatches to either the ellipse or Conuix solver.
+ */
+
+
+/**
+ * @var nusol_enum::ellipse
+ * @brief Use the analytic ellipse intersection method (arxiv:1305.1878).
+ */
+
+/**
+ * @var nusol_enum::conuix
+ * @brief Use the generalised n-neutrino Conuix method.
+ */
+
+/**
+ * @var nusol_enum::undefined
+ * @brief No algorithm selected.
+ */
+
+/**
+ * @struct nusol_t
+ * @brief Run parameters for the neutrino reconstruction.
+ */
+
+/**
+ * @var double nusol_t::met
+ * @brief Missing transverse energy magnitude in MeV.
+ */
+
+/**
+ * @var double nusol_t::phi
+ * @brief Azimuthal angle of the MET vector.
+ */
+
+/**
+ * @var double nusol_t::mt
+ * @brief Top-quark mass constraint in MeV (default 172.68 GeV).
+ */
+
+/**
+ * @var double nusol_t::mw
+ * @brief W-boson mass constraint in MeV (default 80.385 GeV).
+ */
+
+/**
+ * @var double nusol_t::violation
+ * @brief Acceptable mass-constraint violation (default 1e-5).
+ */
+
+/**
+ * @var double nusol_t::limit
+ * @brief Maximum allowed ΔR between the MET vector and the reconstructed
+ *        neutrino (default 0.1).
+ */
+
+/**
+ * @var int nusol_t::iterations
+ * @brief Maximum number of solver iterations (default 10).
+ */
+
+/**
+ * @var nusol_enum nusol_t::mode
+ * @brief Algorithm selector.
+ */
+
+/**
+ * @var std::vector<particle_template*>* nusol_t::targets
+ * @brief Pointer to the list of input particles (b-quarks and leptons).
+ */
+
+/**
+ * @var nusol_t::phys_pairs
+ * @brief Pointer to a list of pre-specified (b, lepton) pairs.  If @c nullptr,
+ *        all combinations are tried.
+ */
+
+/**
+ * @class nusol
+ * @brief Top-level neutrino reconstruction orchestrator.
+ * @details Inherits @c notification and @c tools.  Dispatches to @c ellipse
+ *          or @c conuix based on @c nusol_t::mode.
+ */
+
+/**
+ * @fn nusol::nusol(nusol_t* parameters)
+ * @brief Construct the solver with the given parameters.
+ * @param parameters Pointer to @c nusol_t.
+ */
+
+/**
+ * @fn nusol::solve()
+ * @brief Run the reconstruction and return reconstructed neutrino candidates.
+ * @return Vector of dynamically allocated @c particle_template objects
+ *         (caller takes ownership).
+ */
+
+/**
+ * @fn nusol::~nusol()
+ * @brief Destructor.
+ */

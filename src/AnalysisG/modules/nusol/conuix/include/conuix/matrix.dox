@@ -1,0 +1,95 @@
+/**
+ * @file matrix.h (conuix)
+ * @brief Long-double precision 3×3 matrix type for the Conuix solver.
+ * @details @c matrix_t is a lightweight dense matrix with @c long double
+ *          elements, used throughout the Conuix neutrino reconstruction.
+ */
+
+/**
+ * @struct matrix_t
+ * @brief Dense @c long double matrix with basic linear algebra.
+ */
+
+/**
+ * @fn matrix_t::matrix_t(int _r, int _c)
+ * @brief Construct an @p _r × @p _c matrix initialised to zero.
+ * @param _r Rows (default 3).
+ * @param _c Columns (default 3).
+ */
+
+/**
+ * @fn matrix_t::~matrix_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn matrix_t matrix_t::dot(const matrix_t& o)
+ * @brief Matrix product @c *this · @p o.
+ * @return Product.
+ */
+
+/**
+ * @fn matrix_t matrix_t::T() const
+ * @brief Return the transpose.
+ * @return Transposed matrix.
+ */
+
+/**
+ * @fn long double& matrix_t::at(int _r, int _c)
+ * @brief Mutable element access.
+ * @return Reference to element (@p _r, @p _c).
+ */
+
+/**
+ * @fn const long double& matrix_t::at(int _r, int _c) const
+ * @brief Const element access.
+ * @return Const reference to element (@p _r, @p _c).
+ */
+
+/**
+ * @fn long double matrix_t::det()
+ * @brief Compute the 3×3 determinant.
+ * @return Determinant.
+ */
+
+/**
+ * @fn matrix_t matrix_t::coef()
+ * @brief Return the cofactor matrix.
+ * @return Cofactor matrix.
+ */
+
+/**
+ * @fn matrix_t matrix_t::inv()
+ * @brief Return the inverse.
+ * @return Inverse matrix.
+ */
+
+/**
+ * @fn matrix_t matrix_t::diag(long double v)
+ * @brief Return a diagonal matrix with diagonal value @p v.
+ * @param v Diagonal value (default 1 = identity).
+ * @return Diagonal matrix.
+ */
+
+/**
+ * @fn matrix_t matrix_t::cross(const matrix_t& o)
+ * @brief Cross product.
+ * @param o Other vector (3×1).
+ * @return Cross-product vector.
+ */
+
+/**
+ * @fn void matrix_t::print(int p)
+ * @brief Print to stdout with precision @p p.
+ * @param p Decimal precision (default 9).
+ */
+
+/**
+ * @var int matrix_t::r
+ * @brief Number of rows.
+ */
+
+/**
+ * @var int matrix_t::c
+ * @brief Number of columns.
+ */

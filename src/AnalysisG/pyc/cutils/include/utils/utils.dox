@@ -1,0 +1,49 @@
+/**
+ * @file utils.h (pyc)
+ * @brief Low-level CUDA/C++ tensor utility functions.
+ * @details Provides clip, format, tensor-option construction, and device
+ *          transfer helpers used internally by the pyc modules.
+ */
+
+/**
+ * @fn torch::Tensor clip(torch::Tensor* inpt, int dim)
+ * @brief Clip tensor @p inpt along dimension @p dim.
+ * @param inpt Input tensor.
+ * @param dim  Dimension to clip.
+ * @return Clipped tensor.
+ */
+
+/**
+ * @fn torch::Tensor format(std::vector<torch::Tensor>* inpt)
+ * @brief Stack a vector of tensors into a single tensor.
+ * @param inpt Vector of tensors.
+ * @return Stacked tensor.
+ */
+
+/**
+ * @fn torch::Tensor format(std::vector<torch::Tensor*> inpt)
+ * @brief Stack a vector of tensor pointers into a single tensor.
+ * @param inpt Vector of tensor pointers.
+ * @return Stacked tensor.
+ */
+
+/**
+ * @fn torch::TensorOptions MakeOp(torch::Tensor* x)
+ * @brief Create @c torch::TensorOptions matching the device and dtype of @p x.
+ * @param x Reference tensor.
+ * @return Matching @c TensorOptions.
+ */
+
+/**
+ * @fn void changedev(torch::Tensor* inpt)
+ * @brief Move tensor @p inpt to CPU in place.
+ * @param inpt Tensor to move.
+ */
+
+/**
+ * @fn torch::Tensor changedev(std::string dev, torch::Tensor* inx)
+ * @brief Copy tensor @p inx to the device specified by @p dev.
+ * @param dev  Device string (e.g. @c "cpu", @c "cuda:0").
+ * @param inx  Source tensor.
+ * @return Tensor on the target device.
+ */

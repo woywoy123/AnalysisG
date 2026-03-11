@@ -90,6 +90,13 @@ EXTRACT_STATIC         = YES
 # Relevant for understanding complex template code patterns
 EXTRACT_LOCAL_CLASSES  = YES
 
+# HIDE_FRIEND_COMPOUNDS: Suppress friend declarations from documentation.
+# YES prevents Doxygen from emitting friend-declaration XML nodes, which
+# Breathe/Sphinx's C++ domain cannot render without generating warnings
+# (friend is a C++ keyword, not an identifier, so the RST C++ domain
+# directive ``.. cpp:function:: friend X`` is invalid).
+HIDE_FRIEND_COMPOUNDS  = YES
+
 # RECURSIVE: Process subdirectories recursively
 # YES is required to document the entire src/AnalysisG tree
 # This ensures all modules in the nested directory structure are documented
@@ -144,19 +151,41 @@ INPUT                  = src/AnalysisG \
 #   *.cxx - C++ implementation files (AnalysisG convention)
 #   *.cu  - CUDA kernel source files
 #   *.cuh - CUDA header files
-#   *.pyx - Cython implementation files (Python-C++ interface)
-#   *.pxd - Cython declaration files (Cython headers)
+#   *.pxd - Cython declaration files (cdef class and extern declarations)
 #   *.dox - Doxygen documentation files (module and page definitions)
-FILE_PATTERNS          = *.h *.cxx *.cu *.cuh *.pyx *.pxd *.dox
+# Note: *.pyx (Cython implementation files) are intentionally excluded because
+#       their Python byte-string literals contain angle-bracket text that Doxygen
+#       misinterprets as C++ #include paths, producing malformed XML output.
+FILE_PATTERNS          = *.h *.cxx *.cu *.cuh *.pxd *.dox
 
 # EXTENSION_MAPPING: Map file extensions to languages
-# Treat Cython files (.pyx, .pxd) as C++ for parsing
-# This allows Doxygen to extract classes and functions from Cython code
-EXTENSION_MAPPING      = pyx=C++ pxd=C++
+# Treat Cython .pxd declaration files as C++ for parsing
+# This allows Doxygen to extract cdef classes and declarations
+EXTENSION_MAPPING      = pxd=C++
 
 # RECURSIVE: Scan subdirectories (repeated for clarity with INPUT)
 # Essential for documenting the complete modular structure
 RECURSIVE              = YES
+
+# EXCLUDE: Specific directories and files to exclude entirely.
+# src/AnalysisG/templates/ contains user-facing template files whose names
+# contain angle brackets (e.g. <particle-name>.h).  Those names cannot be
+# emitted as valid XML by Doxygen 1.9.x and therefore break the Breathe
+# XML parser.  Exclude the top-level templates tree; it holds no API code.
+#
+# src/AnalysisG/modules/nusol/tmp/odeRK.h is an exact duplicate of
+# tmp/multisol/include/multisol/_odeRK.h (same header guard, same content).
+# Including both causes Doxygen to emit duplicate member entries for the
+# odeRK class, which Breathe then renders twice and Sphinx reports as
+# duplicate C++ declarations.
+EXCLUDE                = src/AnalysisG/templates \
+                         src/AnalysisG/modules/nusol/tmp/odeRK.h \
+                         src/AnalysisG/modules/nusol/tmp/interface.cxx \
+                         src/AnalysisG/core/tools.pxd \
+                         src/AnalysisG/core/metric_template.pxd \
+                         src/AnalysisG/metrics/pagerank/metric_pagerank.pxd \
+                         src/AnalysisG/selections/neutrino/combinatorial/combinatorial.pxd \
+                         src/AnalysisG/selections/neutrino/validation/validation.pxd
 
 # EXCLUDE_PATTERNS: Patterns for files/directories to skip
 # Excludes:
@@ -347,7 +376,7 @@ EXTERNAL_GROUPS        = YES
 # YES enables all graph generation features below
 # Requires 'dot' command to be available in PATH
 # Install with: apt-get install graphviz
-HAVE_DOT               = YES
+HAVE_DOT               = NO
 
 # CLASS_GRAPH: Generate inheritance diagrams for classes
 # YES creates visual class hierarchy diagrams

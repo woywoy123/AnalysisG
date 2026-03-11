@@ -1,0 +1,175 @@
+/**
+ * @file metric_template.h
+ * @brief Base class for user-defined post-training metrics.
+ * @details Declares @c metric_t (per-graph data accessor passed to user code)
+ *          and @c metric_template (the base class that users subclass to
+ *          define custom post-training analysis).
+ */
+
+/**
+ * @struct metric_t
+ * @brief Provides typed access to graph features and predictions during a
+ *        metric evaluation step.
+ */
+
+/**
+ * @fn metric_t::~metric_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @var int metric_t::kfold
+ * @brief K-fold index of the current graph.
+ */
+
+/**
+ * @var int metric_t::epoch
+ * @brief Epoch number.
+ */
+
+/**
+ * @var int metric_t::device
+ * @brief Device index of the current graph.
+ */
+
+/**
+ * @fn template<typename g> g metric_t::get(graph_enum grx, std::string _name)
+ * @brief Retrieve the tensor associated with feature @p _name at graph level
+ *        @p grx and convert it to type @c g.
+ * @tparam g Return type (e.g. @c std::vector<float>).
+ * @param grx   Graph feature category.
+ * @param _name Feature name.
+ * @return Feature value(s) as type @c g.
+ */
+
+/**
+ * @fn std::string metric_t::mode()
+ * @brief Return the run mode string (@c "training", @c "validation", or
+ *        @c "evaluation").
+ * @return Mode string.
+ */
+
+/**
+ * @fn std::string* metric_t::get_filename(long unsigned int idx)
+ * @brief Return a pointer to the filename of the @p idx-th file in the batch.
+ * @param idx File index within the batch.
+ * @return Pointer to the filename string.
+ */
+
+/**
+ * @class metric_template
+ * @brief Base class for user-defined post-training metrics.
+ * @details Inherits @c tools and @c notification.  Users subclass
+ *          @c metric_template, override @c define_variables to declare which
+ *          graph features are required (populating @c variables), override
+ *          @c define_metric to perform per-graph setup given a @c metric_t
+ *          accessor, and override @c event, @c batch, and @c end to compute
+ *          per-event, per-batch, and final-epoch metrics respectively.
+ *
+ *          Output ROOT branches are written via @c register_output (first
+ *          call; creates the file) and @c write (subsequent calls; optionally
+ *          fills the TTree entry).  The @c sum and @c make_unique template
+ *          helpers mirror those of @c selection_template.
+ *          @c make_particle reconstructs @c particle_template objects from
+ *          bulk kinematic arrays.
+ *
+ *          The framework links models to metric templates at the @c analysis
+ *          level; @c analysis then calls @c define, @c execute, and related
+ *          private methods to drive the evaluation.  Friend @c analysis has
+ *          full access to private state.
+ */
+
+/**
+ * @fn metric_template::metric_template()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn virtual metric_template::~metric_template()
+ * @brief Virtual destructor.
+ */
+
+/**
+ * @fn virtual metric_template* metric_template::clone()
+ * @brief Create an empty clone.  Override in subclasses.
+ * @return New instance.
+ */
+
+/**
+ * @fn virtual void metric_template::define_variables()
+ * @brief Declare the graph features needed by this metric.  Override to
+ *        populate @c variables.
+ */
+
+/**
+ * @fn virtual void metric_template::define_metric(metric_t* v)
+ * @brief Initialise the metric computation for graph @p v.  Override to
+ *        perform per-graph setup.
+ * @param v Accessor for the current graph.
+ */
+
+/**
+ * @fn virtual void metric_template::event()
+ * @brief Called once per event.  Override to compute per-event metrics.
+ */
+
+/**
+ * @fn virtual void metric_template::batch()
+ * @brief Called once per batch.  Override to compute per-batch aggregations.
+ */
+
+/**
+ * @fn virtual void metric_template::end()
+ * @brief Called at the end of all epochs.  Override to finalise and write
+ *        results.
+ */
+
+/**
+ * @var cproperty<std::string, metric_template> metric_template::name
+ * @brief Metric name.
+ */
+
+/**
+ * @var cproperty<std::string, metric_template> metric_template::output_path
+ * @brief Output directory for metric output files.
+ */
+
+/**
+ * @var cproperty<std::vector<std::string>, metric_template> metric_template::variables
+ * @brief List of feature names required by this metric.
+ */
+
+/**
+ * @var cproperty<std::map<std::string, std::string>, metric_template> metric_template::run_names
+ * @brief Map of run identifiers to human-readable run names.
+ */
+
+/**
+ * @fn template<typename T> void metric_template::register_output(std::string tree, std::string __name, T* t)
+ * @brief Register a typed output variable in the output ROOT tree.
+ * @tparam T Variable type.
+ * @param tree   TTree name.
+ * @param __name Branch name.
+ * @param t      Pointer to the variable.
+ */
+
+/**
+ * @fn template<typename T> void metric_template::write(std::string tree, std::string __name, T* t, bool fill)
+ * @brief Write a typed value to the output ROOT tree.
+ * @tparam T Variable type.
+ * @param tree   TTree name.
+ * @param __name Branch name.
+ * @param t      Pointer to the value.
+ * @param fill   If @c true, fill the TTree entry immediately.
+ */
+
+/**
+ * @fn std::vector<particle_template*> metric_template::make_particle(std::vector<std::vector<double>>* pt, std::vector<std::vector<double>>* eta, std::vector<std::vector<double>>* phi, std::vector<std::vector<double>>* energy)
+ * @brief Construct a flat list of @c particle_template objects from bulk
+ *        kinematic arrays.
+ * @param pt     Transverse momenta.
+ * @param eta    Pseudorapidities.
+ * @param phi    Azimuthal angles.
+ * @param energy Energies.
+ * @return Vector of dynamically allocated particles (caller owns them).
+ */

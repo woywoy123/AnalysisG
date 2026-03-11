@@ -1,0 +1,148 @@
+/**
+ * @file matrix.h (tmp/multisol)
+ * @brief Double-precision 3- and 4-vector and matrix types for the multisol
+ *        neutrino solver.
+ * @details Declares @c vec3, @c vec4, and @c matrix.  These are the core
+ *          linear-algebra primitives used by @c multisol and @c odeRK.
+ */
+
+/**
+ * @struct vec3
+ * @brief Three-dimensional vector of doubles.
+ */
+
+/**
+ * @var double vec3::x
+ * @brief x component.
+ */
+
+/**
+ * @var double vec3::y
+ * @brief y component.
+ */
+
+/**
+ * @var double vec3::z
+ * @brief z component.
+ */
+
+/**
+ * @fn vec3 vec3::cross(const vec3& o) const
+ * @brief Cross product.
+ */
+
+/**
+ * @fn double vec3::dot(const vec3& o) const
+ * @brief Dot product.
+ */
+
+/**
+ * @fn double vec3::mag2() const
+ * @brief Squared magnitude.
+ */
+
+/**
+ * @fn double vec3::mag() const
+ * @brief Euclidean magnitude.
+ */
+
+/**
+ * @struct vec4
+ * @brief Four-dimensional vector of doubles.
+ */
+
+/**
+ * @fn double vec4::dot(const vec4& o) const
+ * @brief Dot product.
+ */
+
+/**
+ * @struct matrix
+ * @brief Dense double-precision r×c matrix.
+ */
+
+/**
+ * @fn matrix::matrix(int r, int c)
+ * @brief Construct an r×c zero matrix.
+ * @param r Rows (default 3).
+ * @param c Columns (default 3).
+ */
+
+/**
+ * @fn matrix::matrix(const matrix& other)
+ * @brief Copy constructor.
+ */
+
+/**
+ * @fn matrix::~matrix()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn double& matrix::at(int r, int c)
+ * @brief Mutable element access.
+ */
+
+/**
+ * @fn const double& matrix::at(int r, int c) const
+ * @brief Const element access.
+ */
+
+/**
+ * @fn int matrix::rows() const
+ * @brief Return the number of rows.
+ */
+
+/**
+ * @fn int matrix::cols() const
+ * @brief Return the number of columns.
+ */
+
+/**
+ * @fn double matrix::mag() const
+ * @brief Frobenius norm.
+ */
+
+/**
+ * @fn static matrix matrix::I(int size)
+ * @brief Return an identity matrix of size @p size × @p size.
+ */
+
+/**
+ * @fn matrix matrix::T() const
+ * @brief Return the transpose.
+ */
+
+/**
+ * @fn matrix matrix::inverse()
+ * @brief Return the 3×3 inverse.
+ */
+
+/**
+ * @fn double matrix::det()
+ * @brief Determinant (3×3).
+ */
+
+/**
+ * @fn matrix matrix::dot(const matrix& m)
+ * @brief Matrix-matrix product.
+ */
+
+/**
+ * @fn void matrix::eigenvalues(vec3* real, vec3* imag)
+ * @brief Compute the eigenvalues of a 3×3 matrix.
+ * @param real Output real parts.
+ * @param imag Output imaginary parts.
+ */
+
+/**
+ * @fn bool solve_linear(const matrix& A_in, const matrix& b_in, matrix& x_out)
+ * @brief Solve @c A·x = b by Gaussian elimination.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn bool invert_matrix(const matrix& M, matrix& M_inv)
+ * @brief Compute the inverse of @p M.
+ * @return @c true if invertible.
+ */

@@ -1,0 +1,90 @@
+/**
+ * @file analysis.pxd
+ * @brief Cython declaration file for the @c analysis C++ class.
+ * @details Wraps the @c analysis class (which inherits @c notification) and
+ *          exposes its sample/template registration, model training, and
+ *          progress-reporting interface.  The Cython wrapper class @c Analysis
+ *          owns the underlying C++ @c analysis pointer.
+ */
+
+/**
+ * @class Analysis
+ * @brief Python-level wrapper for the C++ @c analysis pipeline.
+ * @details The @c Analysis class is the primary Python interface to AnalysisG.
+ *          It owns the underlying @c analysis* pointer and keeps Python-side
+ *          references to every registered template and model so they are not
+ *          garbage-collected while C++ holds raw pointers to them.
+ *
+ * **Registration methods:**
+ * - `AddSamples(path: str, label: str)` — Register a ROOT file or directory
+ *   path together with a sample label used for bookkeeping and matching.
+ * - `AddEvent(ev: EventTemplate, label: str)` — Register an EventTemplate
+ *   subclass instance and associate it with a sample label.
+ * - `AddGraph(g: GraphTemplate, label: str)` — Register a GraphTemplate
+ *   subclass instance and associate it with a sample label.
+ * - `AddSelection(s: SelectionTemplate)` — Register a SelectionTemplate
+ *   subclass instance that applies event-level cuts.
+ * - `AddMetric(m: MetricTemplate, model: ModelTemplate)` — Register a
+ *   MetricTemplate paired with a model; also sets `PreTagEvents = True`.
+ * - `AddModel(model: ModelTemplate, op: OptimizerConfig, run_name: str)` —
+ *   Register a model for training with an optimizer configuration and a run
+ *   name.
+ * - `AddModelInference(model: ModelTemplate, run_name: str = "run_name")` —
+ *   Register a model for inference only (no optimizer).
+ *
+ * **Execution:**
+ * - `Start()` — Launch the full analysis pipeline.  Handles meta-data
+ *   fetching, graph caching, training, validation, evaluation, and selection
+ *   post-processing.
+ *
+ * **Read-only property (derived):**
+ * - `GetMetaData` (MetaLookup) — Returns a @c MetaLookup built from the
+ *   cached @c Meta objects collected during `Start()`.
+ * - `PreTagEvents` — Set automatically by `AddMetric`; pre-tags events with
+ *   model inference before running selections.
+ *
+ * **I/O settings (read/write):**
+ * - `OutputPath` (str, default `'./ProjectName'`) — Directory where all
+ *   results (graphs, plots, models) are written.
+ * - `GraphCache` (str, default `''`) — Path to the graph cache HDF5 file.
+ * - `BuildCache` (bool, default `False`) — If `True`, build/rebuild the
+ *   graph HDF5 cache.
+ * - `TrainingDataset` (str, default `''`) — Path to an existing HDF5
+ *   training dataset (`.h5` appended automatically if missing).
+ * - `SumOfWeightsTreeName` (str, default `''`) — Name of the ROOT tree
+ *   containing sum-of-weights information.
+ * - `FetchMeta` (bool, default `False`) — If `True`, fetch ATLAS dataset
+ *   metadata from AMI during `Start()`.
+ * - `SaveSelectionToROOT` (bool, default `False`) — Serialise selection
+ *   results to a ROOT file alongside the pickle output.
+ * - `VarPt` (bytes, default `b'pt'`) — Branch name mapped to transverse
+ *   momentum.
+ * - `VarEta` (bytes, default `b'eta'`) — Branch name mapped to
+ *   pseudorapidity.
+ * - `VarPhi` (bytes, default `b'phi'`) — Branch name mapped to azimuthal
+ *   angle.
+ * - `VarEnergy` (bytes, default `b'energy'`) — Branch name mapped to energy.
+ *
+ * **ML settings (read/write):**
+ * - `Epochs` (int, default `10`) — Number of training epochs.
+ * - `kFolds` (int, default `10`) — Total number of cross-validation folds.
+ * - `kFold` (list, default `[]`) — Fold indices to run; `[]` means all folds.
+ * - `TrainSize` (float, default `50.0`) — Percentage (0–100) of graphs used
+ *   for training.  **Not** a 0–1 fraction; `80.0` means 80 % training.
+ * - `BatchSize` (int, default `1`) — Mini-batch size for training/evaluation.
+ * - `Threads` (int, default `10`) — Inter-operation threads for PyTorch.
+ * - `IntraThreads` (int, default `-1`) — Intra-operation threads for PyTorch
+ *   (`-1` = use PyTorch default).
+ * - `Training` (bool, default `True`) — Enable the training phase.
+ * - `Validation` (bool, default `True`) — Enable the validation phase.
+ * - `Evaluation` (bool, default `True`) — Enable the evaluation phase.
+ * - `ContinueTraining` (bool, default `True`) — Resume from last checkpoint.
+ * - `Targets` (list, default `[]`) — Target feature names for GNN training.
+ * - `NumExamples` (int, default `3`) — Graph examples logged per epoch.
+ *
+ * **Plot / debug settings (read/write):**
+ * - `nBins` (int, default `400`) — Histogram bins for kinematic auto-plots.
+ * - `MaxRange` (int, default `400`) — Upper range for kinematic histograms.
+ * - `SetLogY` (bool, default `False`) — Log y-axis for auto-generated plots.
+ * - `DebugMode` (bool, default `False`) — Verbose debug output from C++.
+ */

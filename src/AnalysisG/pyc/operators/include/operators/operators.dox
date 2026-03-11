@@ -1,0 +1,101 @@
+/**
+ * @file operators.h (pyc)
+ * @brief Internal CUDA/C++ implementation of batched matrix/vector operators.
+ * @details Declares the @c operators_ namespace.  These are wrapped by the
+ *          public @c pyc::operators API in @c pyc.h.
+ */
+
+/**
+ * @namespace operators_
+ * @brief Internal namespace for batched matrix/vector operators.
+ */
+
+/**
+ * @fn torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Batched element-wise dot product.
+ * @param v1 [N, D] first vectors.
+ * @param v2 [N, D] second vectors.
+ * @return [N] dot products.
+ */
+
+/**
+ * @fn torch::Tensor operators_::Cross(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Batched cross product of 3-vectors.
+ * @param v1 [N, 3].
+ * @param v2 [N, 3].
+ * @return [N, 3] cross products.
+ */
+
+/**
+ * @fn torch::Tensor operators_::Determinant(torch::Tensor* matrix)
+ * @brief Batched 3×3 determinant.
+ * @param matrix [N, 3, 3].
+ * @return [N] determinants.
+ */
+
+/**
+ * @fn torch::Tensor operators_::CosTheta(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Batched cosine of angle between v1 and v2.
+ * @return [N] cosines.
+ */
+
+/**
+ * @fn torch::Tensor operators_::SinTheta(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Batched sine of angle between v1 and v2.
+ * @return [N] sines.
+ */
+
+/**
+ * @fn torch::Tensor operators_::Pi_2(torch::Tensor* trn)
+ * @brief Compute π/2 - θ for each element.
+ * @param trn [N] angle tensor.
+ * @return [N] result.
+ */
+
+/**
+ * @fn torch::Tensor operators_::Rx(torch::Tensor* angle)
+ * @brief Batched rotation matrix about x.
+ * @param angle [N].
+ * @return [N, 3, 3].
+ */
+
+/**
+ * @fn torch::Tensor operators_::Ry(torch::Tensor* angle)
+ * @brief Batched rotation matrix about y.
+ * @return [N, 3, 3].
+ */
+
+/**
+ * @fn torch::Tensor operators_::Rz(torch::Tensor* angle)
+ * @brief Batched rotation matrix about z.
+ * @return [N, 3, 3].
+ */
+
+/**
+ * @fn torch::Tensor operators_::RT(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* base)
+ * @brief Compute the rotation from the decay frame to the lab frame for each
+ *        (b, lepton) pair.
+ * @param pmc_b  [N, 4] b-quark Cartesian momenta.
+ * @param pmc_mu [N, 4] lepton Cartesian momenta.
+ * @param base   Pre-computed base matrix.
+ * @return [N, 3, 3] rotation matrices.
+ */
+
+/**
+ * @fn torch::Tensor operators_::CoFactors(torch::Tensor* matrix)
+ * @brief Batched cofactor matrix.
+ * @param matrix [N, 3, 3].
+ * @return [N, 3, 3] cofactor matrices.
+ */
+
+/**
+ * @fn std::tuple<torch::Tensor, torch::Tensor> operators_::Inverse(torch::Tensor* matrix)
+ * @brief Batched 3×3 matrix inverse.
+ * @return (inverse [N, 3, 3], valid_mask [N]).
+ */
+
+/**
+ * @fn std::tuple<torch::Tensor, torch::Tensor> operators_::Eigenvalue(torch::Tensor* matrix)
+ * @brief Batched 3×3 eigenvalue computation.
+ * @return (eigenvalues [N, 3], valid_mask [N]).
+ */

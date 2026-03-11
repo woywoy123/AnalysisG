@@ -1,0 +1,179 @@
+/**
+ * @file base.h
+ * @brief Base struct for typed data elements and ROOT dictionary utilities.
+ * @details Declares @c bsc_t, a polymorphic container that can hold a pointer
+ *          to any supported data type (primitives, vectors, and nested vectors
+ *          up to depth 3), together with free functions for building ROOT PCM
+ *          dictionaries.
+ */
+
+/**
+ * @fn void buildPCM(std::string name, std::string incl, bool exl)
+ * @brief Register and build a ROOT PCM (pre-compiled module) entry.
+ * @param name Name of the PCM.
+ * @param incl Include path for the dictionary header.
+ * @param exl  If @c true, exclude the entry from the build.
+ */
+
+/**
+ * @fn void registerInclude(std::string pth, bool is_abs)
+ * @brief Register a header path with the ROOT dictionary builder.
+ * @param pth    Header file name or path.
+ * @param is_abs If @c true, treat @p pth as an absolute path.
+ */
+
+/**
+ * @fn void buildDict(std::string _name, std::string _shrt)
+ * @brief Build a ROOT dictionary for the given class.
+ * @param _name  Class name.
+ * @param _shrt  Include path.
+ */
+
+/**
+ * @fn void buildAll()
+ * @brief Execute all pending ROOT dictionary builds registered via
+ *        @c registerInclude and @c buildDict.
+ */
+
+/**
+ * @struct bsc_t
+ * @brief Type-erased data container that stores a single typed pointer.
+ * @details @c bsc_t holds one pointer for each supported data type (scalars,
+ *          vectors, 2-deep nested vectors, and 3-deep nested vectors of all
+ *          the numeric types declared in @c data_enum).  Exactly one pointer
+ *          should be non-null at any time; the active type is recorded in the
+ *          @c type member.  The @c index member controls which element of a
+ *          vector-typed buffer is returned by the @c element() accessors.
+ *          @c flush_buffer() either zeros or deletes the active pointer
+ *          depending on the @c clear flag.  The class is the base of
+ *          @c data_t (read buffer for ROOT branches) and @c variable_t (write
+ *          buffer for output ROOT branches).
+ */
+
+/**
+ * @fn bsc_t::bsc_t()
+ * @brief Default constructor.  Initialises all pointers to @c nullptr.
+ */
+
+/**
+ * @fn virtual bsc_t::~bsc_t()
+ * @brief Virtual destructor.
+ */
+
+/**
+ * @fn void bsc_t::flush_buffer()
+ * @brief Clear or delete the active data pointer according to @c bsc_t::clear.
+ */
+
+/**
+ * @fn std::string bsc_t::as_string()
+ * @brief Return the string name of the currently active type.
+ * @return Type name as a string.
+ */
+
+/**
+ * @fn std::string bsc_t::scan_buffer()
+ * @brief Scan and return a debug summary of the buffer state.
+ * @return String describing the active pointer.
+ */
+
+/**
+ * @fn data_enum bsc_t::root_type_translate(std::string*)
+ * @brief Translate a ROOT leaf-type string to the corresponding @c data_enum.
+ * @param root_str Pointer to the ROOT type string (e.g. @c "D" for double).
+ * @return Corresponding @c data_enum value.
+ */
+
+/**
+ * @fn bool bsc_t::element(std::vector<std::vector<std::vector<float>>>* el)
+ * @brief Store the given pointer and set @c type accordingly.
+ * @param el Pointer to assign.
+ * @return @c true on success.
+ */
+
+/**
+ * @var bsc_t::vv_ui
+ * @brief Pointer to depth-2 unsigned int data, or @c nullptr.
+ */
+
+/**
+ * @var std::vector<double>* bsc_t::v_d
+ * @brief Pointer to a flat vector of doubles, or @c nullptr.
+ */
+/**
+ * @var std::vector<long>* bsc_t::v_l
+ * @brief Pointer to a flat vector of longs, or @c nullptr.
+ */
+/**
+ * @var std::vector<float>* bsc_t::v_f
+ * @brief Pointer to a flat vector of floats, or @c nullptr.
+ */
+/**
+ * @var std::vector<int>* bsc_t::v_i
+ * @brief Pointer to a flat vector of ints, or @c nullptr.
+ */
+/**
+ * @var std::vector<bool>* bsc_t::v_b
+ * @brief Pointer to a flat vector of bools, or @c nullptr.
+ */
+/**
+ * @var std::vector<char>* bsc_t::v_c
+ * @brief Pointer to a flat vector of chars, or @c nullptr.
+ */
+/**
+ * @var std::vector<unsigned long long>* bsc_t::v_ull
+ * @brief Pointer to a flat vector of unsigned long longs, or @c nullptr.
+ */
+/**
+ * @var std::vector<unsigned int>* bsc_t::v_ui
+ * @brief Pointer to a flat vector of unsigned ints, or @c nullptr.
+ */
+
+/**
+ * @var double* bsc_t::d
+ * @brief Pointer to a scalar double, or @c nullptr.
+ */
+/**
+ * @var long* bsc_t::l
+ * @brief Pointer to a scalar long, or @c nullptr.
+ */
+/**
+ * @var float* bsc_t::f
+ * @brief Pointer to a scalar float, or @c nullptr.
+ */
+/**
+ * @var int* bsc_t::i
+ * @brief Pointer to a scalar int, or @c nullptr.
+ */
+/**
+ * @var bool* bsc_t::b
+ * @brief Pointer to a scalar bool, or @c nullptr.
+ */
+/**
+ * @var char* bsc_t::c
+ * @brief Pointer to a scalar char, or @c nullptr.
+ */
+/**
+ * @var unsigned long long* bsc_t::ull
+ * @brief Pointer to a scalar unsigned long long, or @c nullptr.
+ */
+/**
+ * @var unsigned int* bsc_t::ui
+ * @brief Pointer to a scalar unsigned int, or @c nullptr.
+ */
+
+/**
+ * @var long bsc_t::index
+ * @brief Current index into a vector-typed buffer (used during iteration).
+ */
+
+/**
+ * @var bool bsc_t::clear
+ * @brief If @c true, @c flush_buffer deletes the pointed-to object;
+ *        otherwise it only resets the value to 0 / clears the vector.
+ */
+
+/**
+ * @var data_enum bsc_t::type
+ * @brief Active data type of this container (default @c data_enum::unset).
+ */

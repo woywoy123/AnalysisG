@@ -1,0 +1,25 @@
+/**
+ * @file __init__.pxd
+ * @brief Cython package initialisation file for @c AnalysisG.core.
+ * @details Imports all public Cython wrapper classes and provides convenience
+ *          helper functions for encoding/decoding strings between Python
+ *          @c str and @c std::string, converting C++ containers to Python
+ *          objects, and vice versa.
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @class Tools
+ * @brief Python wrapper class for the @c tools C++ utility class.
+ * @details Exposes file system, string, math, and encoding helpers.
+ */

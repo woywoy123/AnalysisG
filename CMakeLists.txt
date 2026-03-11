@@ -13,7 +13,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 #set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
-set(CMAKE_ANALYSISG_CUDA ON)
+option(CMAKE_ANALYSISG_CUDA "Build with CUDA support" ON)
 include(FetchContent)
 include(CheckLanguage)
 set(USE_SABI 1)

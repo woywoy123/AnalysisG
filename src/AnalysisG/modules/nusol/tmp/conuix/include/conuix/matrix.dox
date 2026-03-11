@@ -1,0 +1,60 @@
+/**
+ * @file matrix.h (tmp/conuix)
+ * @brief Lightweight double-precision 3×3 matrix type for the tmp/conuix
+ *        neutrino solver.
+ * @details @c matrix_t (tmp version) provides the same interface as the
+ *          production @c matrix_t in @c conuix/matrix.h but uses @c double
+ *          instead of @c long double.
+ */
+
+/**
+ * @struct matrix_t
+ * @brief Double-precision 3×3 matrix.
+ */
+
+/**
+ * @fn matrix_t::matrix_t(int _r, int _c)
+ * @brief Construct an @p _r × @p _c zero matrix.
+ * @param _r Rows (default 3).
+ * @param _c Columns (default 3).
+ */
+
+/**
+ * @fn matrix_t::~matrix_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn matrix_t matrix_t::dot(const matrix_t& o)
+ * @brief Matrix product.
+ */
+
+/**
+ * @fn matrix_t matrix_t::T() const
+ * @brief Transpose.
+ */
+
+/**
+ * @fn const double& matrix_t::at(int _r, int _c) const
+ * @brief Const element access.
+ */
+
+/**
+ * @fn double& matrix_t::at(int _r, int _c)
+ * @brief Mutable element access.
+ */
+
+/**
+ * @fn void matrix_t::print(int p)
+ * @brief Print to stdout.
+ */
+
+/**
+ * @var int matrix_t::r
+ * @brief Number of rows.
+ */
+
+/**
+ * @var int matrix_t::c
+ * @brief Number of columns.
+ */

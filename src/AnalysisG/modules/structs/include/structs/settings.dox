@@ -1,0 +1,193 @@
+/**
+ * @file settings.h
+ * @brief Top-level configuration struct for an AnalysisG run.
+ * @details @c settings_t is passed to the @c analysis class and propagated
+ *          to the dataloader, optimizer, and I/O subsystems.
+ */
+
+/**
+ * @struct settings_t
+ * @brief Aggregated run configuration covering I/O paths, ML hyperparameters,
+ *        and plotting settings.
+ * @details Passed directly to the @c analysis class via
+ *          @c analysis::m_settings and propagated to @c dataloader,
+ *          @c optimizer, @c metrics, and @c io.
+ *
+ *          The **I/O fields** (@c output_path, @c run_name, @c sow_name,
+ *          @c metacache_path) control where results are written and how the
+ *          sum-of-weights histogram is named.
+ *
+ *          The **ML fields** (@c epochs, @c kfolds, @c batch_size, @c kfold,
+ *          @c num_examples, @c train_size, @c training, @c validation,
+ *          @c evaluation, @c continue_training, @c training_dataset,
+ *          @c graph_cache) configure the k-fold cross-validation loop,
+ *          mini-batch size, which phases to run, whether to resume from a
+ *          checkpoint, and paths to pre-built graph caches.
+ *
+ *          The **plotting fields** (@c var_pt, @c var_eta, @c var_phi,
+ *          @c var_energy, @c targets, @c nbins, @c max_range, @c logy)
+ *          configure auto-generated invariant-mass histograms.
+ *
+ *          The **execution fields** (@c threads, @c intra_th, @c debug_mode,
+ *          @c build_cache, @c selection_root) control parallelism, intra-op
+ *          thread count, verbose output, and output format.
+ */
+
+/**
+ * @var std::string settings_t::output_path
+ * @brief Root output directory for plots, models, and selection files
+ *        (default @c "./ProjectName").
+ */
+
+/**
+ * @var std::string settings_t::run_name
+ * @brief Optional tag appended to output directories for this run.
+ */
+
+/**
+ * @var std::string settings_t::sow_name
+ * @brief Name of the sum-of-weights histogram in the ROOT file.
+ */
+
+/**
+ * @var std::string settings_t::metacache_path
+ * @brief Path to the directory used for caching AMI metadata (default @c "./").
+ */
+
+/**
+ * @var bool settings_t::fetch_meta
+ * @brief If @c true, query AMI for dataset metadata; otherwise use cache.
+ */
+
+/**
+ * @var bool settings_t::pretagevents
+ * @brief If @c true, pre-tag events before building graphs.
+ */
+
+/**
+ * @var int settings_t::epochs
+ * @brief Number of training epochs (default 10).
+ */
+
+/**
+ * @var int settings_t::kfolds
+ * @brief Number of k-fold splits (default 10).
+ */
+
+/**
+ * @var int settings_t::batch_size
+ * @brief Minibatch size for training (default 1).
+ */
+
+/**
+ * @var std::vector<int> settings_t::kfold
+ * @brief Explicit list of k-fold indices to run; empty means run all.
+ */
+
+/**
+ * @var int settings_t::num_examples
+ * @brief Number of example graphs displayed during progress reporting
+ *        (default 3).
+ */
+
+/**
+ * @var float settings_t::train_size
+ * @brief Percentage of data used for training (default 50).
+ */
+
+/**
+ * @var bool settings_t::training
+ * @brief Enable the training phase (default @c true).
+ */
+
+/**
+ * @var bool settings_t::validation
+ * @brief Enable the validation phase (default @c true).
+ */
+
+/**
+ * @var bool settings_t::evaluation
+ * @brief Enable the evaluation phase (default @c true).
+ */
+
+/**
+ * @var bool settings_t::continue_training
+ * @brief If @c true, resume training from the last saved checkpoint (default
+ *        @c true).
+ */
+
+/**
+ * @var std::string settings_t::training_dataset
+ * @brief Path to a pre-built graph dataset for training.
+ */
+
+/**
+ * @var std::string settings_t::graph_cache
+ * @brief Path to a graph cache directory.
+ */
+
+/**
+ * @var std::string settings_t::var_pt
+ * @brief Leaf name of the transverse-momentum variable (default @c "pt").
+ */
+
+/**
+ * @var std::string settings_t::var_eta
+ * @brief Leaf name of the pseudorapidity variable (default @c "eta").
+ */
+
+/**
+ * @var std::string settings_t::var_phi
+ * @brief Leaf name of the azimuthal angle variable (default @c "phi").
+ */
+
+/**
+ * @var std::string settings_t::var_energy
+ * @brief Leaf name of the energy variable (default @c "energy").
+ */
+
+/**
+ * @var std::vector<std::string> settings_t::targets
+ * @brief List of variable names to use as training targets.
+ */
+
+/**
+ * @var int settings_t::nbins
+ * @brief Number of histogram bins (default 400).
+ */
+
+/**
+ * @var int settings_t::max_range
+ * @brief Maximum axis range for mass histograms (default 400 GeV).
+ */
+
+/**
+ * @var bool settings_t::logy
+ * @brief Use logarithmic y-axis on histograms (default @c false).
+ */
+
+/**
+ * @var int settings_t::threads
+ * @brief Number of parallel worker threads (default 10).
+ */
+
+/**
+ * @var int settings_t::intra_th
+ * @brief Number of intra-op threads for PyTorch (default -1 = use system
+ *        default).
+ */
+
+/**
+ * @var bool settings_t::debug_mode
+ * @brief Enable verbose debug output (default @c false).
+ */
+
+/**
+ * @var bool settings_t::build_cache
+ * @brief If @c true, build and save a local graph cache (default @c false).
+ */
+
+/**
+ * @var bool settings_t::selection_root
+ * @brief If @c true, write selection output to ROOT files (default @c false).
+ */

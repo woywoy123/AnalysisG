@@ -1,0 +1,104 @@
+/**
+ * @file merge_cast.h
+ * @brief Template utilities for merging, summing, and contracting typed data
+ *        structures.
+ * @details Provides recursive template free functions that operate on scalars,
+ *          vectors, and maps uniformly.
+ */
+
+/**
+ * @fn template<typename G> void merge_data(std::vector<G>* out, std::vector<G>* p2)
+ * @brief Append all elements of @p p2 to @p out.
+ * @tparam G Element type.
+ * @param out Target vector.
+ * @param p2  Source vector.
+ */
+
+/**
+ * @fn template<typename G> void merge_data(G* out, G* p2)
+ * @brief Copy @p p2 into @p out (scalar overload).
+ * @tparam G Scalar type.
+ * @param out Target.
+ * @param p2  Source.
+ */
+
+/**
+ * @fn template<typename g, typename G> void merge_data(std::map<g,G>* out, std::map<g,G>* p2)
+ * @brief Recursively merge map @p p2 into @p out.
+ * @tparam g Key type.
+ * @tparam G Value type.
+ * @param out Target map.
+ * @param p2  Source map.
+ */
+
+/**
+ * @fn template<typename G> void sum_data(G* out, G* p2)
+ * @brief Add @p p2 to @p out in place (scalar overload: @c out += p2).
+ * @tparam G Scalar type.
+ * @param out Target.
+ * @param p2  Value to add.
+ */
+
+/**
+ * @fn template<typename G> void sum_data(std::vector<G>* out, std::vector<G>* p2)
+ * @brief Append @p p2 to @p out (vector overload, equivalent to merge).
+ * @tparam G Element type.
+ * @param out Target vector.
+ * @param p2  Source vector.
+ */
+
+/**
+ * @fn template<typename g, typename G> void sum_data(std::map<g,G>* out, std::map<g,G>* p2)
+ * @brief Recursively sum map @p p2 into @p out.
+ * @tparam g Key type.
+ * @tparam G Value type.
+ * @param out Target map.
+ * @param p2  Source map.
+ */
+
+/**
+ * @fn template<typename g> void reserve_count(g* inp, long* ix)
+ * @brief Increment @p ix by 1 (scalar overload).
+ * @tparam g Scalar type.
+ * @param inp Unused.
+ * @param ix  Counter to increment.
+ */
+
+/**
+ * @fn template<typename g> void reserve_count(std::vector<g>* inp, long* ix)
+ * @brief Recursively count all leaf elements in @p inp.
+ * @tparam g Element type.
+ * @param inp Nested vector.
+ * @param ix  Counter accumulator.
+ */
+
+/**
+ * @fn template<typename g> void contract_data(std::vector<g>* out, g* p2)
+ * @brief Append the scalar @p p2 to @p out.
+ * @tparam g Scalar type.
+ * @param out Target vector.
+ * @param p2  Scalar to append.
+ */
+
+/**
+ * @fn template<typename g> void contract_data(std::vector<g>* out, std::vector<g>* p2)
+ * @brief Append all elements of @p p2 to @p out.
+ * @tparam g Element type.
+ * @param out Target vector.
+ * @param p2  Source vector.
+ */
+
+/**
+ * @fn template<typename g> void contract_data(std::vector<g>* out, std::vector<std::vector<g>>* p2)
+ * @brief Flatten the nested vector @p p2 into @p out.
+ * @tparam g Element type.
+ * @param out Target flat vector.
+ * @param p2  Nested source vector.
+ */
+
+/**
+ * @fn template<typename g> void release_vector(std::vector<g>* ipt)
+ * @brief Call @c shrink_to_fit on @p ipt to release excess capacity.
+ * @tparam g Element type.
+ * @param ipt Vector to shrink.
+ */
