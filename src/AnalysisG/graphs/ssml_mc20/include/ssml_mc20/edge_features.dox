@@ -1,0 +1,70 @@
+/**
+ * @file edge_features.h
+ * @brief Edge truth-label functions for the ssml_mc20 graph.
+ */
+
+/**
+ * @fn void static m_res_edge(int* o, jet* t)
+ * @brief Multiply the running resonance flag by the jet's @c from_res tag.
+ * @param o Running output flag (multiplicative).
+ * @param t Pointer to the jet.
+ */
+
+/**
+ * @fn void static m_res_edge(int* o, electron* t)
+ * @brief Multiply the running resonance flag by the electron's @c from_res tag.
+ * @param o Running output flag (multiplicative).
+ * @param t Pointer to the electron.
+ */
+
+/**
+ * @fn void static m_res_edge(int* o, muon* t)
+ * @brief Multiply the running resonance flag by the muon's @c from_res tag.
+ * @param o Running output flag (multiplicative).
+ * @param t Pointer to the muon.
+ */
+
+/**
+ * @fn void static m_res_edge(int* o, particle_template* t)
+ * @brief Multiply the running resonance flag by inspecting the particle's
+ *        parent top quarks for a resonance origin.
+ * @param o Running output flag (multiplicative).
+ * @param t Pointer to the particle.
+ */
+
+/**
+ * @fn void static res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determine whether both particles originate from the same resonance
+ *        decay by dispatching to the type-specific @c m_res_edge helpers.
+ * @param o   Output flag: 1 if the pair shares a resonance parent, 0 otherwise.
+ * @param pij Pointer to the particle pair.
+ */
+
+/**
+ * @fn std::vector<int> static m_top_edge(jet* t)
+ * @brief Return the top-quark index list for a jet.
+ * @param t Pointer to the jet.
+ * @return Vector containing the jet's @c top_index.
+ */
+
+/**
+ * @fn std::vector<int> static m_top_edge(electron* t)
+ * @brief Return the top-quark index list for an electron.
+ * @param t Pointer to the electron.
+ * @return Vector containing the electron's @c top_index.
+ */
+
+/**
+ * @fn std::vector<int> static m_top_edge(muon* t)
+ * @brief Return the top-quark index list for a muon.
+ * @param t Pointer to the muon.
+ * @return Vector containing the muon's @c top_index.
+ */
+
+/**
+ * @fn void static top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determine whether both particles originate from the same top quark
+ *        by comparing their @c top_index values.
+ * @param o   Output flag: 1 if the pair shares a top parent, 0 otherwise.
+ * @param pij Pointer to the particle pair.
+ */

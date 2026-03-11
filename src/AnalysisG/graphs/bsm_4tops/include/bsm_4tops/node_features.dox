@@ -1,0 +1,74 @@
+/**
+ * @file node_features.h
+ * @brief Node-level feature functions for the BSM four-tops graph.
+ */
+
+/**
+ * @fn void res_node(int* o, particle_template* p)
+ * @brief Whether the particle originates from a resonance decay.
+ * @param o Output flag: 1 if from resonance, 0 otherwise.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void top_node(int* o, particle_template* p)
+ * @brief Index of the parent top quark.
+ * @param o Output index (-1 if the particle has no top parent).
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void pt(double* o, particle_template* p)
+ * @brief Transverse momentum of the particle.
+ * @param o Output value in MeV.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void eta(double* o, particle_template* p)
+ * @brief Pseudorapidity of the particle.
+ * @param o Output value.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void phi(double* o, particle_template* p)
+ * @brief Azimuthal angle of the particle.
+ * @param o Output value in radians.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void energy(double* o, particle_template* p)
+ * @brief Energy of the particle.
+ * @param o Output value in MeV.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void charge(double* o, particle_template* p)
+ * @brief Electric charge of the particle.
+ * @param o Output value.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void is_lepton(int* o, particle_template* p)
+ * @brief Lepton flag (excludes neutrinos).
+ * @param o Output flag: 1 if charged lepton, 0 otherwise.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void is_bquark(int* o, particle_template* p)
+ * @brief b-quark flag.
+ * @param o Output flag: 1 if b-quark, 0 otherwise.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void is_neutrino(int* o, particle_template* p)
+ * @brief Neutrino flag.
+ * @param o Output flag: 1 if neutrino, 0 otherwise.
+ * @param p Pointer to the particle.
+ */

@@ -1,0 +1,96 @@
+/**
+ * @file graph_features.h
+ * @brief Graph-level feature functions for the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_tops(int* o, bsm_4tops* event)
+ * @brief Number of truth top quarks in the event.
+ * @param o     Output integer.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_lepton(int* o, bsm_4tops* event)
+ * @brief Number of truth leptons in the event.
+ * @param o     Output integer.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_neutrino(int* o, bsm_4tops* event)
+ * @brief Number of truth neutrinos in the event.
+ * @param o     Output integer.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void signal_event(bool* o, bsm_4tops* event)
+ * @brief Whether the event is a signal event.
+ * @param o     Output boolean flag.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void missing_et(double* o, bsm_4tops* event)
+ * @brief Missing transverse energy (MET).
+ * @param o     Output value in MeV.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void missing_phi(double* o, bsm_4tops* event)
+ * @brief Azimuthal angle of the missing transverse energy.
+ * @param o     Output angle in radians.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_leps(double* o, bsm_4tops* event)
+ * @brief Number of reconstructed leptons.
+ * @param o     Output value.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_jets(double* o, bsm_4tops* event)
+ * @brief Number of reconstructed jets.
+ * @param o     Output value.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_quark(double* o, bsm_4tops* event)
+ * @brief Number of truth quarks in the event.
+ * @param o     Output value.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_truthjets(double* o, bsm_4tops* event)
+ * @brief Number of truth jets in the event.
+ * @param o     Output value.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void num_children_leps(double* o, bsm_4tops* event)
+ * @brief Number of leptonic top-quark children (charged leptons from top
+ *        decay).
+ * @param o     Output value.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void event_number(long* o, bsm_4tops* event)
+ * @brief Event number identifier.
+ * @param o     Output event number.
+ * @param event Pointer to the BSM four-tops event.
+ */
+
+/**
+ * @fn void event_weight(double* o, bsm_4tops* event)
+ * @brief Monte Carlo event weight.
+ * @param o     Output weight.
+ * @param event Pointer to the BSM four-tops event.
+ */

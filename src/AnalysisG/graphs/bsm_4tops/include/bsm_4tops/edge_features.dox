@@ -1,0 +1,35 @@
+/**
+ * @file edge_features.h
+ * @brief Edge truth-label functions for the BSM four-tops graph.
+ */
+
+/**
+ * @fn void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determine whether both particles originate from the same resonance
+ *        (Z'/heavy boson) decay.
+ * @param o   Output flag: 1 if the pair shares a resonance parent, 0 otherwise.
+ * @param pij Pointer to the particle pair.
+ */
+
+/**
+ * @fn void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determine whether both particles originate from the same top quark.
+ * @param o   Output flag: 1 if the pair shares a top parent, 0 otherwise.
+ * @param pij Pointer to the particle pair.
+ */
+
+/**
+ * @fn void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Detector-level variant of @c top_edge.
+ * @param o   Output flag: 1 if the detector-level pair shares a top parent,
+ *            0 otherwise.
+ * @param pij Pointer to the particle pair.
+ */
+
+/**
+ * @fn void det_res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Detector-level variant of @c res_edge.
+ * @param o   Output flag: 1 if the detector-level pair shares a resonance
+ *            parent, 0 otherwise.
+ * @param pij Pointer to the particle pair.
+ */

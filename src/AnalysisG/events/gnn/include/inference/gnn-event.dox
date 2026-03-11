@@ -1,0 +1,171 @@
+/**
+ * @file gnn-event.h
+ * @brief Event class for GNN inference output.
+ * @details Reads predictions from graph neural network runs and
+ *          reconstructs top quarks and Z' bosons from the network output.
+ */
+
+/**
+ * @fn template <typename g> void reduce(element_t* el, std::string key, g* out)
+ * @brief Extract a scalar value from an @c element_t container.
+ * @tparam g Output value type.
+ * @param el  Pointer to the element container.
+ * @param key Lookup key.
+ * @param out Pointer to the output scalar.
+ */
+
+/**
+ * @fn template <typename g> void reduce(element_t* el, std::string key, std::vector<g>* out, int dim)
+ * @brief Extract a vector of values from an @c element_t container.
+ * @tparam g Element type.
+ * @param el  Pointer to the element container.
+ * @param key Lookup key.
+ * @param out Pointer to the output vector.
+ * @param dim Dimension selector: -1 for the first row, otherwise column 0
+ *            of each row.
+ */
+
+/**
+ * @class gnn_event
+ * @brief Event for GNN inference output; inherits @c event_template.
+ * @details Holds detector-level observables, MVA classification scores,
+ *          reconstructed particles (tops, Z'), and truth-level particles
+ *          for performance evaluation.
+ */
+
+/**
+ * @fn gnn_event::gnn_event()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn gnn_event::~gnn_event()
+ * @brief Destructor.
+ */
+
+/**
+ * @var int gnn_event::num_bjets
+ * @brief Number of b-tagged jets.
+ */
+
+/**
+ * @var double gnn_event::num_jets
+ * @brief Number of reconstructed jets.
+ */
+
+/**
+ * @var double gnn_event::num_leps
+ * @brief Number of reconstructed leptons.
+ */
+
+/**
+ * @var double gnn_event::met
+ * @brief Missing transverse energy.
+ */
+
+/**
+ * @var double gnn_event::phi
+ * @brief Azimuthal angle of the missing transverse energy.
+ */
+
+/**
+ * @var int gnn_event::p_ntops
+ * @brief Predicted number of top quarks.
+ */
+
+/**
+ * @var int gnn_event::p_signal
+ * @brief Predicted signal classification label.
+ */
+
+/**
+ * @var float gnn_event::s_ntops
+ * @brief Score for the predicted number of tops.
+ */
+
+/**
+ * @var float gnn_event::s_signal
+ * @brief Score for the signal classification.
+ */
+
+/**
+ * @var std::vector<float> gnn_event::ntops_scores
+ * @brief Per-class scores for the number-of-tops classifier.
+ */
+
+/**
+ * @var std::vector<float> gnn_event::signal_scores
+ * @brief Per-class scores for the signal classifier.
+ */
+
+/**
+ * @var std::vector<std::vector<float>> gnn_event::edge_res_scores
+ * @brief Edge-level resonance classification scores.
+ */
+
+/**
+ * @var std::vector<std::vector<float>> gnn_event::edge_top_scores
+ * @brief Edge-level top-quark classification scores.
+ */
+
+/**
+ * @var std::vector<top*> gnn_event::r_tops
+ * @brief Reconstructed top quarks.
+ */
+
+/**
+ * @var std::vector<zprime*> gnn_event::r_zprime
+ * @brief Reconstructed Z' bosons.
+ */
+
+/**
+ * @var std::vector<particle_gnn*> gnn_event::event_particles
+ * @brief All particles in the event.
+ */
+
+/**
+ * @var std::vector<top*> gnn_event::t_tops
+ * @brief Truth top quarks.
+ */
+
+/**
+ * @var std::vector<zprime*> gnn_event::t_zprime
+ * @brief Truth Z' bosons.
+ */
+
+/**
+ * @var std::vector<int> gnn_event::t_edge_res
+ * @brief Truth edge-level resonance labels.
+ */
+
+/**
+ * @var std::vector<int> gnn_event::t_edge_top
+ * @brief Truth edge-level top-quark labels.
+ */
+
+/**
+ * @var int gnn_event::t_ntops
+ * @brief Truth number of top quarks.
+ */
+
+/**
+ * @var bool gnn_event::t_signal
+ * @brief Truth signal flag.
+ */
+
+/**
+ * @fn event_template* gnn_event::clone()
+ * @brief Create an empty clone of this event.
+ * @return Pointer to a new @c gnn_event instance.
+ */
+
+/**
+ * @fn void gnn_event::build(element_t* el)
+ * @brief Populate the event from a serialised @c element_t container.
+ * @param el Pointer to the element data.
+ */
+
+/**
+ * @fn void gnn_event::CompileEvent()
+ * @brief Reconstruct tops and Z' bosons from edge scores and particles.
+ */

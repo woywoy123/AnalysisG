@@ -1,0 +1,98 @@
+/**
+ * @file gnn-particles.h
+ * @brief Particle classes for GNN inference output.
+ */
+
+/**
+ * @class particle_gnn
+ * @brief GNN inference particle; inherits @c particle_template.
+ */
+
+/**
+ * @fn particle_gnn::particle_gnn()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn particle_gnn::~particle_gnn()
+ * @brief Destructor.
+ */
+
+/**
+ * @var bool particle_gnn::lep
+ * @brief Whether this particle is a lepton.
+ */
+
+/**
+ * @fn particle_template* particle_gnn::clone()
+ * @brief Create an empty clone of this particle.
+ * @return Pointer to a new @c particle_gnn instance.
+ */
+
+/**
+ * @fn void particle_gnn::build(std::map<std::string, particle_template*>* prt, element_t* el)
+ * @brief Populate the particle from the event particle map and serialised
+ *        element data.
+ * @param prt Pointer to the event-level particle map.
+ * @param el  Pointer to the element data.
+ */
+
+/**
+ * @class top
+ * @brief Reconstructed or truth top quark; inherits @c particle_template.
+ */
+
+/**
+ * @fn top::top()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn top::~top()
+ * @brief Destructor.
+ */
+
+/**
+ * @var float top::av_score
+ * @brief Average edge classification score for this top cluster.
+ */
+
+/**
+ * @var int top::n_leps
+ * @brief Number of leptons among the top's children.
+ */
+
+/**
+ * @var int top::n_nodes
+ * @brief Number of nodes (particles) assigned to this top.
+ */
+
+/**
+ * @class zprime
+ * @brief Reconstructed or truth Z' boson; inherits @c particle_template.
+ */
+
+/**
+ * @fn zprime::zprime()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn zprime::~zprime()
+ * @brief Destructor.
+ */
+
+/**
+ * @var float zprime::av_score
+ * @brief Average edge classification score for this Z' cluster.
+ */
+
+/**
+ * @var int zprime::n_leps
+ * @brief Number of leptons among the Z' children.
+ */
+
+/**
+ * @var int zprime::n_nodes
+ * @brief Number of nodes (particles) assigned to this Z'.
+ */

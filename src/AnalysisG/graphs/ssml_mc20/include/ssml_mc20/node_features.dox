@@ -1,0 +1,69 @@
+/**
+ * @file node_features.h
+ * @brief Node-level feature functions for the ssml_mc20 graph.
+ */
+
+/**
+ * @fn void static res_node(int* o, particle_template* p)
+ * @brief Whether the particle originates from a resonance decay, resolved
+ *        by particle type (jet, muon, electron).
+ * @param o Output flag: 1 if from resonance, 0 otherwise.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static top_node(int* o, particle_template* p)
+ * @brief Index of the parent top quark, resolved by particle type (jet,
+ *        muon, electron).
+ * @param o Output index (-1 if the particle has no top parent).
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static pt(double* o, particle_template* p)
+ * @brief Transverse momentum of the particle.
+ * @param o Output value in MeV.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static eta(double* o, particle_template* p)
+ * @brief Pseudorapidity of the particle.
+ * @param o Output value.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static phi(double* o, particle_template* p)
+ * @brief Azimuthal angle of the particle.
+ * @param o Output value in radians.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static energy(double* o, particle_template* p)
+ * @brief Energy of the particle.
+ * @param o Output value in MeV.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static is_lepton(int* o, particle_template* p)
+ * @brief Lepton flag (excludes neutrinos).
+ * @param o Output flag: 1 if charged lepton, 0 otherwise.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static is_bquark(int* o, particle_template* p)
+ * @brief b-quark flag.
+ * @param o Output flag: 1 if b-quark, 0 otherwise.
+ * @param p Pointer to the particle.
+ */
+
+/**
+ * @fn void static is_neutrino(int* o, particle_template* p)
+ * @brief Neutrino flag.
+ * @param o Output flag: 1 if neutrino, 0 otherwise.
+ * @param p Pointer to the particle.
+ */

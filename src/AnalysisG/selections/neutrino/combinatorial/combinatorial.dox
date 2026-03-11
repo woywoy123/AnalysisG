@@ -1,0 +1,177 @@
+/**
+ * @file combinatorial.h
+ * @brief Combinatorial neutrino reconstruction selection.
+ * @details Performs combinatorial pairing of b-quarks and leptons and solves
+ *          for neutrino momenta using analytical methods.
+ */
+
+/**
+ * @struct packet_t
+ * @brief Per-combination data packet for the combinatorial reconstruction.
+ */
+
+/**
+ * @fn packet_t::~packet_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::particles
+ * @brief All particles considered in this combination.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::t_bquarks
+ * @brief Truth b-quarks.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::t_leptons
+ * @brief Truth leptons.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::t_neutrino
+ * @brief Truth neutrinos.
+ */
+
+/**
+ * @var std::vector<int> packet_t::matched_bquarks
+ * @brief Indices of matched b-quarks.
+ */
+
+/**
+ * @var std::vector<int> packet_t::matched_leptons
+ * @brief Indices of matched leptons.
+ */
+
+/**
+ * @var std::vector<double> packet_t::distance
+ * @brief Solution distances for each combination.
+ */
+
+/**
+ * @var std::vector<double> packet_t::chi2_nu1
+ * @brief Chi-squared values for the first neutrino solution.
+ */
+
+/**
+ * @var std::vector<double> packet_t::chi2_nu2
+ * @brief Chi-squared values for the second neutrino solution.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::nu1
+ * @brief Reconstructed first neutrino candidates.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::nu2
+ * @brief Reconstructed second neutrino candidates.
+ */
+
+/**
+ * @var std::string packet_t::name
+ * @brief Label for this combination.
+ */
+
+/**
+ * @var std::string packet_t::device
+ * @brief Compute device string (e.g. @c "cuda:0").
+ */
+
+/**
+ * @var double packet_t::met
+ * @brief Missing transverse energy.
+ */
+
+/**
+ * @var double packet_t::phi
+ * @brief Azimuthal angle of the MET.
+ */
+
+/**
+ * @var double packet_t::null
+ * @brief Null-space tolerance (default 1e-5).
+ */
+
+/**
+ * @var double packet_t::perturb
+ * @brief Perturbation magnitude (default 1e-1).
+ */
+
+/**
+ * @var long packet_t::steps
+ * @brief Number of iteration steps (default 20).
+ */
+
+/**
+ * @class combinatorial
+ * @brief Combinatorial neutrino reconstruction; inherits
+ *        @c selection_template.
+ * @details Enumerates b-quark / lepton pairings and solves for neutrino
+ *          momenta using analytical methods with the assumed top and W masses.
+ */
+
+/**
+ * @fn combinatorial::combinatorial()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn combinatorial::~combinatorial()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn selection_template* combinatorial::clone()
+ * @brief Create an empty clone.
+ * @return Pointer to a new @c combinatorial instance.
+ */
+
+/**
+ * @fn bool combinatorial::selection(event_template* ev)
+ * @brief Apply the event selection.
+ * @param ev Pointer to the current event.
+ * @return @c true if the event passes.
+ */
+
+/**
+ * @fn bool combinatorial::strategy(event_template* ev)
+ * @brief Secondary strategy called after @c selection.
+ * @param ev Pointer to the current event.
+ * @return @c true if the event is retained.
+ */
+
+/**
+ * @fn void combinatorial::merge(selection_template* sl)
+ * @brief Merge results from a parallel instance.
+ * @param sl Source selection to merge.
+ */
+
+/**
+ * @fn void combinatorial::update_state(packet_t* data)
+ * @brief Update internal state from a completed reconstruction packet.
+ * @param data Pointer to the packet.
+ */
+
+/**
+ * @fn void combinatorial::reconstruction(packet_t* data)
+ * @brief Run the neutrino reconstruction for the given packet.
+ * @param data Pointer to the packet.
+ */
+
+/**
+ * @var int combinatorial::num_device
+ * @brief Number of compute devices for parallelisation (default 1).
+ */
+
+/**
+ * @var double combinatorial::masstop
+ * @brief Assumed top-quark mass in MeV (default 172.62 GeV).
+ */
+
+/**
+ * @var double combinatorial::massw
+ * @brief Assumed W-boson mass in MeV (default 80.385 GeV).
+ */

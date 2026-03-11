@@ -1,0 +1,82 @@
+/**
+ * @file graph_features.h
+ * @brief Graph-level feature functions for the exp_mc20 event.
+ */
+
+/**
+ * @fn void static signal_event(bool* o, exp_mc20* event)
+ * @brief Whether the event is a signal event.  Requires exactly four top
+ *        quarks.
+ * @param o     Output boolean flag.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static num_tops(int* o, exp_mc20* event)
+ * @brief Number of truth top quarks (capped at 4).
+ * @param o     Output integer.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static num_neutrino(int* o, exp_mc20* event)
+ * @brief Number of truth neutrinos among the top-quark children.
+ * @param o     Output integer.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static num_lepton(int* o, exp_mc20* event)
+ * @brief Number of truth leptons among the top-quark children.
+ * @param o     Output integer.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static missing_et(double* o, exp_mc20* event)
+ * @brief Missing transverse energy (MET).
+ * @param o     Output value in MeV.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static missing_phi(double* o, exp_mc20* event)
+ * @brief Azimuthal angle of the missing transverse energy.
+ * @param o     Output angle in radians.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static num_children_leps(double* o, exp_mc20* event)
+ * @brief Number of charged-lepton children from top-quark decays.
+ * @param o     Output value.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static num_leps(double* o, exp_mc20* event)
+ * @brief Number of reconstructed leptons.
+ * @param o     Output value.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static num_jets(double* o, exp_mc20* event)
+ * @brief Number of reconstructed jets.
+ * @param o     Output value.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static event_number(long* o, exp_mc20* event)
+ * @brief Event number identifier.
+ * @param o     Output event number.
+ * @param event Pointer to the exp_mc20 event.
+ */
+
+/**
+ * @fn void static event_weight(double* o, exp_mc20* event)
+ * @brief Monte Carlo event weight.
+ * @param o     Output weight.
+ * @param event Pointer to the exp_mc20 event.
+ */

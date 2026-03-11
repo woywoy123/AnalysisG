@@ -1,0 +1,214 @@
+/**
+ * @file topefficiency.h
+ * @brief Top-quark reconstruction efficiency selection.
+ * @details Evaluates GNN top-quark reconstruction performance by comparing
+ *          predicted and truth top masses, Z' masses, and computing ROC
+ *          curve variables across kinematic bins.
+ */
+
+/**
+ * @class topefficiency
+ * @brief GNN top-reconstruction performance evaluation; inherits
+ *        @c selection_template.
+ */
+
+/**
+ * @fn topefficiency::topefficiency()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn topefficiency::~topefficiency()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn selection_template* topefficiency::clone()
+ * @brief Create an empty clone.
+ * @return Pointer to a new @c topefficiency instance.
+ */
+
+/**
+ * @fn bool topefficiency::selection(event_template* ev)
+ * @brief Apply the event selection.
+ * @param ev Pointer to the current event.
+ * @return @c true if the event passes.
+ */
+
+/**
+ * @fn bool topefficiency::strategy(event_template* ev)
+ * @brief Secondary strategy called after @c selection.
+ * @param ev Pointer to the current event.
+ * @return @c true if the event is retained.
+ */
+
+/**
+ * @fn void topefficiency::merge(selection_template* sl)
+ * @brief Merge results from a parallel instance.
+ * @param sl Source selection to merge.
+ */
+
+/**
+ * @fn int topefficiency::iters(double start, double end, double step)
+ * @brief Compute the number of bin iterations for a scanning range.
+ * @param start Range start value.
+ * @param end   Range end value.
+ * @param step  Bin width.
+ * @return Number of iterations.
+ */
+
+/**
+ * @fn std::string topefficiency::region(double pt, double eta)
+ * @brief Return the kinematic region label for the given pT and eta.
+ * @param pt  Transverse momentum value.
+ * @param eta Pseudorapidity value.
+ * @return Region string identifier.
+ */
+
+/**
+ * @fn std::string topefficiency::decaymode(std::vector<top*> ev_tops)
+ * @brief Determine the top-pair decay mode (e.g. hadronic, leptonic).
+ * @param ev_tops Vector of top-quark pointers.
+ * @return Decay mode label.
+ */
+
+/**
+ * @var double topefficiency::pt_start
+ * @brief Start of the pT scanning range (default 0).
+ */
+
+/**
+ * @var double topefficiency::eta_start
+ * @brief Start of the eta scanning range (default 0).
+ */
+
+/**
+ * @var double topefficiency::pt_end
+ * @brief End of the pT scanning range (default 1500).
+ */
+
+/**
+ * @var double topefficiency::eta_end
+ * @brief End of the eta scanning range (default 6).
+ */
+
+/**
+ * @var double topefficiency::eta_step
+ * @brief Eta bin width (default 0.5).
+ */
+
+/**
+ * @var double topefficiency::pt_step
+ * @brief pT bin width (default 100).
+ */
+
+/**
+ * @var double topefficiency::score_step
+ * @brief Score threshold step for ROC scanning (default 0.01).
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::p_topmass
+ * @brief Predicted top-quark masses binned by region and decay mode.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::t_topmass
+ * @brief Truth top-quark masses binned by region and decay mode.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::p_zmass
+ * @brief Predicted Z' masses binned by region and decay mode.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::t_zmass
+ * @brief Truth Z' masses binned by region and decay mode.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::prob_tops
+ * @brief Top-quark classification probabilities per region and decay mode.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::prob_zprime
+ * @brief Z' classification probabilities per region and decay mode.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::t_decay_region
+ * @brief Truth decay mode distributions per kinematic region.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, std::vector<float>>> topefficiency::p_decay_region
+ * @brief Predicted decay mode distributions per kinematic region.
+ */
+
+/**
+ * @var std::map<std::string, std::map<float, int>> topefficiency::p_nodes
+ * @brief Predicted node counts per region at each score threshold.
+ */
+
+/**
+ * @var std::map<std::string, std::map<float, int>> topefficiency::t_nodes
+ * @brief Truth node counts per region at each score threshold.
+ */
+
+/**
+ * @var std::map<std::string, int> topefficiency::n_tru_tops
+ * @brief Number of truth tops per kinematic region.
+ */
+
+/**
+ * @var std::map<std::string, std::map<float, int>> topefficiency::n_pred_tops
+ * @brief Number of predicted tops per region at each score threshold.
+ */
+
+/**
+ * @var std::map<std::string, std::map<float, int>> topefficiency::n_perfect_tops
+ * @brief Number of perfectly reconstructed tops per region at each score
+ *        threshold.
+ */
+
+/**
+ * @var std::vector<int> topefficiency::truth_res_edge
+ * @brief Truth resonance edge labels for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<int> topefficiency::truth_top_edge
+ * @brief Truth top-quark edge labels for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<int> topefficiency::truth_ntops
+ * @brief Truth number-of-tops labels for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<int> topefficiency::truth_signal
+ * @brief Truth signal labels for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<std::vector<float>> topefficiency::pred_res_edge_score
+ * @brief Predicted resonance edge scores for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<std::vector<float>> topefficiency::pred_top_edge_score
+ * @brief Predicted top-quark edge scores for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<std::vector<float>> topefficiency::pred_ntops_score
+ * @brief Predicted number-of-tops scores for ROC curve computation.
+ */
+
+/**
+ * @var std::vector<std::vector<float>> topefficiency::pred_signal_score
+ * @brief Predicted signal scores for ROC curve computation.
+ */

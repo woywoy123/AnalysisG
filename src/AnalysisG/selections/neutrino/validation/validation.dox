@@ -1,0 +1,177 @@
+/**
+ * @file validation.h
+ * @brief Neutrino reconstruction validation selection.
+ * @details Validates neutrino reconstruction results against truth by
+ *          comparing static (analytical) and dynamic (iterative) solutions.
+ */
+
+/**
+ * @struct packet_t
+ * @brief Per-event data packet for validation of neutrino reconstruction.
+ */
+
+/**
+ * @fn packet_t::~packet_t()
+ * @brief Destructor.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::bquarks
+ * @brief b-quarks used in the reconstruction.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::leptons
+ * @brief Leptons used in the reconstruction.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::neutrino
+ * @brief Truth neutrinos.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::objects
+ * @brief All physics objects in the combination.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::static_nu1
+ * @brief Static (analytical) first neutrino solutions.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::static_nu2
+ * @brief Static (analytical) second neutrino solutions.
+ */
+
+/**
+ * @var std::vector<double> packet_t::static_distances
+ * @brief Distances for the static solutions.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::dynamic_nu1
+ * @brief Dynamic (iterative) first neutrino solutions.
+ */
+
+/**
+ * @var std::vector<particle_template*> packet_t::dynamic_nu2
+ * @brief Dynamic (iterative) second neutrino solutions.
+ */
+
+/**
+ * @var std::vector<double> packet_t::dynamic_distances
+ * @brief Distances for the dynamic solutions.
+ */
+
+/**
+ * @var std::string packet_t::name
+ * @brief Label for this packet.
+ */
+
+/**
+ * @var std::string packet_t::device
+ * @brief Compute device string (e.g. @c "cuda:0").
+ */
+
+/**
+ * @var double packet_t::met
+ * @brief Missing transverse energy.
+ */
+
+/**
+ * @var double packet_t::phi
+ * @brief Azimuthal angle of the MET.
+ */
+
+/**
+ * @var double packet_t::null
+ * @brief Null-space tolerance (default 1e-10).
+ */
+
+/**
+ * @var double packet_t::step
+ * @brief Step size for the iterative solver (default 1e-9).
+ */
+
+/**
+ * @var double packet_t::tolerance
+ * @brief Convergence tolerance (default 1e-6).
+ */
+
+/**
+ * @var unsigned int packet_t::timeout
+ * @brief Maximum number of iterations (default 100).
+ */
+
+/**
+ * @class validation
+ * @brief Neutrino reconstruction validation; inherits
+ *        @c selection_template.
+ * @details Compares static and dynamic neutrino solutions against
+ *          truth to evaluate reconstruction quality.
+ */
+
+/**
+ * @fn validation::validation()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn validation::~validation()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn selection_template* validation::clone()
+ * @brief Create an empty clone.
+ * @return Pointer to a new @c validation instance.
+ */
+
+/**
+ * @fn bool validation::selection(event_template* ev)
+ * @brief Apply the event selection.
+ * @param ev Pointer to the current event.
+ * @return @c true if the event passes.
+ */
+
+/**
+ * @fn bool validation::strategy(event_template* ev)
+ * @brief Secondary strategy called after @c selection.
+ * @param ev Pointer to the current event.
+ * @return @c true if the event is retained.
+ */
+
+/**
+ * @fn void validation::merge(selection_template* sl)
+ * @brief Merge results from a parallel instance.
+ * @param sl Source selection to merge.
+ */
+
+/**
+ * @fn void validation::reconstruction(packet_t* data)
+ * @brief Run the neutrino reconstruction for the given packet.
+ * @param data Pointer to the packet.
+ */
+
+/**
+ * @fn void validation::update_state(packet_t* data)
+ * @brief Update internal state from a completed reconstruction packet.
+ * @param data Pointer to the packet.
+ */
+
+/**
+ * @var int validation::num_device
+ * @brief Number of compute devices for parallelisation (default 1).
+ */
+
+/**
+ * @var double validation::masstop
+ * @brief Assumed top-quark mass in MeV (default 172.62 GeV).
+ */
+
+/**
+ * @var double validation::massw
+ * @brief Assumed W-boson mass in MeV (default 80.385 GeV).
+ */
