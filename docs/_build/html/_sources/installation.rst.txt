@@ -49,13 +49,19 @@ Generate the Doxygen XML (from the repository root)::
 
    doxygen Doxyfile
 
-Build the Sphinx HTML output::
+Build the Sphinx HTML output (from the repository root)::
 
-   cd docs
-   make html
+   python -m sphinx -b html docs/source docs/_build/html
 
-The resulting HTML pages are written to ``docs/build/html/``.
-Open ``docs/build/html/index.html`` in a browser to review the output.
+The resulting HTML pages are written to ``docs/_build/html/``.
+Open ``docs/_build/html/index.html`` in a browser to review the output.
+
+.. tip::
+
+   If doxygen is not installed you can still build the documentation.
+   The Sphinx configuration detects the missing XML and disables the
+   Breathe extension automatically. API reference pages will be empty
+   but all other content renders normally.
 
 Read the Docs
 -------------

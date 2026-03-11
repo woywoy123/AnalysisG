@@ -38,3 +38,7 @@ local/**/*.png
 doxygen-docs/
 unscoped/
 *.deb
+
+# Sphinx build artifacts
+docs/_build/
+docs/build/

@@ -2,21 +2,17 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
-import sys
 
 # -- Project information -----------------------------------------------------
 project = "AnalysisG"
-copyright = "2024, AnalysisG Contributors"
+copyright = "2024-2026, AnalysisG Contributors"
 author = "AnalysisG Contributors"
-release = "1.0"
-version = "1.0"
+release = "5.0"
+version = "5.0"
 
 # -- General configuration ---------------------------------------------------
 extensions = [
     "breathe",
-    "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
 ]
 
@@ -51,10 +47,8 @@ breathe_projects = {
 breathe_default_project = "AnalysisG"
 breathe_default_members = ("members", "undoc-members")
 
-# On Read the Docs the pre_build step runs ``doxygen Doxyfile`` before Sphinx,
-# so the XML is always present.  When building locally without having run
-# doxygen first, remove breathe from extensions entirely to avoid a hard
-# MTimeError exception that would abort the build.
+# When building locally without having run doxygen first, remove breathe from
+# extensions entirely to avoid errors from missing XML.
 if not os.path.isfile(_doxygen_xml_index):
     extensions = [e for e in extensions if e != "breathe"]
     suppress_warnings = ["app.add_node", "app.add_directive"]
