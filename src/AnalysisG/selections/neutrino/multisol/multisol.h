@@ -1,11 +1,11 @@
-#ifndef CONUIX_H
-#define CONUIX_H
+#ifndef MULTISOL_H
+#define MULTISOL_H
 #include <templates/selection_template.h>
 
-class conuix: public selection_template {
+class multisol: public selection_template {
     public:
-        conuix();
-        ~conuix() override; 
+        multisol();
+        ~multisol() override; 
         selection_template* clone() override; 
         bool selection(event_template* ev) override; 
         bool strategy(event_template*  ev) override;

@@ -2,9 +2,10 @@
 #define TOOLS_TOOLS_H
 
 #include <iostream>
-#include <string>
-#include <vector>
 #include <cstdint>
+#include <sstream>
+#include <vector>
+#include <string>
 #include <map>
 
 class tools
@@ -22,8 +23,16 @@ class tools
         static std::vector<std::string> ls(std::string path, std::string ext = ""); 
 
         // strings.cxx
-        static std::string to_string(double val); 
+        template <typename g>
+        static std::string to_string(g val){
+            std::stringstream ss; 
+            ss << val; 
+            return ss.str(); 
+        } 
+
         static std::string to_string(double val, int prec); 
+        static std::string to_string(long double val, int prec); 
+
         static void replace(std::string* in, std::string repl_str, std::string repl_with); 
         static bool has_string(std::string* inpt, std::string trg); 
         static bool ends_with(std::string* inpt, std::string val); 
@@ -39,6 +48,9 @@ class tools
 
         static std::string decode64(std::string* inpt);
         static std::string decode64(std::string const& s); 
+
+        template <typename g>
+        g* as(){return (g*)this;}
 
         // template functions
         template <typename G>

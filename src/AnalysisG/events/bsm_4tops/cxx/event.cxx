@@ -155,11 +155,10 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
 
-
-    this -> debug_strings();
+//    this -> debug_strings();
 //    if (this -> debug_mode){this -> debug_strings();}
 //    if (!this -> reconstruct_nunu){return;}
-//    return; 
+    return; 
 
     double phi_ = this -> phi; //std::atan2(mety, metx);
     double met_ = this -> met; //std::sqrt(metx * metx + mety * mety); 
@@ -245,11 +244,12 @@ void bsm_4tops::debug_strings(){
     for (size_t x(0); x < this -> Children.size(); ++x){
         if (!this -> Children[x] -> is_nu){continue;}
         particle_template* p = this -> Children[x]; 
-        std::cout << "px: "  << double(p -> px) 
-                  << " py: " << double(p -> py)
-                  << " pz: " << double(p  -> pz) 
-                  << " e: "  << double(p -> e) 
-                  << " top-index: " << ((top_children*)this -> Children[x]) -> top_index 
+        std::cout << " px: "  << tools::to_string(p -> px, 12) 
+                  << " py: " << tools::to_string(p -> py, 12)
+                  << " pz: " << tools::to_string(p  -> pz, 12) 
+                  << " e: "  << tools::to_string(p -> e, 12) 
+                  << "\nbeta: "  << tools::to_string(p -> beta, 12) 
+                  << " top-index: " << this -> Children[x] -> as<top_children>() -> top_index 
                   << std::endl;
     }
 

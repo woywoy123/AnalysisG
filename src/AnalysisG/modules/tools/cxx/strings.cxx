@@ -1,5 +1,4 @@
 #include <tools/tools.h>
-#include <sstream>
 #include <string>
 
 void tools::replace(std::string* in, std::string to_repl, std::string repl_w) {
@@ -56,9 +55,17 @@ std::string tools::hash(std::string input, int len) {
     return out; 
 }
 
-std::string tools::to_string(double val){
+std::string tools::to_string(double val, int prec){
     std::stringstream ss; 
-    ss << val; 
+    if (prec > -1){ss.precision(prec);}
+    ss << std::fixed << val; 
+    return ss.str(); 
+}
+
+std::string tools::to_string(long double val, int prec){
+    std::stringstream ss; 
+    if (prec > -1){ss.precision(prec);}
+    ss << std::fixed << val; 
     return ss.str(); 
 }
 
@@ -87,15 +94,6 @@ std::string tools::lower(std::string* in){
     for (size_t t(0); t < in -> size(); ++t){out[t] = std::tolower(out[t]);}
     return out;
 }
-
-std::string tools::to_string(double val, int prec){
-    std::stringstream ss; 
-    if (prec > -1){ss.precision(prec);}
-    ss << std::fixed << val; 
-    return ss.str(); 
-}
-
-
 
 static const std::string base64_chars = 
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

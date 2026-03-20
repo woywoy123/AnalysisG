@@ -7,12 +7,12 @@ from libcpp.string cimport string
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.particle_template cimport *
 
-cdef extern from "conuix.h":
-    cdef cppclass conuix(selection_template):
-        conuix() except +
+cdef extern from "multisol.h":
+    cdef cppclass multisol(selection_template):
+        multisol() except +
 
-cdef class Conuix(SelectionTemplate):
-    cdef conuix* tt
+cdef class MultiSol(SelectionTemplate):
+    cdef multisol* tt
 
 
 

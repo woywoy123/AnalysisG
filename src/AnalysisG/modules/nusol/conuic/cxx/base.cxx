@@ -47,5 +47,5 @@ long double dG2(long double sx, long double sy, G2_t* data){
 }
 
 long double mobius(long double sx, long double sy, G2_t* data){
-    return (sx - data -> delta.p * sy) * (sx -> data -> delta.m * sy); 
+    return (sx - data -> delta.p * sy) * (sx - data -> delta.m * sy); 
 }

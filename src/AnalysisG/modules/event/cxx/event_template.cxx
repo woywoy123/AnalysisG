@@ -1,5 +1,5 @@
 #include <templates/event_template.h>
-#include <reconstruction/nusol.h>
+//#include <reconstruction/nusol.h>
 
 event_template::event_template(){
     this -> trees.set_setter(this -> set_trees); 
@@ -141,21 +141,21 @@ std::vector<particle_template*> event_template:: multi_neutrino(
         double mt, double mw, double violation, double limit
 ){
 
-    nusol_t para; 
-    para.met = met; 
-    para.phi = phi;
-    para.mt = mt;
-    para.mw = mw; 
-    para.limit = limit; 
-    para.targets = targets; 
-    para.violation = violation; 
-    para.mode = nusol_enum::conuic; 
+    //nusol_t para; 
+    //para.met = met; 
+    //para.phi = phi;
+    //para.mt = mt;
+    //para.mw = mw; 
+    //para.limit = limit; 
+    //para.targets = targets; 
+    //para.violation = violation; 
+    //para.mode = nusol_enum::conuic; 
 
-    nusol* nx = new nusol(&para); 
-    std::vector<particle_template*> nunux = nx -> solve();
-    delete nx; 
-    if (!nunux.size()){return nunux;}
-    for (size_t x(0); x < nunux.size(); ++x){this -> garbage[nunux[x] -> hash] = nunux[x];}
-    return nunux; 
+    //nusol* nx = new nusol(&para); 
+    //std::vector<particle_template*> nunux = nx -> solve();
+    //delete nx; 
+    //if (!nunux.size()){return nunux;}
+    //for (size_t x(0); x < nunux.size(); ++x){this -> garbage[nunux[x] -> hash] = nunux[x];}
+    return {}; //nunux; 
 }
 
