@@ -10,29 +10,6 @@ def delta(data, sign):
     a = 1 - data.b_mu ** 2 - wp * wm + sign*(op * om)
     return a / (wp + wm)
 
-def Mxy(data, s1, s2):
-    dt, w = delta(data, s2), omega(data, s1)
-    return ((1 - data.b_mu**2) - dt * w) / (dt * (w ** 2 - data.b_mu ** 2) - w )
-
-def eta_test(data, eps, s1, s2):
-    dt, w, O = delta(data, s2), omega(data, s1), Omega(data, s2)
-    v = eps * (data.b_mu / O) * (w + dt) / ( 1 - dt * w)
-    return v if abs(v) < 1 else 1 / v
-
-
-def m2_nu(data, s1, s2):
-    dt, w = delta(data, s2), omega(data, s1)
-    a = (data.p_mu * dt * Omega(data, s1)) ** 2
-    b = (data.b_mu ** 2  - w ** 2) * dt ** 2 + 2 * w * dt + dt * dt 
-    return data.m_mu ** 2 - a / b 
-
-def m_nuG(data, tau, phi, s1, s2, eps):
-    dt, kappa, O = delta(data, s2), np.atan(omega(data, s1)), Omega(data, s1)
-    skp, ckp, tkp = np.sin(kappa), np.cos(kappa), np.tan(kappa)
-    a = dt * tkp * data.e_mu ** 2 - data.m_mu ** 2 
-    b = data.p_mu * (skp + dt * ckp) * np.sinh(tau) * np.cos(phi) - eps * data.e_mu * O * (ckp - dt * skp) * np.cosh(tau)
-    return a / b
-
 def Z2_coeffs(data, sign):
     w, o = omega(data, sign), Omega(data, sign)
     b_mu, m_mu  = data.b_mu, data.m_mu

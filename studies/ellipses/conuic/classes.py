@@ -87,7 +87,7 @@ class angular_t:
 class linear_t:
     
     def __init__(self, p1, p2):
-        self.d = p1 - p2 
+        self.d  = p1 - p2 
         self.r0 = p2
     
     def __call__(self, tau): return self.d * tau + self.r0

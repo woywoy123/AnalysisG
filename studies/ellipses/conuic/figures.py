@@ -105,7 +105,7 @@ class packet:
     def add_hyperbolic(self, fx, name, pts=None, domain=(-12, 12)):  # Wider default domain
         self.reco.append(hyperbolic(None, None, name, fx, domain, pts))
 
-    def add_line(self, fx, name, pts=None, domain=(-10, 10)):
+    def add_line(self, fx, name, pts=None, domain=(-100, 100)):
         self.reco.append(hyperbolic(None, None, name, fx, domain, pts))
     
     def _assign_styles(self):
@@ -238,7 +238,7 @@ class packet:
         for obj in all_objects:
             if obj.points is not None and len(obj.points) > 0:
                 self.ax.plot(obj.points[:, 0], obj.points[:, 1], obj.points[:, 2],
-                           color=obj.col, linestyle=obj.line, linewidth=2,
+                           color=obj.col, linestyle=obj.line, linewidth=1,
                            label=obj.label, alpha=1.0)
         
         # Then markers on top
@@ -323,7 +323,6 @@ class packet:
         for obj in all_objects:
             if not isinstance(obj, ellipse): continue
             obj.compile(t_values)
-        
         ellipse_bounds = self._get_combined_bounds()
         
         for obj in all_objects:
@@ -331,7 +330,6 @@ class packet:
             obj.compile()
             if ellipse_bounds is not None: obj.clip_to_bounds(ellipse_bounds)
             else: obj.points = obj.raw_points
-        
         self._set_axis_limits_symmetric(self.ax, all_objects, ("x", "y"))
         
         for obj in all_objects:
@@ -344,7 +342,7 @@ class packet:
                 pt = np.array(obj.sol_pts).flatten()
                 if len(pt) >= 2:
                     self.ax.plot(pt[0], pt[1],
-                               marker=obj.mrk_pts, markersize=10,
+                               marker=obj.mrk_pts, markersize=3,
                                color=obj.col, linestyle='',
                                markeredgecolor='black', markeredgewidth=1,
                                label=f"{obj.label} (solution)")
@@ -458,7 +456,6 @@ class packet:
         plt.close()
 
     def make_axis(self, ax, dims=("x", "y")):
-        """Setup axis labels and style"""
         i, j = dims
         ax.set_xlabel(f"{i} (MeV)")
         ax.set_ylabel(f"{j} (MeV)")

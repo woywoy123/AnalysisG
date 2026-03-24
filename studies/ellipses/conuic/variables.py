@@ -2,6 +2,7 @@ from original import NuSol
 import numpy as np
 import math
 
+from experimental import *
 from particle import *
 from atomics import * 
 from figures import *
@@ -21,79 +22,80 @@ class algorithm:
         self.Z2_mm = Z2_t(self.data, -1, -1)
         self.G2    = G2_t(self.data)
 
-        self.plot_lines()
+        self.elliptical()
+
+    def elliptical(self):
+        mw = self.ref.mW2 ** 0.5
+        mt = self.ref.mT2 ** 0.5
+        mn = self.ref.mN2 ** 0.5
+        def make(tau, phi, s1, s2, eps): 
+            #            tau = tau_H(self.data, s1, s2)
+            m_nu = m_nuG(self.data, tau, phi, s1=s1, s2=s2, eps=eps)
+#            print(dLdtau(self.data, m_nu, tau, phi, s1, s2, eps)) 
+            slx = self.G2.Slx(tau, phi, ws=s1, eps=eps, m_nu=m_nu)
+            sly = self.G2.Sly(tau, phi, ws=s1, eps=eps, m_nu=m_nu)
+            x1, y1 = self.G2.lxly_to_x1y1(slx, sly, sign=s1)
+            if s1 > 0: Z2 = self.G2.Z2p(slx, sly, eps=eps, m_nu=m_nu)
+            else:      Z2 = self.G2.Z2m(slx, sly, eps=eps, m_nu=m_nu)
+
+            sx, sy = self.G2.lxly_to_SxSy(slx, sly)
+            _mw, _mt, _mn = mW(self.data, sx, m_nu), mT(self.data, sx, sy, m_nu), m_nu
+#            if (_mw + _mt + _mn).imag != 0: return 
+            return (_mw.real - mw) ** 2 + (_mt.real - mt) ** 2 + (_mn - mn) ** 2 
 
 
-    def plot_lines(self):
-        ref = self.ref.solution
-        vp = packet(ref["H_T"], ref["neutrino"], 1000)
+            #sz = m_nu * np.sinh(tau) * np.sin(phi)
+            sz = Z2 ** 0.5 if Z2 > 0 else complex(Z2)**0.5 
+            O = Omega(self.data, s1)
+            w = omega(self.data, s1)
+            x = np.array([
+                [sz / O,     0, x1 - self.data.p_mu], 
+                [w * sz / O, 0, y1                 ],
+                [0,          sz, 0                 ]
+            ])
+            x = x.dot(x.T)
+            return x
 
-        def pxpp(tau): return self.G2._Line(tau, +1, +1, +1)
-        def pxmp(tau): return self.G2._Line(tau, +1, -1, +1)
-        def pxpm(tau): return self.G2._Line(tau, +1, +1, -1)
-        def pxmm(tau): return self.G2._Line(tau, +1, -1, -1)
 
-        def mxpp(tau): return self.G2._Line(tau, -1, +1, +1)
-        def mxmp(tau): return self.G2._Line(tau, -1, -1, +1)
-        def mxpm(tau): return self.G2._Line(tau, -1, +1, -1)
-        def mxmm(tau): return self.G2._Line(tau, -1, -1, -1)
-        def get_pt(matrix): return np.array([matrix[0][2], matrix[1][2], matrix[2][1]]).real
-        
-        tau = 0 
-        m = [
-            get_pt(pxpp(tau)), get_pt(pxmp(tau)), 
-            get_pt(pxpm(tau)), get_pt(pxmm(tau)), 
-            get_pt(mxpp(tau)), get_pt(mxmp(tau)), 
-            get_pt(mxpm(tau)), get_pt(mxmm(tau))
-        ]
+        def lpppp(tau, phi): return make(tau, phi, +1, +1, +1)
+        def lpppm(tau, phi): return make(tau, phi, +1, +1, -1)
+        def lppmp(tau, phi): return make(tau, phi, +1, -1, +1)
+        def lppmm(tau, phi): return make(tau, phi, +1, -1, -1)
 
-        Lins = {} 
-        for i in range(len(m)):
-            for j in range(len(m)):
-                k = str(i) +"-"+ str(j)
-                Lins[k] = linear_t(m[i], m[j])
+        def lpmpp(tau, phi): return make(tau, phi, -1, +1, +1)
+        def lpmpm(tau, phi): return make(tau, phi, -1, +1, -1)
+        def lpmmp(tau, phi): return make(tau, phi, -1, -1, +1)
+        def lpmmm(tau, phi): return make(tau, phi, -1, -1, -1)
 
-        dy, dz = Lins["0-1"].d[1], Lins["0-1"].d[2]
-        tau    = -0.5 * (np.atanh(dz / dy) if abs(dz) < abs(dy) else np.atanh(dy / dz) )
-        Rx_mat = hyper_t(tau).Rx
-        for k in Lins:
-            Lins[k].d  = Rx_mat.dot(Lins[k].d)
-            Lins[k].r0 = Rx_mat.dot(Lins[k].r0)
 
-        u, v = Lins["0-1"].d, Lins["0-2"].d
-        d_uv = u[0] * v[0] + u[1] * v[1]
-        x_uv = u[0] * v[1] + u[1] * v[0]
-        r = d_uv / x_uv
+        mnx = -1
+        p = []
+        for i in range(1000):
+            a = (i / 1000) * np.pi 
+            for j in range(100000):
+                k = -10 + j * 0.0001
+                x = lpppp(k, a)
+                if x > mnx and mnx > 0: continue
+                p = [a, k, x]
+                mnx = x
+                print(mnx, p)
 
-        tau = -0.5 * np.atanh(1 / r)
-        Rz_hyper = hyper_t(tau).Rz
-        for k in Lins:
-            Lins[k].d  = Rz_hyper.dot(Lins[k].d)
-            Lins[k].r0 = Rz_hyper.dot(Lins[k].r0)
+            continue
 
-        u   = Lins["0-1"].d
-        tau = -np.asinh((u[1] / u[2]))
-        Rz  = hyper_t(tau).Ry
-        for k in Lins:
-            Lins[k].d  = Rz.dot(Lins[k].d)
-            Lins[k].r0 = Rz.dot(Lins[k].r0)
+            data = self.ref.solution
+            pkt = packet(data["H_T"], data["neutrino"])
+            pkt.add_ellipse(lpppp(10, a), "H++++")
+            pkt.add_ellipse(lpppm(10, a), "H+++-")
+            pkt.add_ellipse(lppmp(10, a), "H++-+")
+            pkt.add_ellipse(lppmm(10, a), "H++--")
 
-        #pitch_x = np.asinh(m[0][1] / m[0][2])
-        #Rx_tilt = hyper_t(pitch_x).Rz
-        #for k in Lins:
-        #    Lins[k].d  = Rx_tilt.dot(Lins[k].d)
-        #    Lins[k].r0 = Rx_tilt.dot(Lins[k].r0)
+            pkt.add_ellipse(lpmpp(10, a), "H+-++")
+            pkt.add_ellipse(lpmpm(10, a), "H+-+-")
+            pkt.add_ellipse(lpmmp(10, a), "H+--+")
+            pkt.add_ellipse(lpmmm(10, a), "H+---")
 
-        #pitch_y =  np.acosh(m[0][0] / m[0][1]) 
-        #Ry_tilt = hyper_t(pitch_y).Rz
-        #for k in Lins:
-        #    Lins[k].d  = Ry_tilt.dot(Lins[k].d)
-        #    Lins[k].r0 = Ry_tilt.dot(Lins[k].r0)
- 
-        for k in Lins:
-            #Lins[k].r0 += center
-            vp.add_line(Lins[k], k)
-        vp.compile2D_Proj()
+            pkt.compile2D_Proj(None, True)
+        exit()
 
     @property 
     def R_T(self):
@@ -108,15 +110,6 @@ class algorithm:
         R_x = angular_t(-np.arctan2(b_rot[2], b_rot[1])).Rx
         self.RT = R_z.T @ R_y.T @ R_x.T
         return self.RT
-
-
-
-
-
-
-
-
-
 
 
 
