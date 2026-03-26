@@ -21,40 +21,6 @@ struct kinematics_t {
 }; 
 
 
-struct geometry_t {
-    // -- we want to remove this angle.
-    long double alpha = 0; // skew angle 
-
-    // mutual axis coefficients:
-    // a (Sx - Sx0) + b ( Sy - (Sy0[+] + Sy0[-]) / 2 )
-    long double l1 = 0; 
-    long double l2 = 0;
-
-    // Common center 
-    long double Sx0 = 0;
-    long double Sy0 = 0;
-
-    // distance between sheets. 
-    // mid = d/2
-    long double d = 0; 
-    long double tau = 0; 
-    long double m_nu = 0; 
-}; 
-
-
-
-struct special_t {
-    // cos(phi) tanh(tau) - output of m_nueq_line
-    // see constants.h 
-    long double nueq_dLpp = 0;  // + sheet 
-    long double nueq_dLmm = 0;  // - sheet 
-
-    // swapped 
-    long double nueq_dLpm = 0;  // +, - sheet | delta
-    long double nueq_dLmp = 0;  // -, + sheet | delta
-}; 
-
-
 struct branches_t {
     branches_t();
     ~branches_t(); 
@@ -122,8 +88,7 @@ struct delta_t {
     long double alpha_m = 0; //  (alp - alm) * 0.5
 
     // eigenvalues these digonalize 
-    // the dG^2 = Gm Gp (Sx - dm Sy) ( Sx - dp Sy)
-    // quadric
+    // the dG^2 = Gm Gp (Sx - dm Sy) ( Sx - dp Sy) quadric
     long double lp = 0; 
     long double lm = 0; 
 
@@ -131,6 +96,76 @@ struct delta_t {
     // G is a bit misleading it is -Gm x Gp
     long double Glp = 0;
     long double Glm = 0; 
+}; 
+
+
+struct cline_t {
+    // The delta line from delta G^2.
+    // (Sx - dt+- Sy) can be expressed in terms of hyperbolics
+    cline_t(branches_t* br, long double dt, double eps, long double dti);
+    long double fx(long double m_nu, long double tau, long double phi);
+    long double DfxDphi(long double m_nu, long double tau, long double phi); // derivative w.r.t phi.
+    long double DfxDtau(long double m_nu, long double tau, long double phi); // derivatve w.r.t tau.
+    long double JacoDet(long double m_nu, long double tau, long double phi);
+    matrix_t Jacobian(long double m_nu, long double tau, long double phi); 
+    long double tau_degenJc(long double phi);  // special case where the eigenvalues become degenerate.
+   
+    long double center = 0;
+
+    long double alpha   = 0;
+    long double beta    = 0;
+    long double theta   = 0;
+
+    long double alpha_  = 0;
+    long double beta_   = 0;
+    long double theta_  = 0; 
+
+    long double tn     = 0; 
+    long double cn     = 0; 
+    long double sn     = 0; 
+    long double r      = 0;
+
+    // special cases:
+    // DfDtau and DfDphi = 0, tanh(tau*) = beta / alpha
+    long double zero_dd = 0; 
+
+    //the product of the root lines has a zero derivative
+    long double delta_lxlm = 0; 
+
+    // Jacobian determinant 
+    long double Jdet = 0; 
+
+}; 
+
+struct dline_t {
+    // change of basis - now we use the delta lines as the true center.
+    // The original Sx and Sy geometry is not properly centered.
+    dline_t(kinematics_t* kl, delta_t* dt, branches_t* br, int eps); 
+
+    // output is NOT in terms of Sx or Sy.
+    long double dx(long double m_nu, long double tau, long double phi); 
+    long double dy(long double m_nu, long double tau, long double phi); 
+
+    // implied Sx or Sy translation layer between dx and dy.
+    long double Sdx(long double m_nu, long double tau, long double phi); 
+    long double Sdy(long double m_nu, long double tau, long double phi); 
+
+    long double U(long double m_nu, long double tau, long double phi); 
+    long double V(long double m_nu, long double tau, long double phi); 
+
+
+    long double lx0 = 0;
+    long double lcx = 0; 
+    long double lsx = 0;
+
+    long double ly0 = 0;
+    long double lcy = 0; 
+    long double lsy = 0;
+    
+    long double dtp = 0;
+    long double dtm = 0; 
+    long double lb  = 0; 
+
 }; 
 
 

@@ -31,10 +31,54 @@ conuic::conuic(particle_template* jet, particle_template* lepton){
     this -> plus  = build_branches(this -> jet_, this -> lep_, +1); 
     this -> minus = build_branches(this -> jet_, this -> lep_, -1); 
     this -> delG  = build_deltas(this -> plus, this -> minus); 
-    this -> splx  = build_special(this -> plus, this -> minus, this -> delG, this -> lep_, this); 
+    
+    this -> w_x_dt_x_eps_x = build_clines(this -> plus, this -> delG, +1.0);  
+    this -> w_x_dt_I_eps_x = build_clines(this -> plus, this -> delG, +1.0);  
+    
+    this -> w_x_dt_x_eps_I = build_clines(this -> plus, this -> delG, -1.0);  
+    this -> w_x_dt_I_eps_I = build_clines(this -> plus, this -> delG, -1.0);  
+
+    this -> w_I_dt_x_eps_x = build_clines(this -> minus, this -> delG, +1.0);  
+    this -> w_I_dt_I_eps_x = build_clines(this -> minus, this -> delG, +1.0);  
+    
+    this -> w_I_dt_x_eps_I = build_clines(this -> minus, this -> delG, -1.0);  
+    this -> w_I_dt_I_eps_I = build_clines(this -> minus, this -> delG, -1.0);  
+
+    this -> dt_w_x_eps_x = new dline_t(this -> lep_, this -> delG, this -> plus, +1); 
+    this -> dt_w_x_eps_I = new dline_t(this -> lep_, this -> delG, this -> plus, -1); 
+    this -> dt_w_I_eps_x = new dline_t(this -> lep_, this -> delG, this -> minus, +1); 
+    this -> dt_w_I_eps_I = new dline_t(this -> lep_, this -> delG, this -> minus, -1); 
+
     build_tilde(this -> plus , this -> lep_);
     build_tilde(this -> minus, this -> lep_); 
-    std::cout << "here "<< std::endl;
+    this -> solve(); 
+}
+
+conuic::~conuic(){
+    flush(&this -> lep_);
+    flush(&this -> jet_);   
+    flush(&this -> plus);
+    flush(&this -> minus); 
+    flush(&this -> delG); 
+    flush(&this -> RT); 
+
+    flush(&this -> w_x_dt_x_eps_x); 
+    flush(&this -> w_x_dt_I_eps_x); 
+
+    flush(&this -> w_x_dt_x_eps_I); 
+    flush(&this -> w_x_dt_I_eps_I); 
+
+    flush(&this -> w_I_dt_x_eps_x); 
+    flush(&this -> w_I_dt_I_eps_x); 
+
+    flush(&this -> w_I_dt_x_eps_I); 
+    flush(&this -> w_I_dt_I_eps_I); 
+
+    flush(&this -> dt_w_x_eps_x); 
+    flush(&this -> dt_w_x_eps_I); 
+
+    flush(&this -> dt_w_I_eps_x); 
+    flush(&this -> dt_w_I_eps_I); 
 }
 
 branches_t* conuic::brn(int sign){return route(this -> plus, this -> minus, sign);}
@@ -47,6 +91,16 @@ long double conuic::Z2(long double sx, long double sy, long double m_nu, int sig
     z2 += br -> D * sx;
     z2 += br -> E;
     return z2 - m_nu * m_nu; 
+}
+
+std::complex<long double> conuic::mW(long double sx, long double m_nu){
+    return std::sqrt(std::complex<long double>(std::pow(m_nu, 2) - std::pow(this -> lep_ -> m, 2) - 2 * this -> lep_ -> p * sx)); 
+}
+
+std::complex<long double> conuic::mT(long double sx, long double sy, long double m_nu){
+    long double m_ = std::pow(m_nu, 2) - std::pow(this -> lep_ -> m, 2) + std::pow(this -> jet_ -> m, 2); 
+    long double x_ = 2 * (this -> lep_ -> p * sx + this -> jet_ -> p * (this -> minus -> cth * sx + this -> minus -> sth * sy));
+    return std::sqrt(std::complex<long double>(m_ - x_)); 
 }
 
 long double conuic::Sx(long double tau, long double kappa, long double m_nu, int sign, int eps){
@@ -112,14 +166,63 @@ long double conuic::dG2(long double sx, long double sy){
     return - this -> delG -> Gm * this -> delG -> Gp * this -> line(sx, sy, -1) * this -> line(sx, sy, +1);
 }
 
-conuic::~conuic(){
-    flush(&this -> lep_);
-    flush(&this -> jet_);   
-    flush(&this -> plus);
-    flush(&this -> minus); 
-    flush(&this -> delG); 
-    flush(&this -> splx); 
-    flush(&this -> RT); 
+
+void conuic::solve(){
+    long double Op = this -> plus -> O; 
+    long double wp = this -> plus -> tpsi;
+    long double bl = this -> plus -> bl;  
+
+    long double Om = this -> minus -> O;
+    long double wm = this -> minus -> tpsi;
+
+    std::cout << "==================================" << std::endl;
+    long double tau1 = 0; 
+    long double tau2 = 0; 
+
+    // 1. -----
+    //long double tau1 = std::fabs(Op*Op - Om*Om) / (2 * Op * Om * (1 - std::pow((wp - wm)/(wp + wm), 2))); 
+
+    // 2. -----
+    //tau1 = std::sqrt(1 + (1 + wp * wp)/(bl * bl) + (1 + wp*wp) * (1 + wp * wm)/(bl * bl * Op * Om));
+    //tau2 = std::sqrt(1 + (1 + wp * wp)/(bl * bl) - (1 + wp*wp) * (1 + wp * wm)/(bl * bl * Op * Om));
+
+    // 3. ----    
+    tau1 = this -> w_x_dt_x_eps_I -> zero_dd; 
+    tau2 = this -> w_x_dt_I_eps_x -> zero_dd; 
+ 
+    std::cout << "______________________________" << std::endl;
+    long double phi = 0; 
+    std::cout << tools::to_string(tau1, 12) << std::endl;
+    std::cout << tools::to_string(tau2, 12) << std::endl;
+
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> plus, this -> lep_, tau1, 0, +1, +1), 12) << std::endl; 
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> plus, this -> lep_, tau1, 0, -1, +1), 12) << std::endl; 
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> plus, this -> lep_, tau1, 0, +1, -1), 12) << std::endl; 
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> plus, this -> lep_, tau1, 0, -1, -1), 12) << std::endl; 
+
+
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> minus, this -> lep_, tau2, 0, +1, +1), 12) << std::endl; 
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> minus, this -> lep_, tau2, 0, -1, +1), 12) << std::endl; 
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> minus, this -> lep_, tau2, 0, +1, -1), 12) << std::endl; 
+    std::cout << tools::to_string(m_nuG(this -> delG, this -> minus, this -> lep_, tau2, 0, -1, -1), 12) << std::endl; 
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
 
 

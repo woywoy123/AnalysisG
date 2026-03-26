@@ -104,7 +104,6 @@ void shift_t::print(){
     std::cout << std::endl;
 }
 
-
 long double angles(particle_template* jet, particle_template* lep, kinematic_c* data){
     long double jx = (long double)jet -> px; long double lx = (long double)lep -> px;
     long double jy = (long double)jet -> py; long double ly = (long double)lep -> py;
