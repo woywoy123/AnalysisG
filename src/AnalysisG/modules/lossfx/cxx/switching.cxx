@@ -62,9 +62,11 @@ void lossfx::loss_opt_string(std::string vars){
     std::string _vars = this -> lower(&vars); 
     std::vector<std::string> vx = this -> split(_vars, "->"); 
     if (vx.size() != 2){
-        this -> warning("Invalid parameter: " + vars + "\nExpected Syntax: ::(var -> val | var -> {list}");
+        this -> warning("Invalid parameter: " + vars + "\nExpected Syntax: ::(var -> val | var -> {list})");
+        this -> warning("Example: CrossEntropyLoss::(sum -> True | smoothing -> True)");
         return;
     }
+
     this -> replace(&vx[0], " ", ""); 
     std::string name = vx[0]; 
     std::string val  = vx[1]; 

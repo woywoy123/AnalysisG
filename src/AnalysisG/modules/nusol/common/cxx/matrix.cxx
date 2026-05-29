@@ -124,12 +124,25 @@ matrix_t matrix_t::cross(const matrix_t& o){
 }
 
 long double matrix_t::det(){
-    if (this -> c == 3 && this -> r == 3){
-        return _det3(this -> data);
+    if (this -> c == 4 && this -> r == 4){
+        long double det = 0; 
+        for (int x(0); x < 4; ++x){
+            int mi = 0;
+            matrix_t mx(3, 3); 
+            for (int i(1); i < 4; ++i){
+                int mj = -1; 
+                for (int j(0); j < 4; ++j){
+                    if (j == x){continue;}
+                    mx.at(mi, ++mj) = this -> at(i, j); 
+                }
+                ++mi; 
+            }
+            det += ( (x % 2) ? -1.0L : 1.0L ) * mx.det() * this -> at(0, x); 
+        }
+        return det;
     }
-    if (this -> c == 2 && this -> r == 2){
-        return _det2(this -> data);
-    }
+    if (this -> c == 3 && this -> r == 3){return _det3(this -> data);}
+    if (this -> c == 2 && this -> r == 2){return _det2(this -> data);}
     return 0; 
 }
 
@@ -157,6 +170,29 @@ matrix_t matrix_t::coef(){
 }
 
 matrix_t matrix_t::inv(){
+    auto inv4x4 =[this]() -> matrix_t{
+        long double det_ = this -> det();
+        if (!det_){return matrix_t(4, 4);}
+        det_ = 1.0 / det_;
+        matrix_t mtx(4, 4); 
+        for (int i(0); i < 4; ++i){
+            for (int j(0); j < 4; ++j){
+                int mi = 0; matrix_t mtm(3, 3); 
+                for (int _r(0); _r < 4; ++_r){
+                    if (_r == i){continue;}
+                    int mj = -1;
+                    for (int _c(0); _c < 4; ++_c){
+                        if (_c == j){continue;}
+                        mtm.at(mi, ++mj) = this -> at(_r, _c);
+                    }
+                    ++mi;
+                }
+                mtx.at(i, j) = (((i + j) % 2) ? -1.0L : 1.0L) * mtm.det();
+            }
+        }
+        return mtx.T() * det_;
+    }; 
+
     auto inv3x3 =[this]() -> matrix_t{
         long double det_ = this -> det();
         det_ = (!det_) ? 0.0 : 1.0/det_; 
@@ -168,11 +204,15 @@ matrix_t matrix_t::inv(){
         det_ = (!det_) ? 0.0 : 1.0/det_; 
         return this -> coef() * det_;
     }; 
-    
+   
     if (this -> c == 2 && this -> r == 2){return inv2x2();}
     if (this -> c == 3 && this -> r == 3){return inv3x3();}
+    if (this -> c == 4 && this -> r == 4){return inv4x4();}
     return matrix_t(this -> c, this -> r); 
 }
+
+
+long double matrix_t::trace(){return _trace(this -> data, this -> r);}
 
 matrix_t matrix_t::diag(long double v){
     matrix_t o(this -> c, this -> r); 

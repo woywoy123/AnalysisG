@@ -155,10 +155,10 @@ void bsm_4tops::CompileEvent(){
     this -> vectorize(&this -> m_Muons    , &this -> DetectorObjects); 
     this -> vectorize(&this -> m_Electrons, &this -> DetectorObjects); 
 
+    return; 
 //    this -> debug_strings();
 //    if (this -> debug_mode){this -> debug_strings();}
 //    if (!this -> reconstruct_nunu){return;}
-    return; 
 
     double phi_ = this -> phi; //std::atan2(mety, metx);
     double met_ = this -> met; //std::sqrt(metx * metx + mety * mety); 

@@ -1,0 +1,93 @@
+base: 
+  project: 
+    name:      <base.project.name>
+    input:     <base.project.input>
+    output:    <base.project.output>
+    threads:   <base.project.threads>
+    intra:     <base.project.intra>
+    debug:     <base.project.debug>
+
+  plotting:
+    nbins:     <base.plotting.nbins>
+    range:     <base.plotting.range>
+    variables: <base.plotting.variables>
+    target:    <base.plotting.target> 
+    logy:      <base.plotting.logy>
+
+  event:
+    name: <base.event.name>
+
+  graph:
+    name:  <base.graph.name>
+    path:  <base.graph.path>
+    build: <base.graph.build> 
+
+  training:
+    kfold:    <base.training.kfold>
+    kfolds:   <base.training.kfolds>
+    splits:   <base.training.splits>
+    epochs:   <base.training.epochs>
+    batches:  <base.training.batches>
+    dataset:  <base.training.dataset>
+
+  modes: 
+    continue:   <base.modes.continue>
+    training:   <base.modes.training>
+    validation: <base.modes.validation>
+    evaluation: <base.modes.evaluation>
+
+model-template:
+  base:
+    model:  <run-name.base.model>
+    name:   <run-name.base.name>
+    device: <run-name.base.device>
+
+  optimizer: 
+    algorithm: <run-name.optimizer.algorithm.name>
+    parameters: 
+      adam: 
+      - lr: <run-name.optimizer.algorithm.adam.parameters.lr>
+
+      adagrad:
+      - lr: <run-name.optimizer.algorithm.adagrad.parameters.lr>
+
+      adamw:
+      - lr: <run-name.optimizer.algorithm.adamw.parameters.lr>
+
+      rmsprop:
+      - lr: <run-name.optimizer.algorithm.rmsprop.parameters.lr>
+    
+      sgd:
+      - lr: <run-name.optimizer.algorithm.sgd.parameters.lr>
+
+  scheduler:
+    algorithm: <run-name.scheduler.algorithm>
+    parameters:
+      steplr:
+      - step: <run-name.scheduler.algorithm.steplr.step>
+      - gamma: <run-name.scheduler.algorithm.steplr.gamma>
+
+      reducelronplateauscheduler:
+      - step: <run-name.scheduler.algorithm.reducelronplateauscheduler.step>
+
+      lrscheduler:
+      - step: <run-name.scheduler.algorithm.lrscheduler.step>
+
+  features:
+    node:
+      pt:  <run-name.features.node.pt>
+      eta: <run-name.features.node.eta>
+      phi: <run-name.features.node.phi>
+      energy: <run-name.features.node.energy>
+
+    graph:
+      met: <run-name.feature.graph.met>
+      phi: <run-name.feature.graph.phi>
+  
+    edge:
+      top_edge: 
+        CrossEntropyLoss:
+        - sum: True
+        - smoothing: 0.1
+       
+        

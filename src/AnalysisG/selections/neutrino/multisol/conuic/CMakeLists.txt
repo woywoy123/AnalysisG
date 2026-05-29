@@ -1,15 +1,20 @@
 set(HEADER_FILES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/conuic.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/atomics.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/constants.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/data.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/stateless.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/angular.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/atomics.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/conuic.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/conuic/base.h
 )
 
 set(SOURCE_FILES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/conuic.cxx
-    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/atomics.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/constants.cxx
-    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/data.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/stateless.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/angular.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/atomics.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/independent.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/conuic.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/base.cxx
 )
 
 add_library(cxnunix STATIC ${SOURCE_FILES})

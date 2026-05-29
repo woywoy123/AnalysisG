@@ -12,9 +12,9 @@ def mT(data, m_nu, sx, sy):
     a = m_nu**2 - data.m_mu**2 + data.m_b**2
     return complex(a + -2 * (data.p_mu * sx + data.p_b * (data.theta.cos * sx + data.theta.sin * sy)))**0.5
 
-def cosphi(data, eps, tau, s1, s2):
-    def Lambda(data, dt, s1 = +1): return np.sin(math.atan(omega(data, s1))) + dt * np.cos(math.atan(omega(data, s1)))
-    def Sigma(data , dt, s1 = +1): return np.cos(math.atan(omega(data, s1))) - dt * np.sin(math.atan(omega(data, s1)))
+def cosphi(data, tau, s1, s2, eps):
+    def Lambda(data, dt, s1): return np.sin(math.atan(omega(data, s1))) + dt * np.cos(math.atan(omega(data, s1)))
+    def Sigma(data , dt, s1): return np.cos(math.atan(omega(data, s1))) - dt * np.sin(math.atan(omega(data, s1)))
 
     Op, Om, wp, wm = Omega(data, +1), Omega(data, -1), omega(data, +1), omega(data, -1)
     dp, dm = (delta(data, +1), delta(data, -1)) if s1 == s2 else (delta(data, -1), delta(data, +1))
@@ -23,7 +23,14 @@ def cosphi(data, eps, tau, s1, s2):
     
     a =  (Op * sp - Om * sm) * m_mu ** 2 + (dp * wp * Om * sm - dm * wm * Op * sp) * E_mu ** 2
     b =  (lp           - lm) * m_mu ** 2 + (dp * wp * lm      - dm * wm * lp     ) * E_mu ** 2
-    return eps / (b_mu * np.tanh(tau)) * (a / b)
+    x = eps / (b_mu * np.tanh(tau)) * (a / b) 
+    if abs(x) > 1: x = 1 / x #np.acos(x)
+    return np.arccos(x)
+
+
+
+
+
 
 def cross(v1, v2): 
     i = v1[1] * v2[2] - v1[2] * v2[1]

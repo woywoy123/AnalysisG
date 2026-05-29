@@ -30,21 +30,23 @@ bool multisol::strategy(event_template* ev){
         else if (cl -> is_lep){ls_[tdx] = cl;}
         else {bs_[tdx] = cl;}
     }
-
-
+    
+    std::cout << "------------- EVENT ----------------" << std::endl; 
     std::map<int, particle_template*>::iterator itn; 
     for (itn = nus_.begin(); itn != nus_.end(); ++itn){
         particle_template* pn = itn -> second; 
+        particle_template* ln = ls_[itn -> first]; 
+        particle_template* bn = bs_[itn -> first]; 
         std::cout << "==========================" << std::endl;
-        std::cout << double(pn -> mass); 
+        std::cout << "---------- neutrino ---------- " << std::endl; 
         std::cout << " px: "  << tools::to_string(pn -> px, 12) 
                   << " py: " << tools::to_string(pn -> py, 12)
                   << " pz: " << tools::to_string(pn  -> pz, 12) 
                   << " e: "  << tools::to_string(pn -> e, 12) 
                   << " beta: "  << tools::to_string(pn -> beta, 12) 
+                  << " mass: " << tools::to_string(pn -> mass, 12)
                   << std::endl;
-
-        particle_template* ln = ls_[itn -> first]; 
+        std::cout << "---------- lepton ---------- " << std::endl; 
         std::cout << " px: "  << tools::to_string(ln -> px, 12) 
                   << " py: " << tools::to_string(ln -> py, 12)
                   << " pz: " << tools::to_string(ln  -> pz, 12) 
@@ -52,19 +54,8 @@ bool multisol::strategy(event_template* ev){
                   << " beta: " << tools::to_string(ln -> beta, 12) 
                   << " mass: " << tools::to_string(ln -> mass, 12)
                   << std::endl; 
-        
-        particle_template* wpm = nullptr;
-        std::vector<particle_template*> v ={pn, ln}; 
-        this -> sum(&v, &wpm); 
-        std::cout << "W: " << tools::to_string(wpm -> mass, 12) << std::endl;
-
-        particle_template* bn = bs_[itn -> first]; 
-
-        particle_template* tpm = nullptr;
-        std::vector<particle_template*> vt ={pn, ln, bn}; 
-        this -> sum(&vt, &tpm); 
-        std::cout << "T: " << tools::to_string(tpm -> mass, 12) << std::endl;
-
+ 
+        std::cout << "---------- bquark ---------- " << std::endl; 
         std::cout << " px: " << tools::to_string(bn -> px, 12) 
                   << " py: " << tools::to_string(bn -> py, 12)
                   << " pz: " << tools::to_string(bn -> pz, 12) 
@@ -72,10 +63,9 @@ bool multisol::strategy(event_template* ev){
                   << " beta: "  << tools::to_string(bn -> beta, 12) 
                   << " mass: " << tools::to_string(bn -> mass, 12)
                   << std::endl;
-
-        conuic(bs_[itn -> first], ls_[itn -> first]); 
+        conuic c = conuic(bs_[itn -> first], ls_[itn -> first]); 
+        c.proof(pn); 
     }
-    abort();
     return false; 
 
     

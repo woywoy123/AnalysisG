@@ -74,4 +74,9 @@ def tau_H(data, ws, ds):
     t = (data.b_mu / O) * (np.sin(kappa) + dt * np.cos(kappa)) / (np.cos(kappa) - dt * np.sin(kappa))
     return np.atanh(t)
 
-
+def tau_Con(data, ws):
+    O = Omega(data, ws)
+    bmu = data.b_mu 
+    if abs(O /bmu) < 1: return 1
+    try: return np.acosh( O / bmu ) 
+    except: 1

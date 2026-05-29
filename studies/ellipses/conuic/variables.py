@@ -25,37 +25,44 @@ class algorithm:
         self.elliptical()
 
     def elliptical(self):
-        mw = self.ref.mW2 ** 0.5
-        mt = self.ref.mT2 ** 0.5
-        mn = self.ref.mN2 ** 0.5
         def make(tau, phi, s1, s2, eps): 
-            #            tau = tau_H(self.data, s1, s2)
-            m_nu = m_nuG(self.data, tau, phi, s1=s1, s2=s2, eps=eps)
-#            print(dLdtau(self.data, m_nu, tau, phi, s1, s2, eps)) 
+            tau = tau_Con(self.data, s1)
+            phi = cosphi(self.data, tau, s1, s2, eps)
+            #phi = Omega(self.data, s1) / (self.data.b_mu * omega(self.data, s1) * np.tanh(tau))
+            #if abs(phi) > 1: tau = np.atanh(Omega(self.data, s1) / (self.data.b_mu * omega(self.data, s1) * phi))
+#           # phi = Omega(self.data, s1) / (self.data.b_mu * omega(self.data, s1) * np.tanh(tau))
+#           # phi = cosphi(self.data, tau, s1, s2, eps)
+            def Sigma(data , dt, s1): return np.cos(math.atan(omega(data, s1))) - dt * np.sin(math.atan(omega(data, s1)))
+            dt = delta(self.data, +1) 
+#            m_nu = self.data.e_mu * (dt * omega(self.data, s1) - (1 - self.data.b_mu**2)) /(Omega(self.data, s1) * Sigma(self.data, dt, s1))
+            m_nu = m_nuG(self.data, tau, phi, s1, s2, eps)
+            #m_nu = m2_nu(self.data, s1, s2) # phi, s1, s2, eps)
+            
+            print(self.nu.mass)
             slx = self.G2.Slx(tau, phi, ws=s1, eps=eps, m_nu=m_nu)
             sly = self.G2.Sly(tau, phi, ws=s1, eps=eps, m_nu=m_nu)
             x1, y1 = self.G2.lxly_to_x1y1(slx, sly, sign=s1)
-            if s1 > 0: Z2 = self.G2.Z2p(slx, sly, eps=eps, m_nu=m_nu)
-            else:      Z2 = self.G2.Z2m(slx, sly, eps=eps, m_nu=m_nu)
-
-            sx, sy = self.G2.lxly_to_SxSy(slx, sly)
-            _mw, _mt, _mn = mW(self.data, sx, m_nu), mT(self.data, sx, sy, m_nu), m_nu
-#            if (_mw + _mt + _mn).imag != 0: return 
-            return (_mw.real - mw) ** 2 + (_mt.real - mt) ** 2 + (_mn - mn) ** 2 
-
-
-            #sz = m_nu * np.sinh(tau) * np.sin(phi)
-            sz = Z2 ** 0.5 if Z2 > 0 else complex(Z2)**0.5 
+            
+            Z2p = self.G2.Z2p(slx, sly, eps=eps, m_nu=m_nu)
+            Z2m = self.G2.Z2m(slx, sly, eps=eps, m_nu=m_nu)
+            sz = Z2p if s1 > 0 else Z2m
+            if Z2p < 0: sz = Z2m
+            if Z2m < 0: sz = Z2p
+            sz = sz ** 0.5 if sz > 0 else abs(sz)**0.5 
+            
+            sz = m_nu * np.sinh(tau) * np.sin(phi)
             O = Omega(self.data, s1)
             w = omega(self.data, s1)
+            rx = self.G2.ev
             x = np.array([
-                [sz / O,     0, x1 - self.data.p_mu], 
-                [w * sz / O, 0, y1                 ],
+                [sz / O,     0, x1*0 - self.data.p_mu*0], 
+                [w * sz / O, 0, y1*0                 ],
                 [0,          sz, 0                 ]
-            ])
-            x = x.dot(x.T)
-            return x
-
+            ]) 
+#            d = x.T.dot((np.diag(self.G2.ei)))
+#            print(self.G2.ei.T)
+#            x = d.T.dot(np.diag(self.G2.ei)).dot(d)
+            return x, x.dot([np.cos(phi), np.sin(phi), 1])# / np.sqrt(3) #np.array([x1, y1, sz])
 
         def lpppp(tau, phi): return make(tau, phi, +1, +1, +1)
         def lpppm(tau, phi): return make(tau, phi, +1, +1, -1)
@@ -67,35 +74,29 @@ class algorithm:
         def lpmmp(tau, phi): return make(tau, phi, -1, -1, +1)
         def lpmmm(tau, phi): return make(tau, phi, -1, -1, -1)
 
+        a = np.pi/2
+        data = self.ref.solution
+        pkt = packet(data["H_T"], data["neutrino"])
 
-        mnx = -1
-        p = []
-        for i in range(1000):
-            a = (i / 1000) * np.pi 
-            for j in range(100000):
-                k = -10 + j * 0.0001
-                x = lpppp(k, a)
-                if x > mnx and mnx > 0: continue
-                p = [a, k, x]
-                mnx = x
-                print(mnx, p)
+        h, s = lpppp(10, a)
+        pkt.add_ellipse(h, "H++++", s)
+        h, s = lpppm(10, a)
+        pkt.add_ellipse(h, "H+++-", s)
+        h, s = lppmp(10, a)
+        pkt.add_ellipse(h, "H++-+", s)
+        h, s = lppmm(10, a)
+        pkt.add_ellipse(h, "H++--", s)
 
-            continue
+        h, s = lpmpp(10, a)
+        pkt.add_ellipse(h, "H+-++", s)
+        h, s = lpmpm(10, a)
+        pkt.add_ellipse(h, "H+-+-", s)
+        h, s = lpmmp(10, a)
+        pkt.add_ellipse(h, "H+--+", s)
+        h, s = lpmmm(10, a)
+        pkt.add_ellipse(h, "H+---", s)
 
-            data = self.ref.solution
-            pkt = packet(data["H_T"], data["neutrino"])
-            pkt.add_ellipse(lpppp(10, a), "H++++")
-            pkt.add_ellipse(lpppm(10, a), "H+++-")
-            pkt.add_ellipse(lppmp(10, a), "H++-+")
-            pkt.add_ellipse(lppmm(10, a), "H++--")
-
-            pkt.add_ellipse(lpmpp(10, a), "H+-++")
-            pkt.add_ellipse(lpmpm(10, a), "H+-+-")
-            pkt.add_ellipse(lpmmp(10, a), "H+--+")
-            pkt.add_ellipse(lpmmm(10, a), "H+---")
-
-            pkt.compile2D_Proj(None, True)
-        exit()
+        pkt.compile2D_Proj(None, True)
 
     @property 
     def R_T(self):

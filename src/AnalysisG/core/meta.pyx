@@ -13,10 +13,12 @@ from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport *
 from AnalysisG.core.notification cimport *
 
-import pyAMI.client
-import pyAMI.httpclient
-try: import pyAMI_atlas.api
-except: print("WARNING! YOU NEED TO INSTALL PYAMI-ATLAS, see scripts folder!")
+try: 
+    import pyAMI.client
+    import pyAMI.httpclient
+    import pyAMI_atlas.api
+except: 
+    print("WARNING! YOU NEED TO INSTALL PYAMI-ATLAS, see scripts folder!")
 import http.client
 import pickle
 import h5py
@@ -50,7 +52,12 @@ cdef class ami_client:
         self.nf = new notification()
         self.nf.prefix = b"PyAMI-MetaScan"
 
-    def __init__(self): self.type_ = "DAOD_TOPQ1"
+    def __init__(self): 
+        self.type_ = "DAOD_TOPQ1"
+        self.datas = {}
+        self.dsids = []
+        self.infos = {}
+
     def __dealloc__(self): del self.nf
 
     cdef bool loadcache(self, Meta obj):
@@ -58,7 +65,8 @@ cdef class ami_client:
         self.datas = {}
         self.infos = {}
         self.file_cache = None
-        cdef str dsidr = str(obj.dsid)
+        cdef str dsidr = str(obj.dsid) + "." + str(obj.amitag)
+
         try: self.file_cache = h5py.File(obj.MetaCachePath, "a")
         except FileNotFoundError: self.file_cache = h5py.File(obj.MetaCachePath, "w")
         except OSError: self.file_cache = h5py.File(obj.MetaCachePath, "w")
@@ -82,25 +90,32 @@ cdef class ami_client:
         return len(self.dsids)*len(self.datas)*len(self.infos)
 
     cdef void savecache(self, Meta obj):
-        cdef str dsidr = str(obj.dsid)
+        cdef str dsidr = str(obj.dsid) + "." + str(obj.amitag)
 
         cdef string cached_dsid = pickle.dumps(self.dsids)
         cdef string cached_maps = pickle.dumps(self.datas)
         cdef string cached_info = pickle.dumps(self.infos)
 
-        try: ref = self.file_cache.create_dataset(dsidr, (1), dtype = h5py.ref_dtype)
+        try:    ref = self.file_cache.create_dataset(dsidr, (1), dtype = h5py.ref_dtype)
         except: ref = self.file_cache[dsidr]
 
-        ref.attrs["dsids"] = tools().encode64(&cached_dsid)
+        ref.attrs["dsids"]    = tools().encode64(&cached_dsid)
         ref.attrs["datasets"] = tools().encode64(&cached_maps)
-        ref.attrs["infos"] = tools().encode64(&cached_info)
+        ref.attrs["infos"]    = tools().encode64(&cached_info)
         self.file_cache.close()
 
-    cdef void dressmeta(self, Meta obj, str dset_name):
+    cdef bool dressmeta(self, Meta obj, str dset_name):
         cdef dict files = {}
+        cdef list events = []
         for l in [dict(k) for k in self.datas[dset_name]]: files[l["LFN"]] = l
-        try: obj.events  = [int(files[i]["events"]) for i in obj.Files.values()]
-        except KeyError: return
+
+        for i in obj.Files.values():
+            try: k = int(files[i]["events"])
+            except KeyError: k = -1
+            if k < 0: continue
+            events.append(k)
+        if len(events) != len(obj.Files): return False
+        obj.events = events
 
         cdef list keys = [
                 "logicalDatasetName", "identifier",
@@ -128,36 +143,34 @@ cdef class ami_client:
 
         try: obj.kfactor = info["kFactor@PMG"]
         except KeyError: obj.kfactor = 1
-
         try: obj.weights = info["weights"].split(" | ")[:-1]
         except KeyError: pass
         obj.found = True
+        return True
 
     cdef void list_datasets(self, Meta obj):
         if not self.client.authenticated: return
         cdef str dsidr = str(obj.dsid)
         cdef list ami_tags = sum([i.split(".") for i in list(set(obj.amitag.split("_")))], [])
-        cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr, "show_archived" : True}
+        cdef dict cls_cmd = {"client" : self.client}
+        cdef dict command = cls_cmd | {"type" : self.type_, "dataset_number" : dsidr, "show_archived" : True}
         cdef bool hit = self.loadcache(obj)
 
         if not hit:
             command["type"] = "DAOD_" + obj.derivationFormat
-            try:
-                self.dsids = pyAMI_atlas.api.list_datasets(**command)
-                for f in obj.Files.values():
-                    for k in pyAMI_atlas.api.get_file(self.client, f):
-                        if k["logicalDatasetName"] not in self.datas:
-                            self.datas[k["logicalDatasetName"]] = []
-                            self.dsids += [{"ldn" : k["logicalDatasetName"]}]
-                        self.datas[k["logicalDatasetName"]] += [k]
-            except:
-                auth_pyami()
-                self.client = atlas()
-                self.list_datasets(obj)
-                return
-
-            self.nf.success(enc("DSID not in cache, fetched from PyAMI: " + dsidr))
-        else: self.nf.success(enc("DSID cache hit for: " + dsidr))
+            try: self.dsids = pyAMI_atlas.api.list_datasets(**command)
+            except: self.nf.failure("Login to PyAMI using voms."); exit()
+            for f in obj.Files.values():
+                for k in pyAMI_atlas.api.get_file(self.client, f):
+                    if k["logicalDatasetName"] not in self.datas:
+                        self.datas[k["logicalDatasetName"]] = []
+                        t = pyAMI_atlas.api.get_dataset_prov(**cls_cmd | {"dataset" : k["logicalDatasetName"]})
+                        t = [dict(x)["destination"] for x in t["edge"]]
+                        t = [{"ldn" : x} for x in t if command["type"] in x]
+                        self.dsids += [{"ldn" : k["logicalDatasetName"]}] + t
+                    self.datas[k["logicalDatasetName"]] += [k]
+            self.nf.warning(enc("DSID not in cache, fetched from PyAMI: " + dsidr + " AMITags: " + obj.amitag.replace("_", ", ")))
+        else: self.nf.success(enc("DSID cache hit for: " + dsidr + " AMITags: " + obj.amitag.replace("_", ", ")))
 
         cdef bool fset
         cdef list files
@@ -184,9 +197,8 @@ cdef class ami_client:
             if dset_name not in self.infos:
                 self.infos[dset_name] = pyAMI_atlas.api.get_dataset_info(self.client, dset_name)
                 hit = False
-
             if not fset or obj.found: continue
-            self.dressmeta(obj, dset_name)
+            obj.found = self.dressmeta(obj, dset_name)
 
         if not obj.found:
             for k in self.dsids:
@@ -199,9 +211,7 @@ cdef class ami_client:
                 cx = 0
                 for i in files: cx += 1 if i in srch else 0
                 if cx != lxn: continue
-
-                self.dressmeta(obj, dset_name)
-                if obj.found: break
+                if self.dressmeta(obj, dset_name): break
         if hit: return
         self.savecache(obj)
 
@@ -704,7 +714,6 @@ cdef class Meta:
     @event_index.setter
     def event_index(self, int val):
         self.ptr.meta_data.event_index = val
-
 
     @property
     def keywords(self) -> list:

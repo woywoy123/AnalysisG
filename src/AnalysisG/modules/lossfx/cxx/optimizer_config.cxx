@@ -63,7 +63,6 @@ void lossfx::build_adamw(optimizer_params_t* op, std::vector<torch::Tensor>* par
 void lossfx::build_lbfgs(optimizer_params_t* op, std::vector<torch::Tensor>* params){
     if (this -> m_lbfgs){return;}
     torch::optim::LBFGSOptions optim_(op -> lr); 
-    if (op -> m_max_iter)        {optim_.max_iter(op -> max_iter);}
     if (op -> m_tolerance_grad)  {optim_.tolerance_grad(op -> tolerance_grad);} 
     if (op -> m_tolerance_change){optim_.tolerance_change(op -> tolerance_change);}
     if (op -> m_max_iter)        {optim_.max_iter(op -> max_iter);}

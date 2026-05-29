@@ -1,87 +1,104 @@
 #include <conuic/constants.h>
-#include <conuic/conuic.h>
-#include <tools/tools.h>
+#include <conuic/stateless.h>
+#include <conuic/atomics.h>
+#include <math.h>
 
-branches_t* build_branches(kinematics_t* j, kinematics_t* l, int sign){
-    branches_t* br = new branches_t(); 
-    long double w = omega(j, l, sign);
-    long double O = Omega(j, l, sign); 
-    long double lb = l -> b;
-    br -> w = w; br -> O = O;
-    br -> cth = costh(j, l);  
-    br -> sth = std::sqrt(1 - br -> cth * br -> cth); 
-    br -> tth = br -> sth / br -> cth; 
+shared_t::shared_t(kinematics_t* bq, kinematics_t* lp){
+    this -> cos = costheta(bq, lp); 
+    this -> sin = cs_sin(this -> cos); 
+    this -> tan = cs_tan(this -> cos); 
+    this -> theta = std::acos(this -> cos);  
 
-    // ...... Z2 quadric coefficients ........ //
-    br -> A = (lb * lb - w * w) / (O * O); 
-    br -> B = 2 * w / (O * O);
-    br -> C = w * w / (O * O) - 1; 
-    br -> D = 2 * l -> p;
-    br -> E = l -> m * l -> m; 
+    this -> r = lp -> b / bq -> b; 
+    this -> m_mu = lp -> m; 
+    this -> b_mu = lp -> b; 
+    this -> e_mu = lp -> e;
+    this -> p_mu = lp -> p;
 
-    // ......... Eigenvalues .............. //
-    br -> l1 = -1L; 
-    br -> l2 = lb * lb / ( O * O );
-  
-    // ......... Parameterizations for Sx and Sy ......... // 
-    br -> tpsi = w; br -> cpsi = tn_cos(w); br -> spsi = tn_sin(w);
-    br -> sx0 = -     l -> m * l -> m / l -> p; // m^2_mu / p_mu
-    br -> sy0 = - w * l -> e / l -> b; // omega * E_mu / beta_mu 
-
-    br -> bl = l -> b; 
-    return br; 
+    this -> m_bq = bq -> m; 
+    this -> b_bq = bq -> b; 
+    this -> e_bq = bq -> e;
+    this -> p_bq = bq -> p; 
 }
 
-void build_tilde(branches_t* br, kinematics_t* knl){
-    matrix_t* CC = new matrix_t(3, 3); // cosh matrix
-    CC -> at(0, 2) = - br -> cpsi * knl -> b / br -> O;
-    CC -> at(1, 2) = - br -> spsi * knl -> b / br -> O; 
-    br -> CC = CC; 
+shared_t::~shared_t(){}
 
-    matrix_t* SC = new matrix_t(3, 3); // sinh cos(kappa) matrix
-    SC -> at(0, 2) = - br -> spsi;
-    SC -> at(1, 2) =   br -> cpsi; 
-    br -> SC = SC; 
+base_t::base_t(shared_t* shr, long double sign){
+    this -> w = omega(shr -> cos, shr -> sin, shr -> r, sign); 
+    this -> O = Omega(this -> w, shr -> b_mu); 
+    this -> b_mu = shr -> b_mu; 
+    this -> e_mu = shr -> e_mu; 
 
-    matrix_t* SS = new matrix_t(3, 3); // sinh sin(kappa) matrix
-    SS -> at(0, 0) = 1 / br -> O;
-    SS -> at(1, 0) = br -> tpsi / br -> O;
-    SS -> at(2, 1) = 1; 
-    br -> SS = SS; 
+    this -> A = (pw(shr -> b_mu) - pw(this -> w)) / pw(this -> O); 
+    this -> B = 2 * this -> w / pw(this -> O); 
+    this -> C = - (1.0L - pw(shr -> b_mu)) / pw(this -> O); 
+    this -> D = 2 * shr -> p_mu; 
+    this -> E = pw(shr -> m_mu); 
+
+    this -> track("w", &this -> w); 
+    this -> track("O", &this -> O); 
 }
 
-delta_t* build_deltas(branches_t* plus, branches_t* minus){
-    delta_t* dt = new delta_t();
-    dt -> dp = delta(plus, minus, +1);
-    dt -> Gp = Gamma(plus, minus, +1);
-    dt -> salp = tn_sin(dt -> dp); 
-    dt -> calp = tn_cos(dt -> dp); 
-    dt -> talp = dt -> dp; 
+base_t::~base_t(){}
+
+pk1l_t::pk1l_t(base_t* pl, base_t* ms){
+    this -> GP = Gamma(pl, ms, +1); 
+    this -> GM = Gamma(pl, ms, -1); 
+
+    this -> dp = delta(pl, ms, +1); 
+    this -> dm = delta(pl, ms, -1); 
+    this -> dpm = this -> dp * this -> dm; 
+
+    this -> gmu = std::sqrt(1 - pl -> b_mu * pl -> b_mu); 
+    this -> eta = std::atanh(this -> dm / this -> gmu); 
     
-    dt -> dm = delta(plus, minus, -1); 
-    dt -> Gm = Gamma(plus, minus, -1);
-    dt -> salm = tn_sin(dt -> dm);  
-    dt -> calm = tn_cos(dt -> dm);  
-    dt -> talm = dt -> dm; 
+    this -> kap = KappaPk1(pl, this); 
+    this -> kam = KappaPk1(ms, this); 
 
-    dt -> alp = std::atan(dt -> dp); 
-    dt -> alm = std::atan(dt -> dm); 
+    long double fx = pl -> e_mu / pl -> b_mu; 
 
-    dt -> alpha_p = - (dt -> alp + dt -> alm) * 0.5L;
-    dt -> alpha_m =   (dt -> alp - dt -> alm) * 0.5L;
- 
-    dt -> lp = lm_dt(dt, +1); 
-    dt -> lm = lm_dt(dt, -1); 
+    this -> L0pp = fx * this -> GP * std::sinh(this -> eta) * (this -> dp * pl -> w + this -> dpm); 
+    this -> L0pm = fx * this -> GM * std::cosh(this -> eta) * (this -> dm * pl -> w + this -> dpm); 
 
-    dt -> Glp = - dt -> Gm * dt -> Gp * dt -> lp; 
-    dt -> Glm = - dt -> Gm * dt -> Gp * dt -> lm; 
+    this -> L0mp = fx * this -> GP * std::sinh(this -> eta) * (this -> dp * ms -> w + this -> dpm); 
+    this -> L0mm = fx * this -> GM * std::cosh(this -> eta) * (this -> dm * ms -> w + this -> dpm); 
 
-    return dt; 
 }
 
-cline_t* build_clines(branches_t* br, delta_t* dt, double sign){
-    long double dt_ = (sign < 0) ? dt -> dm : dt -> dp; 
-    long double dtx = (sign < 0) ? dt -> dp : dt -> dm; 
-    return new cline_t(br, dt_, sign, dtx);  
+long double pk1l_t::lx(long double sx, long double sy){
+    return sx - this -> dp * sy;
 }
 
+long double pk1l_t::ly(long double sx, long double sy){
+    return sx - this -> dm * sy;
+}
+
+long double pk1l_t::sx(long double _lx, long double _ly){
+    return (this -> dp * _ly - this -> dm * _lx) / (this -> dp - this -> dm);
+}
+
+long double pk1l_t::sy(long double _lx, long double _ly){
+    return (_ly - _lx) / (this -> dp - this -> dm);
+}
+
+long double pk1l_t::Lx(long double _sx, long double _sy){
+    return this -> GP * (std::sinh(this -> eta) * _sx + this -> gmu * std::cosh(this -> eta) * _sy);
+}
+
+long double pk1l_t::Ly(long double _sx, long double _sy){
+    return this -> GM * (std::cosh(this -> eta) * _sx - this -> gmu * std::sinh(this -> eta) * _sy);
+}
+
+long double pk1l_t::Sx(long double _lx, long double _ly){
+    _lx = _lx / this -> GP; _ly = _ly / this -> GM; 
+    long double s = std::sinh(this -> eta) * _lx + std::cosh(this -> eta) * _ly;
+    return s / std::cosh(2 * this -> eta); 
+}
+
+long double pk1l_t::Sy(long double _lx, long double _ly){
+    _lx = _lx / this -> GP; _ly = _ly / this -> GM; 
+    long double s = std::cosh(this -> eta) * _lx - std::sinh(this -> eta) * _ly;
+    return s / (this -> gmu * std::cosh(2 * this -> eta)); 
+}
+
+pk1l_t::~pk1l_t(){}

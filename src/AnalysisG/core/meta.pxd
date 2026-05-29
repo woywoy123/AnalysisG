@@ -51,8 +51,6 @@ cdef class ami_client:
 
     cdef bool loadcache(self, Meta obj)
     cdef void savecache(self, Meta obj)
-    cdef void dressmeta(self, Meta obj, str dset_name)
+    cdef bool dressmeta(self, Meta obj, str dset_name)
     cdef void list_datasets(self, Meta obj)
-
-
 

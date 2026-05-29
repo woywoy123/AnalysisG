@@ -21,7 +21,6 @@ cdef class OptimizerConfig:
     @Scheduler.setter
     def Scheduler(self, str val): self.params.scheduler = enc(val)
 
-
     @property
     def step_size(self): return self.params.step_size
     @step_size.setter
@@ -52,24 +51,20 @@ cdef class OptimizerConfig:
     @initial_accumulator_value.setter
     def initial_accumulator_value(self, double val): self.params.initial_accumulator_value = val
 
-
     @property
     def eps(self): return self.params.eps
     @eps.setter
     def eps(self, double val): self.params.eps = val
-
 
     @property
     def tolerance_grad(self): return self.params.tolerance_grad
     @tolerance_grad.setter
     def tolerance_grad(self, double val): self.params.tolerance_grad = val
 
-
     @property
     def tolerance_change(self): return self.params.tolerance_change
     @tolerance_change.setter
     def tolerance_change(self, double val): self.params.tolerance_change = val
-
 
     @property
     def alpha(self): return self.params.alpha
@@ -85,7 +80,6 @@ cdef class OptimizerConfig:
     def dampening(self): return self.params.dampening
     @dampening.setter
     def dampening(self, double val): self.params.dampening = val
-
 
     @property
     def amsgrad(self): return self.params.amsgrad

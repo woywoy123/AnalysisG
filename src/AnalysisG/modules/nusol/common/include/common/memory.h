@@ -17,13 +17,13 @@ void copy(
 void ops(
     long double** O, long double** A, long double** B, 
     const int dim_i, const int dim_j, 
-    const float sign
+    const long double sign
 ); 
 
 void opm(
     long double** O, long double** A, 
     const int dim_i, const int dim_j, 
-    const float c
+    const long double c
 ); 
 
 void opt(
@@ -32,7 +32,7 @@ void opt(
 ); 
 
 
-long double _trace(long double** A); 
+long double _trace(long double** A, int lx = 3); 
 long double _m_00(long double**  M); 
 long double _m_01(long double**  M); 
 long double _m_02(long double**  M); 
@@ -42,8 +42,8 @@ long double _m_12(long double**  M);
 long double _m_20(long double**  M); 
 long double _m_21(long double**  M); 
 long double _m_22(long double**  M); 
-long double _det3( long double**  v); 
-long double _det2( long double**  v); 
+long double _det3(long double**  v); 
+long double _det2(long double**  v); 
 
 
 #endif

@@ -90,12 +90,15 @@ class G2_t:
         self.data = data
 
         self.MX = np.array([
-            [Mxy(data, +1, +1), Mxy(data, +1, -1)], 
-            [Mxy(data, -1, +1), Mxy(data, -1, -1)]
+            [Mxy(data, +1, +1), Mxy(data, -1, +1), 0], 
+            [Mxy(data, +1, -1), Mxy(data, -1, -1), 0], 
+            [0                ,                 0, 1]
         ])
         self.ei, self.ev = np.linalg.eig(self.MX)
+        self.ei = angular_t(self.eig.p).Rz
         self.lsp = Z2_t(self.data, +1, +1).ls
         self.lsm = Z2_t(self.data, -1, -1).ls
+        self.rm = (self.psi.p.alpha - self.psi.m.alpha) / 2
 
     def dG2(self, Sx, Sy): 
         return - self.G.m * self.G.p * (Sx - self.dt.p * Sy) * (Sx - self.dt.m * Sy)

@@ -30,6 +30,7 @@ struct matrix_t {
         matrix_t inv();  
        
         long double det(); 
+        long double trace(); 
         void print(int p = 9);
 
     private:
