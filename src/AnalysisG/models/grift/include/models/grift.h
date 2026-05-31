@@ -46,7 +46,6 @@ class grift: public model_template
 
         torch::nn::Sequential* mlp_ntop = nullptr; 
         torch::nn::Sequential* mlp_sig  = nullptr; 
-        torch::Tensor  x_nulls; 
         torch::Tensor dx_nulls; 
         torch::Tensor te_nulls; 
 }; 

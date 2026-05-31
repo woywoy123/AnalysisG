@@ -16,10 +16,10 @@ x = BSM4Tops()
 #tt = GraphChildren()
 #tt = GraphTruthJets()
 #tt = GraphJets()
-#tt = GraphDetectorLep() 
+tt = GraphDetectorLep() 
 
-tt = GraphDetector()
-tt.PreSelection = True
+#tt = GraphDetector()
+#tt.PreSelection = True
 
 params = [
             ("MRK-1", "adam", {"lr" : 1e-4}, "steplr", {"gamma" : 0.9, "step_size" : 100}),
@@ -73,7 +73,7 @@ ana.TrainSize = 100
 ana.TrainingDataset = "./ProjectName/sample.h5"
 ana.kFold = [1] 
 ana.BatchSize = 10
-ana.DebugMode = True
+#ana.DebugMode = True
 #ana.BuildCache = True
 ana.nBins = 400
 ana.MaxRange = 400

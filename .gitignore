@@ -2,7 +2,6 @@
 **/__pycache__
 **/build
 **/*.egg*
-**/_Pickle
 **/gnn-analysis
 **/.apptainer
 **/.local
@@ -12,6 +11,7 @@ scripts/source_this.sh
 **.hdf5
 **.pkl
 **.root
+**/ProjectName
 local/**/*.png
 **.h5
 **.pt
@@ -28,10 +28,6 @@ local/**/*.png
 
 # Vim related swaps 
 **.swp
-
-# Testing stuff 
-**/.tox
-**/.coverage*
 
 # Doxygen documentation
 doxygen-docs/
