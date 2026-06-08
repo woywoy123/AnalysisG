@@ -76,7 +76,16 @@ std::map<std::string, torch::Tensor> graph_::node_aggregation(
     return graph_::edge_aggregation(edge_index, &pred, node_feature);  
 }
 
-std::map<std::string, torch::Tensor> graph_::unique_aggregation(torch::Tensor* cluster_map, torch::Tensor* features){
+std::map<std::string, torch::Tensor> graph_::unique_aggregation(
+        torch::Tensor* cluster_map, torch::Tensor* features
+){
+    std::cout << "WARNING!!! NOT IMPLEMENTED IN C++ USE CUDA!!!" << std::endl;
+    return {}; 
+}
+
+std::map<std::string, torch::Tensor> cycle_aggregation(
+        torch::Tensor* cluster_map, torch::Tensor* node_feature
+){
     std::cout << "WARNING!!! NOT IMPLEMENTED IN C++ USE CUDA!!!" << std::endl;
     return {}; 
 }

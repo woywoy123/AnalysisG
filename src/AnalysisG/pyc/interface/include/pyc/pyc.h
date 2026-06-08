@@ -232,6 +232,10 @@ namespace pyc {
                 torch::Tensor cluster_map, torch::Tensor features
         ); 
 
+        torch::Dict<std::string, torch::Tensor> cycle_aggregation(
+                torch::Tensor cluster_map, torch::Tensor node_feature
+        ); 
+
         torch::Dict<std::string, torch::Tensor> PageRank(
                 torch::Tensor edge_index, torch::Tensor edge_scores, 
                 double alpha = 0.85, double threshold = 0.5, double norm_low = 1e-6, long timeout = 1e6, long num_cls = 2

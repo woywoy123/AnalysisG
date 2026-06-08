@@ -2,7 +2,9 @@
 #include <graph/graph.cuh>
 #include <utils/utils.cuh>
 
-std::map<std::string, torch::Tensor> graph_::unique_aggregation(torch::Tensor* cluster_map, torch::Tensor* features){
+std::map<std::string, torch::Tensor> graph_::unique_aggregation(
+        torch::Tensor* cluster_map, torch::Tensor* features
+){
     const unsigned int n_nodes = cluster_map -> size(0);
     const unsigned int ij_node = cluster_map -> size(1); 
     const unsigned int n_feat  = features -> size(1); 
@@ -36,7 +38,9 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(torch::Tensor* c
     return out; 
 }
 
-std::map<std::string, torch::Tensor> graph_::edge_aggregation(torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature){
+std::map<std::string, torch::Tensor> graph_::edge_aggregation(
+        torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature
+){
     const unsigned int node_lx = node_feature -> size({0}); 
     const unsigned int node_fx = node_feature -> size({1}); 
     const unsigned int pred_lx = prediction -> size({-1}); 
@@ -96,4 +100,33 @@ std::map<std::string, torch::Tensor> graph_::node_aggregation(torch::Tensor* edg
     torch::Tensor pred = prediction -> index({e_i}); 
     return graph_::edge_aggregation(edge_index, &pred, node_feature); 
 }
+
+std::map<std::string, torch::Tensor> graph_::cycle_aggregation(
+        torch::Tensor* cluster_map, torch::Tensor* node_feature
+){
+    const unsigned int n_nodes = cluster_map -> size(0);
+    const unsigned int m_nodes = cluster_map -> size(1); 
+
+    torch::Tensor cyc_map = -torch::ones({n_nodes, m_nodes}, MakeOp(cluster_map)); 
+    torch::Tensor edges   = -torch::ones({2, n_nodes * m_nodes}, MakeOp(cluster_map)); 
+    torch::Tensor msked   =  torch::zeros({n_nodes * m_nodes}, MakeOp(cluster_map)).to(torch::kBool);
+
+    const dim3 ths = dim3(256); 
+    const dim3 bls = blk_(n_nodes, 256); 
+
+    AT_DISPATCH_ALL_TYPES(node_feature -> scalar_type(), "cycle_aggregation", [&]{ 
+        _cycle_build<scalar_t, 256, 16><<<bls, ths>>>(
+                   cluster_map -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                          cyc_map.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), 
+                            edges.packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                            msked.packed_accessor64<bool, 1, torch::RestrictPtrTraits>(),
+                        n_nodes, m_nodes);
+    });
+
+    std::map<std::string, torch::Tensor> out = graph_::unique_aggregation(&cyc_map, node_feature); 
+    out["edge-index"] = edges.index({torch::indexing::Slice(), msked}).clone(); 
+    out["cycles"] = cyc_map; 
+    return out; 
+}
+
 

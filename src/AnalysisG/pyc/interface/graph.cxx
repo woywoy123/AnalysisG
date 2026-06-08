@@ -181,3 +181,12 @@ torch::Dict<std::string, torch::Tensor> pyc::graph::cartesian::node_aggregation(
     return pyc::std_to_dict(&out); 
 }
 
+torch::Dict<std::string, torch::Tensor> pyc::graph::cycle_aggregation(
+        torch::Tensor cluster_mp, torch::Tensor node_feature
+){
+    changedev(&node_feature); 
+    std::map<std::string, torch::Tensor> out; 
+    out = graph_::cycle_aggregation(&cluster_mp, &node_feature); 
+    return pyc::std_to_dict(&out); 
+}
+

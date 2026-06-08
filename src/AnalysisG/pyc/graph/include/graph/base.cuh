@@ -76,5 +76,87 @@ __global__ void _unique_sum(
 }
 
 
+template <typename scalar_t, size_t size_x, size_t size_y> 
+__global__ void _cycle_build(
+        const torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> clu_map, 
+              torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> cyl_map, 
+              torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> edges, 
+              torch::PackedTensorAccessor64<bool, 1, torch::RestrictPtrTraits> msked, 
+        const unsigned int dim_i, const unsigned int dim_j
+){
+    __shared__ long _cycle[size_x][size_y];
+    __shared__ long _sink[size_x];         
+
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned int tid = threadIdx.x;
+    const unsigned int n_tiles = (dim_i + size_x - 1) / size_x;
+
+    long root = -1;
+    for (int x(0); x < dim_j * (idx < dim_i); ++x){
+        root = clu_map[idx][x]; 
+        if (root < 0){continue;}
+        break; 
+    }
+
+    int  cl = 0;
+    long cyc[size_y];
+    for (int x(0); x < dim_j * (idx < dim_i && root > -1); ++x){
+        long val = clu_map[idx][x];
+        if (val < 0){break;}
+        bool found = false;
+        for (int k(0); k < cl; ++k){
+            if (cyc[k] != val){continue;}
+            found = true; break;
+        }
+        if (found){continue;}
+        if (cl >= size_y){continue;}
+        cyc[cl++] = val;
+    }
+
+    for (unsigned int tile(0); tile < n_tiles; ++tile) {
+        unsigned int row = tile * size_x + tid; 
+        if (row < dim_i){
+            for (int x(0); x < dim_j; ++x){_cycle[tid][x] = clu_map[row][x];}
+            for (int x(dim_j); x < size_y; ++x){_cycle[tid][x] = -1;}
+            long s = -1;
+            for (int x = dim_j - 1; x >= 0; --x) {
+                if (_cycle[tid][x] < 0){continue;}
+                s = _cycle[tid][x]; break;
+            }
+            _sink[tid] = s;
+        } 
+        else {
+            for (int x(0); x < size_y; ++x){_cycle[tid][x] = -1;}
+            _sink[tid] = -1;
+        }
+        __syncthreads(); 
+
+        for (unsigned int i(0); i < size_x * (idx < dim_i && root > -1); ++i){
+            if (_sink[i] != root){continue;}
+            for (int x(0); x < size_y; ++x){
+                long val = _cycle[i][x];
+                if (val < 0){break;}
+                bool found = false;
+                for (int k(0); k < cl; ++k){
+                    if (cyc[k] != val){continue;}
+                    found = true; break;
+                }
+                if (found){continue;}
+                if (cl >= size_y){continue;}
+                cyc[cl++] = val;
+            }
+        }
+        __syncthreads();
+    }
+    for (int x(0); x < dim_j * (idx < dim_i); ++x){
+        long val = (x < cl) ? cyc[x] : -1;
+        if (val < 0){continue;}
+        edges[0][idx * dim_j + x] = idx; 
+        edges[1][idx * dim_j + x] = val; 
+        msked[idx * dim_j + x] = true; 
+        cyl_map[idx][x] = val; 
+    }
+}
+
 
 #endif
