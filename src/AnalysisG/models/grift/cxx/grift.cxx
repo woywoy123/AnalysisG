@@ -137,16 +137,15 @@ torch::Tensor grift::recurse(
     // ------------------ check edges for new state transititons --------------- //
     torch::Tensor top_idx = top_edge -> index({idx}); 
 
-    torch::Tensor mskf  = std::get<1>(top_idx.max({-1})).view({-1, 1}).to(node_dnn -> dtype()).view({-1, 1}); 
-    torch::Tensor hk_ij = torch::cat({hx_ij * (1 - mskf), r_dx * (1 - mskf), (hx_j - hx_i) * mskf, top_idx}, {-1}); 
+    torch::Tensor hk_ij = torch::cat({hx_ij, r_dx, hx_j - hx_i, top_idx}, {-1}); 
     torch::Tensor ht_ij = (*this -> rnn_hxx) -> forward(hk_ij); 
     top_idx = (*this -> rnn_txx) -> forward(hk_ij); 
     top_edge -> index_put_({idx}, top_idx); 
-    edge_rnn -> index_put_({idx}, ht_ij - mskf * hx_ij.sigmoid()); 
+    edge_rnn -> index_put_({idx}, ht_ij); 
 
     // ----------- create a new intermediate state of the nodes ----------- //
     gr_ = pyc::graph::edge_aggregation(*edge_index, *top_edge, *pmc); 
-    torch::Tensor n_ki = torch::zeros_like(*node_dnn).index_reduce_(0, src_, ht_ij - mskf * hx_ij, "mean", true); 
+    torch::Tensor n_ki = torch::zeros_like(*node_dnn).index_reduce_(0, src_, ht_ij, "mean", true); 
     torch::Tensor mxk = ( (gr_.at(key_idx) + 1).sum({-1}) == ((*node_s) + 1).sum({-1}) ).view({-1}); 
     (*node_s) = gr_.at(key_idx); 
 
