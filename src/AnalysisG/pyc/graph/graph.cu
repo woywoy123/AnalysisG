@@ -5,36 +5,37 @@
 std::map<std::string, torch::Tensor> graph_::unique_aggregation(
         torch::Tensor* cluster_map, torch::Tensor* features
 ){
-    const unsigned int n_nodes = cluster_map -> size(0);
-    const unsigned int ij_node = cluster_map -> size(1); 
-    const unsigned int n_feat  = features -> size(1); 
+    const unsigned int n_nodes = cluster_map -> size({0});
+    const unsigned int ij_node = cluster_map -> size({1}); 
+    const unsigned int n_feat  = features -> size({1}); 
+    const unsigned int e_nodes = features -> size({0}); 
 
-    torch::Tensor clust  = cluster_map -> to(torch::kLong); 
-    torch::Tensor uniq   = cluster_map -> to(torch::kLong); 
-    torch::Tensor output = torch::zeros({n_nodes, n_feat}, MakeOp(features)); 
+    torch::Tensor feats  =  features -> clone(); 
+    torch::Tensor clust  =  cluster_map -> to(torch::kLong); 
+    torch::Tensor uniq   = -torch::ones({n_nodes, ij_node}, MakeOp(cluster_map));
+    torch::Tensor output =  torch::zeros({n_nodes, n_feat}, MakeOp(features)); 
+    torch::Tensor maxi   =  torch::zeros({n_nodes}, MakeOp(cluster_map));
 
-    const dim3 ths = dim3(16, 8, 8); 
-    const dim3 bls = blk_(n_nodes, 16, ij_node, 8, ij_node, 8); 
-
-    const dim3 thx = dim3(16, 16); 
-    const dim3 blx = blk_(n_nodes, 16, n_feat, 16); 
+    const dim3 ths = dim3(64, 16); 
+    const dim3 bls = blk_(n_nodes, 64, ij_node, 16); 
 
     AT_DISPATCH_ALL_TYPES(features -> scalar_type(), "unique_sum", [&]{ 
-        _fast_unique<scalar_t><<<bls, ths>>>(
-                   uniq.packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+        _fast_unique<scalar_t, 64, 16, 8><<<bls, ths>>>(
+              feats.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+             output.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                   maxi.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
                   clust.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), 
-                n_nodes, ij_node, ij_node);
-
-        _unique_sum<scalar_t><<<blx, thx>>>(
-                 output.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                   uniq.packed_accessor64<long    , 2, torch::RestrictPtrTraits>(), 
-            features -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                n_nodes, ij_node, n_feat);
+                   uniq.packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                n_nodes, ij_node, n_feat, e_nodes);
     }); 
 
     std::map<std::string, torch::Tensor> out; 
-    out["node-sum"] = output; 
-    out["unique"] = uniq; 
+    out["node-sum"] = output.clone(); 
+    out["maxi"] = maxi.clone(); 
+    out["unique"] = uniq.index({
+            torch::indexing::Slice(), 
+            torch::indexing::Slice(torch::indexing::None, std::get<0>(maxi.max({-1})).item<int>())
+    }).clone(); 
     return out; 
 }
 
@@ -56,6 +57,7 @@ std::map<std::string, torch::Tensor> graph_::edge_aggregation(
     torch::Tensor _pred = std::get<1>(prediction -> max({-1})); 
     torch::Tensor _pair = -1*torch::ones(dims, MakeOp(edge_index)); 
     torch::Tensor _pmui = torch::zeros({pred_lx, node_lx, node_fx}, MakeOp(node_feature)); 
+    torch::Tensor _pmx  = node_feature -> clone(); 
 
     const dim3 thx = dim3(256); 
     const dim3 blx = blk_(idx, 256); 
@@ -72,7 +74,7 @@ std::map<std::string, torch::Tensor> graph_::edge_aggregation(
         _edge_summing<scalar_t><<<bls, ths>>>(
                  _pair.packed_accessor64<long    , 3, torch::RestrictPtrTraits>(), 
                  _pmui.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-       node_feature -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                  _pmx.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                  pred_lx, node_lx, node_fx);
     }); 
     _pair = std::get<0>(_pair.sort(-1, true));

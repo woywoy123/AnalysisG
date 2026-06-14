@@ -16,8 +16,8 @@ __global__ void _prediction_topology(
     long dst = edge_index[1][idx]; 
     pairs[prd][src][dst] = dst; 
     if (src != dst){return;}
+    if (src < 0 || dst < 0){return;}
     for (size_t x(0); x < pairs.size({0}); ++x){pairs[x][src][dst] = src;}
-
 }
 
 template <typename scalar_t>
@@ -38,20 +38,56 @@ __global__ void _edge_summing(
 }
 
 
-template <typename scalar_t> 
+template <typename scalar_t, size_t size_x, size_t size_y, size_t size_z> 
 __global__ void _fast_unique(
-              torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> out_map, 
-        const torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> cluster_map, 
-        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> features, 
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> out_feats, 
+              torch::PackedTensorAccessor64<    long, 1, torch::RestrictPtrTraits> maxi_o, 
+        const torch::PackedTensorAccessor64<    long, 2, torch::RestrictPtrTraits> cluster_map, 
+              torch::PackedTensorAccessor64<    long, 2, torch::RestrictPtrTraits> out_map, 
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_f, const unsigned int dim_e
 ){
+    __shared__ long     msk[size_x][size_y];
+    __shared__ long     skx[size_x][size_y];
+    __shared__ double feats[size_x][size_z]; 
+
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y * blockDim.y + threadIdx.y; 
-    const unsigned int idz = blockIdx.z * blockDim.z + threadIdx.z; 
-    if (idx >= dim_i || idy >= dim_j || idz >= dim_k || idz >= idy){return;}   
-    if (cluster_map[idx][idy] < 0){return;}
-    if (cluster_map[idx][idz] < 0){return;}
-    if (!(cluster_map[idx][idy] == cluster_map[idx][idz])){return;}
-    out_map[idx][idy] = -1; 
+    msk[threadIdx.x][threadIdx.y] = -1;
+    skx[threadIdx.x][threadIdx.y] = -1;
+    feats[threadIdx.x][threadIdx.y] = 0;  
+    if (idx >= dim_i){return;}   
+
+    msk[threadIdx.x][threadIdx.y] = (threadIdx.y >= dim_j) ? -1 : cluster_map[idx][threadIdx.y]; 
+    __syncthreads();
+
+    long lx = 0; 
+    long ndx[size_y]; 
+    for (int y(0); y < size_y; ++y){ndx[y] = -1;}
+    long xk = msk[threadIdx.x][threadIdx.y];
+    for (int y(0); y < size_y * (xk > -1); ++y){
+        if (msk[threadIdx.x][y] < 0){continue;}
+        if (xk != msk[threadIdx.x][y]){++lx; continue;}
+        skx[threadIdx.x][lx] = xk; break; 
+    }
+    __syncthreads(); 
+
+    lx = 0; 
+    for (int y(0); y < size_y; ++y){
+        long v = skx[threadIdx.x][y];
+        if (v < 0){continue;}
+        ndx[lx] = v; lx++; 
+    }
+
+    for (int y(0); y < lx; ++y){
+        long vt = ndx[y];
+        if (threadIdx.y >= dim_f){break;}
+        if (vt < 0 || vt >= dim_e){continue;}
+        feats[threadIdx.x][threadIdx.y] += features[vt][threadIdx.y];  
+    }
+    __syncthreads(); 
+    if (threadIdx.y < dim_j){   out_map[idx][threadIdx.y] =   skx[threadIdx.x][threadIdx.y];}
+    if (threadIdx.y < dim_f){out_feats[idx][threadIdx.y]  = feats[threadIdx.x][threadIdx.y];}
+    if (!threadIdx.y){maxi_o[idx] = lx;}
 }
 
 
@@ -69,7 +105,7 @@ __global__ void _unique_sum(
     scalar_t sx = 0; 
     for (unsigned int i(0); i < dim_j; ++i){
         const long tx = cluster_map[idx][i]; 
-        if (tx < 0){continue;}
+        if (tx < 0 || tx > dim_j){continue;}
         sx += features[ tx ][idy];   
     }
     out[idx][idy] = sx; 
