@@ -52,42 +52,70 @@ __global__ void _fast_unique(
     __shared__ double feats[size_x][size_z]; 
 
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    msk[threadIdx.x][threadIdx.y] = -1;
-    skx[threadIdx.x][threadIdx.y] = -1;
-    feats[threadIdx.x][threadIdx.y] = 0;  
-    if (idx >= dim_i){return;}   
+    const unsigned int ix  = threadIdx.x;
+    const unsigned int idy = threadIdx.y;
 
-    msk[threadIdx.x][threadIdx.y] = (threadIdx.y >= dim_j) ? -1 : cluster_map[idx][threadIdx.y]; 
+    msk[ix][idy] = -1; 
+    skx[ix][idy] = -1;
+    feats[ix][idy % size_z] = 0;  
+
+    const bool bly = idy < size_z; 
+    const bool blk = idx < dim_i; 
+    long xk; 
+
+    if (blk && bly){msk[threadIdx.x][threadIdx.y] = cluster_map[threadIdx.x][threadIdx.y];}
     __syncthreads();
 
-    long lx = 0; 
-    long ndx[size_y]; 
-    for (int y(0); y < size_y; ++y){ndx[y] = -1;}
-    long xk = msk[threadIdx.x][threadIdx.y];
-    for (int y(0); y < size_y * (xk > -1); ++y){
-        if (msk[threadIdx.x][y] < 0){continue;}
-        if (xk != msk[threadIdx.x][y]){++lx; continue;}
-        skx[threadIdx.x][lx] = xk; break; 
-    }
-    __syncthreads(); 
-
-    lx = 0; 
-    for (int y(0); y < size_y; ++y){
-        long v = skx[threadIdx.x][y];
-        if (v < 0){continue;}
-        ndx[lx] = v; lx++; 
+    if (blk){
+        xk = msk[threadIdx.x][threadIdx.y]; 
+        for (size_t y(0); y < size_y; ++y){
+            long vl = msk[threadIdx.x][y]; 
+            if (vl < 0 || vl != xk){continue;}
+            skx[threadIdx.x][threadIdx.y] = (threadIdx.y == y) ? vl : -1; 
+            break; 
+        }
+        if (bly){feats[threadIdx.x][threadIdx.y]  = features[threadIdx.x][threadIdx.y] ;}
     }
 
-    for (int y(0); y < lx; ++y){
-        long vt = ndx[y];
-        if (threadIdx.y >= dim_f){break;}
-        if (vt < 0 || vt >= dim_e){continue;}
-        feats[threadIdx.x][threadIdx.y] += features[vt][threadIdx.y];  
-    }
     __syncthreads(); 
-    if (threadIdx.y < dim_j){   out_map[idx][threadIdx.y] =   skx[threadIdx.x][threadIdx.y];}
-    if (threadIdx.y < dim_f){out_feats[idx][threadIdx.y]  = feats[threadIdx.x][threadIdx.y];}
-    if (!threadIdx.y){maxi_o[idx] = lx;}
+    msk[threadIdx.x][threadIdx.y] = -1;
+    __syncthreads();  
+
+    double flx = 0; 
+    if (blk){
+        // define the upper and lower limits
+        long lw = size_x * long(idx / size_x);
+        long lu = lw + size_x; 
+        long kx  = skx[threadIdx.x][threadIdx.y]; 
+        long pos = 0; // this specifies the relative position
+
+        xk = 0;  // count the offset 
+        for (int y(0); y < size_y; ++y){
+            long vt = skx[threadIdx.x][y];
+
+            // count the number of node indices larger than the current one
+            pos += long(vt > kx); 
+            
+            // all threads for (lx, 0 -> ly) should agree to this value.
+            xk += (vt > -1); 
+
+            if (threadIdx.y  >= dim_f){continue;}
+            if (vt < 0 || vt >= dim_e){continue;}
+            // -------------------------------------------- 
+            // if requested node is out of the current block scope:
+            // fetch from global memory ~ slower but better than nothing, 
+            // if within block, we use cached memory.
+            //  -------------------------------------------
+            flx += (vt < lw || vt >= lu) ? features[vt][threadIdx.y] : feats[vt - lw][threadIdx.y]; 
+        }
+        msk[threadIdx.x][threadIdx.y] = kx;
+    }
+    __syncthreads();  
+
+    if (blk && bly        ){out_feats[idx][threadIdx.y] = feats[threadIdx.x][threadIdx.y];}
+    if (blk && idy < dim_j){out_map[idx][threadIdx.y]   =   msk[threadIdx.x][threadIdx.y];}
+    if (blk && !idy       ){maxi_o[idx] = dim_e;}
+    
 }
 
 

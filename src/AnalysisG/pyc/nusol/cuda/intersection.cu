@@ -25,31 +25,39 @@ __global__ void _swapAB(
     const unsigned int idx = threadIdx.x; 
     const unsigned int idy = threadIdx.y; 
     const unsigned int idz = threadIdx.z; 
-    if (_idx >= detB.size({0})){return;}
+    const bool blx = (_idx >= detB.size({0})); 
+    
+    if (!blx){
+        A_[idx][idy][idz] = A[_idx][idy][idz]; 
+        B_[idx][idy][idz] = B[_idx][idy][idz]; 
 
-    A_[idx][idy][idz] = A[_idx][idy][idz]; 
-    B_[idx][idy][idz] = B[_idx][idy][idz]; 
+        // ----- swap if abs(det(B)) > abs(det(A)) -------- //
+        bool swp = abs(detB[_idx][0]) > abs(detA[_idx][0]); 
+        double a_ = (!swp)*A_[idx][idy][idz] + (swp)*B_[idx][idy][idz]; 
+        double b_ = (!swp)*B_[idx][idy][idz] + (swp)*A_[idx][idy][idz];
+        if (isnan(a_) || isinf(a_)){a_ = 0;}
+        if (isnan(b_) || isinf(b_)){b_ = 0;}
 
-    // ----- swap if abs(det(B)) > abs(det(A)) -------- //
-    bool swp = abs(detB[_idx][0]) > abs(detA[_idx][0]); 
-    double a_ = (!swp)*A_[idx][idy][idz] + (swp)*B_[idx][idy][idz]; 
-    double b_ = (!swp)*B_[idx][idy][idz] + (swp)*A_[idx][idy][idz];
-    if (isnan(a_) || isinf(a_)){a_ = 0;}
-    if (isnan(b_) || isinf(b_)){b_ = 0;}
-
-    A_[idx][idy][idz] = a_;  
-    B_[idx][idy][idz] = b_;  
+        A_[idx][idy][idz] = a_;  
+        B_[idx][idy][idz] = b_;  
+    }
     __syncthreads(); 
 
-    // ----- compute the inverse of A -------- //
-    double mx = _cofactor(A_[idx], idy, idz); 
-    _cofA[idx][idz][idy] = mx;  // transpose cofactor matrix to get adjoint 
-    _detA[idx][idy][idz] = mx * A_[idx][idy][idz]; 
+    if (!blx){
+        // ----- compute the inverse of A -------- //
+        double mx = _cofactor(A_[idx], idy, idz); 
+        _cofA[idx][idz][idy] = mx;  // transpose cofactor matrix to get adjoint 
+        _detA[idx][idy][idz] = mx * A_[idx][idy][idz]; 
+    }
     __syncthreads(); 
 
-    double _dt = _detA[idx][0][0] + _detA[idx][0][1] + _detA[idx][0][2];
-    _InvA[idx][idy][idz] = _cofA[idx][idy][idz]*_div(&_dt); 
-    __syncthreads(); 
+    if (!blx){
+        double _dt = _detA[idx][0][0] + _detA[idx][0][1] + _detA[idx][0][2];
+        _InvA[idx][idy][idz] = _cofA[idx][idy][idz]*_div(&_dt); 
+    }
+    __syncthreads();
+
+    if (blx){return;} 
     // --------------------------------------- //
 
     // -------- take the dot product of inv(A) and B --------- //

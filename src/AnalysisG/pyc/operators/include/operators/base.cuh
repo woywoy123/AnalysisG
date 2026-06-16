@@ -17,11 +17,16 @@ __global__ void _dot(
     const unsigned int _idz = threadIdx.z; 
     const unsigned int idx  = blockIdx.x * blockDim.x + threadIdx.x; 
     _vinx[_idx][_idy][_idz] = 0; _viny[_idx][_idz][_idy] = 0; 
-    if (idx >= dx || _idy >= dz || _idz >= dz){return;}
-
-    _vinx[_idx][_idy][_idz] = v1[idx][_idy][_idz]; 
-    _viny[_idx][_idz][_idy] = v2[idx][_idy][_idz]; 
+    const bool blx = (idx >= dx || _idy >= dz || _idz >= dz);
+    
+    if (!blx){
+        _vinx[_idx][_idy][_idz] = v1[idx][_idy][_idz]; 
+        _viny[_idx][_idz][_idy] = v2[idx][_idy][_idz]; 
+    }
+   
     __syncthreads();
+    
+    if (blx){return;}
     out[idx][_idy][_idz] = _dot(_vinx[_idx][_idy], _viny[_idx][_idz], dz); 
 }
 
@@ -34,6 +39,7 @@ __global__ void _cross(
 ){
 
     __shared__ double Av[9][3][3]; 
+
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int _dtt = threadIdx.y; 
     const unsigned int _idy1 = (_dtt/9); 
@@ -45,6 +51,7 @@ __global__ void _cross(
     Av[threadIdx.y][1][threadIdx.z] = v1_; 
     Av[threadIdx.y][2][threadIdx.z] = v2_; 
     __syncthreads(); 
+
     out[_idx][_idy3][_idy2][threadIdx.z] = _cofactor(Av[threadIdx.y], 0, threadIdx.z); 
 }
 
@@ -193,10 +200,12 @@ __global__ void _cofactor(
 ){
     __shared__ double mat[size_x][3][3]; 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (_idx >= matrix.size({0})){return;}
-
-    mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    const bool blx = (_idx >= matrix.size({0})); 
+    if (!blx){mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z];}
+    
     __syncthreads();
+
+    if (blx){return;}
     out[_idx][threadIdx.y][threadIdx.z] = _cofactor(mat[threadIdx.x], threadIdx.y, threadIdx.z);
 }
 
@@ -208,15 +217,20 @@ __global__ void _determinant(
     __shared__ double mat[size_x][3][3]; 
     __shared__ double det[size_x][3][3];
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (_idx >= matrix.size({0})){return;}
-    mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+
+    const bool bx = (_idx >= matrix.size({0}));
+    
+    if (!bx){mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z];}
     __syncthreads();
 
-    double minor = _cofactor(mat[threadIdx.x], threadIdx.y, threadIdx.z); 
-    det[threadIdx.x][threadIdx.y][threadIdx.z] = minor * mat[threadIdx.x][threadIdx.y][threadIdx.z];
+    if (!bx){
+        double minor = _cofactor(mat[threadIdx.x], threadIdx.y, threadIdx.z); 
+        det[threadIdx.x][threadIdx.y][threadIdx.z] = minor * mat[threadIdx.x][threadIdx.y][threadIdx.z];
+    }
 
-    if (threadIdx.y || threadIdx.z){return;}
     __syncthreads(); 
+
+    if (bx || threadIdx.y || threadIdx.z){return;}
     out[_idx][0] = det[threadIdx.x][0][0] + det[threadIdx.x][0][1] + det[threadIdx.x][0][2];  
 }
 
@@ -231,15 +245,19 @@ __global__ void _inverse(
     __shared__ double _det[size_x][3][3];
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (_idx >= matrix.size({0})){return;}
-    _mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    const bool blx = (_idx >= matrix.size({0}));
+    if (!blx){_mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z];}
     __syncthreads();
 
-    double mx = _cofactor(_mat[threadIdx.x], threadIdx.y, threadIdx.z);
-    _cof[threadIdx.x][threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
-    _det[threadIdx.x][threadIdx.y][threadIdx.z] = mx * _mat[threadIdx.x][threadIdx.y][threadIdx.z]; 
+    if (!blx){
+        double mx = _cofactor(_mat[threadIdx.x], threadIdx.y, threadIdx.z);
+        _cof[threadIdx.x][threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
+        _det[threadIdx.x][threadIdx.y][threadIdx.z] = mx * _mat[threadIdx.x][threadIdx.y][threadIdx.z]; 
+    } 
+    
     __syncthreads(); 
 
+    if (blx){return;}
     double _dt = _det[threadIdx.x][0][0] + _det[threadIdx.x][0][1] + _det[threadIdx.x][0][2];
     if (!threadIdx.y && !threadIdx.z){det[_idx][0] = _dt;}
     inv[_idx][threadIdx.y][threadIdx.z] = _cof[threadIdx.x][threadIdx.y][threadIdx.z]*_div(&_dt); 
@@ -261,13 +279,16 @@ __global__ void _eigenvalue(
     const unsigned int idy = threadIdx.y;
     const unsigned int idz = threadIdx.z; 
 
-    if (_idx >= matrix.size({0})){return;}
-    _mat[idx][idy][idz] = matrix[_idx][idy][idz]; 
+    const bool blx = _idx >= matrix.size({0});
+    if (!blx){_mat[idx][idy][idz] = matrix[_idx][idy][idz];}
+
     __syncthreads();
     
-    double minor = _cofactor(_mat[idx], idy, idz, false); 
-    _cof[idx][idy][idz] = -minor;
-    _det[idx][idy][idz] = pow(-1, int(idy) + int(idz)) * minor * _mat[idx][idy][idz]; 
+    if (!blx){
+        double minor = _cofactor(_mat[idx], idy, idz, false); 
+        _cof[idx][idy][idz] = -minor;
+        _det[idx][idy][idz] = pow(-1, int(idy) + int(idz)) * minor * _mat[idx][idy][idz]; 
+    }
     __syncthreads(); 
 
     c10::complex<double> tr = _mat[idx][0][0] + _mat[idx][1][1] + _mat[idx][2][2]; 

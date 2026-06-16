@@ -13,8 +13,8 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
     torch::Tensor feats  =  features -> clone(); 
     torch::Tensor clust  =  cluster_map -> to(torch::kLong); 
     torch::Tensor uniq   = -torch::ones({n_nodes, ij_node}, MakeOp(cluster_map));
-    torch::Tensor output =  torch::zeros({n_nodes, n_feat}, MakeOp(features)); 
-    torch::Tensor maxi   =  torch::zeros({n_nodes}, MakeOp(cluster_map));
+    torch::Tensor output =  torch::zeros({n_nodes, n_feat}, MakeOp(features   )); 
+    torch::Tensor maxi   =  torch::zeros({n_nodes        }, MakeOp(cluster_map));
 
     const dim3 ths = dim3(64, 16); 
     const dim3 bls = blk_(n_nodes, 64, ij_node, 16); 
@@ -32,10 +32,11 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
     std::map<std::string, torch::Tensor> out; 
     out["node-sum"] = output.clone(); 
     out["maxi"] = maxi.clone(); 
-    out["unique"] = uniq.index({
-            torch::indexing::Slice(), 
-            torch::indexing::Slice(torch::indexing::None, std::get<0>(maxi.max({-1})).item<int>())
-    }).clone(); 
+    out["unique"] = uniq; 
+    //.index({
+    //        torch::indexing::Slice(), 
+    //        torch::indexing::Slice(torch::indexing::None, std::get<0>(maxi.max({-1})).item<int>())
+    //}).clone(); 
     return out; 
 }
 

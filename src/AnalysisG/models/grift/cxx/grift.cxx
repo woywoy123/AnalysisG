@@ -113,6 +113,7 @@ grift::grift(){
 torch::Tensor grift::node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn){
     num_node = (num_node > -1).sum({-1}, true); 
     torch::Tensor mass = pyc::physics::cartesian::combined::M(pmc); 
+    std::cout << mass << std::endl;
     if (!node_rnn){return torch::cat({mass, pmc, num_node}, {-1}).to(torch::kFloat32);}
     torch::Tensor nox = torch::cat({mass, pmc, num_node, *node_rnn}, {-1});
     return (*this -> rnn_x) -> forward(nox.to(torch::kFloat32)) * 1.0 / num_node.to(torch::kFloat32);  
@@ -132,7 +133,7 @@ torch::Tensor grift::message(
 
     aggr = pyc::graph::unique_aggregation(trk_j, pmc); 
     torch::Tensor fx_j = this -> node_encode(aggr.at(key_smx), aggr.at(key_idx), hx_j); 
-    
+   
     aggr = pyc::graph::unique_aggregation(torch::cat({trk_i, trk_j}, {-1}), pmc); 
     torch::Tensor fx_ij = this -> node_encode(aggr.at(key_smx), aggr.at(key_idx), dnn); 
 
@@ -164,7 +165,7 @@ void grift::forward(graph_t* data){
     torch::Tensor node_i  = (torch::ones_like(batch_index).cumsum({0})-1).to(torch::kLong); 
     torch::Tensor path_s  = node_i.index({src}).view({-1, 1}).clone();
     torch::Tensor path_d  = node_i.index({dst}).view({-1, 1}).clone(); 
-  
+
     // ------- Build indexing mapping from i -> j, 0 to N^2 - 1 ------ //
     torch::Tensor idx_mat = this -> build_IDX(data, src, dst); 
     
@@ -213,7 +214,6 @@ void grift::forward(graph_t* data){
 
         // ----- encode the state of a single node contraction ----- //
         gr_ = pyc::graph::unique_aggregation(path_d, pmc); 
-        path_d = gr_.at("unique");
         torch::Tensor het_pi = this -> node_encode(
                 this -> expand(gr_.at("node-sum"), slf), this -> expand(path_d, slf), &es_sx
         ); 
@@ -229,15 +229,15 @@ void grift::forward(graph_t* data){
         top_edge.index_put_({idf}, (*this -> rnn_txx) -> forward(echo_s)); 
 
         msk_ij  = this -> get_value(top_edge) > 0; 
-        msk_ij += src == dst; 
+        _src    = this -> expand(src, msk_ij); 
+        _dst    = this -> expand(dst, msk_ij); 
+        msk_ij  = this -> expand(msk_ij, msk_ij).to(torch::kLong); 
 
-        _src   = this -> expand(src, msk_ij); 
-        _dst   = this -> expand(dst, msk_ij); 
-        msk_ij = this -> expand(msk_ij, msk_ij).to(torch::kLong); 
+        //idx_mat.index_put_({_src, _dst}, -1 * msk_ij); 
 
-        idx_mat.index_put_( {_src, _dst}, -1 * msk_ij); 
-        if (this -> break_loop( (idx_mat > -1).sum({-1}, true) <= 1 )){break;}
-        idx_mat = idx_mat.transpose(0, 1); 
+
+//        if (this -> break_loop( (idx_mat > -1).sum({-1}, true) <= 1 )){break;}
+//        idx_mat = idx_mat.transpose(0, 1); 
         // ======================== TURN INTO LOOP ========================== //
     } 
     

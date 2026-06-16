@@ -40,14 +40,14 @@ __global__ void PxPyPzK(
 
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
     pmx[threadIdx.x][threadIdx.y] = 0; 
-    if (_idx >= dx || threadIdx.y >= dy){return;}
-    pmx[threadIdx.x][threadIdx.y] = pmu[_idx][threadIdx.y]; 
+    const bool blx = (_idx >= dx || threadIdx.y >= dy); 
+    if (!blx){pmx[threadIdx.x][threadIdx.y] = pmu[_idx][threadIdx.y];}
     __syncthreads(); 
-
-    if (threadIdx.y == 0){pmc[_idx][threadIdx.y] = px_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]); return;}
-    if (threadIdx.y == 1){pmc[_idx][threadIdx.y] = py_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]); return;}
-    if (threadIdx.y == 2){pmc[_idx][threadIdx.y] = pz_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); return;}
-    pmc[_idx][threadIdx.y] = pmx[threadIdx.x][threadIdx.y]; 
+    
+    if      (!blx && threadIdx.y == 0){pmc[_idx][threadIdx.y] = px_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
+    else if (!blx && threadIdx.y == 1){pmc[_idx][threadIdx.y] = py_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
+    else if (!blx && threadIdx.y == 2){pmc[_idx][threadIdx.y] = pz_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+    else if (!blx){ pmc[_idx][threadIdx.y] = pmx[threadIdx.x][threadIdx.y]; }
 }
 
 template <typename scalar_t, size_t size_x>
@@ -62,19 +62,24 @@ __global__ void PxPyPzEK(
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
     pmx[threadIdx.x][threadIdx.y] = 0;
     pmt[threadIdx.x][threadIdx.y] = 0;
-    if (_idx >= dx || threadIdx.y >= dy){return;}
-    pmx[threadIdx.x][threadIdx.y] = pmu[_idx][threadIdx.y]; 
+    const bool blx = (_idx >= dx || threadIdx.y >= dy);
+
+    if (!blx){pmx[threadIdx.x][threadIdx.y] = pmu[_idx][threadIdx.y];}
+
     __syncthreads(); 
 
     double xt = 0; 
-    if (threadIdx.y == 0){xt = px_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
-    if (threadIdx.y == 1){xt = py_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
-    if (threadIdx.y == 2){xt = pz_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
-    pmt[threadIdx.x][threadIdx.y] = xt*xt;
+    if (blx){}
+    else if (threadIdx.y == 0){xt = px_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
+    else if (threadIdx.y == 1){xt = py_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][2]);}
+    else if (threadIdx.y == 2){xt = pz_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+    else { pmt[threadIdx.x][threadIdx.y] = xt*xt; }
     __syncthreads(); 
 
-    if (threadIdx.y == 3){xt = _sqrt(_sum(pmt[threadIdx.x], 3));} 
-    pmc[_idx][threadIdx.y] = xt; 
+    if (!blx){
+        if (threadIdx.y == 3){xt = _sqrt(_sum(pmt[threadIdx.x], 3));} 
+        pmc[_idx][threadIdx.y] = xt; 
+    }
 }
 
 
@@ -115,21 +120,25 @@ __global__ void PtEtaPhiK(
     const unsigned int dx, const unsigned int dy
 ){
     __shared__ double pmx[size_x][4]; 
+    
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
+    const bool blx = (_idx >= dx || threadIdx.y >= dy); 
     pmx[threadIdx.x][threadIdx.y] = 0; 
-    if (_idx >= dx || threadIdx.y >= dy){return;}
-    pmx[threadIdx.x][threadIdx.y] = pmc[_idx][threadIdx.y]; 
+
+    if (!blx){ pmx[threadIdx.x][threadIdx.y] = pmc[_idx][threadIdx.y]; }
     __syncthreads(); 
 
-    double rx = 0; 
-    if (threadIdx.y == 0){rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
-    else if (threadIdx.y == 1){
-        rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); 
-        rx = eta_(&rx, &pmx[threadIdx.x][2]); 
+    if (!blx){
+        double rx = 0; 
+        if (threadIdx.y == 0){rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+        else if (threadIdx.y == 1){
+            rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); 
+            rx = eta_(&rx, &pmx[threadIdx.x][2]); 
+        }
+        else if (threadIdx.y == 2){rx = phi_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+        else {rx = pmx[threadIdx.x][threadIdx.y];}
+        pmu[_idx][threadIdx.y] = rx; 
     }
-    else if (threadIdx.y == 2){rx = phi_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
-    else {rx = pmx[threadIdx.x][threadIdx.y];}
-    pmu[_idx][threadIdx.y] = rx; 
 } 
 
 template <typename scalar_t, size_t size_x>
@@ -142,21 +151,25 @@ __global__ void PtEtaPhiEK(
     __shared__ double pmt[size_x][4]; 
 
     const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
-    if (_idx >= dx){return;}
+    const bool blx = (_idx >= dx); 
 
     double rx = 0; 
-    if (threadIdx.y < 3){rx = pmc[_idx][threadIdx.y];}
-    pmx[threadIdx.x][threadIdx.y] = rx; 
-    pmt[threadIdx.x][threadIdx.y] = rx*rx;  
+    if (!blx){
+        if (threadIdx.y < 3){rx = pmc[_idx][threadIdx.y];}
+        pmx[threadIdx.x][threadIdx.y] = rx; 
+        pmt[threadIdx.x][threadIdx.y] = rx*rx;  
+    }
     __syncthreads(); 
 
-    if (threadIdx.y == 0){rx =  pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
-    else if (threadIdx.y == 1){
-        rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); 
-        rx = eta_(&rx, &pmx[threadIdx.x][2]); 
+    if (!blx){
+        if (threadIdx.y == 0){rx =  pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+        else if (threadIdx.y == 1){
+            rx = pt_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]); 
+            rx = eta_(&rx, &pmx[threadIdx.x][2]); 
+        }
+        else if (threadIdx.y == 2){rx = phi_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
+        else {rx = _sqrt(_sum(pmt[threadIdx.x], 3));}
+        pmu[_idx][threadIdx.y] = rx; 
     }
-    else if (threadIdx.y == 2){rx = phi_(&pmx[threadIdx.x][0], &pmx[threadIdx.x][1]);}
-    else {rx = _sqrt(_sum(pmt[threadIdx.x], 3));}
-    pmu[_idx][threadIdx.y] = rx; 
 }
 
