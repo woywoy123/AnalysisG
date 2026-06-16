@@ -16,8 +16,16 @@ class grift: public model_template
             torch::Tensor pmc,   torch::Tensor* dnn
         ); 
 
-        torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
+        torch::Tensor get_value(torch::Tensor tpx); 
+        torch::Tensor get_diff(torch::Tensor h1, torch::Tensor h2, torch::Tensor h3); 
+        torch::Tensor expand(torch::Tensor h1, torch::Tensor msk); 
 
+        torch::Tensor node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
+        torch::Tensor build_IDX(graph_t* data, torch::Tensor src, torch::Tensor dst); 
+        torch::Tensor build_pid(graph_t* data, torch::Tensor event_idx); 
+        torch::Tensor build_pmc(graph_t* data); 
+
+        bool break_loop(torch::Tensor inpt); 
 
         // Neural Network Parameters
         int _hidden = 1024; 
