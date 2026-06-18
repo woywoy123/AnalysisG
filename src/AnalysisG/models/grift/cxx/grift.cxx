@@ -23,62 +23,50 @@ grift::grift(){
     int ixn = this -> _xin + rxn; 
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", make_Lin(ixn, rxn * 2)     },      
+            {"rnn_x_r1", make_Prm(rxn * 2)          },
+            {"rnn_x_l2", make_Lin(rxn * 2, rxn * 2) },            
             {"rnn_x_n1", make_Nrm(rxn * 2)          },                     
-            {"rnn_x_r1", torch::nn::LeakyReLU()     },
-            {"rnn_x_l2", make_Lin(rxn * 2, rxn)     },            
-            {"rnn_x_n2", make_Nrm(rxn)              },
-            {"rnn_x_r2", torch::nn::LeakyReLU()     },
-            {"rnn_x_l3", make_Lin(rxn, rxn)         },                
-            {"rnn_x_n3", make_Nrm(rxn)              },
-            {"rnn_x_r3", torch::nn::LeakyReLU()     },
+            {"rnn_x_l3", make_Lin(rxn * 2, rxn)     },                
+            {"rnn_x_n3", make_Prm(rxn)              },
             {"rnn_x_l4", make_Lin(rxn)              }                          
     });
     
     int txn = this -> _xrec * 2; 
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", make_Lin(txn, rxn * 2) }, 
-            {"rnn_dx_n1", make_Nrm(rxn * 2)      },
             {"rnn_dx_r1", torch::nn::LeakyReLU() },
-            {"rnn_dx_l2", make_Lin(rxn * 2, rxn) }, 
-            {"rnn_dx_n2", make_Nrm(rxn)          },
-            {"rnn_dx_r2", torch::nn::LeakyReLU() },
-            {"rnn_dx_l3", make_Lin(rxn, rxn)     },     
-            {"rnn_dx_n3", make_Nrm(rxn)          },
-            {"rnn_dx_r3", torch::nn::LeakyReLU() },
+            {"rnn_dx_l2", make_Lin(rxn * 2)      }, 
+            {"rnn_dx_n1", make_Nrm(rxn * 2)      },
+            {"rnn_dx_l3", make_Lin(rxn*2, rxn)   },     
+            {"rnn_dx_n2", make_Prm(rxn)          },
             {"rnn_dx_l4", make_Lin(rxn)          }               
     });
 
-
     this -> rnn_hxx = new torch::nn::Sequential({
             {"rnn_hxx_l1", make_Lin(rxn * 3, rxn * 3)  }, 
-            {"rnn_hxx_n1", make_Nrm(rxn * 3)           },          
-            {"rnn_hxx_p1", torch::nn::LeakyReLU()      }, 
+            {"rnn_hxx_t1", torch::nn::Tanh()           }, 
             {"rnn_hxx_l2", make_Lin(rxn * 3, rxn * 2)  },     
-            {"rnn_hxx_n2", make_Nrm(rxn * 2)           },
-            {"rnn_hxx_p3", torch::nn::Tanh()           }, 
+            {"rnn_hxx_n2", make_Nrm(rxn * 2)           },          
             {"rnn_hxx_l3", make_Lin(rxn * 2, rxn)      }               
     });
 
     this -> rnn_txx = new torch::nn::Sequential({
             {"rnn_txx_l0", make_Lin(rxn * 3, rxn * 3)},        
             {"rnn_txx_n0", make_Nrm(rxn * 3)         },
-            {"rnn_txx_p1", torch::nn::Tanh()         }, 
             {"rnn_txx_l1", make_Lin(rxn * 3, rxn * 2)}, 
-            {"rnn_txx_n1", make_Nrm(rxn * 2)         },
-            {"rnn_txx_p0", torch::nn::LeakyReLU()    }, 
+            {"rnn_txx_n1", make_Prm(rxn * 2)         },
             {"rnn_txx_l2", make_Lin(rxn * 2, rxn)    },  
             {"rnn_txx_n2", make_Nrm(rxn)             }, 
-            {"rnn_txx_p3", torch::nn::Sigmoid()    }, 
+            {"rnn_txx_p3", torch::nn::Sigmoid()      }, 
             {"rnn_txx_l3", make_Lin(rxn, this -> _xout)}
     });
 
     this -> rnn_rxx = new torch::nn::Sequential({
-            {"rnn_rxx_l0", make_Lin(rxn * 4,  rxn * 2)}, 
-            {"rnn_rxx_n1", make_Nrm(rxn * 2          )},          
+            {"rnn_rxx_l0", make_Lin(rxn * 4,  rxn * 3)}, 
+            {"rnn_rxx_n1", make_Prm(rxn * 3          )},          
+            {"rnn_rxx_l2", make_Lin(rxn * 3, rxn  * 2)}, 
             {"rnn_rxx_r2", torch::nn::LeakyReLU()     }, 
-            {"rnn_rxx_l2", make_Lin(rxn * 2, rxn)     }, 
-            {"rnn_rxx_r3", torch::nn::Softmax(-1)     },
-            {"rnn_rxx_l3", make_Lin(rxn, this -> _xout)}
+            {"rnn_rxx_l3", make_Lin(rxn * 2, this -> _xout)}
     }); 
 
     int ntps = this -> _xtop + this -> _xrec; 
@@ -181,7 +169,7 @@ void grift::forward(graph_t* data){
         torch::Tensor _src = this -> expand(src, sls); 
         torch::Tensor _dst = this -> expand(dst, idf); 
 
-        torch::Tensor path_si = path_d.index({sls}); 
+        torch::Tensor path_si = path_s.index({sls}); 
         torch::Tensor path_ij = path_d.index({idf}); 
 
         torch::Tensor hx_i  = this -> expand(node_rnn, sls); 
@@ -198,7 +186,7 @@ void grift::forward(graph_t* data){
         torch::Tensor es_di = (*this -> rnn_hxx) -> forward(e_di); 
         torch::Tensor es_dj = (*this -> rnn_hxx) -> forward(e_dj); 
 
-        torch::Tensor es_sx  = es_di.softmax(-1) * hx_i + es_dj.softmax(-1) * en_ij; 
+        torch::Tensor es_sx  = es_di.sigmoid() * hx_i + es_dj.sigmoid() * en_ij; 
         torch::Tensor echo_s = torch::cat({hk_ij, en_ij, es_sx}, {-1}); 
 
         // ------- Make a prediction -------- // 
@@ -211,34 +199,36 @@ void grift::forward(graph_t* data){
 
         // ------ Exchange signatures -------- //
         path_d = torch::cat({path_d, path_s.index_put({idf}, msk_ij)}, {-1}).to(torch::kLong); 
-        path_d = pyc::graph::unique_aggregation(path_d, pmc).at("unique"); 
+        gr_ = pyc::graph::unique_aggregation(path_d, pmc); 
 
         // ------ encode the state of this new path (globally) ------ // 
         gr_ = pyc::graph::edge_aggregation(edge_index, top_edge, pmc); 
         torch::Tensor hxt_pi = this -> node_encode(this -> expand(gr_.at(key_smx), _src), path_si, &es_di); 
         torch::Tensor hxt_pj = this -> node_encode(this -> expand(gr_.at(key_smx), _dst), path_ij, &es_dj); 
+        torch::Tensor pki = gr_.at(key_idx);
 
         // ----- encode the state of a single node contraction ----- //
-        gr_ = pyc::graph::unique_aggregation(path_ij, pmc); 
-        path_ij = gr_.at("unique"); 
+        gr_ = pyc::graph::unique_aggregation(path_ij, pmc);
+        torch::Tensor het_pi = this -> node_encode(gr_.at("node-sum"), path_si, &hxt_pi); 
+        torch::Tensor het_pj = this -> node_encode(gr_.at("node-sum"), path_ij, &hxt_pj); 
 
-        torch::Tensor het_pi = this -> node_encode(gr_.at("node-sum"), path_si, &hx_i ); 
-        torch::Tensor het_pj = this -> node_encode(gr_.at("node-sum"), path_ij, &hk_ij); 
-        torch::Tensor hx_sg  = hk_ij - (hxt_pi.softmax(-1) * het_pi + hxt_pj.softmax(-1) * het_pj); 
-        edge_rnn.index_put_({idf}, hx_sg); 
-        node_rnn.index_put_({idf}, es_sx); 
-
-        echo_s = torch::cat({hx_sg, es_sx, hxt_pi - hxt_pj}, {-1}); 
-        top_edge.index_put_({idf}, (*this -> rnn_txx) -> forward(echo_s)); 
+        torch::Tensor hx_sg  = hxt_pi.sigmoid() * het_pi + hxt_pj.sigmoid() * het_pj; 
+        torch::Tensor echo_p = torch::cat({hx_sg, hk_ij - hx_ij, es_sx}, {-1}); 
+        edge_rnn.index_put_({idf}, (*this -> rnn_hxx) -> forward(echo_p)); 
+        node_rnn.index_put_({idf}, hx_sg); 
 
         msk_ij  = this -> get_value(top_edge) > 0; 
         _src    = this -> expand(src, msk_ij); 
         _dst    = this -> expand(dst, msk_ij); 
         msk_ij  = this -> expand(msk_ij, msk_ij).to(torch::kLong); 
 
-        torch::Tensor delta = idx_mat.index({_src, _dst}) == msk_ij; 
-        if (this -> break_loop(delta)){break;}
+        torch::Tensor deP = idx_mat.index({_src, _dst});
         idx_mat.index_put_({_src, _dst}, -1 * msk_ij); 
+        torch::Tensor deN = idx_mat.index({_src, _dst}); 
+
+        torch::Tensor delta = deP != deN; 
+        if (this -> break_loop(delta)){break;}
+        path_d = pyc::graph::cycle_aggregation(pki, pmc).at("cycles").index({src}); 
         idx_mat = idx_mat.transpose(0, 1); 
     } 
     
