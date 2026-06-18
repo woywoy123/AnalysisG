@@ -113,7 +113,6 @@ grift::grift(){
 torch::Tensor grift::node_encode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn){
     num_node = (num_node > -1).sum({-1}, true); 
     torch::Tensor mass = pyc::physics::cartesian::combined::M(pmc); 
-    std::cout << mass << std::endl;
     if (!node_rnn){return torch::cat({mass, pmc, num_node}, {-1}).to(torch::kFloat32);}
     torch::Tensor nox = torch::cat({mass, pmc, num_node, *node_rnn}, {-1});
     return (*this -> rnn_x) -> forward(nox.to(torch::kFloat32)) * 1.0 / num_node.to(torch::kFloat32);  
@@ -127,17 +126,19 @@ torch::Tensor grift::message(
     const std::string key_idx = "unique"; 
     const std::string key_smx = "node-sum"; 
 
+
     torch::Dict<std::string, torch::Tensor> aggr; 
     aggr = pyc::graph::unique_aggregation(trk_i, pmc); 
     torch::Tensor fx_i = this -> node_encode(aggr.at(key_smx), aggr.at(key_idx), hx_i); 
 
     aggr = pyc::graph::unique_aggregation(trk_j, pmc); 
     torch::Tensor fx_j = this -> node_encode(aggr.at(key_smx), aggr.at(key_idx), hx_j); 
-   
+ 
     aggr = pyc::graph::unique_aggregation(torch::cat({trk_i, trk_j}, {-1}), pmc); 
     torch::Tensor fx_ij = this -> node_encode(aggr.at(key_smx), aggr.at(key_idx), dnn); 
 
     return (*this -> rnn_dx) -> forward(torch::cat({fx_ij, fx_j - fx_i}, {-1})); 
+
 }
 
 
@@ -149,11 +150,9 @@ void grift::forward(graph_t* data){
     torch::Tensor edge_index   = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src          = edge_index.index({0}).view({-1}); 
     torch::Tensor dst          = edge_index.index({1}).view({-1}); 
-
+    torch::Tensor pmc          = this -> build_pmc(data); 
     const std::string key_idx = "cls::1::node-indices"; 
     const std::string key_smx = "cls::1::node-sum"; 
-
-    torch::Tensor pmc = this -> build_pmc(data); 
 
     // ------ initialize nulls -------- //
     torch::Tensor null_idx = torch::zeros_like(src); 
@@ -164,66 +163,70 @@ void grift::forward(graph_t* data){
 
     torch::Tensor node_i  = (torch::ones_like(batch_index).cumsum({0})-1).to(torch::kLong); 
     torch::Tensor path_s  = node_i.index({src}).view({-1, 1}).clone();
-    torch::Tensor path_d  = node_i.index({dst}).view({-1, 1}).clone(); 
+    torch::Tensor path_d  = node_i.index({src}).view({-1, 1}).clone(); 
 
     // ------- Build indexing mapping from i -> j, 0 to N^2 - 1 ------ //
     torch::Tensor idx_mat = this -> build_IDX(data, src, dst); 
-    
+     
     torch::Dict<std::string, torch::Tensor> gr_; 
-    torch::Tensor _src = src.clone();  
-    torch::Tensor _dst = dst.clone();  
     while (true){
-        // ======================== TURN INTO LOOP ========================== //
-        torch::Tensor idf = idx_mat.index({_src, _dst}); 
-        torch::Tensor slf = idx_mat.index({_src, _src}); 
+        torch::Tensor sls = idx_mat.index({src, src}); 
+        torch::Tensor idf = idx_mat.index({dst, src}); 
+        torch::Tensor mxk = (sls > -1) * (idf > -1); 
 
-        idf = idf.index({idf > -1}); 
-        slf = slf.index({slf > -1}); 
-        if (this -> break_loop(slf)){break;}
+        if (this -> break_loop(mxk)){break;}
+        sls = sls.index({mxk}); 
+        idf = idf.index({mxk}); 
+
+        torch::Tensor _src = this -> expand(src, sls); 
+        torch::Tensor _dst = this -> expand(dst, idf); 
+
+        torch::Tensor path_si = path_d.index({sls}); 
+        torch::Tensor path_ij = path_d.index({idf}); 
+
+        torch::Tensor hx_i  = this -> expand(node_rnn, sls); 
+        torch::Tensor hx_ij = this -> expand(edge_rnn, idf);
+        torch::Tensor en_ij = this -> expand(node_rnn, idf); 
 
         // ------- Generate a message based on current nodes ---------- //
-        torch::Tensor hx_i  = this -> expand(node_rnn, slf);
-        torch::Tensor hx_j  = this -> expand(node_rnn, idf); 
-        torch::Tensor hx_ij = this -> message(path_s, path_d, &hx_i, &hx_j, pmc, &edge_rnn); 
- 
+        torch::Tensor hk_ij = this -> message(path_si, path_ij, &hx_i, &hx_ij, pmc, &en_ij); 
+
         // ------- Encode the echo heard by the current  
-        torch::Tensor e_di = this -> get_diff(hx_j, hx_ij, edge_rnn); // <- echo of j:  j -> i
-        torch::Tensor e_dj = this -> get_diff(hx_i, hx_ij, edge_rnn); // <- echo of i:  i -> j
+        torch::Tensor e_di = this -> get_diff(hx_i, hk_ij, en_ij); // <- echo of j:  j -> i
+        torch::Tensor e_dj = this -> get_diff(hx_i, hx_ij, en_ij); // <- echo of i:  i -> j
 
         torch::Tensor es_di = (*this -> rnn_hxx) -> forward(e_di); 
         torch::Tensor es_dj = (*this -> rnn_hxx) -> forward(e_dj); 
 
-        torch::Tensor es_sx = es_di.softmax(-1) * hx_i + es_dj.softmax(-1) * hx_j; 
-        torch::Tensor echo_s = torch::cat({hx_ij, edge_rnn, es_sx}, {-1}); 
+        torch::Tensor es_sx  = es_di.softmax(-1) * hx_i + es_dj.softmax(-1) * en_ij; 
+        torch::Tensor echo_s = torch::cat({hk_ij, en_ij, es_sx}, {-1}); 
 
         // ------- Make a prediction -------- // 
         torch::Tensor txp    = (*this -> rnn_txx) -> forward(echo_s); 
         torch::Tensor msk_ij =   this -> get_value(txp).view({-1, 1}); 
-        msk_ij = path_s * (msk_ij > 0) - 1 * (msk_ij < 1); // if true i -> j: [i + j]
-  
+        top_edge.index_put_({idf}, txp); 
+
+        msk_ij  = path_s.index({sls}) * (msk_ij > 0) - 1 * (msk_ij < 1); // if true i -> j: [i + j]
+        path_ij = torch::cat({path_ij, msk_ij}, {-1}).to(torch::kLong); 
+
         // ------ Exchange signatures -------- //
-        path_d = torch::cat({path_d, msk_ij}, {-1}).to(torch::kLong); 
+        path_d = torch::cat({path_d, path_s.index_put({idf}, msk_ij)}, {-1}).to(torch::kLong); 
+        path_d = pyc::graph::unique_aggregation(path_d, pmc).at("unique"); 
 
         // ------ encode the state of this new path (globally) ------ // 
-        _src = this -> expand(_src, slf); 
-        _dst = this -> expand(_dst, idf); 
-
-        gr_ = pyc::graph::edge_aggregation(edge_index, txp, pmc); 
-        torch::Tensor hxt_pi = this -> node_encode(this -> expand(gr_.at(key_smx), _src), path_d, &hx_i); 
-        torch::Tensor hxt_pj = this -> node_encode(this -> expand(gr_.at(key_smx), _dst), path_d, &hx_j); 
+        gr_ = pyc::graph::edge_aggregation(edge_index, top_edge, pmc); 
+        torch::Tensor hxt_pi = this -> node_encode(this -> expand(gr_.at(key_smx), _src), path_si, &es_di); 
+        torch::Tensor hxt_pj = this -> node_encode(this -> expand(gr_.at(key_smx), _dst), path_ij, &es_dj); 
 
         // ----- encode the state of a single node contraction ----- //
-        gr_ = pyc::graph::unique_aggregation(path_d, pmc); 
-        torch::Tensor het_pi = this -> node_encode(
-                this -> expand(gr_.at("node-sum"), slf), this -> expand(path_d, slf), &es_sx
-        ); 
-        torch::Tensor het_pj = this -> node_encode(
-                this -> expand(gr_.at("node-sum"), idf), this -> expand(path_d, idf), &es_sx
-        ); 
-        torch::Tensor hx_sg  = hx_ij - (hxt_pi.softmax(-1) * het_pi + hxt_pj.softmax(-1) * het_pj); 
+        gr_ = pyc::graph::unique_aggregation(path_ij, pmc); 
+        path_ij = gr_.at("unique"); 
 
+        torch::Tensor het_pi = this -> node_encode(gr_.at("node-sum"), path_si, &hx_i ); 
+        torch::Tensor het_pj = this -> node_encode(gr_.at("node-sum"), path_ij, &hk_ij); 
+        torch::Tensor hx_sg  = hk_ij - (hxt_pi.softmax(-1) * het_pi + hxt_pj.softmax(-1) * het_pj); 
         edge_rnn.index_put_({idf}, hx_sg); 
-        node_rnn.index_put_({idf}, es_sx.index({slf})); 
+        node_rnn.index_put_({idf}, es_sx); 
 
         echo_s = torch::cat({hx_sg, es_sx, hxt_pi - hxt_pj}, {-1}); 
         top_edge.index_put_({idf}, (*this -> rnn_txx) -> forward(echo_s)); 
@@ -233,12 +236,10 @@ void grift::forward(graph_t* data){
         _dst    = this -> expand(dst, msk_ij); 
         msk_ij  = this -> expand(msk_ij, msk_ij).to(torch::kLong); 
 
-        //idx_mat.index_put_({_src, _dst}, -1 * msk_ij); 
-
-
-//        if (this -> break_loop( (idx_mat > -1).sum({-1}, true) <= 1 )){break;}
-//        idx_mat = idx_mat.transpose(0, 1); 
-        // ======================== TURN INTO LOOP ========================== //
+        torch::Tensor delta = idx_mat.index({_src, _dst}) == msk_ij; 
+        if (this -> break_loop(delta)){break;}
+        idx_mat.index_put_({_src, _dst}, -1 * msk_ij); 
+        idx_mat = idx_mat.transpose(0, 1); 
     } 
     
     // ----------- Add additional context ----------- //
@@ -261,7 +262,7 @@ void grift::forward(graph_t* data){
     gr_ = pyc::graph::unique_aggregation(torch::cat({node_trk.index({src}), node_trk.index({dst})}, {-1}), pmc); 
     torch::Tensor node_res = this -> node_encode(gr_.at("node-sum"), gr_.at("unique"), &edge_rnn);
 
-    torch::Tensor fx_ij = this -> get_diff(ntops.index({src}), edge_rnn, node_rnn); 
+    torch::Tensor fx_ij = this -> get_diff(ntops, edge_rnn, node_rnn); 
     fx_ij = torch::cat({node_res, fx_ij}, {-1});
     torch::Tensor res_edge = (*this -> rnn_rxx) -> forward(fx_ij);
 

@@ -41,80 +41,82 @@ __global__ void _edge_summing(
 template <typename scalar_t, size_t size_x, size_t size_y, size_t size_z> 
 __global__ void _fast_unique(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> features, 
-              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> out_feats, 
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> out_fea, 
               torch::PackedTensorAccessor64<    long, 1, torch::RestrictPtrTraits> maxi_o, 
         const torch::PackedTensorAccessor64<    long, 2, torch::RestrictPtrTraits> cluster_map, 
               torch::PackedTensorAccessor64<    long, 2, torch::RestrictPtrTraits> out_map, 
-        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_f, const unsigned int dim_e
+        const unsigned int dim_i, const unsigned int dim_j, 
+        const unsigned int dim_l, const unsigned int dim_e
 ){
-    __shared__ long     msk[size_x][size_y];
-    __shared__ long     skx[size_x][size_y];
-    __shared__ double feats[size_x][size_z]; 
+    __shared__ long   msk[size_x][size_y];
+    __shared__ long   skx[size_x][size_y];
+    __shared__ double fea[size_x][size_z]; 
 
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int ix  = threadIdx.x;
     const unsigned int idy = threadIdx.y;
-
-    msk[ix][idy] = -1; 
-    skx[ix][idy] = -1;
-    feats[ix][idy % size_z] = 0;  
-
-    const bool bly = idy < size_z; 
+    const unsigned int dim_f = (dim_l < size_z) ? dim_l : size_z; 
+    const unsigned int smx = size_x; 
     const bool blk = idx < dim_i; 
-    long xk; 
 
-    if (blk && bly){msk[threadIdx.x][threadIdx.y] = cluster_map[threadIdx.x][threadIdx.y];}
+    if (blk && idy <  dim_j){msk[threadIdx.x][idy] = cluster_map[idx][idy];}
+    if (blk && idy >= dim_j){msk[threadIdx.x][idy] = -1;}
+    skx[ix][idy] = -1;
+
     __syncthreads();
-
     if (blk){
-        xk = msk[threadIdx.x][threadIdx.y]; 
+        long xk = msk[ix][idy]; 
         for (size_t y(0); y < size_y; ++y){
-            long vl = msk[threadIdx.x][y]; 
+            long vl = msk[ix][y]; 
             if (vl < 0 || vl != xk){continue;}
-            skx[threadIdx.x][threadIdx.y] = (threadIdx.y == y) ? vl : -1; 
+            if (idy != y){msk[ix][idy] = -1; break;}
+            skx[ix][idy] = vl; 
+            msk[ix][idy] = -1;
             break; 
         }
-        if (bly){feats[threadIdx.x][threadIdx.y]  = features[threadIdx.x][threadIdx.y] ;}
     }
-
     __syncthreads(); 
-    msk[threadIdx.x][threadIdx.y] = -1;
-    __syncthreads();  
-
-    double flx = 0; 
-    if (blk){
-        // define the upper and lower limits
-        long lw = size_x * long(idx / size_x);
-        long lu = lw + size_x; 
-        long kx  = skx[threadIdx.x][threadIdx.y]; 
-        long pos = 0; // this specifies the relative position
-
-        xk = 0;  // count the offset 
-        for (int y(0); y < size_y; ++y){
-            long vt = skx[threadIdx.x][y];
-
-            // count the number of node indices larger than the current one
-            pos += long(vt > kx); 
-            
-            // all threads for (lx, 0 -> ly) should agree to this value.
-            xk += (vt > -1); 
-
-            if (threadIdx.y  >= dim_f){continue;}
-            if (vt < 0 || vt >= dim_e){continue;}
-            // -------------------------------------------- 
-            // if requested node is out of the current block scope:
-            // fetch from global memory ~ slower but better than nothing, 
-            // if within block, we use cached memory.
-            //  -------------------------------------------
-            flx += (vt < lw || vt >= lu) ? features[vt][threadIdx.y] : feats[vt - lw][threadIdx.y]; 
-        }
-        msk[threadIdx.x][threadIdx.y] = kx;
+    long pos = 0;  // count the relative offset
+    long mxp = 0;  // count the global offset 
+    long lx = skx[ix][idy]; 
+    for (size_t y(0); y < size_y * blk; ++y){
+        pos += (skx[ix][y] > -1 && lx > -1 && y < idy);
+        mxp += (skx[ix][y] > -1); 
     }
-    __syncthreads();  
+    if (lx > -1){msk[ix][pos] = lx;}
+    __syncthreads(); 
+    skx[ix][idy] = -1; 
+    __syncthreads();
 
-    if (blk && bly        ){out_feats[idx][threadIdx.y] = feats[threadIdx.x][threadIdx.y];}
-    if (blk && idy < dim_j){out_map[idx][threadIdx.y]   =   msk[threadIdx.x][threadIdx.y];}
-    if (blk && !idy       ){maxi_o[idx] = dim_e;}
+    double fl = 0; 
+    for (int y(0); y < mxp; ++y){
+        long xl  = msk[ix][y]; 
+        if (idy >= dim_f){continue;}
+        if (xl < 0 || xl >= dim_e){continue;}
+        // -------------------------------------------- 
+        // if requested node is out of the current block scope:
+        // fetch from global memory ~ slower but better than nothing, 
+        // if within block, we use cached memory.
+        //  -------------------------------------------
+
+        long lxi = xl % smx; 
+        double dl = 0; 
+        if (skx[lxi][idy] != xl){
+            dl = features[xl][idy];
+            fea[lxi][idy] = dl;
+            skx[lxi][idy] = xl;
+        }
+        else {dl = fea[lxi][idy];}
+
+        fl += dl; 
+    }
+    __syncthreads(); 
+    if (idy < size_z){fea[ix][idy] = fl;}
+    __syncthreads(); 
+
+    if (blk && idy < size_z){out_fea[idx][idy] = fea[ix][idy];}
+    if (blk && idy < mxp   ){out_map[idx][idy] = msk[ix][idy];}
+    if (blk && idy == dim_f){maxi_o[idx] = mxp;}
     
 }
 

@@ -10,8 +10,8 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
     const unsigned int n_feat  = features -> size({1}); 
     const unsigned int e_nodes = features -> size({0}); 
 
-    torch::Tensor feats  =  features -> clone(); 
-    torch::Tensor clust  =  cluster_map -> to(torch::kLong); 
+    torch::Tensor feats  =  format(features, {e_nodes, n_feat});
+    torch::Tensor clust  =  format(cluster_map, {n_nodes, ij_node}); 
     torch::Tensor uniq   = -torch::ones({n_nodes, ij_node}, MakeOp(cluster_map));
     torch::Tensor output =  torch::zeros({n_nodes, n_feat}, MakeOp(features   )); 
     torch::Tensor maxi   =  torch::zeros({n_nodes        }, MakeOp(cluster_map));
@@ -20,7 +20,7 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
     const dim3 bls = blk_(n_nodes, 64, ij_node, 16); 
 
     AT_DISPATCH_ALL_TYPES(features -> scalar_type(), "unique_sum", [&]{ 
-        _fast_unique<scalar_t, 64, 16, 8><<<bls, ths>>>(
+        _fast_unique<scalar_t, 64, 16, 4><<<bls, ths>>>(
               feats.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
              output.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                    maxi.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
@@ -29,14 +29,13 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
                 n_nodes, ij_node, n_feat, e_nodes);
     }); 
 
+
+
+    uniq = uniq.narrow(1, 0, maxi.max().item<long>()); 
     std::map<std::string, torch::Tensor> out; 
     out["node-sum"] = output.clone(); 
     out["maxi"] = maxi.clone(); 
-    out["unique"] = uniq; 
-    //.index({
-    //        torch::indexing::Slice(), 
-    //        torch::indexing::Slice(torch::indexing::None, std::get<0>(maxi.max({-1})).item<int>())
-    //}).clone(); 
+    out["unique"] = uniq.clone();
     return out; 
 }
 
