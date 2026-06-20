@@ -80,7 +80,7 @@ namespace utils {
     torch::nn::Tanh      make_Fx(torch::nn::Tanh*      tn, long int n = -1, long int m = -1); 
 
     torch::nn::Sequential* make_Network(std::string title, std::vector<NetOps>);  
-    torch::Tensor NRecode(torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
+    torch::Tensor NRecode(recyclx* ml, torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
     torch::Tensor build_pmc(recyclx* ml, graph_t* data); 
 }
 

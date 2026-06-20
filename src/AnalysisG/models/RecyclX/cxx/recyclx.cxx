@@ -14,8 +14,7 @@ recyclx::recyclx(){
         NetOps(network::leakyrelu,  0                 ),
         NetOps(network::linear   ,  rnx               )
     }; 
-
-
+    this -> rnn_x = utils::make_Network("node", par_node_rnn); 
 }
 
 torch::Tensor recyclx::message(torch::Tensor trk_i,  torch::Tensor trk_j, torch::Tensor pmc){
@@ -45,6 +44,11 @@ void recyclx::forward(graph_t* data){
     torch::Tensor path_d  = utils::get_index(&node_i, dst); 
     torch::Tensor invBox  = utils::lzero(&this -> dx_nulls, node_i); 
 
+    this -> failure("Model not completely implemented."); 
+
+    abort(); 
+
+
     //// ------- Build indexing mapping from i -> j, 0 to N^2 - 1 ------ //
     //torch::Tensor idx_mat = this -> build_IDX(data, src, dst); 
     //torch::Tensor deC = idx_mat.index({src, dst}); 
@@ -62,6 +66,8 @@ void recyclx::forward(graph_t* data){
     //    // ------ Prior paths 
     //    torch::Tensor path_si = path_s.index({sls}); 
     //    torch::Tensor path_ij = path_d.index({idf}); 
+
+
 
     //    // ------ Node properties
     //    torch::Tensor hx_i  = this -> expand(node_rnn, sls); 

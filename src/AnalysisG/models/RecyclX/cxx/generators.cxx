@@ -31,11 +31,11 @@ torch::Tensor utils::build_pmc(recyclx* ml, graph_t* data){
 torch::Tensor utils::NRecode(
         recyclx* ml, torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn
 ){
-    torch::Tensor feats = (num_node > -1).sum({-1}, true); 
+    torch::Tensor feats = (num_node > -1).sum({-1}, true).to(torch::kFloat32); 
     torch::Tensor mass  = pyc::physics::cartesian::combined::M(pmc); 
     torch::Tensor nox   = torch::cat({mass, pmc, feats, *node_rnn}, {-1});
     nox = (*ml -> rnn_x) -> forward(nox.to(torch::kFloat32)); 
-    return nox / num_node.to(torch::kFloat32);  
+    return nox / feats;  
 }
 
 //// -> src | dst => 0, 1, 2, 3, 4..
@@ -80,4 +80,3 @@ torch::Tensor utils::NRecode(
 ////    this -> prediction_extra("truth_top_edge", *t_edge_t); 
 //    return event_idx; 
 //}
-/
