@@ -29,9 +29,8 @@ bool analysis::build_metric(){
             default: break;   
         }
         if (!smpl){return;}
-        std::vector<graph_t*>* btch = this -> loader -> build_batch(smpl, mdl, nullptr); 
-        (*cx)[hx] = btch; 
-        mx -> link(hx, btch, mt);
+        (*cx)[hx] = this -> loader -> build_batch(smpl, mdl, nullptr); 
+        mx -> link(hx, this -> loader -> build_batch(smpl, mdl, nullptr), mt);
         for (size_t x(0); x < smpl -> size(); ++x){(*smpl)[x] -> in_use = 0;}
     }; 
 
@@ -42,7 +41,24 @@ bool analysis::build_metric(){
     };
 
     if (!this -> model_metrics.size()){return true;}
-    if (!this -> loader -> data_set -> size()){
+
+    size_t threads_ = this -> m_settings.threads-1; 
+    size_t lx       = this -> dsize(); 
+
+    bool tr = this -> m_settings.training; 
+    bool va = this -> m_settings.validation; 
+    bool ev = this -> m_settings.evaluation; 
+    bool debug_mode = this -> m_settings.debug_mode + !threads_;  
+    std::string pth_cache = this -> m_settings.graph_cache; 
+
+    if (!lx && !tr && !va && ev){
+        this -> warning("No Dataset was specified and training / validation were disabled."); 
+        this -> warning("Assuming Evaluation for all graphs within specified cache path."); 
+        this -> loader -> restore_graphs(pth_cache, threads_); 
+        lx = this -> dsize(); 
+    }
+
+    if (!lx){
         this -> failure("No Dataset was found for metrics. Aborting...");
         return false; 
     }
@@ -66,6 +82,7 @@ bool analysis::build_metric(){
     std::map<std::string, std::vector<graph_t*>*> tr_batch_cache = {}; 
     std::map<std::string, std::vector<graph_t*>*> va_batch_cache = {}; 
     std::map<std::string, std::vector<graph_t*>*> ts_batch_cache = {}; 
+
     for (itm = this -> metric_names.begin(); itm != this -> metric_names.end(); ++itm){
         std::map<std::string, std::vector<model_template*>> mdlx = itm -> second -> hash_mdl; 
         std::map<int, torch::TensorOptions*> dev_ = itm -> second -> get_devices(); 
@@ -78,9 +95,9 @@ bool analysis::build_metric(){
                 std::string fx = dev_khx + std::to_string(kf[k]); 
                 fx = this -> hash(fx); 
                 if (!mdlx.count(fx)){continue;}
-                lamb(this -> m_settings.training  , mode_enum::training  , fx, kf[k], itm -> second, mdlx[fx][0], &tr_batch_cache); 
-                lamb(this -> m_settings.validation, mode_enum::validation, fx, kf[k], itm -> second, mdlx[fx][0], &va_batch_cache); 
-                lamb(this -> m_settings.evaluation, mode_enum::evaluation, fx, kf[k], itm -> second, mdlx[fx][0], &ts_batch_cache); 
+                lamb(tr, mode_enum::training  , fx, kf[k], itm -> second, mdlx[fx][0], &tr_batch_cache); 
+                lamb(va, mode_enum::validation, fx, kf[k], itm -> second, mdlx[fx][0], &va_batch_cache); 
+                lamb(ev, mode_enum::evaluation, fx, kf[k], itm -> second, mdlx[fx][0], &ts_batch_cache); 
             }
         }
     }
@@ -138,8 +155,6 @@ bool analysis::build_metric(){
     this -> info("Starting the Metric Compiler"); 
     sx = 0; 
     std::thread* thr_ = nullptr; 
-    size_t threads_ = this -> m_settings.threads-1; 
-    bool debug_mode = this -> m_settings.debug_mode + !threads_;  
     for (size_t x(0); x < mx.size(); ++x, ++sx){
         if (debug_mode){this -> execution_metric(mx[x], &th_prg[x], th_title[x]); continue;}
         th_prc[x] = new std::thread(this -> execution_metric, mx[x], &th_prg[x], th_title[x]);

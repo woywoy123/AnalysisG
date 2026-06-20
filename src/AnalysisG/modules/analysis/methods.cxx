@@ -4,6 +4,7 @@
 #include <TFile.h>
 #include <TTree.h>
 
+size_t analysis::dsize(){return this -> loader -> data_set -> size();}
 
 void analysis::initialize_loop(
         optimizer* op, int k, model_template* model, 

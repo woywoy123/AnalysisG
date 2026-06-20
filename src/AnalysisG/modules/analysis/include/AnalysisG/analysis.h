@@ -39,6 +39,8 @@ class analysis:
         void attach_threads(); 
         void start(); 
 
+        size_t dsize(); 
+
         std::map<std::string, std::vector<float>> progress(); 
         std::map<std::string, std::string> progress_mode(); 
         std::map<std::string, std::string> progress_report(); 

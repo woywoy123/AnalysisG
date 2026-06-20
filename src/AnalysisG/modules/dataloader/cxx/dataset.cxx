@@ -198,7 +198,7 @@ bool dataloader::restore_dataset(std::string path){
         }
 
         std::vector<int>* bin = nullptr; 
-        if (kf -> is_train){bin = this -> k_fold_training[kv];}
+        if (kf -> is_train){     bin = this -> k_fold_training[kv];}
         else if (kf -> is_valid){bin = this -> k_fold_validation[kv];}
         else {continue;}
         bin -> push_back(index); 

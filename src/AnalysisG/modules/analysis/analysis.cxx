@@ -167,6 +167,16 @@ void analysis::start(){
     if (this -> m_settings.pretagevents){this -> fetchtags();}
     this -> create_path(this -> m_settings.output_path + "/"); 
 
+    int threads_ = this -> m_settings.threads; 
+    int intra_th = this -> m_settings.intra_th; 
+
+    std::string pth_cache = this -> m_settings.graph_cache; 
+    bool build_gr_cache   = this -> m_settings.build_cache; 
+    bool load_gr_cache    = pth_cache.size() > 0; 
+
+    std::map<std::string, bool>* root_f = &this -> reader -> root_files; 
+
+
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");
@@ -179,7 +189,7 @@ void analysis::start(){
         if (!this -> event_labels.size() && !this -> graph_labels.size()){
             this -> reader -> import_settings(&this -> m_settings); 
             std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
-            for (; itf != this -> file_labels.end(); ++itf){this -> reader -> root_files[itf -> first] = true;}
+            for (; itf != this -> file_labels.end(); ++itf){(*root_f)[itf -> first] = true;}
             this -> reader -> check_root_file_paths();
             this -> reader -> scan_keys(); 
             this -> meta_data = this -> reader -> meta_data; 
@@ -188,24 +198,29 @@ void analysis::start(){
         return; 
     }
 
-    int threads_ = this -> m_settings.threads; 
-    int intra_th = this -> m_settings.intra_th; 
     ROOT::EnableImplicitMT(threads_); 
-
-    std::string pth_cache = this -> m_settings.graph_cache; 
     this -> loader -> setting = &this -> m_settings; 
 
-    if (pth_cache.size() && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
+    if (load_gr_cache && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
+
     this -> tracer -> compile_objects(threads_, intra_th); 
-    if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
+    
+    if (this -> selection_names.size()){
+        return this -> tracer -> fill_selections(&this -> selection_names);
+    } 
+   
     this -> build_dataloader(false); 
     this -> build_metric_folds();
 
-    if (this -> m_settings.build_cache && !this -> loader -> data_set -> size()){return;}
-    if (pth_cache.size() && this -> loader -> data_set -> size()){this -> loader -> dump_graphs(pth_cache, threads_);}
-    else if (pth_cache.size() && this -> file_labels.size()){
+    if (build_gr_cache && !this -> dsize()){return;}
+
+    if (load_gr_cache && this -> dsize()){
+        this -> loader -> dump_graphs(pth_cache, threads_);
+    }
+
+    else if (load_gr_cache && this -> file_labels.size()){
         std::vector<std::string> cached = {}; 
         std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
         for (; itg != this -> graph_types.end(); ++itg){
@@ -219,13 +234,12 @@ void analysis::start(){
         }
         this -> loader -> restore_graphs(cached, threads_); 
     }
-    else if (pth_cache.size()){this -> loader -> restore_graphs(pth_cache, threads_);}
+    else if (load_gr_cache){this -> loader -> restore_graphs(pth_cache, threads_);}
     if (!this -> build_metric()){return;}
 
     if (this -> model_sessions.size()){
-        if (!this -> loader -> data_set -> size()){
-            return this -> failure("No Dataset was found for training. Aborting...");
-        }
+        size_t lx = this -> dsize(); 
+        if (!lx){return this -> failure("No Dataset was found from training. Aborting...");}
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> loader -> start_cuda_server(); 
@@ -234,7 +248,7 @@ void analysis::start(){
     }
 
     if (this -> model_inference.size()){
-        if (!this -> loader -> data_set -> size()){
+        if (!this -> dsize()){
             return this -> failure("No Dataset was found for inference. Aborting...");
         }
         this -> loader -> start_cuda_server(); 

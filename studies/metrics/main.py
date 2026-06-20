@@ -1,7 +1,8 @@
 import AnalysisG
 from AnalysisG import Analysis
-from AnalysisG.metrics import AccuracyMetric
 from AnalysisG.core.tools import Tools
+from AnalysisG.metrics import AccuracyMetric
+from AnalysisG.graphs.bsm_4tops import *
 from AnalysisG.models import *
 
 from atomics import *
@@ -12,7 +13,7 @@ base_model = "Grift"
 
 train_path = base_dir + "model-package/gnn-update"
 #graph_index = base_dir + "model-package/Graphs/graph_jets_detector_lep"
-graph_index = base_dir + "evaluation/graph_jets_detector_lep"
+graph_index = base_dir + "model-package/evaluation/graph_jets_detector_lep"
 graph_train = base_dir + "model-package/Graphs/GraphDetectorLep_train.h5"
 
 runs = []
@@ -66,9 +67,9 @@ for i in ml.sessions:
     ana.AddMetric(mx, gn)
 
     #ana.TrainingDataset = prm.graph_set
-    ana.Validation = True
-    ana.Training   = True
-    ana.Evaluation = False
+    ana.Validation = False
+    ana.Training   = False
+    ana.Evaluation = True
     ana.Start()
 
     exit()
