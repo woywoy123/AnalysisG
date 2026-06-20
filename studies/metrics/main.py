@@ -1,80 +1,77 @@
 import AnalysisG
+from AnalysisG import Analysis
 from AnalysisG.metrics import AccuracyMetric
+from AnalysisG.core.tools import Tools
 from AnalysisG.models import *
 
-def default(tl):
-    tl.Style = "ATLAS"
-    tl.DPI = 300
-    tl.TitleSize = 15
-    tl.AutoScaling = True
-    tl.LegendSize = 10
-    tl.yScaling = 5 
-    tl.xScaling = 10
-    tl.FontSize = 10
-    tl.AxisSize = 10
-    tl.LineWidth = 1
+from atomics import *
 
-def make_metrics(graph_cache, train_set, batch_size, threads, RunNames, variables):
+
+base_dir   = "/scratch/tnom6927/"
+base_model = "Grift"
+
+train_path = base_dir + "model-package/gnn-update"
+#graph_index = base_dir + "model-package/Graphs/graph_jets_detector_lep"
+graph_index = base_dir + "evaluation/graph_jets_detector_lep"
+graph_train = base_dir + "model-package/Graphs/GraphDetectorLep_train.h5"
+
+runs = []
+tl = Tools()
+for i in tl.ls(train_path, ""):
+    if not i.endswith(".pt"): continue
+    if "optimizer" in i: continue
+    ss = Sessions(train_path)
+    ss.parse(i)
+    runs.append(ss)
+
+varx = [
+    ["truth", "graph",    "ntops"],
+    ["truth", "edge" , "top_edge"],
+    ["prediction", "extra", "ntops_score"   ],
+    ["prediction", "extra", "top_edge_score"],
+    ["data", "node", "index"],
+    ["data", "edge", "index"]
+]
+
+prm = ModelParams()
+prm.variables = varx
+prm.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
+prm.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
+prm.i_node  = ["pt", "eta", "phi", "energy"]
+prm.i_graph = ["met", "phi"]
+prm.train_set = graph_train
+prm.graph_set = graph_index
+prm.batch_size  = 10
+
+ml = ModelEnv(runs, prm)
+ml.compile()
+
+for i in ml.sessions:
     mx = AccuracyMetric()
-    mx.RunNames = RunNames
-    mx.Variables = variables
+    mx.RunNames  = {i.tag : i.abs}
+    mx.Variables = i.variables
 
     gn = Grift()
-    gn.name = "Grift-MRK-1"
-    gn.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
-    gn.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
-    gn.i_node  = ["pt", "eta", "phi", "energy"]
-    gn.i_graph = ["met", "phi"]
+    gn.name    = i.mdl + "-" + i.mrk
+    gn.o_edge  = prm.o_edge
+    gn.o_graph = prm.o_graph
+    gn.i_node  = prm.i_node
+    gn.i_graph = prm.i_graph
     gn.device = "cuda:0"
 
     ana = Analysis()
-    ana.Threads = threads
-    ana.BatchSize = batch_size
+    ana.Threads   = 44
+    ana.BatchSize = prm.batch_size
+    ana.GraphCache = prm.graph_set
     ana.AddMetric(mx, gn)
-    ana.GraphCache = graph_cache
-    ana.TrainingDataset = train_set
+
+    #ana.TrainingDataset = prm.graph_set
     ana.Validation = True
-    ana.Evaluation = True
     ana.Training   = True
+    ana.Evaluation = False
     ana.Start()
 
+    exit()
 
 
-
-base_name = "Grift"
-graph_cache = "./ProjectName/"
-base_dir = "./ProjectName/Grift/"
-train_set = "./ProjectName/sample.h5"
-batch_size = 10
-threads = 2
-epochs = 10
-kfold = 10
-
-RunNames = {}
-Variables = []
-for mrk in ["MRK-1", "MRK-2", "MRK-3", "MRK-4", "MRK-5"]:
-    name = base_name + "-" + mrk
-    Variables += [
-            name + "::truth::graph::ntops", 
-            name + "::prediction::extra::ntops_score", 
-    
-            name + "::truth::edge::top_edge",
-            name + "::prediction::extra::top_edge_score", 
-    
-            name + "::data::node::index",
-            name + "::data::edge::index", 
-    ]
-
-    for ep in range(epochs):
-        for kf in range(kfold):
-            key = base_name + "-" + mrk + "::epoch-" + str(ep+1) + "::k-" + str(kf+1)
-            pth = base_dir + mrk + "/epoch-" + str(ep+1) + "/kfold-" + str(kf+1) + "_model.pt"
-
-#make_metrics(graph_cache, train_set, batch_size, threads, RunNames, Variables)
-
-
-
-sl = AccuracyMetric()
-sl.default_plt = default
-sl.InterpretROOT("./accuracy/", epochs = [], kfolds = [3])
 
