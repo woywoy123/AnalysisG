@@ -10,6 +10,8 @@ class recyclx: public model_template
         model_template* clone() override;
         void forward(graph_t*) override; 
 
+        torch::Tensor message(torch::Tensor trk_i,  torch::Tensor trk_j, torch::Tensor pmc); 
+
         // Neural Network Parameters
         int _hidden = 1024; 
         int _xrec = 128; 
