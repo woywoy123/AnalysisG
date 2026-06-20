@@ -63,7 +63,7 @@ void accuracy_metric::define_metric(metric_t* mtx){
     }; 
 
     std::vector<long> batch_idx             = mtx -> get<std::vector<long>>( graph_enum::batch_index, "index");   
-    std::vector<std::vector<int>> edge_idx  = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::edge_index, "index");
+    std::vector<std::vector<int>>  edge_idx = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::edge_index, "index");
     std::vector<std::vector<float>> edge_sc = mtx -> get<std::vector<std::vector<float>>>(graph_enum::pred_extra, "top_edge_score"); 
     std::vector<std::vector<int>>   edge_tr = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::truth_edge, "top_edge"); 
 

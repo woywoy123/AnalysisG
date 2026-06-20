@@ -4,7 +4,7 @@
 from libcpp cimport int, bool
 from AnalysisG.core.model_template cimport model_template, ModelTemplate
 
-cdef extern from "<models/RecyclX.h>":
+cdef extern from "<models/recyclx.h>":
     cdef cppclass recyclx(model_template):
         recyclx() except+
         int _xrec

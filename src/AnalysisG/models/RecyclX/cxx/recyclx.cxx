@@ -14,8 +14,6 @@ recyclx::recyclx(){
         NetOps(network::leakyrelu,  0                 ),
         NetOps(network::linear   ,  rnx               )
     }; 
-    
-    this -> 
 
 
 }

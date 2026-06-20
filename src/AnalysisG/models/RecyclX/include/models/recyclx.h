@@ -10,17 +10,6 @@ class recyclx: public model_template
         model_template* clone() override;
         void forward(graph_t*) override; 
 
-<<<<<<< HEAD:src/AnalysisG/models/grift/include/models/grift.h
-        torch::Tensor message(
-            torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc,  
-            torch::Tensor  hx_i, torch::Tensor hx_j
-        ); 
-=======
-        torch::Tensor message(torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc); 
-
-        bool break_loop(torch::Tensor inpt); 
->>>>>>> 9efb8567 (Recyclx):src/AnalysisG/models/RecyclX/include/models/recyclx.h
-
         // Neural Network Parameters
         int _hidden = 1024; 
         int _xrec = 128; 
@@ -46,10 +35,7 @@ class recyclx: public model_template
         torch::nn::Sequential* mlp_ntop = nullptr; 
         torch::nn::Sequential* mlp_sig  = nullptr; 
 
-<<<<<<< HEAD:src/AnalysisG/models/grift/include/models/grift.h
         torch::Tensor  x_nulls; 
-=======
->>>>>>> 9efb8567 (Recyclx):src/AnalysisG/models/RecyclX/include/models/recyclx.h
         torch::Tensor dx_nulls; 
         torch::Tensor te_nulls; 
 }; 
