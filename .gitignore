@@ -25,6 +25,9 @@ local/**/*.png
 **.cpp
 **cfg.h
 **AutoDict*
+**.root
+**.valid
+**.pdf
 
 # Vim related swaps 
 **.swp

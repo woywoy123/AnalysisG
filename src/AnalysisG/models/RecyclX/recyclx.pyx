@@ -3,9 +3,9 @@
 
 from AnalysisG.core.model_template cimport ModelTemplate
 
-cdef class Grift(ModelTemplate):
+cdef class RecyclX(ModelTemplate):
     def __cinit__(self):
-        self.rnn = new grift()
+        self.rnn = new recyclx()
         self.nn_ptr = self.rnn
 
     def __init__(self): pass
