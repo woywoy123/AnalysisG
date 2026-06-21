@@ -11,10 +11,7 @@ cdata_t* collector::get_mode(std::string model, std::string mode, int epoch, int
     return nullptr; 
 }
 
-void collector::add_ntop_truth(
-    std::string mode, std::string model, 
-    int epoch, int kfold, int data
-){
+void collector::add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data){
     cdata_t* ins = this -> get_mode(model, mode, epoch, kfold); 
     ins -> ntops_truth.push_back(data);
 }
@@ -72,7 +69,7 @@ std::map<std::string, std::vector<cdata_t*>> collector::get_plts(){
     std::map<std::string, cmodel_t>::iterator itx; 
     for (itx = this -> model_data.begin(); itx != this -> model_data.end(); ++itx){
         std::string base_name = itx -> first; 
-        lamb(base_name, "training", &itx -> second, &out); 
+        lamb(base_name, "training"  , &itx -> second, &out); 
         lamb(base_name, "validation", &itx -> second, &out); 
         lamb(base_name, "evaluation", &itx -> second, &out); 
     }

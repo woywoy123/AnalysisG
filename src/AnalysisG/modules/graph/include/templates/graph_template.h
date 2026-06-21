@@ -95,10 +95,10 @@ struct graph_t {
         void transfer_to_device(torch::TensorOptions* dev); 
         void _purge_all(); 
 
-        int       num_nodes = 0; 
-        long    event_index = 0; 
-        double event_weight = 1; 
-        bool   preselection = false;
+        long    num_nodes    = 0; 
+        long    event_index  = 0; 
+        double  event_weight = 1; 
+        bool    preselection = false;
 
         std::vector<long> batched_events = {}; 
         std::vector<std::string*> batched_filenames = {}; 
@@ -109,6 +109,7 @@ struct graph_t {
 
         c10::DeviceType device = c10::kCPU;  
         int in_use = 1; 
+        double use_weight = 100; 
 
     private:
         friend graph_template; 

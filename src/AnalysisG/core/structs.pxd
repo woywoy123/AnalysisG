@@ -138,7 +138,9 @@ cdef extern from "<structs/settings.h>":
         bool evaluation
         bool continue_training
         string training_dataset
+
         string graph_cache
+        map[string, string] splt_graph_cache
 
         string var_pt
         string var_eta

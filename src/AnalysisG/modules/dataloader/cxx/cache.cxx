@@ -175,12 +175,9 @@ bool dataloader::dump_graphs(std::string path, int threads){
     return false;
 }
 
-std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::string> cache_, int threads){
+std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::string> cache_, int threads, bool force_load){
     auto threaded_reader = [](
-            std::string pth, 
-            std::vector<std::string>* gr_ev, 
-            std::vector<graph_t*>* c_gr, 
-            size_t* prg
+            std::string pth, std::vector<std::string>* gr_ev, std::vector<graph_t*>* c_gr, size_t* prg
     ){
         io* ior = new io();
         ior -> start(pth, "read"); 
@@ -232,7 +229,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         delete io_g; 
     }
 
-    std::map<std::string, bool> load_hash; 
+    std::map<std::string, int> load_hash; 
     bool eval = this -> setting -> evaluation; 
     bool fold = this -> setting -> validation;
     bool train = this -> setting -> training; 
@@ -243,7 +240,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
         if (this -> hash_map.count(hash)){continue;}
         if (load_hash.count(hash)){continue;}
-        if (data_k[x].is_eval && eval){load_hash[hash] = true; continue;}
+        if (data_k[x].is_eval && eval){load_hash[hash] = 1; continue;}
         for (size_t k(0); k < kv.size(); ++k){
             if (kv[k] != data_k[x].k+1){continue;}
             load_hash[hash] = fold * data_k[x].is_valid + train * data_k[x].is_train; 
@@ -268,6 +265,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         ior.start(fname, "read"); 
 
         data_set_[fname] = ior.dataset_names();  
+        for (size_t l(0); l < data_set_[fname].size() * (force_load); ++l){load_hash[data_set_[fname][l]] = -1;}
         if (load_hash.size()){
             std::vector<std::string>* check = &data_set_[fname]; 
             std::vector<std::string>::iterator itx = check -> begin(); 
@@ -307,8 +305,11 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p];
-            if (gr -> preselection){delete gr; continue;}
-            (*restored)[(*gr -> hash)] = gr;  
+            bool pre = gr -> preselection; 
+            if (pre){delete gr; continue;}
+            std::string hash = (*gr -> hash); 
+            if (force_load){gr -> preselection = load_hash[hash] == -1;}
+            (*restored)[hash] = gr; 
         }
         cache_rebuild[x] = nullptr; 
         datax -> clear(); 
@@ -319,8 +320,8 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     return restored; 
 }
 
-void dataloader::restore_graphs(std::vector<std::string> path, int threads){
-    std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, threads); 
+void dataloader::restore_graphs(std::vector<std::string> path, int threads, bool force_load){
+    std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, threads, force_load); 
 
     std::map<std::string, graph_t*>::iterator itr; 
     for (itr = restored -> begin(); itr != restored -> end(); ++itr){
@@ -332,9 +333,10 @@ void dataloader::restore_graphs(std::vector<std::string> path, int threads){
     delete restored; 
 }
 
-void dataloader::restore_graphs(std::string path, int threads){
-    std::vector<std::string> files = this -> ls(path, ".h5"); 
-    this -> restore_graphs(files, threads);
+void dataloader::restore_graphs(std::string path, int threads, bool force_load){
+    bool ish5 = this -> ends_with(&path, ".h5"); 
+    std::vector<std::string> files = (ish5) ? std::vector<std::string>({path}) : this -> ls(path, ".h5");
+    this -> restore_graphs(files, threads, force_load);
 }
 
 

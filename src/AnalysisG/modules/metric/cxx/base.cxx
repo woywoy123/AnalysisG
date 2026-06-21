@@ -1,5 +1,6 @@
 #include <templates/metric_template.h>
 #include <templates/model_template.h>
+#include <structs/switchboards.h>
 
 std::map<int, torch::TensorOptions*> metric_template::get_devices(){
     std::map<int, bool> devs; 
@@ -45,26 +46,6 @@ size_t metric_template::size(){
     return sx; 
 }
 
-std::string enums_to_string(graph_enum gr){
-    switch(gr){
-        case graph_enum::truth_graph:  return "truth::graph::"; 
-        case graph_enum::truth_node :  return "truth::node::"; 
-        case graph_enum::truth_edge :  return "truth::edge::"; 
-        case graph_enum::pred_graph:   return "prediction::graph::"; 
-        case graph_enum::pred_node :   return "prediction::node::"; 
-        case graph_enum::pred_edge :   return "prediction::edge::"; 
-        case graph_enum::data_graph:   return "data::graph::"; 
-        case graph_enum::data_node :   return "data::node::"; 
-        case graph_enum::data_edge :   return "data::edge::"; 
-        case graph_enum::pred_extra  : return "prediction::extra::"; 
-        case graph_enum::edge_index  : return "data::edge::"; 
-        case graph_enum::batch_index : return "data::node:"; 
-        case graph_enum::weight      : return "data::graph::"; 
-        case graph_enum::batch_events: return "data::graph::"; 
-        default: return "undef"; 
-    }
-}
-
 void metric_template::construct(
         std::map<graph_enum, std::vector<variable_t*>>* varx, 
         std::map<graph_enum, std::vector<std::string>>* req, 
@@ -92,12 +73,12 @@ void metric_template::construct(
                 case graph_enum::pred_graph: tnx = mdl -> m_p_graph[va_]; break;
                 case graph_enum::pred_node : tnx = mdl -> m_p_node[va_];  break;
                 case graph_enum::pred_edge : tnx = mdl -> m_p_edge[va_];  break;
+                case graph_enum::pred_extra: tnx = mdl -> m_p_undef[va_]; break;
 
                 case graph_enum::data_graph: tnx = grx -> has_feature(vit -> first, va_, dv); break;
                 case graph_enum::data_node : tnx = grx -> has_feature(vit -> first, va_, dv); break;
                 case graph_enum::data_edge : tnx = grx -> has_feature(vit -> first, va_, dv); break;
                 
-                case graph_enum::pred_extra  : tnx = mdl -> m_p_undef[va_]; break;
                 case graph_enum::edge_index  : tnx = grx -> has_feature(vit -> first, va_, dv); break;
                 case graph_enum::weight      : tnx = grx -> has_feature(vit -> first, va_, dv); break;
                 case graph_enum::batch_index : tnx = grx -> has_feature(vit -> first, va_, dv); break;
@@ -105,7 +86,9 @@ void metric_template::construct(
                 default: break; 
             }
             if (!tnx){
-                (*mtx) = "\033[1;31m Could not find: " + enums_to_string(vit -> first) + va_ + " (try enabling inference mode). Skipping... \033[0m"; 
+                std::string mx = "\033[1;31m Could not find: "; 
+                mx += enums_to_string(vit -> first) + va_; 
+                (*mtx) = mx + " (try enabling inference mode). Skipping... \033[0m"; 
                 std::this_thread::sleep_for(std::chrono::seconds(1));
                 continue;
             }
@@ -115,7 +98,9 @@ void metric_template::construct(
             else {v -> flush_buffer();}
             v -> process(tnx, &va_, nullptr); 
             if (!stx){continue;}
-            (*mtx) = "\033[1;32m (Found " + enums_to_string(vit -> first) + va_ + ") Typed: " + v -> as_string() + "\033[0m"; 
+
+            std::string mxs = "\033[1;32m (Found " + enums_to_string(vit -> first) + va_; 
+            (*mtx) = mxs + ") Typed: " + v -> as_string() + "\033[0m\n"; 
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
             (*varx)[vit -> first][t] = v; 
         }
@@ -133,12 +118,16 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
     std::string name_ = mdl -> name; 
     mdl -> model_checkpoint_path = *mtx -> pth;  
     mdl -> restore_state(); 
-    bool init = false; 
-    obj -> _outdir += "/epoch-" + std::to_string(mtx -> epoch) + "/" + name_ + "/"; 
-    obj -> create_path(obj -> _outdir); 
-    obj -> _outdir += "kfold-" + std::to_string(mtx -> kfold) + ".root"; 
 
-    obj -> define_variables(); 
+    std::string opx = obj -> _outdir;
+    opx = opx + "/epoch-" + std::to_string(mtx -> epoch) + "/" + name_;
+    opx = opx + "/kfold-" + std::to_string(mtx -> kfold) + "/"; 
+    
+    obj -> create_path(opx); 
+    obj -> _outdir  = opx; 
+    obj -> base_pth = opx; 
+
+    bool init = false; 
     std::string hx = std::string(this -> hash(std::to_string(mtx -> device) + "+" + std::to_string(mtx -> kfold)));
     std::map<mode_enum, std::vector<graph_t*>*>::iterator itf = this -> hash_bta[hx].begin(); 
     for (; itf != this -> hash_bta[hx].end(); ++itf){
@@ -151,11 +140,13 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
             this -> construct(&vou, var, mdl, gr, msg);
             if (!init){
                 (*msg) = mf; 
-                mtx -> build(); 
-                init = true;
                 (*prg) = 0; 
+                mtx -> build(); 
+                obj -> start(mtx); 
+                init = true;
             }
-            obj -> define_metric(mtx); 
+
+            obj -> define_metric(mtx);
             obj -> flush_garbage(); 
             mtx -> batch_files = nullptr; 
         }

@@ -153,6 +153,7 @@ void notification::monitor(std::vector<std::thread*>* thr){
             (*thr)[x] = nullptr; 
             --exec; 
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -167,6 +168,7 @@ int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* p
         delete (*thr)[x]; 
         (*thr)[x] = nullptr; 
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     return int(idx); 
 }
 

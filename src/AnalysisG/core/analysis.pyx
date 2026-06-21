@@ -323,6 +323,12 @@ cdef class Analysis:
     def GraphCache(self, str val): self.ana.m_settings.graph_cache = enc(val)
 
     @property
+    def GraphCacheSplit(self): return as_basic_dict(&self.ana.m_settings.splt_graph_cache)
+
+    @GraphCacheSplit.setter
+    def GraphCacheSplit(self, dict val): as_map(val, &self.ana.m_settings.splt_graph_cache)
+
+    @property
     def BatchSize(self): return self.ana.m_settings.batch_size
 
     @BatchSize.setter

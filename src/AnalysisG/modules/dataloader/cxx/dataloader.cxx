@@ -6,9 +6,9 @@
 dataloader::dataloader(){
     this -> prefix = "dataloader";
     this -> data_set   = new std::vector<graph_t*>();
-    this -> data_index = new std::vector<int>(); 
-    this -> test_set   = new std::vector<int>(); 
-    this -> train_set  = new std::vector<int>(); 
+    this -> data_index = new std::vector<unsigned long>(); 
+    this -> test_set   = new std::vector<unsigned long>(); 
+    this -> train_set  = new std::vector<unsigned long>(); 
 }
 
 dataloader::~dataloader(){
@@ -37,13 +37,13 @@ dataloader::~dataloader(){
     flushM(&this -> data_map_node);  
     flushM(&this -> data_map_edge);  
 
-    std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
+    std::map<int, std::vector<unsigned long>*>::iterator itr = this -> k_fold_training.begin(); 
     for (; itr != this -> k_fold_training.end(); ++itr){
         delete this -> gr_k_fold_training[itr -> first]; 
         delete itr -> second;
     }
 
-    std::map<int, std::vector<int>*>::iterator itx = this -> k_fold_validation.begin(); 
+    std::map<int, std::vector<unsigned long>*>::iterator itx = this -> k_fold_validation.begin(); 
     for (; itx != this -> k_fold_validation.end(); ++itx){
         delete this -> gr_k_fold_validation[itr -> first]; 
         delete itx -> second;
@@ -67,7 +67,7 @@ dataloader::~dataloader(){
     if (this -> gr_test){delete this -> gr_test;}
 }
 
-void dataloader::shuffle(std::vector<int>* idx){
+void dataloader::shuffle(std::vector<unsigned long>* idx){
     for (size_t x(0); x < 10; ++x){std::shuffle(idx -> begin(), idx -> end(), this -> rnd);}
 }
 
@@ -106,9 +106,11 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
-    this -> hash_map[*gr -> hash] = this -> data_set -> size(); 
-    this -> data_index -> push_back(this -> data_set -> size()); 
+    this -> hash_map[*gr -> hash] = this -> idk; 
+    this -> data_index -> push_back(this -> idk); 
     this -> data_set -> push_back(gr); 
+    if (gr -> preselection){this -> test_set -> push_back(this -> idk);}
+    this -> idk++; 
 }
 
 
@@ -272,7 +274,6 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     std::vector<std::vector<graph_t*>> batched = this -> discretize(_data, this -> setting -> batch_size); 
     int thr = this -> setting -> threads; 
     bool skip = thr > int(batched.size()); 
-
     if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];
         if (!out -> size()){return out;}
@@ -312,11 +313,6 @@ void dataloader::safe_delete(std::vector<graph_t*>* data){
     c10::cuda::CUDACachingAllocator::emptyCache();
     #endif
 }
-
-
-
-
-
 
 void dataloader::cuda_memory_server(){
     auto cuda_memory = [this](int device_i) -> bool {
@@ -360,11 +356,13 @@ void dataloader::cuda_memory_server(){
 
     bool trig = false;     
     std::vector<graph_t*>* ptr = this -> data_set; 
+    std::this_thread::sleep_for(std::chrono::microseconds(10));
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
-        std::this_thread::sleep_for(std::chrono::microseconds(1));
+        if (gr -> use_weight > 1000){gr -> use_weight = 1000;}
+        if (gr -> in_use == 1 && gr -> use_weight > 0.01){gr -> use_weight *= 1.1; continue;}
+        gr -> use_weight *= 0.9;
 
-        if (gr -> in_use == 1){continue;}
         std::map<int, bool>::iterator itx = gr -> device_index.begin(); 
         for (; itx != gr -> device_index.end(); ++itx){
             int dev = itx -> first; 
@@ -382,15 +380,12 @@ void dataloader::cuda_memory_server(){
             check_t(&gr -> dev_event_weight, true, dev);  
             check_b(&gr -> device_index    , true, dev);  
         }
-        gr -> in_use = 1; 
     }
 
     if (!trig){return;}
     #if _server
     c10::cuda::CUDACachingAllocator::emptyCache();
     #endif
-
-
 }
 
 void dataloader::start_cuda_server(){

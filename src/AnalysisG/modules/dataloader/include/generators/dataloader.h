@@ -52,8 +52,8 @@ class dataloader:
         void datatransfer(std::map<int, torch::TensorOptions*>* ops);
         bool dump_graphs(std::string path = "./", int threads = 10); 
 
-        void restore_graphs(std::vector<std::string> paths, int threads); 
-        void restore_graphs(std::string paths, int threads); 
+        void restore_graphs(std::vector<std::string> paths, int threads, bool force_load = false); 
+        void restore_graphs(std::string paths, int threads, bool force_load = false);  
         void start_cuda_server(); 
     
     private:
@@ -68,21 +68,24 @@ class dataloader:
                 std::vector<std::map<std::string, int>*>* loader_map
         ); 
 
-        void shuffle(std::vector<int>* idx); 
+        void shuffle(std::vector<unsigned long>* idx); 
         void shuffle(std::vector<graph_t*>* idx); 
-        std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads); 
+        
+        std::map<std::string, graph_t*>* restore_graphs_(
+                std::vector<std::string>, int threads, bool force_load = false
+        ); 
 
         std::map<int, std::vector<graph_t*>*> batched_cache = {}; 
         std::map<int, std::vector<graph_t*>*> gr_k_fold_training = {}; 
         std::map<int, std::vector<graph_t*>*> gr_k_fold_validation = {}; 
 
 
-        std::map<int, std::vector<int>*> k_fold_training = {}; 
-        std::map<int, std::vector<int>*> k_fold_validation = {}; 
+        std::map<int, std::vector<unsigned long>*> k_fold_training = {}; 
+        std::map<int, std::vector<unsigned long>*> k_fold_validation = {}; 
 
-        std::vector<int>* test_set  = nullptr; 
-        std::vector<int>* train_set = nullptr; 
-        std::vector<int>* data_index = nullptr; 
+        std::vector<unsigned long>* test_set  = nullptr; 
+        std::vector<unsigned long>* train_set = nullptr; 
+        std::vector<unsigned long>* data_index = nullptr; 
 
         std::vector<std::map<std::string, int>*> truth_map_graph = {}; 
         std::vector<std::map<std::string, int>*> truth_map_node  = {}; 
@@ -92,11 +95,13 @@ class dataloader:
         std::vector<std::map<std::string, int>*> data_map_node  = {}; 
         std::vector<std::map<std::string, int>*> data_map_edge  = {}; 
 
-        std::map<std::string, int> hash_map = {}; 
+        std::map<std::string, unsigned long> hash_map = {}; 
         std::vector<graph_t*>*  gr_test = nullptr; 
         std::vector<graph_t*>* data_set = nullptr; 
 
         std::default_random_engine rnd{}; 
+        unsigned long idk = 0; 
+
 }; 
 
 #endif

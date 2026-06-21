@@ -20,9 +20,14 @@ metric_template::metric_template(){
 }
 
 metric_template::~metric_template(){
-    if (!this -> handle){return;}
-    delete this -> handle;
     this -> handle = nullptr; 
+    std::map<std::string, writer*>::iterator wrt = this -> _handles.begin();
+    for (; wrt != this -> _handles.end(); ++wrt){
+        if (!wrt -> second){continue;}
+        delete wrt -> second; 
+        this -> _handles[wrt -> first] = nullptr;
+    }
+    this -> _handles.clear(); 
 }
 
 metric_template* metric_template::clone(){return new metric_template();}
@@ -35,6 +40,19 @@ metric_template* metric_template::clone(int){
 
 void metric_template::define_metric(metric_t*){}
 void metric_template::define_variables(){}
+
+void metric_template::dynamic_write(std::string v){
+    if (!v.size()){v = this -> name;}
+    this -> _outdir = this -> base_pth + v + ".root";
+    if (!this -> _handles.count(v)){this -> handle = nullptr;}
+    if (!this -> handle){
+        this -> define_variables();
+        this -> _handles[v] = this -> handle;
+    }
+    else {this -> handle = this -> _handles[v];} 
+}
+
 void metric_template::event(){}; 
 void metric_template::batch(){}; 
 void metric_template::end(){}; 
+void metric_template::start(metric_t*){}; 

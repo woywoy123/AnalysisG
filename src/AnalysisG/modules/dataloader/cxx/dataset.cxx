@@ -16,16 +16,16 @@ void dataloader::generate_kfold_set(int k){
     bool all = false;
     for (int x(0); x < k; ++x){
         if (this -> k_fold_training.count(x)){continue;}
-        this -> k_fold_training[x] = new std::vector<int>(); 
-        this -> k_fold_validation[x] = new std::vector<int>();
+        this -> k_fold_training[x]   = new std::vector<unsigned long>(); 
+        this -> k_fold_validation[x] = new std::vector<unsigned long>();
         all = true; 
     }
     if (!all){return;}
-    std::map<int, std::vector<int>> folds = {}; 
+    std::map<int, std::vector<unsigned long>> folds = {}; 
     for (size_t x(0); x < this -> train_set -> size(); ++x){folds[x%(k+1)].push_back((*this -> train_set)[x]);}
     this -> success("Splitting training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
     for (int x(0); x < k; ++x){
-        std::vector<int>* val = this -> k_fold_validation[x]; 
+        std::vector<unsigned long>* val = this -> k_fold_validation[x]; 
         val -> insert(val -> end(), folds[x].begin(), folds[x].end()); 
         for (int y(0); y < k+1; ++y){
             if (y == x){continue;}
@@ -46,7 +46,7 @@ void dataloader::generate_test_set(float percentage){
     size_t fx = (this -> data_set -> size()) * float(percentage/100); 
     this -> shuffle(this -> data_index); 
     for (size_t x(0); x < this -> data_index -> size(); ++x){
-        std::vector<int>* dx = nullptr; 
+        std::vector<unsigned long>* dx = nullptr; 
         if (x >= fx){dx = this -> test_set;}
         else {dx = this -> train_set;}
         dx -> push_back(this -> data_index -> at(x));
@@ -64,7 +64,7 @@ std::vector<graph_t*>* dataloader::get_k_train_set(int k){
         return this -> gr_k_fold_training[k];
     }
 
-    std::vector<int>* kdata = nullptr; 
+    std::vector<unsigned long>* kdata = nullptr; 
     if (!this -> k_fold_training.size()){kdata = this -> data_index;}
     else if (!this -> k_fold_training.count(k)){
         this -> warning("Specified an invalid k-fold index."); 
@@ -81,7 +81,7 @@ std::vector<graph_t*>* dataloader::get_k_train_set(int k){
 
 std::vector<graph_t*>* dataloader::get_k_validation_set(int k){
     if (this -> gr_k_fold_validation.count(k)){return this -> gr_k_fold_validation[k];}
-    std::vector<int>* kdata = this -> k_fold_validation[k]; 
+    std::vector<unsigned long>* kdata = this -> k_fold_validation[k]; 
     this -> shuffle(kdata); 
     this -> gr_k_fold_validation[k] = new std::vector<graph_t*>();
     this -> put(this -> gr_k_fold_validation[k], this -> data_set, kdata); 
@@ -128,8 +128,8 @@ std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
 // ................... dataset dumping ........................ //
 void dataloader::dump_dataset(std::string path){
     std::vector<folds_t> data = {};  
-    std::map<int, std::vector<int>*> data_e; 
-    std::map<int, std::vector<int>*>::iterator itr; 
+    std::map<int, std::vector<unsigned long>*> data_e; 
+    std::map<int, std::vector<unsigned long>*>::iterator itr; 
 
     data_e = this -> k_fold_training; 
     for (itr = data_e.begin(); itr != data_e.end(); ++itr){
@@ -189,15 +189,15 @@ bool dataloader::restore_dataset(std::string path){
         std::string hash = std::string(kf -> hash); 
         kf -> flush_data();
         if (!this -> hash_map.count(hash)){continue;}
-        int index = this -> hash_map[hash]; 
+        unsigned long index = this -> hash_map[hash]; 
         if (kf -> is_eval){this -> test_set -> push_back(index); continue;}
         if (!kv){this -> train_set -> push_back(index);}
         if (!this -> k_fold_training.count(kv)){
-            this -> k_fold_training[kv]   = new std::vector<int>();
-            this -> k_fold_validation[kv] = new std::vector<int>(); 
+            this -> k_fold_training[kv]   = new std::vector<unsigned long>();
+            this -> k_fold_validation[kv] = new std::vector<unsigned long>(); 
         }
 
-        std::vector<int>* bin = nullptr; 
+        std::vector<unsigned long>* bin = nullptr; 
         if (kf -> is_train){     bin = this -> k_fold_training[kv];}
         else if (kf -> is_valid){bin = this -> k_fold_validation[kv];}
         else {continue;}
@@ -209,7 +209,7 @@ bool dataloader::restore_dataset(std::string path){
 
     this -> success(msg_tr); 
     if (this -> test_set -> size()){this -> success(msg_ts);}
-    std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
+    std::map<int, std::vector<unsigned long>*>::iterator itr = this -> k_fold_training.begin(); 
     for (; itr != this -> k_fold_training.end(); ++itr){
         int k = itr -> first; 
         this -> success("---------------- k-Fold: " + this -> to_string(k+1) + " ----------------"); 

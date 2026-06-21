@@ -5,6 +5,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/misc.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/base.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/variable.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/switchboards.cxx
 )
 
 add_library(cstructs ${SOURCE_FILES})

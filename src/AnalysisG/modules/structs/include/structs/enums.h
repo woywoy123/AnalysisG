@@ -80,7 +80,7 @@ enum class graph_enum {
 }; 
 
 enum class mode_enum {
-    training, validation, evaluation
+    training, validation, evaluation, invalid
 }; 
 
 enum class particle_enum {

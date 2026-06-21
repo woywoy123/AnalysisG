@@ -26,8 +26,10 @@ struct settings_t {
     bool evaluation = true;
     bool continue_training = true;
 
-    std::string training_dataset = ""; 
+    std::string training_dataset = "";
+
     std::string graph_cache = ""; 
+    std::map<std::string, std::string> splt_graph_cache; 
 
     // plotting
     std::string var_pt = "pt";

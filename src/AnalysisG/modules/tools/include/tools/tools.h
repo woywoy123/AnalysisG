@@ -94,14 +94,14 @@ class tools
         }
 
         template <typename g>
-        static std::vector<g*> put(std::vector<g*>* src, std::vector<int>* trg){
+        static std::vector<g*> put(std::vector<g*>* src, std::vector<unsigned long>* trg){
             typename std::vector<g*> out(src -> size(), nullptr); 
             for (size_t x(0); x < trg -> size(); ++x){out[x] = (*src)[(*trg)[x]];}
             return out; 
         }
 
         template <typename g>
-        static void put(std::vector<g*>* out, std::vector<g*>* src, std::vector<int>* trg){
+        static void put(std::vector<g*>* out, std::vector<g*>* src, std::vector<unsigned long>* trg){
             out -> clear(); 
             out -> reserve(trg -> size());
             for (size_t x(0); x < trg -> size(); ++x){

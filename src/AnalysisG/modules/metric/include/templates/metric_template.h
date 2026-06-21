@@ -20,7 +20,9 @@ class analysis;
 class model_template;
 class metric_template; 
 
-struct metric_t {
+struct metric_t : 
+    public notification 
+{
     public: 
         ~metric_t(); 
 
@@ -31,19 +33,13 @@ struct metric_t {
         template <typename g>
         g get(graph_enum grx, std::string _name){
             g out = g(); 
-            if (!this -> h_maps[grx][_name]){
-                std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;
-                return out;
-            }
+            if (!this -> h_maps[grx][_name]){this -> warning(this -> emsg + _name); return out;}
             size_t idx = this -> v_maps[grx][_name]; 
             variable_t* v = (*this -> handl)[grx][idx]; 
-            if (!v){
-                std::cout << "\033[1;31m Variable not found: " << _name << "\033[0m" << std::endl;
-                return out;
-            }
+            if (!v){this -> warning(this -> emsg + _name ); return out;}
+
             if (v -> element(&out)){return out;}
-            std::cout << "\033[1;31m Expected Type: " << v -> as_string(); 
-            std::cout << " -> " << _name << "\033[0m" << std::endl;
+            this -> warning(this -> emsx + v -> as_string() + " -> " + _name);
             return out; 
         }
 
@@ -61,9 +57,13 @@ struct metric_t {
         metric_template* mtx = nullptr;
         size_t index = 0; 
         
+        const std::string emsg = "Variable not found: ";
+        const std::string emsx = "Expected Type: ";
+
         std::vector<std::string*>* batch_files = nullptr;  
         std::map<graph_enum, std::vector<std::string>>* vars = nullptr; 
         std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr; 
+
         std::map<graph_enum, std::map<std::string, size_t>> v_maps = {}; 
         std::map<graph_enum, std::map<std::string, bool>>   h_maps = {}; 
 }; 
@@ -81,15 +81,19 @@ class metric_template:
         metric_template(); 
         virtual ~metric_template(); 
         virtual metric_template* clone(); 
-        virtual void define_variables(); 
+
         virtual void define_metric(metric_t* v); 
+        virtual void define_variables(); 
+        void dynamic_write(std::string var = ""); 
+
+        virtual void start(metric_t*); 
         virtual void event();
         virtual void batch();
         virtual void end(); 
 
-        cproperty<std::string, metric_template> name; 
-        cproperty<std::string, metric_template> output_path; 
-        cproperty<std::vector<std::string>, metric_template> variables; 
+        cproperty<std::string, metric_template>                             name; 
+        cproperty<std::string, metric_template>                      output_path; 
+        cproperty<std::vector<std::string>, metric_template>           variables; 
         cproperty<std::map<std::string, std::string>, metric_template> run_names; 
 
         // --------------------------- functions --------------------------- //
@@ -97,7 +101,7 @@ class metric_template:
         void register_output(std::string tree, std::string __name, T* t){ 
             if (this -> handle){return this -> handle -> process(&tree, &__name, t);}
             this -> handle = new writer();
-            this -> handle -> create(&this -> _outdir); 
+            this -> handle -> create(this -> _outdir); 
             this -> handle -> process(&tree, &__name, t); 
         }
 
@@ -164,14 +168,15 @@ class metric_template:
     private:
         friend analysis;
 
-        std::map<std::string, model_template*> lnks; 
-        std::map<std::string, std::vector<model_template*>> hash_mdl = {}; 
-        std::map<std::string, std::map<mode_enum, std::vector<graph_t*>*>> hash_bta = {}; 
-        std::map<std::string, std::map<int, std::map<int, std::string>>> _epoch_kfold;
+        std::map<std::string, model_template*>                                lnks; 
+        std::map<std::string, std::vector<model_template*>>                   hash_mdl = {}; 
+        std::map<std::string, std::map<mode_enum, std::vector<graph_t*>*>>    hash_bta = {}; 
+        std::map<std::string, std::map<int, std::map<int, std::string>>>      _epoch_kfold;
         std::map<std::string, std::map<graph_enum, std::vector<std::string>>> _var_type; 
         
         std::string _name = "metric-template"; 
-        std::string _outdir = ""; 
+        std::string _outdir  = "";
+        std::string base_pth = "";  
 
         std::map<std::string, std::string> _run_names = {}; 
         std::map<std::string, std::string> _variables = {}; 
@@ -204,13 +209,15 @@ class metric_template:
                 std::vector<std::string*>* title, size_t* offset
         ); 
 
+        std::map<std::string, std::vector<particle_template*>> garbage = {}; 
         size_t size(); 
 
         std::map<int, torch::TensorOptions*> get_devices(); 
         std::vector<int> get_kfolds(); 
 
-        std::map<std::string, std::vector<particle_template*>> garbage = {}; 
+        std::map<std::string, writer*> _handles = {}; 
         writer* handle = nullptr; 
+
 }; 
 
 

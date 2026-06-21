@@ -1,5 +1,5 @@
 #include <AnalysisG/analysis.h>
-
+#include <structs/switchboards.h>
 
 void analysis::build_metric_folds(){
     if (!this -> model_metrics.size()){return;}
@@ -30,7 +30,7 @@ bool analysis::build_metric(){
         }
         if (!smpl){return;}
         (*cx)[hx] = this -> loader -> build_batch(smpl, mdl, nullptr); 
-        mx -> link(hx, this -> loader -> build_batch(smpl, mdl, nullptr), mt);
+        mx -> link(hx, (*cx)[hx], mt);
         for (size_t x(0); x < smpl -> size(); ++x){(*smpl)[x] -> in_use = 0;}
     }; 
 
@@ -50,11 +50,14 @@ bool analysis::build_metric(){
     bool ev = this -> m_settings.evaluation; 
     bool debug_mode = this -> m_settings.debug_mode + !threads_;  
     std::string pth_cache = this -> m_settings.graph_cache; 
+    std::map<mode_enum, std::string> spl_cache = model_mode(&this -> m_settings.splt_graph_cache); 
 
-    if (!lx && !tr && !va && ev){
-        this -> warning("No Dataset was specified and training / validation were disabled."); 
+    if (spl_cache[mode_enum::evaluation].size() && ev){
+        this -> warning("Adding evaluation samples " + pth_cache + " to collection."); 
+        this -> warning("Make sure that the directory has no duplicated events to prevent double counting."); 
         this -> warning("Assuming Evaluation for all graphs within specified cache path."); 
-        this -> loader -> restore_graphs(pth_cache, threads_); 
+        if (spl_cache[mode_enum::evaluation].size()){pth_cache = spl_cache[mode_enum::evaluation];}
+        this -> loader -> restore_graphs(spl_cache[mode_enum::evaluation], threads_, true); 
         lx = this -> dsize(); 
     }
 
@@ -87,11 +90,12 @@ bool analysis::build_metric(){
         std::map<std::string, std::vector<model_template*>> mdlx = itm -> second -> hash_mdl; 
         std::map<int, torch::TensorOptions*> dev_ = itm -> second -> get_devices(); 
         std::vector<int> kf = itm -> second -> get_kfolds(); 
-
+        
         std::map<int, torch::TensorOptions*>::iterator itt; 
         for (itt = dev_.begin(); itt != dev_.end(); ++itt){
             std::string dev_khx = std::to_string(itt -> first) + "+"; 
             for (size_t k(0); k < kf.size(); ++k){
+                kf[k] -= 1; 
                 std::string fx = dev_khx + std::to_string(kf[k]); 
                 fx = this -> hash(fx); 
                 if (!mdlx.count(fx)){continue;}
@@ -165,10 +169,12 @@ bool analysis::build_metric(){
     lambd(&tr_batch_cache); 
     lambd(&va_batch_cache);
     lambd(&ts_batch_cache); 
+
     if (debug_mode){
         for (size_t x(0); x < th_title.size(); ++x){delete th_title[x];}
         return true;
     }
+
     if (!thr_){this -> failure("No model metrics were executed..."); return false;}
     thr_ -> join(); delete thr_; thr_ = nullptr; 
     this -> success("Model metrics completed!"); 

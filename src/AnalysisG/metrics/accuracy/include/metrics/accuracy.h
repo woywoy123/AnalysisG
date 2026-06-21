@@ -10,10 +10,10 @@ class accuracy_metric: public metric_template
         ~accuracy_metric() override; 
         accuracy_metric* clone() override; 
 
+        void start(metric_t* mtx) override; 
         void define_metric(metric_t* mtx) override; 
         void define_variables() override; 
         void event() override; 
-        void batch() override; 
         void end() override; 
 
     private: 
@@ -21,7 +21,8 @@ class accuracy_metric: public metric_template
         long idx = 0; 
         float edge_accuracy = 0;
         float global_edge_accuracy = 0; 
-
+        
+        std::vector<std::string> paths = {}; 
         int ntop_truth = 0; 
         std::vector<float> ntop_scores = {}; 
 
@@ -50,33 +51,12 @@ class collector: public tools
         collector(); 
         ~collector();
 
-        cdata_t* get_mode(
-            std::string model, std::string mode, 
-            int epoch, int kfold
-        ); 
-
-        void add_ntop_truth(
-            std::string mode, std::string model, 
-            int epoch, int kfold, int data
-        );
-
-        void add_ntop_edge_accuracy(
-            std::string mode, std::string model, 
-            int epoch, int kfold, int ntops, double data
-        );
-
-        void add_ntop_scores(
-            std::string mode, std::string model, 
-            int epoch, int kfold, std::vector<double>* data
-        );
-
-        void add_ntru_ntop_scores(
-            std::string mode, std::string model, 
-            int epoch, int kfold, int ntru, int ntop, double data
-        );
-
+        cdata_t* get_mode(std::string model, std::string mode, int epoch, int kfold); 
+        void add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data);
+        void add_ntop_edge_accuracy(std::string mode, std::string model, int epoch, int kfold, int ntops, double data);
+        void add_ntop_scores(std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data);
+        void add_ntru_ntop_scores(std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data);
         std::map<std::string, std::vector<cdata_t*>> get_plts(); 
-        
         std::vector<std::string> model_names = {}; 
         std::vector<std::string> modes = {}; 
         std::vector<int> epochs = {}; 

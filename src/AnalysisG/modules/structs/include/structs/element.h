@@ -103,7 +103,8 @@ struct writer {
     public:
         writer(); 
         ~writer();
-        void create(std::string* pth); 
+
+        void create(std::string pth); 
         void write(std::string* tree);
 
         template <typename g>
