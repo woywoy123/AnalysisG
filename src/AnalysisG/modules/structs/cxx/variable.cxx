@@ -19,19 +19,20 @@ void write_t::create(std::string tr_name, std::string path){
     }
     if (this -> data){return;}
     this -> tree = new TTree(tr_name.c_str(), "data"); 
+    this -> tree -> SetCacheSize(10000000U); 
     this -> data = new std::map<std::string, variable_t*>(); 
 }
 
 void write_t::close(){
     if (this -> tree){
-        this -> tree -> ResetBranchAddresses(); 
         this -> tree -> Write("", TObject::kOverwrite); 
-        delete this -> tree; 
+        this -> tree -> ResetBranchAddresses(); 
         this -> tree = nullptr; 
     }
+    
     if (this -> file){
         this -> file -> Close();
-        this -> file -> Delete(); 
+//        this -> file -> Delete(); 
         delete this -> file; 
         this -> file = nullptr;
     }
@@ -86,5 +87,10 @@ variable_t* writer::process(std::string* tree, std::string* name){
 void writer::write(std::string* tree){
     if (!this -> handle.count(*tree)){return;}
     this -> handle[*tree] -> write(); 
+}
+
+void writer::close(){
+    if (!this -> head){return;}
+    this -> head -> close(); 
 }
 

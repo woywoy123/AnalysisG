@@ -213,6 +213,7 @@ void model_template::flush_outputs(){
     auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* inpx){
         std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx = inpx -> begin(); 
         for (; itx != inpx -> end(); ++itx){
+            std::cout << itx -> first << std::endl; 
             if (!std::get<0>(itx -> second)){continue;}
             delete std::get<0>(itx -> second);
             std::get<0>(itx -> second) = nullptr;

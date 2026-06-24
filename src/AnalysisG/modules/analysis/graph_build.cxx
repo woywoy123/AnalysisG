@@ -22,7 +22,7 @@ void analysis::build_graphs(){
                 if (this -> in_cache[fname_][fname]){continue;}
                 graph_template* gr_o = itx_ -> second -> build(events_[x]); 
                 if (!this -> tracer -> add_graph(gr_o, label)){continue;}
-                delete gr_o;
+                this -> pflush(&gr_o); 
             }
         }
     }
@@ -30,9 +30,7 @@ void analysis::build_graphs(){
 }
 
 void analysis::build_dataloader(bool training){
-    if (!this -> loader -> data_set -> size()){
-        this -> tracer -> populate_dataloader(this -> loader);
-    }
+    if (!this -> dsize()){this -> tracer -> populate_dataloader(this -> loader);}
     if (!training){return;}
     std::string path_data = this -> m_settings.training_dataset; 
     if (path_data.size() && !this -> loader -> restore_dataset(path_data)){

@@ -106,6 +106,7 @@ struct writer {
 
         void create(std::string pth); 
         void write(std::string* tree);
+        void close(); 
 
         template <typename g>
         void process(std::string* tree, std::string* name, g* t){

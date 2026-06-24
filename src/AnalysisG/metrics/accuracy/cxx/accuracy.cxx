@@ -4,7 +4,11 @@ accuracy_metric::~accuracy_metric(){}
 accuracy_metric* accuracy_metric::clone(){return new accuracy_metric();}
 accuracy_metric::accuracy_metric(){this -> name = "accuracy";}
 
-void accuracy_metric::define_variables(){
+void accuracy_metric::define_variables(metric_t* mtx){
+    this -> output_path = "./ProjectName/metrics/accuracy/epoch-" + std::to_string(mtx -> epoch) + "/";  
+    this -> create_path(this -> output_path); 
+    this -> output_path += "kfold-" + std::to_string(mtx -> kfold) + ".root"; 
+
     this -> register_output("event_accuracy_training"   , "edge", &this -> edge_accuracy); 
     this -> register_output("event_accuracy_validation" , "edge", &this -> edge_accuracy); 
     this -> register_output("event_accuracy_evaluation" , "edge", &this -> edge_accuracy); 
@@ -38,7 +42,7 @@ void accuracy_metric::end(){
         if ((f + c) == 0){this -> ntops_accuracy[x] = 1.0;}
         else {this -> ntops_accuracy[x] = float(c) / float(f + c);}
     }
-    this -> write("global_accuracy_" + this -> mode,  "edge", &this -> global_edge_accuracy); 
+    this -> write("global_accuracy_" + this -> mode,  "edge", &this -> global_edge_accuracy, true); 
     this -> write("global_accuracy_" + this -> mode, "ntops", &this -> ntops_accuracy, true); 
 }
 
@@ -50,14 +54,13 @@ void accuracy_metric::start(metric_t* mtx){
         std::string dataset = spl[spl.size() -2];
         spl = this -> split(spl[spl.size()-1], ".root"); 
         std::string fnamex  = spl[0];
-        this -> dynamic_write(dataset + "-" + fnamex); 
         this -> paths.push_back(dataset + "-" + fnamex); 
     }
 }
 
 void accuracy_metric::event(){
-    this -> write("event_accuracy_" + this -> mode, "ntop_scores", &this -> ntop_scores);
-    this -> write("event_accuracy_" + this -> mode, "ntop_truth" , &this -> ntop_truth);
+    this -> write("event_accuracy_" + this -> mode, "ntop_scores", &this -> ntop_scores,   true);
+    this -> write("event_accuracy_" + this -> mode, "ntop_truth" , &this -> ntop_truth,    true);
     this -> write("event_accuracy_" + this -> mode, "edge"       , &this -> edge_accuracy, true);
 }
 
@@ -72,7 +75,7 @@ void accuracy_metric::define_metric(metric_t* mtx){
         }
         return idx; 
     }; 
-   
+  
     std::vector<long>              batch_idx = mtx -> get<std::vector<long>>( graph_enum::batch_index            , "index");   
     std::vector<std::vector<int>>  edge_idx  = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::edge_index, "index");
     std::vector<std::vector<float>> edge_sc  = mtx -> get<std::vector<std::vector<float>>>(graph_enum::pred_extra, "top_edge_score"); 
@@ -81,7 +84,6 @@ void accuracy_metric::define_metric(metric_t* mtx){
     std::vector<std::vector<int>>   graph_ntops_tru = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::truth_graph, "ntops"); 
     std::vector<std::vector<float>> graph_ntops_prd = mtx -> get<std::vector<std::vector<float>>>(graph_enum::pred_extra , "ntops_score");
     if (!this -> mode.size()){this -> mode = mtx -> mode();}
-    if (this -> mode != mtx -> mode()){this -> end();}
     this -> mode = mtx -> mode(); 
 
     this -> start(mtx); 
@@ -107,7 +109,6 @@ void accuracy_metric::define_metric(metric_t* mtx){
         this -> edge_accuracy = acc(&itx -> second); 
         this -> ntop_scores = graph_ntops_prd[itx -> first];  
         this -> ntop_truth  = graph_ntops_tru[itx -> first][0]; 
-        this -> dynamic_write(this -> paths[itx -> first]); 
         this -> event(); 
     }
     this -> paths.clear(); 

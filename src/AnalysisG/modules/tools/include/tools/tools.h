@@ -40,6 +40,8 @@ class tools
 
         static std::vector<std::string> split(std::string in, std::string delim);
         static std::vector<std::string> split(std::string in, size_t n);
+        static std::string get_splits(std::string* in, std::string delim, int index = -1); 
+
         static std::string hash(std::string input, int len = 18);
         static std::string lower(std::string*); 
 
@@ -122,6 +124,67 @@ class tools
                 ch[kx] = true;
             }
         }
+
+        template <typename g>
+        static bool pflush(g** p){
+            if (!(*p)){return true;}
+            delete *p; 
+            (*p) = nullptr; 
+            return false; 
+        }
+        
+        template <typename g>
+        static void vflush(std::vector<g*>* data){
+            if (!data){return;}
+            for (size_t x(0); x < data -> size(); ++x){tools::pflush(&(*data)[x]);}
+            data -> clear(); 
+            data -> shrink_to_fit(); 
+        }
+
+        template <typename k, typename g>
+        static void vflush(std::vector< std::map<k, g>* >* data){
+            if (!data){return;}
+            for (size_t x(0); x < data -> size(); ++x){tools::pflush(&(*data)[x]);}
+            data -> clear(); 
+            data -> shrink_to_fit(); 
+        }
+
+        template <typename k, typename g>
+        static void mflush(std::map<k, std::vector<g*>*>* data){
+            if (!data){return;}
+            typename std::map<k, std::vector<g*>*>::iterator ix; 
+            for (ix = data -> begin(); ix != data -> end(); ++ix){
+                tools::vflush(ix -> second); 
+                tools::pflush(&ix -> second); 
+            }
+            data -> clear(); 
+        }
+
+        template <typename k, typename g>
+        static void mflush(std::map<k, g*>* data){
+            if (!data){return;}
+            typename std::map<k, g*>::iterator ix; 
+            for (ix = data -> begin(); ix != data -> end(); ++ix){
+                if (!ix -> second){continue;}
+                delete ix -> second; 
+            }
+            data -> clear(); 
+        }
+
+
+        template <typename k, typename g>
+        static void mflush(std::map<k, std::vector<g>*>* data){
+            if (!data){return;}
+            typename std::map< k, std::vector<g>* >::iterator ix; 
+            for (ix = data -> begin(); ix != data -> end(); ++ix){
+                if (!ix -> second){continue;}
+                delete (*data)[ix -> first]; 
+                (*data)[ix -> first] = nullptr; 
+            }
+            data -> clear(); 
+        }
+
+
 }; 
 
 

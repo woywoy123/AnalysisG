@@ -217,8 +217,8 @@ void gnn_event::CompileEvent(){
 
     //std::cout << "=========== BIN TOP MATRIX ==========" << std::endl; 
     //this -> print(&bin_top); 
-
     std::map<std::string, std::vector<particle_gnn*>>::iterator it;
+
     // ---- truth --- //
     std::map<std::string, std::vector<particle_gnn*>> c_real_tops;
     cluster(&real_tops  , &c_real_tops, nullptr, nullptr); 

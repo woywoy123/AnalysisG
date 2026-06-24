@@ -24,25 +24,21 @@ analysis::analysis(){
 
     std::string mta = std::string(dict_path) + "structs/include/structs/meta.h"; 
     std::thread* tm = nullptr; 
-    tm = new std::thread(buildDict, "meta_t"   , mta); 
-    tm -> join(); delete tm; 
-    tm = new std::thread(buildDict, "weights_t", mta); 
-    tm -> join(); delete tm; 
-    tm = new std::thread(buildAll); 
-    tm -> join(); delete tm; 
+    tm = new std::thread(buildDict, "meta_t"   , mta); tm -> join(); delete tm; 
+    tm = new std::thread(buildDict, "weights_t", mta); tm -> join(); delete tm; 
+    tm = new std::thread(buildAll); tm -> join(); delete tm; 
     gSystem -> ChangeDirectory(cur.c_str()); 
 }
 
 analysis::~analysis(){
     for (size_t x(0); x < this -> tags -> size(); ++x){(*this -> tags)[x].flush_data();}
-    delete this -> tags; 
-
-    flush(&this -> trainer);
-    flush(&this -> model_metrics);
-    flush(&this -> metric_names); 
-    delete this -> loader; 
-    delete this -> tracer; 
-    delete this -> reader; 
+//    this -> pflush(&this -> tags); 
+//    this -> mflush(&this -> trainer);
+//    this -> mflush(&this -> model_metrics);
+//    this -> mflush(&this -> metric_names); 
+//    this -> pflush(&this -> tracer); 
+//    this -> pflush(&this -> reader); 
+//    this -> pflush(&this -> loader); 
 }
 
 void analysis::add_samples(std::string path, std::string label){
@@ -70,10 +66,15 @@ void analysis::add_selection_template(selection_template* sel){
 }
 
 void analysis::add_metric_template(metric_template* mx, model_template* mdl){
-    this -> safe_clone(&this -> model_metrics, mdl); 
-    this -> safe_clone(&this -> metric_names  , mx);  
-    if (this -> metric_names[mx -> name] -> link(this -> model_metrics[mdl -> name])){return;}
-    abort();
+    std::string name_m = std::string(mx -> name) + "/" + std::string(mdl -> name); 
+    bool dup = this -> metric_names.count(name_m); 
+    if (dup){this -> warning("Duplicate input"); return;}
+    metric_template* cl = mx -> clone(1); 
+    model_template* md  = mdl -> clone(1);
+    cl -> link(md); 
+    this -> metric_names[name_m]  = cl; 
+    this -> model_metrics[name_m] = md; 
+
 }
 
 void analysis::add_model(model_template* model, optimizer_params_t* op, std::string run_name){
@@ -99,7 +100,7 @@ void analysis::build_project(){
     }
     std::map<std::string, metric_template*>::iterator itm = this -> metric_names.begin();
     for (; itm != this -> metric_names.end(); ++itm){
-        itm -> second -> _outdir = model_path + "/metrics/" + itm -> first;
+        itm -> second -> outdir = model_path + "/metrics/" + itm -> first;
     }
 }
 
@@ -109,24 +110,29 @@ void analysis::check_cache(){
 
     std::map<std::string, std::string> relabel = {}; 
     std::map<std::string, std::string>::iterator tx = this -> file_labels.begin(); 
+
     for (; tx != this -> file_labels.end(); ++tx){
         std::string base = tx -> first; 
         std::string lbl  = tx -> second; 
         std::vector<std::string> graph_cache = {}; 
         if (this -> graph_labels.count(lbl)){
+
             std::map<std::string, graph_template*>::iterator itg; 
             itg = this -> graph_labels[lbl].begin();
             for (; itg != this -> graph_labels[lbl].end(); ++itg){
+
                 graph_cache.push_back(itg -> first);
                 this -> graph_types[itg -> first]; 
+            
             }
         }
         std::vector<std::string> files = this -> ls(lbl, ".root"); 
         if (this -> ends_with(&base, ".root")){files.push_back(tx -> first);}
         for (size_t x(0); x < files.size(); ++x){
+
             std::string file_n = files[x]; 
-            std::vector<std::string> spl = this -> split(file_n, "/"); 
-            std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
+            std::string fname = this -> get_splits(&file_n, "/"); 
+            fname = this -> hash(fname) + "-" + fname;  
             this -> replace(&fname, ".root", ".h5"); 
             int s = 0; 
             for (size_t y(0); y < graph_cache.size(); ++y){
@@ -136,9 +142,11 @@ void analysis::check_cache(){
 
             int sg = 0; 
             for (size_t y(0); y < cache.size(); ++y){
-                std::vector<std::string> spl_ = this -> split(cache[y], "/"); 
-                std::string fname_ = spl_[spl_.size()-2] + "/" + spl_[spl_.size()-1]; 
-                if (this -> has_string(&cache[y], "/." + spl_[spl_.size()-1])){continue;}
+                std::string fname_ = this -> get_splits(&cache[y], "/", -2) + "/"; 
+                std::string fnameK = this -> get_splits(&cache[y], "/", -1); 
+                fname_ = fname_ + fnameK; 
+
+                if (this -> has_string(&cache[y], "/." + fnameK)){continue;}
                 if (!this -> in_cache[file_n].count(fname_)){continue;}
                 this -> in_cache[file_n][fname_] = true;
                 ++sg; 
@@ -206,40 +214,37 @@ void analysis::start(){
     if (this -> graph_labels.size()){this -> build_graphs();}
 
     this -> tracer -> compile_objects(threads_, intra_th); 
-    
+  
     if (this -> selection_names.size()){
         return this -> tracer -> fill_selections(&this -> selection_names);
     } 
-   
     this -> build_dataloader(false); 
     this -> build_metric_folds();
 
-    if (build_gr_cache && !this -> dsize()){return;}
-
-    if (load_gr_cache && this -> dsize()){
-        this -> loader -> dump_graphs(pth_cache, threads_);
-    }
-
+    if (load_gr_cache  && this -> dsize()){this -> loader -> dump_graphs(pth_cache, threads_);}
+    if (build_gr_cache && this -> dsize()){this -> success("Graph Caches Build: " + pth_cache);}
     else if (load_gr_cache && this -> file_labels.size()){
         std::vector<std::string> cached = {}; 
         std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
         for (; itg != this -> graph_types.end(); ++itg){
             std::map<std::string, std::string>::iterator itc = this -> file_labels.begin(); 
             for (; itc != this -> file_labels.end(); ++itc){
-                std::vector<std::string> spl = this -> split(itc -> first, "/");
-                std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
+
+                std::string fname = itc -> first; 
+                fname = this -> get_splits(&fname, "/"); 
+                fname = this -> hash(fname) + "-" + fname; 
                 this -> replace(&fname, ".root", ".h5"); 
+
                 cached.push_back(pth_cache + itg -> first + "/" + fname);  
             }
         }
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (load_gr_cache){this -> loader -> restore_graphs(pth_cache, threads_);}
+    
     if (!this -> build_metric()){return;}
-
     if (this -> model_sessions.size()){
-        size_t lx = this -> dsize(); 
-        if (!lx){return this -> failure("No Dataset was found from training. Aborting...");}
+        if (!this -> dsize()){return this -> failure("No Dataset was found from training. Aborting...");}
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> loader -> start_cuda_server(); 

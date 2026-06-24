@@ -12,7 +12,8 @@ class accuracy_metric: public metric_template
 
         void start(metric_t* mtx) override; 
         void define_metric(metric_t* mtx) override; 
-        void define_variables() override; 
+        void define_variables(metric_t* mtx) override; 
+
         void event() override; 
         void end() override; 
 

@@ -107,11 +107,14 @@ void analysis::build_inference(){
         addhoc[mds.weight_name] = its -> second[0] -> get_event_weight(md); 
         index = add_content(&addhoc, content, index, ""); 
         index = add_content(&md -> m_p_undef, content, index, "extra_"); 
-        th_prc[x] = new std::thread(execution, md, mds, batched_data[x], &th_prg[x], fname, content, mdl_title[x]);
+        th_prc[x] = new std::thread(
+                execution, md, mds, batched_data[x], 
+                &th_prg[x], fname, content, mdl_title[x]
+        );
         ++itm; 
 
         if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &mdl_title);}
-        while (para >= threads_){
+        while (para > threads_){
             para = this -> running(&th_prc, &th_prg, &num_data);
             for (size_t t(0); t < th_prc.size(); ++t){
                 if ( th_prc[t] && batched_data[t]){continue;}

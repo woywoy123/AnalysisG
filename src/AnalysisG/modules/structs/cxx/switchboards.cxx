@@ -21,6 +21,18 @@ mode_enum model_mode(std::string* val){
     return mode_enum::invalid; 
 }
 
+std::string model_mode(mode_enum st){
+    switch (st){
+        case mode_enum::training:   return "Training";
+        case mode_enum::validation: return "Validation";
+        case mode_enum::evaluation: return "Evaluation";
+        default: break;
+    }
+    return ""; 
+}
+
+
+
 std::map<mode_enum, std::string> model_mode(std::map<std::string, std::string>* val){
     std::map<mode_enum, std::string> out; 
     std::map<std::string, std::string>::iterator it = val -> begin(); 

@@ -1,8 +1,8 @@
 #include <templates/metric_template.h>
+#include <structs/switchboards.h>
 
 void metric_template::set_name(std::string* name, metric_template* ev){
-    ev -> _name = *name; 
-    ev -> prefix = *name;
+    ev -> _name = *name; ev -> prefix = *name;
 }
 
 void metric_template::get_name(std::string* name, metric_template* ev){
@@ -14,29 +14,35 @@ void metric_template::set_run_name(std::map<std::string, std::string>* rn_name, 
     std::string pthn = "Invalid Path. Cannot find the model state: "; 
     std::map<std::string, std::string>::iterator itx = rn_name -> begin(); 
     for (; itx != rn_name -> end(); ++itx){
-        if (ev -> _run_names.count(itx -> first)){continue;}
         std::vector<std::string> names = ev -> split(itx -> first, "::");
         if (!ev -> is_file(itx -> second)){ev -> failure(pthn + itx -> second); continue;}
-
         if (names.size() != 3){ev -> failure(msgn); return;}
         if (!ev -> has_string(&names[1], "epoch-")){ev -> failure(msgn); return;}
         if (!ev -> has_string(&names[2], "k-")){ev -> failure(msgn); return;}
-
         std::string mdl = names[0]; 
         std::string epc = ev -> split(names[1], "epoch-")[1];
         std::string kpc = ev -> split(names[2], "k-")[1]; 
+
         ev -> success("Adding: " + mdl + " @ Epoch " + epc + " using K-" + kpc); 
         ev -> _run_names[itx -> first] = itx -> second;
-        ev -> _epoch_kfold[mdl][std::stoi(epc)][std::stoi(kpc)] = itx -> second;
+        ev -> _epoch_kfold[mdl][std::stoi(epc)][std::stoi(kpc)] = ev -> data -> size();
+
+        metric_model_t* mt = new metric_model_t(); 
+        mt -> kfold           = std::stoi(kpc); 
+        mt -> epoch           = std::stoi(epc);
+        mt -> metrx           = ev -> clone(); 
+        mt -> checkpoint_path = itx -> second;
+        mt -> run_name        = itx -> first;
+        ev -> data -> push_back(mt);
     }
 }
 
-void metric_template::get_run_name(std::map<std::string, std::string>* rn_name, metric_template* ev){ 
-    *rn_name = ev -> _run_names; 
-}
-
 void metric_template::set_variables(std::vector<std::string>* rn_name, metric_template* ev){
-    std::string msgn = "Invalid Syntax for Variables. Expected: <ModelName>::<Level>(data, truth, prediction)::<Type(edge, node, graph, extra)>::<variable>(index, pt, njets, ...)"; 
+    std::string msgn = "Invalid Syntax for Variables. Expected: "; 
+    msgn += "<ModelName>::<Level>(data, truth, prediction)"; 
+    msgn += "::<Type(edge, node, graph, extra)>"; 
+    msgn += "::<variable>(index, pt, njets, ...)"; 
+
     for (size_t x(0); x < rn_name -> size(); ++x){
         std::string nn_ = rn_name -> at(x); 
         if (ev -> _variables.count(nn_)){continue;}
@@ -53,7 +59,7 @@ void metric_template::set_variables(std::vector<std::string>* rn_name, metric_te
         bool is_n  = varK[2] == "node"; 
         bool is_e  = varK[2] == "edge"; 
         bool is_p  = varK[2] == "extra"; 
-
+        
         graph_enum type; 
         if      (has_d && is_e && var == "index"){type = graph_enum::edge_index;}
         else if (has_d && is_n && var == "index"){type = graph_enum::batch_index;}
@@ -70,14 +76,16 @@ void metric_template::set_variables(std::vector<std::string>* rn_name, metric_te
         else if (has_p && is_e){type = graph_enum::pred_edge;}
         else if (has_p && is_p){type = graph_enum::pred_extra;}
         else {ev -> failure(msgn); continue;}
-        ev -> _var_type[mdl][type].push_back(var); 
-        ev -> _variables[nn_] = nn_;
+
+        ev -> _variables[nn_] = enums_to_string(type) + var; 
+        std::map<int, std::map<int, size_t>>::iterator ite = ev -> _epoch_kfold[mdl].begin(); 
+        for (; ite != ev -> _epoch_kfold[mdl].end(); ++ite){
+            std::map<int, size_t>::iterator itv = ite -> second.begin(); 
+            for (; itv != ite -> second.end(); ++itv){
+                ev -> data -> at(itv -> second) -> variables[type].push_back(var);
+            }
+        }
     }
 }
 
-void metric_template::get_variables(std::vector<std::string>* rn_name, metric_template* ev){ 
-    std::map<std::string, std::string>::iterator itx = ev -> _variables.begin(); 
-    for (; itx != ev -> _variables.end(); ++itx){rn_name -> push_back(itx -> first);}
-}
 
-void metric_template::get_output(std::string* out, metric_template* ev){*out = ev -> _outdir;}

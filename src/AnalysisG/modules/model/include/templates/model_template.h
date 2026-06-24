@@ -115,7 +115,9 @@ class model_template:
         bool restore_state(); 
 
         friend struct graph_t; 
+        friend struct metric_t; 
         friend struct model_report; 
+
         friend class metrics; 
         friend class analysis;
         friend class optimizer; 

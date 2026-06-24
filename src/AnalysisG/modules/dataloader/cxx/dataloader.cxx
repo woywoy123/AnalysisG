@@ -12,59 +12,28 @@ dataloader::dataloader(){
 }
 
 dataloader::~dataloader(){
-    auto flush = [](std::vector<graph_t*>* grx){
-        for (size_t x(0); x < grx -> size(); ++x){
-            (*grx)[x] -> _purge_all(); 
-            delete (*grx)[x]; 
-            (*grx)[x] = nullptr;
-        }
-        grx -> clear();
-        grx -> shrink_to_fit(); 
-    }; 
+    this -> idk = 0; 
+    this -> vflush(&this -> truth_map_graph);
+    this -> vflush(&this -> truth_map_node);
+    this -> vflush(&this -> truth_map_edge);
 
-    auto flushM = [](std::vector<std::map<std::string, int>*>* data){
-        for (size_t x(0); x < data -> size(); ++x){
-            delete (*data)[x]; (*data)[x] = nullptr;
-        } 
-        data -> clear();
-    }; 
+    this -> vflush(&this -> data_map_graph); 
+    this -> vflush(&this -> data_map_node);  
+    this -> vflush(&this -> data_map_edge);  
 
-    flushM(&this -> truth_map_graph);
-    flushM(&this -> truth_map_node);
-    flushM(&this -> truth_map_edge);
+    this -> mflush(&this -> graph_names); 
+    this -> mflush(&this -> k_fold_training); 
+    this -> mflush(&this -> k_fold_validation); 
 
-    flushM(&this -> data_map_graph); 
-    flushM(&this -> data_map_node);  
-    flushM(&this -> data_map_edge);  
+    while (this -> cuda_server){std::this_thread::sleep_for(std::chrono::microseconds(10));}
+    this -> mflush(&this -> batched_cache); 
+    this -> vflush( this -> data_set); 
+    this -> pflush(&this -> data_set); 
+    this -> pflush(&this -> gr_test);
+    this -> pflush(&this -> data_index); 
+    this -> pflush(&this -> test_set); 
+    this -> pflush(&this -> train_set); 
 
-    std::map<int, std::vector<unsigned long>*>::iterator itr = this -> k_fold_training.begin(); 
-    for (; itr != this -> k_fold_training.end(); ++itr){
-        delete this -> gr_k_fold_training[itr -> first]; 
-        delete itr -> second;
-    }
-
-    std::map<int, std::vector<unsigned long>*>::iterator itx = this -> k_fold_validation.begin(); 
-    for (; itx != this -> k_fold_validation.end(); ++itx){
-        delete this -> gr_k_fold_validation[itr -> first]; 
-        delete itx -> second;
-    }
-
-    delete this -> test_set; 
-    delete this -> train_set; 
-
-    std::vector<graph_t*>* data_ = this -> data_set; 
-    this -> data_set = nullptr;
-    if (this -> cuda_mem){this -> cuda_mem -> join(); delete this -> cuda_mem;}
-
-    delete this -> data_index; 
-    flush(data_); 
-    delete data_; data_ = nullptr; 
-
-    std::map<int, std::vector<graph_t*>*>::iterator itc = this -> batched_cache.begin(); 
-    for (; itc != this -> batched_cache.end(); ++itc){
-        flush(itc -> second); delete itc -> second; itc -> second = nullptr; 
-    }
-    if (this -> gr_test){delete this -> gr_test;}
 }
 
 void dataloader::shuffle(std::vector<unsigned long>* idx){
@@ -95,8 +64,15 @@ void dataloader::clean_data_elements(
         if (same != dd -> size()){continue;}
         hit = int(x); break;
     } 
-    if (hit < 0){loader_map -> push_back(dd); return; }
-    delete *data_map; *data_map = (*loader_map)[hit];
+    if (hit >= 0){
+        delete *data_map; 
+        *data_map = (*loader_map)[hit];
+        return; 
+    }
+
+    loader_map -> push_back( new std::map<std::string, int>(*dd) ); 
+    delete *data_map; 
+    *data_map = (*loader_map)[loader_map -> size() - 1]; 
 }
 
 void dataloader::extract_data(graph_t* gr){
@@ -106,6 +82,15 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
+  
+    std::string* name = gr -> graph_name; 
+    if (name){
+        std::string* fame = this -> graph_names[*name]; 
+        if (!fame){this -> graph_names[*name] = new std::string(*name);}
+        gr -> graph_name = this -> graph_names[*name];
+        this -> pflush(&name);
+    }
+
     this -> hash_map[*gr -> hash] = this -> idk; 
     this -> data_index -> push_back(this -> idk); 
     this -> data_set -> push_back(gr); 
@@ -200,7 +185,6 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
             (*inpt)[x] -> transfer_to_device(op); 
         }
         graph_t* tr = (*inpt)[0];  
-
         bool cached = true; 
         graph_t* gr = (*out)[index]; 
         if (!gr){
@@ -272,8 +256,6 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     if (rep && rep -> mode == "evaluation"){k = -1;}
 
     std::vector<std::vector<graph_t*>> batched = this -> discretize(_data, this -> setting -> batch_size); 
-    int thr = this -> setting -> threads; 
-    bool skip = thr > int(batched.size()); 
     if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];
         if (!out -> size()){return out;}
@@ -281,16 +263,18 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     }
     else {out = new std::vector<graph_t*>(batched.size(), nullptr);}
 
-    int r = 0; 
     std::vector<size_t> trgt(batched.size(), 1);
     std::vector<size_t> prg(batched.size(), 0);
 
+    int r = 0; 
+    int thr = this -> setting -> threads * 12; 
     std::vector<std::thread*> th_(batched.size(), nullptr); 
-    for (size_t x(0); x < batched.size(); ++x, ++r){
-        if (skip){build_graph(&batched[x], out, _mdl, x); continue;}
-        th_[x] = new std::thread(build_graph, &batched[x], out, _mdl, x, &prg[x]);
-        while (r >= thr){r = this -> running(&th_, &prg, &trgt);}
-    }
+    for (size_t i(0); i < batched.size(); ++i){
+        if (thr == 1){build_graph(&batched[i], out, _mdl, i); continue;}
+        th_[i] = new std::thread(build_graph, &batched[i], out, _mdl, i, &prg[i]);
+        while (r > thr){r = this -> running(&th_, &prg, &trgt);}
+        ++r; 
+    }    
     this -> monitor(&th_); 
 
     if (!rep){}
@@ -300,15 +284,8 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
 }
 
 void dataloader::safe_delete(std::vector<graph_t*>* data){
-    for (size_t x(0); x < data -> size(); ++x){
-        (*data)[x] -> _purge_all(); 
-        delete (*data)[x]; 
-        (*data)[x] = nullptr;
-    }
-    data -> clear();
-    data -> shrink_to_fit(); 
+    tools::vflush(data);
     delete data; 
-
     #if _server
     c10::cuda::CUDACachingAllocator::emptyCache();
     #endif
@@ -327,29 +304,29 @@ void dataloader::cuda_memory_server(){
     #endif
     };                                                   
     auto check_m = [this](std::map<int, std::vector<torch::Tensor>>* in_memory, bool purge, int device){
+        if (!purge){return;}
         std::map<int, std::vector<torch::Tensor>>::iterator ix; 
         for (ix = in_memory -> begin(); ix != in_memory -> end();){
-            if (ix -> first == device){++ix; continue;}
-            if (!purge){++ix; continue;}
+            if (ix -> first != device){++ix; continue;}
             ix -> second.clear(); 
             ix = in_memory -> erase(++ix); 
         }
     }; 
 
     auto check_t = [this](std::map<int, torch::Tensor>* in_memory, bool purge, int device){
+        if (!purge){return;}
         std::map<int, torch::Tensor>::iterator ix; 
         for (ix = in_memory -> begin(); ix != in_memory -> end();){
-            if (ix -> first == device){++ix; continue;}
-            if (!purge){++ix; continue;}
+            if (ix -> first != device){++ix; continue;}
             ix = in_memory -> erase(++ix); 
         }
     }; 
 
     auto check_b = [this](std::map<int, bool>* in_memory, bool purge, int device){
+        if (!purge){return;}
         std::map<int, bool>::iterator ix; 
         for (ix = in_memory -> begin(); ix != in_memory -> end();){
-            if (ix -> first == device){++ix; continue;}
-            if (!purge){++ix; continue;}
+            if (ix -> first != device){++ix; continue;}
             ix = in_memory -> erase(++ix); 
         }
     }; 
@@ -359,13 +336,13 @@ void dataloader::cuda_memory_server(){
     std::this_thread::sleep_for(std::chrono::microseconds(10));
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
-        if (gr -> use_weight > 1000){gr -> use_weight = 1000;}
-        if (gr -> in_use == 1 && gr -> use_weight > 0.01){gr -> use_weight *= 1.1; continue;}
-        gr -> use_weight *= 0.9;
-
+        if (gr -> in_use == 1){continue;}
+        if (!this -> idk){return;}
         std::map<int, bool>::iterator itx = gr -> device_index.begin(); 
         for (; itx != gr -> device_index.end(); ++itx){
             int dev = itx -> first; 
+            bool inx = itx -> second;
+            if (!inx){continue;}
             if (!cuda_memory(dev)){continue;}
             trig = true; 
             if (gr -> in_use == 1){break;}
@@ -389,13 +366,15 @@ void dataloader::cuda_memory_server(){
 }
 
 void dataloader::start_cuda_server(){
-    if (this -> cuda_mem){return;}
+    if (this -> cuda_server){return;}
     if (!_server){return;}
     auto monitor = [this](){
+        this -> cuda_server = true; 
         this -> info("Starting CUDA server!");
-        while (this -> data_set){this -> cuda_memory_server();}
+        while (this -> idk){this -> cuda_memory_server();}
         this -> info("Closing CUDA server!");
+        this -> cuda_server = false; 
     };
-    this -> cuda_mem = new std::thread(monitor);
+    std::thread(monitor).detach();
 }
 

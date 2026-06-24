@@ -61,6 +61,11 @@ cdef class AccuracyMetric(MetricTemplate):
         self.default_plt = None
         self.auc = {}
 
+    def __delloc__(self):
+        del self.mtr
+        del self.cl
+        self.mtx = NULL
+
     def Postprocessing(self):
         cdef ROC rc
         cdef cdata_t* px

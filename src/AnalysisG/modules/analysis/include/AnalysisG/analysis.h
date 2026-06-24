@@ -96,24 +96,24 @@ class analysis:
             (*mp)[name] = in -> clone(1); 
         }
 
-        std::map<std::string, std::string> file_labels = {}; 
-        std::map<std::string, event_template*> event_labels = {}; 
-        std::map<std::string, metric_template*> metric_names = {}; 
-        std::map<std::string, selection_template*> selection_names = {}; 
-        std::map<std::string, std::map<std::string, graph_template*>> graph_labels = {}; 
+        std::map<std::string, std::string>                               file_labels = {}; 
+        std::map<std::string, event_template*>                          event_labels = {}; 
+        std::map<std::string, metric_template*>                         metric_names = {}; 
+        std::map<std::string, selection_template*>                   selection_names = {}; 
+        std::map<std::string, std::map<std::string, graph_template*>>   graph_labels = {}; 
 
-        std::vector<std::string> model_session_names = {}; 
-        std::map<std::string, model_template*> model_inference = {}; 
-        std::map<std::string, model_template*> model_metrics   = {}; 
+        std::vector<std::string>                                 model_session_names = {}; 
+        std::map<std::string, model_template*>                       model_inference = {}; 
+        std::map<std::string, model_template*>                       model_metrics   = {}; 
         std::vector<std::tuple<model_template*, optimizer_params_t*>> model_sessions = {}; 
 
-        std::map<std::string, optimizer*   > trainer = {};
-        std::map<std::string, model_report*> reports = {}; 
-        std::vector<std::thread*> threads = {};
+        std::map<std::string, optimizer*   >                                 trainer = {};
+        std::map<std::string, model_report*>                                 reports = {}; 
+        std::vector<std::thread*>                                            threads = {};
 
-        std::map<std::string, std::map<std::string, bool>> in_cache = {}; 
-        std::map<std::string, bool> skip_event_build = {}; 
-        std::map<std::string, std::string> graph_types = {}; 
+        std::map<std::string, std::map<std::string, bool>>                  in_cache = {}; 
+        std::map<std::string, bool>                                 skip_event_build = {}; 
+        std::map<std::string, std::string>                               graph_types = {}; 
 
         std::vector<folds_t>* tags  = nullptr; 
         dataloader*          loader = nullptr; 

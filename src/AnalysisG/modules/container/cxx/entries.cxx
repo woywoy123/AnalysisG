@@ -1,6 +1,5 @@
 #include <container/container.h>
 
-
 void entry_t::init(){
     this -> m_event.reserve(1); 
     this -> m_graph.reserve(1); 

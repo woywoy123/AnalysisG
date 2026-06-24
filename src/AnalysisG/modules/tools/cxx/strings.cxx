@@ -44,6 +44,13 @@ std::vector<std::string> tools::split(std::string in, size_t n){
     return out; 
 }
 
+std::string tools::get_splits(std::string* in, std::string delm, int index){
+    std::vector<std::string> spl = tools::split(*in, delm); 
+    return (index < int(spl.size())) ? spl[spl.size() + index] : "xxxxxxxxxxxxxx"; 
+}
+
+
+
 std::string tools::hash(std::string input, int len) {
     std::hash<std::string> hasher; 
     std::stringstream ss; 

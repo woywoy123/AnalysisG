@@ -19,11 +19,15 @@ cdef class MetricTemplate:
         self.root_fx = {}
 
     def __init__(self): 
-        if self.mtx != NULL: return
+        if self.mtx is not NULL: return
         print("Forgot to override self.mtx in cython?")
         exit()
 
-    def __dealloc__(self): del self.mtx
+    def __dealloc__(self): 
+        if self.mtx is NULL: return 
+        del self.mtx
+
+
     def __name__(self): return env(self.mtx.name)
 
     @property

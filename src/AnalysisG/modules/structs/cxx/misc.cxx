@@ -1,3 +1,4 @@
+#include <switchboards.h>
 #include <element.h>
 #include <report.h>
 #include <folds.h>
@@ -44,6 +45,62 @@ void graph_hdf5_w::flush_data(){
     this -> truth_edge = nullptr; 
 }
 
+void graph_hdf5::export_gr(graph_hdf5_w* grw){
+    grw -> num_nodes       = this -> num_nodes; 
+    grw -> event_index     = this -> event_index;
+    grw -> event_weight    = this -> event_weight; 
+    
+    grw -> hash            = const_cast<char*>(this -> hash.data());          
+    grw -> filename        = const_cast<char*>(this -> filename.data());      
+    grw -> edge_index      = const_cast<char*>(this -> edge_index.data());    
+    
+    grw -> data_map_graph  = const_cast<char*>(this -> data_map_graph.data()); 
+    grw -> data_map_node   = const_cast<char*>(this -> data_map_node.data()); 
+    grw -> data_map_edge   = const_cast<char*>(this -> data_map_edge.data());  
+    
+    grw -> truth_map_graph = const_cast<char*>(this -> truth_map_graph.data());
+    grw -> truth_map_node  = const_cast<char*>(this -> truth_map_node.data());    
+    grw -> truth_map_edge  = const_cast<char*>(this -> truth_map_edge.data());        
+    
+    grw -> data_graph      = const_cast<char*>(this -> data_graph.data());    
+    grw -> data_node       = const_cast<char*>(this -> data_node.data());     
+    grw -> data_edge       = const_cast<char*>(this -> data_edge.data());     
+    
+    grw -> truth_graph     = const_cast<char*>(this -> truth_graph.data());   
+    grw -> truth_node      = const_cast<char*>(this -> truth_node.data());    
+    grw -> truth_edge      = const_cast<char*>(this -> truth_edge.data());   
+}
+
+void graph_hdf5_w::import_gr(graph_hdf5* w){
+
+    w -> num_nodes       = this -> num_nodes; 
+    w -> event_index     = this -> event_index;
+    w -> event_weight    = this -> event_weight; 
+    
+    w -> hash            = std::string(this -> hash);          
+    w -> filename        = std::string(this -> filename);      
+    w -> edge_index      = std::string(this -> edge_index);    
+    
+    w -> data_map_graph  = std::string(this -> data_map_graph); 
+    w -> data_map_node   = std::string(this -> data_map_node); 
+    w -> data_map_edge   = std::string(this -> data_map_edge);  
+    
+    w -> truth_map_graph = std::string(this -> truth_map_graph);
+    w -> truth_map_node  = std::string(this -> truth_map_node);    
+    w -> truth_map_edge  = std::string(this -> truth_map_edge);        
+    
+    w -> data_graph      = std::string(this -> data_graph);    
+    w -> data_node       = std::string(this -> data_node);     
+    w -> data_edge       = std::string(this -> data_edge);     
+    
+    w -> truth_graph     = std::string(this -> truth_graph);   
+    w -> truth_node      = std::string(this -> truth_node);    
+    w -> truth_edge      = std::string(this -> truth_edge); 
+}
+
+
+
+
 std::string model_report::print(){
     std::string msg = "Run Name: " + this -> run_name; 
     msg += " Epoch: " + std::to_string(this -> epoch); 
@@ -71,12 +128,8 @@ std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>*
     for (itx = data -> begin(); itx != data -> end(); ++itx){
         if (!itx -> second.size()){return "";}
         if (!trig){out += title + ": \n"; trig = true;}
-        switch (itx -> first){
-            case mode_enum::training:   out += "Training -> "; break;
-            case mode_enum::validation: out += "Validation -> "; break;
-            case mode_enum::evaluation: out += "Evaluation -> "; break; 
-            default: break;
-        }
+        out += model_mode(itx -> first) + " -> ";  
+        
         for (itf = itx -> second.begin(); itf != itx -> second.end(); ++itf){
             out += itf -> first + ": " + std::to_string(itf -> second) + " | "; 
         }

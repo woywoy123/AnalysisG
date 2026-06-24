@@ -59,7 +59,6 @@ class dataloader:
     private:
         friend class analysis;
         settings_t* setting = nullptr; 
-        std::thread* cuda_mem = nullptr; 
 
         void cuda_memory_server(); 
 
@@ -87,13 +86,15 @@ class dataloader:
         std::vector<unsigned long>* train_set = nullptr; 
         std::vector<unsigned long>* data_index = nullptr; 
 
-        std::vector<std::map<std::string, int>*> truth_map_graph = {}; 
-        std::vector<std::map<std::string, int>*> truth_map_node  = {}; 
-        std::vector<std::map<std::string, int>*> truth_map_edge  = {}; 
+        std::map<std::string, std::string*> graph_names = {}; 
+        std::vector< std::map<std::string, int>* > truth_map_graph = {}; 
+        std::vector< std::map<std::string, int>* > truth_map_node  = {}; 
+        std::vector< std::map<std::string, int>* > truth_map_edge  = {}; 
 
-        std::vector<std::map<std::string, int>*> data_map_graph = {}; 
-        std::vector<std::map<std::string, int>*> data_map_node  = {}; 
-        std::vector<std::map<std::string, int>*> data_map_edge  = {}; 
+        std::vector< std::map<std::string, int>* > data_map_graph = {}; 
+        std::vector< std::map<std::string, int>* > data_map_node  = {}; 
+        std::vector< std::map<std::string, int>* > data_map_edge  = {}; 
+
 
         std::map<std::string, unsigned long> hash_map = {}; 
         std::vector<graph_t*>*  gr_test = nullptr; 
@@ -101,6 +102,7 @@ class dataloader:
 
         std::default_random_engine rnd{}; 
         unsigned long idk = 0; 
+        bool cuda_server = false;
 
 }; 
 

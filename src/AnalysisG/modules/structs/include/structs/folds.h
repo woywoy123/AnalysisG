@@ -16,6 +16,7 @@ struct folds_t {
     } 
 }; 
 
+struct graph_hdf5_w; 
 
 struct graph_hdf5 {
     int    num_nodes = -1; 
@@ -41,6 +42,8 @@ struct graph_hdf5 {
     std::string truth_graph; 
     std::string truth_node; 
     std::string truth_edge;
+
+    void export_gr(graph_hdf5_w* gr); 
 }; 
 
 struct graph_hdf5_w {
@@ -68,6 +71,7 @@ struct graph_hdf5_w {
     char* truth_node = nullptr; 
     char* truth_edge = nullptr;
     void flush_data();
+    void import_gr(graph_hdf5* w); 
 }; 
 
 
