@@ -64,13 +64,13 @@ class event_template: public tools
             typename std::map<m, g*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){vec.push_back(ix -> second);}
             return vec; 
-        }; 
+        }
 
         template <typename m, typename g, typename k>
         void vectorize(std::map<m, g*>* ipt, std::vector<g*> opt){    
             typename std::map<m, g*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){opt -> push_back(ix -> second);}
-        }; 
+        }
 
         template <typename g, typename m, typename k>
         std::vector<g*> vectorize(std::map<m, k*>* ipt){    
@@ -78,7 +78,7 @@ class event_template: public tools
             typename std::map<m, k*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){vec.push_back(dynamic_cast<g*>(ix -> second));}
             return vec; 
-        }; 
+        }
 
         template <typename g>
         std::map<int, g*> return_by_index(std::map<std::string, g*>* ipt){
@@ -86,7 +86,7 @@ class event_template: public tools
             typename std::map<std::string, g*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){xata[int(ix -> second -> index)] = ix -> second;}
             return xata; 
-        }; 
+        }
 
         template <typename G>
         void register_particle(std::map<std::string, G*>* object){
@@ -103,12 +103,15 @@ class event_template: public tools
         }; 
 
         template <typename G>
-        void deregister_particle(std::map<std::string, G*>* object){
+        void deregister_particle(std::vector<G*>* object){
             if (!object -> size()){return;}
-            typename std::map<std::string, G*>::iterator itr = object -> begin(); 
-            for (; itr != object -> end(); ++itr){this -> pflush(&itr -> second);}
-            object -> clear(); 
-        }; 
+            for (size_t x(0); x < object -> size(); ++x){
+                if (!object -> at(x)){continue;}
+                std::string hash_ = object -> at(x) -> hash; 
+                if (this -> garbage.count(hash_)){continue;}
+                this -> garbage[hash_] = object -> at(x);
+            }
+        }
 
         template <typename g, typename k>
         g* sum(std::vector<k*>* ch){
@@ -126,7 +129,7 @@ class event_template: public tools
             if (this -> garbage.count(hash_)){this -> pflush(&prt);}
             else {this -> garbage[hash_] = prt;}
             return (prt) ? prt : dynamic_cast<g*>(this -> garbage[hash_]); 
-        }; 
+        }
 
 
         template <typename g>
@@ -145,14 +148,14 @@ class event_template: public tools
             if (this -> garbage.count(hash_)){this -> pflush(&prt);}
             else {this -> garbage[hash_] = prt;}
             return (prt) ? prt : dynamic_cast<g*>(this -> garbage[hash_]); 
-        }; 
+        }
 
 
         template <typename k, typename g>
         g* sum(std::map<k, g*>* ch){
             typename std::vector<g*> vec = this -> vectorize(ch); 
             return this -> sum(&vec); 
-        }; 
+        }
 
         bool operator == (event_template& p); 
 
@@ -165,6 +168,14 @@ class event_template: public tools
         void build_mapping(std::map<std::string, data_t*>* evnt); 
         std::map<std::string, particle_template*> garbage = {}; 
         void flush_leaf_string(); 
+
+        template <typename G>
+        void deregister_particle(std::map<std::string, G*>* object){
+            if (!object -> size()){return;}
+            typename std::map<std::string, G*>::iterator itr = object -> begin(); 
+            for (; itr != object -> end(); ++itr){this -> pflush(&itr -> second);}
+            object -> clear(); 
+        }
 
         std::map<std::string, bool> next_ = {}; 
         std::map<std::string, particle_template*> particle_generators; 

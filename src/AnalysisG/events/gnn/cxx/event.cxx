@@ -28,10 +28,19 @@ gnn_event::gnn_event(){
 }
 
 gnn_event::~gnn_event(){
-   // this -> deregister_particle(&this -> m_r_zprime); 
-   // this -> deregister_particle(&this -> m_t_zprime); 
-   // this -> deregister_particle(&this -> m_r_tops);
-   // this -> deregister_particle(&this -> m_t_tops); 
+    this -> deregister_particle(&this -> m_zprime[pagerank_e::truth]); 
+    this -> deregister_particle(&this -> m_zprime[pagerank_e::nominal]); 
+    this -> deregister_particle(&this -> m_zprime[pagerank_e::masked]); 
+    this -> deregister_particle(&this -> m_zprime[pagerank_e::unmasked]); 
+    this -> deregister_particle(&this -> m_zprime[pagerank_e::bias_masked]); 
+    this -> deregister_particle(&this -> m_zprime[pagerank_e::bias_unmasked]); 
+
+    this -> deregister_particle(&this -> m_tops[pagerank_e::truth]); 
+    this -> deregister_particle(&this -> m_tops[pagerank_e::nominal]); 
+    this -> deregister_particle(&this -> m_tops[pagerank_e::masked]); 
+    this -> deregister_particle(&this -> m_tops[pagerank_e::unmasked]); 
+    this -> deregister_particle(&this -> m_tops[pagerank_e::bias_masked]); 
+    this -> deregister_particle(&this -> m_tops[pagerank_e::bias_unmasked]); 
 }
 
 event_template* gnn_event::clone(){return (event_template*)new gnn_event();}
