@@ -31,8 +31,8 @@ event_template::event_template(){
 
 event_template::~event_template(){
     if (this -> filename.size()){this -> flush_particles();}
-    this -> deregister_particle(&this -> particle_generators); 
-    this -> deregister_particle(&this -> garbage); 
+//    this -> deregister_particle(&this -> particle_generators); 
+//    this -> deregister_particle(&this -> garbage); 
 }
 
 bool event_template::operator == (event_template& p){
@@ -135,8 +135,7 @@ event_template* event_template::clone(){
     return new event_template(); 
 }
 
-
-std::vector<particle_template*> event_template:: multi_neutrino(
+std::vector<particle_template*> event_template::multi_neutrino(
         std::vector<particle_template*>* targets, double phi, double met, 
         double mt, double mw, double violation, double limit
 ){

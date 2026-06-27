@@ -1,6 +1,10 @@
 # --------------- DEFINE THE PARTICLES ------------------ #
-set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/inference/gnn-particles.h)
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/particles.cxx)
+set(HEADER_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/inference/gnn-particles.h
+)
+set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/particles.cxx
+)
 
 add_library(cparticle_gnn                STATIC ${SOURCE_FILES})
 target_include_directories(cparticle_gnn PRIVATE include/inference)
@@ -8,8 +12,14 @@ target_include_directories(cparticle_gnn PUBLIC include)
 
 
 # --------------- DEFINE THE EVENT ------------------ #
-set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/inference/gnn-event.h)
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event.cxx)
+set(HEADER_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/inference/gnn-event.h
+)
+
+set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/atomics.cxx
+)
 
 add_library(cevent_gnn                STATIC ${SOURCE_FILES})
 target_include_directories(cevent_gnn PRIVATE include/inference)

@@ -1,4 +1,4 @@
-#include "gnn-particles.h"
+#include <inference/gnn-particles.h>
 
 particle_gnn::particle_gnn(){
     this -> type = "gnn-particle"; 

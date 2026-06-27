@@ -262,6 +262,13 @@ cdef class MetaLookup:
     @property
     def GenerateData(self): return Data(self)
 
+
+
+
+
+
+
+
 cdef class Data:
 
     def __cinit__(self): pass
@@ -322,6 +329,22 @@ cdef class Data:
 
     @data.setter
     def data(self, dict val): self.__populate__(val, &self._data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 cdef class Meta:

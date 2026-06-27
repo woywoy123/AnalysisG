@@ -7,7 +7,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
             std::vector<graph_t*>* quant, 
             std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>* data_c,
             std::map<std::string, std::vector<int>*>* fname_index, 
-            size_t* handle
+            tracing_t* tr
     ){
         tools tl = tools(); 
         for (size_t t(0); t < quant -> size(); ++t){
@@ -27,26 +27,30 @@ bool dataloader::dump_graphs(std::string path, int threads){
             fname = (*gr -> graph_name) + "/." + hash + "-" + fname; 
             if (!fname_index -> count(fname)){(*fname_index)[fname] = new std::vector<int>();}
             (*fname_index)[fname] -> push_back(t); 
-            (*handle) = t+1; 
+            (*tr -> coms) = "Serializing: " + fname; 
+            tr -> next(); 
         }
+        tr -> finished(); 
     };
 
     auto write = [this](
-            std::string* title, std::string fname, size_t* dx, 
-            std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* > datax 
+            std::string fname, 
+            std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* > datax, 
+            tracing_t* tr
     ){
         io* wrt = new io(); 
         wrt -> start(fname, "write"); 
         std::vector<std::string> spl = this -> split(fname, "/"); 
-        *title = "Writing HDF5 -> " + spl[spl.size()-1]; 
+        tr -> message("Writing HDF5 -> " + spl[spl.size()-1]);  
         for (size_t l(0); l < datax.size(); ++l){
             graph_hdf5_w* h5wrt = &std::get<0>(*datax[l]); 
             graph_hdf5*   h5_   = &std::get<1>(*datax[l]); 
             wrt -> write(h5wrt, h5_ -> hash); 
-            *dx = l+1; 
+            tr -> next(); 
         }
         wrt -> end(); 
         delete wrt;     
+        tr -> finished(); 
     }; 
 
     if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
@@ -63,19 +67,17 @@ bool dataloader::dump_graphs(std::string path, int threads){
         serials[t] -> reserve(quant[t].size()); 
     }
 
-    std::vector<size_t> handles(quant.size(), 0); 
-    std::vector<std::thread*> th_(quant.size(), nullptr); 
-    for (size_t t(0); t < th_.size(); ++t){th_[t] = new std::thread(serialize, &quant[t], serials[t], &fnames[t], &handles[t]);}
-
-    std::string title = "Graph Serialization"; 
-    std::thread* prg = new std::thread(this -> progressbar1, &handles, this -> data_set -> size(), title); 
-
+    multithreaded_t* thr = this -> make_threads(quant.size(), threads); 
+    for (size_t t(0); t < quant.size(); ++t){
+        tracing_t* tr = (*thr -> traces)[t]; 
+        tr -> register_thread(new std::thread(serialize, &quant[t], serials[t], &fnames[t], tr), quant[t].size() );
+    } 
+    while (this -> await_threads(thr, true)){}; 
     // sort the graphs to be saves according to their original root name and assure the 
     // sample indexing is consistent. 
     size_t idx = 0; 
     std::map<std::string, std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* >> collect = {}; 
     for (size_t t(0); t < quant.size(); ++t){
-        th_[t] -> join(); delete th_[t]; 
         std::map<std::string, std::vector<int>*>::iterator itr; 
         for (itr = fnames[t].begin(); itr != fnames[t].end(); ++itr){
             std::string id = itr -> first; 
@@ -86,32 +88,21 @@ bool dataloader::dump_graphs(std::string path, int threads){
         }
     }
     std::vector<std::map<std::string, std::vector<int>*>>().swap(fnames); 
-    prg -> join(); delete prg; 
-  
-    std::vector<size_t> prdata(collect.size(), 0); 
-    std::vector<size_t> lrdata(collect.size(), 0);
-    std::vector<std::string*> titles(collect.size(), nullptr); 
-    std::vector<std::thread*> thdata(collect.size(), nullptr);
+    this -> pflush(&thr); 
+   
+    size_t dx = 0;  
+    thr = this -> make_threads(collect.size(), threads);
     std::vector<std::string> pth_verify(collect.size(), ""); 
-
-    int dx(0), thrs(0); 
     std::map<std::string, std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* >>::iterator itf; 
-
     for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx){
         pth_verify[dx] = itf -> first; 
-        lrdata[dx] = itf -> second.size(); 
-        titles[dx] = new std::string(); 
+        tracing_t* tr = (*thr -> traces)[dx]; 
+        tr -> register_thread( new std::thread(write, itf -> first, itf -> second, tr), itf -> second.size()); 
+        while (this -> await_threads(thr, false)){}
     }
-
-    dx = 0; 
-    prg = new std::thread(this -> progressbar3, &prdata, &lrdata, &titles); 
-    for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx, ++thrs){
-        thdata[dx] = new std::thread(write, titles[dx], itf -> first, &prdata[dx], itf -> second); 
-        while (thrs >= threads){thrs = this -> running(&thdata, &prdata, &lrdata);}
-    }
-    this -> monitor(&thdata); 
+    while (this -> await_threads(thr, true)){}
     this -> vflush(&serials); 
-    prg -> join(); delete prg;
+    this -> pflush(&thr); 
 
     for (x = 0; x < pth_verify.size(); ++x){
         std::string nx = pth_verify[x];  

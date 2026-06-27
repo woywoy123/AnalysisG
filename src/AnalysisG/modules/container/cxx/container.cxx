@@ -95,7 +95,6 @@ void container::compile(size_t* l, int threadIdx, int thrds){
             thx[x] = new std::thread(lmb1, vcx[x], &thr[x]);
             while (tidx > std::abs(thrds-1)){
                 tidx = run(&thx);
-
                 (*l) = 0; 
                 for (size_t y(0); y < thr.size(); ++y){(*l) += thr[y] / 2;}
             }
@@ -104,7 +103,6 @@ void container::compile(size_t* l, int threadIdx, int thrds){
 
         while (tidx){
             tidx = run(&thx);
-
             (*l) = 0; 
             for (size_t x(0); x < thr.size(); ++x){(*l) += thr[x] / 2;}
         }
