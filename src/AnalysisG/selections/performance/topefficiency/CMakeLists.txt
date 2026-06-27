@@ -1,5 +1,9 @@
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/topefficiency.h)
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/topefficiency.cxx)
+set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/topefficiency.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/atomics.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/io.cxx
+)
 
 add_library(ctopefficiency STATIC ${SOURCE_FILES})
 target_include_directories(ctopefficiency PUBLIC ../topefficiency)

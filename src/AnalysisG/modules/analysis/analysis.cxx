@@ -32,13 +32,13 @@ analysis::analysis(){
 
 analysis::~analysis(){
     for (size_t x(0); x < this -> tags -> size(); ++x){(*this -> tags)[x].flush_data();}
-//    this -> pflush(&this -> tags); 
-//    this -> mflush(&this -> trainer);
-//    this -> mflush(&this -> model_metrics);
-//    this -> mflush(&this -> metric_names); 
-//    this -> pflush(&this -> tracer); 
-//    this -> pflush(&this -> reader); 
-//    this -> pflush(&this -> loader); 
+    this -> pflush(&this -> tags); 
+    this -> mflush(&this -> trainer);
+    this -> mflush(&this -> model_metrics);
+    this -> mflush(&this -> metric_names); 
+    this -> pflush(&this -> tracer); 
+    this -> pflush(&this -> reader); 
+    this -> pflush(&this -> loader); 
 }
 
 void analysis::add_samples(std::string path, std::string label){

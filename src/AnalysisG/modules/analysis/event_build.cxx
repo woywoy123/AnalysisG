@@ -3,29 +3,30 @@
 
 void analysis::build_events(){
     auto lamb = [this](
-            std::vector<std::string>* trees, std::vector<std::string>* branches, std::vector<std::string>* leaves,
-            std::vector<std::string>* files, std::string* title, size_t* num_events, size_t* idx,
-            event_template* evnt_comp
+            event_template* evnt_comp, 
+            std::vector<std::string>* trees, std::vector<std::string>* branches, 
+            std::vector<std::string>* leaves, std::vector<std::string>* files, tracing_t* tr
     ){
         if (!files -> size()){return;}
-        event_template* evn = evnt_comp -> clone(); 
         io* rdr = new io(); 
         rdr -> shush = true; 
         rdr -> import_settings(&this -> m_settings); 
-        rdr -> trees = *trees; 
+        rdr -> trees    = *trees; 
         rdr -> branches = *branches; 
-        rdr -> leaves = *leaves; 
+        rdr -> leaves   = *leaves; 
         for (size_t x(0); x < files -> size(); ++x){rdr -> root_files[files -> at(x)] = true;}
         rdr -> check_root_file_paths();
+        event_template* evn = evnt_comp -> clone(); 
 
-        size_t num_evn = *num_events;  
+        size_t num_evn = (*tr -> maxlength);  
         std::map<std::string, event_template*> evnts; 
         std::map<std::string, event_template*>::iterator tx; 
         std::map<std::string, data_t*>* io_handle = rdr -> get_data(); 
-        while (*idx < num_evn){
+
+        while (tr -> index() < num_evn){
             evnts = evn -> build_event(io_handle);
             if (!evnts.size()){continue;}
-            *idx += 1; 
+            tr -> next(); 
 
             tx = evnts.begin(); 
             std::string fname = tx -> second -> filename; 
@@ -43,22 +44,23 @@ void analysis::build_events(){
             }
 
             std::vector<std::string> tmp = this -> split(fname, "/"); 
-            *title = tmp[tmp.size()-1]; 
+            tr -> message(tmp[tmp.size()-1]); 
             for (; tx != evnts.end(); ++tx){
                 if (!this -> tracer -> add_event(tx -> second, label)){continue;} 
-                delete tx -> second; tx -> second = nullptr; 
+                this -> pflush(&tx -> second); 
             }
         }
-        delete rdr; 
-        delete evn;  
+        this -> pflush(&rdr); 
+        this -> pflush(&evn); 
+        tr -> finished(); 
     };  
             
-    event_template* event_f = nullptr; 
     std::vector<std::string>* trees_    = &this -> reader -> trees; 
     std::vector<std::string>* branches_ = &this -> reader -> branches; 
     std::vector<std::string>* leaves_   = &this -> reader -> leaves; 
     this -> reader -> import_settings(&this -> m_settings); 
 
+    event_template* event_f = nullptr; 
     std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
     for (; itf != this -> file_labels.end(); ++itf){
         if (!this -> event_labels.count(itf -> second)){continue;}
@@ -90,9 +92,10 @@ void analysis::build_events(){
     for (; ity != len.end(); ++ity){nevents += ity -> second;}
     if (nevents == 0){return;}
 
-    std::vector<size_t> thevnt = {};
     std::vector<std::vector<std::string>> thsmpl = {}; 
     thsmpl.push_back({}); 
+
+    std::vector<size_t> thevnt = {};
     thevnt.push_back(0); 
 
     int idx = 0; 
@@ -117,20 +120,17 @@ void analysis::build_events(){
     std::vector<std::string> _branches = *branches_; 
     std::vector<std::string> _leaves   = *leaves_; 
     this -> reader -> root_end(); 
-    delete this -> reader; 
+    this -> pflush(&this -> reader); 
 
     ROOT::EnableImplicitMT(thsmpl.size()); 
-    std::vector<size_t> th_prg(thsmpl.size(), 0);
-    std::vector<std::thread*> thrs(thsmpl.size(), nullptr); 
-    std::vector<std::string*> title(thsmpl.size(), nullptr); 
+    multithreaded_t* thr = this -> make_threads(thsmpl.size(), this -> m_settings.threads); 
     for (size_t x(0); x < thsmpl.size(); ++x){
-        title[x] = new std::string(""); 
-        thrs[x] = new std::thread(lamb, &_trees, &_branches, &_leaves, &thsmpl[x], title[x], &thevnt[x], &th_prg[x], event_f); 
+        tracing_t* tr = thr -> traces -> at(x); 
+        tr -> register_thread(new std::thread(lamb, event_f, &_trees, &_branches, &_leaves, &thsmpl[x], tr), thevnt[x]); 
+        while (this -> await_threads(thr, false)){} 
     }
-
-    std::thread* th_ = new std::thread(this -> progressbar3, &th_prg, &thevnt, &title); 
-    this -> monitor(&thrs); 
-    th_ -> join(); delete th_; th_ = nullptr; 
-    this -> reader = new io(); 
+    while (this -> await_threads(thr, true)){}
     this -> success("Finished Building Events"); 
+    delete thr; 
+    this -> reader = new io(); 
 }

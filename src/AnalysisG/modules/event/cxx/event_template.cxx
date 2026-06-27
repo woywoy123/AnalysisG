@@ -135,8 +135,7 @@ event_template* event_template::clone(){
     return new event_template(); 
 }
 
-
-std::vector<particle_template*> event_template:: multi_neutrino(
+std::vector<particle_template*> event_template::multi_neutrino(
         std::vector<particle_template*>* targets, double phi, double met, 
         double mt, double mw, double violation, double limit
 ){

@@ -139,7 +139,10 @@ class particle_template : public tools
 
         void operator += (particle_template* p); 
         void iadd(particle_template* p); 
-      
+     
+        template <typename g>
+        g* as(){return dynamic_cast<g*>(this);}
+
         bool register_parent(particle_template* p);
         std::map<std::string, particle_template*> m_parents; 
 
