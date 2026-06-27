@@ -31,24 +31,23 @@ def revert_mapping(data):
     return score, mass
 
 
-def entry(ttbar, tttt, meta):
+def entry(ttbar, tttt):
     tttt_score, tttt_mass = revert_mapping(tttt)
     ttbar_score, ttbar_mass = revert_mapping(ttbar)
-
 
     th2t = TH1F()
     th2t.Color = "red"
     th2t.Density = True
     th2t.ErrorBars = True
     th2t.xData = [i for i in sum(ttbar_score.values(), []) if i < 0.99]
-    th2t.Title = r'$\bar{t}t$'
-
+    th2t.Title = "$\\bar{t}t$"
+    
     th4t = TH1F()
     th4t.Color = "blue"
     th4t.Density = True
     th4t.ErrorBars = True
     th4t.xData = [i for i in sum(tttt_score.values(), []) if i < 0.99]
-    th4t.Title = r'$\bar{t}t\bar{t}t$'
+    th4t.Title = "$\\bar{t}t\\bar{t}t$"
 
     thpx = TH1F()
     thpx.Histograms = [th2t, th4t]
@@ -65,7 +64,6 @@ def entry(ttbar, tttt, meta):
     thpx.Filename = "pagerank"
     thpx.OutputDirectory = "./output/"
     thpx.SaveFigure()
-
 
     ttbar_msc = sum(ttbar_score.values(), [])
     tttt_msc  = sum(tttt_score.values(), [])
@@ -84,12 +82,12 @@ def entry(ttbar, tttt, meta):
     th2t = TH1F()
     th2t.Color = "red"
     th2t.xData = ttbar_mx
-    th2t.Title = r'$\bar{t}t$'
+    th2t.Title = "$\\bar{t}t$"
 
     th4t = TH1F()
     th4t.Color = "blue"
     th4t.xData = tttt_mx
-    th4t.Title = r'$\bar{t}t\bar{t}t$'
+    th4t.Title = "$\\bar{t}t\\bar{t}t$"
 
     thpx = TH1F()
     thpx.Histogram = tht

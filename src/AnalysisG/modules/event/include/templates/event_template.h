@@ -100,7 +100,7 @@ class event_template: public tools
             x -> leaves.clear(); 
             this -> particle_link[tp] = (std::map<std::string, particle_template*>*)object; 
             this -> particle_generators[tp] = x; 
-        }
+        }; 
 
         template <typename G>
         void deregister_particle(std::vector<G*>* object){

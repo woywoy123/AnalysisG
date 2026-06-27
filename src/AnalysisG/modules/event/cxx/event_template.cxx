@@ -31,8 +31,8 @@ event_template::event_template(){
 
 event_template::~event_template(){
     if (this -> filename.size()){this -> flush_particles();}
-    this -> deregister_particle(&this -> particle_generators); 
-    this -> deregister_particle(&this -> garbage); 
+//    this -> deregister_particle(&this -> particle_generators); 
+//    this -> deregister_particle(&this -> garbage); 
 }
 
 bool event_template::operator == (event_template& p){
