@@ -1,0 +1,8 @@
+set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/main.cxx)
+add_library(cmetric_topefficiency STATIC ${SOURCE_FILES})
+target_include_directories(cmetric_topefficiency PRIVATE include/metrics)
+target_include_directories(cmetric_topefficiency PUBLIC include)
+target_link_libraries(cmetric_topefficiency PUBLIC cmetric_template)
+target_compile_options(cmetric_topefficiency PRIVATE -fPIC)
+target_compile_options(cmetric_topefficiency PRIVATE -Wall -pedantic -Wextra)
+cmake_language(CALL cybuild "metrics/topefficiency" "metrics" metric_topefficiency "")

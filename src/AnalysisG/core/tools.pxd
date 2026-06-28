@@ -23,9 +23,9 @@ cdef extern from "<tools/tools.h>":
 
         # strings.cxx
         void replace(string* inpt, string rpl, string rpwl) except+ nogil
-        bool has_string(string* inpt, string trg) except+ nogil
-        bool ends_with(string* inpt, string val) except+ nogil
-        bool has_value(vector[string]* data, string trg) except+ nogil
+        bool has_string(const string* inpt, string trg) except+ nogil
+        bool ends_with(const string* inpt, string val) except+ nogil
+        bool has_value(const vector[string]* data, string trg) except+ nogil
 
         vector[string] split(string ipt, string delm) except+ nogil
         vector[string] split(string ipt, int n) except+ nogil

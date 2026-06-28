@@ -1,25 +1,40 @@
 from AnalysisG import Analysis
 from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
+from AnalysisG.metrics.topefficiency.metric_topefficiency import TopEfficiencyMetric
 from AnalysisG.events.gnn import EventGNN
-from figures import *
+from analysis import *
 
-data_path = "/home/tnom6927/scratch/k-10/*"
+
+
+
+data_path = "/CERN/trainings/results/usyd/Grift-MRK-1/epoch-1/*"
 
 name = "tttt"
 run = True
-sel = TopEfficiency()
-ana = Analysis()
+#ev = EventGNN()
 
-ev = EventGNN()
-ana.Threads = 12
+mx = TopEfficiencyMetric()
+mx.InterpretROOT(
+    "/home/tnom6927/scratch/Selections/topefficiency-gnn_event/Grift-MRK-1/", 
+    [180], [10], "k-", "Grift-"
+)
+
+entry(mx)
+
+
+
+
+
+#ana = Analysis()
+#ana.Threads = 12
 #ana.DebugMode = True
-ana.AddEvent(ev, "k10")
-ana.AddSamples(data_path, "k10")
-ana.AddSelection(sel)
-ana.SaveSelectionToROOT = True
-ana.Start()
+#ana.AddEvent(ev, "MRK-1.epoch-1")
+#ana.AddSamples(data_path, "MRK-1.epoch-1")
+#ana.AddSelection(sel)
+#ana.SaveSelectionToROOT = True
+#ana.Start()
+#
 #sel.dump(name)
-
 #sel = TopEfficiency()
 #selttbar = sel.load("ttbar")
 #

@@ -34,9 +34,9 @@ class tools
         static std::string to_string(long double val, int prec); 
 
         static void replace(std::string* in, std::string repl_str, std::string repl_with); 
-        static bool has_string(std::string* inpt, std::string trg); 
-        static bool ends_with(std::string* inpt, std::string val); 
-        static bool has_value(std::vector<std::string>* data, std::string trg); 
+        static bool has_string(const std::string* inpt, std::string trg); 
+        static bool ends_with(const std::string* inpt, std::string val); 
+        static bool has_value(const std::vector<std::string>* data, std::string trg); 
 
         static std::vector<std::string> split(std::string in, std::string delim);
         static std::vector<std::string> split(std::string in, size_t n);

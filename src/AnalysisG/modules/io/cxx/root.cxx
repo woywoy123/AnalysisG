@@ -41,6 +41,7 @@ void io::check_root_file_paths(){
             for (std::string x : files){tmp[x] = true;}
             continue; 
         }
+
         last = itr -> first; 
         if (!this -> ends_with(&last, ".root")){
             std::vector<std::string> f = this -> ls(last, ".root"); 

@@ -19,8 +19,8 @@ metric_template::metric_template(){
 }
 
 metric_template::~metric_template(){
-    this -> handle -> close(); 
-    delete this -> handle; 
+    if (this -> handle){this -> handle -> close();}
+    this -> pflush(&this -> handle); 
     this -> vflush( this -> data); 
     this -> pflush(&this -> data);  
     this -> mflush(&this -> _handles); 

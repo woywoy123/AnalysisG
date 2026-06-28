@@ -52,7 +52,7 @@ cdef class MetricTemplate:
 
     def Postprocessing(self): pass
 
-    def InterpretROOT(self, str path, list epochs = [], list kfolds = []):
+    def InterpretROOT(self, str path, list epochs = [], list kfolds = [], str prefix = "kfold-", str model_name = "model-"):
         if not len(self.root_leaves) or not len(self.root_fx):
             self.mtx.failure(b"Failed to interpret!")
             self.mtx.failure(b"Please set the attributes:")
@@ -68,7 +68,7 @@ cdef class MetricTemplate:
 
         cdef str k, l, kx
 
-        cdef string key, kl, model_name 
+        cdef string key, kl
 
         cdef data_t* dt = NULL
         cdef data_t* lxk = NULL
@@ -93,15 +93,20 @@ cdef class MetricTemplate:
         cdef dict meta = {}
 
         cdef tools tl
+        cdef vector[string] tmp, lxp
+        cdef string prefx = enc(prefix)
+        cdef string modl_name = enc(model_name)
+
+        cdef int xk = 0
         epochs_ = [enc(str(epoch)) for epoch in epochs]
         kfolds_ = [enc(str(kfold)) for kfold in kfolds]
+        lsx = self.ptr.ls(enc(path), b".root")
 
-        if epochs_.size() + kfolds_.size(): lsx = self.ptr.ls(enc(path), b".root")
-        for kfold in prange(lsx.size(), nogil = True, num_threads = 12):
-            if not finder(&lsx[kfold], &kfolds_, &epochs_): continue
-            idx_map[lsx[kfold]]
+        for ix in prange(lsx.size(), nogil = True, num_threads = 12):
+            if not finder(&lsx[ix], &kfolds_, &epochs_, &prefx): continue
+            idx_map[lsx[ix]];
 
-        if epochs_.size() + kfolds_.size() and idx_map.size(): pass
+        if   epochs_.size() + kfolds_.size() and idx_map.size(): pass
         elif epochs_.size() + kfolds_.size() == 0: pass
         else: self.mtx.failure(b"Files for requested epoch and kfolds not found!"); exit()
         lsx = <vector[string]>(list(idx_map))
@@ -115,7 +120,7 @@ cdef class MetricTemplate:
             for l in self.root_leaves[k]:
                 kx = k + "." + l
                 kl = enc(kx)
-                if k in self.root_fx:    mapfx[key].push_back(enc(l)); mapdx[key].push_back(NULL)
+                if    k in self.root_fx: mapfx[key].push_back(enc(l)); mapdx[key].push_back(NULL)
                 elif kx in self.root_fx: mapfx[kl].push_back(enc(l));  mapdx[kl].push_back(NULL)
                 else: continue 
                 leaves += [l]
@@ -168,12 +173,11 @@ cdef class MetricTemplate:
                 keep_going += not endx[dt.path]
 
             if not ix:
-                kl = deref(lxk.fname)
-                leaves =  env(kl).split("/")[-3:]
-                kfold = int(leaves[-1].replace(".root", "").replace("kfold-", ""))
-                epoch = int(leaves[-3].replace("epoch-", ""))
-                model_name = enc(leaves[-2])
-                meta = {b"filename" : kl, b"epoch" : epoch, b"kfold" : kfold, b"model_name" : model_name}
+                tmp   = tl.split(deref(lxk.fname), b"/")
+                kfold = int(to_format(&tmp, prefx))
+                epoch = int(to_format(&tmp, b"epoch-"))
+                key   =     to_format(&tmp, modl_name)
+                meta = {b"filename" : deref(lxk.fname), b"epoch" : epoch, b"kfold" : kfold, b"model_name" : key}
                 iox.prg.set_description("/".join(env(kl).split("/")[-4:]))
                 iox.prg.refresh()
             

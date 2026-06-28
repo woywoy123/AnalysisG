@@ -76,19 +76,19 @@ std::string tools::to_string(long double val, int prec){
     return ss.str(); 
 }
 
-bool tools::has_string(std::string* inpt, std::string trg){
+bool tools::has_string(const std::string* inpt, std::string trg){
     std::size_t f = inpt -> find(trg); 
     if (f != std::string::npos){return true;}
     return false; 
 }
 
-bool tools::ends_with(std::string* inpt, std::string val){
+bool tools::ends_with(const std::string* inpt, std::string val){
     if (inpt -> size() < val.size()){return false;}
     std::string l = inpt -> substr(inpt -> size() - val.size(), inpt -> size()-1); 
     return val == l; 
 }
 
-bool tools::has_value(std::vector<std::string>* data, std::string trg){
+bool tools::has_value(const std::vector<std::string>* data, std::string trg){
     for (size_t x(0); x < data -> size(); ++x){
         if (trg != data -> at(x)){continue;}
         return true; 
