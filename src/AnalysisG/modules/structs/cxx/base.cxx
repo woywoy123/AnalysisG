@@ -46,6 +46,7 @@ void buildAll(){
     buildPCM("vector<int>"                               , "vector", false); 
     buildPCM("vector<bool>"                              , "vector", false); 
     buildPCM("vector<char>"                              , "vector", false); 
+
     buildPCM("unsigned long long"                        , ""      , true ); 
     buildPCM("unsigned int"                              , ""      , true ); 
     buildPCM("double"                                    , ""      , true );      

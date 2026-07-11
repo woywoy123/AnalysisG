@@ -78,9 +78,6 @@ void topefficiency::writing(
 void topefficiency::merge(selection_template* sl){
     topefficiency* slt = (topefficiency*)sl; 
 
-    std::tuple<dump_t*, std::string> vs; 
-    dump_t*      d; 
-    std::string nm; 
     this -> writing(&slt -> top_r   , pagerank_e::truth        , "top"); 
     this -> writing(&slt -> top_r   , pagerank_e::nominal      , "top"); 
     this -> writing(&slt -> top_r   , pagerank_e::masked       , "top"); 
@@ -115,73 +112,4 @@ void topefficiency::merge(selection_template* sl){
     this -> write(&slt -> pred_signal_score, "prediction_signal");               
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//void topefficiency::merge(selection_template* sl){
-//    topefficiency* slt = (topefficiency*)sl; 
-//
-//    merge_data(&this -> p_topmass, &slt -> p_topmass); 
-//    merge_data(&this -> t_topmass, &slt -> t_topmass); 
-//
-//    merge_data(&this -> p_zmass,   &slt -> p_zmass); 
-//    merge_data(&this -> t_zmass,   &slt -> t_zmass); 
-//
-//    merge_data(&this -> prob_tops  , &slt -> prob_tops); 
-//    merge_data(&this -> prob_zprime, &slt -> prob_zprime); 
-//
-//    merge_data(&this -> n_tru_tops    , &slt -> n_tru_tops); 
-//    merge_data(&this -> n_pred_tops   , &slt -> n_pred_tops); 
-//    merge_data(&this -> n_perfect_tops, &slt -> n_perfect_tops); 
-//
-//    merge_data(&this -> p_decay_region, &slt -> p_decay_region); 
-//    merge_data(&this -> t_decay_region, &slt -> t_decay_region); 
-//
-//    merge_data(&this -> p_nodes, &slt -> p_nodes); 
-//    merge_data(&this -> t_nodes, &slt -> t_nodes); 
-//
-//    sum_data(&this -> truth_res_edge,       &slt -> truth_res_edge); 
-//    sum_data(&this -> truth_top_edge,       &slt -> truth_top_edge);      
-//
-//    sum_data(&this -> truth_ntops,          &slt -> truth_ntops);                     
-//    sum_data(&this -> truth_signal,         &slt -> truth_signal);                    
-//
-//    sum_data(&this -> pred_res_edge_score,  &slt -> pred_res_edge_score);             
-//    sum_data(&this -> pred_top_edge_score,  &slt -> pred_top_edge_score);             
-//
-//    sum_data(&this -> pred_ntops_score,     &slt -> pred_ntops_score);                
-//    sum_data(&this -> pred_signal_score,    &slt -> pred_signal_score);               
-//}
-
 

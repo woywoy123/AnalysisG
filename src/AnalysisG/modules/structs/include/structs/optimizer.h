@@ -8,12 +8,12 @@
 
 struct loss_opt {
     loss_enum fx = loss_enum::invalid_loss;
-    bool mean = false;
-    bool sum  = false;
-    bool none = false;
+    bool mean       = false;
+    bool sum        = false;
+    bool none       = false;
 
-    bool swap = false; 
-    bool full = false; 
+    bool swap       = false; 
+    bool full       = false; 
     bool batch_mean = false;
     bool target     = false;  
     bool zero_inf   = false; 

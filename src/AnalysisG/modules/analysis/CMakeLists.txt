@@ -2,12 +2,13 @@ set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/AnalysisG/analysis.h)
 set(SOURCE_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/analysis.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/methods.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/interface.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/event_build.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/graph_build.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/metric_build.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/selection_build.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/optimizer_build.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/inference_build.cxx
-    ${CMAKE_CURRENT_SOURCE_DIR}/metric_build.cxx
 )
 
 add_library(canalysis STATIC ${SOURCE_FILES})

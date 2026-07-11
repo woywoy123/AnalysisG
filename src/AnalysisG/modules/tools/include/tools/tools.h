@@ -17,9 +17,13 @@ class tools
         // io.cxx
         static void create_path(std::string path); 
         static void delete_path(std::string path); 
-        static bool is_file(std::string path); 
         static void rename(std::string start, std::string target); 
+
+        static bool is_file(std::string path); 
         static std::string absolute_path(std::string path); 
+        static std::string as_path(std::string base, std::string apn = ""); 
+        static std::string as_path(std::string base, bool cnd); 
+
         static std::vector<std::string> ls(std::string path, std::string ext = ""); 
 
         // strings.cxx

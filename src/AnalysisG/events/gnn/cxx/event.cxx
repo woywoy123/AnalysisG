@@ -102,11 +102,7 @@ void gnn_event::CompileEvent(){
         int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
 
-        if (!reco_tops.count(src)){reco_tops[src] = {};}
-        if (!reco_zprime.count(src)){reco_zprime[src] = {};}
-
         std::string hx       = ptr -> hash; 
-
         nrm_tops    [src][hx]  = ptr; 
         nrm_zprime  [src][hx]  = ptr; 
         w_nrm_zprime[src][dst] = this -> edge_res_scores[x][1];
@@ -115,8 +111,8 @@ void gnn_event::CompileEvent(){
         if (top_ij){reco_tops[src][hx] = ptr;}
         if (res_ij){reco_zprime[src][hx] = ptr;}
 
-        bin_top    [src][dst] = this -> edge_top_scores[x][1] * top_ij;
-        bin_zprime [src][dst] = this -> edge_res_scores[x][1] * top_ij;
+        bin_top    [src][dst] = this -> edge_top_scores[x][1]; 
+        bin_zprime [src][dst] = this -> edge_res_scores[x][1]; 
         bias_zprime[src][dst] = this -> edge_top_scores[x][1] + this -> edge_res_scores[x][1]; 
 
         if (this -> t_edge_top[x]){real_tops[src][hx]   = ptr;}
@@ -135,8 +131,8 @@ void gnn_event::CompileEvent(){
     this -> build_particles(&nom_tops  , nullptr, &this -> m_tops  , false, pagerank_e::nominal); 
 
     // ----------- with pagerank applied but boolean masking ---------- // 
-    this -> build_particles(&reco_zprime, &bias_zprime, &this -> m_zprime, true, pagerank_e::bias_masked); 
-    this -> build_particles(&reco_zprime, &bin_zprime , &this -> m_zprime, true, pagerank_e::masked); 
+    this -> build_particles(&reco_zprime, &bias_zprime, &this -> m_zprime, true, pagerank_e::bias_masked);
+    this -> build_particles(&reco_zprime, &bin_zprime , &this -> m_zprime, true, pagerank_e::masked);
     this -> build_particles(&reco_tops  , &bin_top    , &this -> m_tops  , true, pagerank_e::masked); 
     
     // ----------- with pagerank applied but non boolean masking ---------- // 

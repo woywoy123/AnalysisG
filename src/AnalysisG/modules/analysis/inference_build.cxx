@@ -118,7 +118,8 @@ void analysis::build_inference(){
             para = this -> running(&th_prc, &th_prg, &num_data);
             for (size_t t(0); t < th_prc.size(); ++t){
                 if ( th_prc[t] && batched_data[t]){continue;}
-                if (!th_prc[t] && batched_data[t]){this -> loader -> safe_delete(batched_data[t]);}
+                if (!th_prc[t] && batched_data[t]){this -> vflush(batched_data[t]);}
+                this -> loader -> cuflush_cache(); 
                 batched_data[t] = nullptr; 
             }
         } 
@@ -126,7 +127,8 @@ void analysis::build_inference(){
 
     monitor(&th_prc); 
     for (size_t t(0); t < th_prc.size(); ++t){
-        if (batched_data[t]){this -> loader -> safe_delete(batched_data[t]);}
+        if (batched_data[t]){this -> vflush(batched_data[t]);}
+        this -> loader -> cuflush_cache(); 
         batched_data[t] = nullptr;
     }
 
@@ -134,7 +136,6 @@ void analysis::build_inference(){
         its -> second.clear(); 
         its -> second.shrink_to_fit(); 
     }
-
     dl -> clear(); delete dl; dl = nullptr; 
     if (!thr_){return this -> failure("No models were executed...");}
     thr_ -> join(); delete thr_; thr_ = nullptr; 

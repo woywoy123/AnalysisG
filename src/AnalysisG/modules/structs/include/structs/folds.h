@@ -47,30 +47,32 @@ struct graph_hdf5 {
 }; 
 
 struct graph_hdf5_w {
-    int    num_nodes = -1; 
+    int    num_nodes    = -1; 
     double event_weight = 1; 
-    long   event_index = -1;
+    long   event_index  = -1;
 
-    char* hash = nullptr; 
-    char* filename = nullptr; 
+    char* hash       = nullptr; 
+    char* filename   = nullptr; 
     char* edge_index = nullptr; 
 
     char* data_map_graph = nullptr;
-    char* data_map_node = nullptr;  
-    char* data_map_edge = nullptr;  
+    char* data_map_node  = nullptr;  
+    char* data_map_edge  = nullptr;  
 
     char* truth_map_graph = nullptr; 
-    char* truth_map_node = nullptr;         
-    char* truth_map_edge = nullptr;         
+    char* truth_map_node  = nullptr;         
+    char* truth_map_edge  = nullptr;         
 
-    char* data_graph = nullptr; 
-    char* data_node = nullptr; 
-    char* data_edge = nullptr; 
+    char* data_graph  = nullptr; 
+    char* data_node   = nullptr; 
+    char* data_edge   = nullptr; 
 
     char* truth_graph = nullptr; 
-    char* truth_node = nullptr; 
-    char* truth_edge = nullptr;
+    char* truth_node  = nullptr; 
+    char* truth_edge  = nullptr;
+
     void flush_data();
+    void flush_data(char** wx); 
     void import_gr(graph_hdf5* w); 
 }; 
 

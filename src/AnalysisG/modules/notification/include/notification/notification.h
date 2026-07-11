@@ -32,6 +32,8 @@ struct multithreaded_t : public tools {
     multithreaded_t(size_t lgt, int num_thr); 
     ~multithreaded_t();
 
+    tracing_t* next();
+
     std::vector<size_t>*       status   = nullptr;  
     std::vector<size_t>*       progress = nullptr; 
     std::vector<size_t>*       target   = nullptr;  
@@ -40,7 +42,8 @@ struct multithreaded_t : public tools {
     std::vector<tracing_t*>*   traces   = nullptr; 
 
     int num_threads    = -1; 
-    size_t job_length  = 0; 
+    size_t job_length  =  0; 
+    size_t job_index   =  0; 
     std::thread* ptr   = nullptr; 
 }; 
 

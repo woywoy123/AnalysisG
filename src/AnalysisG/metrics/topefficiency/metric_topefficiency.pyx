@@ -68,9 +68,15 @@ cdef class TopEfficiencyMetric(MetricTemplate):
         xp = [
             ["top_truth"       + k for k in kins], 
             ["top_nominal"     + k for k in kins] + ["top_nominal_chi2"  ], 
-            ["top_PR_masked"   + k for k in kins] + ["top_PR_masked_chi2"  , "top_PR_masked_ranks"  ], 
-            ["top_PR_unmasked" + k for k in kins] + ["top_PR_unmasked_chi2", "top_PR_unmasked_ranks"], 
+            ["top_PR_masked"   + k for k in kins] + ["top_PR_masked_chi2"  , "top_PR_masked_ranks"  ]
         ]
+
+        zp = [
+            ["zprime_truth"       + k for k in kins], 
+            ["zprime_nominal"     + k for k in kins] + ["zprime_nominal_chi2"  ], 
+            ["zprime_PR_masked"   + k for k in kins] + ["zprime_PR_masked_chi2"  , "zprime_PR_masked_ranks"  ]
+        ]
+
         xp = sum(xp, [])
         self.root_leaves = {"nominal" : xp + ["event_weight"]}
         self.root_fx     = {"nominal" : loader}

@@ -2,6 +2,7 @@
 #define ANALYSIS_H
 
 #include <string>
+
 #include <generators/sampletracer.h>
 #include <generators/dataloader.h>
 #include <generators/optimizer.h>
@@ -11,6 +12,7 @@
 #include <templates/metric_template.h>
 #include <templates/selection_template.h>
 #include <templates/model_template.h>
+
 #include <structs/settings.h>
 #include <io/io.h>
 

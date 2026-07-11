@@ -83,12 +83,13 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
   
-    std::string* name = gr -> graph_name; 
-    if (name){
-        std::string* fame = this -> graph_names[*name]; 
-        if (!fame){this -> graph_names[*name] = new std::string(*name);}
-        gr -> graph_name = this -> graph_names[*name];
-        this -> pflush(&name);
+    if (gr -> graph_name){
+        std::string gname = *gr -> graph_name; 
+        if (!this -> graph_names[gname]){
+            this -> graph_names[gname] = new std::string(gname);
+        }
+        gr -> graph_name = this -> graph_names[gname];
+        this -> pflush(&gr -> graph_name);
     }
 
     this -> hash_map[*gr -> hash] = this -> idk; 
@@ -283,9 +284,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     return out; 
 }
 
-void dataloader::safe_delete(std::vector<graph_t*>* data){
-    tools::vflush(data);
-    delete data; 
+void dataloader::cuflush_cache(){
     #if _server
     c10::cuda::CUDACachingAllocator::emptyCache();
     #endif

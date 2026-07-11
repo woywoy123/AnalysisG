@@ -37,7 +37,7 @@ class dataloader:
         std::vector<graph_t*>* get_k_validation_set(int k); 
         std::vector<graph_t*>* get_test_set(); 
         std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep); 
-        static void safe_delete(std::vector<graph_t*>* data); 
+        static void cuflush_cache(); 
 
         std::map<std::string, std::vector<graph_t*>>* get_inference(); 
 

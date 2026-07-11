@@ -15,12 +15,11 @@ Event::Event(){}
 Event::~Event(){}
 
 void Event::make_particle(std::map<std::string, std::vector<double>>* vals){
-    auto lamb  = [](std::string o) -> std::string {return "nominal." + o + "." + o;}; 
+    auto lamb     = [](std::string o) -> std::string {return "nominal." + o + "." + o;}; 
+    auto recovery = [this](double pred) -> double {return double(this -> top_truth.size()) - pred;}; 
     auto BaseP = [this](
-            std::vector<double> pt , std::vector<double> eta, 
-            std::vector<double> phi, std::vector<double> mass, 
-            std::vector<double> lep, std::vector<double> chi2, 
-            std::vector<double> pr
+            std::vector<double> pt , std::vector<double> eta,  std::vector<double> phi, std::vector<double> mass, 
+            std::vector<double> lep, std::vector<double> chi2, std::vector<double> pr
     ) -> std::vector<particle> {
         std::vector<particle> out; 
         for (size_t x(0); x < pt.size(); ++x){
@@ -32,65 +31,40 @@ void Event::make_particle(std::map<std::string, std::vector<double>>* vals){
         return out; 
     }; 
 
-    auto recovery = [this](double pred) -> double {
-        return double(this -> top_truth.size()) - pred; 
-    }; 
 
     this -> production = this -> process_sample(this -> dset_name); 
     this -> top_truth = BaseP(
-            (*vals)[lamb("top_truth_pt"      )],
-            (*vals)[lamb("top_truth_eta"     )],  
-            (*vals)[lamb("top_truth_phi"     )], 
-            (*vals)[lamb("top_truth_mass"    )], 
+            (*vals)[lamb("top_truth_pt"      )], (*vals)[lamb("top_truth_eta" )],  
+            (*vals)[lamb("top_truth_phi"     )], (*vals)[lamb("top_truth_mass")], 
             (*vals)[lamb("top_truth_leptonic")], 
             {}, {}
     );  
     
     this -> top_nominal = BaseP(
-            (*vals)[lamb("top_nominal_pt"      )],
-            (*vals)[lamb("top_nominal_eta"     )],  
-            (*vals)[lamb("top_nominal_phi"     )], 
-            (*vals)[lamb("top_nominal_mass"    )], 
-            (*vals)[lamb("top_nominal_leptonic")], 
-            (*vals)[lamb("top_nominal_chi2"    )], 
+            (*vals)[lamb("top_nominal_pt"      )], (*vals)[lamb("top_nominal_eta" )],  
+            (*vals)[lamb("top_nominal_phi"     )], (*vals)[lamb("top_nominal_mass")], 
+            (*vals)[lamb("top_nominal_leptonic")], (*vals)[lamb("top_nominal_chi2")], 
             {}
     );  
 
     this -> top_masked_PR = BaseP(
-            (*vals)[lamb("top_PR_masked_pt"      )],
-            (*vals)[lamb("top_PR_masked_eta"     )],  
-            (*vals)[lamb("top_PR_masked_phi"     )], 
-            (*vals)[lamb("top_PR_masked_mass"    )], 
-            (*vals)[lamb("top_PR_masked_leptonic")], 
-            (*vals)[lamb("top_PR_masked_chi2"    )], 
+            (*vals)[lamb("top_PR_masked_pt"      )], (*vals)[lamb("top_PR_masked_eta" )],  
+            (*vals)[lamb("top_PR_masked_phi"     )], (*vals)[lamb("top_PR_masked_mass")], 
+            (*vals)[lamb("top_PR_masked_leptonic")], (*vals)[lamb("top_PR_masked_chi2")], 
             (*vals)[lamb("top_PR_masked_ranks"   )]
     );  
 
-    this -> top_unmasked_PR = BaseP(
-            (*vals)[lamb("top_PR_unmasked_pt"      )],
-            (*vals)[lamb("top_PR_unmasked_eta"     )],  
-            (*vals)[lamb("top_PR_unmasked_phi"     )], 
-            (*vals)[lamb("top_PR_unmasked_mass"    )], 
-            (*vals)[lamb("top_PR_unmasked_leptonic")], 
-            (*vals)[lamb("top_PR_unmasked_chi2"    )], 
-            (*vals)[lamb("top_PR_unmasked_ranks"   )]
-    );
-    
+
     this -> nom_recovery  = recovery(this -> top_nominal.size()    ); 
     this -> msk_recovery  = recovery(this -> top_masked_PR.size()  ); 
-    this -> umsk_recovery = recovery(this -> top_unmasked_PR.size()); 
 
     this -> nom_error  = (*vals)[lamb("top_nominal_chi2")    ]; 
     this -> msk_error  = (*vals)[lamb("top_PR_masked_chi2")  ]; 
-    this -> umsk_error = (*vals)[lamb("top_PR_unmasked_chi2")]; 
 
     this -> top_truth_mass    = (*vals)[lamb("top_truth_mass")      ]; 
     this -> top_nominal_mass  = (*vals)[lamb("top_nominal_mass")    ]; 
     this -> top_masked_mass   = (*vals)[lamb("top_PR_masked_mass")  ]; 
-    this -> top_unmasked_mass = (*vals)[lamb("top_PR_unmasked_mass")]; 
-
-    this -> top_masked_vPR   = (*vals)[lamb("top_PR_masked_ranks"  )]; 
-    this -> top_unmasked_vPR = (*vals)[lamb("top_PR_unmasked_ranks")]; 
+    this -> top_masked_vPR    = (*vals)[lamb("top_PR_masked_ranks"  )]; 
 
 }
 
@@ -139,31 +113,31 @@ std::string topefficiency_metric::to_string(process_t p){
         case process_t::t_tchan:   return "t_tchan";
         case process_t::t_schan:   return "t_schan";
         case process_t::tW:        return "tW";
-        case process_t::ttbar:     return "ttbar";
-        case process_t::tt_l:      return "tt_l";
-        case process_t::tt_ll:     return "tt_ll";
-        case process_t::tttt_SM:   return "tttt_SM";
-        case process_t::tttt_m400: return "tttt_m400";
-        case process_t::tttt_m500: return "tttt_m500";
-        case process_t::tttt_m600: return "tttt_m600";
-        case process_t::tttt_m700: return "tttt_m700";
-        case process_t::tttt_m800: return "tttt_m800";
-        case process_t::tttt_m900: return "tttt_m900";
-        case process_t::tttt_m1000:return "tttt_m1000";
-        case process_t::Z_ll:      return "Z_ll";
-        case process_t::W_lv:      return "W_lv";
-        case process_t::ZZ_qqll:   return "ZZ_qqll";
-        case process_t::WZ_qqll:   return "WZ_qqll";
+        case process_t::ttbar:     return "t\\bar{t}";
+        case process_t::tt_l:      return "t\\bar{t}\\rightarrow\\ell";
+        case process_t::tt_ll:     return "t\\bar{t}\\rightarrow\\ell\\ell";
+        case process_t::tttt_SM:   return "t\\bar{t}t\\bar{t}_SM";
+        case process_t::tttt_m400: return "t\\bar{t}t\\bar{t}_m400";
+        case process_t::tttt_m500: return "t\\bar{t}t\\bar{t}_m500";
+        case process_t::tttt_m600: return "t\\bar{t}t\\bar{t}_m600";
+        case process_t::tttt_m700: return "t\\bar{t}t\\bar{t}_m700";
+        case process_t::tttt_m800: return "t\\bar{t}t\\bar{t}_m800";
+        case process_t::tttt_m900: return "t\\bar{t}t\\bar{t}_m900";
+        case process_t::tttt_m1000:return "t\\bar{t}t\\bar{t}_m1000";
+        case process_t::Z_ll:      return "Z \\rightarrow \\ell\\ell";
+        case process_t::W_lv:      return "W \\rightarrow \\ell\\nu";
+        case process_t::ZZ_qqll:   return "ZZ \\rightarrow qq\\ell\\ell";
+        case process_t::WZ_qqll:   return "WZ \\rightarrow qq\\ell\\ell";  
         case process_t::ttH:       return "ttH";
-        case process_t::ttZ_qq:    return "ttZ_qq";
-        case process_t::ttZ_vv:    return "ttZ_vv";
+        case process_t::ttZ_qq:    return "ttZ \\rightarrow qq";
+        case process_t::ttZ_vv:    return "ttZ \\rightarrow \\nu\\nu";
         case process_t::ttW:       return "ttW";
         case process_t::ZH:        return "ZH";
         case process_t::WH:        return "WH";
-        case process_t::llll:      return "llll";
-        case process_t::lllv:      return "lllv";
-        case process_t::llvv:      return "llvv";
-        case process_t::lvvv:      return "lvvv";
+        case process_t::llll:      return "\\ell\\ell\\ell\\ell";
+        case process_t::lllv:      return "\\ell\\ell\\ell\\nu";
+        case process_t::llvv:      return "\\ell\\ell\\nu\\nu";
+        case process_t::lvvv:      return "\\ell\\nu\\nu\\nu";
         default:                   return "invalid";
     }
 }

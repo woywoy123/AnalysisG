@@ -11,9 +11,8 @@ optimizer::optimizer(){
 }
 
 optimizer::~optimizer(){
-    delete this -> metric; 
-    std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
-    for (; itx != this -> kfold_sessions.end(); ++itx){delete itx -> second;}
+    this -> pflush(&this -> metric); 
+    this -> mflush(&this -> kfold_sessions); 
 }
 
 void optimizer::import_dataloader(dataloader* dl){
@@ -30,8 +29,8 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
     
     model_settings_t settings;
     base -> clone_settings(&settings); 
-
     this -> info("_____ TESTING IMPORTED MODEL WITH OPTIMIZER PARAMS _____"); 
+
     model_template* model_k = base -> clone(); 
     model_k -> set_optimizer(config -> optimizer); 
     model_k -> import_settings(&settings); 
@@ -42,6 +41,7 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
         model_k -> check_features(rnd[x]);
     }
     delete model_k; 
+    
     this -> success("_____ PASSED TESTS AND CONFIGURATION _____"); 
 }
 
@@ -73,7 +73,8 @@ void optimizer::training_loop(int k, int epoch){
     std::vector<torch::optim::OptimizerParamGroup> para = model -> m_optim -> param_groups(); 
     for (size_t x(0); x < para.size(); ++x){mr -> current_lr.push_back(para.at(x).options().get_lr());}
     if (!batched){return;}
-    this -> loader -> safe_delete(smpl);
+    this -> vflush(smpl); 
+    this -> pflush(&smpl);  
 }
 
 void optimizer::validation_loop(int k, int epoch){
@@ -123,7 +124,7 @@ void optimizer::launch_model(int k){
     for (int ep(0); ep < this -> m_settings.epochs+1; ++ep){
         model_template* model = this -> kfold_sessions[k]; 
         if (model -> epoch > ep){continue;}
-        if (this -> m_settings.training){this -> training_loop(k, ep);}
+        if (this -> m_settings.training  ){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}
         if (this -> m_settings.debug_mode){this -> metric -> dump_plots(k);}
@@ -131,7 +132,7 @@ void optimizer::launch_model(int k){
         model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
         mr -> waiting_plot = this -> metric; 
         if (this -> m_settings.debug_mode){this -> metric -> dump_plots(k); continue;}
-        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::microseconds(10));}
+        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::microseconds(1));}
     }
 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 

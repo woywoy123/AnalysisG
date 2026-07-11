@@ -34,48 +34,20 @@ bool sampletracer::add_selection(selection_template* sel){
 }
 
 void sampletracer::compile_objects(int threads, int intrath){
-    auto lamb = [](size_t* l, int threadidx, container* data, int intrath){
-        data -> compile(l, threadidx, intrath);
-    }; 
-    auto flush = [](std::vector<std::string*>* inpt){
-        for (size_t x(0); x < inpt -> size(); ++x){delete (*inpt)[x];}
-        inpt -> clear(); 
+    auto lamb = [](tracing_t* tr, container* data, int intrath){
+        data -> compile(tr -> idx, tr -> threadIdx, intrath);
+        tr -> finished(); 
     }; 
 
-    std::vector<size_t> progres(this -> root_container.size(), 0); 
-    std::vector<size_t> handles(this -> root_container.size(), 0); 
-    std::vector<std::string*> titles_(this -> root_container.size(), nullptr); 
-    std::vector<std::thread*> threads_(this -> root_container.size(), nullptr); 
-
+    multithreaded_t* thr = this -> make_threads(this -> root_container.size(), threads); 
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
-    for (size_t x(0); itr != this -> root_container.end(); ++itr, ++x){
-        progres[x] = itr -> second.len();
-        itr -> second.output_path = this -> output_path; 
-        std::vector<std::string> vec = this -> split(itr -> first, "/"); 
-        titles_[x] = new std::string(vec[vec.size()-1]); 
+    for (; itr != this -> root_container.end(); ++itr){
+        tracing_t* tr = thr -> next(); 
+        tr -> register_thread( new std::thread(lamb, tr, &itr -> second, intrath), itr -> second.len() ); 
+        this -> await_threads(thr, false); 
     }
-
-    if (!this -> tools::sum(&progres)){
-        flush(&titles_); 
-        return;
-    }
-
-    std::thread* thr = nullptr; 
-    if (this -> shush){
-        thr = new std::thread(this -> progressbar3, &handles, &progres, nullptr);
-        flush(&titles_); 
-    }
-    else {thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);}
-
-    int tidx = 0; 
-    int index = 0; 
-    itr = this -> root_container.begin(); 
-    for (; itr != this -> root_container.end(); ++itr, ++index, ++tidx){
-        threads_[index] = new std::thread(lamb, &handles[index], index, &itr -> second, intrath); 
-        while (tidx > threads-1){tidx = this -> running(&threads_, &handles, &progres);}
-    }
-    this -> monitor(&threads_); 
-    thr -> join(); delete thr; thr = nullptr; 
+    this -> await_threads(thr, true); 
+    this -> pflush(&thr); 
 }
 
 void sampletracer::populate_dataloader(dataloader* dl){
@@ -83,8 +55,10 @@ void sampletracer::populate_dataloader(dataloader* dl){
     for (; itr != this -> root_container.end(); ++itr){itr -> second.populate_dataloader(dl);}
 }
 
-void sampletracer::fill_selections(std::map<std::string, selection_template*>* inpt){
+bool sampletracer::fill_selections(std::map<std::string, selection_template*>* inpt){
+    if (!inpt -> size()){return false;}
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
     for (; itr != this -> root_container.end(); ++itr){itr -> second.fill_selections(inpt);}
+    return true;
 }
 

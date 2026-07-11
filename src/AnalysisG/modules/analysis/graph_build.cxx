@@ -1,6 +1,8 @@
 #include <AnalysisG/analysis.h>
 
 void analysis::build_graphs(){
+    if (!this -> graph_labels.size()){return;}
+
     this -> success("+============================+"); 
     this -> success("|   Starting Graph Builder   |");
     this -> success("+============================+"); 

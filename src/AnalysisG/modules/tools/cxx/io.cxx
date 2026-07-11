@@ -61,3 +61,15 @@ std::vector<std::string> tools::ls(std::string path, std::string ext){
 std::string tools::absolute_path(std::string path){
     return std::filesystem::canonical(path).string(); 
 }
+
+std::string tools::as_path(std::string base, std::string apn){
+    base += std::string( tools::ends_with(&base, "/") ? "" : "/" ); 
+    return base + apn; 
+}
+
+std::string tools::as_path(std::string base, bool cnd){
+    if (!cnd){return base;}
+    return base + std::string( ( tools::ends_with(&base, "/") ? "" : "/") ); 
+}
+
+

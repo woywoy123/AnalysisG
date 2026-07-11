@@ -36,6 +36,13 @@ multithreaded_t::~multithreaded_t(){
     this -> pflush(&this -> coms); 
 }
 
+tracing_t* multithreaded_t::next(){
+    tracing_t* tr = this -> traces -> at(this -> job_index); 
+    ++this -> job_index; 
+    return tr; 
+}
+
+
 size_t tracing_t::index(){return (*this -> idx);}
 void   tracing_t::next(){(*this -> idx)++;}
 void   tracing_t::finished(){(*this -> status) = 0;}
@@ -47,7 +54,6 @@ void   tracing_t::register_thread(std::thread* thr, size_t x){
     (*this -> reg -> status )[this -> threadIdx] = 1; 
     thr -> detach(); 
 }
-
 
 
 
@@ -232,7 +238,6 @@ multithreaded_t* notification::make_threads(size_t num_jobs, int num_threads){
 bool notification::await_threads(multithreaded_t* thr, bool monitor){
     int cnt = 0; 
     for (size_t x(0); x < thr -> job_length; ++x){
-        tracing_t* tr = thr -> traces -> at(x); 
         if (!(*thr -> status )[x]){continue;}
         if (!(*thr -> threads)[x]){continue;}
         ++cnt; 
@@ -242,7 +247,8 @@ bool notification::await_threads(multithreaded_t* thr, bool monitor){
 
     if (!monitor){return false;} 
     if (!thr -> ptr){return false;}
-    thr -> ptr -> join(); delete thr -> ptr; thr -> ptr = nullptr;   
+    thr -> ptr -> join(); 
+    tools::pflush(&thr -> ptr); 
     return false; 
 }
 

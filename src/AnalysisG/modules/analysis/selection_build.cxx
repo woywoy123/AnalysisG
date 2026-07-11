@@ -1,6 +1,7 @@
 #include <AnalysisG/analysis.h>
 
 void analysis::build_selections(){
+    if (!this -> selection_names.size()){return;}
     std::vector<event_template*> events_ = this -> tracer -> get_events(""); 
     if (!events_.size()){return this -> warning("No Events found for Selection. Skipping...");}
     if (this -> m_settings.selection_root){this -> tracer -> output_path = &this -> m_settings.output_path;}

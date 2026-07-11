@@ -27,7 +27,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
             fname = (*gr -> graph_name) + "/." + hash + "-" + fname; 
             if (!fname_index -> count(fname)){(*fname_index)[fname] = new std::vector<int>();}
             (*fname_index)[fname] -> push_back(t); 
-            (*tr -> coms) = "Serializing: " + fname; 
+            tr -> message("Serializing: " + fname); 
             tr -> next(); 
         }
         tr -> finished(); 
@@ -72,21 +72,24 @@ bool dataloader::dump_graphs(std::string path, int threads){
         tracing_t* tr = (*thr -> traces)[t]; 
         tr -> register_thread(new std::thread(serialize, &quant[t], serials[t], &fnames[t], tr), quant[t].size() );
     } 
-    while (this -> await_threads(thr, true)){}; 
-    // sort the graphs to be saves according to their original root name and assure the 
+    // sort the graphs to be saved according to their original root name and assure the 
     // sample indexing is consistent. 
-    size_t idx = 0; 
     std::map<std::string, std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* >> collect = {}; 
-    for (size_t t(0); t < quant.size(); ++t){
-        std::map<std::string, std::vector<int>*>::iterator itr; 
-        for (itr = fnames[t].begin(); itr != fnames[t].end(); ++itr){
-            std::string id = itr -> first; 
-            id = (this -> ends_with(&path, "/")) ? path + id : path + "/" + id; 
-            for (int i : *itr -> second){collect[id].push_back(&(*serials[t])[i]);}
-            idx += itr -> second -> size();  
-            delete itr -> second;
+    bool done = false; 
+    while (this -> await_threads(thr, true) || !done){
+        done = true; 
+        for (size_t t(0); t < quant.size(); ++t){
+            if ( (*thr -> status)[t] ){continue;}
+            std::map<std::string, std::vector<int>*>::iterator itr = fnames[t].begin(); 
+            for (; itr != fnames[t].end(); ++itr){
+                if (!itr -> second){continue;}
+                std::string id = this -> as_path(path, itr -> first); 
+                for (int i : *itr -> second){collect[id].push_back(&(*serials[t])[i]);}
+                this -> pflush(&itr -> second); done = false; 
+            }
         }
-    }
+    };
+
     std::vector<std::map<std::string, std::vector<int>*>>().swap(fnames); 
     this -> pflush(&thr); 
    

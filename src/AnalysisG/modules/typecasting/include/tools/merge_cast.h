@@ -11,6 +11,11 @@ void merge_data(std::vector<G>* out, std::vector<G>* p2){
 }
 
 template <typename G>
+void merge_data(std::vector<G*>* out, std::vector<G*>* p2){
+    out -> insert(out -> end(), p2 -> begin(), p2 -> end()); 
+}
+
+template <typename G>
 void merge_data(G* out, G* p2){(*out) = *p2;}
 
 template <typename g, typename G>

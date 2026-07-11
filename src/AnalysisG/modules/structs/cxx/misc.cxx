@@ -3,46 +3,31 @@
 #include <report.h>
 #include <folds.h>
 
+void graph_hdf5_w::flush_data(char** wx){
+    if (!(*wx)){return;}
+    free(*wx); *wx = nullptr; 
+}
+
 void graph_hdf5_w::flush_data(){
-    free(this -> hash); 
-    free(this -> filename); 
-    free(this -> edge_index); 
+    this -> flush_data(&this -> hash); 
+    this -> flush_data(&this -> filename); 
+    this -> flush_data(&this -> edge_index); 
 
-    free(this -> data_map_graph); 
-    free(this -> data_map_node); 
-    free(this -> data_map_edge); 
+    this -> flush_data(&this -> data_map_graph); 
+    this -> flush_data(&this -> data_map_node); 
+    this -> flush_data(&this -> data_map_edge); 
 
-    free(this -> truth_map_graph); 
-    free(this -> truth_map_node);
-    free(this -> truth_map_edge); 
+    this -> flush_data(&this -> truth_map_graph); 
+    this -> flush_data(&this -> truth_map_node);
+    this -> flush_data(&this -> truth_map_edge); 
 
-    free(this -> data_graph); 
-    free(this -> data_node); 
-    free(this -> data_edge); 
+    this -> flush_data(&this -> data_graph); 
+    this -> flush_data(&this -> data_node); 
+    this -> flush_data(&this -> data_edge); 
 
-    free(this -> truth_graph); 
-    free(this -> truth_node); 
-    free(this -> truth_edge); 
-
-    this -> hash = nullptr; 
-    this -> filename = nullptr; 
-    this -> edge_index = nullptr; 
-
-    this -> data_map_graph = nullptr; 
-    this -> data_map_node = nullptr; 
-    this -> data_map_edge = nullptr; 
-
-    this -> truth_map_graph = nullptr; 
-    this -> truth_map_node = nullptr;
-    this -> truth_map_edge = nullptr; 
-
-    this -> data_graph = nullptr; 
-    this -> data_node = nullptr; 
-    this -> data_edge = nullptr; 
-
-    this -> truth_graph = nullptr; 
-    this -> truth_node = nullptr; 
-    this -> truth_edge = nullptr; 
+    this -> flush_data(&this -> truth_graph); 
+    this -> flush_data(&this -> truth_node); 
+    this -> flush_data(&this -> truth_edge); 
 }
 
 void graph_hdf5::export_gr(graph_hdf5_w* grw){

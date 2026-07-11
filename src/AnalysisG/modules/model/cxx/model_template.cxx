@@ -39,16 +39,15 @@ model_template::~model_template(){
     auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* inpx){
         std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx = inpx -> begin(); 
         for (; itx != inpx -> end(); ++itx){
-            if (!std::get<1>(itx -> second)){continue;}
-            delete std::get<1>(itx -> second);
-            std::get<1>(itx -> second) = nullptr;
+            tools::pflush(&std::get<0>(itx -> second)); 
+            tools::pflush(&std::get<1>(itx -> second)); 
         }
     };
-
-    for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
     this -> flush_outputs(); 
     this -> m_data.clear(); 
-    delete this -> m_loss; 
+
+    this -> vflush(&this -> m_data); 
+    this -> pflush(&this -> m_loss); 
     lamb(&this -> m_o_graph); 
     lamb(&this -> m_o_node); 
     lamb(&this -> m_o_edge); 
@@ -204,20 +203,12 @@ void model_template::prediction_extra(std::string key, torch::Tensor pred){
 void model_template::flush_outputs(){
     auto lambda = [](std::map<std::string, torch::Tensor*>* data){
         std::map<std::string, torch::Tensor*>::iterator itr = data -> begin(); 
-        for (; itr != data -> end(); ++itr){
-            if (!itr -> second){continue;}
-            delete itr -> second; itr -> second = nullptr; 
-        }
+        for (; itr != data -> end(); ++itr){tools::pflush(&itr -> second);}
     }; 
 
     auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>* inpx){
         std::map<std::string, std::tuple<torch::Tensor*, lossfx*>>::iterator itx = inpx -> begin(); 
-        for (; itx != inpx -> end(); ++itx){
-            std::cout << itx -> first << std::endl; 
-            if (!std::get<0>(itx -> second)){continue;}
-            delete std::get<0>(itx -> second);
-            std::get<0>(itx -> second) = nullptr;
-        }
+        for (; itx != inpx -> end(); ++itx){tools::pflush(&std::get<0>(itx -> second));}
     };
 
     lambda(&this -> m_p_graph); 
@@ -227,7 +218,7 @@ void model_template::flush_outputs(){
 
     this -> m_p_loss.clear(); 
     if (!this -> m_batched){return;}
-    delete this -> edge_index; this -> edge_index = nullptr; 
+    tools::pflush(&this -> edge_index); 
 
     lambda(&this -> m_i_graph); 
     lambda(&this -> m_i_node); 

@@ -18,7 +18,7 @@ class sampletracer:
 
         std::vector<event_template*> get_events(std::string label); 
 
-        void fill_selections(std::map<std::string, selection_template*>* inpt); 
+        bool fill_selections(std::map<std::string, selection_template*>* inpt); 
         bool add_event(event_template* ev, std::string label); 
         bool add_graph(graph_template* gr, std::string label);
         bool add_selection(selection_template* sel); 

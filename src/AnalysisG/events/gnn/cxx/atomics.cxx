@@ -139,12 +139,12 @@ std::map<std::string, float> gnn_event::cluster(
                 mps = (*clust)[index]; 
                 itx = mps.begin(); 
                 tmp[hash_] = ptr;
-
                 if (itx != mps.end()){continue;}
                 break;
             }
         }
         if (tmp.size() <= 2){continue;}
+        std::cout << tmp.size() << std::endl; 
 
         std::string hash = ""; 
         for (itp = tmp.begin(); itp != tmp.end(); ++itp){hash = tl.hash(hash + itp -> first);}

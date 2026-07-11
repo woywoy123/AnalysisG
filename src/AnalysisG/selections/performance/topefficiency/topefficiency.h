@@ -39,20 +39,6 @@ class topefficiency: public selection_template
         bool strategy(event_template* ev) override;
         void merge(selection_template* sl) override;
 
-        double pt_start  = 0; 
-        double eta_start = 0; 
-
-        double pt_end  = 1500; 
-        double eta_end = 6; 
-
-        double eta_step = 0.5; 
-        double pt_step  = 100; 
-        double score_step = 0.01; 
-
-        int iters(double start, double end, double step); 
-        std::string region(double pt, double eta); 
-        std::string decaymode(std::vector<top*> ev_tops); 
-
         void check_matching(dump_t* dp, top* trg, std::vector<top*>* ev_tops); 
         std::tuple<dump_t*, std::string> switching(
                 std::map<pagerank_e, dump_t>* prx, pagerank_e px, 

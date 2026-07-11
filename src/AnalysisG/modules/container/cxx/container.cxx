@@ -1,30 +1,24 @@
 #include <container/container.h>
+#include <tools/merge_cast.h>
 #include <TSystem.h>
 
 container::container(){}
 container::~container(){
-    if (this -> meta_data){delete this -> meta_data;}
-    delete this -> filename;  
+    this -> pflush(&this -> meta_data); 
+    this -> pflush(&this -> filename); 
 
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();
     for (; itr != this -> random_access.end(); ++itr){itr -> second.destroy();}
     this -> random_access.clear(); 
     if (!this -> merged){return;}
-
-    std::map<std::string, selection_template*>::iterator itrs = this -> merged -> begin(); 
-    for (; itrs != this -> merged -> end(); ++itrs){delete itrs -> second; itrs -> second = nullptr;}
-    this -> merged -> clear(); 
-    delete this -> merged; 
-    this -> merged = nullptr; 
+    this -> mflush(this -> merged); 
+    this -> pflush(&this -> merged); 
 }
 
 void container::get_events(std::vector<event_template*>* out, std::string _label){
     if (_label != this -> label && _label.size()){return;}
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin(); 
-    for (; itr != this -> random_access.end(); ++itr){
-        std::vector<event_template*> rn = itr -> second.m_event; 
-        out -> insert(out -> end(), rn.begin(), rn.end()); 
-    } 
+    for (; itr != this -> random_access.end(); ++itr){ merge_data(out, &itr -> second.m_event); } 
 }
 
 void container::add_meta_data(meta* data, std::string fname){
@@ -44,20 +38,20 @@ entry_t* container::add_entry(std::string hash){
 
 bool container::add_event_template(event_template* ev, std::string _label){
     if (!this -> label.size()){this -> label = _label;}
-    entry_t* evt = this -> add_entry(ev -> hash); 
+    entry_t*    evt = this -> add_entry(ev -> hash); 
     ev -> meta_data = this -> meta_data; 
     return evt -> has_event(ev); 
 }
 
 bool container::add_graph_template(graph_template* gr, std::string _label){
     if (!this -> label.size()){this -> label = _label;}
-    entry_t* evt = this -> add_entry(gr -> hash); 
+    entry_t*    evt = this -> add_entry(gr -> hash); 
     gr -> meta_data = this -> meta_data; 
     return evt -> has_graph(gr); 
 }
 
 bool container::add_selection_template(selection_template* sel){
-    entry_t* evt = this -> add_entry(sel -> hash); 
+    entry_t*     evt = this -> add_entry(sel -> hash); 
     sel -> meta_data = this -> meta_data; 
     return evt -> has_selection(sel);
 }
@@ -127,11 +121,11 @@ void container::compile(size_t* l, int threadIdx, int thrds){
                 std::string pth  = *this -> output_path + "/Selections/" + name + "-" + std::string(sel -> m_event -> name) + "/";
                 if (this -> label.size()){pth += this -> label + "/";}
                 this -> create_path(pth); 
-                std::vector<std::string> fname = this -> split(*this -> filename, "/"); 
-                
+                std::string fname = this -> get_splits(this -> filename, "/"); 
+
                 handles[name] = new write_t(); 
                 handles[name] -> mtx = &this -> meta_data -> meta_data; 
-                handles[name] -> create(tree, pth + fname[fname.size()-1]); 
+                handles[name] -> create(tree, pth + fname); 
             }
             for (selection_template* sel : ev -> m_selection){
                 std::string name = sel -> name; 
@@ -164,7 +158,6 @@ void container::compile(size_t* l, int threadIdx, int thrds){
             gr_ -> filename = this -> filename; 
             ev -> m_data.push_back(gr_); 
         }
-
         ev -> destroy(); 
         *l += 1; 
     }
@@ -174,8 +167,7 @@ void container::compile(size_t* l, int threadIdx, int thrds){
         (*this -> merged)[itx -> first] -> bulk_write_out();
         (*this -> merged)[itx -> first] -> handle = nullptr; 
         itx -> second -> close();
-        delete itx -> second; 
-        itx -> second = nullptr; 
+        this -> pflush(&itx -> second); 
     }
     *l = this -> random_access.size(); 
 }
@@ -186,12 +178,9 @@ void container::fill_selections(std::map<std::string, selection_template*>* inpt
     for (; itr != this -> merged -> end(); ++itr){
         selection_template* sl = (*inpt)[itr -> first]; 
         sl -> merger(itr -> second); 
-        delete itr -> second; 
-        itr -> second = nullptr; 
+        this -> pflush(&itr -> second); 
     }
-    this -> merged -> clear(); 
-    delete this -> merged;
-    this -> merged = nullptr; 
+    this -> pflush(&this -> merged); 
 }
 
 void container::populate_dataloader(dataloader* dl){

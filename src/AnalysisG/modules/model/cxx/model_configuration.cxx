@@ -61,7 +61,7 @@ void model_template::set_name(std::string* nx, model_template* md){md -> m_name 
 void model_template::get_name(std::string* nx, model_template* md){*nx = md -> m_name;}
 
 void model_template::set_device(std::string* dev, model_template* md){
-    if (md -> m_option){delete md -> m_option; md -> m_option = nullptr;}    
+    if (md -> m_option){tools::pflush(&md -> m_option);}
     int device_n = -1; 
     c10::DeviceType device_enum; 
     std::string _device = md -> lower(dev); 
@@ -76,7 +76,7 @@ void model_template::set_device(std::string* dev, model_template* md){
     switch(device_enum){
         case c10::kCPU:  md -> m_option = new torch::TensorOptions(device_enum); break; 
         case c10::kCUDA: md -> m_option = new torch::TensorOptions(device_enum, device_n); break; 
-        default: md -> m_option = new torch::TensorOptions(device_enum); break; 
+        default:         md -> m_option = new torch::TensorOptions(device_enum); break; 
     }
     for (size_t x(0); x < md -> m_data.size(); ++x){(*md -> m_data[x]) -> to(md -> m_option -> device(), true);}
 }
