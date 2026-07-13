@@ -44,7 +44,7 @@ class tools
 
         static std::vector<std::string> split(std::string in, std::string delim);
         static std::vector<std::string> split(std::string in, size_t n);
-        static std::string get_splits(std::string* in, std::string delim, int index = -1); 
+        static std::string get_splits(const std::string* in, std::string delim, int index = -1); 
 
         static std::string hash(std::string input, int len = 18);
         static std::string lower(std::string*); 
@@ -59,18 +59,33 @@ class tools
         g* as(){return (g*)this;}
 
         // template functions
-        template <typename G>
-        static std::vector<std::vector<G>> discretize(std::vector<G>* v, int N){
+        template <typename g>
+        static std::vector<std::vector<g>> discretize(std::vector<g>* v, int N){
+            typename std::vector<std::vector<g>> out; 
             size_t n = v -> size(); 
-            typename std::vector<std::vector<G>> out; 
-            out.reserve(int(v -> size()/N)); 
+            out.reserve(int(n/N)); 
             for (size_t ib = 0; ib < n; ib += N){
                 size_t end = ib + N; 
                 if (end > n){ end = n; }
-                out.push_back(std::vector<G>(v -> begin() + ib, v -> begin() + end)); 
+                out.push_back(std::vector<g>(v -> begin() + ib, v -> begin() + end)); 
             }
             return out; 
         }
+
+
+        template <typename g>
+        static std::vector<std::vector<g*>> discretize(std::vector<g*>* v, int N){
+            typename std::vector<std::vector<g*>> out; 
+            size_t n = v -> size(); 
+            out.reserve(int(n/N)); 
+            for (size_t ib = 0; ib < n; ib += N){
+                size_t end = ib + N; 
+                if (end > n){ end = n; }
+                out.push_back(std::vector<g*>(v -> begin() + ib, v -> begin() + end)); 
+            }
+            return out; 
+        }
+
 
         template <typename g>
         static g max(std::vector<g>* inpt){

@@ -10,6 +10,18 @@ class grift: public model_template
         model_template* clone() override;
         void forward(graph_t*) override; 
 
+
+        torch::Tensor node_encode(
+                torch::Tensor* pmc, torch::Tensor* trk_i, 
+                torch::Tensor hdx_ij
+        ); 
+
+        torch::Tensor edge_encode(
+            torch::Tensor* pmc, torch::Tensor* edge_index, 
+            torch::Tensor* top_edge, torch::Tensor hdx_ij
+        ); 
+
+
         torch::Tensor message(
             torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc,  
             torch::Tensor  hx_i, torch::Tensor hx_j

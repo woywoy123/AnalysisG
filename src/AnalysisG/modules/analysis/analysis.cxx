@@ -192,12 +192,15 @@ void analysis::start(){
     else if (load_gr_cache){
         this -> loader -> restore_graphs(pth_cache, threads_);
     }
-    
+   
+    std::cout << this -> dsize() << std::endl;
+
     if (!this -> build_metric()){return;}
     if (this -> model_sessions.size()){
         if (!this -> dsize()){
             return this -> failure("No Dataset was found from training. Aborting...");
         }
+        
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> loader -> start_cuda_server(); 

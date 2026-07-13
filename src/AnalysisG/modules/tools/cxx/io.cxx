@@ -28,7 +28,7 @@ void tools::delete_path(std::string input_path){
 }
 
 bool tools::is_file(std::string path){
-    return !std::filesystem::is_directory(path); 
+    return std::filesystem::is_regular_file(path); 
 }
 
 std::vector<std::string> tools::ls(std::string path, std::string ext){
@@ -42,11 +42,11 @@ std::vector<std::string> tools::ls(std::string path, std::string ext){
         try {s = std::filesystem::canonical(val.path()).string();}
         catch (...){continue;}
         if (!tools::is_file(s)){
-            std::vector<std::string> vs = tools::ls(s + "*", ext); 
+            std::vector<std::string> vs = tools::ls(s + "*", ext);
             for (size_t x(0); x < vs.size(); ++x){
                 if (tools::is_file(vs[x])){out.push_back(vs[x]); continue;}
-                std::vector<std::string> lx = tools::ls(vs[x] + "*"); 
-                tools::unique_key(&lx, &out); 
+                std::vector<std::string> lx = tools::ls(vs[x] + "*");
+                tools::unique_key(&lx, &out);
             }
             continue;
         }

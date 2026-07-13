@@ -22,18 +22,11 @@ struct entry_t {
     bool has_event(event_template* ev); 
     bool has_graph(graph_template* gr); 
     bool has_selection(selection_template* sel); 
-    
-    template <typename g>
-    void destroy(std::vector<g*>* c){
-        for (size_t x(0); x < c -> size(); ++x){
-            delete (*c)[x]; 
-            (*c)[x] = nullptr; 
-        }
-        std::vector<g*>().swap(*c); 
-    }
 }; 
 
-class container: public tools
+class container: 
+    public tools, 
+    public notification
 {
     public:
         container();

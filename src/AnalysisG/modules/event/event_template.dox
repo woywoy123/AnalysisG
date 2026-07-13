@@ -1,0 +1,13 @@
+/**
+ * \class event_template
+ * \brief Provides the schema for parsing and importing events from ROOT trees.
+ *
+ * `event_template` acts as a blueprint. The underlying C++ backend uses it to read ROOT trees and dynamically build event representations in memory.
+ * It stores critical structural mapping data such as `Trees`, `Branches`, `leaves`, `index`, and `weight`.
+ *
+ * \fn bool event_template::operator==(const event_template& p)
+ * \brief Equality operator for robust identification of events.
+ *
+ * \fn std::string event_template::hash()
+ * \brief Hashing function to generate a unique identifier for the event.
+ */

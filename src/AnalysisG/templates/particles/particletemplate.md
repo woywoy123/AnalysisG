@@ -1,4 +1,0 @@
-The ParticleTemplate Source Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-

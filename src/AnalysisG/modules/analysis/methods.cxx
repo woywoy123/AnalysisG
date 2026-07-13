@@ -28,11 +28,11 @@ void analysis::initialize_loop(
     mk -> epoch = 0; 
     mk -> kfold = k+1; 
     for (int ep(0); ep < op -> m_settings.epochs+1; ++ep){
+        if (!op -> m_settings.continue_training){break;} 
          // check if the next epoch has a file i+2;
         std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";  
         pth_ += "kfold-" + std::to_string(k+1) + "_model.pt"; 
         if (op -> m_settings.continue_training && op -> is_file(pth_)){++last_ep; continue;}
-        if (!op -> m_settings.continue_training){break;} 
         mk -> epoch = ep;
         mk -> restore_state(); 
         last_ep = -1; 
@@ -49,6 +49,7 @@ void analysis::initialize_loop(
     (*rep) = mr; 
     op -> launch_model(k);
 }
+
 
 int analysis::add_content(
         std::map<std::string, torch::Tensor*>* data, 

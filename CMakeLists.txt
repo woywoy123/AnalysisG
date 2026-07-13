@@ -18,6 +18,7 @@ include(FetchContent)
 include(CheckLanguage)
 set(USE_SABI 1)
 
+# ------------------------- RAPIDJSON -------------------- #
 set(RAPIDJSON_BUILD_THIRDPARTY_GTEST OFF)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
 set(RAPIDJSON_BUILD_TESTS OFF)
@@ -30,7 +31,9 @@ GIT_TAG origin/master
 FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(rapidjson)
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
+# ------------------------- RAPIDJSON -------------------- #
 
+# ------------------------- CUDA + TORCH ENV -------------------- #
 if(CMAKE_ANALYSISG_CUDA)
 check_language(CUDA)
 enable_language(CUDA)
@@ -44,15 +47,16 @@ else()
 FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-2.9.1%2Bcpu.zip")
 endif()
 FetchContent_MakeAvailable(torch)
+set(CAFFE2_USE_CUDNN ON)
+find_package(Torch REQUIRED CONFIG)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
+# ------------------------- CUDA + TORCH ENV -------------------- #
 
 execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
-
-find_package(Torch REQUIRED CONFIG)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
-message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 
 #FetchContent_Declare(HDF5
 #GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
@@ -85,17 +89,4 @@ message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 add_subdirectory(src/AnalysisG)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
 
-#option(BUILD_DOC "Build documentation" OFF)
-#find_package(Doxygen)
-#if (DOXYGEN_FOUND AND BUILD_DOC)
-#set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/Doxyfile.in)
-#set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-#configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-#message("Doxygen build started")
-#add_custom_target( doc_doxygen ALL
-#COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-#WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#COMMENT "Generating documentation with Doxygen" VERBATIM)
-#else (DOXYGEN_FOUND)
-#message("Doxygen need to be installed to generate the doxygen documentation")
 

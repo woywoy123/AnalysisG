@@ -5,6 +5,7 @@
 **/gnn-analysis
 **/.apptainer
 **/.local
+**/build**
 scripts/source_this.sh
 
 # Cache types 
@@ -32,6 +33,4 @@ local/**/*.png
 # Vim related swaps 
 **.swp
 
-# Doxygen documentation
-doxygen-docs/
-unscoped/
+doxygen_output

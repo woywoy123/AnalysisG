@@ -7,7 +7,7 @@ from AnalysisG.graphs.bsm_4tops import *
 from AnalysisG.events import SSML_MC20
 from AnalysisG.models import *
 
-root1 = "./samples/dilepton/DAOD_TOPQ1.21955717._000001.root"
+root1 = "./samples/dilepton/*" #DAOD_TOPQ1.21955717._000001.root"
 #root1 = "/home/tnom6927/Downloads/mc16/tmp/*" #user.tnommens.40945479._000001.output.root"
 #root1 = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
 

@@ -44,7 +44,7 @@ std::vector<std::string> tools::split(std::string in, size_t n){
     return out; 
 }
 
-std::string tools::get_splits(std::string* in, std::string delm, int index){
+std::string tools::get_splits(const std::string* in, std::string delm, int index){
     std::vector<std::string> spl = tools::split(*in, delm); 
     return (index < int(spl.size())) ? spl[spl.size() + index] : "xxxxxxxxxxxxxx"; 
 }

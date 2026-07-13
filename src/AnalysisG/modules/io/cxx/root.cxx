@@ -35,6 +35,7 @@ void io::check_root_file_paths(){
     this -> success("Checking File Path:"); 
     for (; itr != this -> root_files.end(); ++itr){
         int l = itr -> first.size(); 
+        if (l == 0) continue;
         std::string last = itr -> first.substr(l - 1); 
         if (last == "*"){
             std::vector<std::string> files = this -> ls(itr -> first.substr(0, l-1), ".root"); 

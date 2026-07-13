@@ -8,9 +8,9 @@ void entry_t::init(){
 }
 
 void entry_t::destroy(){
-    if (this -> m_event.size()){this -> destroy(&this -> m_event);}
-    if (this -> m_graph.size()){this -> destroy(&this -> m_graph);}
-    if (this -> m_selection.size()){this -> destroy(&this -> m_selection);}
+    tools::vflush(&this -> m_event);
+    tools::vflush(&this -> m_graph);
+    tools::vflush(&this -> m_selection);
 }
 
 bool entry_t::has_event(event_template* ev){

@@ -2,15 +2,14 @@
 #include <tools/merge_cast.h>
 #include <TSystem.h>
 
-container::container(){}
+container::container(){
+    this -> merged = new std::map<std::string, selection_template*>();
+}
+
 container::~container(){
     this -> pflush(&this -> meta_data); 
     this -> pflush(&this -> filename); 
-
-    std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();
-    for (; itr != this -> random_access.end(); ++itr){itr -> second.destroy();}
     this -> random_access.clear(); 
-    if (!this -> merged){return;}
     this -> mflush(this -> merged); 
     this -> pflush(&this -> merged); 
 }
@@ -57,60 +56,62 @@ bool container::add_selection_template(selection_template* sel){
 }
 
 void container::compile(size_t* l, int threadIdx, int thrds){
-    auto lmb1 =[this](std::vector<event_template*> comx, size_t* lx) -> void{
-        for (size_t x(0); x < comx.size(); ++x, ++(*lx)){comx[x] -> CompileEvent();}
+    auto lmb =[this](
+        std::vector<event_template*>* evc, 
+        std::vector<graph_template*>* grc,
+        tracing_t* lx
+    ) -> void{
+        lx -> message(tools::get_splits(this -> filename, "/")); 
+        for (size_t x(0); x < evc -> size(); ++x){
+            (*evc)[x] -> CompileEvent(); 
+            lx -> next(); 
+        }
+
+        for (size_t x(0); x < grc -> size(); ++x){
+            graph_template* gr = (*grc)[x]; 
+            lx -> next(); 
+            if (gr -> preselection && !gr -> PreSelection()){}
+            else {gr -> CompileEvent();}
+            //gr -> flush_particles();
+        }
+        lx -> finished(); 
     }; 
 
-    auto run = [this](std::vector<std::thread*>* thr) -> int {
-        size_t idx = 0; 
-        for (size_t x(0); x < thr -> size(); ++x){
-            if (!(*thr)[x]){continue;}
-            if (!(*thr)[x] -> joinable()){++idx; continue;}
-            (*thr)[x] -> join(); 
-            delete (*thr)[x]; 
-            (*thr)[x] = nullptr; 
-        }
-        return int(idx); 
-    }; 
+    std::vector<event_template*> ev_vec;
+    std::vector<graph_template*> gr_vec;
 
-    std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();  
-
-    if (thrds > 0){
-        std::vector<event_template*> vev = {}; 
-        for (; itr != this -> random_access.end(); ++itr){
-            for (event_template* evx : itr -> second.m_event){vev.push_back(evx);}
-        }
-        std::vector<std::vector<event_template*>> vcx = this -> discretize(&vev, thrds); 
-        std::vector<std::thread*> thx(vcx.size(), nullptr); 
-
-        int tidx = 0;
-        std::vector<size_t> thr(vcx.size(), 0); 
-        for (size_t x(0); x < vcx.size(); ++x, ++tidx){
-            thx[x] = new std::thread(lmb1, vcx[x], &thr[x]);
-            while (tidx > std::abs(thrds-1)){
-                tidx = run(&thx);
-                (*l) = 0; 
-                for (size_t y(0); y < thr.size(); ++y){(*l) += thr[y] / 2;}
-            }
-
-        }
-
-        while (tidx){
-            tidx = run(&thx);
-            (*l) = 0; 
-            for (size_t x(0); x < thr.size(); ++x){(*l) += thr[x] / 2;}
-        }
-        (*l) = 0; 
+    std::map<std::string, entry_t>::iterator itr = this -> random_access.begin(); 
+    for (; itr != this -> random_access.end(); ++itr){
+        merge_data(&ev_vec, &itr -> second.m_event); 
+        merge_data(&gr_vec, &itr -> second.m_graph);  
+        for (graph_template* gr : itr -> second.m_graph){gr -> threadIdx = threadIdx;}
     }
+ 
+    if (thrds < 0){thrds = 2;} 
+    std::vector<std::vector<event_template*>> ev_vx = this -> discretize(&ev_vec, ev_vec.size() / thrds ); 
+    std::vector<std::vector<graph_template*>> gr_vx = this -> discretize(&gr_vec, gr_vec.size() / thrds ); 
+    size_t itz = ev_vx.size();  
+    if (itz == 0){return;}
 
+//    this -> shush = true; 
+    multithreaded_t* thr = this -> make_threads(itz, thrds); 
+    for (size_t x(0); x < itz; ++x){
+        tracing_t* tr = thr -> next(); 
+        tr -> register_thread( new std::thread(lmb, &ev_vx[x], &gr_vx[x], tr), ev_vx[x].size() + gr_vx[x].size() ); 
+//        while (this -> await_threads(thr, true)){}
+    }
+    while (this -> await_threads(thr, true)){}
+    this -> pflush(&thr); 
     std::map<std::string, write_t*> handles;
-    for (itr = this -> random_access.begin(); itr != this -> random_access.end(); ++itr){
+
+    itr = this -> random_access.begin(); 
+    for (; itr != this -> random_access.end(); ++itr){
         entry_t* ev = &itr -> second;  
-        if (thrds <= 0){
-            for (event_template* evx : ev -> m_event){evx -> CompileEvent();}
-        }
-        if (ev -> m_selection.size() && !this -> merged){
-            this -> merged = new std::map<std::string, selection_template*>();
+        for (graph_template* gr : ev -> m_graph){
+            graph_t* gr_    = gr -> data_export();  
+            gr_ -> hash     = new std::string(ev -> hash);
+            gr_ -> filename = this -> filename; 
+            ev -> m_data.push_back(gr_); 
         }
 
         if (itr == this -> random_access.begin()){
@@ -118,7 +119,9 @@ void container::compile(size_t* l, int threadIdx, int thrds){
                 if (!this -> output_path){break;}
                 std::string name = sel -> name; 
                 std::string tree = sel -> m_event -> tree; 
-                std::string pth  = *this -> output_path + "/Selections/" + name + "-" + std::string(sel -> m_event -> name) + "/";
+                std::string pth  = *this -> output_path + "/Selections/"; 
+                pth += (name + "-" + std::string(sel -> m_event -> name) + "/");
+
                 if (this -> label.size()){pth += this -> label + "/";}
                 this -> create_path(pth); 
                 std::string fname = this -> get_splits(this -> filename, "/"); 
@@ -130,6 +133,7 @@ void container::compile(size_t* l, int threadIdx, int thrds){
             for (selection_template* sel : ev -> m_selection){
                 std::string name = sel -> name; 
                 selection_template* slx = sel -> clone(); 
+
                 slx -> threadIdx = threadIdx; 
                 if (this -> output_path){slx -> handle = handles[name];}
                 (*this -> merged)[name] = slx;
@@ -146,20 +150,8 @@ void container::compile(size_t* l, int threadIdx, int thrds){
             if (this -> output_path && !sel -> p_bulk_write){handles[name] -> write();}
             sel -> m_event = nullptr; 
         }
-
-        for (graph_template* gr : ev -> m_graph){
-            gr -> threadIdx = threadIdx; 
-            if (!gr -> preselection){}
-            else if (!gr -> PreSelection()){continue;}
-            gr -> CompileEvent(); 
-            gr -> flush_particles();
-            graph_t* gr_    = gr -> data_export();  
-            gr_ -> hash     = new std::string(ev -> hash);
-            gr_ -> filename = this -> filename; 
-            ev -> m_data.push_back(gr_); 
-        }
+        (*l) += 1; 
         ev -> destroy(); 
-        *l += 1; 
     }
 
     std::map<std::string, write_t*>::iterator itx = handles.begin(); 
@@ -169,7 +161,6 @@ void container::compile(size_t* l, int threadIdx, int thrds){
         itx -> second -> close();
         this -> pflush(&itx -> second); 
     }
-    *l = this -> random_access.size(); 
 }
 
 void container::fill_selections(std::map<std::string, selection_template*>* inpt){
@@ -185,12 +176,16 @@ void container::fill_selections(std::map<std::string, selection_template*>* inpt
 
 void container::populate_dataloader(dataloader* dl){
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();  
+    std::cout << "________________" << std::endl; 
     for (; itr != this -> random_access.end(); ++itr){
         std::vector<graph_t*> data = itr -> second.m_data; 
-        for (size_t x(0); x < data.size(); ++x){dl -> extract_data(data[x]);}
+        std::cout << "________________" << std::endl; 
+//        for (size_t x(0); x < data.size(); ++x){dl -> extract_data(data[x]);}
         itr -> second.m_data.clear(); 
     }
+    std::cout << this -> random_access.size() << std::endl; 
     this -> random_access.clear(); 
+    abort(); 
 }
 
 size_t container::len(){return this -> random_access.size();}

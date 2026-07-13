@@ -34,19 +34,24 @@ bool sampletracer::add_selection(selection_template* sel){
 }
 
 void sampletracer::compile_objects(int threads, int intrath){
-    auto lamb = [](tracing_t* tr, container* data, int intrath){
-        data -> compile(tr -> idx, tr -> threadIdx, intrath);
+    auto lamb = [](tracing_t* tr, container* data, int intr){
+        data -> compile(tr -> idx, tr -> threadIdx, intr);
         tr -> finished(); 
     }; 
 
-    multithreaded_t* thr = this -> make_threads(this -> root_container.size(), threads); 
+    size_t smx = 0;  
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
-    for (; itr != this -> root_container.end(); ++itr){
+    for (; itr != this -> root_container.end(); ++itr){smx += itr -> second.len();}
+
+    this -> shush = true; 
+    multithreaded_t* thr = this -> make_threads(smx, threads); 
+    for (itr = this -> root_container.begin(); itr != this -> root_container.end(); ++itr){
         tracing_t* tr = thr -> next(); 
         tr -> register_thread( new std::thread(lamb, tr, &itr -> second, intrath), itr -> second.len() ); 
-        this -> await_threads(thr, false); 
+        tr -> message(tools::get_splits(&itr -> first, "/"));
+        while (this -> await_threads(thr, true)){}
     }
-    this -> await_threads(thr, true); 
+    while (this -> await_threads(thr, true)){}
     this -> pflush(&thr); 
 }
 

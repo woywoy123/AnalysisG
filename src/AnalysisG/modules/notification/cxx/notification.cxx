@@ -45,7 +45,10 @@ tracing_t* multithreaded_t::next(){
 
 size_t tracing_t::index(){return (*this -> idx);}
 void   tracing_t::next(){(*this -> idx)++;}
-void   tracing_t::finished(){(*this -> status) = 0;}
+void   tracing_t::finished(){
+    (*this -> status) = 0;
+    (*this -> idx) = (*this -> maxlength); 
+}
 
 void   tracing_t::message(std::string msg){(*this -> coms) = msg;}
 void   tracing_t::register_thread(std::thread* thr, size_t x){
