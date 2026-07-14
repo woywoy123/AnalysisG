@@ -1,0 +1,22 @@
+/**
+ * @file src/AnalysisG/modules/roc/include/plotting/roc.h
+ * @brief Header file for Receiver Operating Characteristic (ROC) curve plotting.
+ * 
+ * Contains the roc class and associated data structures for calculating and plotting 
+ * ROC curves from model scores and truth labels.
+ * 
+ * @struct roc_t
+ * @brief Structure containing raw and processed ROC curve data.
+ * 
+ * Stores the target class (`cls`), cross-validation fold (`kfold`), model name,
+ * Area Under Curve (`_auc`), True Positive Rate (`tpr_`), and False Positive Rate (`fpr_`).
+ * Also retains pointers to the original truth labels and scores.
+ * 
+ * @class roc
+ * @brief Class for generating and plotting ROC curves.
+ * 
+ * Inherits from the plotting class. It aggregates ROC data across multiple labels
+ * and folds, providing tools to build the ROC objects dynamically:
+ * - `build_ROC`: Computes and caches the ROC metrics for a given model/name and fold.
+ * - `get_ROC`: Returns the generated ROC structures for rendering.
+ */
