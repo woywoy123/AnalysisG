@@ -113,3 +113,19 @@ convergence.
 .. doxygenstruct:: recon_t
    :project: AnalysisG
    :members:
+
+
+.. doxygenfile:: common/solvers.h
+   :project: AnalysisG
+
+
+.. doxygenfile:: constants.h
+   :project: AnalysisG
+
+
+.. doxygenfile:: htilde.h
+   :project: AnalysisG
+
+
+.. doxygenfile:: ellipse/solvers.h
+   :project: AnalysisG

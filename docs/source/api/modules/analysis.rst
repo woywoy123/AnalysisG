@@ -78,3 +78,7 @@ Execution Methods
      - Returns a human-readable progress report per model.
    * - ``std::map<std::string, bool> is_complete()``
      - Returns whether each model has finished all epochs.
+
+
+.. doxygenfile:: cfg.h
+   :project: AnalysisG

@@ -88,3 +88,6 @@ Example::
     for (roc_t* r : roc_obj.get_ROC()) {
         std::cout << "AUC (class 0): " << r->_auc[0] << std::endl;
     }
+
+.. doxygenfile:: roc.h
+   :project: AnalysisG

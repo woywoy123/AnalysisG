@@ -142,3 +142,7 @@ Example::
     auto* data = reader.get_data();
     // iterate entries via data map
     reader.root_end();
+
+
+.. doxygenfile:: cfg.h
+   :project: AnalysisG

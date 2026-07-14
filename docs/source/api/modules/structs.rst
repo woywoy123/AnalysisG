@@ -202,3 +202,11 @@ well as the current learning rates and iteration counters.
 .. doxygenstruct:: roc_t
    :project: AnalysisG
    :members:
+
+
+.. doxygenfile:: enums.h
+   :project: AnalysisG
+
+
+.. doxygenfile:: switchboards.h
+   :project: AnalysisG

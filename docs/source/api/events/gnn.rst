@@ -16,6 +16,9 @@ exposes no additional scalar fields — particle collections are registered
 via :meth:`~AnalysisG.core.event_template.EventTemplate.register_particle`
 inside ``CompileEvent``.
 
+.. doxygenfile:: gnn-event.h
+   :project: AnalysisG
+
 Particle Classes
 ----------------
 
@@ -32,3 +35,6 @@ ZPrime
 Inferred Z′ resonance particle.  Inherits all
 :class:`~AnalysisG.core.particle_template.ParticleTemplate` kinematics;
 no additional fields.
+
+.. doxygenfile:: gnn-particles.h
+   :project: AnalysisG
