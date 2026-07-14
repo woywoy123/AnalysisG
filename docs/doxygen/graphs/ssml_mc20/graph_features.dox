@@ -1,0 +1,66 @@
+/**
+ * @file ssml_mc20/graph_features.h
+ * @brief Graph feature definitions for the ssml_mc20 event graph.
+ * 
+ * Provides static functions to extract graph-level truth and observable features for `ssml_mc20` events.
+ * 
+ * @fn void static signal_event(bool* o, ssml_mc20* event)
+ * @brief Determines if the event is a signal event.
+ * @param o Output boolean pointer.
+ * @param event Pointer to the `ssml_mc20` event.
+ * 
+ * @fn void static num_tops(int* o, ssml_mc20* event)
+ * @brief Counts the number of top quarks in the event (capped at 4).
+ * @param o Output integer pointer for the top count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static num_neutrino(int* o, ssml_mc20* event)
+ * @brief Counts the number of neutrinos from truth children.
+ * @param o Output integer pointer for the neutrino count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static num_lepton(int* o, ssml_mc20* event)
+ * @brief Counts the number of non-lepton/non-neutrino truth children.
+ * @param o Output integer pointer for the lepton count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static missing_et(double* o, ssml_mc20* event)
+ * @brief Extracts the missing transverse energy (MET).
+ * @param o Output double pointer for MET.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static missing_phi(double* o, ssml_mc20* event)
+ * @brief Extracts the missing energy phi.
+ * @param o Output double pointer for missing phi.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static num_children_leps(double* o, ssml_mc20* event)
+ * @brief Counts the number of children leptons.
+ * @param o Output double pointer for children lepton count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static num_leps(double* o, ssml_mc20* event)
+ * @brief Extracts the number of observed leptons.
+ * @param o Output double pointer for lepton count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static num_quark(double* o, ssml_mc20* event)
+ * @brief Counts the number of non-lepton/non-neutrino truth children as quarks.
+ * @param o Output double pointer for quark count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static num_jets(double* o, ssml_mc20* event)
+ * @brief Extracts the number of observed jets.
+ * @param o Output double pointer for jet count.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static event_number(long* o, ssml_mc20* event)
+ * @brief Extracts the event number.
+ * @param o Output long pointer for the event number.
+ * @param event Pointer to the event.
+ * 
+ * @fn void static event_weight(double* o, ssml_mc20* event)
+ * @brief Extracts the event weight.
+ * @param o Output double pointer for the event weight.
+ * @param event Pointer to the event.
+ */

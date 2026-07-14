@@ -1,0 +1,51 @@
+/**
+ * @file ssml_mc20/node_features.h
+ * @brief Node feature definitions for the ssml_mc20 graph.
+ * 
+ * Provides static functions for extracting truth and observable features for nodes.
+ * 
+ * @fn void static res_node(int* o, particle_template* p)
+ * @brief Checks if a particle node originates from a resonance.
+ * @param o Output integer pointer for the resonance boolean.
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static top_node(int* o, particle_template* p)
+ * @brief Identifies the top quark origin of a particle node.
+ * @param o Output integer pointer for the top quark index (-1 if none).
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static pt(double* o, particle_template* p)
+ * @brief Extracts the transverse momentum (pt) of the node.
+ * @param o Output double pointer for pt.
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static eta(double* o, particle_template* p)
+ * @brief Extracts the pseudorapidity (eta) of the node.
+ * @param o Output double pointer for eta.
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static phi(double* o, particle_template* p)
+ * @brief Extracts the azimuthal angle (phi) of the node.
+ * @param o Output double pointer for phi.
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static energy(double* o, particle_template* p)
+ * @brief Extracts the energy of the node.
+ * @param o Output double pointer for energy.
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static is_lepton(int* o, particle_template* p)
+ * @brief Checks if the particle node is a lepton.
+ * @param o Output integer pointer (1 if true, 0 otherwise).
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static is_bquark(int* o, particle_template* p)
+ * @brief Checks if the particle node is a b-quark.
+ * @param o Output integer pointer (1 if true, 0 otherwise).
+ * @param p Pointer to the particle template.
+ * 
+ * @fn void static is_neutrino(int* o, particle_template* p)
+ * @brief Checks if the particle node is a neutrino.
+ * @param o Output integer pointer (1 if true, 0 otherwise).
+ * @param p Pointer to the particle template.
+ */

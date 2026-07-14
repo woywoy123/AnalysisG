@@ -1,0 +1,57 @@
+/**
+ * @file bsm_4tops/node_features.h
+ * @brief Node feature definitions for the bsm_4tops graph.
+ * 
+ * Contains declarations for extracting node truth and observable features
+ * from particle templates.
+ * 
+ * @fn void res_node(int* o, particle_template* p)
+ * @brief Checks if the node represents a particle from a resonance.
+ * @param o Output integer indicating resonance origin.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void top_node(int* o, particle_template* p)
+ * @brief Identifies the top quark origin of the node.
+ * @param o Output integer representing the top quark index/truth.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void pt(double* o, particle_template* p)
+ * @brief Extracts the transverse momentum (pt) of the node.
+ * @param o Output double for pt.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void eta(double* o, particle_template* p)
+ * @brief Extracts the pseudorapidity (eta) of the node.
+ * @param o Output double for eta.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void phi(double* o, particle_template* p)
+ * @brief Extracts the azimuthal angle (phi) of the node.
+ * @param o Output double for phi.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void energy(double* o, particle_template* p)
+ * @brief Extracts the energy of the node.
+ * @param o Output double for energy.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void charge(double* o, particle_template* p)
+ * @brief Extracts the electrical charge of the node.
+ * @param o Output double for charge.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void is_lepton(int* o, particle_template* p)
+ * @brief Checks if the particle is a lepton.
+ * @param o Output integer (boolean) for lepton identity.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void is_bquark(int* o, particle_template* p)
+ * @brief Checks if the particle is a b-quark.
+ * @param o Output integer (boolean) for b-quark identity.
+ * @param p Pointer to the particle template.
+ *
+ * @fn void is_neutrino(int* o, particle_template* p)
+ * @brief Checks if the particle is a neutrino.
+ * @param o Output integer (boolean) for neutrino identity.
+ * @param p Pointer to the particle template.
+ */

@@ -1,0 +1,37 @@
+/**
+ * @file exp_mc20/edge_features.h
+ * @brief Edge feature definitions for the exp_mc20 graph.
+ * 
+ * Provides static functions to determine edge features based on particle truth and origin.
+ * 
+ * @fn void static m_res_edge(int* o, jet* t)
+ * @brief Helper to check resonance origin for a jet.
+ * 
+ * @fn void static m_res_edge(int* o, electron* t)
+ * @brief Helper to check resonance origin for an electron.
+ * 
+ * @fn void static m_res_edge(int* o, muon* t)
+ * @brief Helper to check resonance origin for a muon.
+ * 
+ * @fn void static m_res_edge(int* o, particle_template* t)
+ * @brief Helper to check resonance origin for a generic particle by iterating over parents.
+ * 
+ * @fn void static res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determines if an edge connects two particles originating from a resonance.
+ * @param o Output integer pointer (1 if true, 0 otherwise).
+ * @param pij Pointer to the tuple of two particles forming the edge.
+ * 
+ * @fn std::vector<int> static m_top_edge(jet* t)
+ * @brief Helper to get top index for a jet.
+ * 
+ * @fn std::vector<int> static m_top_edge(electron* t)
+ * @brief Helper to get top index for an electron.
+ * 
+ * @fn std::vector<int> static m_top_edge(muon* t)
+ * @brief Helper to get top index for a muon.
+ * 
+ * @fn void static top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determines if an edge connects two particles originating from the same top quark.
+ * @param o Output integer pointer (1 if true, 0 otherwise).
+ * @param pij Pointer to the tuple of two particles forming the edge.
+ */

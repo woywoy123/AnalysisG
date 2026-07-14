@@ -1,0 +1,72 @@
+/**
+ * @file bsm_4tops/graph_features.h
+ * @brief Graph feature definitions for the bsm_4tops event graph.
+ * 
+ * Provides declarations for extracting graph-level truth and observable features
+ * from a `bsm_4tops` event.
+ * 
+ * @fn void num_tops(int* o, bsm_4tops* event)
+ * @brief Counts the number of top quarks in the event.
+ * @param o Output integer for the number of top quarks.
+ * @param event Pointer to the `bsm_4tops` event.
+ *
+ * @fn void num_lepton(int* o, bsm_4tops* event)
+ * @brief Counts the number of leptons in the event.
+ * @param o Output integer for lepton count.
+ * @param event Pointer to the event.
+ *
+ * @fn void num_neutrino(int* o, bsm_4tops* event)
+ * @brief Counts the number of neutrinos in the event.
+ * @param o Output integer for neutrino count.
+ * @param event Pointer to the event.
+ *
+ * @fn void signal_event(bool* o, bsm_4tops* event)
+ * @brief Determines if the event is a signal event.
+ * @param o Output boolean indicating if it's a signal.
+ * @param event Pointer to the event.
+ *
+ * @fn void missing_et(double* o, bsm_4tops* event)
+ * @brief Extracts the missing transverse energy (MET) of the event.
+ * @param o Output double for MET.
+ * @param event Pointer to the event.
+ *
+ * @fn void missing_phi(double* o, bsm_4tops* event)
+ * @brief Extracts the missing energy phi of the event.
+ * @param o Output double for missing phi.
+ * @param event Pointer to the event.
+ *
+ * @fn void num_leps(double* o, bsm_4tops* event)
+ * @brief Computes the number of observed leptons.
+ * @param o Output double for lepton count.
+ * @param event Pointer to the event.
+ *
+ * @fn void num_jets(double* o, bsm_4tops* event)
+ * @brief Computes the number of observed jets.
+ * @param o Output double for jet count.
+ * @param event Pointer to the event.
+ *
+ * @fn void num_quark(double* o, bsm_4tops* event)
+ * @brief Computes the number of quarks.
+ * @param o Output double for quark count.
+ * @param event Pointer to the event.
+ *
+ * @fn void num_truthjets(double* o, bsm_4tops* event)
+ * @brief Computes the number of truth jets.
+ * @param o Output double for truth jet count.
+ * @param event Pointer to the event.
+ *
+ * @fn void num_children_leps(double* o, bsm_4tops* event)
+ * @brief Computes the number of children leptons.
+ * @param o Output double for children lepton count.
+ * @param event Pointer to the event.
+ *
+ * @fn void event_number(long* o, bsm_4tops* event)
+ * @brief Extracts the event number.
+ * @param o Output long integer for the event number.
+ * @param event Pointer to the event.
+ *
+ * @fn void event_weight(double* o, bsm_4tops* event)
+ * @brief Extracts the event weight.
+ * @param o Output double for the event weight.
+ * @param event Pointer to the event.
+ */

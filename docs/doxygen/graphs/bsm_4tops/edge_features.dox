@@ -1,0 +1,27 @@
+/**
+ * @file bsm_4tops/edge_features.h
+ * @brief Edge feature definitions for the bsm_4tops graph.
+ * 
+ * This header contains declarations for extracting edge truth features
+ * from particle templates within the bsm_4tops graph representation.
+ * 
+ * @fn void res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determines if an edge connects two particles from a resonance.
+ * @param o Output pointer to store the boolean integer result.
+ * @param pij Pointer to a tuple containing the two particles forming the edge.
+ *
+ * @fn void top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determines if an edge connects two particles originating from the same top quark.
+ * @param o Output pointer to store the boolean integer result.
+ * @param pij Pointer to a tuple containing the two particles forming the edge.
+ *
+ * @fn void det_top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determines if an edge connects two detector-level particles from the same top quark.
+ * @param o Output pointer to store the result.
+ * @param pij Pointer to a tuple containing the two particles.
+ *
+ * @fn void det_res_edge(int* o, std::tuple<particle_template*, particle_template*>* pij)
+ * @brief Determines if an edge connects two detector-level particles from a resonance.
+ * @param o Output pointer to store the result.
+ * @param pij Pointer to a tuple containing the two particles.
+ */
