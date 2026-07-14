@@ -42,6 +42,7 @@ selections — all from a Python interface backed by high-performance C++ and CU
    :maxdepth: 1
    :caption: Advanced / C++ Backend
 
+   architecture
    api/modules/index_templates
    api/modules/index_framework
    api/modules/nusol

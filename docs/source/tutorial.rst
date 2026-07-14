@@ -4,7 +4,7 @@ End-to-End Pipeline Tutorial
 AnalysisG is designed around a single, fundamental philosophy: **The Event is the source of truth.** 
 
 Once you have defined your physics particles and mapped them into an Event from a ROOT file, that exact same Event can be split down three distinct downstream paths without rewriting any data-loading logic:
-1. **Graph Compilation**: Transforming the event into a PyGeometric graph for Neural Network training.
+1. **Graph Compilation**: Transforming the event into a graph structure for Neural Network training.
 2. **Selection Analysis**: Running cut-based analyses and aggregating kinematics.
 3. **Inference**: Consuming pre-trained model predictions to reconstruct topologies (like Top quarks).
 
