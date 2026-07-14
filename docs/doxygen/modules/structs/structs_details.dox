@@ -1,0 +1,214 @@
+/**
+ * @defgroup Structs Structs Module
+ * @brief Core data structures and enumerations used throughout AnalysisG.
+ * 
+ * This module defines various structs, enumerations, and template classes
+ * responsible for handling data flow, properties, configurations,
+ * and input/output from ROOT and HDF5 files.
+ */
+
+/**
+ * @file report.h
+ * @ingroup Structs
+ * @brief Defines the model_report structure used for tracking model performance.
+ */
+
+/**
+ * @struct model_report
+ * @brief Structure for aggregating and reporting model training and evaluation metrics.
+ *
+ * `model_report` collects losses, accuracies, learning rates, and other relevant
+ * statistics across epochs, k-folds, and modes (training, validation, evaluation).
+ * It provides methods to format these metrics into readable strings.
+ * 
+ * @var model_report::k 
+ * Current k-fold index.
+ * @var model_report::epoch 
+ * Current epoch index.
+ * @var model_report::is_complete 
+ * Flag indicating if the current report phase is complete.
+ * @var model_report::waiting_plot 
+ * Pointer to a metrics object for plotting (if any).
+ * @var model_report::current_lr 
+ * Vector storing current learning rates across parameter groups.
+ * @var model_report::loss_graph 
+ * Map of graph-level loss metrics categorized by mode and name.
+ * @var model_report::loss_node 
+ * Map of node-level loss metrics categorized by mode and name.
+ * @var model_report::loss_edge 
+ * Map of edge-level loss metrics categorized by mode and name.
+ * @var model_report::accuracy_graph 
+ * Map of graph-level accuracy metrics categorized by mode and name.
+ * @var model_report::accuracy_node 
+ * Map of node-level accuracy metrics categorized by mode and name.
+ * @var model_report::accuracy_edge 
+ * Map of edge-level accuracy metrics categorized by mode and name.
+ * @var model_report::run_name 
+ * Identifying name of the run.
+ * @var model_report::mode 
+ * Current operation mode (e.g., training, validation).
+ * @var model_report::iters 
+ * Total iterations elapsed.
+ * @var model_report::num_evnt 
+ * Total events processed.
+ * @var model_report::progress 
+ * Progress percentage.
+ *
+ * @fn std::string model_report::print()
+ * @brief Generates a formatted string of the current model report metrics.
+ * @return String representation of the report.
+ * 
+ * @fn std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)
+ * @brief Helper to print specific metrics.
+ * @param data Pointer to the metrics map.
+ * @param title Title of the metrics category.
+ * @return Formatted string.
+ */
+
+/**
+ * @file settings.h
+ * @ingroup Structs
+ * @brief Defines the settings_t structure for global configuration.
+ */
+
+/**
+ * @struct settings_t
+ * @brief Centralized configuration structure for the AnalysisG framework.
+ *
+ * Stores all essential user configurations, including machine learning hyperparameters,
+ * plotting variables, execution threads, dataset caching settings, and output paths.
+ *
+ * @var settings_t::output_path
+ * Base path for saving project outputs.
+ * @var settings_t::run_name
+ * Specific run identifier.
+ * @var settings_t::epochs
+ * Number of training epochs.
+ * @var settings_t::kfolds
+ * Number of folds for k-fold cross-validation.
+ * @var settings_t::batch_size
+ * Batch size for model training/inference.
+ */
+
+/**
+ * @file enums.h
+ * @ingroup Structs
+ * @brief Provides globally used enumerations in the AnalysisG framework.
+ *
+ * Contains `data_enum`, `opt_enum`, `loss_enum`, `mode_enum`, etc., 
+ * to standardize internal switch cases and configurations.
+ */
+
+/**
+ * @enum data_enum
+ * @brief Identifies the underlying C++ primitive or vector type.
+ */
+
+/**
+ * @enum opt_enum
+ * @brief Identifies the PyTorch optimizer algorithm.
+ */
+
+/**
+ * @enum mlp_init
+ * @brief Weight-initialisation schemes for MLPs.
+ */
+
+/**
+ * @enum loss_enum
+ * @brief Identifies the PyTorch loss function to use.
+ */
+
+/**
+ * @enum scheduler_enum
+ * @brief Identifies the learning-rate scheduler algorithm.
+ */
+
+/**
+ * @enum graph_enum
+ * @brief Identifies tensor slots or roles in graph constructions.
+ */
+
+/**
+ * @enum mode_enum
+ * @brief Identifies the training phase (training, validation, evaluation).
+ */
+
+/**
+ * @enum particle_enum
+ * @brief Identifies kinematic or metadata attributes for particles.
+ */
+
+/**
+ * @file folds.h
+ * @ingroup Structs
+ * @brief Definitions related to k-folds and HDF5 dataset structures.
+ */
+
+/**
+ * @struct folds_t
+ * @brief Represents state and split indices for k-fold cross validation.
+ */
+
+/**
+ * @struct graph_hdf5
+ * @brief Metadata tracking for retrieving and managing graphs in HDF5 data stores.
+ */
+
+/**
+ * @struct graph_hdf5_w
+ * @brief Internal writing counterpart to `graph_hdf5` managing char buffers.
+ */
+
+/**
+ * @file property.h
+ * @ingroup Structs
+ * @brief Template class implementations for a Python-like property interface.
+ */
+
+/**
+ * @class cproperty
+ * @brief Wrapper class allowing custom getter and setter functions on a variable.
+ * @tparam T The wrapped data type.
+ * @tparam G The class object type which owns this property.
+ */
+
+/**
+ * @file base.h
+ * @ingroup Structs
+ * @brief Contains the base structural class `bsc_t` managing typed buffer allocations.
+ */
+
+/**
+ * @struct bsc_t
+ * @brief Base buffer managing class holding multiple distinct type pointers.
+ *
+ * Used extensively in TTrees and HDF5 wrappers to dynamically cast
+ * and fetch varying types without virtual inheritance overhead for primitive types.
+ */
+
+/**
+ * @file element.h
+ * @ingroup Structs
+ * @brief Interfacing structures mapping raw ROOT TTrees to usable data structures.
+ */
+
+/**
+ * @struct data_t
+ * @brief Represents a single variable element (TLeaf) bound to a TTree.
+ */
+
+/**
+ * @struct element_t
+ * @brief Encapsulates multiple `data_t` leaf readers to parse a full event tree.
+ */
+
+/**
+ * @struct write_t
+ * @brief Handles TTree branch creation and filling for outputs.
+ */
+
+/**
+ * @struct writer
+ * @brief Orchestrates multiple `write_t` instances for writing output root files.
+ */
