@@ -1,0 +1,35 @@
+/**
+ * @file src/AnalysisG/modules/nusol/ellipse/include/ellipse/mtx.h
+ * @brief Robust double-precision matrix manipulation class for the ellipse module.
+ *
+ * The `mtx` class allows for matrix arithmetic, transposition, inversion, determinants, 
+ * eigenvalues, eigenvectors, and custom matrix generation functions necessary for 
+ * solving kinematic reconstruction geometries.
+ *
+ * @class mtx
+ * @brief Multi-dimensional double precision matrix wrapper.
+ *
+ * @fn mtx::mtx(int idx, int idy)
+ * @brief Constructs a zero-initialized matrix of dimensions `idx` by `idy`.
+ *
+ * @fn double mtx::trace()
+ * @brief Computes the matrix trace.
+ *
+ * @fn double mtx::det()
+ * @brief Computes the matrix determinant.
+ *
+ * @fn mtx* mtx::eigenvalues()
+ * @brief Computes and returns the eigenvalues of the matrix.
+ *
+ * @fn mtx* mtx::eigenvector()
+ * @brief Computes and returns the eigenvectors corresponding to the matrix.
+ *
+ * @fn mtx mtx::T()
+ * @brief Returns the transposed matrix.
+ *
+ * @fn mtx mtx::inv()
+ * @brief Returns the inverse of the matrix.
+ *
+ * @fn mtx mtx::cross(mtx* r1)
+ * @brief Computes the cross product of this matrix and r1.
+ */

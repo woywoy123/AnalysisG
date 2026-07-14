@@ -1,0 +1,26 @@
+/**
+ * @file src/AnalysisG/modules/nusol/ellipse/include/ellipse/solvers.h
+ * @brief Core mathematical root finders and matrix operations specific to the ellipse solver.
+ *
+ * Provides functions to generate specific constraint matrices, apply rotations, and factor
+ * degenerate conics. Contains implementations of root finders used primarily to extract
+ * intersections between geometric conic objects in the parameter space.
+ *
+ * @fn mtx* find_roots(double a, double b, double c)
+ * @brief Finds roots for a quadratic polynomial and returns a matrix of roots.
+ *
+ * @fn mtx* solve_cubic(double a, double b, double c, double d)
+ * @brief Solves a cubic polynomial analytically.
+ *
+ * @fn mtx* smatx(double px, double py, double pz)
+ * @brief Generates an S-matrix representation given momentum components.
+ *
+ * @fn void factor_degenerate(mtx G, mtx* lines, int* lc, double* q0)
+ * @brief Factors a degenerate conic section into a pair of crossing lines.
+ *
+ * @fn int intersections_ellipse_line(mtx* ellipse, mtx* line, mtx* pts)
+ * @brief Computes intersection points between an ellipse constraint and a line.
+ *
+ * @fn int intersection_ellipses(mtx* A, mtx* B, mtx** lines, mtx** pts, mtx** sols)
+ * @brief Computes intersection points of two arbitrary ellipses A and B.
+ */

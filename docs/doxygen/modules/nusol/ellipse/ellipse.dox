@@ -1,0 +1,29 @@
+/**
+ * @file src/AnalysisG/modules/nusol/ellipse/include/ellipse/ellipse.h
+ * @brief Defines the main `ellipse` class and `nunu_t` struct to orchestrate dilepton/neutrino solves.
+ *
+ * Coordinates the full mathematical pipeline mapping from high-level physics 
+ * objects (jets, leptons) down to the mathematical conic constraints, finding 
+ * intersections, and retrieving valid neutrino momentum solutions.
+ *
+ * @struct nunu_t
+ * @brief Data structure holding a neutrino pair solution.
+ *
+ * @var nunu_t::nu1
+ * @brief Matrix representation of the first neutrino solution.
+ *
+ * @var nunu_t::nu2
+ * @brief Matrix representation of the second neutrino solution.
+ *
+ * @class ellipse
+ * @brief Core solver interface class for executing the analytical ellipse intersections.
+ *
+ * @fn ellipse::ellipse(nusol_t* parameters)
+ * @brief Initializes the solver with global configuration parameters.
+ *
+ * @fn void ellipse::prepare(double mt, double mw, std::vector<conuic*>* vnc = nullptr)
+ * @brief Prepares the mathematical states with specific W boson and top quark mass constraints.
+ *
+ * @fn void ellipse::solve()
+ * @brief Executes the solver algorithm finding roots and mapping valid intersections back to neutrino momenta.
+ */
