@@ -1,0 +1,24 @@
+/**
+ * @file src/AnalysisG/metrics/topefficiency/include/metrics/topefficiency.h
+ * @brief Header file for the topefficiency selection and metric evaluation class.
+ * 
+ * This file defines the topefficiency class which evaluates the performance of top quark 
+ * reconstruction and related machine learning inferences. It contains methods and 
+ * data structures to evaluate predictions against truth information for top quarks and Z' bosons.
+ * 
+ * @class topefficiency
+ * @brief Evaluates top quark reconstruction efficiency and kinematics.
+ * 
+ * This class inherits from selection_template and implements methods to evaluate
+ * event strategies (`strategy`) and selections (`selection`). It supports binning
+ * across transverse momentum (pt) and pseudorapidity (eta) and tracks numerous metrics
+ * including top/Z' mass, decay regions, node multiplicities, and probabilities.
+ * 
+ * It also maintains variables necessary for ROC curve generation (truth/prediction edge
+ * scores, number of tops, and signal classification).
+ * 
+ * Key Methods:
+ * - `iters`: Helper to determine bin iterations.
+ * - `region`: Classifies a pt/eta combination into a specific region.
+ * - `decaymode`: Analyzes a vector of top quarks to classify their collective decay mode.
+ */

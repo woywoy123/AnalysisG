@@ -1,0 +1,8 @@
+/**
+ * @file src/AnalysisG/modules/io/include/io/cfg.h
+ * @brief Configuration settings for the IO module.
+ * 
+ * Provides configuration macros and absolute paths such as `dict_path` for the IO module.
+ * This file is typically auto-generated via CMake from `cfg.h.in` to inject system-specific
+ * deployment paths.
+ */

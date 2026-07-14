@@ -1,0 +1,14 @@
+/**
+ * @file src/AnalysisG/models/RecyclX/include/models/recyclx.h
+ * @brief Header file for the RecyclX graph neural network model.
+ * 
+ * This file contains the definition of the RecyclX class, which is a graph neural network model 
+ * designed for particle physics event reconstruction and classification. 
+ *
+ * @class RecyclX
+ * @brief A class representing the RecyclX graph neural network model.
+ * 
+ * The RecyclX model provides an implementation of a message-passing neural network tailored 
+ * for analyzing complex event topologies, classifying node/edge properties, and reconstructing 
+ * particles such as top quarks and Z' bosons from detector hits or reconstructed objects.
+ */

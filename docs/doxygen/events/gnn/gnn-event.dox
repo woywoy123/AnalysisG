@@ -1,0 +1,19 @@
+/**
+ * @file src/AnalysisG/events/gnn/include/inference/gnn-event.h
+ * @brief Header file for the gnn_event class.
+ * 
+ * Defines the gnn_event class, which inherits from event_template, and is used to represent 
+ * physics events structured for graph neural network inference and processing.
+ * 
+ * @class gnn_event
+ * @brief Represents a physics event for GNN inference.
+ * 
+ * This class provides a container for event-level observables (MET, phi, jet/lepton multiplicities),
+ * MVA predictions (top quark multiplicities, signal scores, edge scores), and stores both
+ * truth and reconstructed particles (tops, Z', and general GNN particles).
+ * 
+ * Key Features:
+ * - Built-in templated reductions for extracting element properties into standard containers.
+ * - `build`: Constructs the event from raw element data.
+ * - `CompileEvent`: Finalizes the event structure by establishing edges and parent-child relationships.
+ */

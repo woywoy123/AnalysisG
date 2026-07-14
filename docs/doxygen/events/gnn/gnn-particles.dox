@@ -1,0 +1,25 @@
+/**
+ * @file src/AnalysisG/events/gnn/include/inference/gnn-particles.h
+ * @brief Header file for GNN particle definitions.
+ * 
+ * This file contains the definitions of various particle classes used in GNN-based events,
+ * such as particle_gnn, top, and zprime, which all inherit from particle_template.
+ * 
+ * @class particle_gnn
+ * @brief General particle class for GNN processing.
+ * 
+ * Represents basic particles participating in the GNN, potentially tracking features
+ * such as whether the particle is a lepton (`lep`).
+ * 
+ * @class top
+ * @brief Represents a reconstructed or truth top quark.
+ * 
+ * Includes fields for average MVA score (`av_score`), number of constituent leptons (`n_leps`),
+ * and number of associated graph nodes (`n_nodes`).
+ * 
+ * @class zprime
+ * @brief Represents a reconstructed or truth Z' boson.
+ * 
+ * Includes analogous fields to the top class (`av_score`, `n_leps`, `n_nodes`) for tracking
+ * its reconstruction profile.
+ */
