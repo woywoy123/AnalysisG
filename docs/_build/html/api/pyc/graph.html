@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Graph Operations &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tensor Operators" href="operators.html" />
+    <link rel="prev" title="Coordinate Transforms" href="transform.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="graph-operations">
+<h1>Graph Operations<a class="headerlink" href="#graph-operations" title="Link to this heading">¶</a></h1>
+<p>Batched graph-level operations for message-passing and graph
+reconstruction, exposed via <code class="docutils literal notranslate"><span class="pre">pyc::graph</span></code>.</p>
+<section id="pyc-graph-functions">
+<h2><code class="docutils literal notranslate"><span class="pre">pyc::graph</span></code> Functions<a class="headerlink" href="#pyc-graph-functions" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">edge_aggregation(edge_index,</span> <span class="pre">prediction,</span> <span class="pre">node_feature)</span></code></p></td>
+<td><p>Aggregate node features along edges weighted by <code class="docutils literal notranslate"><span class="pre">prediction</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">node_aggregation(edge_index,</span> <span class="pre">prediction,</span> <span class="pre">node_feature)</span></code></p></td>
+<td><p>Aggregate edge scores back to nodes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unique_aggregation(cluster_map,</span> <span class="pre">features)</span></code></p></td>
+<td><p>Aggregate features by integer cluster label (reduces to number of clusters)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PageRank(edge_index,</span> <span class="pre">edge_scores,</span> <span class="pre">alpha,</span> <span class="pre">threshold,</span> <span class="pre">norm_low,</span> <span class="pre">timeout,</span> <span class="pre">num_cls)</span></code></p></td>
+<td><p>Personalised PageRank convergence; returns cluster assignment and scores</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PageRankReconstruction(edge_index,</span> <span class="pre">edge_scores,</span> <span class="pre">pmc,</span> <span class="pre">…)</span></code></p></td>
+<td><p>PageRank + batched 4-momentum sum per cluster</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">pyc::graph::polar</span></code> overloads accept <code class="docutils literal notranslate"><span class="pre">(pt,</span> <span class="pre">eta,</span> <span class="pre">phi,</span> <span class="pre">e)</span></code> or a stacked
+<code class="docutils literal notranslate"><span class="pre">pmu</span></code> tensor instead of cartesian <code class="docutils literal notranslate"><span class="pre">pmc</span></code> for aggregation functions.</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graphE">
+<span id="_CPPv3N3pyc5graphE"></span><span id="_CPPv2N3pyc5graphE"></span><span id="pyc::graph"></span><span class="target" id="namespacepyc_1_1graph"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">graph</span></span></span><a class="headerlink" href="#_CPPv4N3pyc5graphE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Graph-level aggregation and PageRank reconstruction. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::edge_aggregation__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1aa28a4253050413ec67a3313635a699ad"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">node_feature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Aggregate node features along edges weighted by <code class="docutils literal notranslate"><span class="pre">prediction</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::node_aggregation__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1a122f7af31a0d3d53790f3389ffef5073"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">node_feature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Aggregate edge features to nodes weighted by <code class="docutils literal notranslate"><span class="pre">prediction</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph18unique_aggregationEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph18unique_aggregationEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph18unique_aggregationEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::unique_aggregation__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1a6b142e7f996e314f3c8a971e471d6d95"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unique_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cluster_map</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">features</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph18unique_aggregationEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Aggregate features within unique cluster assignments. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph17cycle_aggregationEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph17cycle_aggregationEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph17cycle_aggregationEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::cycle_aggregation__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1ace5c5cfe06bef85f2265d86449394f72"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cycle_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cluster_map</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">node_feature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph17cycle_aggregationEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph8PageRankEN5torch6TensorEN5torch6TensorEdddll">
+<span id="_CPPv3N3pyc5graph8PageRankEN5torch6TensorEN5torch6TensorEdddll"></span><span id="_CPPv2N3pyc5graph8PageRankEN5torch6TensorEN5torch6TensorEdddll"></span><span id="pyc::graph::PageRank__torch::Tensor.torch::Tensor.double.double.double.l.l"></span><span class="target" id="namespacepyc_1_1graph_1a2f6c4c8a0a97cb02e98e17a22345ba95"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PageRank</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_scores</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.85</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">threshold</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.5</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">norm_low</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e6</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_cls</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph8PageRankEN5torch6TensorEN5torch6TensorEdddll" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched personalised PageRank clustering. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph22PageRankReconstructionEN5torch6TensorEN5torch6TensorEN5torch6TensorEdddll">
+<span id="_CPPv3N3pyc5graph22PageRankReconstructionEN5torch6TensorEN5torch6TensorEN5torch6TensorEdddll"></span><span id="_CPPv2N3pyc5graph22PageRankReconstructionEN5torch6TensorEN5torch6TensorEN5torch6TensorEdddll"></span><span id="pyc::graph::PageRankReconstruction__torch::Tensor.torch::Tensor.torch::Tensor.double.double.double.l.l"></span><span class="target" id="namespacepyc_1_1graph_1a509b4a1583be203ff16f22594194655b"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PageRankReconstruction</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_scores</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.85</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">threshold</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.5</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">norm_low</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeout</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e6</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">num_cls</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph22PageRankReconstructionEN5torch6TensorEN5torch6TensorEN5torch6TensorEdddll" title="Link to this definition">¶</a><br /></dt>
+<dd><p>PageRank clustering followed by four-momentum reconstruction. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph5polarE">
+<span id="_CPPv3N3pyc5graph5polarE"></span><span id="_CPPv2N3pyc5graph5polarE"></span><span id="pyc::graph::polar"></span><span class="target" id="namespacepyc_1_1graph_1_1polar"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">polar</span></span></span><a class="headerlink" href="#_CPPv4N3pyc5graph5polarE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::polar::edge_aggregation__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1polar_1ab00a9b5d4070afc2aac6fd639d82c46b"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::polar::node_aggregation__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1polar_1a4b8251423b7ede00df4fbda3ab664485"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::polar::edge_aggregation__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1polar_1a4892c3989bd8b62a5f02688d030e92d5"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph5polar16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::polar::node_aggregation__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1polar_1a2214179747b4d328f815a532e6d4fdcf"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph5polar16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph9cartesianE">
+<span id="_CPPv3N3pyc5graph9cartesianE"></span><span id="_CPPv2N3pyc5graph9cartesianE"></span><span id="pyc::graph::cartesian"></span><span class="target" id="namespacepyc_1_1graph_1_1cartesian"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cartesian</span></span></span><a class="headerlink" href="#_CPPv4N3pyc5graph9cartesianE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::cartesian::edge_aggregation__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1cartesian_1a0c4efe06c06429b730d408323dcaf302"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::cartesian::node_aggregation__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1cartesian_1a876b2614216840138fb428e66f4938b8"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::cartesian::edge_aggregation__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1cartesian_1a84c64361a1b6ab23b56915ab7f7290a0"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph9cartesian16edge_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::graph::cartesian::node_aggregation__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1graph_1_1cartesian_1a6a2ffe369ee9d484a004f40351db4215"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc5graph9cartesian16node_aggregationEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="internal-kernel-namespace">
+<h2>Internal Kernel Namespace<a class="headerlink" href="#internal-kernel-namespace" title="Link to this heading">¶</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv46graph_">
+<span id="_CPPv36graph_"></span><span id="_CPPv26graph_"></span><span id="graph_"></span><span class="target" id="namespacegraph__"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">graph_</span></span></span><a class="headerlink" href="#_CPPv46graph_" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Internal namespace for CUDA-accelerated graph aggregation. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6graph_18unique_aggregationEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N6graph_18unique_aggregationEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N6graph_18unique_aggregationEPN5torch6TensorEPN5torch6TensorE"></span><span id="graph_::unique_aggregation__torch::TensorP.torch::TensorP"></span><span class="target" id="namespacegraph___1a655508d69dfe9b652021095288aa02f8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unique_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cluster_map</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">features</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6graph_18unique_aggregationEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Sum <code class="docutils literal notranslate"><span class="pre">features</span></code> within each unique cluster in <code class="docutils literal notranslate"><span class="pre">cluster_map</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cluster_map</strong> – [N] integer cluster assignments. </p></li>
+<li><p><strong>features</strong> – [N, D] node features. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Map with keys <code class="docutils literal notranslate"><span class="pre">&quot;clusters&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;cluster_map&quot;</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6graph_16edge_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N6graph_16edge_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N6graph_16edge_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="graph_::edge_aggregation__torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacegraph___1a7249186f32a05a8ff1601bff5deabdef"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">node_feature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6graph_16edge_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Aggregate <code class="docutils literal notranslate"><span class="pre">node_feature</span></code> along source edges, weighted by <code class="docutils literal notranslate"><span class="pre">prediction</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_index</strong> – [2, E] COO edge index. </p></li>
+<li><p><strong>prediction</strong> – [E] or [E, C] edge weights/predictions. </p></li>
+<li><p><strong>node_feature</strong> – [N, D] node features. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Map containing <code class="docutils literal notranslate"><span class="pre">&quot;nodes&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;node_map&quot;</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6graph_16node_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N6graph_16node_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N6graph_16node_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="graph_::node_aggregation__torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacegraph___1af76bc3bdcf60cb8a46bdd978e5097376"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">node_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">edge_index</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">prediction</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">node_feature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6graph_16node_aggregationEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Aggregate <code class="docutils literal notranslate"><span class="pre">node_feature</span></code> along destination edges, weighted by <code class="docutils literal notranslate"><span class="pre">prediction</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_index</strong> – [2, E] COO edge index. </p></li>
+<li><p><strong>prediction</strong> – [E] or [E, C] edge weights/predictions. </p></li>
+<li><p><strong>node_feature</strong> – [N, D] node features. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Map containing <code class="docutils literal notranslate"><span class="pre">&quot;nodes&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;node_map&quot;</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6graph_17cycle_aggregationEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N6graph_17cycle_aggregationEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N6graph_17cycle_aggregationEPN5torch6TensorEPN5torch6TensorE"></span><span id="graph_::cycle_aggregation__torch::TensorP.torch::TensorP"></span><span class="target" id="namespacegraph___1a9e97408bb881bcf89def6ac579c366d5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cycle_aggregation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cluster_map</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">node_feature</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6graph_17cycle_aggregationEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="transform.html" title="previous chapter">Coordinate Transforms</a></li>
+      <li>Next: <a href="operators.html" title="next chapter">Tensor Operators</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

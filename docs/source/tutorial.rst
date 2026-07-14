@@ -133,6 +133,7 @@ To perform standard cut-based physics analysis, we inherit from :cpp:class:`sele
        ~TopSelection() {}
        selection_template* clone() override { return new TopSelection(); }
 
+       // Runs concurrently on multiple worker threads (thread-safe operations only!)
        bool selection(event_template* ev) override {
            MyEvent* event = (MyEvent*)ev; // Retrieve our event!
 
@@ -143,14 +144,23 @@ To perform standard cut-based physics analysis, we inherit from :cpp:class:`sele
                }
            }
            
-           // Reject event if it has no high pT tops
-           if (high_pt_count == 0) return false;
-
-           // Save the count for this event. 
-           // The framework automatically maps this variable to the event's hash.
-           this->write(&high_pt_count, "n_high_pt_tops");
+           // Store the result in this thread's local vector (indexed by threadIdx)
+           // We ensure our struct/vector is resized during compile time
+           if (this->counts.size() <= this->threadIdx) {
+               this->counts.resize(this->threadIdx + 1);
+           }
+           this->counts[this->threadIdx] = high_pt_count;
            return true; 
        }
+
+       // Runs synchronously on the main thread after all workers finish
+       void merge(selection_template* sl) override {
+           TopSelection* slt = (TopSelection*)sl;
+           // Aggregate the data and safely write it to the IO handle
+           this->write(slt->counts[0], "n_high_pt_tops");
+       }
+
+       std::vector<int> counts;
    };
 
 Split C: Event $\rightarrow$ Inference (Reconstruction)
@@ -197,6 +207,7 @@ Once your C++ classes are wrapped in Cython (see Quick Start), you manage the en
    ana.AddSelection(PyTopSelection())
 
    # Run everything concurrently!
+   ana.SaveSelectionToROOT = True # Ensure output is saved to ROOT!
    ana.Start()
 
 4. Plotting a Simple Distribution

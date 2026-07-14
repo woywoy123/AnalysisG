@@ -165,7 +165,7 @@ void grift::forward(graph_t* data){
     torch::Tensor node_s   = this -> edge_encode(&pmc, &edge_index, &top_edge, node_rnn); 
 
     // ------ index the edges from 0 to N^2 -1 ------ //
-    unsigned int n_nodes  = data -> num_nodes;
+    unsigned int n_nodes  = data -> meta_data -> num_nodes;
     torch::Tensor idx_mat = torch::zeros({n_nodes, n_nodes}, src.device()).to(torch::kLong);  
     idx_mat.index_put_({src, dst}, (null_idx+1).cumsum({-1})-1); 
     torch::Tensor norm   = torch::zeros_like(idx_mat); 

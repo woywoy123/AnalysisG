@@ -45,7 +45,7 @@ bool container::add_event_template(event_template* ev, std::string _label){
 bool container::add_graph_template(graph_template* gr, std::string _label){
     if (!this -> label.size()){this -> label = _label;}
     entry_t*    evt = this -> add_entry(gr -> hash); 
-    gr -> meta_data = this -> meta_data; 
+    gr -> m_graph -> meta_data = this -> meta_data; 
     return evt -> has_graph(gr); 
 }
 
@@ -57,9 +57,7 @@ bool container::add_selection_template(selection_template* sel){
 
 void container::compile(size_t* l, int threadIdx, int thrds){
     auto lmb =[this](
-        std::vector<event_template*>* evc, 
-        std::vector<graph_template*>* grc,
-        tracing_t* lx
+        std::vector<event_template*>* evc, std::vector<graph_template*>* grc, tracing_t* lx
     ) -> void{
         lx -> message(tools::get_splits(this -> filename, "/")); 
         for (size_t x(0); x < evc -> size(); ++x){
@@ -72,7 +70,7 @@ void container::compile(size_t* l, int threadIdx, int thrds){
             lx -> next(); 
             if (gr -> preselection && !gr -> PreSelection()){}
             else {gr -> CompileEvent();}
-            //gr -> flush_particles();
+            gr -> flush_particles();
         }
         lx -> finished(); 
     }; 
@@ -93,25 +91,21 @@ void container::compile(size_t* l, int threadIdx, int thrds){
     size_t itz = ev_vx.size();  
     if (itz == 0){return;}
 
-//    this -> shush = true; 
+    this -> shush = true; 
     multithreaded_t* thr = this -> make_threads(itz, thrds); 
     for (size_t x(0); x < itz; ++x){
         tracing_t* tr = thr -> next(); 
         tr -> register_thread( new std::thread(lmb, &ev_vx[x], &gr_vx[x], tr), ev_vx[x].size() + gr_vx[x].size() ); 
-//        while (this -> await_threads(thr, true)){}
+        this -> await_threads(thr, false); 
     }
-    while (this -> await_threads(thr, true)){}
-    this -> pflush(&thr); 
+    this -> await_threads(thr, true); 
     std::map<std::string, write_t*> handles;
 
     itr = this -> random_access.begin(); 
     for (; itr != this -> random_access.end(); ++itr){
         entry_t* ev = &itr -> second;  
         for (graph_template* gr : ev -> m_graph){
-            graph_t* gr_    = gr -> data_export();  
-            gr_ -> hash     = new std::string(ev -> hash);
-            gr_ -> filename = this -> filename; 
-            ev -> m_data.push_back(gr_); 
+            ev -> m_data.push_back(gr -> data_export()); 
         }
 
         if (itr == this -> random_access.begin()){
@@ -180,9 +174,10 @@ void container::populate_dataloader(dataloader* dl){
     for (; itr != this -> random_access.end(); ++itr){
         std::vector<graph_t*> data = itr -> second.m_data; 
         std::cout << "________________" << std::endl; 
-//        for (size_t x(0); x < data.size(); ++x){dl -> extract_data(data[x]);}
+        //for (size_t x(0); x < data.size(); ++x){dl -> extract_data(data[x]);}
         itr -> second.m_data.clear(); 
     }
+    std::cout << "??????????????" << std::endl; 
     std::cout << this -> random_access.size() << std::endl; 
     this -> random_access.clear(); 
     abort(); 

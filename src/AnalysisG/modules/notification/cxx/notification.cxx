@@ -238,7 +238,7 @@ multithreaded_t* notification::make_threads(size_t num_jobs, int num_threads){
     return thr;   
 }
 
-bool notification::await_threads(multithreaded_t* thr, bool monitor){
+bool notification::await_threads(multithreaded_t* thr, bool monitor, double freq){
     int cnt = 0; 
     for (size_t x(0); x < thr -> job_length; ++x){
         if (!(*thr -> status )[x]){continue;}
@@ -246,7 +246,13 @@ bool notification::await_threads(multithreaded_t* thr, bool monitor){
         ++cnt; 
     }
     if (cnt > thr -> num_threads && !monitor){return true;}
-    if (monitor && cnt > 0){return true;}
+    if (monitor && cnt > 0){
+        if (freq < 0){return true;}
+        while (notification::await_threads(thr, monitor, -1)){
+            std::this_thread::sleep_for(std::chrono::microseconds(int(freq)));
+        }
+        return true;
+    }
 
     if (!monitor){return false;} 
     if (!thr -> ptr){return false;}

@@ -1,3 +1,4 @@
+#include <tools/merge_cast.h>
 #include <tools/tools.h>
 #include <sys/stat.h>
 #include <filesystem>
@@ -34,6 +35,7 @@ bool tools::is_file(std::string path){
 std::vector<std::string> tools::ls(std::string path, std::string ext){
     if (tools::ends_with(&path, "*")){path = tools::split(path, "*")[0];}
     std::vector<std::string> out = {}; 
+    std::vector<std::string> dix = {}; 
     std::filesystem::recursive_directory_iterator itr; 
     try {itr = std::filesystem::recursive_directory_iterator(path);}
     catch (...) {return {};}
@@ -41,19 +43,21 @@ std::vector<std::string> tools::ls(std::string path, std::string ext){
         std::string s = ""; 
         try {s = std::filesystem::canonical(val.path()).string();}
         catch (...){continue;}
-        if (!tools::is_file(s)){
-            std::vector<std::string> vs = tools::ls(s + "*", ext);
-            for (size_t x(0); x < vs.size(); ++x){
-                if (tools::is_file(vs[x])){out.push_back(vs[x]); continue;}
-                std::vector<std::string> lx = tools::ls(vs[x] + "*");
-                tools::unique_key(&lx, &out);
-            }
-            continue;
-        }
-        if (ext.size() && !tools::ends_with(&s, ext)){continue;}
-        out.push_back(s); 
+        bool isF = tools::is_file(s); 
+        if (!isF){dix.push_back(s + "*"); continue;}
+
+        bool isE = tools::ends_with(&s, ext); 
+        if (!isE){continue;}
+        out.push_back(s);
     }
+    std::map<std::string, bool> vx; 
     std::vector<std::string> ox = {}; 
+    for (size_t y(0); y < dix.size(); ++y){
+        if (vx[dix[y]]){continue;}
+        std::vector<std::string> vs = tools::ls(dix[y], ext);
+        for (size_t x(0); x < vs.size(); ++x){out.push_back(vs[x]);}
+        vx[dix[y]] = true;
+    }
     tools::unique_key(&out, &ox); 
     return ox; 
 }

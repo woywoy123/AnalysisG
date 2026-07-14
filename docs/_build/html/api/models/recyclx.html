@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>RecyclX Model &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="recyclx-model">
+<h1>RecyclX Model<a class="headerlink" href="#recyclx-model" title="Link to this heading">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">RecyclX</span></code> model is implemented as a specialized neural network model within the AnalysisG framework.</p>
+<p>Header file for the RecyclX graph neural network model. </p>
+<p>This file contains the definition of the RecyclX class, which is a graph neural network model designed for particle physics event reconstruction and classification. </p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv47recyclx">
+<span id="_CPPv37recyclx"></span><span id="_CPPv27recyclx"></span><span id="recyclx"></span><span class="target" id="classrecyclx"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">recyclx</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">model_template</span></span><a class="headerlink" href="#_CPPv47recyclx" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;recyclx.h&gt;</em></div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7recyclxEv">
+<span id="_CPPv3N7recyclx7recyclxEv"></span><span id="_CPPv2N7recyclx7recyclxEv"></span><span id="recyclx::recyclx"></span><span class="target" id="classrecyclx_1ab340d130fca57d9b5df9266a6510a53e"></span><span class="sig-name descname"><span class="n"><span class="pre">recyclx</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7recyclx7recyclxEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclxD0Ev">
+<span id="_CPPv3N7recyclxD0Ev"></span><span id="_CPPv2N7recyclxD0Ev"></span><span id="recyclx::~recyclx"></span><span class="target" id="classrecyclx_1a6863aa9933d6a414e52b8389bf649b68"></span><span class="sig-name descname"><span class="n"><span class="pre">~recyclx</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7recyclxD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx5cloneEv">
+<span id="_CPPv3N7recyclx5cloneEv"></span><span id="_CPPv2N7recyclx5cloneEv"></span><span id="recyclx::clone"></span><span class="target" id="classrecyclx_1a6c2f521c12dbf6a2221988d6a18c29d2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">model_template</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7recyclx5cloneEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Create a default-constructed clone. Override in subclasses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>New model instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7forwardEP7graph_t">
+<span id="_CPPv3N7recyclx7forwardEP7graph_t"></span><span id="_CPPv2N7recyclx7forwardEP7graph_t"></span><span id="recyclx::forward__graph_tP"></span><span class="target" id="classrecyclx_1a00cf57883cb0086055153a7bcca65d82"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">forward</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../modules/structs.html#_CPPv47graph_t" title="graph_t"><span class="n"><span class="pre">graph_t</span></span></a><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7recyclx7forwardEP7graph_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Execute one forward pass. Override in subclasses to implement the model computation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – Pointer to the input graph. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7messageEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N7recyclx7messageEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N7recyclx7messageEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="recyclx::message__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="classrecyclx_1a7dab1b4eafb2fd49d0373f23c2c13b9a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">trk_i</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">trk_j</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7recyclx7messageEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7_hiddenE">
+<span id="_CPPv3N7recyclx7_hiddenE"></span><span id="_CPPv2N7recyclx7_hiddenE"></span><span id="recyclx::_hidden__i"></span><span class="target" id="classrecyclx_1aeb0a697251c0e377edf1b11571424c84"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_hidden</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1024</span></span><a class="headerlink" href="#_CPPv4N7recyclx7_hiddenE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx5_xrecE">
+<span id="_CPPv3N7recyclx5_xrecE"></span><span id="_CPPv2N7recyclx5_xrecE"></span><span id="recyclx::_xrec__i"></span><span class="target" id="classrecyclx_1a156574ebc756788eb3c75cba65e5a418"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_xrec</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">128</span></span><a class="headerlink" href="#_CPPv4N7recyclx5_xrecE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx4_xinE">
+<span id="_CPPv3N7recyclx4_xinE"></span><span id="_CPPv2N7recyclx4_xinE"></span><span id="recyclx::_xin__i"></span><span class="target" id="classrecyclx_1ac6a9e912b25bfb4e51167254fb4e69a0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_xin</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#_CPPv4N7recyclx4_xinE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx5_xoutE">
+<span id="_CPPv3N7recyclx5_xoutE"></span><span id="_CPPv2N7recyclx5_xoutE"></span><span id="recyclx::_xout__i"></span><span class="target" id="classrecyclx_1a35164647af166abad0905806110d59cd"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_xout</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N7recyclx5_xoutE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx5_xtopE">
+<span id="_CPPv3N7recyclx5_xtopE"></span><span id="_CPPv2N7recyclx5_xtopE"></span><span id="recyclx::_xtop__i"></span><span class="target" id="classrecyclx_1a4acf2bdafdd5df8e31ba10b29e5ed75b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_xtop</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#_CPPv4N7recyclx5_xtopE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx8drop_outE">
+<span id="_CPPv3N7recyclx8drop_outE"></span><span id="_CPPv2N7recyclx8drop_outE"></span><span id="recyclx::drop_out__double"></span><span class="target" id="classrecyclx_1a105f295af4f676eeaf51206cb66c8915"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drop_out</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.01</span></span><a class="headerlink" href="#_CPPv4N7recyclx8drop_outE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx5is_mcE">
+<span id="_CPPv3N7recyclx5is_mcE"></span><span id="_CPPv2N7recyclx5is_mcE"></span><span id="recyclx::is_mc__b"></span><span class="target" id="classrecyclx_1a849ad743d65b9e51a0227c5058ca1bb7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_mc</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><a class="headerlink" href="#_CPPv4N7recyclx5is_mcE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx4initE">
+<span id="_CPPv3N7recyclx4initE"></span><span id="_CPPv2N7recyclx4initE"></span><span id="recyclx::init__b"></span><span class="target" id="classrecyclx_1a66ef72ee95dc8b2613eafb3f82bedeff"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N7recyclx4initE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx5rnn_xE">
+<span id="_CPPv3N7recyclx5rnn_xE"></span><span id="_CPPv2N7recyclx5rnn_xE"></span><span id="recyclx::rnn_x__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1aed0a377848c6fa6eab70e0263ea559b5"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rnn_x</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx5rnn_xE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx6rnn_dxE">
+<span id="_CPPv3N7recyclx6rnn_dxE"></span><span id="_CPPv2N7recyclx6rnn_dxE"></span><span id="recyclx::rnn_dx__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1a277c4567c9daf4c2d1f9409491e10c85"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rnn_dx</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx6rnn_dxE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx12rnn_top_edgeE">
+<span id="_CPPv3N7recyclx12rnn_top_edgeE"></span><span id="_CPPv2N7recyclx12rnn_top_edgeE"></span><span id="recyclx::rnn_top_edge__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1ad56dbe891c4d58bdf66ed2adc009cbdd"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rnn_top_edge</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx12rnn_top_edgeE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx12rnn_res_edgeE">
+<span id="_CPPv3N7recyclx12rnn_res_edgeE"></span><span id="_CPPv2N7recyclx12rnn_res_edgeE"></span><span id="recyclx::rnn_res_edge__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1aab9991e1548102c0709ebcb47d6a843a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rnn_res_edge</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx12rnn_res_edgeE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7rnn_hxxE">
+<span id="_CPPv3N7recyclx7rnn_hxxE"></span><span id="_CPPv2N7recyclx7rnn_hxxE"></span><span id="recyclx::rnn_hxx__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1a624ab319bd50e6d449e4c424f787bc8d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rnn_hxx</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx7rnn_hxxE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7autoencE">
+<span id="_CPPv3N7recyclx7autoencE"></span><span id="_CPPv2N7recyclx7autoencE"></span><span id="recyclx::autoenc__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1ae1b26e4d19bc727debd53373cc61f5f6"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">autoenc</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx7autoencE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7autodecE">
+<span id="_CPPv3N7recyclx7autodecE"></span><span id="_CPPv2N7recyclx7autodecE"></span><span id="recyclx::autodec__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1a663caf07b717b8cc252a5c4ffd881ff3"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">autodec</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx7autodecE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx8mlp_ntopE">
+<span id="_CPPv3N7recyclx8mlp_ntopE"></span><span id="_CPPv2N7recyclx8mlp_ntopE"></span><span id="recyclx::mlp_ntop__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1aa878b123053a7b61ccb386e3d3826674"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">mlp_ntop</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx8mlp_ntopE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7mlp_sigE">
+<span id="_CPPv3N7recyclx7mlp_sigE"></span><span id="_CPPv2N7recyclx7mlp_sigE"></span><span id="recyclx::mlp_sig__torch::nn::SequentialP"></span><span class="target" id="classrecyclx_1ad72c29d7b38339918ff65bb87d3eef73"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nn</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Sequential</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">mlp_sig</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N7recyclx7mlp_sigE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx7x_nullsE">
+<span id="_CPPv3N7recyclx7x_nullsE"></span><span id="_CPPv2N7recyclx7x_nullsE"></span><span id="recyclx::x_nulls__torch::Tensor"></span><span class="target" id="classrecyclx_1a42f63ed5594764c7e1c7e7bd07f14db9"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">x_nulls</span></span></span><a class="headerlink" href="#_CPPv4N7recyclx7x_nullsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx8dx_nullsE">
+<span id="_CPPv3N7recyclx8dx_nullsE"></span><span id="_CPPv2N7recyclx8dx_nullsE"></span><span id="recyclx::dx_nulls__torch::Tensor"></span><span class="target" id="classrecyclx_1ab185a82f9901f2cd699d0eb49a49cb05"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dx_nulls</span></span></span><a class="headerlink" href="#_CPPv4N7recyclx8dx_nullsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7recyclx8te_nullsE">
+<span id="_CPPv3N7recyclx8te_nullsE"></span><span id="_CPPv2N7recyclx8te_nullsE"></span><span id="recyclx::te_nulls__torch::Tensor"></span><span class="target" id="classrecyclx_1a091f4ad9d9bbbc0edd18a8ed41d113be"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">te_nulls</span></span></span><a class="headerlink" href="#_CPPv4N7recyclx8te_nullsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

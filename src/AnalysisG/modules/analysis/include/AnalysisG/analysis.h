@@ -23,66 +23,39 @@ void flush(std::map<std::string, g*>* data){
     data -> clear(); 
 }
 
-/**
- * \class analysis
- * \brief The central orchestration engine for the AnalysisG framework.
- *
- * Serves as the primary C++ backend manager. Orchestrates the entire pipeline, from loading data samples 
- * to executing graph neural network models and calculating physics metrics. Inherits from `notification` 
- * for CLI logging and `tools` for general utilities.
- */
+
 class analysis: 
     public notification, 
     public tools
 {
     public: 
-        /**
-         * \brief Default constructor initializing the analysis engine and state variables.
-         */
+
         analysis();
         ~analysis(); 
 
-        /**
-         * \brief Registers data samples into the analysis pipeline.
-         * \param path The filesystem path to the data (supports wildcards and directories).
-         * \param label An internal label to group these samples (e.g., "Signal", "Background").
-         */
+
         void add_samples(std::string path, std::string label);
-        /**
-         * \brief Injects a physics selection or cut-flow template into the event loop.
-         */
+
         void add_selection_template(selection_template* sel); 
 
-        /**
-         * \brief Registers an event structure definition so the backend knows how to unpack incoming TTree branches.
-         */
+
         void add_event_template(event_template* ev, std::string label); 
 
-        /**
-         * \brief Defines the graph topology construction logic.
-         */
+
         void add_graph_template(graph_template* gr, std::string label); 
 
-        /**
-         * \brief Hooks a metric calculation template into the inference/training loop for a specific model.
-         */
+
         void add_metric_template(metric_template* mx, model_template* mdl);
 
-        /**
-         * \brief Injects a PyTorch/C++ GNN model into the engine for training with optimizer configurations.
-         */
+
         void add_model(model_template* model, optimizer_params_t* op, std::string run_name); 
 
-        /**
-         * \brief Injects a PyTorch/C++ GNN model into the engine for inference.
-         */
+
         void add_model(model_template* model, std::string run_name); 
 
         void attach_threads(); 
 
-        /**
-         * \brief Kicks off the internal execution loops (event building, graphs, selections, model sessions).
-         */
+
         void start(); 
 
         size_t dsize(); 

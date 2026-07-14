@@ -26,7 +26,7 @@ bool sampletracer::add_event(event_template* ev, std::string label){
 }
 
 bool sampletracer::add_graph(graph_template* gr, std::string label){
-    return this -> root_container[gr -> filename].add_graph_template(gr, label); 
+    return this -> root_container[gr -> m_graph -> meta_data -> sample_name].add_graph_template(gr, label); 
 }
 
 bool sampletracer::add_selection(selection_template* sel){
@@ -43,12 +43,12 @@ void sampletracer::compile_objects(int threads, int intrath){
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
     for (; itr != this -> root_container.end(); ++itr){smx += itr -> second.len();}
 
-    this -> shush = true; 
+    this -> shush = false; 
     multithreaded_t* thr = this -> make_threads(smx, threads); 
     for (itr = this -> root_container.begin(); itr != this -> root_container.end(); ++itr){
         tracing_t* tr = thr -> next(); 
         tr -> register_thread( new std::thread(lamb, tr, &itr -> second, intrath), itr -> second.len() ); 
-        tr -> message(tools::get_splits(&itr -> first, "/"));
+        //tr -> message(tools::get_splits(&itr -> first, "/"));
         while (this -> await_threads(thr, true)){}
     }
     while (this -> await_threads(thr, true)){}

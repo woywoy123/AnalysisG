@@ -156,6 +156,7 @@ void io::root_key_paths(std::string path){
         meta* mtx = this -> meta_data[fname];  
         mtx -> metacache_path = this -> metacache_path; 
         mtx -> meta_data.sample_name = fname; 
+
         if (obname == "AnalysisTracking"){mtx -> scan_data(obj); continue;}
         if (obname == "EventLoop_FileExecuted"){mtx -> scan_data(obj); continue;}
         if (obname == "metadata"){mtx -> scan_data(obj); continue;}

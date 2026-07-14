@@ -20,6 +20,8 @@ graph_template::graph_template(){
 
     this -> weight.set_getter(this -> get_weight); 
     this -> weight.set_object(this);
+
+    this -> m_graph = new graph_meta(); 
 }
 
 graph_template::~graph_template(){
@@ -36,7 +38,7 @@ graph_template* graph_template::clone(){
 }
 
 void graph_template::flush_particles(){
-    this -> m_event = nullptr; 
+    this -> m_event   = nullptr; 
     this -> _topology = {}; 
     this -> _topological_index = {}; 
     this -> nodes = {}; 
@@ -56,7 +58,8 @@ void graph_template::define_particle_nodes(std::vector<particle_template*>* prt)
         this -> node_particles[n_nodes] = (*prt)[x]; 
         this -> nodes[hash_] = n_nodes; 
     }
-    this -> num_nodes = this -> nodes.size(); 
+    this -> num_nodes            = this -> nodes.size(); 
+    this -> m_graph -> num_nodes = this -> num_nodes; 
 }
 
 void graph_template::define_topology(std::function<bool(particle_template*, particle_template*)> fx){
@@ -111,7 +114,15 @@ graph_t* graph_template::data_export(){
     std::map<std::string, int>* e_dat_i = new std::map<std::string, int>();
     this -> build_export(&e_tru_t, e_tru_i, &e_dat_t, e_dat_i, &this -> edge_fx); 
     
-    graph_t* gr = new graph_t(); 
+    graph_t* gr                     = new graph_t(); 
+    gr -> meta_data                 = this -> m_graph;
+    gr -> meta_data -> index        = this -> index;
+    gr -> meta_data -> weight       = this -> weight; 
+    gr -> meta_data -> preselection = this -> preselection; 
+
+    gr -> meta_data -> name         = new std::string(this -> name); 
+    gr -> meta_data -> hash         = new std::string(this -> hash); 
+
     gr -> edge_index = new torch::Tensor(this -> m_topology);  
     gr -> add_truth_graph(&g_tru_t, g_tru_i); 
     gr -> add_truth_node(&n_tru_t, n_tru_i); 
@@ -120,26 +131,16 @@ graph_t* graph_template::data_export(){
     gr -> add_data_graph(&g_dat_t, g_dat_i); 
     gr -> add_data_node(&n_dat_t, n_dat_i); 
     gr -> add_data_edge(&e_dat_t, e_dat_i); 
-    
-    gr -> num_nodes    = this -> num_nodes; 
-    gr -> event_index  = this -> index;
-    gr -> event_weight = this -> weight; 
-    gr -> preselection = this -> preselection; 
-    gr -> graph_name   = new std::string(this -> name); 
+
     return gr; 
 }
 
 graph_template* graph_template::build(event_template* ev){
-    event_t* data_ = &ev -> data; 
-    data_ -> name = this -> name; 
-
     graph_template* gr = this -> clone(); 
+    gr -> data         = ev -> data; 
+    gr -> data.name    = this -> name; 
     gr -> preselection = this -> preselection; 
-
-    gr -> m_event = ev; 
-    gr -> data = *data_; 
-    gr -> filename  = ev -> filename; 
-    gr -> meta_data = ev -> meta_data; 
+    gr -> m_event      = ev; 
     return gr; 
 }
 

@@ -2,6 +2,7 @@
 #include <c10/core/DeviceType.h>
 #include <tools/tensor_cast.h>
 #include <structs/enums.h>
+#include <structs/graph.h>
 #include <tools/tools.h>
 #include <torch/torch.h>
 #include <mutex> 
@@ -16,8 +17,7 @@ class dataloader;
 #define cu_pyc c10::kCPU
 #endif
 
-class graph_t : 
-    public tools 
+class graph_t : public tools 
 {
     public: 
         graph_t();
@@ -82,31 +82,16 @@ class graph_t :
         void add_data_edge(  std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
 
         void transfer_to_device(torch::TensorOptions* dev); 
-        void _purge_all(bool data_maps = false); 
+        void _purge_all(); 
 
-        long    num_nodes    = 0; 
-        long    event_index  = 0; 
-        double  event_weight = 1; 
-        bool    preselection = false;
-
-        std::vector<long> batched_events = {}; 
-        std::vector<std::string*> batched_filenames = {}; 
-
-        std::string* hash       = nullptr; 
-        std::string* filename   = nullptr; 
-        std::string* graph_name = nullptr; 
-
-        c10::DeviceType device = c10::kCPU;  
-        int in_use = 1; 
+        graph_meta* meta_data = nullptr; 
 
     private:
         friend graph_template; 
         friend dataloader; 
-
-        bool is_owner = false; 
         std::mutex mut; 
 
-        torch::Tensor* edge_index = nullptr; 
+        torch::Tensor*                  edge_index = nullptr; 
         std::map<std::string, int>* data_map_graph = nullptr; 
         std::map<std::string, int>* data_map_node  = nullptr;         
         std::map<std::string, int>* data_map_edge  = nullptr;         

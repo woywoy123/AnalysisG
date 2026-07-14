@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Particle Template &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Event Template" href="event.html" />
+    <link rel="prev" title="Top Efficiency (selections.performance.topefficiency)" href="../selections/performance_topefficiency.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="particle-template">
+<h1>Particle Template<a class="headerlink" href="#particle-template" title="Link to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">particle_template</span></code> is the C++ base for every user-defined particle type.
+It stores a <code class="docutils literal notranslate"><span class="pre">particle_t</span></code> data struct (4-momentum + flags) and exposes
+kinematic properties via the <code class="docutils literal notranslate"><span class="pre">cproperty&lt;T,G&gt;</span></code> getter/setter mechanism so that
+subclasses can override individual components without changing the interface.</p>
+<p>The class also manages topology helpers (<code class="docutils literal notranslate"><span class="pre">register_parent</span></code>, <code class="docutils literal notranslate"><span class="pre">register_child</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DeltaR</span></code>), ROOT-branch leaf registration (<code class="docutils literal notranslate"><span class="pre">add_leaf</span></code>, <code class="docutils literal notranslate"><span class="pre">apply_type_prefix</span></code>),
+and in-place four-momentum addition (<code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">+=</span></code>, <code class="docutils literal notranslate"><span class="pre">iadd</span></code>).</p>
+<section id="class-particle-template">
+<h2>Class: <code class="docutils literal notranslate"><span class="pre">particle_template</span></code><a class="headerlink" href="#class-particle-template" title="Link to this heading">¶</a></h2>
+<p><strong>Header:</strong> <code class="docutils literal notranslate"><span class="pre">&lt;templates/particle_template.h&gt;</span></code></p>
+<p><strong>Inheritance:</strong> <code class="docutils literal notranslate"><span class="pre">tools</span></code></p>
+<section id="constructors">
+<h3>Constructors<a class="headerlink" href="#constructors" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Signature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">particle_template()</span></code></p></td>
+<td><p>Default constructor; initialises <code class="docutils literal notranslate"><span class="pre">data</span></code> to NaN kinematics and <code class="docutils literal notranslate"><span class="pre">is_add</span> <span class="pre">=</span> <span class="pre">true</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">particle_template(particle_t*</span> <span class="pre">p)</span></code></p></td>
+<td><p>Initialises from a serialised <code class="docutils literal notranslate"><span class="pre">particle_t</span></code> struct (used during de-serialisation).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">particle_template(particle_template*</span> <span class="pre">p,</span> <span class="pre">bool</span> <span class="pre">dump</span> <span class="pre">=</span> <span class="pre">false)</span></code></p></td>
+<td><p>Copy constructor; <code class="docutils literal notranslate"><span class="pre">dump=true</span></code> copies without leaf mappings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">particle_template(double</span> <span class="pre">px,</span> <span class="pre">double</span> <span class="pre">py,</span> <span class="pre">double</span> <span class="pre">pz,</span> <span class="pre">double</span> <span class="pre">e)</span></code></p></td>
+<td><p>Constructs from Cartesian four-momentum (all in MeV).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">particle_template(double</span> <span class="pre">px,</span> <span class="pre">double</span> <span class="pre">py,</span> <span class="pre">double</span> <span class="pre">pz)</span></code></p></td>
+<td><p>Constructs massless particle from 3-momentum (<code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">=</span> <span class="pre">||p||</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kinematic-properties-cproperty">
+<h3>Kinematic Properties (<code class="docutils literal notranslate"><span class="pre">cproperty</span></code>)<a class="headerlink" href="#kinematic-properties-cproperty" title="Link to this heading">¶</a></h3>
+<p>All kinematic properties are readable and writable.  The framework converts
+between cylindrical (pt, η, φ, E) and Cartesian (px, py, pz, E)
+representations on demand via <code class="docutils literal notranslate"><span class="pre">to_polar()</span></code> / <code class="docutils literal notranslate"><span class="pre">to_cartesian()</span></code>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">e</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Energy in MeV.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pt</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Transverse momentum <code class="docutils literal notranslate"><span class="pre">√(px²+py²)</span></code> in MeV.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eta</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Pseudorapidity <code class="docutils literal notranslate"><span class="pre">-ln(tan(θ/2))</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">phi</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Azimuthal angle <code class="docutils literal notranslate"><span class="pre">atan2(py,</span> <span class="pre">px)</span></code> in radians.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">px</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>x-component of 3-momentum in MeV.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">py</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>y-component of 3-momentum in MeV.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pz</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>z-component of 3-momentum (<code class="docutils literal notranslate"><span class="pre">pt·sinh(η)</span></code>) in MeV.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mass</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Invariant mass <code class="docutils literal notranslate"><span class="pre">√(E²−||p||²)</span></code> in MeV (<code class="docutils literal notranslate"><span class="pre">nan</span></code> if space-like).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">P</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>3-momentum magnitude <code class="docutils literal notranslate"><span class="pre">√(px²+py²+pz²)</span></code> in MeV.  Read-only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">beta</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Relativistic β = ||p||/E.  Read-only.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="meta-data-properties">
+<h3>Meta-Data Properties<a class="headerlink" href="#meta-data-properties" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pdgid</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>PDG particle identifier.  Default <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">symbol</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::string</span></code></p></td>
+<td><p>LaTeX symbol, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;t&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;\\nu&quot;</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">charge</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>Electric charge in units of elementary charge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hash</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::string</span></code></p></td>
+<td><p>18-character hex string uniquely identifying this particle in an event.
+Read-only — computed from kinematic content.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::string</span></code></p></td>
+<td><p>String type prefix set by <code class="docutils literal notranslate"><span class="pre">apply_type_prefix()</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;top&quot;</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p>Position index within the parent event particle collection.  Default <code class="docutils literal notranslate"><span class="pre">-1</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="truth-flag-properties-read-only">
+<h3>Truth / Flag Properties (read-only)<a class="headerlink" href="#truth-flag-properties-read-only" title="Link to this heading">¶</a></h3>
+<p>All flags are derived from <code class="docutils literal notranslate"><span class="pre">particle_t.pdgid</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_b</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the particle is a b-quark (abs(pdgid) = 5).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_lep</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the particle is a charged lepton (abs(pdgid) ∈ {11,13,15}).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">is_nu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the particle is a neutrino (abs(pdgid) ∈ {12,14,16}).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_add</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the particle was added to an event (not matched to truth).
+Default <code class="docutils literal notranslate"><span class="pre">true</span></code> for default-constructed particles.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lep_decay</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the top quark decayed leptonically (set by the event builder).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="topology-properties">
+<h3>Topology Properties<a class="headerlink" href="#topology-properties" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parents</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;std::string,</span> <span class="pre">particle_template*&gt;</span></code></p></td>
+<td><p>Map of parent particles by their hash.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">children</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;std::string,</span> <span class="pre">particle_template*&gt;</span></code></p></td>
+<td><p>Map of child particles by their hash.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">m_parents</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;std::string,</span> <span class="pre">particle_template*&gt;</span></code></p></td>
+<td><p>Internal backing store for <code class="docutils literal notranslate"><span class="pre">parents</span></code> (public for framework use).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">m_children</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;std::string,</span> <span class="pre">particle_template*&gt;</span></code></p></td>
+<td><p>Internal backing store for <code class="docutils literal notranslate"><span class="pre">children</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="public-methods">
+<h3>Public Methods<a class="headerlink" href="#public-methods" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Signature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">DeltaR(particle_template*</span> <span class="pre">p)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">√(Δη²</span> <span class="pre">+</span> <span class="pre">Δφ²)</span></code> between <code class="docutils literal notranslate"><span class="pre">this</span></code> and <em>p</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">operator</span> <span class="pre">==</span> <span class="pre">(particle_template&amp;</span> <span class="pre">p)</span></code></p></td>
+<td><p>Hash-equality comparison.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">template&lt;g&gt;</span> <span class="pre">g</span> <span class="pre">operator</span> <span class="pre">+</span> <span class="pre">(g&amp;</span> <span class="pre">p)</span></code></p></td>
+<td><p>Returns a new particle of type <em>g</em> whose 4-momentum is the sum of
+<code class="docutils literal notranslate"><span class="pre">this</span></code> and <em>p</em> (Cartesian addition).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">operator</span> <span class="pre">+=</span> <span class="pre">(particle_template*</span> <span class="pre">p)</span></code></p></td>
+<td><p>Adds <em>p</em>’s 4-momentum to <code class="docutils literal notranslate"><span class="pre">this</span></code> (calls <code class="docutils literal notranslate"><span class="pre">iadd</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">iadd(particle_template*</span> <span class="pre">p)</span></code></p></td>
+<td><p>In-place 4-momentum addition (Cartesian).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">register_parent(particle_template*</span> <span class="pre">p)</span></code></p></td>
+<td><p>Adds <em>p</em> to <code class="docutils literal notranslate"><span class="pre">m_parents</span></code> by hash.  Returns <code class="docutils literal notranslate"><span class="pre">false</span></code> if already present.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">register_child(particle_template*</span> <span class="pre">p)</span></code></p></td>
+<td><p>Adds <em>p</em> to <code class="docutils literal notranslate"><span class="pre">m_children</span></code> by hash.  Returns <code class="docutils literal notranslate"><span class="pre">false</span></code> if already present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">add_leaf(std::string</span> <span class="pre">key,</span> <span class="pre">std::string</span> <span class="pre">leaf</span> <span class="pre">=</span> <span class="pre">&quot;&quot;)</span></code></p></td>
+<td><p>Registers ROOT branch mapping: <code class="docutils literal notranslate"><span class="pre">key</span></code> is the property name;
+<code class="docutils literal notranslate"><span class="pre">leaf</span></code> is the ROOT branch suffix (with leading underscore, e.g.
+<code class="docutils literal notranslate"><span class="pre">&quot;_pt&quot;</span></code>).  The full branch name is resolved by <code class="docutils literal notranslate"><span class="pre">apply_type_prefix()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">apply_type_prefix()</span></code></p></td>
+<td><p>Prepends <code class="docutils literal notranslate"><span class="pre">type</span></code> to every leaf suffix registered via <code class="docutils literal notranslate"><span class="pre">add_leaf</span></code>.
+For example, with <code class="docutils literal notranslate"><span class="pre">type=&quot;top&quot;</span></code> and leaf <code class="docutils literal notranslate"><span class="pre">&quot;_pt&quot;</span></code> the resolved
+branch name becomes <code class="docutils literal notranslate"><span class="pre">&quot;top_pt&quot;</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;std::string,</span> <span class="pre">std::map&lt;std::string,</span> <span class="pre">particle_t&gt;&gt;</span> <span class="pre">__reduce__()</span></code></p></td>
+<td><p>Serialises the particle to a nested map suitable for HDF5 storage.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">virtual</span> <span class="pre">void</span> <span class="pre">build(std::map&lt;std::string,</span> <span class="pre">particle_template*&gt;*</span> <span class="pre">event,</span> <span class="pre">element_t*</span> <span class="pre">el)</span></code></p></td>
+<td><p>Override in subclasses to populate the particle from ROOT branch data
+held in <em>el</em> (called by the event builder).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">virtual</span> <span class="pre">particle_template*</span> <span class="pre">clone()</span></code></p></td>
+<td><p>Override in subclasses to return a heap-allocated copy of the particle.
+The caller is responsible for ownership.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">is(std::vector&lt;int&gt;</span> <span class="pre">p)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if <code class="docutils literal notranslate"><span class="pre">abs(pdgid)</span></code> is contained in <em>p</em>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="public-data">
+<h3>Public Data<a class="headerlink" href="#public-data" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 20.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">particle_t</span></code></p></td>
+<td><p>Raw kinematic and flag storage struct.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">leaves</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">std::map&lt;std::string,</span> <span class="pre">std::string&gt;</span></code></p></td>
+<td><p>Maps property key → resolved ROOT branch name (populated by <code class="docutils literal notranslate"><span class="pre">add_leaf</span></code> + <code class="docutils literal notranslate"><span class="pre">apply_type_prefix</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">_is_serial</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>Set to <code class="docutils literal notranslate"><span class="pre">true</span></code> by the framework after serialisation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">_is_marked</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p>Set to <code class="docutils literal notranslate"><span class="pre">true</span></code> by <code class="docutils literal notranslate"><span class="pre">selection_template::sum</span></code> on synthesised combination
+particles; prevents <code class="docutils literal notranslate"><span class="pre">safe_delete</span></code> from freeing them twice.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../selections/performance_topefficiency.html" title="previous chapter">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+      <li>Next: <a href="event.html" title="next chapter">Event Template</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

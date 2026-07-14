@@ -10,6 +10,7 @@
 
 #include <torch/torch.h>
 
+class sampletracer; 
 class container; 
 class analysis; 
 class meta; 
@@ -38,10 +39,7 @@ class graph_template: public tools
         cproperty<std::string, graph_template> hash; 
         cproperty<std::string, graph_template> tree;  
         cproperty<std::string, graph_template> name; 
-
         int threadIdx = -1; 
-        std::string filename = ""; 
-        meta* meta_data = nullptr; 
 
         template <typename G>
         G* get_event(){return (G*)this -> m_event;}
@@ -139,6 +137,7 @@ class graph_template: public tools
         }
 
     private:
+        friend sampletracer; 
         friend container; 
         friend analysis; 
 
@@ -224,17 +223,17 @@ class graph_template: public tools
         std::vector<particle_template*> garbage = {}; 
 
         std::vector<std::vector<int>> _topology; 
-        std::vector<int> _topological_index;
-        torch::Tensor m_topology; 
+        std::vector<int>     _topological_index;
+        torch::Tensor                m_topology; 
 
         torch::TensorOptions* op = nullptr; 
-        event_template* m_event = nullptr; 
+        event_template*  m_event = nullptr; 
+        graph_meta*      m_graph = nullptr; 
 
         bool m_preselection = false; 
         graph_template* build(event_template* el); 
         graph_t* data_export(); 
         event_t data; 
-
 }; 
  
 

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="AnalysisG Documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
+<section id="abstract">
+<h2>Abstract<a class="headerlink" href="#abstract" title="Link to this heading">¶</a></h2>
+<p>As the field of High Energy Particle Physics (HEPP) has begun exploring more
+exotic machine learning algorithms, such as Graph Neural Networks (GNNs),
+analyses commonly rely on pre-existing data science frameworks — including
+PyTorch, TensorFlow and Keras — to recast ROOT samples into an appropriate
+data structure.  This often results in tedious and computationally expensive
+co-routines.</p>
+<p><strong>AnalysisG</strong> addresses these issues by following a similar philosophy to
+<em>AnalysisTop</em>: events and particles are treated as polymorphic objects.  The
+framework translates ROOT n-tuples into user-defined particle and event
+objects, matches particles within complex decay chains, and constructs graph
+structures with edge, node and graph-level feature tensors ready for GNN
+training or inference.</p>
+<p>For cut-based analyses the framework provides selection templates that accept
+event objects, perform detailed studies, and export results to ROOT n-tuples or
+serialised plot objects.</p>
+<p>To facilitate fast machine learning in HEP, a self-contained sub-package
+called <strong>pyc</strong> (<em>Python CUDA</em>) implements high-performance C++ and CUDA
+kernels via the LibTorch API.  These include <span class="math notranslate nohighlight">\(\Delta R\)</span>, polar/Cartesian
+transforms, invariant-mass computation, edge/node aggregation, and analytical
+single/double neutrino reconstruction.</p>
+</section>
+<section id="core-modules">
+<h2>Core Modules<a class="headerlink" href="#core-modules" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>ParticleTemplate</strong></p></td>
+<td><p>C++ base class for user-defined particles.  Provides kinematic
+properties (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">eta</span></code>, <code class="docutils literal notranslate"><span class="pre">phi</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code>, <code class="docutils literal notranslate"><span class="pre">px</span></code>, <code class="docutils literal notranslate"><span class="pre">py</span></code>, <code class="docutils literal notranslate"><span class="pre">pz</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Mass</span></code>), classification flags (<code class="docutils literal notranslate"><span class="pre">is_b</span></code>, <code class="docutils literal notranslate"><span class="pre">is_lep</span></code>, <code class="docutils literal notranslate"><span class="pre">is_nu</span></code>,
+<code class="docutils literal notranslate"><span class="pre">is_add</span></code>), decay-tree bookkeeping (<code class="docutils literal notranslate"><span class="pre">Children</span></code>, <code class="docutils literal notranslate"><span class="pre">Parents</span></code>), and
+the <code class="docutils literal notranslate"><span class="pre">add_leaf</span></code> / <code class="docutils literal notranslate"><span class="pre">apply_type_prefix</span></code> / <code class="docutils literal notranslate"><span class="pre">build</span></code> interface for ROOT
+branch mapping.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>EventTemplate</strong></p></td>
+<td><p>C++ base class for user-defined physics events.  Declares the ROOT
+trees/branches to read (<code class="docutils literal notranslate"><span class="pre">trees</span></code>, <code class="docutils literal notranslate"><span class="pre">add_leaf</span></code>), registers particle
+collections (<code class="docutils literal notranslate"><span class="pre">register_particle</span></code>), and provides <code class="docutils literal notranslate"><span class="pre">build</span></code> and
+<code class="docutils literal notranslate"><span class="pre">CompileEvent</span></code> hooks for constructing the event from raw branch data.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>GraphTemplate</strong></p></td>
+<td><p>C++ base class for graph construction.  Inside <code class="docutils literal notranslate"><span class="pre">CompileEvent</span></code> users
+call <code class="docutils literal notranslate"><span class="pre">define_particle_nodes</span></code>, <code class="docutils literal notranslate"><span class="pre">add_node_data_feature</span></code>,
+<code class="docutils literal notranslate"><span class="pre">add_edge_truth_feature</span></code> etc. to assemble the graph tensors that the
+ML pipeline consumes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SelectionTemplate</strong></p></td>
+<td><p>Template for custom cut-based event selections.  Provides
+<code class="docutils literal notranslate"><span class="pre">dump</span></code>/<code class="docutils literal notranslate"><span class="pre">load</span></code> serialisation, <code class="docutils literal notranslate"><span class="pre">GetMetaData</span></code>, <code class="docutils literal notranslate"><span class="pre">InterpretROOT</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">Postprocessing</span></code> hooks.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MetricTemplate</strong></p></td>
+<td><p>Template for ML evaluation metrics.  Exposes <code class="docutils literal notranslate"><span class="pre">RunNames</span></code> (dict),
+<code class="docutils literal notranslate"><span class="pre">Variables</span></code> (list), <code class="docutils literal notranslate"><span class="pre">Postprocessing</span></code>, and <code class="docutils literal notranslate"><span class="pre">InterpretROOT</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ModelTemplate</strong></p></td>
+<td><p>C++ base class for GNN model definitions.  Users override <code class="docutils literal notranslate"><span class="pre">forward</span></code>
+to fetch tensors from a <code class="docutils literal notranslate"><span class="pre">graph_t</span></code> object and write predictions back.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>OptimizerConfig</strong></p></td>
+<td><p>Configuration struct for PyTorch optimizers (Adam, SGD, RMSprop,
+Adagrad, LBFGS) and learning-rate schedulers (StepLR, CyclicLR,
+ExponentialLR).  Passed to <code class="docutils literal notranslate"><span class="pre">Analysis.AddModel</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>IO</strong></p></td>
+<td><p>C++ class (inheriting <code class="docutils literal notranslate"><span class="pre">tools</span></code> + <code class="docutils literal notranslate"><span class="pre">notification</span></code>) for reading CERN
+ROOT n-tuples.  Iterable in Python; each iteration yields a <code class="docutils literal notranslate"><span class="pre">dict</span></code>
+whose keys are <code class="docutils literal notranslate"><span class="pre">bytes</span></code> in the format <code class="docutils literal notranslate"><span class="pre">b'tree.leaf.leaf'</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Analysis</strong></p></td>
+<td><p>Top-level Python pipeline compiler.  Chains
+<code class="docutils literal notranslate"><span class="pre">AddSamples</span></code> / <code class="docutils literal notranslate"><span class="pre">AddEvent</span></code> / <code class="docutils literal notranslate"><span class="pre">AddGraph</span></code> / <code class="docutils literal notranslate"><span class="pre">AddModel</span></code> /
+<code class="docutils literal notranslate"><span class="pre">AddSelection</span></code> / <code class="docutils literal notranslate"><span class="pre">AddMetric</span></code> registrations and launches the full
+pipeline with <code class="docutils literal notranslate"><span class="pre">Start()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Meta / MetaLookup</strong></p></td>
+<td><p>ATLAS dataset metadata (AMI) cache and lookup helpers.  <code class="docutils literal notranslate"><span class="pre">Meta</span></code>
+stores per-dataset fields (DSID, cross-section, generator, …);
+<code class="docutils literal notranslate"><span class="pre">MetaLookup</span></code> aggregates them and computes luminosity-weighted yields.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Plotting</strong></p></td>
+<td><p>Python histogram and line-plot wrappers (<code class="docutils literal notranslate"><span class="pre">TH1F</span></code>, <code class="docutils literal notranslate"><span class="pre">TH2F</span></code>, <code class="docutils literal notranslate"><span class="pre">TLine</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ROC</span></code>) built on <code class="docutils literal notranslate"><span class="pre">mplhep</span></code> and boost-histogram.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Tools</strong></p></td>
+<td><p>Utility class (file-system, string, hashing, math helpers) used
+throughout the framework.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>pyc</strong></p></td>
+<td><p>Self-contained C++/CUDA sub-package for HEP-specific PyTorch custom
+operators: <span class="math notranslate nohighlight">\(\Delta R\)</span>, polar/Cartesian transforms, invariant-mass
+computation, edge/node aggregation, and neutrino reconstruction.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Verified sample statistics</strong> — as a sanity check the IO class was run
+against the dilepton test sample shipped with the repository:</p>
+<ul class="simple">
+<li><p>File: <code class="docutils literal notranslate"><span class="pre">test/samples/dilepton/DAOD_TOPQ1.21955717._000001.root</span></code></p></li>
+<li><p>Tree: <code class="docutils literal notranslate"><span class="pre">nominal</span></code></p></li>
+<li><p>Events: <strong>1,098</strong></p></li>
+<li><p>Total jets (<code class="docutils literal notranslate"><span class="pre">b'nominal.jet_pt.jet_pt'</span></code>): <strong>8,161</strong></p></li>
+<li><p>Average jets per event: <strong>7.43</strong> (min 4, max 14)</p></li>
+</ul>
+<p>This result was obtained by iterating the <code class="docutils literal notranslate"><span class="pre">IO</span></code> class over the file and
+summing <code class="docutils literal notranslate"><span class="pre">len(entry[b'nominal.jet_pt.jet_pt'])</span></code> across all events.</p>
+</div>
+<p>See <a class="reference internal" href="quick_start.html"><span class="doc">Quick Start</span></a> for a step-by-step walkthrough with code examples.</p>
+</section>
+<section id="languages-and-technologies">
+<h2>Languages and Technologies<a class="headerlink" href="#languages-and-technologies" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>C++20</strong> — core engine, modules, CUDA wrappers.</p></li>
+<li><p><strong>Cython</strong> — Python/C++ bridge with minimal overhead.</p></li>
+<li><p><strong>CUDA</strong> — GPU kernels for physics computations.</p></li>
+<li><p><strong>LibTorch</strong> — tensor operations inside CUDA kernels.</p></li>
+<li><p><strong>Doxygen + Breathe + Sphinx</strong> — documentation pipeline.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">AnalysisG Documentation</a></li>
+      <li>Next: <a href="installation.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

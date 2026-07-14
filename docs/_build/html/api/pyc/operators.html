@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tensor Operators &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Neutrino Reconstruction (pyc)" href="nusol.html" />
+    <link rel="prev" title="Graph Operations" href="graph.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="tensor-operators">
+<h1>Tensor Operators<a class="headerlink" href="#tensor-operators" title="Link to this heading">¶</a></h1>
+<p>Batched linear-algebra and angular operators implemented as CUDA/C++
+kernels and exposed via <code class="docutils literal notranslate"><span class="pre">pyc::operators</span></code>.</p>
+<section id="pyc-operators-functions">
+<h2><code class="docutils literal notranslate"><span class="pre">pyc::operators</span></code> Functions<a class="headerlink" href="#pyc-operators-functions" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Dot(v1,</span> <span class="pre">v2)</span></code></p></td>
+<td><p>Batch inner (dot) product of two vector tensors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CosTheta(v1,</span> <span class="pre">v2)</span></code></p></td>
+<td><p>Cosine of the opening angle between <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SinTheta(v1,</span> <span class="pre">v2)</span></code></p></td>
+<td><p>Sine of the opening angle</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Rx(angle)</span></code></p></td>
+<td><p>Rotation matrix around x-axis for each element in <code class="docutils literal notranslate"><span class="pre">angle</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ry(angle)</span></code></p></td>
+<td><p>Rotation matrix around y-axis</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Rz(angle)</span></code></p></td>
+<td><p>Rotation matrix around z-axis</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RT(pmc_b,</span> <span class="pre">pmc_mu)</span></code></p></td>
+<td><p>Combined rotation aligning b-quark to z-axis in the lepton rest frame</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CoFactors(matrix)</span></code></p></td>
+<td><p>Cofactor matrix of each <span class="math notranslate nohighlight">\(3\times3\)</span> element in the batch</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Determinant(matrix)</span></code></p></td>
+<td><p>Determinant of each matrix in the batch</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Inverse(matrix)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">(inv,</span> <span class="pre">valid)</span></code> — Moore–Penrose pseudo-inverse and validity mask</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Eigenvalue(matrix)</span></code></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">(eigenvalues,</span> <span class="pre">eigenvectors)</span></code> for symmetric matrices</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Cross(mat1,</span> <span class="pre">mat2)</span></code></p></td>
+<td><p>Batch 3-vector cross product</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operatorsE">
+<span id="_CPPv3N3pyc9operatorsE"></span><span id="_CPPv2N3pyc9operatorsE"></span><span id="pyc::operators"></span><span class="target" id="namespacepyc_1_1operators"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">operators</span></span></span><a class="headerlink" href="#_CPPv4N3pyc9operatorsE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Tensor-based matrix/vector operations. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators3DotEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators3DotEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators3DotEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::operators::Dot__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1ab614cf3043e983f0327b698e8c80af06"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Dot</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators3DotEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Element-wise inner product. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators8CosThetaEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators8CosThetaEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators8CosThetaEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::operators::CosTheta__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1af098f14372678c7e79bdd095305d90ff"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CosTheta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators8CosThetaEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute cos θ between two vectors. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators8SinThetaEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators8SinThetaEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators8SinThetaEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::operators::SinTheta__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a08ce9a10632751c377c359f2c8b2e889"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SinTheta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators8SinThetaEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute sin θ between two vectors. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators2RxEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators2RxEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators2RxEN5torch6TensorE"></span><span id="pyc::operators::Rx__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a99b031f4c597d8075f46fdf850a8bd41"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rx</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">angle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators2RxEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched rotation matrix about x. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators2RyEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators2RyEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators2RyEN5torch6TensorE"></span><span id="pyc::operators::Ry__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1abcfa7b9cf2af875ac48807e57dafffdc"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ry</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">angle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators2RyEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched rotation matrix about y. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators2RzEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators2RzEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators2RzEN5torch6TensorE"></span><span id="pyc::operators::Rz__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a0a4de4024b67c144c057a812aa618c4b"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rz</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">angle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators2RzEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched rotation matrix about z. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators2RTEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators2RTEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators2RTEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::operators::RT__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a5c947d6968337f95f86e6925acc63dfa"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc_b</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc_mu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators2RTEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute the rotation from the b–lepton decay frame to the lab frame. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators9CoFactorsEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators9CoFactorsEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators9CoFactorsEN5torch6TensorE"></span><span id="pyc::operators::CoFactors__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a5b271f36f06d0f527f2c92a9d96041d7"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CoFactors</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators9CoFactorsEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute the cofactor matrix. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators11DeterminantEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators11DeterminantEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators11DeterminantEN5torch6TensorE"></span><span id="pyc::operators::Determinant__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a0aa896a26a1d7a623ce9c8f09473add9"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Determinant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators11DeterminantEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute the determinant. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators7InverseEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators7InverseEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators7InverseEN5torch6TensorE"></span><span id="pyc::operators::Inverse__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a35e565272bd6223991498cb4965db10a"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators7InverseEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute the inverse and a validity mask. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(inverse, valid_mask). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators10EigenvalueEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators10EigenvalueEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators10EigenvalueEN5torch6TensorE"></span><span id="pyc::operators::Eigenvalue__torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a4c1fbc10c44075ccfd52cede9bd72b62"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Eigenvalue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators10EigenvalueEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute eigenvalues and a validity mask. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(eigenvalues, valid_mask). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9operators5CrossEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc9operators5CrossEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc9operators5CrossEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::operators::Cross__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1operators_1a2eb6f48cfeb67f943bcbdf1f861d2903"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cross</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mat1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mat2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9operators5CrossEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched cross product. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="internal-kernel-namespace">
+<h2>Internal Kernel Namespace<a class="headerlink" href="#internal-kernel-namespace" title="Link to this heading">¶</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv410operators_">
+<span id="_CPPv310operators_"></span><span id="_CPPv210operators_"></span><span id="operators_"></span><span class="target" id="namespaceoperators__"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">operators_</span></span></span><a class="headerlink" href="#_CPPv410operators_" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Internal namespace for batched matrix/vector operators. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_3DotEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N10operators_3DotEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N10operators_3DotEPN5torch6TensorEPN5torch6TensorE"></span><span id="operators_::Dot__torch::TensorP.torch::TensorP"></span><span class="target" id="namespaceoperators___1a9c06ae4b1ec4e5f50d3db14bc1da2ef6"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Dot</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_3DotEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched element-wise dot product. </p>
+<p>Computes the dot product between two tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v1</strong> – [N, D] first vectors. </p></li>
+<li><p><strong>v2</strong> – [N, D] second vectors. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] dot products. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_5CrossEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N10operators_5CrossEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N10operators_5CrossEPN5torch6TensorEPN5torch6TensorE"></span><span id="operators_::Cross__torch::TensorP.torch::TensorP"></span><span class="target" id="namespaceoperators___1adbe7fd5192c2b058280996ad9529f6ed"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cross</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_5CrossEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched cross product of 3-vectors. </p>
+<p>Computes the cross product between two 3D vector tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v1</strong> – [N, 3]. </p></li>
+<li><p><strong>v2</strong> – [N, 3]. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N, 3] cross products. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_11DeterminantEPN5torch6TensorE">
+<span id="_CPPv3N10operators_11DeterminantEPN5torch6TensorE"></span><span id="_CPPv2N10operators_11DeterminantEPN5torch6TensorE"></span><span id="operators_::Determinant__torch::TensorP"></span><span class="target" id="namespaceoperators___1a123a2d44cfea06825875800ebf21ae0d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Determinant</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_11DeterminantEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched 3×3 determinant. </p>
+<p>Calculates the determinant of a batch of square matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrix</strong> – [N, 3, 3]. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] determinants. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_8CosThetaEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N10operators_8CosThetaEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N10operators_8CosThetaEPN5torch6TensorEPN5torch6TensorE"></span><span id="operators_::CosTheta__torch::TensorP.torch::TensorP"></span><span class="target" id="namespaceoperators___1af012532b8e034b7d6cb733360e14f8d7"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CosTheta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_8CosThetaEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched cosine of angle between v1 and v2. </p>
+<p>Computes the cosine of the angle between two tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[N] cosines. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_8SinThetaEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N10operators_8SinThetaEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N10operators_8SinThetaEPN5torch6TensorEPN5torch6TensorE"></span><span id="operators_::SinTheta__torch::TensorP.torch::TensorP"></span><span class="target" id="namespaceoperators___1a0335a4a853f7cff5faa4bc7bc68e3a8a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SinTheta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_8SinThetaEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched sine of angle between v1 and v2. </p>
+<p>Computes the sine of the angle between two tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[N] sines. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_4Pi_2EPN5torch6TensorE">
+<span id="_CPPv3N10operators_4Pi_2EPN5torch6TensorE"></span><span id="_CPPv2N10operators_4Pi_2EPN5torch6TensorE"></span><span id="operators_::Pi_2__torch::TensorP"></span><span class="target" id="namespaceoperators___1a0c172770ef15d9bd7bd41f4b2ac142fa"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Pi_2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">trn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_4Pi_2EPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute π/2 - θ for each element. </p>
+<p>Ensures angular boundaries remain within <code class="docutils literal notranslate"><span class="pre">-pi</span></code> and <code class="docutils literal notranslate"><span class="pre">pi</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>trn</strong> – [N] angle tensor. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] result. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_2RxEPN5torch6TensorE">
+<span id="_CPPv3N10operators_2RxEPN5torch6TensorE"></span><span id="_CPPv2N10operators_2RxEPN5torch6TensorE"></span><span id="operators_::Rx__torch::TensorP"></span><span class="target" id="namespaceoperators___1a7ce1f1b4f84306a157386ac5fd54ea1a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rx</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">angle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_2RxEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched rotation matrix about x. </p>
+<p>Generates a 3D rotation matrix around the X-axis for a given angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angle</strong> – [N]. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N, 3, 3]. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_2RyEPN5torch6TensorE">
+<span id="_CPPv3N10operators_2RyEPN5torch6TensorE"></span><span id="_CPPv2N10operators_2RyEPN5torch6TensorE"></span><span id="operators_::Ry__torch::TensorP"></span><span class="target" id="namespaceoperators___1a7f4dbc7ab056202b3b43d621f6c8df50"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Ry</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">angle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_2RyEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched rotation matrix about y. </p>
+<p>Generates a 3D rotation matrix around the Y-axis for a given angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[N, 3, 3]. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_2RzEPN5torch6TensorE">
+<span id="_CPPv3N10operators_2RzEPN5torch6TensorE"></span><span id="_CPPv2N10operators_2RzEPN5torch6TensorE"></span><span id="operators_::Rz__torch::TensorP"></span><span class="target" id="namespaceoperators___1a38a28124e97111d3a1f2809ce2039769"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Rz</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">angle</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_2RzEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched rotation matrix about z. </p>
+<p>Generates a 3D rotation matrix around the Z-axis for a given angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[N, 3, 3]. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_2RTEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N10operators_2RTEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N10operators_2RTEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="operators_::RT__torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespaceoperators___1aef2baf16bbbf8f8076d0ec37becf9b82"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc_b</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc_mu</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">base</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_2RTEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute the rotation from the decay frame to the lab frame for each (b, lepton) pair. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pmc_b</strong> – [N, 4] b-quark Cartesian momenta. </p></li>
+<li><p><strong>pmc_mu</strong> – [N, 4] lepton Cartesian momenta. </p></li>
+<li><p><strong>base</strong> – Pre-computed base matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N, 3, 3] rotation matrices. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_9CoFactorsEPN5torch6TensorE">
+<span id="_CPPv3N10operators_9CoFactorsEPN5torch6TensorE"></span><span id="_CPPv2N10operators_9CoFactorsEPN5torch6TensorE"></span><span id="operators_::CoFactors__torch::TensorP"></span><span class="target" id="namespaceoperators___1a3d017da3c5169dfb4e1ca5da7cae0703"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CoFactors</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_9CoFactorsEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched cofactor matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrix</strong> – [N, 3, 3]. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N, 3, 3] cofactor matrices. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_7InverseEPN5torch6TensorE">
+<span id="_CPPv3N10operators_7InverseEPN5torch6TensorE"></span><span id="_CPPv2N10operators_7InverseEPN5torch6TensorE"></span><span id="operators_::Inverse__torch::TensorP"></span><span class="target" id="namespaceoperators___1ace5d906c5b92466fe61d9141799d763c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inverse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_7InverseEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched 3×3 matrix inverse. </p>
+<p>Computes the inverse of a batch of square matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(inverse [N, 3, 3], valid_mask [N]).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the inverse matrix and a boolean tensor indicating invertibility. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10operators_10EigenvalueEPN5torch6TensorE">
+<span id="_CPPv3N10operators_10EigenvalueEPN5torch6TensorE"></span><span id="_CPPv2N10operators_10EigenvalueEPN5torch6TensorE"></span><span id="operators_::Eigenvalue__torch::TensorP"></span><span class="target" id="namespaceoperators___1a397771485c4cb252dc518eddd9d1d9d9"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Eigenvalue</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matrix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10operators_10EigenvalueEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Batched 3×3 eigenvalue computation. </p>
+<p>Computes the eigenvalues and eigenvectors for a batch of matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(eigenvalues [N, 3], valid_mask [N]).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the eigenvalues and the corresponding eigenvectors. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="graph.html" title="previous chapter">Graph Operations</a></li>
+      <li>Next: <a href="nusol.html" title="next chapter">Neutrino Reconstruction (pyc)</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

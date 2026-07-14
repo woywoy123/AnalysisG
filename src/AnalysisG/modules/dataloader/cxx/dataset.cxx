@@ -104,7 +104,7 @@ std::vector<graph_t*>* dataloader::get_test_set(){
 std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
     auto lamb = [](std::vector<graph_t*>* sort){
         std::map<long, graph_t*> tmp = {}; 
-        for (size_t x(0); x < sort -> size(); ++x){tmp[(*sort)[x] -> event_index] = (*sort)[x];}
+        for (size_t x(0); x < sort -> size(); ++x){tmp[(*sort)[x] -> meta_data -> index] = (*sort)[x];}
 
         std::map<long, graph_t*>::iterator itr = tmp.begin(); 
         for (size_t t(0); itr != tmp.end(); ++itr, ++t){(*sort)[t] = itr -> second;}
@@ -114,7 +114,7 @@ std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
     std::map<std::string, std::vector<graph_t*>>* out = new std::map<std::string, std::vector<graph_t*>>();
     for (size_t x(0); x < this -> data_set -> size(); ++x){
         graph_t* gr = (*this -> data_set)[x]; 
-        (*out)[*(gr -> filename)].push_back(gr); 
+        (*out)[gr -> meta_data -> meta_data -> sample_name].push_back(gr); 
     }
 
     std::vector<std::thread*> th(out -> size(), nullptr); 
@@ -139,7 +139,7 @@ void dataloader::dump_dataset(std::string path){
             kf.k = itr -> first;
             kf.is_train = true; 
             graph_t* gr = (*this -> data_set)[itr -> second -> at(x)]; 
-            kf.hash = const_cast<char*>(gr -> hash -> data()); 
+            kf.hash = const_cast<char*>(gr -> meta_data -> hash -> data()); 
             data.push_back(kf); 
         }
     } 
@@ -152,7 +152,7 @@ void dataloader::dump_dataset(std::string path){
             kf.k = itr -> first;
             kf.is_valid = true; 
             graph_t* gr = (*this -> data_set)[itr -> second -> at(x)]; 
-            kf.hash = const_cast<char*>(gr -> hash -> data()); 
+            kf.hash = const_cast<char*>(gr -> meta_data -> hash -> data()); 
             data.push_back(kf); 
         }
     } 
@@ -161,7 +161,7 @@ void dataloader::dump_dataset(std::string path){
         folds_t kf = folds_t(); 
         kf.is_eval = true; 
         graph_t* gr = (*this -> data_set)[this -> test_set -> at(x)]; 
-        kf.hash = const_cast<char*>(gr -> hash -> data()); 
+        kf.hash = const_cast<char*>(gr -> meta_data -> hash -> data()); 
         data.push_back(kf); 
     }
 

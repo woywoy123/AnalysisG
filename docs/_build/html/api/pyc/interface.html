@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pyc Interface &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Physics Kernels" href="physics.html" />
+    <link rel="prev" title="Neutrino Solution (NuSol) Module" href="../modules/nusol.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pyc-interface">
+<h1>pyc Interface<a class="headerlink" href="#pyc-interface" title="Link to this heading">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">pyc</span></code> namespace is the public C++/CUDA interface for tensor-based
+particle physics computations.  All functions operate on <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code>
+objects and are compiled into shared libraries <code class="docutils literal notranslate"><span class="pre">libtpyc.so</span></code> (CPU) and
+<code class="docutils literal notranslate"><span class="pre">libcupyc.so</span></code> (CUDA).  At the Python level they are registered as
+<code class="docutils literal notranslate"><span class="pre">torch.ops.tpyc.*</span></code> / <code class="docutils literal notranslate"><span class="pre">torch.ops.cupyc.*</span></code> custom operators.</p>
+<section id="neutrino-reconstructed-neutrino">
+<h2><code class="docutils literal notranslate"><span class="pre">neutrino</span></code> — Reconstructed Neutrino<a class="headerlink" href="#neutrino-reconstructed-neutrino" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">neutrino</span></code> is a <code class="docutils literal notranslate"><span class="pre">particle_template</span></code> subclass that carries the output
+of the NuSol analytical reconstruction.  In addition to the standard
+kinematic properties it records which b-quark and lepton seeds were used,
+the minimised <span class="math notranslate nohighlight">\(\chi^2\)</span> residual, and an index into the top-quark it
+belongs to.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv48neutrino">
+<span id="_CPPv38neutrino"></span><span id="_CPPv28neutrino"></span><span id="neutrino"></span><span class="target" id="classneutrino"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">neutrino</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><a class="headerlink" href="#_CPPv48neutrino" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Lightweight <code class="docutils literal notranslate"><span class="pre">particle_template</span></code> subclass for reconstructed neutrinos. </p>
+<p>Inherits <code class="docutils literal notranslate"><span class="pre">particle_template</span></code> and extends it with reconstruction metadata: the minimum chi² penalty (<code class="docutils literal notranslate"><span class="pre">min</span></code>), the indices of the lepton and b-quark used in the reconstruction (<code class="docutils literal notranslate"><span class="pre">l_idx</span></code>, <code class="docutils literal notranslate"><span class="pre">b_idx</span></code>), pointers back to those particles (<code class="docutils literal notranslate"><span class="pre">lepton</span></code>, <code class="docutils literal notranslate"><span class="pre">bquark</span></code>), a vector of alternative neutrino solutions (<code class="docutils literal notranslate"><span class="pre">alternatives</span></code>), the top-quark node indices from a combinatorial reconstruction (<code class="docutils literal notranslate"><span class="pre">top_index</span></code>), and a flag indicating whether the solution comes from a resonance decay (<code class="docutils literal notranslate"><span class="pre">from_res</span></code>).</p>
+<p>Instances are typically created by <code class="docutils literal notranslate"><a class="reference internal" href="nusol.html#namespacenusol___1a6f05175e14627bd3c34ffa61686b7da4"><span class="std std-ref"><span class="pre">nusol_::Nu</span></span></a></code>, <code class="docutils literal notranslate"><a class="reference internal" href="nusol.html#namespacenusol___1ac849ef3564c5ac968727dce36494fd0a"><span class="std std-ref"><span class="pre">nusol_::NuNu</span></span></a></code>, or <code class="docutils literal notranslate"><a class="reference internal" href="nusol.html#namespacenusol___1aab99dbcd9227b04c51ba1d394c6c9079"><span class="std std-ref"><span class="pre">nusol_::combinatorial</span></span></a></code> and returned through the <code class="docutils literal notranslate"><a class="reference internal" href="nusol.html#namespacepyc_1_1nusol"><span class="std std-ref"><span class="pre">pyc::nusol</span></span></a></code> API. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino8neutrinoEv">
+<span id="_CPPv3N8neutrino8neutrinoEv"></span><span id="_CPPv2N8neutrino8neutrinoEv"></span><span id="neutrino::neutrino"></span><span class="target" id="classneutrino_1a55d24784a408d382fcce7a397fcfb062"></span><span class="sig-name descname"><span class="n"><span class="pre">neutrino</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8neutrino8neutrinoEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino8neutrinoEddd">
+<span id="_CPPv3N8neutrino8neutrinoEddd"></span><span id="_CPPv2N8neutrino8neutrinoEddd"></span><span id="neutrino::neutrino__double.double.double"></span><span class="target" id="classneutrino_1a619858b3e69d93acd563daf542facd4a"></span><span class="sig-name descname"><span class="n"><span class="pre">neutrino</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8neutrino8neutrinoEddd" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Construct from Cartesian three-momentum. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>px</strong> – x-momentum. </p></li>
+<li><p><strong>py</strong> – y-momentum. </p></li>
+<li><p><strong>pz</strong> – z-momentum. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrinoD0Ev">
+<span id="_CPPv3N8neutrinoD0Ev"></span><span id="_CPPv2N8neutrinoD0Ev"></span><span id="neutrino::~neutrino"></span><span class="target" id="classneutrino_1a1c9956db4c554c01a07977d801970de0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~neutrino</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8neutrinoD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino3minE">
+<span id="_CPPv3N8neutrino3minE"></span><span id="_CPPv2N8neutrino3minE"></span><span id="neutrino::min__double"></span><span class="target" id="classneutrino_1a3bc2ad31e9a33589d1a6c270d4b37c79"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N8neutrino3minE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Minimum penalty value from the reconstruction. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino5l_idxE">
+<span id="_CPPv3N8neutrino5l_idxE"></span><span id="_CPPv2N8neutrino5l_idxE"></span><span id="neutrino::l_idx__l"></span><span class="target" id="classneutrino_1adb04f9e57abe5c760b683e3e3002bd3f"></span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">l_idx</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N8neutrino5l_idxE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Index of the lepton used in this neutrino’s reconstruction. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino5b_idxE">
+<span id="_CPPv3N8neutrino5b_idxE"></span><span id="_CPPv2N8neutrino5b_idxE"></span><span id="neutrino::b_idx__l"></span><span class="target" id="classneutrino_1a57b98e2c17f1e0168c016a09d427b438"></span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">b_idx</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="o"><span class="pre">-</span></span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N8neutrino5b_idxE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Index of the b-jet used in this neutrino’s reconstruction. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino6bquarkE">
+<span id="_CPPv3N8neutrino6bquarkE"></span><span id="_CPPv2N8neutrino6bquarkE"></span><span id="neutrino::bquark__particle_templateP"></span><span class="target" id="classneutrino_1a3484bfc48d1ebc5ebdeb9966f1297cb6"></span><span class="n"><span class="pre">particle_template</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">bquark</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N8neutrino6bquarkE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Pointer to the associated b-quark. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino6leptonE">
+<span id="_CPPv3N8neutrino6leptonE"></span><span id="_CPPv2N8neutrino6leptonE"></span><span id="neutrino::lepton__particle_templateP"></span><span class="target" id="classneutrino_1a7be5886637dbd42037a06f191abb3e9e"></span><span class="n"><span class="pre">particle_template</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">lepton</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N8neutrino6leptonE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Pointer to the associated lepton. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino12alternativesE">
+<span id="_CPPv3N8neutrino12alternativesE"></span><span id="_CPPv2N8neutrino12alternativesE"></span><span id="neutrino::alternatives__std::vector:neutrinoP:"></span><span class="target" id="classneutrino_1aa7865a169d8c4b893fa2e62604131724"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv48neutrino" title="neutrino"><span class="n"><span class="pre">neutrino</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">alternatives</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N8neutrino12alternativesE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Alternative neutrino solutions for this (b, l) pair. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino9top_indexE">
+<span id="_CPPv3N8neutrino9top_indexE"></span><span id="_CPPv2N8neutrino9top_indexE"></span><span id="neutrino::top_index__std::vector:i:"></span><span class="target" id="classneutrino_1aac4c602d24eb5fba0e27a13f51362579"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">top_index</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N8neutrino9top_indexE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Per-solution top-quark index. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N8neutrino8from_resE">
+<span id="_CPPv3N8neutrino8from_resE"></span><span id="_CPPv2N8neutrino8from_resE"></span><span id="neutrino::from_res__b"></span><span class="target" id="classneutrino_1a3ea0fa55e8ed18cdcedae2ec46c1bfbb"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">from_res</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N8neutrino8from_resE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this neutrino came from a resonance. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="top-level-utilities">
+<h2>Top-Level Utilities<a class="headerlink" href="#top-level-utilities" title="Link to this heading">¶</a></h2>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc11std_to_dictEPNSt3mapINSt6stringEN5torch6TensorEEE">
+<span id="_CPPv3N3pyc11std_to_dictEPNSt3mapINSt6stringEN5torch6TensorEEE"></span><span id="_CPPv2N3pyc11std_to_dictEPNSt3mapINSt6stringEN5torch6TensorEEE"></span><span id="pyc::std_to_dict__std::map:ss.torch::Tensor:P"></span><span class="target" id="namespacepyc_1ab174cc51f6efef06bdb0ba47ec3fe3bf"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dict</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">pyc</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">std_to_dict</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">inpt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc11std_to_dictEPNSt3mapINSt6stringEN5torch6TensorEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Convert a <code class="docutils literal notranslate"><span class="pre">std::map</span></code> to a <code class="docutils literal notranslate"><span class="pre">torch::Dict</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inpt</strong> – Input map. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Equivalent <code class="docutils literal notranslate"><span class="pre">torch::Dict</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc9tensorizeEPNSt6vectorINSt6vectorIdEEEE">
+<span id="_CPPv3N3pyc9tensorizeEPNSt6vectorINSt6vectorIdEEEE"></span><span id="_CPPv2N3pyc9tensorizeEPNSt6vectorINSt6vectorIdEEEE"></span><span id="pyc::tensorize__std::vector:std::vector:double::P"></span><span class="target" id="namespacepyc_1a78a6e4f2cbb1ffc7ceb42ce358f0fa3e"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">pyc</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">tensorize</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">inpt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc9tensorizeEPNSt6vectorINSt6vectorIdEEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Convert a 2D double vector to a <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inpt</strong> – Input 2D vector. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of shape [N, D]. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="coordinate-transforms-pyc-transform">
+<h2>Coordinate Transforms — <code class="docutils literal notranslate"><span class="pre">pyc::transform</span></code><a class="headerlink" href="#coordinate-transforms-pyc-transform" title="Link to this heading">¶</a></h2>
+<p>All functions accept Nx1 column tensors (separate overloads) or an Nx4
+stacked tensor (combined overloads).  Inputs are validated for shape
+compatibility at runtime.</p>
+<p><strong>Cartesian → Polar (separate column inputs)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::Pt(px,</span> <span class="pre">py)</span></code> → <span class="math notranslate nohighlight">\(p_T\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::Eta(px,</span> <span class="pre">py,</span> <span class="pre">pz)</span></code> → <span class="math notranslate nohighlight">\(\eta\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::Phi(px,</span> <span class="pre">py)</span></code> → <span class="math notranslate nohighlight">\(\phi\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::PtEtaPhi(px,</span> <span class="pre">py,</span> <span class="pre">pz)</span></code> → Nx3 <span class="math notranslate nohighlight">\((p_T, \eta, \phi)\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::PtEtaPhiE(px,</span> <span class="pre">py,</span> <span class="pre">pz,</span> <span class="pre">e)</span></code> → Nx4 <span class="math notranslate nohighlight">\((p_T, \eta, \phi, E)\)</span></p></li>
+</ul>
+<p><strong>Cartesian → Polar (stacked Nx4 pmc input)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::Pt(pmc)</span></code> → <span class="math notranslate nohighlight">\(p_T\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::Eta(pmc)</span></code> → <span class="math notranslate nohighlight">\(\eta\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::Phi(pmc)</span></code> → <span class="math notranslate nohighlight">\(\phi\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::PtEtaPhi(pmc)</span></code> → Nx3</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::PtEtaPhiE(pmc)</span></code> → Nx4</p></li>
+</ul>
+<p><strong>Polar → Cartesian (separate column inputs)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::Px(pt,</span> <span class="pre">phi)</span></code> → <span class="math notranslate nohighlight">\(p_x\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::Py(pt,</span> <span class="pre">phi)</span></code> → <span class="math notranslate nohighlight">\(p_y\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::Pz(pt,</span> <span class="pre">eta)</span></code> → <span class="math notranslate nohighlight">\(p_z\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::PxPyPz(pt,</span> <span class="pre">eta,</span> <span class="pre">phi)</span></code> → Nx3</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::separate::PxPyPzE(pt,</span> <span class="pre">eta,</span> <span class="pre">phi,</span> <span class="pre">e)</span></code> → Nx4</p></li>
+</ul>
+<p><strong>Polar → Cartesian (stacked Nx4 pmu input)</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::Px(pmu)</span></code> → <span class="math notranslate nohighlight">\(p_x\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::PxPyPz(pmu)</span></code> → Nx3</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::transform::combined::PxPyPzE(pmu)</span></code> → Nx4</p></li>
+</ul>
+<p>See <a class="reference internal" href="transform.html"><span class="doc">Coordinate Transforms</span></a> for the complete API reference.</p>
+</section>
+<section id="physics-kernels-pyc-physics">
+<h2>Physics Kernels — <code class="docutils literal notranslate"><span class="pre">pyc::physics</span></code><a class="headerlink" href="#physics-kernels-pyc-physics" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">physics</span></code> sub-namespace provides two coordinate variants
+(<code class="docutils literal notranslate"><span class="pre">cartesian</span></code> and <code class="docutils literal notranslate"><span class="pre">polar</span></code>), each split into <code class="docutils literal notranslate"><span class="pre">separate</span></code> (per-column
+tensor arguments) and <code class="docutils literal notranslate"><span class="pre">combined</span></code> (single stacked tensor) overloads.</p>
+<p><strong>Cartesian — separate inputs</strong> (<code class="docutils literal notranslate"><span class="pre">pyc::physics::cartesian::separate</span></code>)</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">P2(px,py,pz)</span></code> — squared 3-momentum <span class="math notranslate nohighlight">\(|\vec{p}|^2\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P(px,py,pz)</span></code> — 3-momentum magnitude</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Beta2/Beta(px,py,pz,e)</span></code> — squared/absolute velocity <span class="math notranslate nohighlight">\(\beta^2\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M2/M(px,py,pz,e)</span></code> — squared/absolute invariant mass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mt2/Mt(pz,e)</span></code> — squared/absolute transverse mass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Theta(px,py,pz)</span></code> — polar angle <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DeltaR(px1,px2,py1,py2,pz1,pz2)</span></code> — angular separation</p></li>
+</ul>
+<p><strong>Cartesian — combined</strong> (<code class="docutils literal notranslate"><span class="pre">pyc::physics::cartesian::combined</span></code>)</p>
+<p>Same functions but accept a stacked Nx4 <code class="docutils literal notranslate"><span class="pre">pmc</span></code> tensor.</p>
+<p><strong>Polar — separate</strong> (<code class="docutils literal notranslate"><span class="pre">pyc::physics::polar::separate</span></code>)</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">P2/P(pt,eta,phi)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Beta2/Beta(pt,eta,phi,e)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M2/M(pt,eta,phi,e)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mt2/Mt(pt,eta,e)</span></code>  — note: only <code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">eta</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code> needed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Theta(pt,eta,phi)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DeltaR(eta1,eta2,phi1,phi2)</span></code></p></li>
+</ul>
+<p><strong>Polar — combined</strong> (<code class="docutils literal notranslate"><span class="pre">pyc::physics::polar::combined</span></code>)</p>
+<p>Same functions but accept a stacked Nx4 <code class="docutils literal notranslate"><span class="pre">pmu</span></code> tensor.</p>
+<p>See <a class="reference internal" href="physics.html"><span class="doc">Physics Kernels</span></a> for the complete API reference.</p>
+</section>
+<section id="matrix-operators-pyc-operators">
+<h2>Matrix Operators — <code class="docutils literal notranslate"><span class="pre">pyc::operators</span></code><a class="headerlink" href="#matrix-operators-pyc-operators" title="Link to this heading">¶</a></h2>
+<p>Batched linear-algebra utilities for <span class="math notranslate nohighlight">\(N\times3\times3\)</span> or
+<span class="math notranslate nohighlight">\(N\times4\times4\)</span> tensors.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Dot(v1,</span> <span class="pre">v2)</span></code> — batch dot product</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CosTheta(v1,</span> <span class="pre">v2)</span></code> / <code class="docutils literal notranslate"><span class="pre">SinTheta(v1,</span> <span class="pre">v2)</span></code> — angle between vectors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Rx/Ry/Rz(angle)</span></code> — rotation matrix construction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RT(pmc_b,</span> <span class="pre">pmc_mu)</span></code> — combined rotation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CoFactors(matrix)</span></code> — cofactor matrix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Determinant(matrix)</span></code> — determinant</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Inverse(matrix)</span></code> → <code class="docutils literal notranslate"><span class="pre">(inv,</span> <span class="pre">valid)</span></code> — Moore–Penrose pseudo-inverse</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Eigenvalue(matrix)</span></code> → <code class="docutils literal notranslate"><span class="pre">(vals,</span> <span class="pre">vecs)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cross(mat1,</span> <span class="pre">mat2)</span></code> — cross product</p></li>
+</ul>
+<p>See <a class="reference internal" href="operators.html"><span class="doc">Tensor Operators</span></a> for the complete API reference.</p>
+</section>
+<section id="graph-aggregation-pyc-graph">
+<h2>Graph Aggregation — <code class="docutils literal notranslate"><span class="pre">pyc::graph</span></code><a class="headerlink" href="#graph-aggregation-pyc-graph" title="Link to this heading">¶</a></h2>
+<p>Aggregation utilities used during GNN message-passing.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">edge_aggregation(edge_index,</span> <span class="pre">prediction,</span> <span class="pre">node_feature)</span></code> — aggregate edge scores to nodes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node_aggregation(edge_index,</span> <span class="pre">prediction,</span> <span class="pre">node_feature)</span></code> — aggregate node features along edges</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unique_aggregation(cluster_map,</span> <span class="pre">features)</span></code> — aggregate by cluster label</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PageRank(edge_index,</span> <span class="pre">edge_scores,</span> <span class="pre">…)</span></code> — stable personalised PageRank</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PageRankReconstruction(…,</span> <span class="pre">pmc)</span></code> — PageRank + 4-momentum assignment</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">pyc::graph::polar</span></code> overloads accept <code class="docutils literal notranslate"><span class="pre">(pt,</span> <span class="pre">eta,</span> <span class="pre">phi,</span> <span class="pre">e)</span></code> or a stacked
+<code class="docutils literal notranslate"><span class="pre">pmu</span></code> tensor instead of cartesian <code class="docutils literal notranslate"><span class="pre">pmc</span></code>.</p>
+<p>See <a class="reference internal" href="graph.html"><span class="doc">Graph Operations</span></a> for the complete API reference.</p>
+</section>
+<section id="neutrino-reconstruction-pyc-nusol">
+<h2>Neutrino Reconstruction — <code class="docutils literal notranslate"><span class="pre">pyc::nusol</span></code><a class="headerlink" href="#neutrino-reconstruction-pyc-nusol" title="Link to this heading">¶</a></h2>
+<p>Batch-capable analytical neutrino reconstruction backed by the
+<code class="docutils literal notranslate"><span class="pre">nusol_</span></code> CUDA/CPU kernel namespace.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BaseMatrix(pmc_b,</span> <span class="pre">pmc_mu,</span> <span class="pre">masses)</span></code> — returns the <span class="math notranslate nohighlight">\(3\times3\)</span> neutrino constraint matrix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Nu(pmc_b,</span> <span class="pre">pmc_mu,</span> <span class="pre">met_xy,</span> <span class="pre">masses,</span> <span class="pre">sigma,</span> <span class="pre">null)</span></code> — single-neutrino solution</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NuNu(pmc_b1,</span> <span class="pre">pmc_b2,</span> <span class="pre">pmc_l1,</span> <span class="pre">pmc_l2,</span> <span class="pre">met_xy,</span> <span class="pre">masses,</span> <span class="pre">null,</span> <span class="pre">step,</span> <span class="pre">tol,</span> <span class="pre">timeout)</span></code> — double-neutrino solution (uniform masses)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NuNu(…,</span> <span class="pre">mass1,</span> <span class="pre">mass2,</span> <span class="pre">…)</span></code> — double-neutrino solution (per-event masses)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NuNu&lt;b,</span> <span class="pre">l&gt;(bquark1,</span> <span class="pre">bquark2,</span> <span class="pre">lepton1,</span> <span class="pre">lepton2,</span> <span class="pre">met,</span> <span class="pre">phi,</span> <span class="pre">mass1,</span> <span class="pre">mass2,</span> <span class="pre">dev,</span> <span class="pre">…)</span></code> — particle-pointer convenience overload</p></li>
+</ul>
+<p>See <a class="reference internal" href="nusol.html"><span class="doc">Neutrino Reconstruction (pyc)</span></a> for the complete API reference.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../modules/nusol.html" title="previous chapter">Neutrino Solution (NuSol) Module</a></li>
+      <li>Next: <a href="physics.html" title="next chapter">Physics Kernels</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

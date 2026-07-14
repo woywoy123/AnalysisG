@@ -13,33 +13,16 @@ class event_template: public tools
     public:
         event_template(); 
         virtual ~event_template(); 
-
         cproperty<std::vector<std::string>, event_template> trees;  
-        void static set_trees(std::vector<std::string>*, event_template*); 
-
         cproperty<std::vector<std::string>, event_template> branches;  
-        void static set_branches(std::vector<std::string>*, event_template*); 
-
         cproperty<std::vector<std::string>, event_template> leaves;  
-        void static get_leaves(std::vector<std::string>*, event_template*); 
-        void add_leaf(std::string key, std::string leaf = ""); 
-
         cproperty<std::string, event_template> name; 
-        void static set_name(std::string*, event_template*); 
-
         cproperty<std::string, event_template> hash; 
-        void static set_hash(std::string*, event_template*); 
-        void static get_hash(std::string*, event_template*); 
-
         cproperty<std::string, event_template> tree;  
-        void static set_tree(std::string*, event_template*); 
-        void static get_tree(std::string*, event_template*); 
-
         cproperty<double, event_template> weight;
-        void static set_weight(double*, event_template*); 
+        cproperty<long  , event_template> index; 
 
-        cproperty<long, event_template> index; 
-        void static set_index(long*, event_template*); 
+        void add_leaf(std::string key, std::string leaf = ""); 
 
         std::map<std::string, std::string> m_trees; 
         std::map<std::string, std::string> m_branches;
@@ -159,14 +142,26 @@ class event_template: public tools
 
         bool operator == (event_template& p); 
 
-        event_t data; 
+        event_t data;
+        std::string filename = "";  
         meta* meta_data = nullptr; 
-        std::string filename = ""; 
+
         void flush_particles();
 
     private:
+
+        void static set_trees(std::vector<std::string>*, event_template*); 
+        void static set_branches(std::vector<std::string>*, event_template*); 
+        void static get_leaves(std::vector<std::string>*, event_template*); 
+        void static set_name(std::string*, event_template*); 
+        void static set_hash(std::string*, event_template*); 
+        void static get_hash(std::string*, event_template*); 
+        void static set_tree(std::string*, event_template*); 
+        void static get_tree(std::string*, event_template*); 
+        void static set_weight(double*, event_template*); 
+        void static set_index(long*, event_template*); 
+
         void build_mapping(std::map<std::string, data_t*>* evnt); 
-        std::map<std::string, particle_template*> garbage = {}; 
         void flush_leaf_string(); 
 
         template <typename G>
@@ -177,9 +172,10 @@ class event_template: public tools
             object -> clear(); 
         }
 
-        std::map<std::string, bool> next_ = {}; 
-        std::map<std::string, particle_template*> particle_generators; 
-        std::map<std::string, std::map<std::string, element_t>> tree_variable_link = {}; 
+        std::map<std::string, bool>                                               next_ = {}; 
+        std::map<std::string, particle_template*>                   particle_generators = {}; 
+        std::map<std::string, particle_template*>                               garbage = {}; 
+        std::map<std::string, std::map<std::string, element_t>>      tree_variable_link = {}; 
         std::map<std::string, std::map<std::string, particle_template*>*> particle_link = {}; 
 }; 
 

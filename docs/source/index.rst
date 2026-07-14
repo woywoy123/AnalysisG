@@ -8,45 +8,124 @@ selections — all from a Python interface backed by high-performance C++ and CU
 
 .. toctree::
    :maxdepth: 1
-   :caption: Getting Started
+   :caption: Beginner
 
    introduction
    installation
    quick_start
    tutorial
+   api/core/minimal_working_example
 
 .. toctree::
    :maxdepth: 1
-   :caption: Python User Guide
+   :caption: Templates
 
-   api/core/analysis
-   api/core/particle_template
    api/core/event_template
+   api/core/particle_template
    api/core/graph_template
    api/core/selection_template
    api/core/model_template
    api/core/metric_template
-   api/core/advanced_api
 
 .. toctree::
    :maxdepth: 1
-   :caption: Standard Library
+   :caption: Core Class types
+
+   api/modules/meta
+   api/modules/plotting
+   api/modules/graph
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Core Struct types
+
+   api/modules/structs
+   api/modules/event
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Backend Containers
+
+   api/modules/container
+   api/modules/sampletracer
+   api/modules/dataloader
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Reconstruction Algorithms
+
+   api/modules/nusol
+   api/metrics/pagerank
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Configurations
+
+   api/modules/lossfx
+   api/modules/optimizer
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Translations
+
+   api/modules/typecasting
+   api/modules/mergecast
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Toolings
+
+   api/modules/notification
+   api/modules/tools
+   api/modules/io
+   api/core/plotting
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Interfaces
+
+   api/interfaces_cython
+
+.. toctree::
+   :maxdepth: 1
+   :caption: CMake Tooling
+
+   api/cmake_cybuild
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Exports
+
+   api/exports_hdf5
+   api/exports_root
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Custom Maps
+
+   api/custom_root_pcm
+   api/custom_root_types
+   api/custom_tensor_types
+   api/custom_tensor_casting
+
+.. toctree::
+   :maxdepth: 1
+   :caption: pyc: PyCUDA
+
+   api/pyc/cutils
+   api/pyc/physics
+   api/pyc/graph
+   api/pyc/missing_cuda
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Default Implementations
 
    api/events/index
    api/graphs/index
+   api/selections/index
    api/models/index
    api/metrics/index
-   api/selections/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Advanced / C++ Backend
-
-   architecture
-   api/modules/index_templates
-   api/modules/index_framework
-   api/modules/nusol
-   api/pyc/index
 
 .. toctree::
    :maxdepth: 1

@@ -44,7 +44,7 @@ void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){this -> mflush(da
 void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){this -> mflush(data);}
 void graph_t::_purge_data(std::vector<torch::Tensor*>* data){this -> vflush(data);}
 
-void graph_t::_purge_all(bool data_maps){
+void graph_t::_purge_all(){
     this -> _purge_data(this -> data_graph); 
     this -> _purge_data(this -> data_node); 
     this -> _purge_data(this -> data_edge); 
@@ -73,21 +73,13 @@ void graph_t::_purge_all(bool data_maps){
     this -> dev_event_weight.clear(); 
     this -> dev_batch_index.clear(); 
 
-    this -> pflush(&this -> hash); 
-    if (this -> graph_name){
-        this -> pflush(&this -> data_map_graph); 
-        this -> pflush(&this -> data_map_node);       
-        this -> pflush(&this -> data_map_edge);      
+    this -> pflush(&this -> data_map_graph); 
+    this -> pflush(&this -> data_map_node);       
+    this -> pflush(&this -> data_map_edge);      
 
-        this -> pflush(&this -> truth_map_graph); 
-        this -> pflush(&this -> truth_map_node);  
-        this -> pflush(&this -> truth_map_edge);   
-        this -> pflush(&this -> graph_name); 
-    }
-
-    if (!this -> is_owner){return;}
-    this -> pflush(&this -> filename); 
-
+    this -> pflush(&this -> truth_map_graph); 
+    this -> pflush(&this -> truth_map_node);  
+    this -> pflush(&this -> truth_map_edge);   
 }
 
 torch::Tensor* graph_t::return_any(
@@ -132,7 +124,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     c10::DeviceType dev_in = dev -> device().type(); 
     if (dev_in == c10::kCPU){return;}
     int dev_ = (int)dev -> device().index(); 
-    bool sm = (dev_in == c10::kCUDA && this -> device == c10::kCUDA); 
+    bool sm = (dev_in == c10::kCUDA && this -> meta_data -> device == c10::kCUDA); 
     sm = sm && this -> device_index[dev_]; 
     if (sm){return;}
     this -> device_index[dev_] = true; 
@@ -144,21 +136,21 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_truth_node[dev_] , this -> truth_node , dev); 
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
 
-    this -> batched_events = std::vector<long>({0}); 
-    std::vector<long> bc(this -> num_nodes, 0);
-    std::vector<double> evw = {this -> event_weight}; 
+    std::vector<long> _batched_events(1, 0); 
+    std::vector<long> bc(this -> meta_data -> num_nodes, 0);
+    std::vector<double> evw = {this -> meta_data -> weight}; 
     torch::TensorOptions op = torch::TensorOptions(torch::kCPU); 
     
     torch::Tensor dt = build_tensor(&evw, torch::kDouble, double(), &op);
     torch::Tensor bx = build_tensor(&bc , torch::kLong  , long()  , &op); 
-    torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &op); 
+    torch::Tensor bi = build_tensor(&_batched_events, torch::kLong, long(), &op); 
 
     this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device(), true); 
     this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true); 
     this -> dev_batched_events[dev_] = bi.clone().to(dev -> device(), true);
     this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device(), true); 
     torch::cuda::synchronize(dev_); 
-    this -> device = dev_in;
+    this -> meta_data -> device = dev_in;
     lk.unlock(); 
 }
 
@@ -194,11 +186,11 @@ void graph_t::meta_serialize(torch::Tensor* data, std::string* out){
 }
 
 void graph_t::serialize(graph_hdf5* m_hdf5){
-    m_hdf5 -> hash         = this -> hash -> c_str();
-    m_hdf5 -> filename     = this -> filename -> c_str();
-    m_hdf5 -> num_nodes    = this -> num_nodes;
-    m_hdf5 -> event_index  = this -> event_index;
-    m_hdf5 -> event_weight = this -> event_weight; 
+    m_hdf5 -> filename     = std::string(this -> meta_data -> meta_data -> sample_name).c_str();
+    m_hdf5 -> hash         = this -> meta_data -> hash -> c_str();
+    m_hdf5 -> num_nodes    = this -> meta_data -> num_nodes;
+    m_hdf5 -> event_index  = this -> meta_data -> index;
+    m_hdf5 -> event_weight = this -> meta_data -> weight; 
 
     this -> meta_serialize(this -> edge_index, &m_hdf5 -> edge_index); 
 
@@ -247,12 +239,14 @@ torch::Tensor* graph_t::meta_deserialize(std::string* out){
 }
 
 void graph_t::deserialize(graph_hdf5* m_hdf5){
-    this -> hash         = new std::string(m_hdf5 -> hash);
-    this -> filename     = new std::string(m_hdf5 -> filename);
-    this -> num_nodes    = m_hdf5 -> num_nodes;
-    this -> preselection = !this -> num_nodes; 
-    this -> event_index  = m_hdf5 -> event_index;
-    this -> event_weight = m_hdf5 -> event_weight;
+    if (!this -> meta_data){this -> meta_data = new graph_meta();}
+    this -> meta_data -> hash                               = new std::string(m_hdf5 -> hash);
+    this -> meta_data -> meta_data -> meta_data.sample_name = m_hdf5 -> filename;
+    this -> meta_data -> num_nodes                          = m_hdf5 -> num_nodes;
+    this -> meta_data -> index                              = m_hdf5 -> event_index;
+    this -> meta_data -> weight                             = m_hdf5 -> event_weight;
+    this -> meta_data -> preselection                       = !this -> meta_data -> num_nodes; 
+    this -> meta_data -> is_owner                           = true; 
 
     this -> data_map_graph  = new std::map<std::string, int>();  
     this -> data_map_node   = new std::map<std::string, int>();       
@@ -286,6 +280,5 @@ void graph_t::deserialize(graph_hdf5* m_hdf5){
     this -> meta_deserialize(this -> truth_graph, &m_hdf5 -> truth_graph);       
     this -> meta_deserialize(this -> truth_node , &m_hdf5 -> truth_node );       
     this -> meta_deserialize(this -> truth_edge , &m_hdf5 -> truth_edge );       
-    this -> is_owner = true; 
 }
 

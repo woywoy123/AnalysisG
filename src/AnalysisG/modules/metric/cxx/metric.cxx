@@ -58,7 +58,7 @@ void metric_t::build(){
 std::string* metric_t::get_filename(long unsigned int idx){
     if (!this -> batch_files){return nullptr;}
     if (this -> batch_files -> size() < idx){return nullptr;}
-    return this -> batch_files -> at(idx); 
+    return &this -> batch_files -> at(idx) -> meta_data -> meta_data.sample_name; 
 }
 
 std::string metric_t::mode(){return model_mode(this -> _mode);}
@@ -116,7 +116,7 @@ bool metric_t::next(){
     if (!this -> batch_graphs   ){return false;}
     if (this -> nx >= this -> ny){return false;}
     this -> gr_i        =  this -> batch_graphs -> at(this -> nx);
-    this -> batch_files = &this -> gr_i -> batched_filenames; 
+    this -> batch_files = &this -> gr_i -> meta_data -> batched_events; 
     if (this -> mdlx){this -> mdlx -> forward(this -> gr_i, false);}
     this -> getPrediction(); 
     this -> index = this -> nx; 

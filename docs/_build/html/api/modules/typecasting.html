@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Type Casting Utilities &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Neutrino Solution (NuSol) Module" href="nusol.html" />
+    <link rel="prev" title="Structs and Enumerations" href="structs.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="type-casting-utilities">
+<h1>Type Casting Utilities<a class="headerlink" href="#type-casting-utilities" title="Link to this heading">¶</a></h1>
+<p>Template helpers for casting between C++ STL containers and PyTorch
+tensors, and for merging containers across threads.</p>
+<section id="cproperty-t-g-observable-property">
+<h2><code class="docutils literal notranslate"><span class="pre">cproperty&lt;T,</span> <span class="pre">G&gt;</span></code> — Observable Property<a class="headerlink" href="#cproperty-t-g-observable-property" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">cproperty</span></code> is a thin property-like wrapper used throughout the C++
+class hierarchy.  It stores a value of type <code class="docutils literal notranslate"><span class="pre">T</span></code> and optionally calls a
+user-supplied getter or setter callback (of type <code class="docutils literal notranslate"><span class="pre">void(T*,</span> <span class="pre">G*)</span></code>) on each
+read or write.  It models <code class="docutils literal notranslate"><span class="pre">operator=(T)</span></code> and implicit <code class="docutils literal notranslate"><span class="pre">operator</span> <span class="pre">T()</span></code>,
+so it behaves like a plain data member at call sites.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I00E9cproperty">
+<span id="_CPPv3I00E9cproperty"></span><span id="_CPPv2I00E9cproperty"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classcproperty"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cproperty</span></span></span><a class="headerlink" href="#_CPPv4I00E9cproperty" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Typed property with optional setter and getter callbacks. </p>
+<p>Wrapper class allowing custom getter and setter functions on a variable.</p>
+<p>
+Wraps a value of type <code class="docutils literal notranslate"><span class="pre">T</span></code> and optionally calls user-provided static (or std::function) setter and getter functions on assignment and conversion.</p>
+<p><strong>Registration</strong> — <code class="docutils literal notranslate"><span class="pre">set_setter/</span> <span class="pre">register</span></code> the callbacks; <code class="docutils literal notranslate"><span class="pre">set_object</span></code> sets the owner pointer that is passed as the second argument to each callback.</p>
+<p><strong>Assignment</strong> — <code class="docutils literal notranslate"><a class="reference internal" href="#classcproperty_1a9709c338b860f7142dfeacd15e4f7426"><span class="std std-ref"><span class="pre">operator=(const</span> <span class="pre">T&amp;</span> <span class="pre">val)</span></span></a></code> stores the value and, if a setter is registered, immediately calls <code class="docutils literal notranslate"><span class="pre">setter(&amp;data,</span> <span class="pre">obj)</span></code>. This allows side-effects such as keeping Cartesian and polar four-momentum consistent in <code class="docutils literal notranslate"><span class="pre">particle_template</span></code>.</p>
+<p><strong>Reading</strong> — the implicit conversion <code class="docutils literal notranslate"><span class="pre">operator</span></code> T() and the address-of <code class="docutils literal notranslate"><a class="reference internal" href="#classcproperty_1a72a1e4f32f901922e2c5d074e6fc69f0"><span class="std std-ref"><span class="pre">operator&amp;()</span></span></a></code> both invoke <code class="docutils literal notranslate"><span class="pre">getter(&amp;data,</span> <span class="pre">obj)</span></code> if registered before returning the value. This allows lazy computation of derived quantities such as <code class="docutils literal notranslate"><span class="pre">hash</span></code> or <code class="docutils literal notranslate"><span class="pre">mass</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><a class="reference internal" href="#classcproperty_1a8406c403abbf89e5832b92ac8e2c487b"><span class="std std-ref"><span class="pre">clear()</span></span></a></code> method resets <code class="docutils literal notranslate"><span class="pre">data</span></code> to <code class="docutils literal notranslate"><span class="pre">T()</span></code> only when a getter is registered (indicating the value is always computed on demand). The comparison operators <code class="docutils literal notranslate"><span class="pre">operator==</span></code> and <code class="docutils literal notranslate"><span class="pre">operator!=</span></code> test against the stored <code class="docutils literal notranslate"><span class="pre">data</span></code> without invoking any callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – Value type stored by the property. </p></li>
+<li><p><strong>G</strong> – Owner class type. A pointer to the owner is passed to the setter/getter so they can read or update related state.</p></li>
+<li><p><strong>T</strong> – The wrapped data type. </p></li>
+<li><p><strong>G</strong> – The class object type which owns this property. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cproperty9cpropertyEv">
+<span id="_CPPv3N9cproperty9cpropertyEv"></span><span id="_CPPv2N9cproperty9cpropertyEv"></span><span id="cproperty::cproperty"></span><span class="target" id="classcproperty_1aaed642ab76fa3cec770f1f5633b51a43"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cproperty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cproperty9cpropertyEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Default constructor. Initialises the wrapped value with <code class="docutils literal notranslate"><span class="pre">T()</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cproperty10set_setterENSt8functionIFvP1TP1GEEE">
+<span id="_CPPv3N9cproperty10set_setterENSt8functionIFvP1TP1GEEE"></span><span id="_CPPv2N9cproperty10set_setterENSt8functionIFvP1TP1GEEE"></span><span class="target" id="classcproperty_1af4583ba4cf4ebc53f870a2de8f110da7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_setter</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">x_setter</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cproperty10set_setterENSt8functionIFvP1TP1GEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Register a setter callback. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>c</strong> – Function called with a pointer to the internal value and a pointer to the owner object each time the property is assigned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cproperty10set_getterENSt8functionIFvP1TP1GEEE">
+<span id="_CPPv3N9cproperty10set_getterENSt8functionIFvP1TP1GEEE"></span><span id="_CPPv2N9cproperty10set_getterENSt8functionIFvP1TP1GEEE"></span><span class="target" id="classcproperty_1a31b26b5ffb20bbf8d8ee38e0755a9819"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_getter</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">x_getter</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cproperty10set_getterENSt8functionIFvP1TP1GEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Register a getter callback. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>c</strong> – Function called with a pointer to the internal value and a pointer to the owner object each time the property is read. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cproperty10set_objectEP1G">
+<span id="_CPPv3N9cproperty10set_objectEP1G"></span><span id="_CPPv2N9cproperty10set_objectEP1G"></span><span id="cproperty::set_object__GP"></span><span class="target" id="classcproperty_1ae8318560f854cf31431663c1de2ff994"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_object</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::G"><span class="n"><span class="pre">G</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">_obj</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cproperty10set_objectEP1G" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Set the owner object pointer passed to the callbacks. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>_obj</strong> – Pointer to the owning object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cpropertyaSERK1T">
+<span id="_CPPv3N9cpropertyaSERK1T"></span><span id="_CPPv2N9cpropertyaSERK1T"></span><span id="cproperty::assign-operator__TCR"></span><span class="target" id="classcproperty_1a9709c338b860f7142dfeacd15e4f7426"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty"><span class="n"><span class="pre">cproperty</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">val</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cpropertyaSERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Assign a new value and invoke the setter callback if registered. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – New value. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to <code class="docutils literal notranslate"><span class="pre">*this</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cpropertyplERK1T">
+<span id="_CPPv3N9cpropertyplERK1T"></span><span id="_CPPv2N9cpropertyplERK1T"></span><span id="cproperty::add-operator__TCR"></span><span class="target" id="classcproperty_1a29f31c10baf02a7ef70e415b1032cfc6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">+</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">val</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cpropertyplERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Return the sum of the stored value and <code class="docutils literal notranslate"><span class="pre">val</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – Value to add. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sum. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cpropertyeqERK1T">
+<span id="_CPPv3N9cpropertyeqERK1T"></span><span id="_CPPv2N9cpropertyeqERK1T"></span><span id="cproperty::eq-operator__TCR"></span><span class="target" id="classcproperty_1a8fe606a2540de63047826ec51dbaf447"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">val</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cpropertyeqERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compare the stored value with <code class="docutils literal notranslate"><span class="pre">val</span></code> for equality. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – Value to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if equal. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cpropertyneERK1T">
+<span id="_CPPv3N9cpropertyneERK1T"></span><span id="_CPPv2N9cpropertyneERK1T"></span><span id="cproperty::neq-operator__TCR"></span><span class="target" id="classcproperty_1a9423508b897ac25752e8ed8cffdd2689"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">val</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cpropertyneERK1T" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compare the stored value with <code class="docutils literal notranslate"><span class="pre">val</span></code> for inequality. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>val</strong> – Value to compare. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if not equal. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cpropertycv1TEv">
+<span id="_CPPv3N9cpropertycv1TEv"></span><span id="_CPPv2N9cpropertycv1TEv"></span><span id="cproperty::castto-T-operator"></span><span class="target" id="classcproperty_1a3b2718a086280549f708c728320698be"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cpropertycv1TEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Implicit conversion to <code class="docutils literal notranslate"><span class="pre">T</span></code>. Invokes the getter callback if registered. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cpropertyanEv">
+<span id="_CPPv3N9cpropertyanEv"></span><span id="_CPPv2N9cpropertyanEv"></span><span id="cproperty::and-operator"></span><span class="target" id="classcproperty_1a72a1e4f32f901922e2c5d074e6fc69f0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E9cproperty" title="cproperty::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&amp;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cpropertyanEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Address-of operator. Invokes the getter callback if registered and returns a pointer to the internal value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the stored value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9cproperty5clearEv">
+<span id="_CPPv3N9cproperty5clearEv"></span><span id="_CPPv2N9cproperty5clearEv"></span><span id="cproperty::clear"></span><span class="target" id="classcproperty_1a8406c403abbf89e5832b92ac8e2c487b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9cproperty5clearEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Reset the stored value to <code class="docutils literal notranslate"><span class="pre">T()</span></code> if a getter is registered. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="merge-cast-h-thread-safe-merge-helpers">
+<h2><code class="docutils literal notranslate"><span class="pre">merge_cast.h</span></code> — Thread-safe Merge Helpers<a class="headerlink" href="#merge-cast-h-thread-safe-merge-helpers" title="Link to this heading">¶</a></h2>
+<p>Recursive template functions for merging two data structures of the same
+type (vectors, maps, or scalars) element-wise.  Used in multi-threaded
+compilation to coalesce per-thread results into a single output.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">merge_data(out,</span> <span class="pre">p2)</span></code> — append / overwrite <code class="docutils literal notranslate"><span class="pre">*p2</span></code> into <code class="docutils literal notranslate"><span class="pre">*out</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sum_data(out,</span> <span class="pre">p2)</span></code> — add <code class="docutils literal notranslate"><span class="pre">*p2</span></code> to <code class="docutils literal notranslate"><span class="pre">*out</span></code> (numeric accumulation)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reserve_count(inp,</span> <span class="pre">ix)</span></code> — count elements for pre-allocation</p></li>
+</ul>
+<p>Template utilities for merging, summing, and contracting typed data structures. </p>
+<p>Detailed documentation for the merge_cast.h header.</p>
+<p>Provides recursive template free functions that operate on scalars, vectors, and maps uniformly.</p>
+<section id="merge__cast_8h_1merge_cast_intro">
+<h3>merge_cast.h<a class="headerlink" href="#merge__cast_8h_1merge_cast_intro" title="Link to this heading">¶</a></h3>
+<p id="merge__cast_8h_1merge_cast_intro">The <code class="docutils literal notranslate"><span class="pre">merge_cast.h</span></code> header contains overloaded template utilities designed to cleanly merge, sum, and contract nested C++ containers like <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> and <code class="docutils literal notranslate"><span class="pre">std::map</span></code>. These templates are extensively used in event aggregation and graph building to combine data from multiple sources efficiently. </p>
+</section>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E10merge_datavPNSt6vectorI1GEEPNSt6vectorI1GEE">
+<span id="_CPPv3I0E10merge_dataPNSt6vectorI1GEEPNSt6vectorI1GEE"></span><span id="_CPPv2I0E10merge_dataPNSt6vectorI1GEEPNSt6vectorI1GEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">merge_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E10merge_datavPNSt6vectorI1GEEPNSt6vectorI1GEE" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E10merge_datavPNSt6vectorI1GEEPNSt6vectorI1GEE" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E10merge_datavPNSt6vectorI1GEEPNSt6vectorI1GEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Append all elements of <code class="docutils literal notranslate"><span class="pre">p2</span></code> to <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<p>Appends elements of vector <code class="docutils literal notranslate"><span class="pre">p2</span></code> to the end of vector <code class="docutils literal notranslate"><span class="pre">out</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target vector. </p></li>
+<li><p><strong>p2</strong> – Source vector.</p></li>
+<li><p><strong>out</strong> – Pointer to the destination vector. </p></li>
+<li><p><strong>p2</strong> – Pointer to the source vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E10merge_datavPNSt6vectorIP1GEEPNSt6vectorIP1GEE">
+<span id="_CPPv3I0E10merge_dataPNSt6vectorIP1GEEPNSt6vectorIP1GEE"></span><span id="_CPPv2I0E10merge_dataPNSt6vectorIP1GEEPNSt6vectorIP1GEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1ad154738feae4ba10ebc6f941a3a0617a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">merge_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E10merge_datavPNSt6vectorIP1GEEPNSt6vectorIP1GEE" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E10merge_datavPNSt6vectorIP1GEEPNSt6vectorIP1GEE" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E10merge_datavPNSt6vectorIP1GEEPNSt6vectorIP1GEE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E10merge_datavP1GP1G">
+<span id="_CPPv3I0E10merge_dataP1GP1G"></span><span id="_CPPv2I0E10merge_dataP1GP1G"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1a0014316f5d80b653296fd84aed32a032"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">merge_data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E10merge_datavP1GP1G" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <a class="reference internal" href="#_CPPv4I0E10merge_datavP1GP1G" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E10merge_datavP1GP1G" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Copy <code class="docutils literal notranslate"><span class="pre">p2</span></code> into <code class="docutils literal notranslate"><span class="pre">out</span></code> (scalar overload). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target. </p></li>
+<li><p><strong>p2</strong> – Source. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E10merge_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE">
+<span id="_CPPv3I00E10merge_dataPNSt3mapI1g1GEEPNSt3mapI1g1GEE"></span><span id="_CPPv2I00E10merge_dataPNSt3mapI1g1GEEPNSt3mapI1g1GEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1ae137607c46405e7e2c40786984696a32"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">merge_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E10merge_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="merge_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E10merge_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E10merge_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="merge_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E10merge_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="merge_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E10merge_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Recursively merge map <code class="docutils literal notranslate"><span class="pre">p2</span></code> into <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<p>Recursively merges two maps. If keys overlap, it delegates to <code class="docutils literal notranslate"><a class="reference internal" href="#merge__cast_8h_1a205af11d07be8d10770e7392817fc5c3"><span class="std std-ref"><span class="pre">merge_data</span></span></a></code> for the values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – Key type. </p></li>
+<li><p><strong>G</strong> – Value type. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target map. </p></li>
+<li><p><strong>p2</strong> – Source map.</p></li>
+<li><p><strong>out</strong> – Pointer to the destination map. </p></li>
+<li><p><strong>p2</strong> – Pointer to the source map to be merged. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E8sum_datavP1GP1G">
+<span id="_CPPv3I0E8sum_dataP1GP1G"></span><span id="_CPPv2I0E8sum_dataP1GP1G"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1aab3625363fc92b018cd9994332ca30f1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sum_data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E8sum_datavP1GP1G" title="sum_data::G"><span class="n"><span class="pre">G</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <a class="reference internal" href="#_CPPv4I0E8sum_datavP1GP1G" title="sum_data::G"><span class="n"><span class="pre">G</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8sum_datavP1GP1G" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Add <code class="docutils literal notranslate"><span class="pre">p2</span></code> to <code class="docutils literal notranslate"><span class="pre">out</span></code> in place (scalar overload: <code class="docutils literal notranslate"><span class="pre">out</span></code> += p2). </p>
+<p>Sums a primitive or vector type in place (<code class="docutils literal notranslate"><span class="pre">*out</span> <span class="pre">+=</span> <span class="pre">*p2</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target. </p></li>
+<li><p><strong>p2</strong> – Value to add.</p></li>
+<li><p><strong>out</strong> – Pointer to the destination. </p></li>
+<li><p><strong>p2</strong> – Pointer to the added value. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E8sum_datavPNSt6vectorI1GEEPNSt6vectorI1GEE">
+<span id="_CPPv3I0E8sum_dataPNSt6vectorI1GEEPNSt6vectorI1GEE"></span><span id="_CPPv2I0E8sum_dataPNSt6vectorI1GEEPNSt6vectorI1GEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1a450bf7d0337071779d7f200a7d73a6fe"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sum_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E8sum_datavPNSt6vectorI1GEEPNSt6vectorI1GEE" title="sum_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E8sum_datavPNSt6vectorI1GEEPNSt6vectorI1GEE" title="sum_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8sum_datavPNSt6vectorI1GEEPNSt6vectorI1GEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Append <code class="docutils literal notranslate"><span class="pre">p2</span></code> to <code class="docutils literal notranslate"><span class="pre">out</span></code> (vector overload, equivalent to merge). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target vector. </p></li>
+<li><p><strong>p2</strong> – Source vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E8sum_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE">
+<span id="_CPPv3I00E8sum_dataPNSt3mapI1g1GEEPNSt3mapI1g1GEE"></span><span id="_CPPv2I00E8sum_dataPNSt3mapI1g1GEEPNSt3mapI1g1GEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1aa0782a3dc150f9ff00323eb872ec417f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sum_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E8sum_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="sum_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E8sum_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="sum_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E8sum_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="sum_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00E8sum_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="sum_data::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E8sum_datavPNSt3mapI1g1GEEPNSt3mapI1g1GEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Recursively sum map <code class="docutils literal notranslate"><span class="pre">p2</span></code> into <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<p>Recursively iterates over a map and applies <code class="docutils literal notranslate"><a class="reference internal" href="#merge__cast_8h_1aab3625363fc92b018cd9994332ca30f1"><span class="std std-ref"><span class="pre">sum_data</span></span></a></code> to matching keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> – Key type. </p></li>
+<li><p><strong>G</strong> – Value type. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target map. </p></li>
+<li><p><strong>p2</strong> – Source map.</p></li>
+<li><p><strong>out</strong> – Pointer to the destination map. </p></li>
+<li><p><strong>p2</strong> – Pointer to the map to be added. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13reserve_countvP1gPl">
+<span id="_CPPv3I0E13reserve_countP1gPl"></span><span id="_CPPv2I0E13reserve_countP1gPl"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1a038699fe5eb12405a92cab2300b5a62e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserve_count</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E13reserve_countvP1gPl" title="reserve_count::g"><span class="n"><span class="pre">g</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">inp</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13reserve_countvP1gPl" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Increment <code class="docutils literal notranslate"><span class="pre">ix</span></code> by 1 (scalar overload). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>inp</strong> – Unused. </p></li>
+<li><p><strong>ix</strong> – Counter to increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13reserve_countvPNSt6vectorI1gEEPl">
+<span id="_CPPv3I0E13reserve_countPNSt6vectorI1gEEPl"></span><span id="_CPPv2I0E13reserve_countPNSt6vectorI1gEEPl"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1afad517d4d28db3a38ccecc2e8ae63142"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reserve_count</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13reserve_countvPNSt6vectorI1gEEPl" title="reserve_count::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">inp</span></span>, <span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13reserve_countvPNSt6vectorI1gEEPl" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Recursively count all leaf elements in <code class="docutils literal notranslate"><span class="pre">inp</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>inp</strong> – Nested vector. </p></li>
+<li><p><strong>ix</strong> – Counter accumulator. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13contract_datavPNSt6vectorI1gEEP1g">
+<span id="_CPPv3I0E13contract_dataPNSt6vectorI1gEEP1g"></span><span id="_CPPv2I0E13contract_dataPNSt6vectorI1gEEP1g"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1acd9a5341808f2b6416c6c1c9b0fb7d35"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">contract_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEP1g" title="contract_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <a class="reference internal" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEP1g" title="contract_data::g"><span class="n"><span class="pre">g</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEP1g" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Append the scalar <code class="docutils literal notranslate"><span class="pre">p2</span></code> to <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target vector. </p></li>
+<li><p><strong>p2</strong> – Scalar to append. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorI1gEE">
+<span id="_CPPv3I0E13contract_dataPNSt6vectorI1gEEPNSt6vectorI1gEE"></span><span id="_CPPv2I0E13contract_dataPNSt6vectorI1gEEPNSt6vectorI1gEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1ab81a13cf465b2bdd05d9eec11cfae874"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">contract_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorI1gEE" title="contract_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorI1gEE" title="contract_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorI1gEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Append all elements of <code class="docutils literal notranslate"><span class="pre">p2</span></code> to <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target vector. </p></li>
+<li><p><strong>p2</strong> – Source vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorINSt6vectorI1gEEEE">
+<span id="_CPPv3I0E13contract_dataPNSt6vectorI1gEEPNSt6vectorINSt6vectorI1gEEEE"></span><span id="_CPPv2I0E13contract_dataPNSt6vectorI1gEEPNSt6vectorINSt6vectorI1gEEEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1ae4012b887d0eb8668ff411bef30880b3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">contract_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorINSt6vectorI1gEEEE" title="contract_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorINSt6vectorI1gEEEE" title="contract_data::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13contract_datavPNSt6vectorI1gEEPNSt6vectorINSt6vectorI1gEEEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Flatten the nested vector <code class="docutils literal notranslate"><span class="pre">p2</span></code> into <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<p>Flattens a 2D vector <code class="docutils literal notranslate"><span class="pre">p2</span></code> and appends all its inner elements sequentially into the 1D vector <code class="docutils literal notranslate"><span class="pre">out</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>out</strong> – Target flat vector. </p></li>
+<li><p><strong>p2</strong> – Nested source vector.</p></li>
+<li><p><strong>out</strong> – Pointer to the destination 1D vector. </p></li>
+<li><p><strong>p2</strong> – Pointer to the source 2D vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E14release_vectorvPNSt6vectorI1gEE">
+<span id="_CPPv3I0E14release_vectorPNSt6vectorI1gEE"></span><span id="_CPPv2I0E14release_vectorPNSt6vectorI1gEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="merge__cast_8h_1a0f168ff9ebacff28dfe0d77c5803e3f0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">release_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E14release_vectorvPNSt6vectorI1gEE" title="release_vector::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ipt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E14release_vectorvPNSt6vectorI1gEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Call <code class="docutils literal notranslate"><span class="pre">shrink_to_fit</span></code> on <code class="docutils literal notranslate"><span class="pre">ipt</span></code> to release excess capacity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ipt</strong> – Vector to shrink. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</section>
+<section id="tensor-cast-h-stl-container-tensor-conversion">
+<h2><code class="docutils literal notranslate"><span class="pre">tensor_cast.h</span></code> — STL Container ↔ Tensor Conversion<a class="headerlink" href="#tensor-cast-h-stl-container-tensor-conversion" title="Link to this heading">¶</a></h2>
+<p>Recursive template system for converting arbitrarily nested
+<code class="docutils literal notranslate"><span class="pre">std::vector&lt;std::vector&lt;…&lt;T&gt;…&gt;&gt;</span></code> into flat <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> buffers
+with automatic dimension tracking and null-padding for ragged tensors.</p>
+<p>Key public functions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">build_tensor(data,</span> <span class="pre">scalar_type,</span> <span class="pre">prim,</span> <span class="pre">opts)</span></code> — convert a nested vector to a padded tensor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tensor_to_vector(tensor,</span> <span class="pre">out)</span></code> — round-trip back to a nested vector</p></li>
+</ul>
+<p>Template utilities for converting nested C++ vectors to <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> objects with padding. </p>
+<p>Detailed documentation for the tensor_cast.h header.</p>
+<p>Provides a family of recursive template functions that determine the maximum dimension of a ragged nested vector, pad shorter rows with sentinel values, flatten the data into a contiguous array, and wrap it in a <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code>.</p>
+<section id="tensor__cast_8h_1tensor_cast_intro">
+<h3>tensor_cast.h<a class="headerlink" href="#tensor__cast_8h_1tensor_cast_intro" title="Link to this heading">¶</a></h3>
+<p id="tensor__cast_8h_1tensor_cast_intro">The <code class="docutils literal notranslate"><span class="pre">tensor_cast.h</span></code> header contains template logic used to safely rebuild N-dimensional <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> objects from nested C++ <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> types. This is effectively the inverse operation to <code class="docutils literal notranslate"><span class="pre">vector_cast.h</span></code>, primarily used when reconstructing tensors from ROOT event buffers. </p>
+</section>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E9scout_dimvP1gPi">
+<span id="_CPPv3I0E9scout_dimP1gPi"></span><span id="_CPPv2I0E9scout_dimP1gPi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1af735bf7b89e3864dbde7fe5def867d4d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scout_dim</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E9scout_dimvP1gPi" title="scout_dim::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E9scout_dimvP1gPi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Base case: scalar — does nothing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Scalar type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E5nullsvP1gPi">
+<span id="_CPPv3I0E5nullsP1gPi"></span><span id="_CPPv2I0E5nullsP1gPi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1a21dae38adc3eda42c21a7791d6b42232"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nulls</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E5nullsvP1gPi" title="nulls::g"><span class="n"><span class="pre">g</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d</span></span>, <span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E5nullsvP1gPi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Base case: fill scalar sentinel — sets <code class="docutils literal notranslate"><span class="pre">d</span></code> to -1. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>d</strong> – Pointer to the scalar to reset. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E8standardbP1gPi">
+<span id="_CPPv3I0E8standardP1gPi"></span><span id="_CPPv2I0E8standardP1gPi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1af14120999422d60b3d0aef376398fca6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">standard</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E8standardbP1gPi" title="standard::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8standardbP1gPi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Base case: scalar is already “standard” — returns <code class="docutils literal notranslate"><span class="pre">true</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Scalar type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E12as_primitivevP1GPNSt6vectorI1gEEPNSt6vectorIlEEj">
+<span id="_CPPv3I00E12as_primitiveP1GPNSt6vectorI1gEEPNSt6vectorIlEEj"></span><span id="_CPPv2I00E12as_primitiveP1GPNSt6vectorI1gEEPNSt6vectorIlEEj"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1a49d70dbad1cfb3e27ebb8960cff818bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">as_primitive</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E12as_primitivevP1GPNSt6vectorI1gEEPNSt6vectorIlEEj" title="as_primitive::G"><span class="n"><span class="pre">G</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E12as_primitivevP1GPNSt6vectorI1gEEPNSt6vectorIlEEj" title="as_primitive::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">lin</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E12as_primitivevP1GPNSt6vectorI1gEEPNSt6vectorIlEEj" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Base case: append scalar <code class="docutils literal notranslate"><span class="pre">data</span></code> to the linearised vector <code class="docutils literal notranslate"><span class="pre">lin</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> – Source type. </p></li>
+<li><p><strong>g</strong> – Target primitive type. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – Pointer to the scalar. </p></li>
+<li><p><strong>lin</strong> – Linear output buffer. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E9scout_dimvPKNSt6vectorI1GEEPi">
+<span id="_CPPv3I0E9scout_dimPKNSt6vectorI1GEEPi"></span><span id="_CPPv2I0E9scout_dimPKNSt6vectorI1GEEPi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1a0a79cc424d604f22f510d2c9dc3de7b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scout_dim</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9scout_dimvPKNSt6vectorI1GEEPi" title="scout_dim::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mx_dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E9scout_dimvPKNSt6vectorI1GEEPi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Determine the maximum length at the first nesting level of <code class="docutils literal notranslate"><span class="pre">vec</span></code>. </p>
+<p>Recursively explores a nested vector structure to find its maximum inner dimensionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>G</strong> – Element type (may itself be a vector for deeper nesting). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vec</strong> – Pointer to the vector to inspect. </p></li>
+<li><p><strong>mx_dim</strong> – Running maximum dimension; updated in place.</p></li>
+<li><p><strong>vec</strong> – Pointer to the input nested vector. </p></li>
+<li><p><strong>mx_dim</strong> – Pointer to the integer storing the discovered maximum dimension. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E5nullsvPKNSt6vectorI1gEEPi">
+<span id="_CPPv3I0E5nullsPKNSt6vectorI1gEEPi"></span><span id="_CPPv2I0E5nullsPKNSt6vectorI1gEEPi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1aed6011af1941fc2fe6dd1cba12a682dd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nulls</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E5nullsvPKNSt6vectorI1gEEPi" title="nulls::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mx_dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E5nullsvPKNSt6vectorI1gEEPi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Pad the vector <code class="docutils literal notranslate"><span class="pre">d</span></code> with default-constructed elements until it reaches <code class="docutils literal notranslate"><span class="pre">mx_dim</span></code> entries. </p>
+<p>Pads ragged nested vectors with default null/negative-one values to ensure uniform dimensionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>d</strong> – Pointer to the vector to pad. </p></li>
+<li><p><strong>mx_dim</strong> – Target size.</p></li>
+<li><p><strong>d</strong> – Pointer to the vector to be padded. </p></li>
+<li><p><strong>mx_dim</strong> – Pointer to the required dimension size. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E8standardbPKNSt6vectorI1gEEPi">
+<span id="_CPPv3I0E8standardPKNSt6vectorI1gEEPi"></span><span id="_CPPv2I0E8standardPKNSt6vectorI1gEEPi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1a093a1df6acceb4e79a18e0c1d1be24b0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">standard</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E8standardbPKNSt6vectorI1gEEPi" title="standard::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mx_dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8standardbPKNSt6vectorI1gEEPi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Recursively ensure that <code class="docutils literal notranslate"><span class="pre">vec</span></code> and all sub-vectors are padded to <code class="docutils literal notranslate"><span class="pre">mx_dim</span></code>. </p>
+<p>Validates and forcefully standardizes the shape of a vector by applying padding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>vec</strong> – Pointer to the vector to normalise. </p></li>
+<li><p><strong>mx_dim</strong> – Target size. </p></li>
+<li><p><strong>vec</strong> – Pointer to the vector to validate. </p></li>
+<li><p><strong>mx_dim</strong> – Pointer to the target maximum dimension. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Always <code class="docutils literal notranslate"><span class="pre">false</span></code> (padding was applied).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the vector shape matches expectations. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E12as_primitivevPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEj">
+<span id="_CPPv3I00E12as_primitivePNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEj"></span><span id="_CPPv2I00E12as_primitivePNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEj"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1a7309c6796a9e5ad0bcdbe2d4099d60ca"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">as_primitive</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E12as_primitivevPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEj" title="as_primitive::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E12as_primitivevPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEj" title="as_primitive::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">linear</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dims</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">depth</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E12as_primitivevPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEj" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E12build_tensorN5torch6TensorEPNSt6vectorI1GEEN2at10ScalarTypeE1gPN5torch13TensorOptionsE">
+<span id="_CPPv3I00E12build_tensorPNSt6vectorI1GEEN2at10ScalarTypeE1gPN5torch13TensorOptionsE"></span><span id="_CPPv2I00E12build_tensorPNSt6vectorI1GEEN2at10ScalarTypeE1gPN5torch13TensorOptionsE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="tensor__cast_8h_1a27121e7e5aeb77bda0453dd6214cf7fb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build_tensor</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E12build_tensorN5torch6TensorEPNSt6vectorI1GEEN2at10ScalarTypeE1gPN5torch13TensorOptionsE" title="build_tensor::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">_data</span></span>, <span class="n"><span class="pre">at</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ScalarType</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">_op</span></span>, <a class="reference internal" href="#_CPPv4I00E12build_tensorN5torch6TensorEPNSt6vectorI1GEEN2at10ScalarTypeE1gPN5torch13TensorOptionsE" title="build_tensor::g"><span class="n"><span class="pre">g</span></span></a>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TensorOptions</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E12build_tensorN5torch6TensorEPNSt6vectorI1GEEN2at10ScalarTypeE1gPN5torch13TensorOptionsE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Convert a (possibly ragged) nested vector to a padded <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code>. </p>
+<p>Orchestrates the compilation of a nested vector back into a contiguous PyTorch tensor.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">scout_dim</span></code>, <code class="docutils literal notranslate"><span class="pre">standard</span></code>, and <code class="docutils literal notranslate"><span class="pre">as_primitive</span></code><p>internally.</p>
+<p>It utilizes</p>
+<code class="docutils literal notranslate"><a class="reference internal" href="#tensor__cast_8h_1af735bf7b89e3864dbde7fe5def867d4d"><span class="std std-ref"><span class="pre">scout_dim</span></span></a></code> and <code class="docutils literal notranslate"><a class="reference internal" href="#tensor__cast_8h_1af14120999422d60b3d0aef376398fca6"><span class="std std-ref"><span class="pre">standard</span></span></a></code> to ensure uniform shape, flattens the vector using <code class="docutils literal notranslate"><a class="reference internal" href="#tensor__cast_8h_1a49d70dbad1cfb3e27ebb8960cff818bb"><span class="std std-ref"><span class="pre">as_primitive</span></span></a></code>, and uses <code class="docutils literal notranslate"><span class="pre">torch::from_blob</span></code> to initialize the target tensor without excessive data copies where possible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> – Outer element type. </p></li>
+<li><p><strong>g</strong> – Leaf primitive type. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>_data</strong> – Source nested vector. </p></li>
+<li><p><strong>_op</strong> – Scalar type for the tensor (e.g. <code class="docutils literal notranslate"><span class="pre">torch::kFloat32</span></code>). </p></li>
+<li><p><strong>op</strong> – Tensor options (device, dtype overridden by <code class="docutils literal notranslate"><span class="pre">_op</span></code>). </p></li>
+<li><p><strong>_data</strong> – Pointer to the source nested C++ vector. </p></li>
+<li><p><strong>_op</strong> – The target <code class="docutils literal notranslate"><span class="pre">torch::dtype</span></code> enum. </p></li>
+<li><p><strong>op</strong> – Tensor configuration options (e.g., target device). </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Padded <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> with dimensions derived from <code class="docutils literal notranslate"><span class="pre">_data</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The reconstructed <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> object. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</section>
+<section id="vector-cast-h-variable-storage-and-vector-casting">
+<h2><code class="docutils literal notranslate"><span class="pre">vector_cast.h</span></code> — Variable Storage and Vector Casting<a class="headerlink" href="#vector-cast-h-variable-storage-and-vector-casting" title="Link to this heading">¶</a></h2>
+<p>Provides <code class="docutils literal notranslate"><span class="pre">variable_t</span></code> (a polymorphic type-erased buffer for a single
+named ROOT leaf column) used by <code class="docutils literal notranslate"><span class="pre">data_t</span></code> and <code class="docutils literal notranslate"><span class="pre">bsc_t</span></code>.</p>
+<p>Template utilities for converting <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> back to typed C++ vectors, plus the <code class="docutils literal notranslate"><a class="reference internal" href="#structvariable__t"><span class="std std-ref"><span class="pre">variable_t</span></span></a></code> ROOT branch writer. </p>
+<p>Detailed documentation for the vector_cast.h header.</p>
+<p>Provides <code class="docutils literal notranslate"><span class="pre">tensor_to_vector</span></code> (reverse of <code class="docutils literal notranslate"><span class="pre">build_tensor</span></code>), <code class="docutils literal notranslate"><span class="pre">chunking</span></code> (split vector into fixed-size chunks), and <code class="docutils literal notranslate"><a class="reference internal" href="#structvariable__t"><span class="std std-ref"><span class="pre">variable_t</span></span></a></code> (typed branch writer for ROOT TTrees).</p>
+<section id="vector__cast_8h_1vector_cast_intro">
+<h3>vector_cast.h<a class="headerlink" href="#vector__cast_8h_1vector_cast_intro" title="Link to this heading">¶</a></h3>
+<p id="vector__cast_8h_1vector_cast_intro">The <code class="docutils literal notranslate"><span class="pre">vector_cast.h</span></code> header contains the core templates and structures used to serialize N-dimensional PyTorch tensors into standard C++ containers, making them fully compatible with CERN ROOT’s <code class="docutils literal notranslate"><span class="pre">TTree</span></code> and <code class="docutils literal notranslate"><span class="pre">TBranch</span></code> systems. </p>
+</section>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv49_transferPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv39_transferPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv29_transferPN5torch6TensorEPN5torch6TensorE"></span><span id="_transfer__torch::TensorP.torch::TensorP"></span><span class="target" id="vector__cast_8h_1a5822f0d234fa9f854abe10afaa62ea0c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_transfer</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cpux</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49_transferPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Copy <code class="docutils literal notranslate"><span class="pre">data</span></code> to the pinned-memory CPU tensor <code class="docutils literal notranslate"><span class="pre">cpux</span></code>. </p>
+<p>Transfers tensor memory across devices securely.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Source tensor (any device). </p></li>
+<li><p><strong>cpux</strong> – Destination CPU tensor. </p></li>
+<li><p><strong>data</strong> – Pointer to the source PyTorch tensor (potentially on GPU). </p></li>
+<li><p><strong>cpux</strong> – Pointer to the destination CPU tensor. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> on success.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if transfer was successful, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E8chunkingNSt6vectorINSt6vectorI1GEEEEPNSt6vectorI1GEEi">
+<span id="_CPPv3I0E8chunkingPNSt6vectorI1GEEi"></span><span id="_CPPv2I0E8chunkingPNSt6vectorI1GEEi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="vector__cast_8h_1ab5402be55f85d8352acf78801fb839d4"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E8chunkingNSt6vectorINSt6vectorI1GEEEEPNSt6vectorI1GEEi" title="chunking::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chunking</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E8chunkingNSt6vectorINSt6vectorI1GEEEEPNSt6vectorI1GEEi" title="chunking::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8chunkingNSt6vectorINSt6vectorI1GEEEEPNSt6vectorI1GEEi" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13tensor_vectorvPNSt6vectorI1gEEPNSt6vectorI1gEEPNSt6vectorIlEEi">
+<span id="_CPPv3I0E13tensor_vectorPNSt6vectorI1gEEPNSt6vectorI1gEEPNSt6vectorIlEEi"></span><span id="_CPPv2I0E13tensor_vectorPNSt6vectorI1gEEPNSt6vectorI1gEEPNSt6vectorIlEEi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="vector__cast_8h_1adc5ffd895fb49094059fd9dc0af67de9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensor_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13tensor_vectorvPNSt6vectorI1gEEPNSt6vectorI1gEEPNSt6vectorIlEEi" title="tensor_vector::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">trgt</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E13tensor_vectorvPNSt6vectorI1gEEPNSt6vectorI1gEEPNSt6vectorIlEEi" title="tensor_vector::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">chnks</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E13tensor_vectorvPNSt6vectorI1gEEPNSt6vectorI1gEEPNSt6vectorIlEEi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Base case: append chunk <code class="docutils literal notranslate"><span class="pre">chnks</span></code> to <code class="docutils literal notranslate"><span class="pre">trgt</span></code>. </p>
+<p>Base case recursive function for nesting flattened vectors based on tensor dimensionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>trgt</strong> – Destination vector. </p></li>
+<li><p><strong>chnks</strong> – Source chunk.</p></li>
+<li><p><strong>trgt</strong> – The target nested vector. </p></li>
+<li><p><strong>chnks</strong> – The flattened chunk. </p></li>
+<li><p><strong>dims</strong> – The dimensions of the original tensor. </p></li>
+<li><p><strong>next_dim</strong> – The current recursive dimension depth. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E13tensor_vectorvPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEi">
+<span id="_CPPv3I00E13tensor_vectorPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEi"></span><span id="_CPPv2I00E13tensor_vectorPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="vector__cast_8h_1aaa531658da650605f52a4c48a377585f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensor_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E13tensor_vectorvPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEi" title="tensor_vector::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">trgt</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E13tensor_vectorvPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEi" title="tensor_vector::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">chnks</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dims</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">next_dim</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E13tensor_vectorvPNSt6vectorI1GEEPNSt6vectorI1gEEPNSt6vectorIlEEi" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Recursively re-chunk a flat vector according to the dimension sizes in <code class="docutils literal notranslate"><span class="pre">dims</span></code> and append the result to <code class="docutils literal notranslate"><span class="pre">trgt</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> – Outer element type (a vector type). </p></li>
+<li><p><strong>g</strong> – Leaf primitive type. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>trgt</strong> – Destination nested vector. </p></li>
+<li><p><strong>chnks</strong> – Flat input data. </p></li>
+<li><p><strong>dims</strong> – Dimension sizes from the original tensor. </p></li>
+<li><p><strong>next_dim</strong> – Current dimension index. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00E16tensor_to_vectorbPN5torch6TensorEPNSt6vectorI1GEEPNSt6vectorIlEE1g">
+<span id="_CPPv3I00E16tensor_to_vectorPN5torch6TensorEPNSt6vectorI1GEEPNSt6vectorIlEE1g"></span><span id="_CPPv2I00E16tensor_to_vectorPN5torch6TensorEPNSt6vectorI1GEEPNSt6vectorIlEE1g"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="vector__cast_8h_1ac7a9af0b0f1be080df7b36542fa958f2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensor_to_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I00E16tensor_to_vectorbPN5torch6TensorEPNSt6vectorI1GEEPNSt6vectorIlEE1g" title="tensor_to_vector::G"><span class="n"><span class="pre">G</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dims</span></span>, <a class="reference internal" href="#_CPPv4I00E16tensor_to_vectorbPN5torch6TensorEPNSt6vectorI1GEEPNSt6vectorIlEE1g" title="tensor_to_vector::g"><span class="n"><span class="pre">g</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E16tensor_to_vectorbPN5torch6TensorEPNSt6vectorI1GEEPNSt6vectorIlEE1g" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Transfer tensor <code class="docutils literal notranslate"><span class="pre">data</span></code> to CPU, reshape it, and fill <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<p>Core recursive function mapping a PyTorch tensor to a C++ <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> of matching dimensionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> – Output element type (may be nested). </p></li>
+<li><p><strong>g</strong> – Leaf primitive type. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – Source tensor. </p></li>
+<li><p><strong>out</strong> – Output vector. </p></li>
+<li><p><strong>dims</strong> – Dimension sizes. </p></li>
+<li><p><strong>data</strong> – Pointer to the input <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code>. </p></li>
+<li><p><strong>out</strong> – Pointer to the pre-allocated output <code class="docutils literal notranslate"><span class="pre">std::vector</span></code>. </p></li>
+<li><p><strong>dims</strong> – Pointer to the tensor sizes. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> on success.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv411tensor_sizePN5torch6TensorE">
+<span id="_CPPv311tensor_sizePN5torch6TensorE"></span><span id="_CPPv211tensor_sizePN5torch6TensorE"></span><span id="tensor_size__torch::TensorP"></span><span class="target" id="vector__cast_8h_1af402b36c82dfb4b1a34d90e26494da67"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensor_size</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">inpt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411tensor_sizePN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Return the sizes of all dimensions of <code class="docutils literal notranslate"><span class="pre">inpt</span></code> as a signed long vector. </p>
+<p>Extracts and returns the size/shape array of a tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inpt</strong> – Pointer to the tensor. </p></li>
+<li><p><strong>inpt</strong> – The input tensor. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dimension size vector.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A vector containing the dimensions of the tensor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0E16tensor_to_vectorvPN5torch6TensorEPNSt6vectorI1gEE">
+<span id="_CPPv3I0E16tensor_to_vectorPN5torch6TensorEPNSt6vectorI1gEE"></span><span id="_CPPv2I0E16tensor_to_vectorPN5torch6TensorEPNSt6vectorI1gEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="vector__cast_8h_1a87523748db69512f07becf42d97f274e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensor_to_vector</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E16tensor_to_vectorvPN5torch6TensorEPNSt6vectorI1gEE" title="tensor_to_vector::g"><span class="n"><span class="pre">g</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E16tensor_to_vectorvPN5torch6TensorEPNSt6vectorI1gEE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Convenience overload: infer dimensions from <code class="docutils literal notranslate"><span class="pre">data</span></code> and fill <code class="docutils literal notranslate"><span class="pre">out</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>g</strong> – Output element type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>data</strong> – Source tensor. </p></li>
+<li><p><strong>out</strong> – Output vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv410variable_t">
+<span id="_CPPv310variable_t"></span><span id="_CPPv210variable_t"></span><span id="variable_t"></span><span class="target" id="structvariable__t"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">variable_t</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="structs.html#_CPPv45bsc_t" title="bsc_t"><span class="n"><span class="pre">bsc_t</span></span></a><a class="headerlink" href="#_CPPv410variable_t" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;vector_cast.h&gt;</em></div>
+<p>Typed ROOT TBranch write buffer derived from <code class="docutils literal notranslate"><a class="reference internal" href="structs.html#structbsc__t"><span class="std std-ref"><span class="pre">bsc_t</span></span></a></code>. </p>
+<p>Container bridging PyTorch tensors and ROOT <code class="docutils literal notranslate"><span class="pre">TBranch</span></code>.</p>
+<p>Stores a typed pointer and creates/fills a <code class="docutils literal notranslate"><span class="pre">TBranch</span></code> on the first write. Supports both tensor data (via <code class="docutils literal notranslate"><span class="pre">build_switch</span></code>) and raw typed pointers.</p>
+<p>The <code class="docutils literal notranslate"><a class="reference internal" href="#structvariable__t"><span class="std std-ref"><span class="pre">variable_t</span></span></a></code> structure dynamically maps PyTorch tensors by type and dimensionality using <code class="docutils literal notranslate"><a class="reference internal" href="#vector__cast_8h_1ac7a9af0b0f1be080df7b36542fa958f2"><span class="std std-ref"><span class="pre">tensor_to_vector</span></span></a></code> and safely assigns the resulting nested <code class="docutils literal notranslate"><span class="pre">std::vector</span></code> directly to a <code class="docutils literal notranslate"><span class="pre">TBranch</span></code> memory address for ultra-fast serialization. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t10variable_tEv">
+<span id="_CPPv3N10variable_t10variable_tEv"></span><span id="_CPPv2N10variable_t10variable_tEv"></span><span id="variable_t::variable_t"></span><span class="target" id="structvariable__t_1aac7276055229fc3b628fc612a9c22fdf"></span><span class="sig-name descname"><span class="n"><span class="pre">variable_t</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t10variable_tEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t10variable_tEb">
+<span id="_CPPv3N10variable_t10variable_tEb"></span><span id="_CPPv2N10variable_t10variable_tEb"></span><span id="variable_t::variable_t__b"></span><span class="target" id="structvariable__t_1a00b3029e56b65ffd0d7da293ccc5e1f8"></span><span class="sig-name descname"><span class="n"><span class="pre">variable_t</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">use_external</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t10variable_tEb" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Construct with an explicit flag for external buffer management. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>use_external</strong> – If <code class="docutils literal notranslate"><span class="pre">true</span></code>, data pointers are managed externally. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_tD0Ev">
+<span id="_CPPv3N10variable_tD0Ev"></span><span id="_CPPv2N10variable_tD0Ev"></span><span id="variable_t::~variable_t"></span><span class="target" id="structvariable__t_1a3ae26cbb367f83db713ce8cb8b99b7a4"></span><span class="sig-name descname"><span class="n"><span class="pre">~variable_t</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10variable_tD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t11create_metaEP6meta_t">
+<span id="_CPPv3N10variable_t11create_metaEP6meta_t"></span><span id="_CPPv2N10variable_t11create_metaEP6meta_t"></span><span id="variable_t::create_meta__meta_tP"></span><span class="target" id="structvariable__t_1a2fdb004c324727113017b83666dcfb5f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_meta</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="structs.html#_CPPv46meta_t" title="meta_t"><span class="n"><span class="pre">meta_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t11create_metaEP6meta_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Associate metadata <code class="docutils literal notranslate"><span class="pre">mt</span></code> with this variable for the ROOT file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mt</strong> – Pointer to the metadata struct. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t12build_switchE6size_tPN5torch6TensorE">
+<span id="_CPPv3N10variable_t12build_switchE6size_tPN5torch6TensorE"></span><span id="_CPPv2N10variable_t12build_switchE6size_tPN5torch6TensorE"></span><span id="variable_t::build_switch__s.torch::TensorP"></span><span class="target" id="structvariable__t_1a658b5e8556268b7ae507aef14a5b1adb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build_switch</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">s</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tx</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t12build_switchE6size_tPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Select the appropriate typed <code class="docutils literal notranslate"><span class="pre">process</span></code> overload based on the tensor’s dtype and call it. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> – Branch index hint. </p></li>
+<li><p><strong>tx</strong> – Pointer to the tensor to write. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPN5torch6TensorEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPN5torch6TensorEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPN5torch6TensorEPNSt6stringEP5TTree"></span><span id="variable_t::process__torch::TensorP.ssP.TTreeP"></span><span class="target" id="structvariable__t_1abb328168f0e26f52e6d164f6e6aed831"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPN5torch6TensorEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Write <code class="docutils literal notranslate"><span class="pre">data</span></code> to the ROOT branch named <code class="docutils literal notranslate"><span class="pre">varname</span></code> in tree <code class="docutils literal notranslate"><span class="pre">tr</span></code>. </p>
+<p>Deduces tensor type and assigns it to the internal branch buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Source tensor. </p></li>
+<li><p><strong>varname</strong> – Branch name. </p></li>
+<li><p><strong>tr</strong> – Root TTree.</p></li>
+<li><p><strong>data</strong> – The incoming <code class="docutils literal notranslate"><span class="pre">torch::Tensor</span></code> for the current event. </p></li>
+<li><p><strong>varname</strong> – The requested branch name. </p></li>
+<li><p><strong>tr</strong> – The parent <code class="docutils literal notranslate"><span class="pre">TTree</span></code> where the branch is stored. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIfEEEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorINSt6vectorIfEEEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorINSt6vectorIfEEEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:std::vector:float::P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1ab2fcf3da4b0bee438f4e924f42e7f726"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIfEEEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Write a 2D float vector to the ROOT branch. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIdEEEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorINSt6vectorIdEEEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorINSt6vectorIdEEEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:std::vector:double::P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a75bad524927bf91a007171a0355c4d63"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIdEEEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIlEEEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorINSt6vectorIlEEEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorINSt6vectorIlEEEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:std::vector:l::P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1af742a3f583a554f5fcbafc54173e8ca3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIlEEEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIiEEEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorINSt6vectorIiEEEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorINSt6vectorIiEEEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:std::vector:i::P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a848fa1b98399c95a85eaeed8f9ec4cbd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIiEEEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIbEEEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorINSt6vectorIbEEEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorINSt6vectorIbEEEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:std::vector:b::P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1ab405e916ff12e4d03a793a4c99e33d55"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorINSt6vectorIbEEEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorIfEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorIfEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorIfEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:float:P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a56d5251c44d6a7eae549a13650b5669d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorIfEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Write a 1D float vector to the ROOT branch. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorIdEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorIdEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorIdEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:double:P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a85e71650dc42bf0c016b3b96925e85c0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorIdEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorIlEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorIlEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorIlEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:l:P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a097e8b78875c1c97af46af0592db7ceb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorIlEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorIiEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorIiEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorIiEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:i:P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a8c3b1b96e0c1d85393fade779242717d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorIiEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPNSt6vectorIbEEPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPNSt6vectorIbEEPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPNSt6vectorIbEEPNSt6stringEP5TTree"></span><span id="variable_t::process__std::vector:b:P.ssP.TTreeP"></span><span class="target" id="structvariable__t_1adc7166efe960af387ec49f47807d61bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPNSt6vectorIbEEPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPfPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPfPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPfPNSt6stringEP5TTree"></span><span id="variable_t::process__floatP.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a8d1ac4fd8d3404a956f127b5d741f184"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPfPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Write a scalar float to the ROOT branch. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPdPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPdPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPdPNSt6stringEP5TTree"></span><span id="variable_t::process__doubleP.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a84fe3a92f9d6fa4c53128a732cd4c358"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPdPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPlPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPlPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPlPNSt6stringEP5TTree"></span><span id="variable_t::process__lP.ssP.TTreeP"></span><span class="target" id="structvariable__t_1aee7245ebee637ddaac944179fdf6006c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPlPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPiPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPiPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPiPNSt6stringEP5TTree"></span><span id="variable_t::process__iP.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a2b01c65dbb43444b2a355c0d2fe646c0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPiPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t7processEPbPNSt6stringEP5TTree">
+<span id="_CPPv3N10variable_t7processEPbPNSt6stringEP5TTree"></span><span id="_CPPv2N10variable_t7processEPbPNSt6stringEP5TTree"></span><span id="variable_t::process__bP.ssP.TTreeP"></span><span class="target" id="structvariable__t_1a63e05c0cf2e19a41c47e350a5959dd8a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">process</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">varname</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10variable_t7processEPbPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t13variable_nameE">
+<span id="_CPPv3N10variable_t13variable_nameE"></span><span id="_CPPv2N10variable_t13variable_nameE"></span><span id="variable_t::variable_name__ss"></span><span class="target" id="structvariable__t_1a48d00c929a53fa85b3a0b973c632854f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">variable_name</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;&quot;</span></span><a class="headerlink" href="#_CPPv4N10variable_t13variable_nameE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>ROOT branch name. </p>
+<p>The name of the <code class="docutils literal notranslate"><span class="pre">TBranch</span></code> this variable will be bound to. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t13failed_branchE">
+<span id="_CPPv3N10variable_t13failed_branchE"></span><span id="_CPPv2N10variable_t13failed_branchE"></span><span id="variable_t::failed_branch__b"></span><span class="target" id="structvariable__t_1a68f2aadf526d222b7dd192f8f768b692"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">failed_branch</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N10variable_t13failed_branchE" title="Link to this definition">¶</a><br /></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if <code class="docutils literal notranslate"><span class="pre">TTree::Branch</span></code> returned a null pointer. </p>
+<p>True if the <code class="docutils literal notranslate"><span class="pre">TBranch</span></code> could not be successfully created or linked. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN10variable_t8add_dataEvRP1gPN5torch6TensorEPNSt6vectorIlEE1p">
+<span id="_CPPv3I00EN10variable_t8add_dataERP1gPN5torch6TensorEPNSt6vectorIlEE1p"></span><span id="_CPPv2I00EN10variable_t8add_dataERP1gPN5torch6TensorEPNSt6vectorIlEE1p"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structvariable__t_1a35efa1aca52f54be53701f19713efeab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN10variable_t8add_dataEvRP1gPN5torch6TensorEPNSt6vectorIlEE1p" title="variable_t::add_data::g"><span class="n"><span class="pre">g</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tx</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">long</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">s</span></span>, <a class="reference internal" href="#_CPPv4I00EN10variable_t8add_dataEvRP1gPN5torch6TensorEPNSt6vectorIlEE1p" title="variable_t::add_data::p"><span class="n"><span class="pre">p</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">prim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN10variable_t8add_dataEvRP1gPN5torch6TensorEPNSt6vectorIlEE1p" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN10variable_t8add_dataEvP1gRP1gPNSt6stringEP5TTree">
+<span id="_CPPv3I0EN10variable_t8add_dataEP1gRP1gPNSt6stringEP5TTree"></span><span id="_CPPv2I0EN10variable_t8add_dataEP1gRP1gPNSt6stringEP5TTree"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structvariable__t_1abd0bfdbf8de9ce048371c4d0e3002331"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_data</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN10variable_t8add_dataEvP1gRP1gPNSt6stringEP5TTree" title="variable_t::add_data::g"><span class="n"><span class="pre">g</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">var</span></span>, <a class="reference internal" href="#_CPPv4I0EN10variable_t8add_dataEvP1gRP1gPNSt6stringEP5TTree" title="variable_t::add_data::g"><span class="n"><span class="pre">g</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tx</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tr</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN10variable_t8add_dataEvP1gRP1gPNSt6stringEP5TTree" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp">
+<span class="target" id="structvariable__t_1ae7e4e596bd7bf8049a74a3052410d796"></span><span class="sig-name descname"><span class="pre">friend</span> <span class="pre">write_t</span></span></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t12use_externalE">
+<span id="_CPPv3N10variable_t12use_externalE"></span><span id="_CPPv2N10variable_t12use_externalE"></span><span id="variable_t::use_external__b"></span><span class="target" id="structvariable__t_1a23eef53f63980447d472222d0398fdc1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">use_external</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N10variable_t12use_externalE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t12is_triggeredE">
+<span id="_CPPv3N10variable_t12is_triggeredE"></span><span id="_CPPv2N10variable_t12is_triggeredE"></span><span id="variable_t::is_triggered__b"></span><span class="target" id="structvariable__t_1aa56f7493f5a614907a076bfcca845215"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_triggered</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N10variable_t12is_triggeredE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t2tbE">
+<span id="_CPPv3N10variable_t2tbE"></span><span id="_CPPv2N10variable_t2tbE"></span><span id="variable_t::tb__TBranchP"></span><span class="target" id="structvariable__t_1ab24e9c1198bbfe4eae02d77a90d42d3f"></span><span class="n"><span class="pre">TBranch</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tb</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N10variable_t2tbE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t2ttE">
+<span id="_CPPv3N10variable_t2ttE"></span><span id="_CPPv2N10variable_t2ttE"></span><span id="variable_t::tt__TTreeP"></span><span class="target" id="structvariable__t_1a7d3e9f6fdedcdc38860f2065204ffb12"></span><span class="n"><span class="pre">TTree</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tt</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N10variable_t2ttE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10variable_t3mtxE">
+<span id="_CPPv3N10variable_t3mtxE"></span><span id="_CPPv2N10variable_t3mtxE"></span><span id="variable_t::mtx__meta_tP"></span><span class="target" id="structvariable__t_1a119b9993d2aca4331bd5325a5ff98620"></span><a class="reference internal" href="structs.html#_CPPv46meta_t" title="meta_t"><span class="n"><span class="pre">meta_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">mtx</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N10variable_t3mtxE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="structs.html" title="previous chapter">Structs and Enumerations</a></li>
+      <li>Next: <a href="nusol.html" title="next chapter">Neutrino Solution (NuSol) Module</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

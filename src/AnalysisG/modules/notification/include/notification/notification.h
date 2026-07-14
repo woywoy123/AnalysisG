@@ -67,7 +67,7 @@ class notification
         void monitor(std::vector<std::thread*>* thr); 
         
         multithreaded_t* make_threads(size_t num_jobs, int num_threads);  
-        bool await_threads(multithreaded_t* thr, bool monitor); 
+        bool await_threads(multithreaded_t* thr, bool monitor, double freq = 10); 
 
         void static progressbar1(std::vector<size_t>* threads, size_t l, std::string title); 
         void static progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title); 

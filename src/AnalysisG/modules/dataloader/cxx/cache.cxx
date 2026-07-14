@@ -24,7 +24,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
             std::string hash  = tl.hash(fname);  
             tl.replace(&fname, ".root", ".h5"); 
 
-            fname = (*gr -> graph_name) + "/." + hash + "-" + fname; 
+            fname = (*gr -> meta_data -> name) + "/." + hash + "-" + fname; 
             if (!fname_index -> count(fname)){(*fname_index)[fname] = new std::vector<int>();}
             (*fname_index)[fname] -> push_back(t); 
             tr -> message("Serializing: " + fname); 
@@ -120,7 +120,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
     bool valid = true;
     for (x = 0; x < this -> data_set -> size(); ++x){
         graph_t* dt = (*this -> data_set)[x]; 
-        valid = valid && restored -> count(*dt -> hash);
+        valid = valid && restored -> count(*dt -> meta_data -> hash);
         if (valid){continue;}
         break;
     }
@@ -242,10 +242,10 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p];
-            bool pre = gr -> preselection; 
+            bool pre = gr -> meta_data -> preselection; 
             if (pre){continue;}
-            if (force_load){gr -> preselection = true;}
-            std::string hash = (*gr -> hash); 
+            if (force_load){gr -> meta_data -> preselection = true;}
+            std::string hash = (*gr -> meta_data -> hash); 
             (*restored)[hash] = gr; 
             (*datax)[p] = nullptr; 
         }

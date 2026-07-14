@@ -16,6 +16,8 @@
 #include <tools/tools.h>
 
 struct graph_t; 
+struct graph_meta; 
+
 class analysis; 
 class model_template;
 class metric_template; 
@@ -73,7 +75,7 @@ struct metric_t :
         const std::string emsx = "METRIC_T::Expected Type: ";
 
         std::vector<graph_t*>*                   batch_graphs = nullptr; 
-        std::vector<std::string*>*                batch_files = nullptr;  
+        std::vector<graph_meta*>*                 batch_files = nullptr;  
         std::map<graph_enum, std::vector<std::string>>*  vars = nullptr; 
         std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr; 
 

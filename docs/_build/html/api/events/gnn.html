@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>GNN Inference Event (gnn) &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Same-Sign Multi-Lepton MC20 Event (ssml_mc20)" href="ssml_mc20.html" />
+    <link rel="prev" title="Experimental MC20 Event (exp_mc20)" href="exp_mc20.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="gnn-inference-event-gnn">
+<h1>GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)<a class="headerlink" href="#gnn-inference-event-gnn" title="Link to this heading">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">gnn</span></code> package provides the event and particle classes used during
+GNN inference runs.  Import with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">AnalysisG.events.gnn</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventGNN</span>
+</pre></div>
+</div>
+<section id="eventgnn">
+<h2>EventGNN<a class="headerlink" href="#eventgnn" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">EventGNN</span></code> is an <code class="xref py py-class docutils literal notranslate"><span class="pre">EventTemplate</span></code>
+subclass wrapping <code class="docutils literal notranslate"><span class="pre">&lt;inference/gnn-event.h&gt;</span></code>.  It inherits all base
+event properties (<code class="docutils literal notranslate"><span class="pre">index</span></code>, <code class="docutils literal notranslate"><span class="pre">weight</span></code>, <code class="docutils literal notranslate"><span class="pre">Tree</span></code>, <code class="docutils literal notranslate"><span class="pre">Trees</span></code>, etc.) and
+exposes no additional scalar fields — particle collections are registered
+via <code class="xref py py-meth docutils literal notranslate"><span class="pre">register_particle()</span></code>
+inside <code class="docutils literal notranslate"><span class="pre">CompileEvent</span></code>.</p>
+<p>Header file for the <a class="reference internal" href="#classgnn__event"><span class="std std-ref">gnn_event</span></a> class. </p>
+<p>Defines the <a class="reference internal" href="#classgnn__event"><span class="std std-ref">gnn_event</span></a> class, which inherits from event_template, and is used to represent physics events structured for graph neural network inference and processing. </p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv49gnn_event">
+<span id="_CPPv39gnn_event"></span><span id="_CPPv29gnn_event"></span><span id="gnn_event"></span><span class="target" id="classgnn__event"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gnn_event</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">event_template</span></span><a class="headerlink" href="#_CPPv49gnn_event" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;gnn-event.h&gt;</em></div>
+<p>Represents a physics event for GNN inference. </p>
+<p>This class provides a container for event-level observables (MET, phi, jet/lepton multiplicities), MVA predictions (top quark multiplicities, signal scores, edge scores), and stores both truth and reconstructed particles (tops, Z’, and general GNN particles).</p>
+<p>Key Features:<ul class="simple">
+<li><p>Built-in templated reductions for extracting element properties into standard containers.</p></li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="#classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f"><span class="std std-ref"><span class="pre">build</span></span></a></code>: Constructs the event from raw element data.</p></li>
+<li><p><code class="docutils literal notranslate"><a class="reference internal" href="#classgnn__event_1ab87f90ab398273aeaa604b56b86274ad"><span class="std std-ref"><span class="pre">CompileEvent</span></span></a></code>: Finalizes the event structure by establishing edges and parent-child relationships. </p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event9gnn_eventEv">
+<span id="_CPPv3N9gnn_event9gnn_eventEv"></span><span id="_CPPv2N9gnn_event9gnn_eventEv"></span><span id="gnn_event::gnn_event"></span><span class="target" id="classgnn__event_1a3c9a7e52028ab3304bb23be24332009c"></span><span class="sig-name descname"><span class="n"><span class="pre">gnn_event</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9gnn_event9gnn_eventEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_eventD0Ev">
+<span id="_CPPv3N9gnn_eventD0Ev"></span><span id="_CPPv2N9gnn_eventD0Ev"></span><span id="gnn_event::~gnn_event"></span><span class="target" id="classgnn__event_1a8ab0f5d799e1d2061eb8be50bdcf1e4a"></span><span class="sig-name descname"><span class="n"><span class="pre">~gnn_event</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N9gnn_eventD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP3topEEEEb10pagerank_e">
+<span id="_CPPv3N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP3topEEEEb10pagerank_e"></span><span id="_CPPv2N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP3topEEEEb10pagerank_e"></span><span id="gnn_event::build_particles__std::map:i.std::map:ss.particle_gnnP::P.std::map:i.std::map:i.float::P.std::map:pagerank_e.std::vector:topP::P.b.pagerank_e"></span><span class="target" id="classgnn__event_1afdaa16fa1c25a5baddaf40dcb795f5a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build_particles</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412particle_gnn" title="particle_gnn"><span class="n"><span class="pre">particle_gnn</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">prtl_map</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">bin_map</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">pagerank_e</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv43top" title="top"><span class="n"><span class="pre">top</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">use_pr</span></span>, <span class="n"><span class="pre">pagerank_e</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP3topEEEEb10pagerank_e" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP6zprimeEEEEb10pagerank_e">
+<span id="_CPPv3N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP6zprimeEEEEb10pagerank_e"></span><span id="_CPPv2N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP6zprimeEEEEb10pagerank_e"></span><span id="gnn_event::build_particles__std::map:i.std::map:ss.particle_gnnP::P.std::map:i.std::map:i.float::P.std::map:pagerank_e.std::vector:zprimeP::P.b.pagerank_e"></span><span class="target" id="classgnn__event_1a35dcfd07043dfd8cd3f35dadc7209e90"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build_particles</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412particle_gnn" title="particle_gnn"><span class="n"><span class="pre">particle_gnn</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">prtl_map</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">bin_map</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">pagerank_e</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv46zprime" title="zprime"><span class="n"><span class="pre">zprime</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">use_pr</span></span>, <span class="n"><span class="pre">pagerank_e</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9gnn_event15build_particlesEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEPNSt3mapI10pagerank_eNSt6vectorIP6zprimeEEEEb10pagerank_e" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event7clusterEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapINSt6stringENSt6vectorIP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEb10pagerank_e">
+<span id="_CPPv3N9gnn_event7clusterEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapINSt6stringENSt6vectorIP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEb10pagerank_e"></span><span id="_CPPv2N9gnn_event7clusterEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapINSt6stringENSt6vectorIP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEb10pagerank_e"></span><span id="gnn_event::cluster__std::map:i.std::map:ss.particle_gnnP::P.std::map:ss.std::vector:particle_gnnP::P.std::map:i.std::map:i.float::P.b.pagerank_e"></span><span class="target" id="classgnn__event_1ae6576e053240071f828e94274b6719ed"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cluster</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412particle_gnn" title="particle_gnn"><span class="n"><span class="pre">particle_gnn</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">clust</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv412particle_gnn" title="particle_gnn"><span class="n"><span class="pre">particle_gnn</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">out</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">bin_data</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">use_pr</span></span>, <span class="n"><span class="pre">pagerank_e</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">scr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9gnn_event7clusterEPNSt3mapIiNSt3mapINSt6stringEP12particle_gnnEEEEPNSt3mapINSt6stringENSt6vectorIP12particle_gnnEEEEPNSt3mapIiNSt3mapIifEEEEb10pagerank_e" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event5cloneEv">
+<span id="_CPPv3N9gnn_event5cloneEv"></span><span id="_CPPv2N9gnn_event5cloneEv"></span><span id="gnn_event::clone"></span><span class="target" id="classgnn__event_1ae5ad399474dcb1e8a7396e3d4da9932d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">event_template</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N9gnn_event5cloneEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Create an empty clone of this event type. Override in subclasses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to a new instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event5buildEP9element_t">
+<span id="_CPPv3N9gnn_event5buildEP9element_t"></span><span id="_CPPv2N9gnn_event5buildEP9element_t"></span><span id="gnn_event::build__element_tP"></span><span class="target" id="classgnn__event_1a16a9515f93e5ea7b93f91e60bdc1ca1f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../modules/structs.html#_CPPv49element_t" title="element_t"><span class="n"><span class="pre">element_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">el</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N9gnn_event5buildEP9element_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Populate all registered particles from the current <code class="docutils literal notranslate"><a class="reference internal" href="../modules/structs.html#structelement__t"><span class="std std-ref"><span class="pre">element_t</span></span></a></code> entry. Override in subclasses to perform custom filling. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>el</strong> – Element iterator pointing at the current ROOT event. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event12CompileEventEv">
+<span id="_CPPv3N9gnn_event12CompileEventEv"></span><span id="_CPPv2N9gnn_event12CompileEventEv"></span><span id="gnn_event::CompileEvent"></span><span class="target" id="classgnn__event_1ab87f90ab398273aeaa604b56b86274ad"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CompileEvent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N9gnn_event12CompileEventEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Post-processing hook called after <code class="docutils literal notranslate"><span class="pre">build</span></code>. Override to compute derived quantities. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event9num_bjetsE">
+<span id="_CPPv3N9gnn_event9num_bjetsE"></span><span id="_CPPv2N9gnn_event9num_bjetsE"></span><span id="gnn_event::num_bjets__i"></span><span class="target" id="classgnn__event_1ad7304d095be1acf08225083e4dd053f7"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">num_bjets</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event9num_bjetsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event8num_jetsE">
+<span id="_CPPv3N9gnn_event8num_jetsE"></span><span id="_CPPv2N9gnn_event8num_jetsE"></span><span id="gnn_event::num_jets__double"></span><span class="target" id="classgnn__event_1a35268eefea5dfd0f70c79cc2853bb8ed"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">num_jets</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event8num_jetsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event8num_lepsE">
+<span id="_CPPv3N9gnn_event8num_lepsE"></span><span id="_CPPv2N9gnn_event8num_lepsE"></span><span id="gnn_event::num_leps__double"></span><span class="target" id="classgnn__event_1a47373a568d8201b494deb13fc92cb9ff"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">num_leps</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event8num_lepsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event3metE">
+<span id="_CPPv3N9gnn_event3metE"></span><span id="_CPPv2N9gnn_event3metE"></span><span id="gnn_event::met__double"></span><span class="target" id="classgnn__event_1ae8ac9965af2d9cb79cce878edb6c8bc8"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">met</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event3metE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event3phiE">
+<span id="_CPPv3N9gnn_event3phiE"></span><span id="_CPPv2N9gnn_event3phiE"></span><span id="gnn_event::phi__double"></span><span class="target" id="classgnn__event_1ae46e3ccd313bfdf8ead0578e4d41054f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">phi</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event3phiE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event7p_ntopsE">
+<span id="_CPPv3N9gnn_event7p_ntopsE"></span><span id="_CPPv2N9gnn_event7p_ntopsE"></span><span id="gnn_event::p_ntops__i"></span><span class="target" id="classgnn__event_1a6f88036ae273b5c5c9633839ffa81c0e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p_ntops</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event7p_ntopsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event8p_signalE">
+<span id="_CPPv3N9gnn_event8p_signalE"></span><span id="_CPPv2N9gnn_event8p_signalE"></span><span id="gnn_event::p_signal__i"></span><span class="target" id="classgnn__event_1aab7a24d5e7ac602208b1cff2ea31ea4f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p_signal</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event8p_signalE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event7s_ntopsE">
+<span id="_CPPv3N9gnn_event7s_ntopsE"></span><span id="_CPPv2N9gnn_event7s_ntopsE"></span><span id="gnn_event::s_ntops__float"></span><span class="target" id="classgnn__event_1ae0185eeb793def411cc4f6951ce81ffd"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">s_ntops</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event7s_ntopsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event8s_signalE">
+<span id="_CPPv3N9gnn_event8s_signalE"></span><span id="_CPPv2N9gnn_event8s_signalE"></span><span id="gnn_event::s_signal__float"></span><span class="target" id="classgnn__event_1afe31240cc587d682cff6a54d65dccd1c"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">s_signal</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event8s_signalE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event12ntops_scoresE">
+<span id="_CPPv3N9gnn_event12ntops_scoresE"></span><span id="_CPPv2N9gnn_event12ntops_scoresE"></span><span id="gnn_event::ntops_scores__std::vector:float:"></span><span class="target" id="classgnn__event_1a987cbe2e4c116259128b60c2ffc2b33e"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntops_scores</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event12ntops_scoresE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event13signal_scoresE">
+<span id="_CPPv3N9gnn_event13signal_scoresE"></span><span id="_CPPv2N9gnn_event13signal_scoresE"></span><span id="gnn_event::signal_scores__std::vector:float:"></span><span class="target" id="classgnn__event_1ac08b15295236ceb6167b960f599c90c7"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">signal_scores</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event13signal_scoresE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event15edge_res_scoresE">
+<span id="_CPPv3N9gnn_event15edge_res_scoresE"></span><span id="_CPPv2N9gnn_event15edge_res_scoresE"></span><span id="gnn_event::edge_res_scores__std::vector:std::vector:float::"></span><span class="target" id="classgnn__event_1a03d8f992c924d4b8e34278a2366640e8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_res_scores</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event15edge_res_scoresE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event15edge_top_scoresE">
+<span id="_CPPv3N9gnn_event15edge_top_scoresE"></span><span id="_CPPv2N9gnn_event15edge_top_scoresE"></span><span id="gnn_event::edge_top_scores__std::vector:std::vector:float::"></span><span class="target" id="classgnn__event_1ad517905f9ec3ae570ccc186aa24f3a85"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">edge_top_scores</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event15edge_top_scoresE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event15event_particlesE">
+<span id="_CPPv3N9gnn_event15event_particlesE"></span><span id="_CPPv2N9gnn_event15event_particlesE"></span><span id="gnn_event::event_particles__std::vector:particle_gnnP:"></span><span class="target" id="classgnn__event_1a876f2baaf062806b25c3d248951dfcef"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv412particle_gnn" title="particle_gnn"><span class="n"><span class="pre">particle_gnn</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">event_particles</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event15event_particlesE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event6m_topsE">
+<span id="_CPPv3N9gnn_event6m_topsE"></span><span id="_CPPv2N9gnn_event6m_topsE"></span><span id="gnn_event::m_tops__std::map:pagerank_e.std::vector:topP::"></span><span class="target" id="classgnn__event_1af271219fdd7bd283240fff53fc932bcf"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">pagerank_e</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv43top" title="top"><span class="n"><span class="pre">top</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m_tops</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event6m_topsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event8m_zprimeE">
+<span id="_CPPv3N9gnn_event8m_zprimeE"></span><span id="_CPPv2N9gnn_event8m_zprimeE"></span><span id="gnn_event::m_zprime__std::map:pagerank_e.std::vector:zprimeP::"></span><span class="target" id="classgnn__event_1a41218cec000bbf85bd3f13a20404c232"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">pagerank_e</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv46zprime" title="zprime"><span class="n"><span class="pre">zprime</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m_zprime</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event8m_zprimeE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event10t_edge_resE">
+<span id="_CPPv3N9gnn_event10t_edge_resE"></span><span id="_CPPv2N9gnn_event10t_edge_resE"></span><span id="gnn_event::t_edge_res__std::vector:i:"></span><span class="target" id="classgnn__event_1aabd2759ec6336a9ab28dbd855a0f4f58"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">t_edge_res</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event10t_edge_resE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event10t_edge_topE">
+<span id="_CPPv3N9gnn_event10t_edge_topE"></span><span id="_CPPv2N9gnn_event10t_edge_topE"></span><span id="gnn_event::t_edge_top__std::vector:i:"></span><span class="target" id="classgnn__event_1a6178dbcad9820f7fe6b36f33f2f8ffab"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">t_edge_top</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event10t_edge_topE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event7t_ntopsE">
+<span id="_CPPv3N9gnn_event7t_ntopsE"></span><span id="_CPPv2N9gnn_event7t_ntopsE"></span><span id="gnn_event::t_ntops__i"></span><span class="target" id="classgnn__event_1a0601b77c54a0a174d124ce8741e924fc"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">t_ntops</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event7t_ntopsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event8t_signalE">
+<span id="_CPPv3N9gnn_event8t_signalE"></span><span id="_CPPv2N9gnn_event8t_signalE"></span><span id="gnn_event::t_signal__b"></span><span class="target" id="classgnn__event_1ac6e99d3fcf8efcf8079fe08716f52b3d"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">t_signal</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9gnn_event8t_signalE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event12m_edge_indexE">
+<span id="_CPPv3N9gnn_event12m_edge_indexE"></span><span id="_CPPv2N9gnn_event12m_edge_indexE"></span><span id="gnn_event::m_edge_index__std::vector:std::vector:i::"></span><span class="target" id="classgnn__event_1ae89c93a690d509ef5f13eada6b4ecfd5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m_edge_index</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event12m_edge_indexE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9gnn_event17m_event_particlesE">
+<span id="_CPPv3N9gnn_event17m_event_particlesE"></span><span id="_CPPv2N9gnn_event17m_event_particlesE"></span><span id="gnn_event::m_event_particles__std::map:ss.particle_gnnP:"></span><span class="target" id="classgnn__event_1a3210a5699622405d1f5434556121f1dd"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv412particle_gnn" title="particle_gnn"><span class="n"><span class="pre">particle_gnn</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m_event_particles</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N9gnn_event17m_event_particlesE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="particle-classes">
+<h2>Particle Classes<a class="headerlink" href="#particle-classes" title="Link to this heading">¶</a></h2>
+<section id="top">
+<h3>Top<a class="headerlink" href="#top" title="Link to this heading">¶</a></h3>
+<p>Inferred top quark.  Inherits all
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ParticleTemplate</span></code> kinematics;
+no additional fields.</p>
+</section>
+<section id="zprime">
+<h3>ZPrime<a class="headerlink" href="#zprime" title="Link to this heading">¶</a></h3>
+<p>Inferred Z′ resonance particle.  Inherits all
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ParticleTemplate</span></code> kinematics;
+no additional fields.</p>
+<p>Header file for GNN particle definitions. </p>
+<p>This file contains the definitions of various particle classes used in GNN-based events, such as <a class="reference internal" href="#classparticle__gnn"><span class="std std-ref">particle_gnn</span></a>, top, and zprime, which all inherit from particle_template. </p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv412particle_gnn">
+<span id="_CPPv312particle_gnn"></span><span id="_CPPv212particle_gnn"></span><span id="particle_gnn"></span><span class="target" id="classparticle__gnn"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">particle_gnn</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><a class="headerlink" href="#_CPPv412particle_gnn" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;gnn-particles.h&gt;</em></div>
+<p>General particle class for GNN processing. </p>
+<p>Represents basic particles participating in the GNN, potentially tracking features such as whether the particle is a lepton (<code class="docutils literal notranslate"><a class="reference internal" href="#classparticle__gnn_1a662eea0c43b0bc02c7f8377571565034"><span class="std std-ref"><span class="pre">lep</span></span></a></code>). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12particle_gnn12particle_gnnEv">
+<span id="_CPPv3N12particle_gnn12particle_gnnEv"></span><span id="_CPPv2N12particle_gnn12particle_gnnEv"></span><span id="particle_gnn::particle_gnn"></span><span class="target" id="classparticle__gnn_1a4303d4892077b22590fac39ed9092600"></span><span class="sig-name descname"><span class="n"><span class="pre">particle_gnn</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12particle_gnn12particle_gnnEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12particle_gnnD0Ev">
+<span id="_CPPv3N12particle_gnnD0Ev"></span><span id="_CPPv2N12particle_gnnD0Ev"></span><span id="particle_gnn::~particle_gnn"></span><span class="target" id="classparticle__gnn_1a55d1b4a06f6e022a75d4347b5308a7b1"></span><span class="sig-name descname"><span class="n"><span class="pre">~particle_gnn</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N12particle_gnnD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12particle_gnn5cloneEv">
+<span id="_CPPv3N12particle_gnn5cloneEv"></span><span id="_CPPv2N12particle_gnn5cloneEv"></span><span id="particle_gnn::clone"></span><span class="target" id="classparticle__gnn_1a6a9ae072c21b1a1379047accc90e87bb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">clone</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N12particle_gnn5cloneEv" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Create a default-constructed clone. Override in subclasses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to a new instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12particle_gnn5buildEPNSt3mapINSt6stringEP17particle_templateEEP9element_t">
+<span id="_CPPv3N12particle_gnn5buildEPNSt3mapINSt6stringEP17particle_templateEEP9element_t"></span><span id="_CPPv2N12particle_gnn5buildEPNSt3mapINSt6stringEP17particle_templateEEP9element_t"></span><span id="particle_gnn::build__std::map:ss.particle_templateP:P.element_tP"></span><span class="target" id="classparticle__gnn_1ab93f3ba7e85a44342fcf7ed6a8ec39f9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">prt</span></span>, <a class="reference internal" href="../modules/structs.html#_CPPv49element_t" title="element_t"><span class="n"><span class="pre">element_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">el</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N12particle_gnn5buildEPNSt3mapINSt6stringEP17particle_templateEEP9element_t" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Populate this particle from a ROOT event. Override in subclasses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> – Map of other particles in the event. </p></li>
+<li><p><strong>el</strong> – Element iterator pointing at the current event entry. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12particle_gnn3lepE">
+<span id="_CPPv3N12particle_gnn3lepE"></span><span id="_CPPv2N12particle_gnn3lepE"></span><span id="particle_gnn::lep__b"></span><span class="target" id="classparticle__gnn_1a662eea0c43b0bc02c7f8377571565034"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lep</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N12particle_gnn3lepE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N12particle_gnn8pr_scoreE">
+<span id="_CPPv3N12particle_gnn8pr_scoreE"></span><span id="_CPPv2N12particle_gnn8pr_scoreE"></span><span id="particle_gnn::pr_score__std::map:pagerank_e.float:"></span><span class="target" id="classparticle__gnn_1a931b27893cc7ed557402d001c96abb6c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">pagerank_e</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pr_score</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N12particle_gnn8pr_scoreE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv43top">
+<span id="_CPPv33top"></span><span id="_CPPv23top"></span><span class="target" id="classtop"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">top</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><a class="headerlink" href="#_CPPv43top" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;particles.h&gt;</em></div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46zprime">
+<span id="_CPPv36zprime"></span><span id="_CPPv26zprime"></span><span class="target" id="classzprime"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zprime</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">particle_template</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">selection_template</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">selection_template</span></span><a class="headerlink" href="#_CPPv46zprime" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;gnn-particles.h&gt;</em></div>
+<p>Represents a reconstructed or truth Z’ boson. </p>
+<p>Includes analogous fields to the top class (<code class="docutils literal notranslate"><a class="reference internal" href="#classzprime_1ae27b8f5b0fd84381b923635ce5e6bb44"><span class="std std-ref"><span class="pre">av_score</span></span></a></code>, <code class="docutils literal notranslate"><a class="reference internal" href="#classzprime_1a2cc603e1788632ad9e72474c3c78fe66"><span class="std std-ref"><span class="pre">n_leps</span></span></a></code>, <code class="docutils literal notranslate"><a class="reference internal" href="#classzprime_1ac4a228f25271c020126756439c046bf4"><span class="std std-ref"><span class="pre">n_nodes</span></span></a></code>) for tracking its reconstruction profile. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6zprime6zprimeEv">
+<span id="_CPPv3N6zprime6zprimeEv"></span><span id="_CPPv2N6zprime6zprimeEv"></span><span id="zprime::zprime"></span><span class="target" id="classzprime_1a72d200f9231f123820eb9cc586be00ed"></span><span class="sig-name descname"><span class="n"><span class="pre">zprime</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6zprime6zprimeEv" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6zprimeD0Ev">
+<span id="_CPPv3N6zprimeD0Ev"></span><span id="_CPPv2N6zprimeD0Ev"></span><span id="zprime::~zprime"></span><span class="target" id="classzprime_1a42c3d9393123ac871431e7a850a198e6"></span><span class="sig-name descname"><span class="n"><span class="pre">~zprime</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6zprimeD0Ev" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6zprime8av_scoreE">
+<span id="_CPPv3N6zprime8av_scoreE"></span><span id="_CPPv2N6zprime8av_scoreE"></span><span id="zprime::av_score__float"></span><span class="target" id="classzprime_1ae27b8f5b0fd84381b923635ce5e6bb44"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">av_score</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6zprime8av_scoreE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6zprime6n_lepsE">
+<span id="_CPPv3N6zprime6n_lepsE"></span><span id="_CPPv2N6zprime6n_lepsE"></span><span id="zprime::n_leps__i"></span><span class="target" id="classzprime_1a2cc603e1788632ad9e72474c3c78fe66"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">n_leps</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6zprime6n_lepsE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6zprime7n_nodesE">
+<span id="_CPPv3N6zprime7n_nodesE"></span><span id="_CPPv2N6zprime7n_nodesE"></span><span id="zprime::n_nodes__i"></span><span class="target" id="classzprime_1ac4a228f25271c020126756439c046bf4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">n_nodes</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6zprime7n_nodesE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6zprime4modeE">
+<span id="_CPPv3N6zprime4modeE"></span><span id="_CPPv2N6zprime4modeE"></span><span id="zprime::mode__pagerank_e"></span><span class="target" id="classzprime_1aa63ee873df66a847e940d39c2a9f7330"></span><span class="n"><span class="pre">pagerank_e</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mode</span></span></span><a class="headerlink" href="#_CPPv4N6zprime4modeE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/interface.html">pyc Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/physics.html">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyc/cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="exp_mc20.html" title="previous chapter">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+      <li>Next: <a href="ssml_mc20.html" title="next chapter">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Physics Kernels &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coordinate Transforms" href="transform.html" />
+    <link rel="prev" title="pyc Interface" href="interface.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="physics-kernels">
+<h1>Physics Kernels<a class="headerlink" href="#physics-kernels" title="Link to this heading">¶</a></h1>
+<p>Relativistic kinematics implemented as batched CUDA/C++ kernels.  All
+functions are available through the <code class="docutils literal notranslate"><span class="pre">pyc::physics</span></code> C++ API
+(see <a class="reference internal" href="interface.html"><span class="doc">pyc Interface</span></a>) and as <code class="docutils literal notranslate"><span class="pre">torch.ops.tpyc</span></code> / <code class="docutils literal notranslate"><span class="pre">torch.ops.cupyc</span></code>
+Python operators.</p>
+<p>The namespace is organised into two coordinate-system variants:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::physics::cartesian</span></code> — inputs as Cartesian <span class="math notranslate nohighlight">\((p_x, p_y, p_z, E)\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyc::physics::polar</span></code> — inputs as polar <span class="math notranslate nohighlight">\((p_T, \eta, \phi, E)\)</span></p></li>
+</ul>
+<p>Each variant exposes <code class="docutils literal notranslate"><span class="pre">separate</span></code> (per-column tensor arguments) and
+<code class="docutils literal notranslate"><span class="pre">combined</span></code> (single stacked Nx4 tensor) overloads.</p>
+<p>The formulas below are taken directly from <code class="docutils literal notranslate"><span class="pre">physics/physics.cxx</span></code>
+(CPU) and <code class="docutils literal notranslate"><span class="pre">physics/physics.cu</span></code> (CUDA):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}|\vec{p}|^2 &amp;= p_x^2 + p_y^2 + p_z^2 \\
+|\vec{p}|   &amp;= \sqrt{|\vec{p}|^2} \\
+\beta^2     &amp;= \frac{|\vec{p}|^2}{E^2}, \quad \beta = \frac{|\vec{p}|}{E} \\
+m^2         &amp;= E^2 - |\vec{p}|^2, \quad m = \mathrm{sign}(m^2)\sqrt{|m^2|} \\
+m_T^2       &amp;= E^2 - p_z^2, \quad m_T = \mathrm{sign}(m_T^2)\sqrt{|m_T^2|} \\
+\theta       &amp;= \mathrm{atan2}\!\left(\sqrt{p_x^2+p_y^2},\, p_z\right) \\
+\Delta R    &amp;= \sqrt{(\Delta\eta)^2 + (\Delta\phi)^2}\end{split}\]</div>
+<section id="cartesian-separate-inputs">
+<h2>Cartesian – Separate Inputs<a class="headerlink" href="#cartesian-separate-inputs" title="Link to this heading">¶</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separateE">
+<span id="_CPPv3N3pyc7physics9cartesian8separateE"></span><span id="_CPPv2N3pyc7physics9cartesian8separateE"></span><span id="pyc::physics::cartesian::separate"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">separate</span></span></span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separateE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Kinematics from individual Cartesian component tensors. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::P2__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a8cb63afce970e51324566b39dd3ca54a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute |p|² = px² + py² + pz². </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::P__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a3505dc653842be9622feb9094a0aa8cc"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute |p|. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::Beta2__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1ac9464974b2e24ae9825795f48234e067"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute β² = |p|²/E². </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::Beta__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1ab7fc9bc713e9578278cf535b7d296d99"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute β = |p|/E. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::M2__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a822811be563d9cfe703ffc1c1688d343"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute m² = E² - |p|². </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::M__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adb6b95ef1d9eb19796bda77aa1d5caf6"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute invariant mass m. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate3Mt2EN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate3Mt2EN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate3Mt2EN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::Mt2__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a732d6bb76e4a60ee810b312e27235974"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate3Mt2EN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute transverse mass squared. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate2MtEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate2MtEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate2MtEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::Mt__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a28a5bc1982da9a36e87ce2e3e979a464"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate2MtEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute transverse mass. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::Theta__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1a82aecb485f9b6534ebcf8921b03c1bbc"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Theta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute polar angle θ. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::separate::DeltaR__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1separate_1adbd2ec240755f1bf46b2c157f0325669"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeltaR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">px2</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">py2</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pz2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute ΔR between two particles. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="cartesian-combined-input">
+<h2>Cartesian – Combined Input<a class="headerlink" href="#cartesian-combined-input" title="Link to this heading">¶</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combinedE">
+<span id="_CPPv3N3pyc7physics9cartesian8combinedE"></span><span id="_CPPv2N3pyc7physics9cartesian8combinedE"></span><span id="pyc::physics::cartesian::combined"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">combined</span></span></span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combinedE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined2P2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined2P2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined2P2EN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::P2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aba7856741341e1db62a5a4db61dbb953"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined2P2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined1PEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined1PEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined1PEN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::P__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a8d18df9edaf934cad512b70852a5a813"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined1PEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined5Beta2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined5Beta2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined5Beta2EN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::Beta2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a1614132c9009de833ba27233fd21655d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined5Beta2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined4BetaEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined4BetaEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined4BetaEN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::Beta__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1af5c9256b89e17319365e9c7841627e7a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined4BetaEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined2M2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined2M2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined2M2EN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::M2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a2288acf9d44eb7c8f537dc732381967d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined2M2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined1MEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined1MEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined1MEN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::M__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1adc80247c6622f7cb166a81fa45b7b51d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined1MEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined3Mt2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined3Mt2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined3Mt2EN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::Mt2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1a111f70a5f3166ef67f2a6f41a19377b2"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined3Mt2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined2MtEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined2MtEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined2MtEN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::Mt__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aaf8cf1904c15a733221a1b44039989ce"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined2MtEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined5ThetaEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined5ThetaEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined5ThetaEN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::Theta__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1aefe1c7cb2cb523ab1118a6d1cabbfe69"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Theta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined5ThetaEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics9cartesian8combined6DeltaREN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics9cartesian8combined6DeltaREN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics9cartesian8combined6DeltaREN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::cartesian::combined::DeltaR__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1cartesian_1_1combined_1ada89277d3b7f28e15501e5c943516fe0"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeltaR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmc2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics9cartesian8combined6DeltaREN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="polar-separate-inputs">
+<h2>Polar – Separate Inputs<a class="headerlink" href="#polar-separate-inputs" title="Link to this heading">¶</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separateE">
+<span id="_CPPv3N3pyc7physics5polar8separateE"></span><span id="_CPPv2N3pyc7physics5polar8separateE"></span><span id="pyc::physics::polar::separate"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">separate</span></span></span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separateE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::P2__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a164422e673f81c41b4a16f950beb8cdd"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate2P2EN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::P__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a4de18b7ee3dff64515722df522605c7f"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate1PEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::Beta2__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a49c21afa9d65d851f1cfe13e35875ea3"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate5Beta2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::Beta__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a49811b3e193170bb3f8d0a185b4fc07d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate4BetaEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::M2__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a5166df2f83d8ea10350011307d165ed2"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate2M2EN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::M__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1aaab901d4c62535312b57336a324c3461"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate1MEN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate3Mt2EN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate3Mt2EN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate3Mt2EN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::Mt2__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1ae3fb2671574519706f3c764499ce3164"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate3Mt2EN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate2MtEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate2MtEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate2MtEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::Mt__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1ab979af5143b4e4c7ad9abacf21ef9544"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate2MtEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::Theta__torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a40b284f030bc35051fe4ceb68e0b560e"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Theta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pt</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate5ThetaEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::separate::DeltaR__torch::Tensor.torch::Tensor.torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1separate_1a126d69d61b586628696defeedc82f79c"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeltaR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta2</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">phi2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8separate6DeltaREN5torch6TensorEN5torch6TensorEN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="polar-combined-input">
+<h2>Polar – Combined Input<a class="headerlink" href="#polar-combined-input" title="Link to this heading">¶</a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combinedE">
+<span id="_CPPv3N3pyc7physics5polar8combinedE"></span><span id="_CPPv2N3pyc7physics5polar8combinedE"></span><span id="pyc::physics::polar::combined"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">combined</span></span></span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combinedE" title="Link to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined2P2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined2P2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined2P2EN5torch6TensorE"></span><span id="pyc::physics::polar::combined::P2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a61c93f07eede4e32cdcf303a8a508946"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined2P2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined1PEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined1PEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined1PEN5torch6TensorE"></span><span id="pyc::physics::polar::combined::P__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a5760f3a249756acd268a9c66fdf53b17"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined1PEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined5Beta2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined5Beta2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined5Beta2EN5torch6TensorE"></span><span id="pyc::physics::polar::combined::Beta2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a20e7dc61ab62ab57496a8fc22f68a630"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined5Beta2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined4BetaEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined4BetaEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined4BetaEN5torch6TensorE"></span><span id="pyc::physics::polar::combined::Beta__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a0150f0dac00fdc96ee3021c48c912f5a"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined4BetaEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined2M2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined2M2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined2M2EN5torch6TensorE"></span><span id="pyc::physics::polar::combined::M2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1aa79557e9e58fc548b41444667ebb1b62"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined2M2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined1MEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined1MEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined1MEN5torch6TensorE"></span><span id="pyc::physics::polar::combined::M__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a03ec955a2641ce4f53ade06bff9ebaae"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined1MEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined3Mt2EN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined3Mt2EN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined3Mt2EN5torch6TensorE"></span><span id="pyc::physics::polar::combined::Mt2__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1acc5e59b1f7549ce950cab57976edfd79"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined3Mt2EN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined2MtEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined2MtEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined2MtEN5torch6TensorE"></span><span id="pyc::physics::polar::combined::Mt__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1acbeb9c6012612bd77cab7fe7871f0ccf"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined2MtEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined5ThetaEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined5ThetaEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined5ThetaEN5torch6TensorE"></span><span id="pyc::physics::polar::combined::Theta__torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1a6169c98dd89c2571d2871582b3fb1279"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Theta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined5ThetaEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3pyc7physics5polar8combined6DeltaREN5torch6TensorEN5torch6TensorE">
+<span id="_CPPv3N3pyc7physics5polar8combined6DeltaREN5torch6TensorEN5torch6TensorE"></span><span id="_CPPv2N3pyc7physics5polar8combined6DeltaREN5torch6TensorEN5torch6TensorE"></span><span id="pyc::physics::polar::combined::DeltaR__torch::Tensor.torch::Tensor"></span><span class="target" id="namespacepyc_1_1physics_1_1polar_1_1combined_1ae7398e6dca3f3b6fea2d769cc8d5d4de"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeltaR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pmu2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3pyc7physics5polar8combined6DeltaREN5torch6TensorEN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="internal-kernel-namespace">
+<h2>Internal Kernel Namespace<a class="headerlink" href="#internal-kernel-namespace" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">physics_</span></code> internal namespace provides the raw implementations
+before wrapping in the public <code class="docutils literal notranslate"><span class="pre">pyc::physics</span></code> API.</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv48physics_">
+<span id="_CPPv38physics_"></span><span id="_CPPv28physics_"></span><span id="physics_"></span><span class="target" id="namespacephysics__"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">physics_</span></span></span><a class="headerlink" href="#_CPPv48physics_" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Internal namespace for batched relativistic kinematics. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_2P2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_2P2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_2P2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::P2__torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1ae22e22a969315629a6ae7549f7344805"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_2P2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute |p|² from individual components. </p>
+<p>Computes the squared momentum from separate Cartesian components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>px</strong> – [N],</p></li>
+<li><p><strong>py</strong> – [N],</p></li>
+<li><p><strong>pz</strong> – [N]. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] |p|². </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_2P2EPN5torch6TensorE">
+<span id="_CPPv3N8physics_2P2EPN5torch6TensorE"></span><span id="_CPPv2N8physics_2P2EPN5torch6TensorE"></span><span id="physics_::P2__torch::TensorP"></span><span class="target" id="namespacephysics___1a04d5875bbb80e829852070706190d8ee"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_2P2EPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute |p|² from stacked [N, 4] Cartesian momenta. </p>
+<p>Computes the squared momentum from a combined Nx4 or Nx3 kinematics tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pmc</strong> – [N, 4]. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] |p|². </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_1PEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_1PEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_1PEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::P__torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1ac12a78b1943348345b940e510930f420"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_1PEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute |p| = √(px² + py² + pz²). </p>
+<p>Computes the absolute momentum |p| from separate Cartesian components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_1PEPN5torch6TensorE">
+<span id="_CPPv3N8physics_1PEPN5torch6TensorE"></span><span id="_CPPv2N8physics_1PEPN5torch6TensorE"></span><span id="physics_::P__torch::TensorP"></span><span class="target" id="namespacephysics___1ab5a156a8862434e86693193360d27847"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">P</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_1PEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the absolute momentum |p| from a combined kinematics tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_5Beta2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_5Beta2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_5Beta2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::Beta2__torch::TensorP.torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1aace12d6d7317cd102e5059781d724151"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_5Beta2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute β² = |p|²/E². </p>
+<p>Computes the squared relativistic velocity beta^2 from separate Cartesian components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_5Beta2EPN5torch6TensorE">
+<span id="_CPPv3N8physics_5Beta2EPN5torch6TensorE"></span><span id="_CPPv2N8physics_5Beta2EPN5torch6TensorE"></span><span id="physics_::Beta2__torch::TensorP"></span><span class="target" id="namespacephysics___1a5b55715f9b9c607241139bf3541b03ab"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_5Beta2EPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the squared relativistic velocity beta^2 from a combined Nx4 tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_4BetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_4BetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_4BetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::Beta__torch::TensorP.torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1a3123f743b9c22850e7346d5f56a4441b"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_4BetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute β = |p|/E. </p>
+<p>Computes the relativistic velocity beta from separate Cartesian components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_4BetaEPN5torch6TensorE">
+<span id="_CPPv3N8physics_4BetaEPN5torch6TensorE"></span><span id="_CPPv2N8physics_4BetaEPN5torch6TensorE"></span><span id="physics_::Beta__torch::TensorP"></span><span class="target" id="namespacephysics___1a9ea85f47a64c014bc999d9c2015fec4f"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Beta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_4BetaEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the relativistic velocity beta from a combined Nx4 tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_2M2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_2M2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_2M2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::M2__torch::TensorP.torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1a7787594305d4a156c31be581401b0b0b"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_2M2EPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute m² = E² - |p|². </p>
+<p>Computes the invariant squared mass M^2 from separate Cartesian components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_2M2EPN5torch6TensorE">
+<span id="_CPPv3N8physics_2M2EPN5torch6TensorE"></span><span id="_CPPv2N8physics_2M2EPN5torch6TensorE"></span><span id="physics_::M2__torch::TensorP"></span><span class="target" id="namespacephysics___1a941b75f458038a6d86dc28328606999c"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_2M2EPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the invariant squared mass M^2 from a combined Nx4 tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_1MEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_1MEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_1MEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::M__torch::TensorP.torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1a64e8e583c57246f52851c0bff4137ebc"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_1MEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute invariant mass m = √|m²|. </p>
+<p>Computes the invariant mass M from separate Cartesian components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_1MEPN5torch6TensorE">
+<span id="_CPPv3N8physics_1MEPN5torch6TensorE"></span><span id="_CPPv2N8physics_1MEPN5torch6TensorE"></span><span id="physics_::M__torch::TensorP"></span><span class="target" id="namespacephysics___1a87db235f0b9b1b2a8c3696b4b7d4c009"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">M</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_1MEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the invariant mass M from a combined Nx4 tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_3Mt2EPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_3Mt2EPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_3Mt2EPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::Mt2__torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1a3d421991e1f29e21ba3d495c6ae6c93d"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_3Mt2EPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute transverse mass squared. </p>
+<p>Computes the transverse squared mass Mt^2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pz</strong> – [N] z-momentum. </p></li>
+<li><p><strong>e</strong> – [N] energy. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] mT². </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_3Mt2EPN5torch6TensorE">
+<span id="_CPPv3N8physics_3Mt2EPN5torch6TensorE"></span><span id="_CPPv2N8physics_3Mt2EPN5torch6TensorE"></span><span id="physics_::Mt2__torch::TensorP"></span><span class="target" id="namespacephysics___1aa8aaa93322dec33a8159a197da3e8e62"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt2</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_3Mt2EPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the transverse squared mass Mt^2 from a combined Nx4 tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_2MtEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_2MtEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_2MtEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::Mt__torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1af5fecf9c76889e0e996dc44793e67153"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_2MtEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute transverse mass. </p>
+<p>Computes the transverse mass Mt. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_2MtEPN5torch6TensorE">
+<span id="_CPPv3N8physics_2MtEPN5torch6TensorE"></span><span id="_CPPv2N8physics_2MtEPN5torch6TensorE"></span><span id="physics_::Mt__torch::TensorP"></span><span class="target" id="namespacephysics___1a82a8f3ce685f324e52dfea55d33fff03"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Mt</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_2MtEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Computes the transverse mass Mt from a combined Nx4 tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_5ThetaEPN5torch6TensorE">
+<span id="_CPPv3N8physics_5ThetaEPN5torch6TensorE"></span><span id="_CPPv2N8physics_5ThetaEPN5torch6TensorE"></span><span id="physics_::Theta__torch::TensorP"></span><span class="target" id="namespacephysics___1a6d323b672a05eb19edce0b4d818bdb7f"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Theta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_5ThetaEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute polar angle θ from stacked [N, 4] Cartesian momenta. </p>
+<p>Computes the polar angle theta from a combined tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_5ThetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_5ThetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_5ThetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::Theta__torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1a6e76ad80e9f8bade6a2014ecb7580a76"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Theta</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">px</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">py</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_5ThetaEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute polar angle θ from individual components. </p>
+<p>Computes the polar angle theta from separate Cartesian components. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::DeltaR__torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1a5f66fa5ca30082509e1284fbcb4b25be"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeltaR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmu1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pmu2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute ΔR from two stacked [N, 4] polar four-momenta. </p>
+<p>Computes the spatial distance DeltaR = sqrt(DeltaEta^2 + DeltaPhi^2) between two combined tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pmu1</strong> – [N, 4] (pT, η, φ, E). </p></li>
+<li><p><strong>pmu2</strong> – [N, 4]. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[N] ΔR = √(Δη² + Δφ²). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE">
+<span id="_CPPv3N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="_CPPv2N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE"></span><span id="physics_::DeltaR__torch::TensorP.torch::TensorP.torch::TensorP.torch::TensorP"></span><span class="target" id="namespacephysics___1af00266daeb6a7b5387326943d136eb57"></span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeltaR</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">eta1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">eta2</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">phi1</span></span>, <span class="n"><span class="pre">torch</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">phi2</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8physics_6DeltaREPN5torch6TensorEPN5torch6TensorEPN5torch6TensorEPN5torch6TensorE" title="Link to this definition">¶</a><br /></dt>
+<dd><p>Compute ΔR from individual η and φ tensors. </p>
+<p>Computes the spatial distance DeltaR from separate pseudorapidity and azimuthal angle tensors. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/io.html">IO (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/meta.html">Meta / AMI (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/tools.html">Tools (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/notification.html">Notification (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/plotting.html">Plotting (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/roc.html">ROC (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/lossfx.html">OptimizerConfig (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/structs.html">Structs (Python)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Events</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../events/bsm_4tops.html">BSM 4-Tops Event (<code class="docutils literal notranslate"><span class="pre">bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/exp_mc20.html">Experimental MC20 Event (<code class="docutils literal notranslate"><span class="pre">exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/gnn.html">GNN Inference Event (<code class="docutils literal notranslate"><span class="pre">gnn</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../events/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Event (<code class="docutils literal notranslate"><span class="pre">ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Graphs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/bsm_4tops.html">BSM 4-Tops Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.bsm_4tops</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/exp_mc20.html">Experimental MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.exp_mc20</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../graphs/ssml_mc20.html">Same-Sign Multi-Lepton MC20 Graphs (<code class="docutils literal notranslate"><span class="pre">graphs.ssml_mc20</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Models</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/grift.html">Grift Model (<code class="docutils literal notranslate"><span class="pre">models.grift</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rgnn.html">Recursive Graph Neural Network (<code class="docutils literal notranslate"><span class="pre">models.RecursiveGraphNeuralNetwork</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Metrics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/accuracy.html">Accuracy Metric (<code class="docutils literal notranslate"><span class="pre">metrics.accuracy</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/pagerank.html">PageRank Metric (<code class="docutils literal notranslate"><span class="pre">metrics.pagerank</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Built-In Selections</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../selections/example_met.html">Example MET Selection (<code class="docutils literal notranslate"><span class="pre">selections.example.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/analysis_regions.html">Analysis Regions Selection (<code class="docutils literal notranslate"><span class="pre">selections.analysis.regions</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_childrenkinematics.html">MC16 Children Kinematics (<code class="docutils literal notranslate"><span class="pre">selections.mc16.childrenkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_decaymodes.html">MC16 Decay Modes (<code class="docutils literal notranslate"><span class="pre">selections.mc16.decaymodes</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_met.html">MC16 Missing ET / Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.mc16.met</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_parton.html">MC16 Parton Energy Fractions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.parton</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topjets.html">MC16 Top + Reconstructed-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topkinematics.html">MC16 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_topmatching.html">MC16 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_toptruthjets.html">MC16 Top + Truth-Jet Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc16.toptruthjets</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc16_zprime.html">MC16 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc16.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_matching.html">MC20 Truth Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.matching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topkinematics.html">MC20 Top Kinematic Distributions (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topkinematics</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_topmatching.html">MC20 Top-Quark Matching (<code class="docutils literal notranslate"><span class="pre">selections.mc20.topmatching</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/mc20_zprime.html">MC20 Z′ Selection (<code class="docutils literal notranslate"><span class="pre">selections.mc20.zprime</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_combinatorial.html">Combinatorial Neutrino Reconstruction (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.combinatorial</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/neutrino_validation.html">Neutrino Reconstruction Validation (<code class="docutils literal notranslate"><span class="pre">selections.neutrino.validation</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selections/performance_topefficiency.html">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ User Templates</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/particle.html">Particle Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/event.html">Event Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">Graph Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/selection.html">Selection Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metric.html">Metric Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/model.html">Model Template</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">C++ Framework</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/analysis.html">Analysis Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/container.html">Container Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sampletracer.html">Sample Tracer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/dataloader.html">Data Loader / Generator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/optimizer.html">Optimizer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/io.html">I/O Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/meta.html">Meta Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tools.html">Tools Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/notification.html">Notification Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/roc.html">ROC Curve Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/lossfx.html">Loss Functions Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/metrics.html">Metrics Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/structs.html">Structs and Enumerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/typecasting.html">Type Casting Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Neutrino Solutions (NuSol)</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">pyc — CUDA Extensions</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interface.html">pyc Interface</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Physics Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transform.html">Coordinate Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">Graph Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Tensor Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nusol.html">Neutrino Reconstruction (pyc)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cutils.html">C Utilities (cutils)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="interface.html" title="previous chapter">pyc Interface</a></li>
+      <li>Next: <a href="transform.html" title="next chapter">Coordinate Transforms</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

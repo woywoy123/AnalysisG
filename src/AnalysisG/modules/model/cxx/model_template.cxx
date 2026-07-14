@@ -153,7 +153,7 @@ void model_template::forward(std::vector<graph_t*> data, bool train){
         if (!_edge_index.size()){_edge_index.push_back(*gr -> get_edge_index(this));}
         else {_edge_index.push_back((*gr -> get_edge_index(this)) + offset_nodes);}
         this -> forward(gr); 
-        offset_nodes += gr -> num_nodes; 
+        offset_nodes += gr -> meta_data -> num_nodes; 
     }
     this -> edge_index = new torch::Tensor(torch::cat(_edge_index, {-1})); 
     this -> train_sequence(train);

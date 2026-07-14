@@ -128,7 +128,7 @@ class tools
             for (size_t x(0); x < trg -> size(); ++x){
                 g* v = (*src)[(*trg)[x]];  
                 out -> push_back(v);
-                v -> in_use = 1; 
+                v -> meta_data -> in_use = 1; 
             }
         }
 

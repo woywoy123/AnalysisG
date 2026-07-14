@@ -342,6 +342,38 @@ selections do.
        def __init__(self): pass
        def __dealloc__(self): del self.nn_ptr
 
+**Selection** (``my_selection.pxd`` + ``my_selection.pyx``):
+
+.. code-block:: cython
+
+   # my_selection.pxd
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.selection_template cimport selection_template, SelectionTemplate
+
+   cdef extern from "<my_module/my_selection.h>":
+       cdef cppclass MySelectionCpp(selection_template):
+           MySelectionCpp() except+
+
+   cdef class PyMySelection(SelectionTemplate): pass
+
+.. code-block:: cython
+
+   # my_selection.pyx
+   # distutils: language=c++
+   # cython: language_level=3
+
+   from AnalysisG.core.selection_template cimport SelectionTemplate
+   from my_selection cimport MySelectionCpp
+
+   cdef class PyMySelection(SelectionTemplate):
+       def __cinit__(self):
+           self.ptr = new MySelectionCpp()
+           self.tt = <MySelectionCpp*>self.ptr
+       def __init__(self): pass
+       def __dealloc__(self): del self.tt
+
 Step 5 — Define a Model *(optional)*
 --------------------------------------
 
@@ -442,6 +474,7 @@ values shown below are verified defaults or typical overrides.
    ana.Training    = True          # enable training phase (default: True)
    ana.Validation  = True          # enable validation phase (default: True)
    ana.Evaluation  = True          # enable evaluation phase (default: True)
+   ana.SaveSelectionToROOT = True  # serialize selection output to ROOT (default: False)
 
    ana.AddSamples("./data/ttbar.root", "ttbar")
    ana.AddEvent(PyMyEvent(), "ttbar")
@@ -457,7 +490,8 @@ Subclass :cpp:class:`selection_template` and implement
 :cpp:func:`selection_template::selection` for per-event logic.  Optional
 overrides include:
 
-* ``strategy()`` — aggregate post-processing over all passed events
+* ``strategy()`` — secondary per-event logic executed after ``selection()``.
+* ``merge()`` — synchronously aggregates results across threads and triggers I/O via ``this->write()``.
 * ``Postprocessing()`` — finalise and serialise results
 * ``InterpretROOT()`` — re-read results from a ROOT output file
 * ``dump()`` / ``load()`` — pickle serialisation

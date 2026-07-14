@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>End-to-End Pipeline Tutorial &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Analysis (Python)" href="api/core/analysis.html" />
+    <link rel="prev" title="Quick Start" href="quick_start.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="end-to-end-pipeline-tutorial">
+<h1>End-to-End Pipeline Tutorial<a class="headerlink" href="#end-to-end-pipeline-tutorial" title="Link to this heading">¶</a></h1>
+<p>AnalysisG is designed around a single, fundamental philosophy: <strong>The Event is the source of truth.</strong></p>
+<p>Once you have defined your physics particles and mapped them into an Event from a ROOT file, that exact same Event can be split down three distinct downstream paths without rewriting any data-loading logic:
+1. <strong>Graph Compilation</strong>: Transforming the event into a graph structure for Neural Network training.
+2. <strong>Selection Analysis</strong>: Running cut-based analyses and aggregating kinematics.
+3. <strong>Inference</strong>: Consuming pre-trained model predictions to reconstruct topologies (like Top quarks).</p>
+<p>This tutorial walks through building a full pipeline from start to finish.</p>
+<section id="the-fundamental-building-blocks">
+<h2>1. The Fundamental Building Blocks<a class="headerlink" href="#the-fundamental-building-blocks" title="Link to this heading">¶</a></h2>
+<p>Before we can split our workflows, we must define the atomic units of our physics: the Particle and the Event.</p>
+<section id="step-1a-defining-the-particle">
+<h3>Step 1a: Defining the Particle<a class="headerlink" href="#step-1a-defining-the-particle" title="Link to this heading">¶</a></h3>
+<p>A Particle inherits from <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">particle_template</span></code>. We register the ROOT branch suffixes it expects. The framework will automatically handle reading these branches from the <cite>.root</cite> file.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;templates/particle_template.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Top</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">particle_template</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">Top</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;top&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">add_leaf</span><span class="p">(</span><span class="s">&quot;pt&quot;</span><span class="p">,</span><span class="w">  </span><span class="s">&quot;_pt&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">add_leaf</span><span class="p">(</span><span class="s">&quot;eta&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;_eta&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">add_leaf</span><span class="p">(</span><span class="s">&quot;phi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;_phi&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">add_leaf</span><span class="p">(</span><span class="s">&quot;e&quot;</span><span class="p">,</span><span class="w">   </span><span class="s">&quot;_e&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">apply_type_prefix</span><span class="p">();</span><span class="w"> </span><span class="c1">// Maps to: &quot;top_pt&quot;, &quot;top_eta&quot;, etc.</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="o">~</span><span class="n">Top</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">particle_template</span><span class="o">*</span><span class="w"> </span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Top</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">build</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">particle_template</span><span class="o">*&gt;*</span><span class="w"> </span><span class="n">prt</span><span class="p">,</span><span class="w"> </span><span class="n">element_t</span><span class="o">*</span><span class="w"> </span><span class="n">el</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">_pt</span><span class="p">,</span><span class="w"> </span><span class="n">_eta</span><span class="p">,</span><span class="w"> </span><span class="n">_phi</span><span class="p">,</span><span class="w"> </span><span class="n">_e</span><span class="p">;</span>
+<span class="w">        </span><span class="n">el</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;pt&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_pt</span><span class="p">);</span><span class="w"> </span><span class="n">el</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;eta&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_eta</span><span class="p">);</span>
+<span class="w">        </span><span class="n">el</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;phi&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_phi</span><span class="p">);</span><span class="w"> </span><span class="n">el</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;e&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_e</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">_pt</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Top</span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Top</span><span class="p">();</span>
+<span class="w">            </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">pt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_pt</span><span class="p">[</span><span class="n">x</span><span class="p">];</span><span class="w"> </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">eta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_eta</span><span class="p">[</span><span class="n">x</span><span class="p">];</span>
+<span class="w">            </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">phi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_phi</span><span class="p">[</span><span class="n">x</span><span class="p">];</span><span class="w"> </span><span class="n">t</span><span class="o">-&gt;</span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_e</span><span class="p">[</span><span class="n">x</span><span class="p">];</span>
+<span class="w">            </span><span class="p">(</span><span class="o">*</span><span class="n">prt</span><span class="p">)[</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">hash</span><span class="p">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="step-1b-defining-the-event">
+<h3>Step 1b: Defining the Event<a class="headerlink" href="#step-1b-defining-the-event" title="Link to this heading">¶</a></h3>
+<p>The Event inherits from <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">event_template</span></code>. It registers our <code class="docutils literal notranslate"><span class="pre">Top</span></code> particles so the framework knows to build them when iterating over the ROOT trees.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;templates/event_template.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyEvent</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">event_template</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">particle_template</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">Tops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">met</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">MyEvent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;my_event&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">trees</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;nominal&quot;</span><span class="p">};</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">add_leaf</span><span class="p">(</span><span class="s">&quot;met&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;met_met&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">register_particle</span><span class="p">(</span><span class="o">&amp;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">m_tops</span><span class="p">);</span><span class="w"> </span><span class="c1">// Register the particle map</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="o">~</span><span class="n">MyEvent</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">event_template</span><span class="o">*</span><span class="w"> </span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyEvent</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">build</span><span class="p">(</span><span class="n">element_t</span><span class="o">*</span><span class="w"> </span><span class="n">el</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">el</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;met&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">met</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">CompileEvent</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Flatten the internal map into our public Tops vector</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">ix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">m_tops</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">ix</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">m_tops</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">ix</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">Tops</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ix</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Top</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">m_tops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="the-branching-paths-the-splits">
+<h2>2. The Branching Paths (The “Splits”)<a class="headerlink" href="#the-branching-paths-the-splits" title="Link to this heading">¶</a></h2>
+<p>With <code class="docutils literal notranslate"><span class="pre">MyEvent</span></code> defined, we have our source of truth. We can now plug this exact event into three different systems.</p>
+<section id="split-a-event-rightarrow-graph-training">
+<h3>Split A: Event $rightarrow$ Graph (Training)<a class="headerlink" href="#split-a-event-rightarrow-graph-training" title="Link to this heading">¶</a></h3>
+<p>To train a Graph Neural Network, we transform the Event into a Graph by inheriting from <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">graph_template</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;templates/graph_template.h&gt;</span>
+
+<span class="c1">// A simple node feature function extracting pT</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">node_pt</span><span class="p">(</span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="n">particle_template</span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">*</span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="o">-&gt;</span><span class="n">pt</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyGraph</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">graph_template</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">MyGraph</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;my_graph&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="o">~</span><span class="n">MyGraph</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">graph_template</span><span class="o">*</span><span class="w"> </span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyGraph</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">CompileEvent</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">MyEvent</span><span class="o">*</span><span class="w"> </span><span class="n">ev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">get_event</span><span class="o">&lt;</span><span class="n">MyEvent</span><span class="o">&gt;</span><span class="p">();</span><span class="w"> </span><span class="c1">// Retrieve our compiled event!</span>
+
+<span class="w">        </span><span class="c1">// Register nodes based on the Tops found in the event</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">define_particle_nodes</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ev</span><span class="o">-&gt;</span><span class="n">Tops</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Attach the pT feature to every node</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">add_node_data_feature</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="n">particle_template</span><span class="o">&gt;</span><span class="p">(</span><span class="n">node_pt</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pt&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="split-b-event-rightarrow-selection-analysis">
+<h3>Split B: Event $rightarrow$ Selection (Analysis)<a class="headerlink" href="#split-b-event-rightarrow-selection-analysis" title="Link to this heading">¶</a></h3>
+<p>To perform standard cut-based physics analysis, we inherit from <code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">selection_template</span></code>. This allows us to aggregate properties across millions of events safely.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;templates/selection_template.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TopSelection</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">selection_template</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">TopSelection</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;high_pt_tops&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="o">~</span><span class="n">TopSelection</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="n">selection_template</span><span class="o">*</span><span class="w"> </span><span class="n">clone</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TopSelection</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">selection</span><span class="p">(</span><span class="n">event_template</span><span class="o">*</span><span class="w"> </span><span class="n">ev</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">MyEvent</span><span class="o">*</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">MyEvent</span><span class="o">*</span><span class="p">)</span><span class="n">ev</span><span class="p">;</span><span class="w"> </span><span class="c1">// Retrieve our event!</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">high_pt_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">event</span><span class="o">-&gt;</span><span class="n">Tops</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">pt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">500000</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 500 GeV cut</span>
+<span class="w">                </span><span class="n">high_pt_count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Reject event if it has no high pT tops</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">high_pt_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Save the count for this event.</span>
+<span class="w">        </span><span class="c1">// The framework automatically maps this variable to the event&#39;s hash.</span>
+<span class="w">        </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">write</span><span class="p">(</span><span class="o">&amp;</span><span class="n">high_pt_count</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;n_high_pt_tops&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="split-c-event-rightarrow-inference-reconstruction">
+<h3>Split C: Event $rightarrow$ Inference (Reconstruction)<a class="headerlink" href="#split-c-event-rightarrow-inference-reconstruction" title="Link to this heading">¶</a></h3>
+<p>What happens after your GNN is trained? You use a specialised Event (like the built-in <code class="docutils literal notranslate"><span class="pre">gnn_event</span></code>) to read the neural network outputs directly from an evaluation dataset, and run algorithms (like PageRank) to cluster the nodes back into physical objects.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Snippet reflecting the logic inside src/AnalysisG/events/gnn/cxx/event.cxx</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">gnn_event::CompileEvent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 1. We extract the edge probabilities predicted by the GNN</span>
+<span class="w">    </span><span class="n">el</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;top_edge&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">edge_top_scores</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 2. We use these probabilities as adjacency weights to cluster particles</span>
+<span class="w">    </span><span class="c1">//    together into Top Quarks using PageRank!</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">w_nrm_top</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// ... populate w_nrm_top with edge_top_scores ...</span>
+
+<span class="w">    </span><span class="c1">// 3. Build reconstructed Top objects based on the unmasked PageRank algorithm</span>
+<span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">build_particles</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nrm_tops</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">w_nrm_top</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">m_tops</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="n">pagerank_e</span><span class="o">::</span><span class="n">unmasked</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tying-it-together-python-api">
+<h2>3. Tying It Together (Python API)<a class="headerlink" href="#tying-it-together-python-api" title="Link to this heading">¶</a></h2>
+<p>Once your C++ classes are wrapped in Cython (see Quick Start), you manage the entire pipeline from Python using the <code class="docutils literal notranslate"><span class="pre">Analysis()</span></code> object. You simply attach the classes you want to run!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">AnalysisG</span><span class="w"> </span><span class="kn">import</span> <span class="n">Analysis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_module</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyMyEvent</span><span class="p">,</span> <span class="n">PyMyGraph</span><span class="p">,</span> <span class="n">PyTopSelection</span>
+
+<span class="n">ana</span> <span class="o">=</span> <span class="n">Analysis</span><span class="p">()</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">OutputPath</span> <span class="o">=</span> <span class="s2">&quot;./output&quot;</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSamples</span><span class="p">(</span><span class="s2">&quot;./data/ttbar.root&quot;</span><span class="p">,</span> <span class="s2">&quot;ttbar&quot;</span><span class="p">)</span>
+
+<span class="c1"># The Source of Truth</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddEvent</span><span class="p">(</span><span class="n">PyMyEvent</span><span class="p">(),</span> <span class="s2">&quot;ttbar&quot;</span><span class="p">)</span>
+
+<span class="c1"># Split A: Generate Training Graphs</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddGraph</span><span class="p">(</span><span class="n">PyMyGraph</span><span class="p">(),</span> <span class="s2">&quot;ttbar&quot;</span><span class="p">)</span>
+
+<span class="c1"># Split B: Run Cut-Based Analysis</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">AddSelection</span><span class="p">(</span><span class="n">PyTopSelection</span><span class="p">())</span>
+
+<span class="c1"># Run everything concurrently!</span>
+<span class="n">ana</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="plotting-a-simple-distribution">
+<h2>4. Plotting a Simple Distribution<a class="headerlink" href="#plotting-a-simple-distribution" title="Link to this heading">¶</a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">Analysis()</span></code> pipeline completes, the results of your Selection are safely aggregated in your output directories. You can fetch this data and plot it using Python.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">AnalysisG.core.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">IO</span>
+
+<span class="c1"># We read the output file generated by our TopSelection</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">IO</span><span class="p">()</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">Files</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;./output/ttbar/Selections/high_pt_tops.root&quot;</span><span class="p">]</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">Trees</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;high_pt_tops&quot;</span><span class="p">]</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">Leaves</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;n_high_pt_tops&quot;</span><span class="p">]</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">ScanKeys</span><span class="p">()</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+    <span class="c1"># The key format is usually: tree_name.branch_name.leaf_name</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;high_pt_tops.n_high_pt_tops.n_high_pt_tops&#39;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+        <span class="n">counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># Extract scalar</span>
+
+<span class="c1"># Plot the simple distribution</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;royalblue&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of High $p_T$ Tops per Event&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Tops ($p_T &gt; 500$ GeV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Events&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;high_pt_tops_distribution.pdf&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saved plot to high_pt_tops_distribution.pdf!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Congratulations! You have successfully traced the journey of an analysis from a raw ROOT <cite>Particle</cite> to a final physical distribution.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">End-to-End Pipeline Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/advanced_api.html">Advanced Core API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/events/index.html">Built-In Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/graphs/index.html">Built-In Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models/index.html">Built-In Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/metrics/index.html">Built-In Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/index.html">Built-In Selections</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced / C++ Backend</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Framework Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/index_templates.html">C++ User Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/index_framework.html">C++ Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/index.html">CUDA Extensions (pyc)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="quick_start.html" title="previous chapter">Quick Start</a></li>
+      <li>Next: <a href="api/core/analysis.html" title="next chapter">Analysis (Python)</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

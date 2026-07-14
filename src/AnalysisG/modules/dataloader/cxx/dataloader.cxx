@@ -82,20 +82,16 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
-  
-    if (gr -> graph_name){
-        std::string gname = *gr -> graph_name; 
-        if (!this -> graph_names[gname]){
-            this -> graph_names[gname] = new std::string(gname);
-        }
-        gr -> graph_name = this -> graph_names[gname];
-        this -> pflush(&gr -> graph_name);
-    }
+    
+    //std::string gname = *gr -> graph_name; 
+    //if (!this -> graph_names[gname]){this -> graph_names[gname] = new std::string(gname);}
+    //this -> pflush(&gr -> graph_name);
+    //gr -> graph_name = this -> graph_names[gname];
 
-    this -> hash_map[*gr -> hash] = this -> idk; 
-    this -> data_index -> push_back(this -> idk); 
-    this -> data_set -> push_back(gr); 
-    if (gr -> preselection){this -> test_set -> push_back(this -> idk);}
+    //this -> hash_map[*gr -> data -> hash] = this -> idk; 
+    //this -> data_index -> push_back(this -> idk); 
+    //this -> data_set -> push_back(gr); 
+    //if (gr -> preselection){this -> test_set -> push_back(this -> idk);}
     this -> idk++; 
 }
 
@@ -137,151 +133,152 @@ void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops){
 
 
 std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, model_template* _mdl, model_report* rep){
-    auto g_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_graph;};
-    auto n_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_node;};
-    auto e_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_edge;};
-    auto g_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_graph;}; 
-    auto n_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_node;};
-    auto e_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_edge;};
+    return nullptr; 
+    //auto g_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_graph;};
+    //auto n_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_node;};
+    //auto e_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_edge;};
+    //auto g_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_graph;}; 
+    //auto n_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_node;};
+    //auto e_truth = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_truth_edge;};
 
-    auto collect = [this](
-            model_template* __mdl,
-            std::vector<graph_t*>* __data, 
-            std::map<std::string, int>* loc, 
-            std::map<int, std::vector<torch::Tensor>>* cnt, 
-            std::function<std::map<int, std::vector<torch::Tensor>>* (graph_t*)> fx)
-    {
-        std::map<int, torch::Tensor> tmp; 
-        std::map<std::string, int>::iterator ilx; 
-        for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){      
-            std::string key = ilx -> first; 
-            std::vector<torch::Tensor> arr;
-            arr.reserve(__data -> size()); 
-            for (size_t x(0); x < __data -> size(); ++x){
-                graph_t* grx = (*__data)[x]; 
-                torch::Tensor* val = grx -> return_any(loc, fx(grx), key, __mdl -> device_index);
-                if (val){arr.push_back(*val); continue;}
-                this -> warning("broken graph!"); 
-                this -> warning("Hash: " + std::string(*grx -> hash) + " -> " + *grx -> filename); 
-                abort();
-            } 
-            if (!arr.size()){continue;}
-            tmp[ilx -> second] = torch::Tensor(torch::cat(arr, {0}));
-        }
-        
-        int dev_ = (int)__mdl -> m_option -> device().index();  
-        for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){(*cnt)[dev_].push_back(tmp[ilx -> second]);}
-    };  
+    //auto collect = [this](
+    //        model_template* __mdl,
+    //        std::vector<graph_t*>* __data, 
+    //        std::map<std::string, int>* loc, 
+    //        std::map<int, std::vector<torch::Tensor>>* cnt, 
+    //        std::function<std::map<int, std::vector<torch::Tensor>>* (graph_t*)> fx)
+    //{
+    //    std::map<int, torch::Tensor> tmp; 
+    //    std::map<std::string, int>::iterator ilx; 
+    //    for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){      
+    //        std::string key = ilx -> first; 
+    //        std::vector<torch::Tensor> arr;
+    //        arr.reserve(__data -> size()); 
+    //        for (size_t x(0); x < __data -> size(); ++x){
+    //            graph_t* grx = (*__data)[x]; 
+    //            torch::Tensor* val = grx -> return_any(loc, fx(grx), key, __mdl -> device_index);
+    //            if (val){arr.push_back(*val); continue;}
+    //            this -> warning("broken graph!"); 
+    //            this -> warning("Hash: " + std::string(*grx -> hash) + " -> " + *grx -> filename); 
+    //            abort();
+    //        } 
+    //        if (!arr.size()){continue;}
+    //        tmp[ilx -> second] = torch::Tensor(torch::cat(arr, {0}));
+    //    }
+    //    
+    //    int dev_ = (int)__mdl -> m_option -> device().index();  
+    //    for (ilx = loc -> begin(); ilx != loc -> end(); ++ilx){(*cnt)[dev_].push_back(tmp[ilx -> second]);}
+    //};  
 
-    auto build_graph = [this, g_data, n_data, e_data, g_truth, n_truth, e_truth, collect](
-            std::vector<graph_t*>* inpt, 
-            std::vector<graph_t*>* out, 
-            model_template* __mdl, 
-            size_t index, size_t* prg = nullptr
-    ){
-        torch::TensorOptions* op = __mdl -> m_option; 
-        for (size_t x(0); x < inpt -> size(); ++x){
-            if ((*inpt)[x] -> preselection){continue;}
-            (*inpt)[x] -> in_use = 1;
-            (*inpt)[x] -> transfer_to_device(op); 
-        }
-        graph_t* tr = (*inpt)[0];  
-        bool cached = true; 
-        graph_t* gr = (*out)[index]; 
-        if (!gr){
-            cached = false; 
-            gr = new graph_t();
-            gr -> data_map_graph  = tr -> data_map_graph; 
-            gr -> data_map_node   = tr -> data_map_node; 
-            gr -> data_map_edge   = tr -> data_map_edge;
+    //auto build_graph = [this, g_data, n_data, e_data, g_truth, n_truth, e_truth, collect](
+    //        std::vector<graph_t*>* inpt, 
+    //        std::vector<graph_t*>* out, 
+    //        model_template* __mdl, 
+    //        size_t index, size_t* prg = nullptr
+    //){
+    //    torch::TensorOptions* op = __mdl -> m_option; 
+    //    for (size_t x(0); x < inpt -> size(); ++x){
+    //        if ((*inpt)[x] -> preselection){continue;}
+    //        (*inpt)[x] -> in_use = 1;
+    //        (*inpt)[x] -> transfer_to_device(op); 
+    //    }
+    //    graph_t* tr = (*inpt)[0];  
+    //    bool cached = true; 
+    //    graph_t* gr = (*out)[index]; 
+    //    if (!gr){
+    //        cached = false; 
+    //        gr = new graph_t();
+    //        gr -> data_map_graph  = tr -> data_map_graph; 
+    //        gr -> data_map_node   = tr -> data_map_node; 
+    //        gr -> data_map_edge   = tr -> data_map_edge;
 
-            gr -> truth_map_graph = tr -> truth_map_graph; 
-            gr -> truth_map_node  = tr -> truth_map_node ;
-            gr -> truth_map_edge  = tr -> truth_map_edge ;
-        }
+    //        gr -> truth_map_graph = tr -> truth_map_graph; 
+    //        gr -> truth_map_node  = tr -> truth_map_node ;
+    //        gr -> truth_map_edge  = tr -> truth_map_edge ;
+    //    }
 
-        int dev_ = (int)op -> device().index();  
+    //    int dev_ = (int)op -> device().index();  
 
-        // observables 
-        collect(__mdl, inpt, gr -> data_map_graph, &gr -> dev_data_graph, g_data); 
-        collect(__mdl, inpt, gr -> data_map_node,  &gr -> dev_data_node,  n_data); 
-        collect(__mdl, inpt, gr -> data_map_edge,  &gr -> dev_data_edge,  e_data); 
+    //    // observables 
+    //    collect(__mdl, inpt, gr -> data_map_graph, &gr -> dev_data_graph, g_data); 
+    //    collect(__mdl, inpt, gr -> data_map_node,  &gr -> dev_data_node,  n_data); 
+    //    collect(__mdl, inpt, gr -> data_map_edge,  &gr -> dev_data_edge,  e_data); 
 
-        // truth data
-        collect(__mdl, inpt, gr -> truth_map_graph, &gr -> dev_truth_graph, g_truth); 
-        collect(__mdl, inpt, gr -> truth_map_node,  &gr -> dev_truth_node,  n_truth); 
-        collect(__mdl, inpt, gr -> truth_map_edge,  &gr -> dev_truth_edge,  e_truth); 
+    //    // truth data
+    //    collect(__mdl, inpt, gr -> truth_map_graph, &gr -> dev_truth_graph, g_truth); 
+    //    collect(__mdl, inpt, gr -> truth_map_node,  &gr -> dev_truth_node,  n_truth); 
+    //    collect(__mdl, inpt, gr -> truth_map_edge,  &gr -> dev_truth_edge,  e_truth); 
 
-        int offset_nodes = 0; 
-        std::vector<long> batch_index; 
-        std::vector<torch::Tensor> _edge_index;
-        std::vector<torch::Tensor> _event_weight; 
-        for (size_t x(0); x < inpt -> size(); ++x){
-            graph_t* grx = (*inpt)[x]; 
-            _edge_index.push_back((*grx -> get_edge_index(__mdl)) + offset_nodes);
-            for (int t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
-            _event_weight.push_back(*grx -> get_event_weight(__mdl)); 
-            offset_nodes += grx -> num_nodes; 
-            gr -> in_use = 0; 
-            if (cached){continue;}
-            gr -> batched_events.push_back(x);
-            gr -> batched_filenames.push_back(grx -> filename);
-        }
+    //    int offset_nodes = 0; 
+    //    std::vector<long> batch_index; 
+    //    std::vector<torch::Tensor> _edge_index;
+    //    std::vector<torch::Tensor> _event_weight; 
+    //    for (size_t x(0); x < inpt -> size(); ++x){
+    //        graph_t* grx = (*inpt)[x]; 
+    //        _edge_index.push_back((*grx -> get_edge_index(__mdl)) + offset_nodes);
+    //        for (int t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
+    //        _event_weight.push_back(*grx -> get_event_weight(__mdl)); 
+    //        offset_nodes += grx -> num_nodes; 
+    //        gr -> in_use = 0; 
+    //        if (cached){continue;}
+    //        gr -> batched_events.push_back(x);
+    //        gr -> batched_filenames.push_back(grx -> filename);
+    //    }
 
-        if (!cached){
-            gr -> num_nodes = offset_nodes; 
-            gr -> device = op -> device().type(); 
-        }
+    //    if (!cached){
+    //        gr -> num_nodes = offset_nodes; 
+    //        gr -> device = op -> device().type(); 
+    //    }
 
-        torch::TensorOptions opx = torch::TensorOptions(torch::kCPU).dtype(torch::kLong); 
-        torch::Tensor bx = torch::from_blob(batch_index.data(), {offset_nodes}, opx); 
-        torch::Tensor bi = torch::from_blob(gr -> batched_events.data(), {(long)inpt -> size()}, opx); 
+    //    torch::TensorOptions opx = torch::TensorOptions(torch::kCPU).dtype(torch::kLong); 
+    //    torch::Tensor bx = torch::from_blob(batch_index.data(), {offset_nodes}, opx); 
+    //    torch::Tensor bi = torch::from_blob(gr -> batched_events.data(), {(long)inpt -> size()}, opx); 
 
-        gr -> dev_edge_index[dev_]     = torch::cat(_edge_index, {-1}); 
-        gr -> dev_event_weight[dev_]   = torch::cat(_event_weight, {0}); 
-        gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device(), true);
-        gr -> dev_batched_events[dev_] = bi.clone().to(op -> device(), true); 
-        #ifdef PYC_CUDA
-        torch::cuda::synchronize(dev_); 
-        #endif
-        gr -> device_index[dev_] = true; 
-        (*out)[index] = gr; 
-        if (!prg){return;}
-        *prg = 1;
-    }; 
+    //    gr -> dev_edge_index[dev_]     = torch::cat(_edge_index, {-1}); 
+    //    gr -> dev_event_weight[dev_]   = torch::cat(_event_weight, {0}); 
+    //    gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device(), true);
+    //    gr -> dev_batched_events[dev_] = bi.clone().to(op -> device(), true); 
+    //    #ifdef PYC_CUDA
+    //    torch::cuda::synchronize(dev_); 
+    //    #endif
+    //    gr -> device_index[dev_] = true; 
+    //    (*out)[index] = gr; 
+    //    if (!prg){return;}
+    //    *prg = 1;
+    //}; 
 
-    int k   = _mdl -> kfold-1; 
-    int dev = _mdl -> m_option -> device().index(); 
+    //int k   = _mdl -> kfold-1; 
+    //int dev = _mdl -> m_option -> device().index(); 
 
-    std::vector<graph_t*>* out = nullptr; 
-    if (rep && rep -> mode == "evaluation"){k = -1;}
+    //std::vector<graph_t*>* out = nullptr; 
+    //if (rep && rep -> mode == "evaluation"){k = -1;}
 
-    std::vector<std::vector<graph_t*>> batched = this -> discretize(_data, this -> setting -> batch_size); 
-    if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
-        out = this -> batched_cache[k];
-        if (!out -> size()){return out;}
-        if ((*out)[0] -> device_index[dev]){return out;}
-    }
-    else {out = new std::vector<graph_t*>(batched.size(), nullptr);}
+    //std::vector<std::vector<graph_t*>> batched = this -> discretize(_data, this -> setting -> batch_size); 
+    //if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
+    //    out = this -> batched_cache[k];
+    //    if (!out -> size()){return out;}
+    //    if ((*out)[0] -> device_index[dev]){return out;}
+    //}
+    //else {out = new std::vector<graph_t*>(batched.size(), nullptr);}
 
-    std::vector<size_t> trgt(batched.size(), 1);
-    std::vector<size_t> prg(batched.size(), 0);
+    //std::vector<size_t> trgt(batched.size(), 1);
+    //std::vector<size_t> prg(batched.size(), 0);
 
-    int r = 0; 
-    int thr = this -> setting -> threads * 12; 
-    std::vector<std::thread*> th_(batched.size(), nullptr); 
-    for (size_t i(0); i < batched.size(); ++i){
-        if (thr == 1){build_graph(&batched[i], out, _mdl, i); continue;}
-        th_[i] = new std::thread(build_graph, &batched[i], out, _mdl, i, &prg[i]);
-        while (r > thr){r = this -> running(&th_, &prg, &trgt);}
-        ++r; 
-    }    
-    this -> monitor(&th_); 
+    //int r = 0; 
+    //int thr = this -> setting -> threads * 12; 
+    //std::vector<std::thread*> th_(batched.size(), nullptr); 
+    //for (size_t i(0); i < batched.size(); ++i){
+    //    if (thr == 1){build_graph(&batched[i], out, _mdl, i); continue;}
+    //    th_[i] = new std::thread(build_graph, &batched[i], out, _mdl, i, &prg[i]);
+    //    while (r > thr){r = this -> running(&th_, &prg, &trgt);}
+    //    ++r; 
+    //}    
+    //this -> monitor(&th_); 
 
-    if (!rep){}
-    else if (rep -> mode == "validation"){this -> batched_cache[k] = out;}
-    else if (rep -> mode == "evaluation"){this -> batched_cache[-1] = out;}
-    return out; 
+    //if (!rep){}
+    //else if (rep -> mode == "validation"){this -> batched_cache[k] = out;}
+    //else if (rep -> mode == "evaluation"){this -> batched_cache[-1] = out;}
+    //return out; 
 }
 
 void dataloader::cuflush_cache(){
@@ -335,7 +332,7 @@ void dataloader::cuda_memory_server(){
     std::this_thread::sleep_for(std::chrono::microseconds(10));
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
-        if (gr -> in_use == 1){continue;}
+        if (gr -> meta_data -> in_use == 1){continue;}
         if (!this -> idk){return;}
         std::map<int, bool>::iterator itx = gr -> device_index.begin(); 
         for (; itx != gr -> device_index.end(); ++itx){
@@ -344,7 +341,7 @@ void dataloader::cuda_memory_server(){
             if (!inx){continue;}
             if (!cuda_memory(dev)){continue;}
             trig = true; 
-            if (gr -> in_use == 1){break;}
+            if (gr -> meta_data -> in_use == 1){break;}
             check_m(&gr -> dev_data_graph  , true, dev); 
             check_m(&gr -> dev_data_node   , true, dev); 
             check_m(&gr -> dev_data_edge   , true, dev); 

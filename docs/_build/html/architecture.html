@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Framework Architecture &#8212; AnalysisG 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="C++ User Templates" href="api/modules/index_templates.html" />
+    <link rel="prev" title="Top Efficiency (selections.performance.topefficiency)" href="api/selections/performance_topefficiency.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="framework-architecture">
+<h1>Framework Architecture<a class="headerlink" href="#framework-architecture" title="Link to this heading">¶</a></h1>
+<p>The AnalysisG framework is engineered to eliminate the severe I/O bottlenecks and computational overhead typically associated with High Energy Physics (HEP) Python analysis. It achieves this by moving almost the entirely of the execution—file reading, graph compilation, event selection, and deep learning tensor operations—into a highly-optimised C++ backend, while exposing a clean, dynamic Python API to the end user.</p>
+<p>This section provides a deep-dive into the core architectural pillars of the framework.</p>
+<section id="memory-management-cython-bridge">
+<h2>1. Memory Management &amp; Cython Bridge<a class="headerlink" href="#memory-management-cython-bridge" title="Link to this heading">¶</a></h2>
+<p>The fundamental challenge of a hybrid C++/Python framework is passing large amounts of complex data (like decay trees of physics particles) across the boundary without incurring massive serialisation penalties.</p>
+<p>AnalysisG solves this by strictly controlling memory ownership in C++:
+- When the <cite>Analysis</cite> compiler runs, all particles (<cite>particle_template</cite>) and events (<cite>event_template</cite>) are dynamically heap-allocated in C++.
+- The framework uses a thin <strong>Cython layer</strong> solely to pass memory <em>pointers</em> between Python and C++.
+- Python does not copy or own the physics data. It merely holds a reference to the C++ objects. When an event passes out of scope, the C++ garbage collection routine safely deallocates the decay trees, preventing memory leaks and entirely bypassing Python’s Global Interpreter Lock (GIL) limitations.</p>
+</section>
+<section id="multithreaded-execution-engine">
+<h2>2. Multithreaded Execution Engine<a class="headerlink" href="#multithreaded-execution-engine" title="Link to this heading">¶</a></h2>
+<p>Reading millions of events from <cite>.root</cite> files is an inherently slow process. To maximize throughput, AnalysisG employs a highly concurrent execution engine built on native C++ threading (<cite>std::thread</cite> and internal thread-pool management):</p>
+<ul class="simple">
+<li><p><strong>Data Parallelism:</strong> The framework splits ROOT tree processing across multiple worker threads. Each thread receives an isolated chunk of the dataset to prevent race conditions.</p></li>
+<li><p><strong>Concurrent Compilation:</strong> The <cite>CompileEvent</cite> hook (which builds the particles) and the <cite>selection_template</cite> / <cite>graph_template</cite> transformations run concurrently across these chunks.</p></li>
+<li><p><strong>Aggregation:</strong> Once threads complete their workloads, the framework triggers a <cite>merge</cite> protocol (e.g., aggregating selection pass/fail statistics), safely joining the results back into the main process thread.</p></li>
+</ul>
+</section>
+<section id="libtorch-integration">
+<h2>3. LibTorch Integration<a class="headerlink" href="#libtorch-integration" title="Link to this heading">¶</a></h2>
+<p>AnalysisG natively binds to <strong>LibTorch</strong> (the C++ backend of PyTorch).</p>
+<p>It explicitly <strong>avoids intermediate graph wrappers like PyTorch Geometric (PyG)</strong>. Instead, the <cite>graph_template</cite> generates native, flat C++ arrays for node features, edge lists, and truth labels, which are directly converted into highly efficient <cite>torch::Tensor</cite> objects.</p>
+<ul class="simple">
+<li><p><strong>Direct Forward Passes:</strong> Models inheriting from <cite>model_template</cite> implement their <cite>forward()</cite> passes in C++.</p></li>
+<li><p><strong>CUDA Acceleration:</strong> Tensors are seamlessly moved between the CPU and GPU using LibTorch’s device APIs before inference or back-propagation, bypassing Python-level overhead entirely.</p></li>
+</ul>
+</section>
+<section id="hdf5-data-caching">
+<h2>4. HDF5 Data Caching<a class="headerlink" href="#hdf5-data-caching" title="Link to this heading">¶</a></h2>
+<p>Translating complex physics structures from ROOT trees into machine-learning ready tensors is computationally expensive. To prevent redundant computation during iterative model training, AnalysisG implements a robust caching mechanism:</p>
+<ul class="simple">
+<li><p>If <cite>BuildCache = True</cite> is set, the framework serializes the fully compiled, <cite>torch::Tensor</cite>-backed graphs into chunked HDF5 files on disk.</p></li>
+<li><p>On subsequent runs, the framework intelligently skips the <cite>.root</cite> file processing entirely, streaming the <cite>torch::Tensor</cite> batches directly from the HDF5 cache into the LibTorch neural network optimizer.</p></li>
+</ul>
+</section>
+<section id="the-nusol-backend">
+<h2>5. The NuSol Backend<a class="headerlink" href="#the-nusol-backend" title="Link to this heading">¶</a></h2>
+<p>The <strong>Neutrino Solutions (NuSol)</strong> module is a specialised C++ backend for the kinematic reconstruction of neutrinos (particularly in top-quark decays).</p>
+<p>Unlike traditional methods that rely on slow, iterative numerical minimizers, NuSol implements an elegant, analytical <strong>conformal geometric solver</strong>.
+- It represents the kinematic constraints (e.g., $W$-boson mass, Top-quark mass) as a <strong>pencil of conics</strong> in a mathematical parameter space.
+- The framework uses highly optimized root-finding algorithms to extract the geometric intersections of these conic objects, yielding exact analytical solutions for the neutrino four-momenta.
+- These solvers are fully vectorized and integrated with CUDA via the <cite>pyc</cite> sub-package, allowing millions of events to be reconstructed concurrently on the GPU.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">AnalysisG</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">End-to-End Pipeline Tutorial</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/core/analysis.html">Analysis (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/particle_template.html">ParticleTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/event_template.html">EventTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/graph_template.html">GraphTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/selection_template.html">SelectionTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/model_template.html">ModelTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/metric_template.html">MetricTemplate (Python)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/core/advanced_api.html">Advanced Core API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standard Library</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/events/index.html">Built-In Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/graphs/index.html">Built-In Graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/models/index.html">Built-In Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/metrics/index.html">Built-In Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/selections/index.html">Built-In Selections</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced / C++ Backend</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Framework Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/index_templates.html">C++ User Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/index_framework.html">C++ Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules/nusol.html">Neutrino Solution (NuSol) Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyc/index.html">CUDA Extensions (pyc)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="api/selections/performance_topefficiency.html" title="previous chapter">Top Efficiency (<code class="docutils literal notranslate"><span class="pre">selections.performance.topefficiency</span></code>)</a></li>
+      <li>Next: <a href="api/modules/index_templates.html" title="next chapter">C++ User Templates</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, AnalysisG Contributors.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
