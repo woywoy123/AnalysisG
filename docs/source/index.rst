@@ -13,6 +13,7 @@ selections — all from a Python interface backed by high-performance C++ and CU
    introduction
    installation
    quick_start
+   tutorial
 
 .. toctree::
    :maxdepth: 1
