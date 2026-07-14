@@ -1,0 +1,32 @@
+/**
+ * @file src/AnalysisG/modules/nusol/conuix/include/conuix/matrix.h
+ * @brief Custom matrix class for NuSol mathematical operations.
+ *
+ * Defines the `matrix_t` struct, which encapsulates a 2D array of `long double` values,
+ * providing high-level mathematical operations like addition, multiplication, matrix inversion, 
+ * dot products, and cross products.
+ *
+ * @class matrix_t
+ * @brief Encapsulates an arbitrary r x c matrix of long double values.
+ * 
+ * Provides an object-oriented approach over raw pointer manipulation for common
+ * linear algebra routines used heavily in kinematic reconstruction.
+ *
+ * @fn matrix_t::matrix_t(int _r = 3, int _c = 3)
+ * @brief Constructs an `_r` by `_c` matrix initialized to zero.
+ *
+ * @fn matrix_t matrix_t::dot(const matrix_t& o)
+ * @brief Computes the matrix dot product with another matrix `o`.
+ *
+ * @fn matrix_t matrix_t::T() const
+ * @brief Returns the transpose of the matrix.
+ *
+ * @fn matrix_t matrix_t::inv()
+ * @brief Computes the matrix inverse.
+ *
+ * @fn long double matrix_t::det()
+ * @brief Computes the determinant of the matrix.
+ *
+ * @fn matrix_t matrix_t::cross(const matrix_t& o)
+ * @brief Computes the cross product.
+ */

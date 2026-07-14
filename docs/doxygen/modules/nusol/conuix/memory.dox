@@ -1,0 +1,31 @@
+/**
+ * @file src/AnalysisG/modules/nusol/conuix/include/conuix/memory.h
+ * @brief Low-level memory management and mathematical routines for long double 2D arrays.
+ *
+ * Contains utility functions to allocate, flush, and perform operations on raw C-style 2D arrays
+ * of `long double`. Also provides basic trace, determinant, and element access functions for 3x3 arrays.
+ *
+ * @fn long double** alloc(const int dim_i, const int dim_j)
+ * @brief Allocates a contiguous 2D array of `long double`.
+ *
+ * @fn long double** flush(long double** dmx, const int dim_j)
+ * @brief Deallocates a 2D array.
+ *
+ * @fn void copy(long double** from, long double** to, const int dim_i, const int dim_j)
+ * @brief Deep copies elements from one 2D array to another.
+ *
+ * @fn void ops(long double** O, long double** A, long double** B, const int dim_i, const int dim_j, const float sign)
+ * @brief Computes element-wise addition/subtraction: \f$O_{ij} = A_{ij} + \text{sign} \cdot B_{ij}\f$.
+ *
+ * @fn void opm(long double** O, long double** A, const int dim_i, const int dim_j, const float c)
+ * @brief Computes scalar multiplication: \f$O_{ij} = c \cdot A_{ij}\f$.
+ *
+ * @fn void opt(long double** O, long double** A, const int dim_i, const int dim_j)
+ * @brief Transposes a 2D array: \f$O_{ij} = A_{ji}\f$.
+ *
+ * @fn long double _trace(long double** A)
+ * @brief Calculates the trace of a 3x3 array.
+ *
+ * @fn long double _det(long double** v)
+ * @brief Calculates the determinant of a 3x3 array.
+ */

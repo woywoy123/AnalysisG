@@ -1,0 +1,39 @@
+/**
+ * @file src/AnalysisG/modules/nusol/conuix/include/conuix/solvers.h
+ * @brief Provides mathematical polynomial root finders used in reconstruction.
+ *
+ * This header includes templated polynomial solvers for equations up to the third 
+ * degree. These functions use real coefficients to yield complex solutions, handling
+ * degenerate cases and falling back to lower-degree solvers when leading coefficients
+ * are smaller than the tolerance.
+ *
+ * @fn template <typename g> int linear(g a, g b, std::complex<g>* v0, double tol = 1e-14)
+ * @brief Solves the linear equation \f$ax + b = 0\f$.
+ * @param a Coefficient of the linear term.
+ * @param b The constant term.
+ * @param v0 Pointer to store the resulting root.
+ * @param tol Tolerance to consider coefficient `a` as zero.
+ * @return Number of roots found (0 or 1).
+ *
+ * @fn template <typename g> int quadratic(g a, g b, g c, std::complex<g>* v0, std::complex<g>* v1, double tol = 1e-14)
+ * @brief Solves the quadratic equation \f$ax^2 + bx + c = 0\f$.
+ * @param a Coefficient of the quadratic term.
+ * @param b Coefficient of the linear term.
+ * @param c The constant term.
+ * @param v0 Pointer to store the first root.
+ * @param v1 Pointer to store the second root.
+ * @param tol Tolerance to consider coefficient `a` as zero.
+ * @return Number of roots found (up to 2).
+ *
+ * @fn template <typename g> int cubic(g a, g b, g c, g d, std::complex<g>* v0, std::complex<g>* v1, std::complex<g>* v2, double tol = 1e-14)
+ * @brief Solves the cubic equation \f$ax^3 + bx^2 + cx + d = 0\f$.
+ * @param a Coefficient of the cubic term.
+ * @param b Coefficient of the quadratic term.
+ * @param c Coefficient of the linear term.
+ * @param d The constant term.
+ * @param v0 Pointer to store the first root.
+ * @param v1 Pointer to store the second root.
+ * @param v2 Pointer to store the third root.
+ * @param tol Tolerance to consider coefficient `a` as zero.
+ * @return Number of roots found (up to 3).
+ */

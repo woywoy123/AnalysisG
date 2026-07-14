@@ -1,0 +1,35 @@
+/**
+ * @file src/AnalysisG/modules/nusol/conuix/include/conuix/conuic.h
+ * @brief Declares the `conuic` core mathematical struct for neutrino solver algorithms.
+ *
+ * This header defines the `conuic` class which manages calculations over a single
+ * jet and lepton, specifically to set up parameters (\f$t^*\f$, \f$Z^2\f$, etc.) 
+ * to solve for neutrino kinematics in dilepton or semi-leptonic topologies.
+ *
+ * @class conuic
+ * @brief Primary calculation instance for computing neutrino ellipse equations.
+ *
+ * @fn conuic::conuic(particle_template* jet, particle_template* lep)
+ * @brief Initializes the conuic solver with a specific jet and lepton pair.
+ *
+ * @var conuic::tstar
+ * @brief Solved time-like parameter.
+ *
+ * @var conuic::theta
+ * @brief Solved theta angle.
+ *
+ * @var conuic::vstar
+ * @brief Solved vector representation of the neutrino constraint ellipse.
+ *
+ * @fn long double conuic::Z2(long double Sx, long double Sy)
+ * @brief Computes the Z^2 parameter from scaling factors.
+ *
+ * @fn matrix_t conuic::Hmatrix(long double t, long double Z)
+ * @brief Computes the H-matrix representing the constraint quadratic form.
+ *
+ * @fn matrix_t conuic::Nmatrix(long double t, long double Z)
+ * @brief Computes the N-matrix representing rotation/scaling.
+ *
+ * @fn bool conuic::mass_line(long double mW, long double mT, std::complex<long double>* z_, long double* t_)
+ * @brief Solves the mass line intersection finding suitable points for W mass and top mass.
+ */
