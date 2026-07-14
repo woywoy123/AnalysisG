@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="ModelTemplate_page" kind="page">
     <compoundname>ModelTemplate_page</compoundname>
     <title>ModelTemplate</title>
@@ -79,6 +79,6 @@
 </para>
 </sect1>
     </detaileddescription>
-    <location file="modules/model_template.dox"/>
+    <location file="core/model_template.dox"/>
   </compounddef>
 </doxygen>

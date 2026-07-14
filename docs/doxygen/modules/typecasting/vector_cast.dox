@@ -1,0 +1,59 @@
+/**
+ * @file vector_cast.h
+ * @brief Detailed documentation for the vector_cast.h header.
+ *
+ * @section vector_cast_intro vector_cast.h
+ * The `vector_cast.h` header contains the core templates and structures used 
+ * to serialize N-dimensional PyTorch tensors into standard C++ containers, 
+ * making them fully compatible with CERN ROOT's `TTree` and `TBranch` systems.
+ *
+ * @fn bool _transfer(torch::Tensor* data, torch::Tensor* cpux)
+ * @brief Transfers tensor memory across devices securely.
+ * @param data Pointer to the source PyTorch tensor (potentially on GPU).
+ * @param cpux Pointer to the destination CPU tensor.
+ * @return True if transfer was successful, false otherwise.
+ *
+ * @fn template <typename G> std::vector<std::vector<G>> chunking(std::vector<G>* v, int N)
+ * @brief Chunks a flattened 1D vector into a 2D vector with chunk size N.
+ * @param v Pointer to the flattened source vector.
+ * @param N The chunk size or inner dimension stride.
+ * @return A 2D vector representing the chunked data.
+ *
+ * @fn template <typename g> void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>* dims, int next_dim)
+ * @brief Base case recursive function for nesting flattened vectors based on tensor dimensionality.
+ * @param trgt The target nested vector.
+ * @param chnks The flattened chunk.
+ * @param dims The dimensions of the original tensor.
+ * @param next_dim The current recursive dimension depth.
+ *
+ * @fn template <typename G, typename g> bool tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g)
+ * @brief Core recursive function mapping a PyTorch tensor to a C++ `std::vector` of matching dimensionality.
+ * @param data Pointer to the input `torch::Tensor`.
+ * @param out Pointer to the pre-allocated output `std::vector`.
+ * @param dims Pointer to the tensor sizes.
+ * @return True if successful.
+ *
+ * @fn std::vector<signed long> tensor_size(torch::Tensor* inpt)
+ * @brief Extracts and returns the size/shape array of a tensor.
+ * @param inpt The input tensor.
+ * @return A vector containing the dimensions of the tensor.
+ *
+ * @struct variable_t
+ * @brief Container bridging PyTorch tensors and ROOT `TBranch`.
+ *
+ * The `variable_t` structure dynamically maps PyTorch tensors by type and dimensionality 
+ * using `tensor_to_vector` and safely assigns the resulting nested `std::vector` directly 
+ * to a `TBranch` memory address for ultra-fast serialization.
+ *
+ * @var variable_t::variable_name
+ * @brief The name of the `TBranch` this variable will be bound to.
+ *
+ * @var variable_t::failed_branch
+ * @brief True if the `TBranch` could not be successfully created or linked.
+ *
+ * @fn void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr)
+ * @brief Deduces tensor type and assigns it to the internal branch buffer.
+ * @param data The incoming `torch::Tensor` for the current event.
+ * @param varname The requested branch name.
+ * @param tr The parent `TTree` where the branch is stored.
+ */

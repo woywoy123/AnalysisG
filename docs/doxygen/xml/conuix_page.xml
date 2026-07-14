@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="conuix_page" kind="page">
+    <compoundname>conuix_page</compoundname>
+    <title>Conuix Neutrino Solver</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="conuix_page_1conuix_intro">
+<title>Introduction</title><para>The <computeroutput>Conuix</computeroutput> namespace provides a set of functions for the kinematic reconstruction of particles, particularly for solving the neutrino momentum in top quark decays. It is based on the &quot;conformal solution&quot; method, which involves a series of geometric transformations to solve for the neutrino&apos;s four-momentum.</para>
+</sect1>
+<sect1 id="conuix_page_1conuix_methods">
+<title>Methods</title><para>The <computeroutput>Conuix</computeroutput> namespace contains the following functions:</para>
+<sect2 id="conuix_page_1conuix_get_kinematic">
+<title>get_kinematic</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_kinematic(particle_template* ptr, Conuix::kinematic_t* kin)</computeroutput>: Extracts the kinematic properties (beta, mass, energy) from a <computeroutput>particle_template</computeroutput> object and stores them in a <computeroutput>kinematic_t</computeroutput> struct.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_rotation">
+<title>get_rotation</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_rotation(particle_template* jet, particle_template* lep, Conuix::rotation_t* rot)</computeroutput>: Calculates the rotation matrix required to align the lepton&apos;s momentum with the z-axis. This is a key step in the conformal solution method.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_psi_theta_mapping">
+<title>get_psi_theta_mapping</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_psi_theta_mapping(Conuix::base_t* base, Conuix::thetapsi_t* msp)</computeroutput>: Calculates the mapping between the psi and theta angles, which are used to parameterize the neutrino&apos;s momentum.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_base">
+<title>get_base</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_base(Conuix::kinematic_t* jet, Conuix::kinematic_t* lep, Conuix::base_t* bs)</computeroutput>: Calculates the base parameters for the conformal solution, including the omega and rbl values.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_pencil">
+<title>get_pencil</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_pencil(Conuix::kinematic_t* lep, Conuix::kinematic_t* nu, Conuix::base_t* base, Conuix::pencil_t* pen)</computeroutput>: Calculates the parameters of the &quot;pencil of circles,&quot; which represents the possible solutions for the neutrino&apos;s momentum.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_sx">
+<title>get_sx</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_sx(Conuix::base_t* base, Conuix::Sx_t* sx)</computeroutput>: Calculates the parameters for the Sx component of the neutrino&apos;s momentum.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_sy">
+<title>get_sy</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_sy(Conuix::base_t* base, Conuix::Sy_t* sy)</computeroutput>: Calculates the parameters for the Sy component of the neutrino&apos;s momentum.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="conuix_page_1conuix_get_hmatrix">
+<title>get_hmatrix</title><para><itemizedlist>
+<listitem><para><computeroutput>void Conuix::get_hmatrix(Conuix::base_t* base, Conuix::rotation_t* rot, Conuix::H_matrix_t* H)</computeroutput>: Calculates the H-matrix, which is the transformation matrix for the ellipse of possible neutrino solutions.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="conuix_page_1conuix_structs">
+<title>Structs</title><para>The <computeroutput>Conuix</computeroutput> namespace uses several structs to store the intermediate results of the calculations:<itemizedlist>
+<listitem><para><computeroutput>kinematic_t</computeroutput>: Stores the kinematic properties of a particle.</para>
+</listitem><listitem><para><computeroutput>rotation_t</computeroutput>: Stores the rotation parameters.</para>
+</listitem><listitem><para><computeroutput>thetapsi_t</computeroutput>: Stores the psi-theta mapping parameters.</para>
+</listitem><listitem><para><computeroutput>base_t</computeroutput>: Stores the base parameters for the conformal solution.</para>
+</listitem><listitem><para><computeroutput>pencil_t</computeroutput>: Stores the parameters of the pencil of circles.</para>
+</listitem><listitem><para><computeroutput>Sx_t</computeroutput>, <computeroutput>Sy_t</computeroutput>: Store the parameters for the Sx and Sy components of the neutrino&apos;s momentum.</para>
+</listitem><listitem><para><computeroutput>H_matrix_t</computeroutput>: Stores the H-matrix. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/nusol/conuix/htilde.dox"/>
+  </compounddef>
+</doxygen>

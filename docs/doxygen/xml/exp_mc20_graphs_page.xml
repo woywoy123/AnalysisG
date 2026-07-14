@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="exp_mc20_graphs_page" kind="page">
     <compoundname>exp_mc20_graphs_page</compoundname>
     <title>exp_mc20 Graphs</title>
     <briefdescription>
+<para>This page provides detailed documentation for the various graph classes used in the <computeroutput>exp_mc20</computeroutput> analysis. </para>
     </briefdescription>
     <detaileddescription>
-<para>This page provides detailed documentation for the various graph classes used in the <computeroutput>exp_mc20</computeroutput> analysis. These classes inherit from <computeroutput>graph_template</computeroutput> and define the specific nodes and features used to represent the event as a graph.</para>
+<para>These classes inherit from <computeroutput>graph_template</computeroutput> and define the specific nodes and features used to represent the event as a graph.</para>
 <sect1 id="exp_mc20_graphs_page_1exp_mc20_graphs_graph_jets">
 <title>Graph of Reconstructed Jets</title><para>The <computeroutput>graph_jets</computeroutput> class constructs a graph using reconstructed jets and leptonic top decay products.</para>
 <sect2 id="exp_mc20_graphs_page_1exp_mc20_graphs_graph_jets_ctor">

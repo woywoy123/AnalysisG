@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="PlottingModule_page" kind="page">
     <compoundname>PlottingModule_page</compoundname>
     <title>Plotting Module</title>
@@ -140,14 +140,14 @@
 <sect2 id="PlottingModule_page_1BasePlotting_cinit_dealloc">
 <title>Constructors and Destructors</title><para><itemizedlist>
 <listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent. Initializes a new C++ <computeroutput>plotting</computeroutput> object (<computeroutput>self.ptr</computeroutput>) and sets up <computeroutput>matplotlib</computeroutput> (<computeroutput>self.matpl</computeroutput>). Initializes flags for axis limits.</para>
-</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: The Python initializer. If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: The Python initializer. If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt["data"]</computeroutput>.</para>
 </listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>plotting</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>.</para>
 </listitem></itemizedlist>
 </para>
 </sect2>
 <sect2 id="PlottingModule_page_1BasePlotting_internal_methods">
 <title>Internal Methods</title><para><itemizedlist>
-<listitem><para><computeroutput>cdef void __figure__(self, dict com = {&quot;nrows&quot; : 1, &quot;ncols&quot; : 1})</computeroutput>: Creates a new matplotlib figure and axes based on the provided configuration <computeroutput>com</computeroutput>. It sets the figure size and attempts to set autoscale on the axes.</para>
+<listitem><para><computeroutput>cdef void __figure__(self, dict com = {"nrows" : 1, "ncols" : 1})</computeroutput>: Creates a new matplotlib figure and axes based on the provided configuration <computeroutput>com</computeroutput>. It sets the figure size and attempts to set autoscale on the axes.</para>
 </listitem><listitem><para><computeroutput>cdef void __resetplt__(self)</computeroutput>: Clears the current matplotlib figure, closes all figures, resets matplotlib&apos;s default runtime configuration parameters, and then calls <computeroutput>__figure__</computeroutput> to create a new default figure.</para>
 </listitem><listitem><para><computeroutput>cdef dict __compile__(self, bool raw = False)</computeroutput>: An abstract internal method intended to be overridden by subclasses. It&apos;s responsible for compiling the plot data and returning a dictionary of plotting parameters.</para>
 </listitem></itemizedlist>
@@ -156,7 +156,7 @@
 <sect2 id="PlottingModule_page_1BasePlotting_methods">
 <title>Methods</title><para><itemizedlist>
 <listitem><para><computeroutput>__reduce__(self)</computeroutput>: Implements the <computeroutput>__reduce__</computeroutput> protocol for pickling <computeroutput>BasePlotting</computeroutput> objects, allowing them to be serialized and deserialized. It saves non-callable attributes.</para>
-</listitem><listitem><para><computeroutput>dump(self, str path = &quot;&quot;, str name = &quot;&quot;)</computeroutput>: Saves the current plotting object to a pickle file. <parameterlist kind="param"><parameteritem>
+</listitem><listitem><para><computeroutput>dump(self, str path = "", str name = "")</computeroutput>: Saves the current plotting object to a pickle file. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>path</parametername>
 </parameternamelist>
@@ -174,7 +174,7 @@
 </parameteritem>
 </parameterlist>
 </para>
-</listitem><listitem><para><computeroutput>load(self, str path = &quot;&quot;, str name = &quot;&quot;)</computeroutput>: Loads a plotting object from a pickle file. <parameterlist kind="param"><parameteritem>
+</listitem><listitem><para><computeroutput>load(self, str path = "", str name = "")</computeroutput>: Loads a plotting object from a pickle file. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>path</parametername>
 </parameternamelist>
@@ -254,7 +254,7 @@
 <sect2 id="PlottingModule_page_1TH1F_cinit_dealloc">
 <title>Constructors</title><para><itemizedlist>
 <listitem><para><computeroutput>__cinit__(self)</computeroutput>: Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;TH1F&quot;.</para>
-</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Histograms</computeroutput> and <computeroutput>self.Histogram</computeroutput>. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Histograms</computeroutput> and <computeroutput>self.Histogram</computeroutput>. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt["data"]</computeroutput>.</para>
 </listitem></itemizedlist>
 </para>
 </sect2>
@@ -297,8 +297,8 @@
 </sect2>
 <sect2 id="PlottingModule_page_1TH1F_internal_methods">
 <title>Internal Methods</title><para><itemizedlist>
-<listitem><para><computeroutput>cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = &quot;Uncertainty&quot;, str color = &quot;k&quot;)</computeroutput>: Internal method to plot error bands using <computeroutput>matplotlib.pyplot.fill_between</computeroutput>.</para>
-</listitem><listitem><para><computeroutput>cdef __get_error_seg__(self, plot, str label = &quot;Uncertainty&quot;, str color = &quot;k&quot;)</computeroutput>: Extracts error segment data from a matplotlib errorbar plot and calls <computeroutput>__error__</computeroutput> to draw the error band.</para>
+<listitem><para><computeroutput>cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = "Uncertainty", str color = "k")</computeroutput>: Internal method to plot error bands using <computeroutput>matplotlib.pyplot.fill_between</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>cdef __get_error_seg__(self, plot, str label = "Uncertainty", str color = "k")</computeroutput>: Extracts error segment data from a matplotlib errorbar plot and calls <computeroutput>__error__</computeroutput> to draw the error band.</para>
 </listitem><listitem><para><computeroutput>cdef float scale_f(self)</computeroutput>: Calculates the scaling factor based on <computeroutput>CrossSection</computeroutput> and <computeroutput>IntegratedLuminosity</computeroutput>.</para>
 </listitem><listitem><para><computeroutput>cdef dict factory(self)</computeroutput>: Creates a dictionary of common plotting parameters for <computeroutput>mplhep.histplot</computeroutput>.</para>
 </listitem><listitem><para><computeroutput>cdef __build__(self)</computeroutput>: Constructs a <computeroutput>boost_histogram</computeroutput> object based on the configured <computeroutput>xData</computeroutput>, <computeroutput>xBins</computeroutput>, <computeroutput>xMin</computeroutput>, <computeroutput>xMax</computeroutput>, <computeroutput>xLabels</computeroutput>, <computeroutput>Weights</computeroutput>, <computeroutput>Density</computeroutput>, and <computeroutput>ApplyScaling</computeroutput>.</para>
@@ -318,7 +318,7 @@
 <sect2 id="PlottingModule_page_1TH2F_cinit_dealloc">
 <title>Constructors</title><para><itemizedlist>
 <listitem><para><computeroutput>__cinit__(self)</computeroutput>: Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;TH2F&quot;.</para>
-</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Color</computeroutput> to &quot;plasma&quot;. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Color</computeroutput> to &quot;plasma&quot;. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt["data"]</computeroutput>.</para>
 </listitem></itemizedlist>
 </para>
 </sect2>
@@ -347,7 +347,7 @@
 <sect2 id="PlottingModule_page_1TLine_cinit_dealloc">
 <title>Constructors</title><para><itemizedlist>
 <listitem><para><computeroutput>__cinit__(self)</computeroutput>: Sets the C++ <computeroutput>plotting</computeroutput> object&apos;s prefix to &quot;TLine&quot;.</para>
-</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Lines</computeroutput> and <computeroutput>self.Marker</computeroutput>. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt[&quot;data&quot;]</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None, **kwargs)</computeroutput>: Initializes <computeroutput>self.Lines</computeroutput> and <computeroutput>self.Marker</computeroutput>. If <computeroutput>kwargs</computeroutput> are provided, they are converted to an <computeroutput>inpt</computeroutput> dictionary. It then attempts to set various attributes from <computeroutput>inpt["data"]</computeroutput>.</para>
 </listitem></itemizedlist>
 </para>
 </sect2>
@@ -421,6 +421,6 @@
 </para>
 </sect1>
     </detaileddescription>
-    <location file="modules/plotting.dox"/>
+    <location file="core/plotting.dox"/>
   </compounddef>
 </doxygen>

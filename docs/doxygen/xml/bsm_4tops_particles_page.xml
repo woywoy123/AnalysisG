@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="bsm_4tops_particles_page" kind="page">
     <compoundname>bsm_4tops_particles_page</compoundname>
     <title>bsm_4tops Particles</title>
     <briefdescription>
+<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>bsm_4tops</computeroutput> event. </para>
     </briefdescription>
     <detaileddescription>
-<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>bsm_4tops</computeroutput> event. These classes inherit from <computeroutput>particle_template</computeroutput> and define the specific properties and behaviors of each particle type.</para>
+<para>These classes inherit from <computeroutput>particle_template</computeroutput> and define the specific properties and behaviors of each particle type.</para>
 <sect1 id="bsm_4tops_particles_page_1bsm_4tops_particles_top">
 <title>Top</title><para>The <computeroutput>top</computeroutput> class represents a top quark in the event.</para>
 <sect2 id="bsm_4tops_particles_page_1bsm_4tops_particles_top_ctor">

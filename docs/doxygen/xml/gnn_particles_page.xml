@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="gnn_particles_page" kind="page">
     <compoundname>gnn_particles_page</compoundname>
     <title>gnn_event Particles</title>
     <briefdescription>
+<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>gnn_event</computeroutput>. </para>
     </briefdescription>
     <detaileddescription>
-<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>gnn_event</computeroutput>. These classes are used to represent the input nodes to the GNN and the reconstructed particles.</para>
+<para>These classes are used to represent the input nodes to the GNN and the reconstructed particles.</para>
 <sect1 id="gnn_particles_page_1gnn_particles_particle_gnn">
 <title>GNN Particle</title><para>The <computeroutput>particle_gnn</computeroutput> class represents a single node in the input graph for the GNN.</para>
 <sect2 id="gnn_particles_page_1gnn_particles_particle_gnn_ctor">

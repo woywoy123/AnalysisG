@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="metrics_module_page" kind="page">
+    <compoundname>metrics_module_page</compoundname>
+    <title>Metrics Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="metrics_module_page_1metrics_module_intro">
+<title>Introduction</title><para>The <computeroutput>metrics</computeroutput> module provides a class for collecting, processing, and plotting various metrics during the training of a machine learning model. It is designed to work with the <computeroutput>model_template</computeroutput> and <computeroutput>optimizer</computeroutput> classes to provide a comprehensive monitoring and evaluation framework.</para>
+</sect1>
+<sect1 id="metrics_module_page_1metrics_class">
+<title>The metrics Class</title><para>The <computeroutput>metrics</computeroutput> class is the main component of this module.</para>
+<sect2 id="metrics_module_page_1metrics_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>metrics()</computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~metrics()</computeroutput>: The destructor cleans up the allocated resources, including the <computeroutput>analytics_t</computeroutput> objects.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metrics_module_page_1metrics_methods_registration">
+<title>Model Registration</title><para><itemizedlist>
+<listitem><para><computeroutput>model_report* register_model(model_template* mod, int kfold)</computeroutput>: This method registers a model with the metrics module for a specific k-fold. It creates an <computeroutput>analytics_t</computeroutput> object to store the metrics for the model and initializes the histograms for tracking loss and accuracy.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metrics_module_page_1metrics_methods_capture">
+<title>Metric Capture</title><para><itemizedlist>
+<listitem><para><computeroutput>void capture(mode_enum mode, int kfold, int epoch, int smpl_len)</computeroutput>: This method is called at the end of each epoch to capture the metrics for the current mode (training, validation, or evaluation). It calculates the loss and accuracy for the graph, node, and edge predictions and fills the corresponding histograms. It also calculates and fills the mass plots if specified in the settings.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metrics_module_page_1metrics_methods_plotting">
+<title>Plotting</title><para><itemizedlist>
+<listitem><para><computeroutput>void dump_plots(int k)</computeroutput>: This method generates and saves all the metric plots for a specific k-fold. This includes loss plots, accuracy plots, and mass plots.</para>
+</listitem><listitem><para><computeroutput>void dump_loss_plots(int k)</computeroutput>: Generates and saves the loss plots.</para>
+</listitem><listitem><para><computeroutput>void dump_accuracy_plots(int k)</computeroutput>: Generates and saves the accuracy plots.</para>
+</listitem><listitem><para><computeroutput>void dump_mass_plots(int k)</computeroutput>: Generates and saves the mass plots.</para>
+</listitem><listitem><para><computeroutput>void generic_painter(...)</computeroutput>: A generic function for creating and styling plots.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metrics_module_page_1metrics_methods_histograms">
+<title>Histogram Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void build_th1f_loss(...)</computeroutput>, <computeroutput>void add_th1f_loss(...)</computeroutput>: Methods for creating and filling the loss histograms.</para>
+</listitem><listitem><para><computeroutput>void build_th1f_accuracy(...)</computeroutput>, <computeroutput>void add_th1f_accuracy(...)</computeroutput>: Methods for creating and filling the accuracy histograms.</para>
+</listitem><listitem><para><computeroutput>void build_th1f_mass(...)</computeroutput>, <computeroutput>void add_th1f_mass(...)</computeroutput>: Methods for creating and filling the mass histograms.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="metrics_module_page_1analytics_t_struct">
+<title>The analytics_t Struct</title><para>The <computeroutput>analytics_t</computeroutput> struct is a data container that holds all the metrics and histograms for a single model and k-fold.</para>
+<sect2 id="metrics_module_page_1analytics_t_members">
+<title>Members</title><para><itemizedlist>
+<listitem><para><computeroutput>model_template* model</computeroutput>: A pointer to the model template.</para>
+</listitem><listitem><para><computeroutput>model_report* report</computeroutput>: A pointer to the model report.</para>
+</listitem><listitem><para><computeroutput>int this_epoch</computeroutput>: The current epoch number.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;mode_enum, std::map&lt;std::string, TH1F*&gt;&gt; loss_graph</computeroutput>, <computeroutput>loss_node</computeroutput>, <computeroutput>loss_edge</computeroutput>: Maps for storing the loss histograms.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;mode_enum, std::map&lt;std::string, TH1F*&gt;&gt; accuracy_graph</computeroutput>, <computeroutput>accuracy_node</computeroutput>, <computeroutput>accuracy_edge</computeroutput>: Maps for storing the accuracy histograms.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;mode_enum, std::map&lt;std::string, TH1F*&gt;&gt; truth_mass_edge</computeroutput>, <computeroutput>pred_mass_edge</computeroutput>: Maps for storing the mass histograms. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/metrics/metrics.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="tools_module_page" kind="page">
+    <compoundname>tools_module_page</compoundname>
+    <title>Tools Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="tools_module_page_1tools_module_intro">
+<title>Introduction</title><para>The <computeroutput>tools</computeroutput> module provides a collection of utility functions for file system operations, string manipulation, and data encoding/decoding.</para>
+</sect1>
+<sect1 id="tools_module_page_1tools_class">
+<title>The tools Class</title><para>The <computeroutput>tools</computeroutput> class is the main component of this module, providing a set of static methods for various tasks.</para>
+<sect2 id="tools_module_page_1tools_methods_io">
+<title>File System Operations</title><para><itemizedlist>
+<listitem><para><computeroutput>void create_path(std::string input_path)</computeroutput>: Creates a directory path.</para>
+</listitem><listitem><para><computeroutput>void rename(std::string start, std::string target)</computeroutput>: Renames a file or directory.</para>
+</listitem><listitem><para><computeroutput>void delete_path(std::string input_path)</computeroutput>: Deletes a file or directory.</para>
+</listitem><listitem><para><computeroutput>bool is_file(std::string path)</computeroutput>: Checks if a path points to an existing file.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;std::string&gt; ls(std::string path, std::string ext = "")</computeroutput>: Lists the files in a directory, with an optional extension filter.</para>
+</listitem><listitem><para><computeroutput>std::string absolute_path(std::string path)</computeroutput>: Returns the absolute path of a given path.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="tools_module_page_1tools_methods_string">
+<title>String Manipulation</title><para><itemizedlist>
+<listitem><para><computeroutput>void replace(std::string* in, std::string to_repl, std::string repl_w)</computeroutput>: Replaces all occurrences of a substring in a string.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;std::string&gt; split(std::string inpt, std::string search)</computeroutput>: Splits a string by a delimiter.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;std::string&gt; split(std::string in, size_t n)</computeroutput>: Splits a string into chunks of a given size.</para>
+</listitem><listitem><para><computeroutput>std::string hash(std::string input, int len = 18)</computeroutput>: Computes a hash of a string.</para>
+</listitem><listitem><para><computeroutput>std::string to_string(double val)</computeroutput>: Converts a double to a string.</para>
+</listitem><listitem><para><computeroutput>std::string to_string(double val, int prec)</computeroutput>: Converts a double to a string with a specified precision.</para>
+</listitem><listitem><para><computeroutput>bool has_string(std::string* inpt, std::string trg)</computeroutput>: Checks if a string contains a substring.</para>
+</listitem><listitem><para><computeroutput>bool ends_with(std::string* inpt, std::string val)</computeroutput>: Checks if a string ends with a given value.</para>
+</listitem><listitem><para><computeroutput>bool has_value(std::vector&lt;std::string&gt;* data, std::string trg)</computeroutput>: Checks if a vector of strings contains a given value.</para>
+</listitem><listitem><para><computeroutput>std::string lower(std::string* in)</computeroutput>: Converts a string to lowercase.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="tools_module_page_1tools_methods_encoding">
+<title>Base64 Encoding/Decoding</title><para><itemizedlist>
+<listitem><para><computeroutput>std::string encode64(std::string* data)</computeroutput>: Encodes a string using Base64.</para>
+</listitem><listitem><para><computeroutput>std::string encode64(unsigned char const* bytes_to_encode, unsigned int in_len)</computeroutput>: Encodes a byte array using Base64.</para>
+</listitem><listitem><para><computeroutput>std::string decode64(std::string* inpt)</computeroutput>: Decodes a Base64-encoded string.</para>
+</listitem><listitem><para><computeroutput>std::string decode64(std::string const&amp; encoded_string)</computeroutput>: Decodes a Base64-encoded string. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/tools/tools.dox"/>
+  </compounddef>
+</doxygen>

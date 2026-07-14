@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="event__template_8dox" kind="file" language="C++">
     <compoundname>event_template.dox</compoundname>
     <briefdescription>
@@ -84,6 +84,6 @@
 <codeline lineno="74"><highlight class="comment"><sp/>*<sp/>-<sp/>`env(self.ptr.name)`<sp/>and<sp/>`enc(val)`:<sp/>These<sp/>functions<sp/>(presumably<sp/>from<sp/>`AnalysisG.core.tools`)<sp/>handle<sp/>the<sp/>conversion<sp/>between<sp/>C++<sp/>`std::string`<sp/>and<sp/>Python<sp/>`str`.</highlight></codeline>
 <codeline lineno="75"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="modules/event_template.dox"/>
+    <location file="core/event_template.dox"/>
   </compounddef>
 </doxygen>

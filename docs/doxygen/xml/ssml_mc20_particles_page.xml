@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="ssml_mc20_particles_page" kind="page">
     <compoundname>ssml_mc20_particles_page</compoundname>
     <title>ssml_mc20 Truth Particles</title>
     <briefdescription>
+<para>This page provides detailed documentation for the truth-level particle classes used in the <computeroutput>ssml_mc20</computeroutput> event. </para>
     </briefdescription>
     <detaileddescription>
-<para>This page provides detailed documentation for the truth-level particle classes used in the <computeroutput>ssml_mc20</computeroutput> event.</para>
 <sect1 id="ssml_mc20_particles_page_1ssml_mc20_particles_zboson">
 <title>Z-Boson</title><para>The <computeroutput>zboson</computeroutput> class represents a truth-level Z&apos; boson.</para>
 <sect2 id="ssml_mc20_particles_page_1ssml_mc20_particles_zboson_ctor">

@@ -1,0 +1,471 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.15.0" xml:lang="en-US">
+  <compound refid="classAnalysisG_1_1analysis" kind="class"><name>AnalysisG::analysis</name>
+  </compound>
+  <compound refid="structvariable__t" kind="struct"><name>variable_t</name>
+  </compound>
+  <compound refid="core_2analysis_8dox" kind="file"><name>analysis.dox</name>
+  </compound>
+  <compound refid="modules_2analysis_2analysis_8dox" kind="file"><name>analysis.dox</name>
+  </compound>
+  <compound refid="event__template_8dox" kind="file"><name>event_template.dox</name>
+  </compound>
+  <compound refid="graph__template_8dox" kind="file"><name>graph_template.dox</name>
+  </compound>
+  <compound refid="core_2io_8dox" kind="file"><name>io.dox</name>
+  </compound>
+  <compound refid="modules_2io_2io_8dox" kind="file"><name>io.dox</name>
+  </compound>
+  <compound refid="core_2lossfx_8dox" kind="file"><name>lossfx.dox</name>
+  </compound>
+  <compound refid="modules_2lossfx_2lossfx_8dox" kind="file"><name>lossfx.dox</name>
+  </compound>
+  <compound refid="core_2meta_8dox" kind="file"><name>meta.dox</name>
+  </compound>
+  <compound refid="modules_2meta_2meta_8dox" kind="file"><name>meta.dox</name>
+  </compound>
+  <compound refid="metric__template_8dox" kind="file"><name>metric_template.dox</name>
+  </compound>
+  <compound refid="model__template_8dox" kind="file"><name>model_template.dox</name>
+  </compound>
+  <compound refid="core_2notification_8dox" kind="file"><name>notification.dox</name>
+  </compound>
+  <compound refid="modules_2notification_2notification_8dox" kind="file"><name>notification.dox</name>
+  </compound>
+  <compound refid="particle__template_8dox" kind="file"><name>particle_template.dox</name>
+  </compound>
+  <compound refid="core_2plotting_8dox" kind="file"><name>plotting.dox</name>
+  </compound>
+  <compound refid="modules_2plotting_2plotting_8dox" kind="file"><name>plotting.dox</name>
+  </compound>
+  <compound refid="selection__template_8dox" kind="file"><name>selection_template.dox</name>
+  </compound>
+  <compound refid="core_2structs_8dox" kind="file"><name>structs.dox</name>
+  </compound>
+  <compound refid="modules_2structs_2structs_8dox" kind="file"><name>structs.dox</name>
+  </compound>
+  <compound refid="core_2tools_8dox" kind="file"><name>tools.dox</name>
+  </compound>
+  <compound refid="modules_2tools_2tools_8dox" kind="file"><name>tools.dox</name>
+  </compound>
+  <compound refid="event__bsm__4tops_8dox" kind="file"><name>event_bsm_4tops.dox</name>
+  </compound>
+  <compound refid="event__exp__mc20_8dox" kind="file"><name>event_exp_mc20.dox</name>
+  </compound>
+  <compound refid="particle__exp__mc20_8dox" kind="file"><name>particle_exp_mc20.dox</name>
+  </compound>
+  <compound refid="events_2bsm__4tops_2event_8dox" kind="file"><name>event.dox</name>
+  </compound>
+  <compound refid="events_2exp__mc20_2event_8dox" kind="file"><name>event.dox</name>
+  </compound>
+  <compound refid="events_2gnn_2event_8dox" kind="file"><name>event.dox</name>
+  </compound>
+  <compound refid="events_2ssml__mc20_2event_8dox" kind="file"><name>event.dox</name>
+  </compound>
+  <compound refid="modules_2event_2event_8dox" kind="file"><name>event.dox</name>
+  </compound>
+  <compound refid="selections_2mc16_2event_2event_8dox" kind="file"><name>event.dox</name>
+  </compound>
+  <compound refid="event__gnn_8dox" kind="file"><name>event_gnn.dox</name>
+  </compound>
+  <compound refid="particle__gnn_8dox" kind="file"><name>particle_gnn.dox</name>
+  </compound>
+  <compound refid="bsm__4tops_2particles_8dox" kind="file"><name>particles.dox</name>
+  </compound>
+  <compound refid="exp__mc20_2particles_8dox" kind="file"><name>particles.dox</name>
+  </compound>
+  <compound refid="gnn_2particles_8dox" kind="file"><name>particles.dox</name>
+  </compound>
+  <compound refid="ssml__mc20_2particles_8dox" kind="file"><name>particles.dox</name>
+  </compound>
+  <compound refid="event__ssml__mc20_8dox" kind="file"><name>event_ssml_mc20.dox</name>
+  </compound>
+  <compound refid="jets_8dox" kind="file"><name>jets.dox</name>
+  </compound>
+  <compound refid="leptons_8dox" kind="file"><name>leptons.dox</name>
+  </compound>
+  <compound refid="graph__bsm__4tops_8dox" kind="file"><name>graph_bsm_4tops.dox</name>
+  </compound>
+  <compound refid="bsm__4tops_2graphs_8dox" kind="file"><name>graphs.dox</name>
+  </compound>
+  <compound refid="exp__mc20_2graphs_8dox" kind="file"><name>graphs.dox</name>
+  </compound>
+  <compound refid="ssml__mc20_2graphs_8dox" kind="file"><name>graphs.dox</name>
+  </compound>
+  <compound refid="graph__exp__mc20_8dox" kind="file"><name>graph_exp_mc20.dox</name>
+  </compound>
+  <compound refid="graph__ssml__mc20_8dox" kind="file"><name>graph_ssml_mc20.dox</name>
+  </compound>
+  <compound refid="mainpage_8dox" kind="file"><name>mainpage.dox</name>
+  </compound>
+  <compound refid="accuracy_8dox" kind="file"><name>accuracy.dox</name>
+  </compound>
+  <compound refid="metric__accuracy_8dox" kind="file"><name>metric_accuracy.dox</name>
+  </compound>
+  <compound refid="metric__pagerank_8dox" kind="file"><name>metric_pagerank.dox</name>
+  </compound>
+  <compound refid="pagerank_8dox" kind="file"><name>pagerank.dox</name>
+  </compound>
+  <compound refid="grift_8dox" kind="file"><name>grift.dox</name>
+  </compound>
+  <compound refid="RecursiveGraphNeuralNetwork_8dox" kind="file"><name>RecursiveGraphNeuralNetwork.dox</name>
+  </compound>
+  <compound refid="container_8dox" kind="file"><name>container.dox</name>
+  </compound>
+  <compound refid="dataloader_8dox" kind="file"><name>dataloader.dox</name>
+  </compound>
+  <compound refid="metric_8dox" kind="file"><name>metric.dox</name>
+  </compound>
+  <compound refid="metrics_8dox" kind="file"><name>metrics.dox</name>
+  </compound>
+  <compound refid="model_8dox" kind="file"><name>model.dox</name>
+  </compound>
+  <compound refid="htilde_8dox" kind="file"><name>htilde.dox</name>
+  </compound>
+  <compound refid="optimizer_8dox" kind="file"><name>optimizer.dox</name>
+  </compound>
+  <compound refid="particle_8dox" kind="file"><name>particle.dox</name>
+  </compound>
+  <compound refid="sampletracer_8dox" kind="file"><name>sampletracer.dox</name>
+  </compound>
+  <compound refid="selection_8dox" kind="file"><name>selection.dox</name>
+  </compound>
+  <compound refid="merge__cast_8dox" kind="file"><name>merge_cast.dox</name>
+  </compound>
+  <compound refid="tensor__cast_8dox" kind="file"><name>tensor_cast.dox</name>
+  </compound>
+  <compound refid="typecasting_8dox" kind="file"><name>typecasting.dox</name>
+  </compound>
+  <compound refid="vector__cast_8dox" kind="file"><name>vector_cast.dox</name>
+  </compound>
+  <compound refid="cutils_8dox" kind="file"><name>cutils.dox</name>
+  </compound>
+  <compound refid="modules_2graph_2graph_8dox" kind="file"><name>graph.dox</name>
+  </compound>
+  <compound refid="pyc_2graph_8dox" kind="file"><name>graph.dox</name>
+  </compound>
+  <compound refid="interface_8dox" kind="file"><name>interface.dox</name>
+  </compound>
+  <compound refid="nusol_8dox" kind="file"><name>nusol.dox</name>
+  </compound>
+  <compound refid="operators_8dox" kind="file"><name>operators.dox</name>
+  </compound>
+  <compound refid="physics_8dox" kind="file"><name>physics.dox</name>
+  </compound>
+  <compound refid="pyc_8dox" kind="file"><name>pyc.dox</name>
+  </compound>
+  <compound refid="transform_8dox" kind="file"><name>transform.dox</name>
+  </compound>
+  <compound refid="regions_8dox" kind="file"><name>regions.dox</name>
+  </compound>
+  <compound refid="met_8dox" kind="file"><name>met.dox</name>
+  </compound>
+  <compound refid="childrenkinematics_8dox" kind="file"><name>childrenkinematics.dox</name>
+  </compound>
+  <compound refid="decaymodes_8dox" kind="file"><name>decaymodes.dox</name>
+  </compound>
+  <compound refid="parton_8dox" kind="file"><name>parton.dox</name>
+  </compound>
+  <compound refid="topjets_8dox" kind="file"><name>topjets.dox</name>
+  </compound>
+  <compound refid="topkinematics_8dox" kind="file"><name>topkinematics.dox</name>
+  </compound>
+  <compound refid="topmatching_8dox" kind="file"><name>topmatching.dox</name>
+  </compound>
+  <compound refid="toptruthjets_8dox" kind="file"><name>toptruthjets.dox</name>
+  </compound>
+  <compound refid="zprime_8dox" kind="file"><name>zprime.dox</name>
+  </compound>
+  <compound refid="matching_8dox" kind="file"><name>matching.dox</name>
+  </compound>
+  <compound refid="topkinematics__mc20_8dox" kind="file"><name>topkinematics_mc20.dox</name>
+  </compound>
+  <compound refid="topmatching__mc20_8dox" kind="file"><name>topmatching_mc20.dox</name>
+  </compound>
+  <compound refid="Analysis_page" kind="page"><name>Analysis_page</name>
+  </compound>
+  <compound refid="EventTemplate_page" kind="page"><name>EventTemplate_page</name>
+  </compound>
+  <compound refid="GraphTemplate_page" kind="page"><name>GraphTemplate_page</name>
+  </compound>
+  <compound refid="IOCython_page" kind="page"><name>IOCython_page</name>
+  </compound>
+  <compound refid="OptimizerConfig_page" kind="page"><name>OptimizerConfig_page</name>
+  </compound>
+  <compound refid="MetaModule_page" kind="page"><name>MetaModule_page</name>
+  </compound>
+  <compound refid="MetricTemplate_page" kind="page"><name>MetricTemplate_page</name>
+  </compound>
+  <compound refid="ModelTemplate_page" kind="page"><name>ModelTemplate_page</name>
+  </compound>
+  <compound refid="Notification_page" kind="page"><name>Notification_page</name>
+  </compound>
+  <compound refid="ParticleTemplate_page" kind="page"><name>ParticleTemplate_page</name>
+  </compound>
+  <compound refid="PlottingModule_page" kind="page"><name>PlottingModule_page</name>
+  </compound>
+  <compound refid="SelectionTemplate_page" kind="page"><name>SelectionTemplate_page</name>
+  </compound>
+  <compound refid="StructsModule_page" kind="page"><name>StructsModule_page</name>
+  </compound>
+  <compound refid="ToolsModule_page" kind="page"><name>ToolsModule_page</name>
+  </compound>
+  <compound refid="bsm_4tops_event_page" kind="page"><name>bsm_4tops_event_page</name>
+  </compound>
+  <compound refid="BSM4TopsEvent_page" kind="page"><name>BSM4TopsEvent_page</name>
+  </compound>
+  <compound refid="bsm_4tops_particles_page" kind="page"><name>bsm_4tops_particles_page</name>
+  </compound>
+  <compound refid="exp_mc20_event_page" kind="page"><name>exp_mc20_event_page</name>
+  </compound>
+  <compound refid="ExpMC20Event_page" kind="page"><name>ExpMC20Event_page</name>
+  </compound>
+  <compound refid="ExpMC20Particles_page" kind="page"><name>ExpMC20Particles_page</name>
+  </compound>
+  <compound refid="exp_mc20_particles_page" kind="page"><name>exp_mc20_particles_page</name>
+  </compound>
+  <compound refid="gnn_event_page" kind="page"><name>gnn_event_page</name>
+  </compound>
+  <compound refid="EventGNN_page" kind="page"><name>EventGNN_page</name>
+  </compound>
+  <compound refid="GNNParticles_page" kind="page"><name>GNNParticles_page</name>
+  </compound>
+  <compound refid="gnn_particles_page" kind="page"><name>gnn_particles_page</name>
+  </compound>
+  <compound refid="ssml_mc20_event_page" kind="page"><name>ssml_mc20_event_page</name>
+  </compound>
+  <compound refid="SSML_MC20Event_page" kind="page"><name>SSML_MC20Event_page</name>
+  </compound>
+  <compound refid="ssml_mc20_jets_page" kind="page"><name>ssml_mc20_jets_page</name>
+  </compound>
+  <compound refid="ssml_mc20_leptons_page" kind="page"><name>ssml_mc20_leptons_page</name>
+  </compound>
+  <compound refid="ssml_mc20_particles_page" kind="page"><name>ssml_mc20_particles_page</name>
+  </compound>
+  <compound refid="BSM4TopsGraphs_page" kind="page"><name>BSM4TopsGraphs_page</name>
+  </compound>
+  <compound refid="bsm_4tops_graphs_page" kind="page"><name>bsm_4tops_graphs_page</name>
+  </compound>
+  <compound refid="ExpMC20Graphs_page" kind="page"><name>ExpMC20Graphs_page</name>
+  </compound>
+  <compound refid="exp_mc20_graphs_page" kind="page"><name>exp_mc20_graphs_page</name>
+  </compound>
+  <compound refid="SSML_MC20Graphs_page" kind="page"><name>SSML_MC20Graphs_page</name>
+  </compound>
+  <compound refid="ssml_mc20_graphs_page" kind="page"><name>ssml_mc20_graphs_page</name>
+  </compound>
+  <compound refid="accuracy_metric_page" kind="page"><name>accuracy_metric_page</name>
+  </compound>
+  <compound refid="AccuracyMetric_page" kind="page"><name>AccuracyMetric_page</name>
+  </compound>
+  <compound refid="PageRankMetric_page" kind="page"><name>PageRankMetric_page</name>
+  </compound>
+  <compound refid="pagerank_metric_page" kind="page"><name>pagerank_metric_page</name>
+  </compound>
+  <compound refid="GriftModel_page" kind="page"><name>GriftModel_page</name>
+  </compound>
+  <compound refid="RecursiveGraphNeuralNetwork_page" kind="page"><name>RecursiveGraphNeuralNetwork_page</name>
+  </compound>
+  <compound refid="container_module_page" kind="page"><name>container_module_page</name>
+  </compound>
+  <compound refid="dataloader_module_page" kind="page"><name>dataloader_module_page</name>
+  </compound>
+  <compound refid="event_module_page" kind="page"><name>event_module_page</name>
+  </compound>
+  <compound refid="graph_module_page" kind="page"><name>graph_module_page</name>
+  </compound>
+  <compound refid="io_module_page" kind="page"><name>io_module_page</name>
+  </compound>
+  <compound refid="lossfx_module_page" kind="page"><name>lossfx_module_page</name>
+  </compound>
+  <compound refid="meta_module_page" kind="page"><name>meta_module_page</name>
+  </compound>
+  <compound refid="metric_module_page" kind="page"><name>metric_module_page</name>
+  </compound>
+  <compound refid="metrics_module_page" kind="page"><name>metrics_module_page</name>
+  </compound>
+  <compound refid="model_module_page" kind="page"><name>model_module_page</name>
+  </compound>
+  <compound refid="notification_module_page" kind="page"><name>notification_module_page</name>
+  </compound>
+  <compound refid="conuix_page" kind="page"><name>conuix_page</name>
+  </compound>
+  <compound refid="optimizer_module_page" kind="page"><name>optimizer_module_page</name>
+  </compound>
+  <compound refid="particle_module_page" kind="page"><name>particle_module_page</name>
+  </compound>
+  <compound refid="plotting_module_page" kind="page"><name>plotting_module_page</name>
+  </compound>
+  <compound refid="sampletracer_module_page" kind="page"><name>sampletracer_module_page</name>
+  </compound>
+  <compound refid="selection_module_page" kind="page"><name>selection_module_page</name>
+  </compound>
+  <compound refid="structs_module_page" kind="page"><name>structs_module_page</name>
+  </compound>
+  <compound refid="tools_module_page" kind="page"><name>tools_module_page</name>
+  </compound>
+  <compound refid="typecasting_module_page" kind="page"><name>typecasting_module_page</name>
+  </compound>
+  <compound refid="cutils_page" kind="page"><name>cutils_page</name>
+  </compound>
+  <compound refid="graph_page" kind="page"><name>graph_page</name>
+  </compound>
+  <compound refid="interface_page" kind="page"><name>interface_page</name>
+  </compound>
+  <compound refid="nusol_page" kind="page"><name>nusol_page</name>
+  </compound>
+  <compound refid="operators_page" kind="page"><name>operators_page</name>
+  </compound>
+  <compound refid="physics_page" kind="page"><name>physics_page</name>
+  </compound>
+  <compound refid="pyc_page" kind="page"><name>pyc_page</name>
+  </compound>
+  <compound refid="transform_page" kind="page"><name>transform_page</name>
+  </compound>
+  <compound refid="RegionsSelection_page" kind="page"><name>RegionsSelection_page</name>
+  </compound>
+  <compound refid="METSelection_page" kind="page"><name>METSelection_page</name>
+  </compound>
+  <compound refid="ChildrenKinematicsSelection_page" kind="page"><name>ChildrenKinematicsSelection_page</name>
+  </compound>
+  <compound refid="DecayModesSelection_page" kind="page"><name>DecayModesSelection_page</name>
+  </compound>
+  <compound refid="EventSelection_page" kind="page"><name>EventSelection_page</name>
+  </compound>
+  <compound refid="PartonSelection_page" kind="page"><name>PartonSelection_page</name>
+  </compound>
+  <compound refid="TopJetsSelection_page" kind="page"><name>TopJetsSelection_page</name>
+  </compound>
+  <compound refid="TopKinematicsSelection_page" kind="page"><name>TopKinematicsSelection_page</name>
+  </compound>
+  <compound refid="TopMatchingSelection_page" kind="page"><name>TopMatchingSelection_page</name>
+  </compound>
+  <compound refid="TopTruthJetsSelection_page" kind="page"><name>TopTruthJetsSelection_page</name>
+  </compound>
+  <compound refid="ZPrimeSelection_page" kind="page"><name>ZPrimeSelection_page</name>
+  </compound>
+  <compound refid="MC20TopMatchingSelection_page" kind="page"><name>MC20TopMatchingSelection_page</name>
+  </compound>
+  <compound refid="MC20TopKinematicsSelection_page" kind="page"><name>MC20TopKinematicsSelection_page</name>
+  </compound>
+  <compound refid="dir_f090470839cdbf7be500e6fc1ffed126" kind="dir"><name>metrics/accuracy</name>
+  </compound>
+  <compound refid="dir_3f9450a4e0f0296540f6b5606b0d570c" kind="dir"><name>modules/analysis</name>
+  </compound>
+  <compound refid="dir_6885d297930b69d0328b70243704877b" kind="dir"><name>selections/analysis</name>
+  </compound>
+  <compound refid="dir_0f133139428cd3d7561565c70572be73" kind="dir"><name>events/bsm_4tops</name>
+  </compound>
+  <compound refid="dir_0b245b1405edd58251adf99dc048dd17" kind="dir"><name>graphs/bsm_4tops</name>
+  </compound>
+  <compound refid="dir_22822b97f0af7f3754dc9599ed767a96" kind="dir"><name>selections/mc16/childrenkinematics</name>
+  </compound>
+  <compound refid="dir_b7278174cb2727ebbc9eb1774fdf9330" kind="dir"><name>modules/container</name>
+  </compound>
+  <compound refid="dir_7b0d2eaa525628923d27cd26bc623b08" kind="dir"><name>modules/nusol/conuix</name>
+  </compound>
+  <compound refid="dir_4270bfced15e0e73154b13468c7c9ad9" kind="dir"><name>core</name>
+  </compound>
+  <compound refid="dir_512b3fa5ea8b5b0e626ca3957b840e90" kind="dir"><name>modules/dataloader</name>
+  </compound>
+  <compound refid="dir_4fa79e83a97f3e176c62f00d26201ba1" kind="dir"><name>selections/mc16/decaymodes</name>
+  </compound>
+  <compound refid="dir_4f62ca89e6e2b2dab0d5f15908e4b9e4" kind="dir"><name>modules/event</name>
+  </compound>
+  <compound refid="dir_b6d51eaf04b0c0b8b937b5e2a19354c6" kind="dir"><name>selections/mc16/event</name>
+  </compound>
+  <compound refid="dir_7d604191edc08013a26f918aa8ef79ad" kind="dir"><name>events</name>
+  </compound>
+  <compound refid="dir_438cce133384f973360f389a59082800" kind="dir"><name>selections/example</name>
+  </compound>
+  <compound refid="dir_bb1b57868d0ed55cbf44e35df64feb04" kind="dir"><name>events/exp_mc20</name>
+  </compound>
+  <compound refid="dir_b10912f1a09fe7b891e27c82af01f9d0" kind="dir"><name>graphs/exp_mc20</name>
+  </compound>
+  <compound refid="dir_030b4031ff7ee61dbbd5f985d6322d9e" kind="dir"><name>events/gnn</name>
+  </compound>
+  <compound refid="dir_9196830e2b12fddb888cddff15227a7b" kind="dir"><name>modules/graph</name>
+  </compound>
+  <compound refid="dir_014563f092b9a36e69e485d819dd177d" kind="dir"><name>graphs</name>
+  </compound>
+  <compound refid="dir_84c920c1d5812ef6877905e563bf9263" kind="dir"><name>models/Grift</name>
+  </compound>
+  <compound refid="dir_bf23fab3514d8be3fd87af74ed79b4ba" kind="dir"><name>modules/io</name>
+  </compound>
+  <compound refid="dir_4747c4b8680ed1915c0a575a37de3dba" kind="dir"><name>modules/lossfx</name>
+  </compound>
+  <compound refid="dir_54fdcfa4280221a3a57777b53f7935d1" kind="dir"><name>selections/mc20/matching</name>
+  </compound>
+  <compound refid="dir_217c73d33aa2f2528e57fa1905ac8ac0" kind="dir"><name>selections/mc16</name>
+  </compound>
+  <compound refid="dir_c628fb23f0c5d62ba84a7e1ec7b400b5" kind="dir"><name>selections/mc20</name>
+  </compound>
+  <compound refid="dir_1772d6a3b7da76172735ed2c9a787b95" kind="dir"><name>selections/example/met</name>
+  </compound>
+  <compound refid="dir_4b156fa65eb4bb6e158ad4d55ec0e96b" kind="dir"><name>modules/meta</name>
+  </compound>
+  <compound refid="dir_73279208217045b8683e504770108e9d" kind="dir"><name>modules/metric</name>
+  </compound>
+  <compound refid="dir_9ae5a78382c3df588883652dc9476a9d" kind="dir"><name>metrics</name>
+  </compound>
+  <compound refid="dir_2f556ce6c711b36280412cfc1efb7dd0" kind="dir"><name>modules/metrics</name>
+  </compound>
+  <compound refid="dir_e9cdecfa940c25caed6eef2d1cacc6e1" kind="dir"><name>modules/model</name>
+  </compound>
+  <compound refid="dir_1ae4179d5e953611aae20c997279e02c" kind="dir"><name>models</name>
+  </compound>
+  <compound refid="dir_e05d7e2b1ecd646af5bb94391405f3b5" kind="dir"><name>modules</name>
+  </compound>
+  <compound refid="dir_137f1a5752e9e019398a22c961dc9e99" kind="dir"><name>modules/notification</name>
+  </compound>
+  <compound refid="dir_13c7adf932cf635937c85b7453dcf430" kind="dir"><name>modules/nusol</name>
+  </compound>
+  <compound refid="dir_89044f0e1fd73be34bd7e15062fbd72a" kind="dir"><name>modules/optimizer</name>
+  </compound>
+  <compound refid="dir_f3d6062ae31b91cc6d245d5a5cc94819" kind="dir"><name>metrics/pagerank</name>
+  </compound>
+  <compound refid="dir_21bfaa142d9585ac3a653d0c5274d2c0" kind="dir"><name>modules/particle</name>
+  </compound>
+  <compound refid="dir_f2bf50629a429bd12b7da059afdc6cf7" kind="dir"><name>selections/mc16/parton</name>
+  </compound>
+  <compound refid="dir_7269e5c41abcfc884652ba23fb53d8fd" kind="dir"><name>modules/plotting</name>
+  </compound>
+  <compound refid="dir_62bc8075dda85828d8b9c2b3f2c01549" kind="dir"><name>pyc</name>
+  </compound>
+  <compound refid="dir_fe57f14a16ecd34363a14f9de1fd51f9" kind="dir"><name>models/RecursiveGraphNeuralNetwork</name>
+  </compound>
+  <compound refid="dir_1904a8208d180e5550f2a08ff0e4a843" kind="dir"><name>selections/analysis/regions</name>
+  </compound>
+  <compound refid="dir_320eb61a6b9841034453a1d82e268108" kind="dir"><name>modules/sampletracer</name>
+  </compound>
+  <compound refid="dir_192b6d98d9c9f880e689b03554527217" kind="dir"><name>modules/selection</name>
+  </compound>
+  <compound refid="dir_f7bab29040f56711375e13800667d539" kind="dir"><name>selections</name>
+  </compound>
+  <compound refid="dir_bf9accd39ab31d22606c1f7cbbd2d08d" kind="dir"><name>events/ssml_mc20</name>
+  </compound>
+  <compound refid="dir_d0a8bdc5043d45daff3ee7d468cbf7db" kind="dir"><name>graphs/ssml_mc20</name>
+  </compound>
+  <compound refid="dir_be6c6712005854e1ce7ad12a0eef9a93" kind="dir"><name>modules/structs</name>
+  </compound>
+  <compound refid="dir_991001ef066643793c958f968aa10338" kind="dir"><name>modules/tools</name>
+  </compound>
+  <compound refid="dir_e372460a25c959002ef56e8992cb7584" kind="dir"><name>selections/mc16/topjets</name>
+  </compound>
+  <compound refid="dir_688adb0efc40cffe5835ad822e4a8040" kind="dir"><name>selections/mc16/topkinematics</name>
+  </compound>
+  <compound refid="dir_90494a79c80303b5554f3296843e9aef" kind="dir"><name>selections/mc20/topkinematics</name>
+  </compound>
+  <compound refid="dir_ac80bb13f1aa2a9c9e1fca9c27fa37e5" kind="dir"><name>selections/mc16/topmatching</name>
+  </compound>
+  <compound refid="dir_350d61c487fef4cce104db46804781df" kind="dir"><name>selections/mc20/topmatching</name>
+  </compound>
+  <compound refid="dir_82f4a673a0ce8bbf4383134ac5390857" kind="dir"><name>selections/mc16/toptruthjets</name>
+  </compound>
+  <compound refid="dir_1e2f39263fdf7b4e6fbf21d435567732" kind="dir"><name>modules/typecasting</name>
+  </compound>
+  <compound refid="dir_6c54cb48c6bf200a6a67f010ec28294b" kind="dir"><name>selections/mc16/zprime</name>
+  </compound>
+  <compound refid="indexpage" kind="page"><name>index</name>
+  </compound>
+</doxygenindex>

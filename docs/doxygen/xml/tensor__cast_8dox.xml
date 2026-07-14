@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="tensor__cast_8dox" kind="file" language="C++">
+    <compoundname>tensor_cast.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the tensor_cast.h header. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="tensor__cast_8dox_1tensor_cast_intro">
+<title>tensor_cast.h</title><para>The <computeroutput>tensor_cast.h</computeroutput> header contains template logic used to safely rebuild N-dimensional <computeroutput>torch::Tensor</computeroutput> objects from nested C++ <computeroutput>std::vector</computeroutput> types. This is effectively the inverse operation to <computeroutput>vector_cast.h</computeroutput>, primarily used when reconstructing tensors from ROOT event buffers. </para>
+</sect1>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>tensor_cast.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>tensor_cast.h<sp/>header.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@section<sp/>tensor_cast_intro<sp/>tensor_cast.h</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>The<sp/>`tensor_cast.h`<sp/>header<sp/>contains<sp/>template<sp/>logic<sp/>used<sp/>to<sp/>safely<sp/>rebuild<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>N-dimensional<sp/>`torch::Tensor`<sp/>objects<sp/>from<sp/>nested<sp/>C++<sp/>`std::vector`<sp/>types.<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>This<sp/>is<sp/>effectively<sp/>the<sp/>inverse<sp/>operation<sp/>to<sp/>`vector_cast.h`,<sp/>primarily<sp/>used<sp/></highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>when<sp/>reconstructing<sp/>tensors<sp/>from<sp/>ROOT<sp/>event<sp/>buffers.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>G&gt;<sp/>void<sp/>scout_dim(const<sp/>std::vector&lt;G&gt;*<sp/>vec,<sp/>int*<sp/>mx_dim)</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Recursively<sp/>explores<sp/>a<sp/>nested<sp/>vector<sp/>structure<sp/>to<sp/>find<sp/>its<sp/>maximum<sp/>inner<sp/>dimensionality.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@param<sp/>vec<sp/>Pointer<sp/>to<sp/>the<sp/>input<sp/>nested<sp/>vector.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@param<sp/>mx_dim<sp/>Pointer<sp/>to<sp/>the<sp/>integer<sp/>storing<sp/>the<sp/>discovered<sp/>maximum<sp/>dimension.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>g&gt;<sp/>void<sp/>nulls(const<sp/>std::vector&lt;g&gt;*<sp/>d,<sp/>int*<sp/>mx_dim)</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Pads<sp/>ragged<sp/>nested<sp/>vectors<sp/>with<sp/>default<sp/>null/negative-one<sp/>values<sp/>to<sp/>ensure<sp/>uniform<sp/>dimensionality.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@param<sp/>d<sp/>Pointer<sp/>to<sp/>the<sp/>vector<sp/>to<sp/>be<sp/>padded.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@param<sp/>mx_dim<sp/>Pointer<sp/>to<sp/>the<sp/>required<sp/>dimension<sp/>size.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>g&gt;<sp/>bool<sp/>standard(const<sp/>std::vector&lt;g&gt;*<sp/>vec,<sp/>int*<sp/>mx_dim)</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Validates<sp/>and<sp/>forcefully<sp/>standardizes<sp/>the<sp/>shape<sp/>of<sp/>a<sp/>vector<sp/>by<sp/>applying<sp/>padding.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@param<sp/>vec<sp/>Pointer<sp/>to<sp/>the<sp/>vector<sp/>to<sp/>validate.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>@param<sp/>mx_dim<sp/>Pointer<sp/>to<sp/>the<sp/>target<sp/>maximum<sp/>dimension.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@return<sp/>True<sp/>if<sp/>the<sp/>vector<sp/>shape<sp/>matches<sp/>expectations.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>G,<sp/>typename<sp/>g&gt;<sp/>static<sp/>void<sp/>as_primitive(std::vector&lt;G&gt;*<sp/>data,<sp/>std::vector&lt;g&gt;*<sp/>linear,<sp/>std::vector&lt;signed<sp/>long&gt;*<sp/>dims,<sp/>unsigned<sp/>int<sp/>depth)</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Flattens<sp/>a<sp/>dynamically<sp/>typed<sp/>nested<sp/>vector<sp/>into<sp/>a<sp/>continuous<sp/>1D<sp/>primitive<sp/>array<sp/>and<sp/>logs<sp/>its<sp/>original<sp/>shape.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>the<sp/>input<sp/>multi-dimensional<sp/>vector.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@param<sp/>linear<sp/>Pointer<sp/>to<sp/>the<sp/>output<sp/>1D<sp/>flattened<sp/>vector.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@param<sp/>dims<sp/>Pointer<sp/>to<sp/>the<sp/>vector<sp/>tracking<sp/>the<sp/>discovered<sp/>dimension<sp/>shapes.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@param<sp/>depth<sp/>Current<sp/>recursive<sp/>depth.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>G,<sp/>typename<sp/>g&gt;<sp/>static<sp/>torch::Tensor<sp/>build_tensor(std::vector&lt;G&gt;*<sp/>_data,<sp/>at::ScalarType<sp/>_op,<sp/>g,<sp/>torch::TensorOptions*<sp/>op)</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Orchestrates<sp/>the<sp/>compilation<sp/>of<sp/>a<sp/>nested<sp/>vector<sp/>back<sp/>into<sp/>a<sp/>contiguous<sp/>PyTorch<sp/>tensor.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>It<sp/>utilizes<sp/>`scout_dim`<sp/>and<sp/>`standard`<sp/>to<sp/>ensure<sp/>uniform<sp/>shape,<sp/>flattens<sp/>the<sp/>vector<sp/></highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>using<sp/>`as_primitive`,<sp/>and<sp/>uses<sp/>`torch::from_blob`<sp/>to<sp/>initialize<sp/>the<sp/>target<sp/>tensor<sp/>without<sp/></highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>excessive<sp/>data<sp/>copies<sp/>where<sp/>possible.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@param<sp/>_data<sp/>Pointer<sp/>to<sp/>the<sp/>source<sp/>nested<sp/>C++<sp/>vector.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@param<sp/>_op<sp/>The<sp/>target<sp/>`torch::dtype`<sp/>enum.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>@param<sp/>op<sp/>Tensor<sp/>configuration<sp/>options<sp/>(e.g.,<sp/>target<sp/>device).</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@return<sp/>The<sp/>reconstructed<sp/>`torch::Tensor`<sp/>object.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/typecasting/tensor_cast.dox"/>
+  </compounddef>
+</doxygen>

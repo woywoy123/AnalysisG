@@ -1,5 +1,5 @@
 /**
- * @file operators.dox
+ * @file operators.h
  * @brief Detailed documentation for the operators module within the AnalysisG.pyc framework, including its CUDA kernel implementations for optimized mathematical and logical operations.
  *
  * @page operators_page operators
@@ -9,4 +9,39 @@
  *
  * @section operators_contents Contents
  * This module contains optimized operator functions, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ *
+ * @fn torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Computes the dot product between two tensors.
+ *
+ * @fn torch::Tensor operators_::Cross(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Computes the cross product between two 3D vector tensors.
+ *
+ * @fn torch::Tensor operators_::Determinant(torch::Tensor* matrix)
+ * @brief Calculates the determinant of a batch of square matrices.
+ *
+ * @fn torch::Tensor operators_::CosTheta(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Computes the cosine of the angle between two tensors.
+ *
+ * @fn torch::Tensor operators_::SinTheta(torch::Tensor* v1, torch::Tensor* v2)
+ * @brief Computes the sine of the angle between two tensors.
+ *
+ * @fn torch::Tensor operators_::Pi_2(torch::Tensor* trn)
+ * @brief Ensures angular boundaries remain within `-pi` and `pi`.
+ *
+ * @fn torch::Tensor operators_::Rx(torch::Tensor* angle)
+ * @brief Generates a 3D rotation matrix around the X-axis for a given angle.
+ *
+ * @fn torch::Tensor operators_::Ry(torch::Tensor* angle)
+ * @brief Generates a 3D rotation matrix around the Y-axis for a given angle.
+ *
+ * @fn torch::Tensor operators_::Rz(torch::Tensor* angle)
+ * @brief Generates a 3D rotation matrix around the Z-axis for a given angle.
+ *
+ * @fn std::tuple<torch::Tensor, torch::Tensor> operators_::Inverse(torch::Tensor* matrix)
+ * @brief Computes the inverse of a batch of square matrices.
+ * @return A tuple containing the inverse matrix and a boolean tensor indicating invertibility.
+ *
+ * @fn std::tuple<torch::Tensor, torch::Tensor> operators_::Eigenvalue(torch::Tensor* matrix)
+ * @brief Computes the eigenvalues and eigenvectors for a batch of matrices.
+ * @return A tuple containing the eigenvalues and the corresponding eigenvectors.
  */

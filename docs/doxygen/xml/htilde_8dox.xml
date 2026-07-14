@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="htilde_8dox" kind="file" language="C++">
+    <compoundname>htilde.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the Conuix namespace, which provides tools for the kinematic reconstruction of particles. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>htilde.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>Conuix<sp/>namespace,<sp/>which<sp/>provides<sp/>tools<sp/>for<sp/>the<sp/>kinematic<sp/>reconstruction<sp/>of<sp/>particles.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>conuix_page<sp/>Conuix<sp/>Neutrino<sp/>Solver</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>conuix_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`Conuix`<sp/>namespace<sp/>provides<sp/>a<sp/>set<sp/>of<sp/>functions<sp/>for<sp/>the<sp/>kinematic<sp/>reconstruction<sp/>of<sp/>particles,<sp/>particularly<sp/>for<sp/>solving<sp/>the<sp/>neutrino<sp/>momentum<sp/>in<sp/>top<sp/>quark<sp/>decays.<sp/>It<sp/>is<sp/>based<sp/>on<sp/>the<sp/>&quot;conformal<sp/>solution&quot;<sp/>method,<sp/>which<sp/>involves<sp/>a<sp/>series<sp/>of<sp/>geometric<sp/>transformations<sp/>to<sp/>solve<sp/>for<sp/>the<sp/>neutrino&apos;s<sp/>four-momentum.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>conuix_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`Conuix`<sp/>namespace<sp/>contains<sp/>the<sp/>following<sp/>functions:</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_kinematic<sp/>get_kinematic</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_kinematic(particle_template*<sp/>ptr,<sp/>Conuix::kinematic_t*<sp/>kin)`:<sp/>Extracts<sp/>the<sp/>kinematic<sp/>properties<sp/>(beta,<sp/>mass,<sp/>energy)<sp/>from<sp/>a<sp/>`particle_template`<sp/>object<sp/>and<sp/>stores<sp/>them<sp/>in<sp/>a<sp/>`kinematic_t`<sp/>struct.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_rotation<sp/>get_rotation</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_rotation(particle_template*<sp/>jet,<sp/>particle_template*<sp/>lep,<sp/>Conuix::rotation_t*<sp/>rot)`:<sp/>Calculates<sp/>the<sp/>rotation<sp/>matrix<sp/>required<sp/>to<sp/>align<sp/>the<sp/>lepton&apos;s<sp/>momentum<sp/>with<sp/>the<sp/>z-axis.<sp/>This<sp/>is<sp/>a<sp/>key<sp/>step<sp/>in<sp/>the<sp/>conformal<sp/>solution<sp/>method.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_psi_theta_mapping<sp/>get_psi_theta_mapping</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_psi_theta_mapping(Conuix::base_t*<sp/>base,<sp/>Conuix::thetapsi_t*<sp/>msp)`:<sp/>Calculates<sp/>the<sp/>mapping<sp/>between<sp/>the<sp/>psi<sp/>and<sp/>theta<sp/>angles,<sp/>which<sp/>are<sp/>used<sp/>to<sp/>parameterize<sp/>the<sp/>neutrino&apos;s<sp/>momentum.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_base<sp/>get_base</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_base(Conuix::kinematic_t*<sp/>jet,<sp/>Conuix::kinematic_t*<sp/>lep,<sp/>Conuix::base_t*<sp/>bs)`:<sp/>Calculates<sp/>the<sp/>base<sp/>parameters<sp/>for<sp/>the<sp/>conformal<sp/>solution,<sp/>including<sp/>the<sp/>omega<sp/>and<sp/>rbl<sp/>values.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_pencil<sp/>get_pencil</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_pencil(Conuix::kinematic_t*<sp/>lep,<sp/>Conuix::kinematic_t*<sp/>nu,<sp/>Conuix::base_t*<sp/>base,<sp/>Conuix::pencil_t*<sp/>pen)`:<sp/>Calculates<sp/>the<sp/>parameters<sp/>of<sp/>the<sp/>&quot;pencil<sp/>of<sp/>circles,&quot;<sp/>which<sp/>represents<sp/>the<sp/>possible<sp/>solutions<sp/>for<sp/>the<sp/>neutrino&apos;s<sp/>momentum.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_sx<sp/>get_sx</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_sx(Conuix::base_t*<sp/>base,<sp/>Conuix::Sx_t*<sp/>sx)`:<sp/>Calculates<sp/>the<sp/>parameters<sp/>for<sp/>the<sp/>Sx<sp/>component<sp/>of<sp/>the<sp/>neutrino&apos;s<sp/>momentum.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_sy<sp/>get_sy</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_sy(Conuix::base_t*<sp/>base,<sp/>Conuix::Sy_t*<sp/>sy)`:<sp/>Calculates<sp/>the<sp/>parameters<sp/>for<sp/>the<sp/>Sy<sp/>component<sp/>of<sp/>the<sp/>neutrino&apos;s<sp/>momentum.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>conuix_get_hmatrix<sp/>get_hmatrix</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>Conuix::get_hmatrix(Conuix::base_t*<sp/>base,<sp/>Conuix::rotation_t*<sp/>rot,<sp/>Conuix::H_matrix_t*<sp/>H)`:<sp/>Calculates<sp/>the<sp/>H-matrix,<sp/>which<sp/>is<sp/>the<sp/>transformation<sp/>matrix<sp/>for<sp/>the<sp/>ellipse<sp/>of<sp/>possible<sp/>neutrino<sp/>solutions.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@section<sp/>conuix_structs<sp/>Structs</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>The<sp/>`Conuix`<sp/>namespace<sp/>uses<sp/>several<sp/>structs<sp/>to<sp/>store<sp/>the<sp/>intermediate<sp/>results<sp/>of<sp/>the<sp/>calculations:</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`kinematic_t`:<sp/>Stores<sp/>the<sp/>kinematic<sp/>properties<sp/>of<sp/>a<sp/>particle.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`rotation_t`:<sp/>Stores<sp/>the<sp/>rotation<sp/>parameters.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`thetapsi_t`:<sp/>Stores<sp/>the<sp/>psi-theta<sp/>mapping<sp/>parameters.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`base_t`:<sp/>Stores<sp/>the<sp/>base<sp/>parameters<sp/>for<sp/>the<sp/>conformal<sp/>solution.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>-<sp/>`pencil_t`:<sp/>Stores<sp/>the<sp/>parameters<sp/>of<sp/>the<sp/>pencil<sp/>of<sp/>circles.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`Sx_t`,<sp/>`Sy_t`:<sp/>Store<sp/>the<sp/>parameters<sp/>for<sp/>the<sp/>Sx<sp/>and<sp/>Sy<sp/>components<sp/>of<sp/>the<sp/>neutrino&apos;s<sp/>momentum.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`H_matrix_t`:<sp/>Stores<sp/>the<sp/>H-matrix.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/nusol/conuix/htilde.dox"/>
+  </compounddef>
+</doxygen>

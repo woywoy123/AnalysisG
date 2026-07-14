@@ -51,7 +51,5 @@ Key public functions:
 Provides ``variable_t`` (a polymorphic type-erased buffer for a single
 named ROOT leaf column) used by ``data_t`` and ``bsc_t``.
 
-.. doxygenstruct:: variable_t
+.. doxygenfile:: vector_cast.h
    :project: AnalysisG
-   :members:
-   :protected-members:

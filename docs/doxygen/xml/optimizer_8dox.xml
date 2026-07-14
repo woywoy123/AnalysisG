@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="optimizer_8dox" kind="file" language="C++">
+    <compoundname>optimizer.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the optimizer class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>optimizer.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>optimizer<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>optimizer_module_page<sp/>Optimizer<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>optimizer_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`optimizer`<sp/>module<sp/>provides<sp/>a<sp/>class<sp/>for<sp/>managing<sp/>the<sp/>training,<sp/>validation,<sp/>and<sp/>evaluation<sp/>of<sp/>machine<sp/>learning<sp/>models.<sp/>It<sp/>orchestrates<sp/>the<sp/>training<sp/>loops,<sp/>handles<sp/>data<sp/>loading<sp/>and<sp/>batching,<sp/>and<sp/>captures<sp/>metrics.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>optimizer_class<sp/>The<sp/>optimizer<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`optimizer`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>optimizer_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`optimizer()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>`optimizer`<sp/>object<sp/>and<sp/>creates<sp/>a<sp/>`metrics`<sp/>object.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~optimizer()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>the<sp/>allocated<sp/>resources,<sp/>including<sp/>the<sp/>`metrics`<sp/>object<sp/>and<sp/>the<sp/>model<sp/>sessions.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>optimizer_methods_import<sp/>Importing<sp/>Data<sp/>and<sp/>Models</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>import_dataloader(dataloader*<sp/>dl)`:<sp/>Imports<sp/>a<sp/>`dataloader`<sp/>object<sp/>to<sp/>be<sp/>used<sp/>for<sp/>data<sp/>loading<sp/>and<sp/>batching.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>import_model_sessions(std::tuple&lt;model_template*,<sp/>optimizer_params_t*&gt;*<sp/>models)`:<sp/>Imports<sp/>the<sp/>model<sp/>and<sp/>optimizer<sp/>parameters<sp/>for<sp/>the<sp/>training<sp/>session.<sp/>It<sp/>also<sp/>performs<sp/>a<sp/>test<sp/>run<sp/>to<sp/>ensure<sp/>that<sp/>the<sp/>model<sp/>and<sp/>parameters<sp/>are<sp/>correctly<sp/>configured.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>optimizer_methods_training<sp/>Training<sp/>and<sp/>Evaluation<sp/>Loops</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>training_loop(int<sp/>k,<sp/>int<sp/>epoch)`:<sp/>This<sp/>method<sp/>implements<sp/>the<sp/>training<sp/>loop<sp/>for<sp/>a<sp/>given<sp/>k-fold<sp/>and<sp/>epoch.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>training<sp/>data,<sp/>performs<sp/>the<sp/>forward<sp/>and<sp/>backward<sp/>passes,<sp/>and<sp/>captures<sp/>the<sp/>training<sp/>metrics.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>validation_loop(int<sp/>k,<sp/>int<sp/>epoch)`:<sp/>This<sp/>method<sp/>implements<sp/>the<sp/>validation<sp/>loop.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>validation<sp/>data,<sp/>performs<sp/>the<sp/>forward<sp/>pass<sp/>(without<sp/>gradient<sp/>calculation),<sp/>and<sp/>captures<sp/>the<sp/>validation<sp/>metrics.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>evaluation_loop(int<sp/>k,<sp/>int<sp/>epoch)`:<sp/>This<sp/>method<sp/>implements<sp/>the<sp/>evaluation<sp/>loop.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>test<sp/>data,<sp/>performs<sp/>the<sp/>forward<sp/>pass,<sp/>and<sp/>captures<sp/>the<sp/>evaluation<sp/>metrics.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>optimizer_methods_launch<sp/>Launching<sp/>the<sp/>Model</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>launch_model(int<sp/>k)`:<sp/>This<sp/>method<sp/>launches<sp/>the<sp/>training<sp/>and<sp/>evaluation<sp/>process<sp/>for<sp/>a<sp/>given<sp/>k-fold.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>specified<sp/>number<sp/>of<sp/>epochs<sp/>and<sp/>calls<sp/>the<sp/>training,<sp/>validation,<sp/>and<sp/>evaluation<sp/>loops<sp/>accordingly.<sp/>It<sp/>also<sp/>triggers<sp/>the<sp/>plotting<sp/>of<sp/>the<sp/>metrics<sp/>at<sp/>the<sp/>end<sp/>of<sp/>each<sp/>epoch<sp/>if<sp/>in<sp/>debug<sp/>mode.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/optimizer/optimizer.dox"/>
+  </compounddef>
+</doxygen>

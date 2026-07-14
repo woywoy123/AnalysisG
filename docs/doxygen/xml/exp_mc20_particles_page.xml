@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="exp_mc20_particles_page" kind="page">
     <compoundname>exp_mc20_particles_page</compoundname>
     <title>exp_mc20 Particles</title>
     <briefdescription>
+<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>exp_mc20</computeroutput> event. </para>
     </briefdescription>
     <detaileddescription>
-<para>This page provides detailed documentation for the various particle classes used in the <computeroutput>exp_mc20</computeroutput> event. These classes inherit from <computeroutput>particle_template</computeroutput> and define the specific properties and behaviors of each particle type.</para>
+<para>These classes inherit from <computeroutput>particle_template</computeroutput> and define the specific properties and behaviors of each particle type.</para>
 <sect1 id="exp_mc20_particles_page_1exp_mc20_particles_top">
 <title>Top</title><para>The <computeroutput>top</computeroutput> class represents a top quark in the event.</para>
 <sect2 id="exp_mc20_particles_page_1exp_mc20_particles_top_ctor">

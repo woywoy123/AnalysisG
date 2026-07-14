@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="operators_8dox" kind="file" language="C++">
+    <compoundname>operators.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the operators module within the AnalysisG.pyc framework, including its CUDA kernel implementations for optimized mathematical and logical operations. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>operators.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>operators<sp/>module<sp/>within<sp/>the<sp/>AnalysisG.pyc<sp/>framework,<sp/>including<sp/>its<sp/>CUDA<sp/>kernel<sp/>implementations<sp/>for<sp/>optimized<sp/>mathematical<sp/>and<sp/>logical<sp/>operations.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>operators_page<sp/>operators</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>operators_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`operators`<sp/>module<sp/>provides<sp/>a<sp/>suite<sp/>of<sp/>optimized<sp/>mathematical<sp/>and<sp/>logical<sp/>operators,<sp/>implemented<sp/>with<sp/>Cython<sp/>and<sp/>accelerated<sp/>using<sp/>CUDA<sp/>kernels.<sp/>These<sp/>operators<sp/>are<sp/>designed<sp/>to<sp/>perform<sp/>common<sp/>computational<sp/>tasks<sp/>with<sp/>high<sp/>efficiency,<sp/>particularly<sp/>beneficial<sp/>for<sp/>large-scale<sp/>data<sp/>processing<sp/>and<sp/>numerical<sp/>simulations<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>operators_contents<sp/>Contents</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>This<sp/>module<sp/>contains<sp/>optimized<sp/>operator<sp/>functions,<sp/>many<sp/>of<sp/>which<sp/>leverage<sp/>CUDA<sp/>for<sp/>parallel<sp/>execution<sp/>on<sp/>GPUs.<sp/>Specific<sp/>contents<sp/>will<sp/>be<sp/>detailed<sp/>as<sp/>they<sp/>are<sp/>implemented,<sp/>highlighting<sp/>their<sp/>GPU-accelerated<sp/>nature<sp/>where<sp/>applicable.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Dot(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2)</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>dot<sp/>product<sp/>between<sp/>two<sp/>tensors.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Cross(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2)</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>cross<sp/>product<sp/>between<sp/>two<sp/>3D<sp/>vector<sp/>tensors.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Determinant(torch::Tensor*<sp/>matrix)</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Calculates<sp/>the<sp/>determinant<sp/>of<sp/>a<sp/>batch<sp/>of<sp/>square<sp/>matrices.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::CosTheta(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2)</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>cosine<sp/>of<sp/>the<sp/>angle<sp/>between<sp/>two<sp/>tensors.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::SinTheta(torch::Tensor*<sp/>v1,<sp/>torch::Tensor*<sp/>v2)</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>sine<sp/>of<sp/>the<sp/>angle<sp/>between<sp/>two<sp/>tensors.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Pi_2(torch::Tensor*<sp/>trn)</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Ensures<sp/>angular<sp/>boundaries<sp/>remain<sp/>within<sp/>`-pi`<sp/>and<sp/>`pi`.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Rx(torch::Tensor*<sp/>angle)</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Generates<sp/>a<sp/>3D<sp/>rotation<sp/>matrix<sp/>around<sp/>the<sp/>X-axis<sp/>for<sp/>a<sp/>given<sp/>angle.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Ry(torch::Tensor*<sp/>angle)</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Generates<sp/>a<sp/>3D<sp/>rotation<sp/>matrix<sp/>around<sp/>the<sp/>Y-axis<sp/>for<sp/>a<sp/>given<sp/>angle.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@fn<sp/>torch::Tensor<sp/>operators_::Rz(torch::Tensor*<sp/>angle)</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Generates<sp/>a<sp/>3D<sp/>rotation<sp/>matrix<sp/>around<sp/>the<sp/>Z-axis<sp/>for<sp/>a<sp/>given<sp/>angle.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>@fn<sp/>std::tuple&lt;torch::Tensor,<sp/>torch::Tensor&gt;<sp/>operators_::Inverse(torch::Tensor*<sp/>matrix)</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>inverse<sp/>of<sp/>a<sp/>batch<sp/>of<sp/>square<sp/>matrices.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tuple<sp/>containing<sp/>the<sp/>inverse<sp/>matrix<sp/>and<sp/>a<sp/>boolean<sp/>tensor<sp/>indicating<sp/>invertibility.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@fn<sp/>std::tuple&lt;torch::Tensor,<sp/>torch::Tensor&gt;<sp/>operators_::Eigenvalue(torch::Tensor*<sp/>matrix)</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Computes<sp/>the<sp/>eigenvalues<sp/>and<sp/>eigenvectors<sp/>for<sp/>a<sp/>batch<sp/>of<sp/>matrices.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>tuple<sp/>containing<sp/>the<sp/>eigenvalues<sp/>and<sp/>the<sp/>corresponding<sp/>eigenvectors.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/operators.dox"/>
+  </compounddef>
+</doxygen>

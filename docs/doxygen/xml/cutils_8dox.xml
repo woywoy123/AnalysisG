@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="cutils_8dox" kind="file" language="C++">
+    <compoundname>cutils.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the cutils module within the AnalysisG.pyc framework, specifically highlighting its CUDA kernel implementations. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>cutils.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>cutils<sp/>module<sp/>within<sp/>the<sp/>AnalysisG.pyc<sp/>framework,<sp/>specifically<sp/>highlighting<sp/>its<sp/>CUDA<sp/>kernel<sp/>implementations.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>cutils_page<sp/>cutils</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>cutils_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`cutils`<sp/>module<sp/>provides<sp/>a<sp/>collection<sp/>of<sp/>common<sp/>utility<sp/>functions,<sp/>many<sp/>of<sp/>which<sp/>are<sp/>implemented<sp/>as<sp/>CUDA<sp/>kernels<sp/>for<sp/>GPU<sp/>acceleration.<sp/>These<sp/>utilities<sp/>are<sp/>designed<sp/>to<sp/>support<sp/>various<sp/>computationally<sp/>intensive<sp/>operations<sp/>across<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>offering<sp/>highly<sp/>efficient<sp/>implementations<sp/>for<sp/>frequently<sp/>used<sp/>tasks<sp/>by<sp/>leveraging<sp/>parallel<sp/>processing<sp/>capabilities<sp/>of<sp/>NVIDIA<sp/>GPUs.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>cutils_contents<sp/>Contents</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>This<sp/>module<sp/>contains<sp/>general-purpose<sp/>utility<sp/>functions,<sp/>with<sp/>a<sp/>focus<sp/>on<sp/>GPU-accelerated<sp/>operations.<sp/>Specific<sp/>contents<sp/>will<sp/>be<sp/>detailed<sp/>as<sp/>they<sp/>are<sp/>implemented,<sp/>emphasizing<sp/>their<sp/>CUDA-based<sp/>nature<sp/>where<sp/>applicable.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/cutils.dox"/>
+  </compounddef>
+</doxygen>

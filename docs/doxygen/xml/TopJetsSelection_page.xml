@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="TopJetsSelection_page" kind="page">
+    <compoundname>TopJetsSelection_page</compoundname>
+    <title>Top Jets Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="TopJetsSelection_page_1TopJetsSelection_intro">
+<title>Introduction</title><para>The <computeroutput>TopJets</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top-tagged jets and their underlying parton associations in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed information about jet masses, parton contributions to jets, and the relationship between jets and top quarks. This class facilitates a high-performance extraction and structuring of top-jet data for further physics analysis.</para>
+</sect1>
+<sect1 id="TopJetsSelection_page_1TopJetsSelection_class">
+<title>The TopJets Class</title><para><computeroutput>TopJets</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>topjets</computeroutput> object, which likely contains the logic for identifying top-tagged jets, associating them with partons, and calculating relevant kinematic properties.</para>
+<sect2 id="TopJetsSelection_page_1TopJetsSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>topjets</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>topjets*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>topjets</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="TopJetsSelection_page_1TopJetsSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is responsible for converting the C++ data structures within the underlying <computeroutput>topjets</computeroutput> object into Python dictionaries and lists, making them accessible as properties of the <computeroutput>TopJets</computeroutput> instance.<itemizedlist>
+<listitem><para><computeroutput>self.top_mass</computeroutput>: Populated from <computeroutput>self.tt.top_mass</computeroutput> (masses of top quarks).</para>
+</listitem><listitem><para><computeroutput>self.jet_partons</computeroutput>: Populated from <computeroutput>self.tt.jet_partons</computeroutput> (partons associated with jets).</para>
+</listitem><listitem><para><computeroutput>self.jets_contribute</computeroutput>: Populated from <computeroutput>self.tt.jets_contribute</computeroutput> (contributions of jets to various categories).</para>
+</listitem><listitem><para><computeroutput>self.jet_top</computeroutput>: Populated from <computeroutput>self.tt.jet_top</computeroutput> (top quarks associated with jets).</para>
+</listitem><listitem><para><computeroutput>self.jet_mass</computeroutput>: Populated from <computeroutput>self.tt.jet_mass</computeroutput> (masses of jets).</para>
+</listitem><listitem><para><computeroutput>self.ntops_lost</computeroutput>: Populated from <computeroutput>self.tt.ntops_lost</computeroutput> (number of lost top quarks).</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="TopJetsSelection_page_1TopJetsSelection_properties">
+<title>Properties</title><para>The following properties are implicitly defined and populated by the <computeroutput>transform_dict_keys</computeroutput> method, providing access to the processed top-jet information:<itemizedlist>
+<listitem><para><computeroutput>@property top_mass -&gt; dict</computeroutput>: Dictionary of top quark masses.</para>
+</listitem><listitem><para><computeroutput>@property jet_partons -&gt; dict</computeroutput>: Dictionary detailing partons associated with jets.</para>
+</listitem><listitem><para><computeroutput>@property jets_contribute -&gt; dict</computeroutput>: Dictionary detailing contributions of jets.</para>
+</listitem><listitem><para><computeroutput>@property jet_top -&gt; dict</computeroutput>: Dictionary associating jets with top quarks.</para>
+</listitem><listitem><para><computeroutput>@property jet_mass -&gt; dict</computeroutput>: Dictionary of jet masses.</para>
+</listitem><listitem><para><computeroutput>@property ntops_lost -&gt; list</computeroutput>: List indicating the number of lost top quarks.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="TopJetsSelection_page_1TopJetsSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>TopJets</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class TopJets</computeroutput>: Declares <computeroutput>TopJets</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef topjets *tt</computeroutput>: A C++ pointer to a <computeroutput>topjets</computeroutput> object, which is the specialized C++ implementation for top-jet analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new topjets()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;topjets*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>TopJets</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>topjets</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>TopJets</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.selections.mc16.topjets.topjets cimport *</computeroutput>: Imports the C++ <computeroutput>topjets</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures, specifically <computeroutput>as_dict_dict_dict</computeroutput>, <computeroutput>as_dict_dict</computeroutput>, <computeroutput>as_dict</computeroutput>, and <computeroutput>as_list</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/topjets/topjets.dox"/>
+  </compounddef>
+</doxygen>

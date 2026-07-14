@@ -1,10 +1,28 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="dir_e05d7e2b1ecd646af5bb94391405f3b5" kind="dir">
     <compoundname>modules</compoundname>
     <innerdir refid="dir_3f9450a4e0f0296540f6b5606b0d570c">modules/analysis</innerdir>
     <innerdir refid="dir_b7278174cb2727ebbc9eb1774fdf9330">modules/container</innerdir>
     <innerdir refid="dir_512b3fa5ea8b5b0e626ca3957b840e90">modules/dataloader</innerdir>
+    <innerdir refid="dir_4f62ca89e6e2b2dab0d5f15908e4b9e4">modules/event</innerdir>
+    <innerdir refid="dir_9196830e2b12fddb888cddff15227a7b">modules/graph</innerdir>
+    <innerdir refid="dir_bf23fab3514d8be3fd87af74ed79b4ba">modules/io</innerdir>
+    <innerdir refid="dir_4747c4b8680ed1915c0a575a37de3dba">modules/lossfx</innerdir>
+    <innerdir refid="dir_4b156fa65eb4bb6e158ad4d55ec0e96b">modules/meta</innerdir>
+    <innerdir refid="dir_73279208217045b8683e504770108e9d">modules/metric</innerdir>
+    <innerdir refid="dir_2f556ce6c711b36280412cfc1efb7dd0">modules/metrics</innerdir>
+    <innerdir refid="dir_e9cdecfa940c25caed6eef2d1cacc6e1">modules/model</innerdir>
+    <innerdir refid="dir_137f1a5752e9e019398a22c961dc9e99">modules/notification</innerdir>
+    <innerdir refid="dir_13c7adf932cf635937c85b7453dcf430">modules/nusol</innerdir>
+    <innerdir refid="dir_89044f0e1fd73be34bd7e15062fbd72a">modules/optimizer</innerdir>
+    <innerdir refid="dir_21bfaa142d9585ac3a653d0c5274d2c0">modules/particle</innerdir>
+    <innerdir refid="dir_7269e5c41abcfc884652ba23fb53d8fd">modules/plotting</innerdir>
+    <innerdir refid="dir_320eb61a6b9841034453a1d82e268108">modules/sampletracer</innerdir>
+    <innerdir refid="dir_192b6d98d9c9f880e689b03554527217">modules/selection</innerdir>
+    <innerdir refid="dir_be6c6712005854e1ce7ad12a0eef9a93">modules/structs</innerdir>
+    <innerdir refid="dir_991001ef066643793c958f968aa10338">modules/tools</innerdir>
+    <innerdir refid="dir_1e2f39263fdf7b4e6fbf21d435567732">modules/typecasting</innerdir>
     <briefdescription>
     </briefdescription>
     <detaileddescription>

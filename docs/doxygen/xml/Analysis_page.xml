@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="Analysis_page" kind="page">
     <compoundname>Analysis_page</compoundname>
     <title>Analysis</title>
@@ -32,12 +32,12 @@
 </para>
 </sect1>
 <sect1 id="Analysis_page_1Analysis_class">
-<title>The Analysis Class</title><para><computeroutput>Analysis</computeroutput> is a <computeroutput>cdef class</computeroutput>, signifying its implementation as a Cython extension type. This design enables direct and optimized interaction with an underlying C++ <computeroutput>analysis</computeroutput> object, which handles the heavy lifting of data processing, threading, and resource management. The Python <computeroutput>Analysis</computeroutput> class provides a user-friendly interface to configure and control this powerful backend.</para>
+<title>The Analysis Class</title><para><computeroutput>Analysis</computeroutput> is a <computeroutput>cdef class</computeroutput>, signifying its implementation as a Cython extension type. This design enables direct and optimized interaction with an underlying C++ <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> object, which handles the heavy lifting of data processing, threading, and resource management. The Python <computeroutput>Analysis</computeroutput> class provides a user-friendly interface to configure and control this powerful backend.</para>
 <sect2 id="Analysis_page_1Analysis_cinit_dealloc">
 <title>Constructors and Destructors</title><para><itemizedlist>
-<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>analysis</computeroutput> object (<computeroutput>self.ana</computeroutput>) and sets up empty Python lists for storing references to added templates (<computeroutput>selections_</computeroutput>, <computeroutput>graphs_</computeroutput>, <computeroutput>events_</computeroutput>, <computeroutput>models_</computeroutput>, <computeroutput>optim_</computeroutput>) and a dictionary for metadata (<computeroutput>meta_</computeroutput>).</para>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> object (<computeroutput>self.ana</computeroutput>) and sets up empty Python lists for storing references to added templates (<computeroutput>selections_</computeroutput>, <computeroutput>graphs_</computeroutput>, <computeroutput>events_</computeroutput>, <computeroutput>models_</computeroutput>, <computeroutput>optim_</computeroutput>) and a dictionary for metadata (<computeroutput>meta_</computeroutput>).</para>
 </listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: The standard Python initializer, intentionally left empty as primary initialization is handled by <computeroutput>__cinit__</computeroutput>.</para>
-</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>analysis</computeroutput> object pointed to by <computeroutput>self.ana</computeroutput> and explicitly calls <computeroutput>gc.collect()</computeroutput> to encourage garbage collection of associated Python objects.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> object pointed to by <computeroutput>self.ana</computeroutput> and explicitly calls <computeroutput>gc.collect()</computeroutput> to encourage garbage collection of associated Python objects.</para>
 </listitem></itemizedlist>
 </para>
 </sect2>
@@ -151,7 +151,7 @@
 </parameteritem>
 </parameterlist>
 </para>
-</listitem><listitem><para><computeroutput>AddModelInference(self, ModelTemplate model, str run_name = &quot;run_name&quot;)</computeroutput>: Registers a <computeroutput>ModelTemplate</computeroutput> specifically for inference (prediction) tasks. <parameterlist kind="param"><parameteritem>
+</listitem><listitem><para><computeroutput>AddModelInference(self, ModelTemplate model, str run_name = "run_name")</computeroutput>: Registers a <computeroutput>ModelTemplate</computeroutput> specifically for inference (prediction) tasks. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>model</parametername>
 </parameternamelist>
@@ -223,15 +223,15 @@
 <sect1 id="Analysis_page_1Analysis_cpp_interaction">
 <title>C++ Interaction</title><para>The <computeroutput>Analysis</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
 <listitem><para><computeroutput>cdef class Analysis</computeroutput>: Declares <computeroutput>Analysis</computeroutput> as a Cython extension type.</para>
-</listitem><listitem><para><computeroutput>cdef analysis *ana</computeroutput>: A C++ pointer to an <computeroutput>analysis</computeroutput> object, managed by the Cython class.</para>
+</listitem><listitem><para><computeroutput>cdef <ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref> *ana</computeroutput>: A C++ pointer to an <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> object, managed by the Cython class.</para>
 </listitem><listitem><para><computeroutput>from libcpp cimport bool, string, map, pair</computeroutput>: Imports C++ standard library types.</para>
 </listitem><listitem><para><computeroutput>from AnalysisG.core.meta cimport *</computeroutput>, <computeroutput>from AnalysisG.core.tools cimport *</computeroutput>, <computeroutput>from AnalysisG.core.lossfx cimport *</computeroutput>, <computeroutput>from AnalysisG.core.event_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.graph_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.selection_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.metric_template cimport *</computeroutput>, <computeroutput>from AnalysisG.core.model_template cimport *</computeroutput>: Imports C++ declarations from corresponding <computeroutput>.pxd</computeroutput> files and Python classes.</para>
-</listitem><listitem><para><computeroutput>from AnalysisG.core.analysis cimport analysis</computeroutput>: Imports the C++ <computeroutput>analysis</computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.analysis cimport <ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput>: Imports the C++ <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> class declaration from its <computeroutput>.pxd</computeroutput> file.</para>
 </listitem><listitem><para><computeroutput>tqdm</computeroutput>, <computeroutput>pickle</computeroutput>, <computeroutput>gc</computeroutput>, <computeroutput>time.sleep</computeroutput>: Python libraries used for progress bars, object serialization, garbage collection, and pausing execution. </para>
 </listitem></itemizedlist>
 </para>
 </sect1>
     </detaileddescription>
-    <location file="modules/analysis.dox"/>
+    <location file="core/analysis.dox"/>
   </compounddef>
 </doxygen>

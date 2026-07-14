@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="selection_8dox" kind="file" language="C++">
+    <compoundname>selection.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the selection_template class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>selection.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>selection_template<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>selection_module_page<sp/>Selection<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>selection_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`selection`<sp/>module<sp/>provides<sp/>the<sp/>base<sp/>template<sp/>for<sp/>defining<sp/>and<sp/>applying<sp/>event<sp/>selections<sp/>in<sp/>the<sp/>|g-framework|.<sp/>The<sp/>`selection_template`<sp/>class<sp/>defines<sp/>the<sp/>common<sp/>interface<sp/>and<sp/>functionality<sp/>for<sp/>all<sp/>selection<sp/>types.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>selection_template_class<sp/>The<sp/>selection_template<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`selection_template`<sp/>class<sp/>is<sp/>an<sp/>abstract<sp/>base<sp/>class<sp/>that<sp/>defines<sp/>the<sp/>structure<sp/>of<sp/>an<sp/>event<sp/>selection.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>selection_template_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`selection_template()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>properties<sp/>of<sp/>the<sp/>selection,<sp/>such<sp/>as<sp/>`name`,<sp/>`hash`,<sp/>`tree`,<sp/>`weight`,<sp/>and<sp/>`index`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~selection_template()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>the<sp/>allocated<sp/>memory.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>selection_template_methods_virtual<sp/>Virtual<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`selection_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>selection<sp/>object.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>selection(event_template*<sp/>ev)`:<sp/>This<sp/>is<sp/>the<sp/>main<sp/>selection<sp/>method.<sp/>It<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>derived<sp/>classes<sp/>to<sp/>implement<sp/>the<sp/>selection<sp/>logic.<sp/>It<sp/>should<sp/>return<sp/>`true`<sp/>if<sp/>the<sp/>event<sp/>passes<sp/>the<sp/>selection,<sp/>and<sp/>`false`<sp/>otherwise.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>strategy(event_template*<sp/>ev)`:<sp/>This<sp/>method<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>derived<sp/>classes<sp/>to<sp/>implement<sp/>a<sp/>selection<sp/>strategy.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>merge(selection_template*<sp/>sl2)`:<sp/>This<sp/>method<sp/>is<sp/>used<sp/>to<sp/>merge<sp/>the<sp/>results<sp/>of<sp/>two<sp/>selection<sp/>objects.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>bulk_write(const<sp/>long*<sp/>ev,<sp/>std::string*<sp/>h)`:<sp/>This<sp/>method<sp/>is<sp/>used<sp/>for<sp/>bulk<sp/>writing<sp/>of<sp/>selection<sp/>results.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>selection_template_methods_building<sp/>Building<sp/>and<sp/>Compiling</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`selection_template*<sp/>build(event_template*<sp/>ev)`:<sp/>Builds<sp/>a<sp/>selection<sp/>object<sp/>from<sp/>an<sp/>event<sp/>template.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>CompileEvent()`:<sp/>This<sp/>method<sp/>applies<sp/>the<sp/>selection<sp/>and<sp/>strategy<sp/>to<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>selection_template_methods_writing<sp/>Writing<sp/>Results</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>write(std::vector&lt;particle_template*&gt;*<sp/>particles,<sp/>std::string<sp/>name,<sp/>particle_enum<sp/>attrs)`:<sp/>Writes<sp/>the<sp/>properties<sp/>of<sp/>a<sp/>vector<sp/>of<sp/>particles<sp/>to<sp/>the<sp/>output<sp/>file.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>bulk_write_out()`:<sp/>Performs<sp/>the<sp/>bulk<sp/>writing<sp/>of<sp/>the<sp/>selection<sp/>results.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>selection_template_methods_merging<sp/>Merging<sp/>Results</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>merger(selection_template*<sp/>sl2)`:<sp/>Merges<sp/>the<sp/>results<sp/>of<sp/>another<sp/>selection<sp/>object<sp/>into<sp/>this<sp/>one.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>selection_template_methods_properties<sp/>Property<sp/>Management</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>The<sp/>class<sp/>provides<sp/>a<sp/>number<sp/>of<sp/>setters<sp/>and<sp/>getters<sp/>for<sp/>accessing<sp/>the<sp/>selection&apos;s<sp/>properties,<sp/>such<sp/>as:</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`set_name`,<sp/>`get_name`</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`set_hash`,<sp/>`get_hash`</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`get_tree`</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`set_weight`,<sp/>`get_weight`</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`set_index`</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/selection/selection.dox"/>
+  </compounddef>
+</doxygen>

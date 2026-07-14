@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="sampletracer_8dox" kind="file" language="C++">
+    <compoundname>sampletracer.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the sampletracer class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>sampletracer.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>sampletracer<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>sampletracer_module_page<sp/>Sample<sp/>Tracer<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>sampletracer_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`sampletracer`<sp/>module<sp/>provides<sp/>a<sp/>class<sp/>for<sp/>tracing<sp/>and<sp/>processing<sp/>samples<sp/>in<sp/>a<sp/>multi-threaded<sp/>environment.<sp/>It<sp/>is<sp/>responsible<sp/>for<sp/>managing<sp/>the<sp/>data<sp/>containers,<sp/>distributing<sp/>the<sp/>processing<sp/>tasks,<sp/>and<sp/>monitoring<sp/>the<sp/>progress.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>sampletracer_class<sp/>The<sp/>sampletracer<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`sampletracer`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>sampletracer_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`sampletracer()`:<sp/>The<sp/>constructor.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~sampletracer()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>sampletracer_methods_config<sp/>Configuration</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>silent()`:<sp/>Sets<sp/>the<sp/>execution<sp/>mode<sp/>to<sp/>silent<sp/>(no<sp/>progress<sp/>output).</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>verbose()`:<sp/>Sets<sp/>the<sp/>execution<sp/>mode<sp/>to<sp/>verbose<sp/>(with<sp/>progress<sp/>output).</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_output_path(std::string<sp/>path)`:<sp/>Sets<sp/>the<sp/>output<sp/>path<sp/>for<sp/>the<sp/>processed<sp/>data.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>sampletracer_methods_data<sp/>Data<sp/>Management</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_meta_data(meta*<sp/>meta_,<sp/>std::string<sp/>filename)`:<sp/>Adds<sp/>metadata<sp/>for<sp/>a<sp/>given<sp/>file.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`meta*<sp/>get_meta_data(std::string<sp/>filename)`:<sp/>Retrieves<sp/>the<sp/>metadata<sp/>for<sp/>a<sp/>given<sp/>file.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;event_template*&gt;<sp/>get_events(std::string<sp/>label)`:<sp/>Retrieves<sp/>all<sp/>the<sp/>events<sp/>with<sp/>a<sp/>specific<sp/>label.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_event(event_template*<sp/>ev,<sp/>std::string<sp/>label)`:<sp/>Adds<sp/>an<sp/>event<sp/>template<sp/>to<sp/>the<sp/>tracer.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_graph(graph_template*<sp/>gr,<sp/>std::string<sp/>label)`:<sp/>Adds<sp/>a<sp/>graph<sp/>template<sp/>to<sp/>the<sp/>tracer.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>add_selection(selection_template*<sp/>sel)`:<sp/>Adds<sp/>a<sp/>selection<sp/>template<sp/>to<sp/>the<sp/>tracer.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>sampletracer_methods_processing<sp/>Processing</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>compile_objects(int<sp/>threads)`:<sp/>This<sp/>is<sp/>the<sp/>main<sp/>processing<sp/>method.<sp/>It<sp/>distributes<sp/>the<sp/>compilation<sp/>of<sp/>the<sp/>events,<sp/>graphs,<sp/>and<sp/>selections<sp/>across<sp/>multiple<sp/>threads.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>populate_dataloader(dataloader*<sp/>dl)`:<sp/>Populates<sp/>a<sp/>`dataloader`<sp/>with<sp/>the<sp/>processed<sp/>graph<sp/>data.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>fill_selections(std::map&lt;std::string,<sp/>selection_template*&gt;*<sp/>inpt)`:<sp/>Fills<sp/>a<sp/>map<sp/>of<sp/>selection<sp/>templates<sp/>with<sp/>the<sp/>results<sp/>of<sp/>the<sp/>selections.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>sampletracer_methods_threading<sp/>Thread<sp/>Management</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>running(std::vector&lt;std::thread*&gt;*<sp/>threads_,<sp/>std::vector&lt;size_t&gt;*<sp/>handles,<sp/>std::vector&lt;size_t&gt;*<sp/>progres)`:<sp/>Checks<sp/>the<sp/>status<sp/>of<sp/>the<sp/>running<sp/>threads.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>monitor(std::vector&lt;std::thread*&gt;*<sp/>threads_)`:<sp/>Monitors<sp/>the<sp/>threads<sp/>and<sp/>joins<sp/>them<sp/>when<sp/>they<sp/>are<sp/>finished.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/sampletracer/sampletracer.dox"/>
+  </compounddef>
+</doxygen>

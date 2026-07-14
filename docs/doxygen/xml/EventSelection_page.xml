@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="EventSelection_page" kind="page">
+    <compoundname>EventSelection_page</compoundname>
+    <title>Event Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="EventSelection_page_1EventSelection_intro">
+<title>Introduction</title><para>The <computeroutput>Event</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for generic event selection in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, providing a foundational structure for event-level filtering. While its <computeroutput>transform_dict_keys</computeroutput> method is currently empty, it serves as a placeholder for potential future data exposure from the underlying C++ event selection logic.</para>
+</sect1>
+<sect1 id="EventSelection_page_1EventSelection_class">
+<title>The Event Class</title><para><computeroutput>Event</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>event</computeroutput> object, which likely contains the core logic for applying generic event-level selections.</para>
+<sect2 id="EventSelection_page_1EventSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>event</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to an <computeroutput>event*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>event</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="EventSelection_page_1EventSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is a placeholder from <computeroutput>SelectionTemplate</computeroutput> and is currently empty in this implementation. It is intended to be overridden by subclasses or to be populated if the underlying C++ <computeroutput>event</computeroutput> object exposes data that needs to be converted into Python dictionaries or lists.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="EventSelection_page_1EventSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>Event</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Event</computeroutput>: Declares <computeroutput>Event</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef event *tt</computeroutput>: A C++ pointer to an <computeroutput>event</computeroutput> object, which is the specialized C++ implementation for event selections.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new event()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;event*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>Event</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>event</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>Event</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport as_dict, as_list</computeroutput>: Imports utility functions for converting between C++ and Python data structures (though not used in the current <computeroutput>transform_dict_keys</computeroutput>). </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/event/event.dox"/>
+  </compounddef>
+</doxygen>

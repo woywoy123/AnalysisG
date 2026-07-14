@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="selections_2mc16_2event_2event_8dox" kind="file" language="C++">
+    <compoundname>event.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the Event Cython class, a generic event selection for MC16 events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>event.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>Event<sp/>Cython<sp/>class,<sp/>a<sp/>generic<sp/>event<sp/>selection<sp/>for<sp/>MC16<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>EventSelection_page<sp/>Event<sp/>Selection</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>EventSelection_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`Event`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>selection<sp/>template<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>for<sp/>generic<sp/>event<sp/>selection<sp/>in<sp/>Monte<sp/>Carlo<sp/>16<sp/>(MC16)<sp/>events.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>generic<sp/>`SelectionTemplate`<sp/>class,<sp/>providing<sp/>a<sp/>foundational<sp/>structure<sp/>for<sp/>event-level<sp/>filtering.<sp/>While<sp/>its<sp/>`transform_dict_keys`<sp/>method<sp/>is<sp/>currently<sp/>empty,<sp/>it<sp/>serves<sp/>as<sp/>a<sp/>placeholder<sp/>for<sp/>potential<sp/>future<sp/>data<sp/>exposure<sp/>from<sp/>the<sp/>underlying<sp/>C++<sp/>event<sp/>selection<sp/>logic.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>EventSelection_class<sp/>The<sp/>Event<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`Event`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>It<sp/>inherits<sp/>from<sp/>`SelectionTemplate`,<sp/>thereby<sp/>gaining<sp/>all<sp/>the<sp/>base<sp/>functionalities<sp/>for<sp/>event<sp/>selection,<sp/>ROOT<sp/>file<sp/>interpretation,<sp/>and<sp/>weight<sp/>management.<sp/>Its<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>encapsulate<sp/>a<sp/>C++<sp/>`event`<sp/>object,<sp/>which<sp/>likely<sp/>contains<sp/>the<sp/>core<sp/>logic<sp/>for<sp/>applying<sp/>generic<sp/>event-level<sp/>selections.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>EventSelection_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`event`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.ptr`<sp/>to<sp/>an<sp/>`event*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.tt`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Python<sp/>initializer.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>It<sp/>deallocates<sp/>the<sp/>C++<sp/>`event`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.tt`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>EventSelection_internal_methods<sp/>Internal<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>transform_dict_keys(self)`:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>This<sp/>method<sp/>is<sp/>a<sp/>placeholder<sp/>from<sp/>`SelectionTemplate`<sp/>and<sp/>is<sp/>currently<sp/>empty<sp/>in<sp/>this<sp/>implementation.<sp/>It<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>subclasses<sp/>or<sp/>to<sp/>be<sp/>populated<sp/>if<sp/>the<sp/>underlying<sp/>C++<sp/>`event`<sp/>object<sp/>exposes<sp/>data<sp/>that<sp/>needs<sp/>to<sp/>be<sp/>converted<sp/>into<sp/>Python<sp/>dictionaries<sp/>or<sp/>lists.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@section<sp/>EventSelection_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>The<sp/>`Event`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>Event`:<sp/>Declares<sp/>`Event`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>event<sp/>*tt`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>an<sp/>`event`<sp/>object,<sp/>which<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>implementation<sp/>for<sp/>event<sp/>selections.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.ptr<sp/>=<sp/>new<sp/>event()`:<sp/>Initializes<sp/>the<sp/>base<sp/>`SelectionTemplate`&apos;s<sp/>C++<sp/>pointer.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.tt<sp/>=<sp/>&lt;event*&gt;self.ptr`:<sp/>This<sp/>line<sp/>demonstrates<sp/>C++<sp/>upcasting,<sp/>allowing<sp/>`Event`<sp/>to<sp/>fulfill<sp/>the<sp/>`SelectionTemplate`<sp/>interface<sp/>while<sp/>internally<sp/>managing<sp/>its<sp/>specific<sp/>`event`<sp/>data.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>SelectionTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`SelectionTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`Event`<sp/>inherits.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>as_dict,<sp/>as_list`:<sp/>Imports<sp/>utility<sp/>functions<sp/>for<sp/>converting<sp/>between<sp/>C++<sp/>and<sp/>Python<sp/>data<sp/>structures<sp/>(though<sp/>not<sp/>used<sp/>in<sp/>the<sp/>current<sp/>`transform_dict_keys`).</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/event/event.dox"/>
+  </compounddef>
+</doxygen>

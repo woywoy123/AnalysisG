@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="selection__template_8dox" kind="file" language="C++">
     <compoundname>selection_template.dox</compoundname>
     <briefdescription>
@@ -96,6 +96,6 @@
 <codeline lineno="86"><highlight class="comment"><sp/>*<sp/>-<sp/>`pathlib`,<sp/>`pickle`:<sp/>Python<sp/>libraries<sp/>used<sp/>for<sp/>path<sp/>manipulation<sp/>and<sp/>object<sp/>serialization.</highlight></codeline>
 <codeline lineno="87"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="modules/selection_template.dox"/>
+    <location file="core/selection_template.dox"/>
   </compounddef>
 </doxygen>

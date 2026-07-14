@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="indexpage" kind="page">
+    <compoundname>index</compoundname>
+    <title>AnalysisG — A Graph Neural Network Analysis Framework for High Energy Physics</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="index_1intro_sec">
+<title>Introduction</title><para><bold>AnalysisG</bold> is a high-performance analysis framework that translates CERN ROOT n-tuples into graph-structured data, trains and evaluates Graph Neural Networks (GNNs), and supports cut-based selections. It is written in C++20 with CUDA extensions and exposed to Python via Cython.</para>
+</sect1>
+<sect1 id="index_1modules_sec">
+<title>Module Overview</title><para><table rows="20" cols="2"><row>
+<entry thead="yes"><para>Module  </para>
+</entry><entry thead="yes"><para>Description  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>notification  </para>
+</entry><entry thead="no"><para>Coloured terminal logging and progress-bar utilities.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>tools  </para>
+</entry><entry thead="no"><para>File-system, string and math utility base class.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>particle_template  </para>
+</entry><entry thead="no"><para>Base for user-defined particle types.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>event_template  </para>
+</entry><entry thead="no"><para>Base for user-defined event types.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>graph_template  </para>
+</entry><entry thead="no"><para>Defines GNN edge/node/global features.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>selection_template  </para>
+</entry><entry thead="no"><para>Base for cut-based event selections.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>metric_template  </para>
+</entry><entry thead="no"><para>Base for ML evaluation metrics.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>model_template  </para>
+</entry><entry thead="no"><para>Base for GNN model definitions.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>sampletracer  </para>
+</entry><entry thead="no"><para>ROOT sample management and multi-threaded reading.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>dataloader  </para>
+</entry><entry thead="no"><para>Batched data delivery to GNN training loops.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>optimizer  </para>
+</entry><entry thead="no"><para>PyTorch optimiser and scheduler wrapper.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>plotting  </para>
+</entry><entry thead="no"><para>Object-oriented histogram and plot definitions.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>roc  </para>
+</entry><entry thead="no"><para>ROC-curve computation and visualisation.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>lossfx  </para>
+</entry><entry thead="no"><para>Named loss-function registry.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para><ref refid="dir_9ae5a78382c3df588883652dc9476a9d" kindref="compound">metrics</ref>  </para>
+</entry><entry thead="no"><para>Epoch-level metric aggregation and reporting.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>meta  </para>
+</entry><entry thead="no"><para>DSID lookup and data-scraping via AMI.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>io  </para>
+</entry><entry thead="no"><para>Minimal-syntax CERN ROOT I/O interface.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>  </para>
+</entry><entry thead="no"><para>Main analysis compiler / pipeline orchestrator.  </para>
+</entry></row>
+<row>
+<entry thead="no"><para>pyc  </para>
+</entry><entry thead="no"><para>Self-contained C++/CUDA HEP kernels (ΔR, pT, η, φ, m, ν-reco, …).  </para>
+</entry></row>
+</table>
+</para>
+</sect1>
+<sect1 id="index_1pyc_sec">
+<title>Python CUDA (pyc) Sub-package</title><para>The <bold>pyc</bold> sub-package provides fully batched CUDA/C++ implementations of common HEP operations via the LibTorch API:</para>
+<para><itemizedlist>
+<listitem><para><bold>pyc::transform</bold> — polar ↔ Cartesian coordinate transforms.</para>
+</listitem><listitem><para><bold>pyc::physics</bold> — relativistic kinematics (|p|², pT, η, φ, m, ΔR).</para>
+</listitem><listitem><para><bold>pyc::operators</bold> — edge/node aggregation operators.</para>
+</listitem><listitem><para><bold>pyc::nusol</bold> — analytical single and double neutrino reconstruction.</para>
+</listitem><listitem><para><bold>pyc::graph</bold> — graph-level batched operations.</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="index_1build_sec">
+<title>Building the Documentation</title></sect1>
+<sect1 id="index_1architecture_sec">
+<title>Architecture Overview</title><para>The framework follows a pipeline architecture:</para>
+<para><orderedlist>
+<listitem><para><bold>I/O Layer</bold>: <computeroutput>io</computeroutput> and <computeroutput>sampletracer</computeroutput> read ROOT files via <computeroutput>data_t/<computeroutput>element_t</computeroutput>,</computeroutput> producing <computeroutput>event_template</computeroutput> objects populated with <computeroutput>particle_template</computeroutput> collections.</para>
+</listitem><listitem><para><bold>Graph Layer</bold>: <computeroutput>graph_template</computeroutput> transforms event objects into <computeroutput>graph_t</computeroutput> instances containing PyTorch tensors. The topology predicate and feature getters are defined by the user in <computeroutput>CompileEvent()</computeroutput>.</para>
+</listitem><listitem><para><bold>Selection Layer</bold>: <computeroutput>selection_template</computeroutput> receives the same events and applies user-defined cuts, optionally writing output ROOT branches.</para>
+</listitem><listitem><para><bold>Training Layer</bold>: <computeroutput>dataloader</computeroutput> batches <computeroutput>graph_t</computeroutput> objects; <computeroutput>model_template</computeroutput> subclasses implement the GNN forward pass and loss computation; <computeroutput>optimizer</computeroutput> wraps the PyTorch optimiser/scheduler; k-fold cross-validation is coordinated by <computeroutput>analysis</computeroutput>.</para>
+</listitem><listitem><para><bold>Metrics Layer</bold>: <computeroutput>metric_template</computeroutput> and <computeroutput>metrics</computeroutput> accumulate per-epoch loss, accuracy, and invariant-mass histograms.</para>
+</listitem><listitem><para><bold>Utility Layer</bold>: <computeroutput>notification</computeroutput> (coloured logging), <computeroutput>tools</computeroutput> (filesystem/strings/math), and <computeroutput>cproperty</computeroutput> (computed property mechanism) are inherited throughout.</para>
+</listitem></orderedlist>
+</para>
+<para>The <computeroutput>analysis</computeroutput> class is the top-level orchestrator that chains all layers together.</para>
+<para><programlisting filename=".sh"><codeline><highlight class="normal">#<sp/>Generate<sp/>Doxygen<sp/>XML<sp/>(from<sp/>the<sp/>repository<sp/>root)</highlight></codeline>
+<codeline><highlight class="normal">doxygen<sp/>Doxyfile</highlight></codeline>
+<codeline></codeline>
+<codeline><highlight class="normal">#<sp/>Build<sp/>Sphinx<sp/>HTML<sp/>(Read<sp/>the<sp/>Docs<sp/>style)</highlight></codeline>
+<codeline><highlight class="normal">cd<sp/>docs<sp/>&amp;&amp;<sp/>make<sp/>html</highlight></codeline>
+</programlisting></para>
+</sect1>
+<sect1 id="index_1rtd_sec">
+<title>Read the Docs</title><para>Documentation is hosted on Read the Docs and rebuilt automatically on every push. The full pipeline is defined in <computeroutput>.readthedocs.yaml</computeroutput>. </para>
+</sect1>
+    </detaileddescription>
+    <location file="mainpage.dox"/>
+  </compounddef>
+</doxygen>

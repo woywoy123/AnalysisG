@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="pyc_8dox" kind="file" language="C++">
+    <compoundname>pyc.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the AnalysisG.pyc package, which contains Cython-optimized utilities for high-performance data analysis. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>pyc.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>AnalysisG.pyc<sp/>package,<sp/>which<sp/>contains<sp/>Cython-optimized<sp/>utilities<sp/>for<sp/>high-performance<sp/>data<sp/>analysis.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>pyc_page<sp/>AnalysisG.pyc</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>pyc_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`AnalysisG.pyc`<sp/>package<sp/>is<sp/>a<sp/>collection<sp/>of<sp/>Cython-optimized<sp/>modules<sp/>designed<sp/>to<sp/>enhance<sp/>the<sp/>performance<sp/>of<sp/>various<sp/>data<sp/>analysis<sp/>tasks<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework.<sp/>By<sp/>leveraging<sp/>Cython,<sp/>these<sp/>modules<sp/>provide<sp/>significant<sp/>speed<sp/>improvements<sp/>for<sp/>computationally<sp/>intensive<sp/>operations,<sp/>bridging<sp/>the<sp/>gap<sp/>between<sp/>Python&apos;s<sp/>ease<sp/>of<sp/>use<sp/>and<sp/>C/C++&apos;s<sp/>execution<sp/>speed.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>pyc_contents<sp/>Contents</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>This<sp/>package<sp/>contains<sp/>several<sp/>sub-modules,<sp/>each<sp/>focusing<sp/>on<sp/>specific<sp/>optimized<sp/>functionalities:</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>-<sp/>`cutils`:<sp/>Common<sp/>utility<sp/>functions.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph`:<sp/>Graph-related<sp/>operations<sp/>and<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`interface`:<sp/>Interfaces<sp/>for<sp/>interacting<sp/>with<sp/>external<sp/>libraries<sp/>or<sp/>systems.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`nusol`:<sp/>Neutrino<sp/>solver<sp/>utilities.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`operators`:<sp/>Optimized<sp/>mathematical<sp/>or<sp/>logical<sp/>operators.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`physics`:<sp/>Physics-related<sp/>calculations<sp/>and<sp/>constants.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`transform`:<sp/>Data<sp/>transformation<sp/>utilities.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/pyc.dox"/>
+  </compounddef>
+</doxygen>

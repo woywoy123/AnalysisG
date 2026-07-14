@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="nusol_page" kind="page">
+    <compoundname>nusol_page</compoundname>
+    <title>nusol</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="nusol_page_1nusol_intro">
+<title>Introduction</title><para>The <computeroutput>nusol</computeroutput> module provides high-performance neutrino solver utilities, optimized with Cython and accelerated using CUDA kernels. This module is critical for complex physics analyses requiring efficient and accurate neutrino kinematic reconstruction, leveraging GPU capabilities for rapid calculations.</para>
+</sect1>
+<sect1 id="nusol_page_1nusol_contents">
+<title>Contents</title><para>This module contains optimized neutrino solver functions and related utilities, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable. </para>
+</sect1>
+    </detaileddescription>
+    <location file="pyc/nusol.dox"/>
+  </compounddef>
+</doxygen>

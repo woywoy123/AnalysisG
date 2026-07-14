@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="interface_page" kind="page">
+    <compoundname>interface_page</compoundname>
+    <title>interface</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="interface_page_1interface_intro">
+<title>Introduction</title><para>The <computeroutput>interface</computeroutput> module provides optimized interfaces for interacting with various components, potentially including external libraries or hardware, within the AnalysisG framework. These interfaces are designed for high-performance data exchange and control, and may leverage Cython and CUDA kernels for accelerated operations where direct hardware interaction or high-throughput data transfer is required.</para>
+</sect1>
+<sect1 id="interface_page_1interface_contents">
+<title>Contents</title><para>This module contains definitions for various interfaces. Specific contents will be detailed as they are implemented, noting any CUDA-accelerated components. </para>
+</sect1>
+    </detaileddescription>
+    <location file="pyc/interface.dox"/>
+  </compounddef>
+</doxygen>

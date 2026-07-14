@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="IOCython_page" kind="page">
     <compoundname>IOCython_page</compoundname>
     <title>IO</title>
@@ -138,6 +138,6 @@
 </para>
 </sect1>
     </detaileddescription>
-    <location file="modules/io.dox"/>
+    <location file="core/io.dox"/>
   </compounddef>
 </doxygen>

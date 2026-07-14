@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="model_8dox" kind="file" language="C++">
+    <compoundname>model.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the model_template class and related components. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>model.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>model_template<sp/>class<sp/>and<sp/>related<sp/>components.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>model_module_page<sp/>Model<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>model_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`model`<sp/>module<sp/>provides<sp/>the<sp/>base<sp/>template<sp/>for<sp/>defining<sp/>and<sp/>training<sp/>machine<sp/>learning<sp/>models<sp/>in<sp/>the<sp/>|g-framework|.<sp/>The<sp/>`model_template`<sp/>class<sp/>defines<sp/>the<sp/>common<sp/>interface<sp/>and<sp/>functionality<sp/>for<sp/>all<sp/>model<sp/>types.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>model_template_class<sp/>The<sp/>model_template<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`model_template`<sp/>class<sp/>is<sp/>an<sp/>abstract<sp/>base<sp/>class<sp/>that<sp/>defines<sp/>the<sp/>structure<sp/>of<sp/>a<sp/>machine<sp/>learning<sp/>model.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`model_template()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>properties<sp/>of<sp/>the<sp/>model,<sp/>such<sp/>as<sp/>input<sp/>and<sp/>output<sp/>features,<sp/>and<sp/>the<sp/>device<sp/>settings.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~model_template()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>the<sp/>resources,<sp/>including<sp/>the<sp/>registered<sp/>modules<sp/>and<sp/>output<sp/>tensors.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_methods_virtual<sp/>Virtual<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`model_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>model<sp/>object.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>forward(graph_t*<sp/>data)`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>method<sp/>of<sp/>the<sp/>model,<sp/>defining<sp/>the<sp/>forward<sp/>pass.<sp/>It<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>derived<sp/>classes.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_methods_config<sp/>Configuration</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_input_features(...)`:<sp/>Sets<sp/>the<sp/>input<sp/>features<sp/>for<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_output_features(...)`:<sp/>Sets<sp/>the<sp/>output<sp/>features<sp/>and<sp/>their<sp/>corresponding<sp/>loss<sp/>functions.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_device(std::string*<sp/>dev,<sp/>model_template*<sp/>md)`:<sp/>Sets<sp/>the<sp/>device<sp/>(CPU<sp/>or<sp/>CUDA)<sp/>for<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_optimizer(std::string<sp/>name)`:<sp/>Sets<sp/>the<sp/>optimizer<sp/>for<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>initialize(optimizer_params_t*<sp/>op_params)`:<sp/>Initializes<sp/>the<sp/>model,<sp/>including<sp/>checking<sp/>the<sp/>parameters<sp/>and<sp/>building<sp/>the<sp/>optimizer.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>import_settings(model_settings_t*<sp/>setd)`:<sp/>Imports<sp/>the<sp/>settings<sp/>for<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>clone_settings(model_settings_t*<sp/>setd)`:<sp/>Clones<sp/>the<sp/>settings<sp/>of<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_methods_training<sp/>Training</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>forward(graph_t*<sp/>data,<sp/>bool<sp/>train)`:<sp/>Performs<sp/>a<sp/>forward<sp/>pass<sp/>on<sp/>a<sp/>single<sp/>graph,<sp/>with<sp/>an<sp/>option<sp/>to<sp/>enable<sp/>training<sp/>mode.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>forward(std::vector&lt;graph_t*&gt;<sp/>data,<sp/>bool<sp/>train)`:<sp/>Performs<sp/>a<sp/>forward<sp/>pass<sp/>on<sp/>a<sp/>batch<sp/>of<sp/>graphs.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>train_sequence(bool<sp/>train)`:<sp/>Computes<sp/>the<sp/>loss<sp/>for<sp/>all<sp/>the<sp/>output<sp/>features<sp/>and,<sp/>if<sp/>in<sp/>training<sp/>mode,<sp/>performs<sp/>a<sp/>backward<sp/>pass<sp/>and<sp/>updates<sp/>the<sp/>model<sp/>parameters.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`torch::Tensor*<sp/>compute_loss(std::string<sp/>pred,<sp/>graph_enum<sp/>feat)`:<sp/>Computes<sp/>the<sp/>loss<sp/>for<sp/>a<sp/>specific<sp/>prediction.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_methods_state<sp/>State<sp/>Management</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>save_state()`:<sp/>Saves<sp/>the<sp/>state<sp/>of<sp/>the<sp/>model<sp/>and<sp/>optimizer<sp/>to<sp/>files.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>restore_state()`:<sp/>Restores<sp/>the<sp/>state<sp/>of<sp/>the<sp/>model<sp/>and<sp/>optimizer<sp/>from<sp/>files.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_methods_features<sp/>Feature<sp/>Handling</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`torch::Tensor*<sp/>assign_features(...)`:<sp/>Assigns<sp/>features<sp/>from<sp/>a<sp/>graph<sp/>to<sp/>the<sp/>model&apos;s<sp/>input/output<sp/>tensors.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>check_features(graph_t*<sp/>data)`:<sp/>Checks<sp/>if<sp/>all<sp/>the<sp/>required<sp/>input<sp/>and<sp/>output<sp/>features<sp/>are<sp/>present<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>model_template_methods_modules<sp/>Module<sp/>Management</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>register_module(torch::nn::Sequential*<sp/>data)`:<sp/>Registers<sp/>a<sp/>PyTorch<sp/>module<sp/>with<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>register_module(torch::nn::Sequential*<sp/>data,<sp/>mlp_init<sp/>method)`:<sp/>Registers<sp/>a<sp/>PyTorch<sp/>module<sp/>and<sp/>initializes<sp/>its<sp/>weights.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/model/model.dox"/>
+  </compounddef>
+</doxygen>

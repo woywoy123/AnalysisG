@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="SelectionTemplate_page" kind="page">
     <compoundname>SelectionTemplate_page</compoundname>
     <title>SelectionTemplate</title>
@@ -14,7 +14,7 @@
 <sect2 id="SelectionTemplate_page_1SelectionTemplate_cinit_dealloc">
 <title>Constructors and Destructors</title><para><itemizedlist>
 <listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. If the instance is not <computeroutput>SelectionTemplate</computeroutput> itself (i.e., it&apos;s a subclass), it returns immediately. Otherwise, it initializes <computeroutput>self.root_leaves</computeroutput> as an empty dictionary and a new C++ <computeroutput>selection_template</computeroutput> object, assigning its pointer to <computeroutput>self.ptr</computeroutput>.</para>
-</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: The Python initializer. If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt[&quot;data&quot;]</computeroutput>. It also initializes <computeroutput>self.ptr.passed_weights</computeroutput> and <computeroutput>self.ptr.matched_meta</computeroutput> from <computeroutput>inpt[&quot;weights&quot;]</computeroutput> and <computeroutput>inpt[&quot;meta&quot;]</computeroutput> respectively, converting them from Python types to C++ maps.</para>
+</listitem><listitem><para><computeroutput>__init__(self, inpt = None)</computeroutput>: The Python initializer. If <computeroutput>inpt</computeroutput> (a dictionary) is provided, it attempts to set various attributes of <computeroutput>self</computeroutput> from <computeroutput>inpt["data"]</computeroutput>. It also initializes <computeroutput>self.ptr.passed_weights</computeroutput> and <computeroutput>self.ptr.matched_meta</computeroutput> from <computeroutput>inpt["weights"]</computeroutput> and <computeroutput>inpt["meta"]</computeroutput> respectively, converting them from Python types to C++ maps.</para>
 </listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. If the instance is not <computeroutput>SelectionTemplate</computeroutput> itself, it returns. Otherwise, it deallocates the C++ <computeroutput>selection_template</computeroutput> object pointed to by <computeroutput>self.ptr</computeroutput>, ensuring proper memory management.</para>
 </listitem></itemizedlist>
 </para>
@@ -35,7 +35,7 @@
 </sect2>
 <sect2 id="SelectionTemplate_page_1SelectionTemplate_methods">
 <title>Methods</title><para><itemizedlist>
-<listitem><para><computeroutput>dump(self, str path = &quot;./pkl-data&quot;, str name = &quot;&quot;)</computeroutput>: Saves the current <computeroutput>SelectionTemplate</computeroutput> object to a pickle file. <parameterlist kind="param"><parameteritem>
+<listitem><para><computeroutput>dump(self, str path = "./pkl-data", str name = "")</computeroutput>: Saves the current <computeroutput>SelectionTemplate</computeroutput> object to a pickle file. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>path</parametername>
 </parameternamelist>
@@ -53,7 +53,7 @@
 </parameteritem>
 </parameterlist>
 </para>
-</listitem><listitem><para><computeroutput>load(self, str path = &quot;./pkl-data&quot;, str name = &quot;&quot;)</computeroutput>: Loads a <computeroutput>SelectionTemplate</computeroutput> object from a pickle file. <parameterlist kind="param"><parameteritem>
+</listitem><listitem><para><computeroutput>load(self, str path = "./pkl-data", str name = "")</computeroutput>: Loads a <computeroutput>SelectionTemplate</computeroutput> object from a pickle file. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>path</parametername>
 </parameternamelist>
@@ -139,6 +139,6 @@
 </para>
 </sect1>
     </detaileddescription>
-    <location file="modules/selection_template.dox"/>
+    <location file="core/selection_template.dox"/>
   </compounddef>
 </doxygen>

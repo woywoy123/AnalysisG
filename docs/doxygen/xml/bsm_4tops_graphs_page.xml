@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="bsm_4tops_graphs_page" kind="page">
     <compoundname>bsm_4tops_graphs_page</compoundname>
     <title>bsm_4tops Graphs</title>
     <briefdescription>
+<para>This page provides detailed documentation for the various graph classes used in the <computeroutput>bsm_4tops</computeroutput> analysis. </para>
     </briefdescription>
     <detaileddescription>
-<para>This page provides detailed documentation for the various graph classes used in the <computeroutput>bsm_4tops</computeroutput> analysis. These classes inherit from <computeroutput>graph_template</computeroutput> and define the specific nodes, features, and topologies used to represent the event as a graph.</para>
+<para>These classes inherit from <computeroutput>graph_template</computeroutput> and define the specific nodes, features, and topologies used to represent the event as a graph.</para>
 <sect1 id="bsm_4tops_graphs_page_1bsm_4tops_graphs_graph_tops">
 <title>Graph of Tops</title><para>The <computeroutput>graph_tops</computeroutput> class constructs a graph where each node is a top quark.</para>
 <sect2 id="bsm_4tops_graphs_page_1bsm_4tops_graphs_graph_tops_ctor">

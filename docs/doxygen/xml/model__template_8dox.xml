@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
   <compounddef id="model__template_8dox" kind="file" language="C++">
     <compoundname>model_template.dox</compoundname>
     <briefdescription>
@@ -88,6 +88,6 @@
 <codeline lineno="78"><highlight class="comment"><sp/>*<sp/>-<sp/>`cython.operator.dereference<sp/>as<sp/>deref`:<sp/>Used<sp/>to<sp/>dereference<sp/>C++<sp/>pointers.</highlight></codeline>
 <codeline lineno="79"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="modules/model_template.dox"/>
+    <location file="core/model_template.dox"/>
   </compounddef>
 </doxygen>

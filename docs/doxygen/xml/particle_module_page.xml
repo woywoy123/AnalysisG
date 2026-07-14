@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="particle_module_page" kind="page">
+    <compoundname>particle_module_page</compoundname>
+    <title>Particle Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="particle_module_page_1particle_module_intro">
+<title>Introduction</title><para>The <computeroutput>particle</computeroutput> module provides the base template for representing a particle in the |g-framework|. The <computeroutput>particle_template</computeroutput> class defines the common interface and functionality for all particle types.</para>
+</sect1>
+<sect1 id="particle_module_page_1particle_template_class">
+<title>The particle_template Class</title><para>The <computeroutput>particle_template</computeroutput> class is an abstract base class that defines the structure of a particle.</para>
+<sect2 id="particle_module_page_1particle_template_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template()</computeroutput>: The constructor initializes the properties of the particle, such as <computeroutput>pt</computeroutput>, <computeroutput>eta</computeroutput>, <computeroutput>phi</computeroutput>, <computeroutput>e</computeroutput>, <computeroutput>mass</computeroutput>, <computeroutput>px</computeroutput>, <computeroutput>py</computeroutput>, <computeroutput>pz</computeroutput>, <computeroutput>pdgid</computeroutput>, <computeroutput>charge</computeroutput>, etc., by setting up their respective setters and getters.</para>
+</listitem><listitem><para><computeroutput>~particle_template()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="particle_module_page_1particle_template_methods_virtual">
+<title>Virtual Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>particle_template* clone()</computeroutput>: Creates a copy of the particle object.</para>
+</listitem><listitem><para><computeroutput>void build(std::map&lt;std::string, particle_template*&gt;* prt, element_t* el)</computeroutput>: Populates the particle&apos;s properties from an <computeroutput>element_t</computeroutput> object. This is a virtual function that can be overridden by derived classes.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="particle_module_page_1particle_template_methods_kinematics">
+<title>Kinematics</title><para><itemizedlist>
+<listitem><para><computeroutput>void to_cartesian()</computeroutput>: Converts the particle&apos;s kinematics from polar to Cartesian coordinates.</para>
+</listitem><listitem><para><computeroutput>void to_polar()</computeroutput>: Converts the particle&apos;s kinematics from Cartesian to polar coordinates.</para>
+</listitem><listitem><para><computeroutput>double DeltaR(particle_template* part)</computeroutput>: Calculates the DeltaR distance between this particle and another.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="particle_module_page_1particle_template_methods_properties">
+<title>Property Management</title><para>The class provides a large number of setters and getters for accessing the particle&apos;s properties, such as:<itemizedlist>
+<listitem><para><computeroutput>set_pt</computeroutput>, <computeroutput>get_pt</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_eta</computeroutput>, <computeroutput>get_eta</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_phi</computeroutput>, <computeroutput>get_phi</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_e</computeroutput>, <computeroutput>get_e</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_mass</computeroutput>, <computeroutput>get_mass</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_px</computeroutput>, <computeroutput>get_px</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_py</computeroutput>, <computeroutput>get_py</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_pz</computeroutput>, <computeroutput>get_pz</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_pdgid</computeroutput>, <computeroutput>get_pdgid</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_charge</computeroutput>, <computeroutput>get_charge</computeroutput></para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="particle_module_page_1particle_template_methods_relations">
+<title>Particle Relations</title><para><itemizedlist>
+<listitem><para><computeroutput>void set_parents(std::map&lt;std::string, particle_template*&gt;* val, particle_template* prt)</computeroutput>: Sets the parents of the particle.</para>
+</listitem><listitem><para><computeroutput>void get_parents(std::map&lt;std::string, particle_template*&gt;* val, particle_template* prt)</computeroutput>: Retrieves the parents of the particle.</para>
+</listitem><listitem><para><computeroutput>void set_children(std::map&lt;std::string, particle_template*&gt;* val, particle_template* prt)</computeroutput>: Sets the children of the particle.</para>
+</listitem><listitem><para><computeroutput>void get_children(std::map&lt;std::string, particle_template*&gt;* val, particle_template* prt)</computeroutput>: Retrieves the children of the particle.</para>
+</listitem><listitem><para><computeroutput>bool register_child(particle_template* p)</computeroutput>: Registers a particle as a child.</para>
+</listitem><listitem><para><computeroutput>bool register_parent(particle_template* p)</computeroutput>: Registers a particle as a parent.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="particle_module_page_1particle_template_methods_identification">
+<title>Particle Identification</title><para><itemizedlist>
+<listitem><para><computeroutput>bool is(std::vector&lt;int&gt; p)</computeroutput>: Checks if the particle&apos;s PDG ID is in a given list.</para>
+</listitem><listitem><para><computeroutput>void get_isb(bool* val, particle_template* prt)</computeroutput>: Checks if the particle is a b-quark.</para>
+</listitem><listitem><para><computeroutput>void get_isnu(bool* val, particle_template* prt)</computeroutput>: Checks if the particle is a neutrino.</para>
+</listitem><listitem><para><computeroutput>void get_islep(bool* val, particle_template* prt)</computeroutput>: Checks if the particle is a lepton.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="particle_module_page_1particle_t_struct">
+<title>The particle_t Struct</title><para>The <computeroutput>particle_t</computeroutput> struct is a simple data container for the properties of a particle. </para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/particle/particle.dox"/>
+  </compounddef>
+</doxygen>

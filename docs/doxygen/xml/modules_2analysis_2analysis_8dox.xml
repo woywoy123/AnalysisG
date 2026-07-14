@@ -1,0 +1,409 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2analysis_2analysis_8dox" kind="file" language="C++">
+    <compoundname>analysis.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the <ref refid="classAnalysisG_1_1analysis" kindref="compound">AnalysisG::analysis</ref> class. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This file provides comprehensive technical documentation for the <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">AnalysisG::analysis</ref></computeroutput> class, covering its purpose, internal mechanisms, member variables, and public/private member functions. The <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> class serves as the core orchestrator for the entire analysis workflow within the bsm4tops-gnn-analysis framework, managing data loading, event and graph building, selection application, metric calculation, and model training/inference. </para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>analysis.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>AnalysisG::analysis<sp/>class.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>provides<sp/>comprehensive<sp/>technical<sp/>documentation<sp/>for<sp/>the<sp/>`AnalysisG::analysis`<sp/>class,</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>covering<sp/>its<sp/>purpose,<sp/>internal<sp/>mechanisms,<sp/>member<sp/>variables,<sp/>and<sp/>public/private<sp/>member<sp/>functions.</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>The<sp/>`analysis`<sp/>class<sp/>serves<sp/>as<sp/>the<sp/>core<sp/>orchestrator<sp/>for<sp/>the<sp/>entire<sp/>analysis<sp/>workflow<sp/>within</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>the<sp/>bsm4tops-gnn-analysis<sp/>framework,<sp/>managing<sp/>data<sp/>loading,<sp/>event<sp/>and<sp/>graph<sp/>building,</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>selection<sp/>application,<sp/>metric<sp/>calculation,<sp/>and<sp/>model<sp/>training/inference.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="12"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="13" refid="classAnalysisG_1_1analysis" refkind="compound"><highlight class="comment"><sp/>*<sp/>@class<sp/>AnalysisG::analysis</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Core<sp/>orchestrator<sp/>for<sp/>the<sp/>bsm4tops-gnn-analysis<sp/>framework.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>The<sp/>`AnalysisG::analysis`<sp/>class<sp/>is<sp/>the<sp/>central<sp/>component<sp/>responsible<sp/>for<sp/>managing<sp/>and<sp/>executing</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>the<sp/>various<sp/>stages<sp/>of<sp/>a<sp/>physics<sp/>analysis,<sp/>from<sp/>data<sp/>input<sp/>and<sp/>processing<sp/>to<sp/>model<sp/>training</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>and<sp/>inference.<sp/>It<sp/>integrates<sp/>functionalities<sp/>from<sp/>several<sp/>other<sp/>modules,<sp/>including</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>data<sp/>loading<sp/>(`dataloader`),<sp/>sample<sp/>tracing<sp/>(`sampletracer`),<sp/>I/O<sp/>operations<sp/>(`io`),</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>event<sp/>and<sp/>graph<sp/>building,<sp/>selection<sp/>application,<sp/>metric<sp/>evaluation,<sp/>and<sp/>model<sp/>management.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>This<sp/>class<sp/>provides<sp/>a<sp/>high-level<sp/>interface<sp/>for<sp/>users<sp/>to<sp/>define<sp/>their<sp/>analysis<sp/>pipeline</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>by<sp/>adding<sp/>samples,<sp/>event/graph<sp/>templates,<sp/>selections,<sp/>metrics,<sp/>and<sp/>models.<sp/>It<sp/>handles</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>the<sp/>intricate<sp/>details<sp/>of<sp/>data<sp/>flow,<sp/>caching,<sp/>multi-threading,<sp/>and<sp/>interaction<sp/>with</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>external<sp/>libraries<sp/>like<sp/>ROOT<sp/>and<sp/>potentially<sp/>CUDA<sp/>for<sp/>accelerated<sp/>computing.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@details</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>The<sp/>`analysis`<sp/>class<sp/>follows<sp/>a<sp/>structured<sp/>approach<sp/>to<sp/>manage<sp/>the<sp/>analysis<sp/>workflow:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>**Initialization:**<sp/>Sets<sp/>up<sp/>paths,<sp/>initializes<sp/>helper<sp/>objects<sp/>(`tracer`,<sp/>`loader`,<sp/>`reader`),</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/><sp/><sp/>and<sp/>prepares<sp/>the<sp/>environment<sp/>for<sp/>PCM<sp/>(Plugin-in<sp/>C++<sp/>Modules)<sp/>compilation<sp/>if<sp/>necessary.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>It<sp/>dynamically<sp/>compiles<sp/>meta-data<sp/>structs<sp/>and<sp/>other<sp/>necessary<sp/>components<sp/>using<sp/>`gSystem`</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/><sp/><sp/>and<sp/>`std::thread`<sp/>for<sp/>parallel<sp/>compilation.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>**Configuration:**<sp/>Users<sp/>configure<sp/>the<sp/>analysis<sp/>by<sp/>adding<sp/>various<sp/>components:</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`add_samples`:<sp/>Specifies<sp/>input<sp/>ROOT<sp/>files<sp/>and<sp/>their<sp/>corresponding<sp/>labels.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`add_event_template`:<sp/>Defines<sp/>how<sp/>raw<sp/>events<sp/>are<sp/>transformed<sp/>into<sp/>structured<sp/>event<sp/>objects.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`add_graph_template`:<sp/>Specifies<sp/>how<sp/>event<sp/>objects<sp/>are<sp/>converted<sp/>into<sp/>graph<sp/>representations.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`add_selection_template`:<sp/>Applies<sp/>cuts<sp/>and<sp/>filters<sp/>to<sp/>events<sp/>or<sp/>graphs.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`add_metric_template`:<sp/>Defines<sp/>metrics<sp/>for<sp/>evaluating<sp/>models<sp/>or<sp/>analysis<sp/>performance.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`add_model`:<sp/>Registers<sp/>models<sp/>for<sp/>training<sp/>or<sp/>inference,<sp/>optionally<sp/>with<sp/>optimizer<sp/>parameters.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>**Execution<sp/>(`start()`<sp/>method):**</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>settings,<sp/>including<sp/>debug<sp/>mode<sp/>and<sp/>thread<sp/>count.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Checks<sp/>and<sp/>manages<sp/>data<sp/>caching<sp/>for<sp/>graphs.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Orchestrates<sp/>the<sp/>building<sp/>of<sp/>events,<sp/>selections,<sp/>and<sp/>graphs.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Compiles<sp/>tracer<sp/>objects<sp/>for<sp/>efficient<sp/>data<sp/>processing.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Builds<sp/>the<sp/>data<sp/>loader,<sp/>preparing<sp/>data<sp/>for<sp/>training/inference.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Manages<sp/>metric<sp/>fold<sp/>creation.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Handles<sp/>graph<sp/>caching<sp/>(dumping<sp/>and<sp/>restoring).</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initiates<sp/>model<sp/>training<sp/>sessions<sp/>(if<sp/>configured)<sp/>by<sp/>starting<sp/>a<sp/>CUDA<sp/>server<sp/>and<sp/>building<sp/>the<sp/>project.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initiates<sp/>model<sp/>inference<sp/>sessions<sp/>(if<sp/>configured)<sp/>by<sp/>starting<sp/>a<sp/>CUDA<sp/>server.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>The<sp/>class<sp/>extensively<sp/>uses<sp/>`std::map`<sp/>and<sp/>`std::vector`<sp/>for<sp/>managing<sp/>various<sp/>configurations</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>and<sp/>data<sp/>structures,<sp/>ensuring<sp/>flexibility<sp/>and<sp/>scalability.<sp/>It<sp/>also<sp/>leverages<sp/>ROOT&apos;s</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>`RDataFrame`<sp/>for<sp/>efficient<sp/>data<sp/>processing<sp/>and<sp/>`TSystem`<sp/>for<sp/>file<sp/>system<sp/>interactions</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>and<sp/>dynamic<sp/>code<sp/>compilation.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="57"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Constructor<sp/>for<sp/>the<sp/>analysis<sp/>class.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>Initializes<sp/>the<sp/>`analysis`<sp/>object,<sp/>setting<sp/>up<sp/>default<sp/>prefixes,<sp/>and<sp/>allocating<sp/>memory</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>for<sp/>internal<sp/>data<sp/>structures<sp/>such<sp/>as<sp/>`tags`,<sp/>`tracer`,<sp/>`loader`,<sp/>and<sp/>`reader`.</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/>It<sp/>also<sp/>handles<sp/>the<sp/>dynamic<sp/>compilation<sp/>of<sp/>PCM<sp/>(Plugin-in<sp/>C++<sp/>Modules)<sp/>files,</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>specifically<sp/>for<sp/>meta-data<sp/>structs<sp/>(`meta_t`,<sp/>`weights_t`)<sp/>and<sp/>other<sp/>components.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>This<sp/>involves<sp/>setting<sp/>up<sp/>ROOT&apos;s<sp/>`gSystem`<sp/>build<sp/>directory<sp/>and<sp/>dynamically<sp/>loading</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/>compiled<sp/>modules<sp/>to<sp/>ensure<sp/>all<sp/>necessary<sp/>C++<sp/>components<sp/>are<sp/>available<sp/>at<sp/>runtime.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>@details</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*<sp/>The<sp/>constructor<sp/>performs<sp/>the<sp/>following<sp/>key<sp/>operations:</highlight></codeline>
+<codeline lineno="69"><highlight class="comment"><sp/>*<sp/>-<sp/>Sets<sp/>`prefix`<sp/>to<sp/>&quot;Analysis&quot;.</highlight></codeline>
+<codeline lineno="70"><highlight class="comment"><sp/>*<sp/>-<sp/>Initializes<sp/>`tags`<sp/>(a<sp/>vector<sp/>of<sp/>`folds_t`),<sp/>`tracer`<sp/>(a<sp/>`sampletracer`),</highlight></codeline>
+<codeline lineno="71"><highlight class="comment"><sp/>*<sp/><sp/><sp/>`loader`<sp/>(a<sp/>`dataloader`),<sp/>and<sp/>`reader`<sp/>(an<sp/>`io`<sp/>object).</highlight></codeline>
+<codeline lineno="72"><highlight class="comment"><sp/>*<sp/>-<sp/>Determines<sp/>the<sp/>current<sp/>absolute<sp/>path.</highlight></codeline>
+<codeline lineno="73"><highlight class="comment"><sp/>*<sp/>-<sp/>Creates<sp/>a<sp/>directory<sp/>for<sp/>PCM<sp/>files<sp/>(`dict_path/pcm/`)<sp/>and<sp/>sets<sp/>it<sp/>as<sp/>ROOT&apos;s<sp/>build<sp/>directory.</highlight></codeline>
+<codeline lineno="74"><highlight class="comment"><sp/>*<sp/>-<sp/>Changes<sp/>the<sp/>current<sp/>directory<sp/>to<sp/>the<sp/>PCM<sp/>directory,<sp/>adds<sp/>it<sp/>to<sp/>the<sp/>dynamic<sp/>path,</highlight></codeline>
+<codeline lineno="75"><highlight class="comment"><sp/>*<sp/><sp/><sp/>and<sp/>sets<sp/>`TSystem::kAclicMode`<sp/>to<sp/>`TSystem::kOpt`<sp/>for<sp/>optimized<sp/>compilation.</highlight></codeline>
+<codeline lineno="76"><highlight class="comment"><sp/>*<sp/>-<sp/>Uses<sp/>`std::thread`<sp/>to<sp/>parallelize<sp/>the<sp/>compilation<sp/>of<sp/>`meta_t`<sp/>and<sp/>`weights_t`</highlight></codeline>
+<codeline lineno="77"><highlight class="comment"><sp/>*<sp/><sp/><sp/>structs<sp/>from<sp/>`dict_path/structs/include/structs/meta.h`,<sp/>and<sp/>then<sp/>`buildAll`.</highlight></codeline>
+<codeline lineno="78"><highlight class="comment"><sp/>*<sp/>-<sp/>Restores<sp/>the<sp/>original<sp/>current<sp/>directory<sp/>after<sp/>compilation.</highlight></codeline>
+<codeline lineno="79"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="80"><highlight class="normal">analysis::analysis()</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="83"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Destructor<sp/>for<sp/>the<sp/>analysis<sp/>class.</highlight></codeline>
+<codeline lineno="84"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="85"><highlight class="comment"><sp/>*<sp/>Cleans<sp/>up<sp/>allocated<sp/>resources<sp/>and<sp/>flushes<sp/>any<sp/>remaining<sp/>data.</highlight></codeline>
+<codeline lineno="86"><highlight class="comment"><sp/>*<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>`tags`<sp/>vector<sp/>to<sp/>flush<sp/>data<sp/>for<sp/>each<sp/>fold,</highlight></codeline>
+<codeline lineno="87"><highlight class="comment"><sp/>*<sp/>and<sp/>then<sp/>deallocates<sp/>memory<sp/>for<sp/>`tags`,<sp/>`trainer`,<sp/>`model_metrics`,</highlight></codeline>
+<codeline lineno="88"><highlight class="comment"><sp/>*<sp/>`metric_names`,<sp/>`loader`,<sp/>`tracer`,<sp/>and<sp/>`reader`.</highlight></codeline>
+<codeline lineno="89"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="90"><highlight class="comment"><sp/>*<sp/>@details</highlight></codeline>
+<codeline lineno="91"><highlight class="comment"><sp/>*<sp/>The<sp/>destructor<sp/>ensures<sp/>proper<sp/>memory<sp/>management<sp/>and<sp/>resource<sp/>release.</highlight></codeline>
+<codeline lineno="92"><highlight class="comment"><sp/>*<sp/>-<sp/>Calls<sp/>`flush_data()`<sp/>on<sp/>each<sp/>`folds_t`<sp/>object<sp/>within<sp/>the<sp/>`tags`<sp/>vector.</highlight></codeline>
+<codeline lineno="93"><highlight class="comment"><sp/>*<sp/>-<sp/>Deletes<sp/>the<sp/>`tags`<sp/>vector.</highlight></codeline>
+<codeline lineno="94"><highlight class="comment"><sp/>*<sp/>-<sp/>Calls<sp/>a<sp/>generic<sp/>`flush`<sp/>utility<sp/>function<sp/>for<sp/>`trainer`,<sp/>`model_metrics`,</highlight></codeline>
+<codeline lineno="95"><highlight class="comment"><sp/>*<sp/><sp/><sp/>and<sp/>`metric_names`<sp/>to<sp/>ensure<sp/>their<sp/>contents<sp/>are<sp/>properly<sp/>deallocated.</highlight></codeline>
+<codeline lineno="96"><highlight class="comment"><sp/>*<sp/>-<sp/>Deletes<sp/>the<sp/>`dataloader`,<sp/>`sampletracer`,<sp/>and<sp/>`io`<sp/>objects.</highlight></codeline>
+<codeline lineno="97"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::~<ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>()</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="100"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="101"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>sample<sp/>path<sp/>and<sp/>its<sp/>corresponding<sp/>label<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="102"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="103"><highlight class="comment"><sp/>*<sp/>This<sp/>method<sp/>registers<sp/>an<sp/>input<sp/>data<sp/>file<sp/>(e.g.,<sp/>a<sp/>ROOT<sp/>file)<sp/>with<sp/>a<sp/>user-defined</highlight></codeline>
+<codeline lineno="104"><highlight class="comment"><sp/>*<sp/>label.<sp/>This<sp/>label<sp/>is<sp/>used<sp/>to<sp/>group<sp/>samples<sp/>and<sp/>apply<sp/>specific<sp/>event<sp/>or<sp/>graph</highlight></codeline>
+<codeline lineno="105"><highlight class="comment"><sp/>*<sp/>templates<sp/>to<sp/>them.</highlight></codeline>
+<codeline lineno="106"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="107"><highlight class="comment"><sp/>*<sp/>@param<sp/>path<sp/>The<sp/>absolute<sp/>or<sp/>relative<sp/>path<sp/>to<sp/>the<sp/>input<sp/>data<sp/>file<sp/>(e.g.,<sp/>a<sp/>ROOT<sp/>file).</highlight></codeline>
+<codeline lineno="108"><highlight class="comment"><sp/>*<sp/>@param<sp/>label<sp/>A<sp/>string<sp/>label<sp/>to<sp/>associate<sp/>with<sp/>this<sp/>sample<sp/>path.</highlight></codeline>
+<codeline lineno="109"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_samples(std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>path,<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>label)</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="112"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="113"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>an<sp/>event<sp/>template<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="114"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="115"><highlight class="comment"><sp/>*<sp/>Event<sp/>templates<sp/>define<sp/>how<sp/>raw<sp/>data<sp/>from<sp/>input<sp/>files<sp/>are<sp/>processed<sp/>and</highlight></codeline>
+<codeline lineno="116"><highlight class="comment"><sp/>*<sp/>transformed<sp/>into<sp/>structured<sp/>event<sp/>objects.<sp/>Each<sp/>template<sp/>is<sp/>associated</highlight></codeline>
+<codeline lineno="117"><highlight class="comment"><sp/>*<sp/>with<sp/>a<sp/>unique<sp/>label,<sp/>allowing<sp/>different<sp/>processing<sp/>logic<sp/>for<sp/>different</highlight></codeline>
+<codeline lineno="118"><highlight class="comment"><sp/>*<sp/>types<sp/>of<sp/>events<sp/>or<sp/>samples.</highlight></codeline>
+<codeline lineno="119"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="120"><highlight class="comment"><sp/>*<sp/>@param<sp/>ev<sp/>A<sp/>pointer<sp/>to<sp/>an<sp/>`event_template`<sp/>object.<sp/>The<sp/>`analysis`<sp/>class</highlight></codeline>
+<codeline lineno="121"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>takes<sp/>ownership<sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="122"><highlight class="comment"><sp/>*<sp/>@param<sp/>label<sp/>A<sp/>string<sp/>label<sp/>to<sp/>associate<sp/>with<sp/>this<sp/>event<sp/>template.</highlight></codeline>
+<codeline lineno="123"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_event_template(event_template*<sp/>ev,<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>label)</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="126"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="127"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>graph<sp/>template<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="128"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="129"><highlight class="comment"><sp/>*<sp/>Graph<sp/>templates<sp/>specify<sp/>how<sp/>structured<sp/>event<sp/>objects<sp/>are<sp/>converted<sp/>into</highlight></codeline>
+<codeline lineno="130"><highlight class="comment"><sp/>*<sp/>graph<sp/>representations,<sp/>which<sp/>are<sp/>typically<sp/>used<sp/>for<sp/>Graph<sp/>Neural<sp/>Network<sp/>(GNN)</highlight></codeline>
+<codeline lineno="131"><highlight class="comment"><sp/>*<sp/>processing.<sp/>Each<sp/>graph<sp/>template<sp/>has<sp/>a<sp/>unique<sp/>name<sp/>and<sp/>is<sp/>associated<sp/>with</highlight></codeline>
+<codeline lineno="132"><highlight class="comment"><sp/>*<sp/>a<sp/>sample<sp/>label.</highlight></codeline>
+<codeline lineno="133"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="134"><highlight class="comment"><sp/>*<sp/>@param<sp/>ev<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`graph_template`<sp/>object.<sp/>The<sp/>`analysis`<sp/>class</highlight></codeline>
+<codeline lineno="135"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>takes<sp/>ownership<sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="136"><highlight class="comment"><sp/>*<sp/>@param<sp/>label<sp/>A<sp/>string<sp/>label<sp/>to<sp/>associate<sp/>with<sp/>the<sp/>sample(s)<sp/>for<sp/>which</highlight></codeline>
+<codeline lineno="137"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>this<sp/>graph<sp/>template<sp/>should<sp/>be<sp/>applied.</highlight></codeline>
+<codeline lineno="138"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_graph_template(graph_template*<sp/>ev,<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>label)</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="141"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="142"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>selection<sp/>template<sp/>to<sp/>the<sp/>analysis.</highlight></codeline>
+<codeline lineno="143"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="144"><highlight class="comment"><sp/>*<sp/>Selection<sp/>templates<sp/>define<sp/>criteria<sp/>for<sp/>filtering<sp/>events<sp/>or<sp/>graphs<sp/>based<sp/>on</highlight></codeline>
+<codeline lineno="145"><highlight class="comment"><sp/>*<sp/>specific<sp/>physics<sp/>conditions<sp/>or<sp/>properties.<sp/>These<sp/>selections<sp/>are<sp/>applied</highlight></codeline>
+<codeline lineno="146"><highlight class="comment"><sp/>*<sp/>during<sp/>the<sp/>analysis<sp/>workflow<sp/>to<sp/>focus<sp/>on<sp/>relevant<sp/>data.</highlight></codeline>
+<codeline lineno="147"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="148"><highlight class="comment"><sp/>*<sp/>@param<sp/>sel<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`selection_template`<sp/>object.<sp/>The<sp/>`analysis`<sp/>class</highlight></codeline>
+<codeline lineno="149"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>takes<sp/>ownership<sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="150"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_selection_template(selection_template*<sp/>sel)</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="153"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="154"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>metric<sp/>template<sp/>and<sp/>links<sp/>it<sp/>to<sp/>a<sp/>model<sp/>template.</highlight></codeline>
+<codeline lineno="155"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="156"><highlight class="comment"><sp/>*<sp/>This<sp/>method<sp/>associates<sp/>a<sp/>`metric_template`<sp/>with<sp/>a<sp/>`model_template`,</highlight></codeline>
+<codeline lineno="157"><highlight class="comment"><sp/>*<sp/>enabling<sp/>the<sp/>evaluation<sp/>of<sp/>a<sp/>specific<sp/>model&apos;s<sp/>performance<sp/>using<sp/>the</highlight></codeline>
+<codeline lineno="158"><highlight class="comment"><sp/>*<sp/>defined<sp/>metric.<sp/>If<sp/>the<sp/>linking<sp/>fails,<sp/>the<sp/>program<sp/>will<sp/>abort.</highlight></codeline>
+<codeline lineno="159"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="160"><highlight class="comment"><sp/>*<sp/>@param<sp/>mx<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`metric_template`<sp/>object.<sp/>The<sp/>`analysis`<sp/>class</highlight></codeline>
+<codeline lineno="161"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>takes<sp/>ownership<sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="162"><highlight class="comment"><sp/>*<sp/>@param<sp/>mdl<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object<sp/>to<sp/>which<sp/>the<sp/>metric</highlight></codeline>
+<codeline lineno="163"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>will<sp/>be<sp/>linked.</highlight></codeline>
+<codeline lineno="164"><highlight class="comment"><sp/>*<sp/>@throws<sp/>std::runtime_error<sp/>if<sp/>the<sp/>metric<sp/>cannot<sp/>be<sp/>linked<sp/>to<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="165"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_metric_template(metric_template*<sp/>mx,<sp/>model_template*<sp/>mdl)</highlight></codeline>
+<codeline lineno="167"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="168"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="169"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>model<sp/>for<sp/>training<sp/>with<sp/>specified<sp/>optimizer<sp/>parameters.</highlight></codeline>
+<codeline lineno="170"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="171"><highlight class="comment"><sp/>*<sp/>This<sp/>overload<sp/>registers<sp/>a<sp/>`model_template`<sp/>along<sp/>with<sp/>its<sp/>`optimizer_params_t`</highlight></codeline>
+<codeline lineno="172"><highlight class="comment"><sp/>*<sp/>for<sp/>a<sp/>training<sp/>session.<sp/>Each<sp/>training<sp/>session<sp/>is<sp/>identified<sp/>by<sp/>a<sp/>unique<sp/>`run_name`.</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="174"><highlight class="comment"><sp/>*<sp/>@param<sp/>model<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object<sp/>representing<sp/>the<sp/>model</highlight></codeline>
+<codeline lineno="175"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>to<sp/>be<sp/>trained.<sp/>The<sp/>`analysis`<sp/>class<sp/>takes<sp/>ownership<sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="176"><highlight class="comment"><sp/>*<sp/>@param<sp/>op<sp/>A<sp/>pointer<sp/>to<sp/>an<sp/>`optimizer_params_t`<sp/>object<sp/>containing<sp/>parameters</highlight></codeline>
+<codeline lineno="177"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>the<sp/>optimizer<sp/>used<sp/>during<sp/>training.<sp/>The<sp/>`analysis`<sp/>class<sp/>takes</highlight></codeline>
+<codeline lineno="178"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ownership<sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="179"><highlight class="comment"><sp/>*<sp/>@param<sp/>run_name<sp/>A<sp/>unique<sp/>string<sp/>identifier<sp/>for<sp/>this<sp/>training<sp/>run.</highlight></codeline>
+<codeline lineno="180"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_model(model_template*<sp/>model,<sp/>optimizer_params_t*<sp/>op,<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>run_name)</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="183"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="184"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Adds<sp/>a<sp/>model<sp/>for<sp/>inference.</highlight></codeline>
+<codeline lineno="185"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="186"><highlight class="comment"><sp/>*<sp/>This<sp/>overload<sp/>registers<sp/>a<sp/>`model_template`<sp/>for<sp/>an<sp/>inference<sp/>session.</highlight></codeline>
+<codeline lineno="187"><highlight class="comment"><sp/>*<sp/>Each<sp/>inference<sp/>session<sp/>is<sp/>identified<sp/>by<sp/>a<sp/>unique<sp/>`run_name`.</highlight></codeline>
+<codeline lineno="188"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="189"><highlight class="comment"><sp/>*<sp/>@param<sp/>model<sp/>A<sp/>pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>object<sp/>representing<sp/>the<sp/>model</highlight></codeline>
+<codeline lineno="190"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>to<sp/>be<sp/>used<sp/>for<sp/>inference.<sp/>The<sp/>`analysis`<sp/>class<sp/>takes<sp/>ownership</highlight></codeline>
+<codeline lineno="191"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>of<sp/>this<sp/>pointer.</highlight></codeline>
+<codeline lineno="192"><highlight class="comment"><sp/>*<sp/>@param<sp/>run_name<sp/>A<sp/>unique<sp/>string<sp/>identifier<sp/>for<sp/>this<sp/>inference<sp/>run.</highlight></codeline>
+<codeline lineno="193"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::add_model(model_template*<sp/>model,<sp/>std::</highlight><highlight class="keywordtype">string</highlight><highlight class="normal"><sp/>run_name)</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="196"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="197"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Builds<sp/>the<sp/>project<sp/>structure,<sp/>including<sp/>output<sp/>paths<sp/>for<sp/>models<sp/>and<sp/>metrics.</highlight></codeline>
+<codeline lineno="198"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="199"><highlight class="comment"><sp/>*<sp/>This<sp/>method<sp/>ensures<sp/>that<sp/>all<sp/>necessary<sp/>output<sp/>directories<sp/>for<sp/>model<sp/>checkpoints</highlight></codeline>
+<codeline lineno="200"><highlight class="comment"><sp/>*<sp/>and<sp/>metric<sp/>results<sp/>are<sp/>created<sp/>and<sp/>properly<sp/>configured<sp/>based<sp/>on<sp/>the<sp/>`m_settings`.</highlight></codeline>
+<codeline lineno="201"><highlight class="comment"><sp/>*<sp/>It<sp/>iterates<sp/>through<sp/>registered<sp/>models<sp/>and<sp/>metrics<sp/>to<sp/>set<sp/>their<sp/>respective<sp/>output<sp/>paths.</highlight></codeline>
+<codeline lineno="202"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="203"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::build_project()</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="205"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="206"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Checks<sp/>the<sp/>graph<sp/>cache<sp/>for<sp/>existing<sp/>H5<sp/>files.</highlight></codeline>
+<codeline lineno="207"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="208"><highlight class="comment"><sp/>*<sp/>This<sp/>method<sp/>scans<sp/>the<sp/>specified<sp/>`graph_cache`<sp/>directory<sp/>for<sp/>`.h5`<sp/>files</highlight></codeline>
+<codeline lineno="209"><highlight class="comment"><sp/>*<sp/>and<sp/>determines<sp/>which<sp/>events/graphs<sp/>have<sp/>already<sp/>been<sp/>processed<sp/>and<sp/>cached.</highlight></codeline>
+<codeline lineno="210"><highlight class="comment"><sp/>*<sp/>It<sp/>populates<sp/>the<sp/>`in_cache`<sp/>and<sp/>`skip_event_build`<sp/>maps<sp/>to<sp/>optimize</highlight></codeline>
+<codeline lineno="211"><highlight class="comment"><sp/>*<sp/>subsequent<sp/>event<sp/>and<sp/>graph<sp/>building<sp/>steps,<sp/>avoiding<sp/>redundant<sp/>processing.</highlight></codeline>
+<codeline lineno="212"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="213"><highlight class="comment"><sp/>*<sp/>@details</highlight></codeline>
+<codeline lineno="214"><highlight class="comment"><sp/>*<sp/>-<sp/>Iterates<sp/>through<sp/>`file_labels`<sp/>to<sp/>get<sp/>input<sp/>ROOT<sp/>files<sp/>and<sp/>their<sp/>labels.</highlight></codeline>
+<codeline lineno="215"><highlight class="comment"><sp/>*<sp/>-<sp/>For<sp/>each<sp/>file,<sp/>it<sp/>checks<sp/>if<sp/>corresponding<sp/>graph<sp/>templates<sp/>exist.</highlight></codeline>
+<codeline lineno="216"><highlight class="comment"><sp/>*<sp/>-<sp/>Generates<sp/>expected<sp/>cache<sp/>file<sp/>names<sp/>based<sp/>on<sp/>input<sp/>file<sp/>names<sp/>and<sp/>graph<sp/>types.</highlight></codeline>
+<codeline lineno="217"><highlight class="comment"><sp/>*<sp/>-<sp/>Compares<sp/>expected<sp/>cache<sp/>files<sp/>with<sp/>actual<sp/>files<sp/>in<sp/>the<sp/>`graph_cache`<sp/>directory.</highlight></codeline>
+<codeline lineno="218"><highlight class="comment"><sp/>*<sp/>-<sp/>Sets<sp/>`in_cache[file_n][graph_type/fname]`<sp/>to<sp/>`true`<sp/>if<sp/>a<sp/>cached<sp/>file<sp/>exists,<sp/>`false`<sp/>otherwise.</highlight></codeline>
+<codeline lineno="219"><highlight class="comment"><sp/>*<sp/>-<sp/>Sets<sp/>`skip_event_build[file_n]`<sp/>to<sp/>`true`<sp/>if<sp/>all<sp/>graphs<sp/>for<sp/>a<sp/>given<sp/>file<sp/>are<sp/>cached.</highlight></codeline>
+<codeline lineno="220"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="221"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::check_cache()</highlight></codeline>
+<codeline lineno="222"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="223"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="224"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Fetches<sp/>pre-tagged<sp/>event<sp/>information.</highlight></codeline>
+<codeline lineno="225"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="226"><highlight class="comment"><sp/>*<sp/>If<sp/>`m_settings.pretagevents`<sp/>is<sp/>enabled,<sp/>this<sp/>method<sp/>reads<sp/>pre-tagged<sp/>event</highlight></codeline>
+<codeline lineno="227"><highlight class="comment"><sp/>*<sp/>information<sp/>(e.g.,<sp/>k-folds<sp/>for<sp/>cross-validation)<sp/>from<sp/>a<sp/>specified<sp/>training<sp/>dataset.</highlight></codeline>
+<codeline lineno="228"><highlight class="comment"><sp/>*<sp/>This<sp/>information<sp/>is<sp/>stored<sp/>in<sp/>the<sp/>`tags`<sp/>member<sp/>variable.</highlight></codeline>
+<codeline lineno="229"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="230"><highlight class="comment"><sp/>*<sp/>@details</highlight></codeline>
+<codeline lineno="231"><highlight class="comment"><sp/>*<sp/>-<sp/>Creates<sp/>an<sp/>`io`<sp/>object<sp/>to<sp/>read<sp/>data.</highlight></codeline>
+<codeline lineno="232"><highlight class="comment"><sp/>*<sp/>-<sp/>Opens<sp/>the<sp/>`m_settings.training_dataset`<sp/>in<sp/>&quot;read&quot;<sp/>mode.</highlight></codeline>
+<codeline lineno="233"><highlight class="comment"><sp/>*<sp/>-<sp/>Reads<sp/>&quot;kfolds&quot;<sp/>data<sp/>into<sp/>the<sp/>`tags`<sp/>vector.</highlight></codeline>
+<codeline lineno="234"><highlight class="comment"><sp/>*<sp/>-<sp/>Closes<sp/>the<sp/>`io`<sp/>object<sp/>and<sp/>deallocates<sp/>it.</highlight></codeline>
+<codeline lineno="235"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="236"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::fetchtags()</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="238"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="239"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Starts<sp/>the<sp/>analysis<sp/>workflow.</highlight></codeline>
+<codeline lineno="240"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="241"><highlight class="comment"><sp/>*<sp/>This<sp/>is<sp/>the<sp/>main<sp/>entry<sp/>point<sp/>for<sp/>initiating<sp/>the<sp/>analysis.<sp/>It<sp/>orchestrates</highlight></codeline>
+<codeline lineno="242"><highlight class="comment"><sp/>*<sp/>the<sp/>entire<sp/>process,<sp/>including<sp/>cache<sp/>checking,<sp/>event<sp/>building,<sp/>selection</highlight></codeline>
+<codeline lineno="243"><highlight class="comment"><sp/>*<sp/>application,<sp/>graph<sp/>building,<sp/>data<sp/>loading,<sp/>metric<sp/>calculation,<sp/>and</highlight></codeline>
+<codeline lineno="244"><highlight class="comment"><sp/>*<sp/>model<sp/>training/inference.</highlight></codeline>
+<codeline lineno="245"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="246"><highlight class="comment"><sp/>*<sp/>@details</highlight></codeline>
+<codeline lineno="247"><highlight class="comment"><sp/>*<sp/>The<sp/>`start()`<sp/>method<sp/>performs<sp/>a<sp/>sequence<sp/>of<sp/>operations:</highlight></codeline>
+<codeline lineno="248"><highlight class="comment"><sp/>*<sp/>-<sp/>Sets<sp/>`tracer-&gt;shush`<sp/>based<sp/>on<sp/>`m_settings.debug_mode`<sp/>and<sp/>adjusts<sp/>thread<sp/>count.</highlight></codeline>
+<codeline lineno="249"><highlight class="comment"><sp/>*<sp/>-<sp/>Calls<sp/>`fetchtags()`<sp/>if<sp/>`m_settings.pretagevents`<sp/>is<sp/>true.</highlight></codeline>
+<codeline lineno="250"><highlight class="comment"><sp/>*<sp/>-<sp/>Creates<sp/>the<sp/>main<sp/>output<sp/>path.</highlight></codeline>
+<codeline lineno="251"><highlight class="comment"><sp/>*<sp/>-<sp/>If<sp/>not<sp/>already<sp/>started,<sp/>it<sp/>prints<sp/>a<sp/>&quot;Starting<sp/>Analysis<sp/>Session!&quot;<sp/>message,</highlight></codeline>
+<codeline lineno="252"><highlight class="comment"><sp/>*<sp/><sp/><sp/>calls<sp/>`check_cache()`,<sp/>and<sp/>`build_events()`.</highlight></codeline>
+<codeline lineno="253"><highlight class="comment"><sp/>*<sp/>-<sp/>If<sp/>`event_labels`<sp/>and<sp/>`graph_labels`<sp/>are<sp/>empty,<sp/>it<sp/>uses<sp/>the<sp/>`reader`<sp/>to</highlight></codeline>
+<codeline lineno="254"><highlight class="comment"><sp/>*<sp/><sp/><sp/>scan<sp/>ROOT<sp/>files<sp/>and<sp/>populate<sp/>`meta_data`.</highlight></codeline>
+<codeline lineno="255"><highlight class="comment"><sp/>*<sp/>-<sp/>Enables<sp/>implicit<sp/>multi-threading<sp/>for<sp/>ROOT<sp/>with<sp/>`m_settings.threads`.</highlight></codeline>
+<codeline lineno="256"><highlight class="comment"><sp/>*<sp/>-<sp/>Configures<sp/>the<sp/>`dataloader`<sp/>with<sp/>`m_settings`.</highlight></codeline>
+<codeline lineno="257"><highlight class="comment"><sp/>*<sp/>-<sp/>Builds<sp/>selections<sp/>(`build_selections()`)<sp/>if<sp/>`selection_names`<sp/>are<sp/>present.</highlight></codeline>
+<codeline lineno="258"><highlight class="comment"><sp/>*<sp/>-<sp/>Builds<sp/>graphs<sp/>(`build_graphs()`)<sp/>if<sp/>`graph_labels`<sp/>are<sp/>present.</highlight></codeline>
+<codeline lineno="259"><highlight class="comment"><sp/>*<sp/>-<sp/>Compiles<sp/>tracer<sp/>objects.</highlight></codeline>
+<codeline lineno="260"><highlight class="comment"><sp/>*<sp/>-<sp/>Fills<sp/>selections<sp/>if<sp/>`selection_names`<sp/>are<sp/>present.</highlight></codeline>
+<codeline lineno="261"><highlight class="comment"><sp/>*<sp/>-<sp/>Builds<sp/>the<sp/>data<sp/>loader<sp/>(`build_dataloader(false)`).</highlight></codeline>
+<codeline lineno="262"><highlight class="comment"><sp/>*<sp/>-<sp/>Builds<sp/>metric<sp/>folds<sp/>(`build_metric_folds()`).</highlight></codeline>
+<codeline lineno="263"><highlight class="comment"><sp/>*<sp/>-<sp/>Handles<sp/>graph<sp/>caching:</highlight></codeline>
+<codeline lineno="264"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Dumps<sp/>graphs<sp/>if<sp/>`m_settings.build_cache`<sp/>is<sp/>true<sp/>and<sp/>`loader-&gt;data_set`<sp/>is<sp/>not<sp/>empty.</highlight></codeline>
+<codeline lineno="265"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Restores<sp/>graphs<sp/>from<sp/>cache<sp/>if<sp/>`pth_cache`<sp/>is<sp/>set<sp/>and<sp/>`file_labels`<sp/>are<sp/>present.</highlight></codeline>
+<codeline lineno="266"><highlight class="comment"><sp/>*<sp/>-<sp/>Builds<sp/>metrics<sp/>(`build_metric()`).</highlight></codeline>
+<codeline lineno="267"><highlight class="comment"><sp/>*<sp/>-<sp/>If<sp/>`model_sessions`<sp/>are<sp/>present<sp/>(training):</highlight></codeline>
+<codeline lineno="268"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Checks<sp/>for<sp/>dataset<sp/>availability.</highlight></codeline>
+<codeline lineno="269"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Builds<sp/>the<sp/>data<sp/>loader<sp/>(`build_dataloader(true)`).</highlight></codeline>
+<codeline lineno="270"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Starts<sp/>the<sp/>CUDA<sp/>server.</highlight></codeline>
+<codeline lineno="271"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Calls<sp/>`build_project()`.</highlight></codeline>
+<codeline lineno="272"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Calls<sp/>`build_model_session()`.</highlight></codeline>
+<codeline lineno="273"><highlight class="comment"><sp/>*<sp/>-<sp/>If<sp/>`model_inference`<sp/>are<sp/>present<sp/>(inference):</highlight></codeline>
+<codeline lineno="274"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Checks<sp/>for<sp/>dataset<sp/>availability.</highlight></codeline>
+<codeline lineno="275"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Starts<sp/>the<sp/>CUDA<sp/>server.</highlight></codeline>
+<codeline lineno="276"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Calls<sp/>`build_inference()`.</highlight></codeline>
+<codeline lineno="277"><highlight class="comment"><sp/>*<sp/>-<sp/>Returns<sp/>`failure`<sp/>message<sp/>if<sp/>no<sp/>dataset<sp/>is<sp/>found<sp/>for<sp/>training/inference.</highlight></codeline>
+<codeline lineno="278"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="279"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref>::start()</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="281"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="282"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::string<sp/>AnalysisG::analysis::prefix</highlight></codeline>
+<codeline lineno="283"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>string<sp/>prefix<sp/>used<sp/>for<sp/>logging<sp/>and<sp/>identification,<sp/>typically<sp/>&quot;Analysis&quot;.</highlight></codeline>
+<codeline lineno="284"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="285"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="286"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="287"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::vector&lt;folds_t&gt;*<sp/>AnalysisG::analysis::tags</highlight></codeline>
+<codeline lineno="288"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Pointer<sp/>to<sp/>a<sp/>vector<sp/>of<sp/>`folds_t`<sp/>objects,<sp/>used<sp/>for<sp/>storing<sp/>pre-tagged<sp/>event<sp/>information,</highlight></codeline>
+<codeline lineno="289"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>such<sp/>as<sp/>k-folds<sp/>for<sp/>cross-validation.</highlight></codeline>
+<codeline lineno="290"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="291"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="292"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="293"><highlight class="comment"><sp/>*<sp/>@var<sp/>sampletracer*<sp/>AnalysisG::analysis::tracer</highlight></codeline>
+<codeline lineno="294"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Pointer<sp/>to<sp/>a<sp/>`sampletracer`<sp/>object,<sp/>responsible<sp/>for<sp/>tracing<sp/>and<sp/>managing<sp/>samples</highlight></codeline>
+<codeline lineno="295"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>throughout<sp/>the<sp/>analysis<sp/>workflow.</highlight></codeline>
+<codeline lineno="296"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="297"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="298"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="299"><highlight class="comment"><sp/>*<sp/>@var<sp/>dataloader*<sp/>AnalysisG::analysis::loader</highlight></codeline>
+<codeline lineno="300"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Pointer<sp/>to<sp/>a<sp/>`dataloader`<sp/>object,<sp/>responsible<sp/>for<sp/>loading<sp/>and<sp/>managing<sp/>data</highlight></codeline>
+<codeline lineno="301"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>training<sp/>and<sp/>inference.</highlight></codeline>
+<codeline lineno="302"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="303"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="304"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="305"><highlight class="comment"><sp/>*<sp/>@var<sp/>io*<sp/>AnalysisG::analysis::reader</highlight></codeline>
+<codeline lineno="306"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Pointer<sp/>to<sp/>an<sp/>`io`<sp/>object,<sp/>used<sp/>for<sp/>input/output<sp/>operations,<sp/>such<sp/>as<sp/>reading</highlight></codeline>
+<codeline lineno="307"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>ROOT<sp/>files<sp/>and<sp/>managing<sp/>meta-data.</highlight></codeline>
+<codeline lineno="308"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="310"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="311"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/>AnalysisG::analysis::file_labels</highlight></codeline>
+<codeline lineno="312"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>input<sp/>file<sp/>paths<sp/>as<sp/>keys<sp/>and<sp/>their<sp/>corresponding<sp/>string<sp/>labels<sp/>as<sp/>values.</highlight></codeline>
+<codeline lineno="313"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="314"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="315"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="316"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>event_template*&gt;<sp/>AnalysisG::analysis::event_labels</highlight></codeline>
+<codeline lineno="317"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>event<sp/>template<sp/>labels<sp/>as<sp/>keys<sp/>and<sp/>pointers<sp/>to<sp/>`event_template`<sp/>objects<sp/>as<sp/>values.</highlight></codeline>
+<codeline lineno="318"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="319"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="320"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="321"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>graph_template*&gt;&gt;<sp/>AnalysisG::analysis::graph_labels</highlight></codeline>
+<codeline lineno="322"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>nested<sp/>map<sp/>storing<sp/>sample<sp/>labels<sp/>as<sp/>outer<sp/>keys,<sp/>graph<sp/>template<sp/>names<sp/>as<sp/>inner<sp/>keys,</highlight></codeline>
+<codeline lineno="323"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>and<sp/>pointers<sp/>to<sp/>`graph_template`<sp/>objects<sp/>as<sp/>values.</highlight></codeline>
+<codeline lineno="324"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="325"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="326"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="327"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>selection_template*&gt;<sp/>AnalysisG::analysis::selection_names</highlight></codeline>
+<codeline lineno="328"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>selection<sp/>template<sp/>names<sp/>as<sp/>keys<sp/>and<sp/>pointers<sp/>to<sp/>`selection_template`<sp/>objects<sp/>as<sp/>values.</highlight></codeline>
+<codeline lineno="329"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="330"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="331"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="332"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>model_template*&gt;<sp/>AnalysisG::analysis::model_metrics</highlight></codeline>
+<codeline lineno="333"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>model<sp/>names<sp/>as<sp/>keys<sp/>and<sp/>pointers<sp/>to<sp/>`model_template`<sp/>objects<sp/>associated<sp/>with<sp/>metrics.</highlight></codeline>
+<codeline lineno="334"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="335"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="336"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="337"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>metric_template*&gt;<sp/>AnalysisG::analysis::metric_names</highlight></codeline>
+<codeline lineno="338"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>metric<sp/>names<sp/>as<sp/>keys<sp/>and<sp/>pointers<sp/>to<sp/>`metric_template`<sp/>objects.</highlight></codeline>
+<codeline lineno="339"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="340"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="341"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="342"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::vector&lt;std::string&gt;<sp/>AnalysisG::analysis::model_session_names</highlight></codeline>
+<codeline lineno="343"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>vector<sp/>storing<sp/>unique<sp/>run<sp/>names<sp/>for<sp/>model<sp/>training<sp/>sessions.</highlight></codeline>
+<codeline lineno="344"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="345"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="346"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="347"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::vector&lt;std::tuple&lt;model_template*,<sp/>optimizer_params_t*&gt;&gt;<sp/>AnalysisG::analysis::model_sessions</highlight></codeline>
+<codeline lineno="348"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>vector<sp/>of<sp/>tuples,<sp/>where<sp/>each<sp/>tuple<sp/>contains<sp/>a<sp/>pointer<sp/>to<sp/>a<sp/>`model_template`<sp/>and</highlight></codeline>
+<codeline lineno="349"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>a<sp/>pointer<sp/>to<sp/>`optimizer_params_t`<sp/>for<sp/>a<sp/>training<sp/>session.</highlight></codeline>
+<codeline lineno="350"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="351"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="352"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="353"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>model_template*&gt;<sp/>AnalysisG::analysis::model_inference</highlight></codeline>
+<codeline lineno="354"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>run<sp/>names<sp/>as<sp/>keys<sp/>and<sp/>pointers<sp/>to<sp/>`model_template`<sp/>objects<sp/>for<sp/>inference<sp/>sessions.</highlight></codeline>
+<codeline lineno="355"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="356"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="357"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="358"><highlight class="comment"><sp/>*<sp/>@var<sp/>settings<sp/>AnalysisG::analysis::m_settings</highlight></codeline>
+<codeline lineno="359"><highlight class="comment"><sp/>*<sp/>@brief<sp/>An<sp/>instance<sp/>of<sp/>the<sp/>`settings`<sp/>struct,<sp/>containing<sp/>various<sp/>configuration<sp/>parameters</highlight></codeline>
+<codeline lineno="360"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>for<sp/>the<sp/>analysis,<sp/>such<sp/>as<sp/>output<sp/>paths,<sp/>debug<sp/>mode,<sp/>and<sp/>thread<sp/>count.</highlight></codeline>
+<codeline lineno="361"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="362"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="363"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="364"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>std::map&lt;std::string,<sp/>bool&gt;&gt;<sp/>AnalysisG::analysis::in_cache</highlight></codeline>
+<codeline lineno="365"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>nested<sp/>map<sp/>indicating<sp/>whether<sp/>specific<sp/>graphs<sp/>for<sp/>a<sp/>given<sp/>file<sp/>are<sp/>present<sp/>in<sp/>the<sp/>cache.</highlight></codeline>
+<codeline lineno="366"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Outer<sp/>key:<sp/>file<sp/>path,<sp/>Inner<sp/>key:<sp/>graph<sp/>type<sp/>/<sp/>filename,<sp/>Value:<sp/>boolean<sp/>(true<sp/>if<sp/>in<sp/>cache).</highlight></codeline>
+<codeline lineno="367"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="368"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="369"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="370"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>bool&gt;<sp/>AnalysisG::analysis::skip_event_build</highlight></codeline>
+<codeline lineno="371"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>indicating<sp/>whether<sp/>event<sp/>building<sp/>should<sp/>be<sp/>skipped<sp/>for<sp/>a<sp/>given<sp/>file,</highlight></codeline>
+<codeline lineno="372"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>typically<sp/>if<sp/>all<sp/>associated<sp/>graphs<sp/>are<sp/>already<sp/>in<sp/>the<sp/>cache.</highlight></codeline>
+<codeline lineno="373"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="374"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="375"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="376"><highlight class="comment"><sp/>*<sp/>@var<sp/>std::map&lt;std::string,<sp/>std::string&gt;<sp/>AnalysisG::analysis::graph_types</highlight></codeline>
+<codeline lineno="377"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>map<sp/>storing<sp/>graph<sp/>type<sp/>names<sp/>as<sp/>keys<sp/>and<sp/>their<sp/>corresponding<sp/>string<sp/>representations<sp/>(currently<sp/>unused,<sp/>but<sp/>intended<sp/>for<sp/>type<sp/>tracking).</highlight></codeline>
+<codeline lineno="378"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="379"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="380"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="381"><highlight class="comment"><sp/>*<sp/>@var<sp/>bool<sp/>AnalysisG::analysis::started</highlight></codeline>
+<codeline lineno="382"><highlight class="comment"><sp/>*<sp/>@brief<sp/>A<sp/>boolean<sp/>flag<sp/>indicating<sp/>whether<sp/>the<sp/>analysis<sp/>session<sp/>has<sp/>been<sp/>started.</highlight></codeline>
+<codeline lineno="383"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="385"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="386"><highlight class="comment"><sp/>*<sp/>@var<sp/>meta_data_t<sp/>AnalysisG::analysis::meta_data</highlight></codeline>
+<codeline lineno="387"><highlight class="comment"><sp/>*<sp/>@brief<sp/>An<sp/>instance<sp/>of<sp/>`meta_data_t`,<sp/>storing<sp/>meta-information<sp/>about<sp/>the<sp/>dataset,</highlight></codeline>
+<codeline lineno="388"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>such<sp/>as<sp/>event<sp/>counts<sp/>and<sp/>branch<sp/>availability.</highlight></codeline>
+<codeline lineno="389"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="390"><highlight class="normal"></highlight><highlight class="comment"></highlight></codeline>
+<codeline lineno="391"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="392"><highlight class="comment"><sp/>*<sp/>@var<sp/>trainer<sp/>AnalysisG::analysis::trainer</highlight></codeline>
+<codeline lineno="393"><highlight class="comment"><sp/>*<sp/>@brief<sp/>An<sp/>instance<sp/>of<sp/>the<sp/>`trainer`<sp/>class,<sp/>responsible<sp/>for<sp/>managing<sp/>model<sp/>training.</highlight></codeline>
+<codeline lineno="394"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/analysis/analysis.dox"/>
+  </compounddef>
+</doxygen>

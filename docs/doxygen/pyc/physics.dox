@@ -1,5 +1,5 @@
 /**
- * @file physics.dox
+ * @file physics.h
  * @brief Detailed documentation for the physics module within the AnalysisG.pyc framework, including its CUDA kernel implementations for physics-related calculations.
  *
  * @page physics_page physics
@@ -9,4 +9,64 @@
  *
  * @section physics_contents Contents
  * This module contains optimized physics calculation functions and constants, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable.
+ *
+ * @fn torch::Tensor physics_::P2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Computes the squared momentum from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::P2(torch::Tensor* pmc)
+ * @brief Computes the squared momentum from a combined Nx4 or Nx3 kinematics tensor.
+ *
+ * @fn torch::Tensor physics_::P(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Computes the absolute momentum |p| from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::P(torch::Tensor* pmc)
+ * @brief Computes the absolute momentum |p| from a combined kinematics tensor.
+ *
+ * @fn torch::Tensor physics_::Beta2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Computes the squared relativistic velocity beta^2 from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::Beta2(torch::Tensor* pmc)
+ * @brief Computes the squared relativistic velocity beta^2 from a combined Nx4 tensor.
+ *
+ * @fn torch::Tensor physics_::Beta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Computes the relativistic velocity beta from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::Beta(torch::Tensor* pmc)
+ * @brief Computes the relativistic velocity beta from a combined Nx4 tensor.
+ *
+ * @fn torch::Tensor physics_::M2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Computes the invariant squared mass M^2 from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::M2(torch::Tensor* pmc)
+ * @brief Computes the invariant squared mass M^2 from a combined Nx4 tensor.
+ *
+ * @fn torch::Tensor physics_::M(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Computes the invariant mass M from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::M(torch::Tensor* pmc)
+ * @brief Computes the invariant mass M from a combined Nx4 tensor.
+ *
+ * @fn torch::Tensor physics_::Mt2(torch::Tensor* pz, torch::Tensor* e)
+ * @brief Computes the transverse squared mass Mt^2.
+ *
+ * @fn torch::Tensor physics_::Mt2(torch::Tensor* pmc)
+ * @brief Computes the transverse squared mass Mt^2 from a combined Nx4 tensor.
+ *
+ * @fn torch::Tensor physics_::Mt(torch::Tensor* pz, torch::Tensor* e)
+ * @brief Computes the transverse mass Mt.
+ *
+ * @fn torch::Tensor physics_::Mt(torch::Tensor* pmc)
+ * @brief Computes the transverse mass Mt from a combined Nx4 tensor.
+ *
+ * @fn torch::Tensor physics_::Theta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Computes the polar angle theta from separate Cartesian components.
+ *
+ * @fn torch::Tensor physics_::Theta(torch::Tensor* pmc)
+ * @brief Computes the polar angle theta from a combined tensor.
+ *
+ * @fn torch::Tensor physics_::DeltaR(torch::Tensor* pmu1, torch::Tensor* pmu2)
+ * @brief Computes the spatial distance DeltaR = sqrt(DeltaEta^2 + DeltaPhi^2) between two combined tensors.
+ *
+ * @fn torch::Tensor physics_::DeltaR(torch::Tensor* eta1, torch::Tensor* eta2, torch::Tensor* phi1, torch::Tensor* phi2)
+ * @brief Computes the spatial distance DeltaR from separate pseudorapidity and azimuthal angle tensors.
  */

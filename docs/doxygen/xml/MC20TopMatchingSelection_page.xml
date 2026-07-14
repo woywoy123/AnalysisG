@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="MC20TopMatchingSelection_page" kind="page">
+    <compoundname>MC20TopMatchingSelection_page</compoundname>
+    <title>MC20 Top Matching Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_intro">
+<title>Introduction</title><para>The <computeroutput>TopMatching</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for analyzing top quark matching in Monte Carlo 20 (MC20) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to incorporate specific criteria for matching top quarks, particularly with respect to energy limits. This class provides a high-performance interface to an underlying C++ matching object, enabling efficient filtering and analysis based on top quark matching properties.</para>
+</sect1>
+<sect1 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_class">
+<title>The TopMatching Class</title><para><computeroutput>TopMatching</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>matching</computeroutput> object, which likely contains the logic for performing top quark matching and applying energy constraints.</para>
+<sect2 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>matching</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>matching*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>matching</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_properties">
+<title>Properties</title><para><itemizedlist>
+<listitem><para><computeroutput>@property EnergyLimit</computeroutput>: Gets and sets the energy constraint value used in the top quark matching algorithm. This property directly interacts with the <computeroutput>energy_constraint</computeroutput> member of the underlying C++ <computeroutput>matching</computeroutput> object. <simplesect kind="return"><para>The current energy limit value. </para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>val</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new energy limit value to set.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>TopMatching</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class TopMatching</computeroutput>: Declares <computeroutput>TopMatching</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef matching *tt</computeroutput>: A C++ pointer to a <computeroutput>matching</computeroutput> object, which is the specialized C++ implementation for top quark matching.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new matching()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;matching*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>TopMatching</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>matching</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>TopMatching</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.particle_template cimport *</computeroutput>: Imports particle template definitions.</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_intro">
+<title>Introduction</title><para>The <computeroutput>TopMatching</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top quark matching in Monte Carlo 20 (MC20) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed information about truth-level top quarks, their children, truth-jets, and reconstructed jets, categorized by leptonicity and jet multiplicity. This class facilitates a high-performance extraction and structuring of top matching data for further physics analysis in the MC20 context.</para>
+</sect1>
+<sect1 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_class">
+<title>The TopMatching Class</title><para><computeroutput>TopMatching</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>topmatching</computeroutput> object, which likely contains the logic for performing top quark matching and categorizing associated particles and jets.</para>
+<sect2 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>topmatching</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>topmatching*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>topmatching</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is responsible for converting the C++ data structures within the underlying <computeroutput>topmatching</computeroutput> object into Python dictionaries and lists, making them accessible as properties of the <computeroutput>TopMatching</computeroutput> instance.<itemizedlist>
+<listitem><para><computeroutput>self.truth_top</computeroutput>: Populated from <computeroutput>self.tt.truth_top</computeroutput> (truth-level top quarks).</para>
+</listitem><listitem><para><computeroutput>self.no_children</computeroutput>: Populated from <computeroutput>self.tt.no_children</computeroutput> (information about top quarks with no children).</para>
+</listitem><listitem><para><computeroutput>self.truth_children</computeroutput>: Populated from <computeroutput>self.tt.truth_children</computeroutput> (truth-level children of top quarks).</para>
+</listitem><listitem><para><computeroutput>self.truth_jets</computeroutput>: Populated from <computeroutput>self.tt.truth_jets</computeroutput> (truth-level jets).</para>
+</listitem><listitem><para><computeroutput>self.n_truth_jets_lep</computeroutput>: Populated from <computeroutput>self.tt.n_truth_jets_lep</computeroutput> (number of leptonic truth-jets).</para>
+</listitem><listitem><para><computeroutput>self.n_truth_jets_had</computeroutput>: Populated from <computeroutput>self.tt.n_truth_jets_had</computeroutput> (number of hadronic truth-jets).</para>
+</listitem><listitem><para><computeroutput>self.jets_truth_leps</computeroutput>: Populated from <computeroutput>self.tt.jets_truth_leps</computeroutput> (jets associated with truth-level leptons).</para>
+</listitem><listitem><para><computeroutput>self.jet_leps</computeroutput>: Populated from <computeroutput>self.tt.jet_leps</computeroutput> (reconstructed jets associated with leptons).</para>
+</listitem><listitem><para><computeroutput>self.n_jets_lep</computeroutput>: Populated from <computeroutput>self.tt.n_jets_lep</computeroutput> (number of leptonic reconstructed jets).</para>
+</listitem><listitem><para><computeroutput>self.n_jets_had</computeroutput>: Populated from <computeroutput>self.tt.n_jets_had</computeroutput> (number of hadronic reconstructed jets).</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_properties">
+<title>Properties</title><para>The following properties are implicitly defined and populated by the <computeroutput>transform_dict_keys</computeroutput> method, providing access to the processed top matching information:<itemizedlist>
+<listitem><para><computeroutput>@property truth_top -&gt; list</computeroutput>: List of truth-level top quarks.</para>
+</listitem><listitem><para><computeroutput>@property no_children -&gt; list</computeroutput>: List of top quarks with no children.</para>
+</listitem><listitem><para><computeroutput>@property truth_children -&gt; dict</computeroutput>: Dictionary of truth-level children of top quarks.</para>
+</listitem><listitem><para><computeroutput>@property truth_jets -&gt; dict</computeroutput>: Dictionary of truth-level jets.</para>
+</listitem><listitem><para><computeroutput>@property n_truth_jets_lep -&gt; dict</computeroutput>: Dictionary of leptonic truth-jets counts.</para>
+</listitem><listitem><para><computeroutput>@property n_truth_jets_had -&gt; dict</computeroutput>: Dictionary of hadronic truth-jets counts.</para>
+</listitem><listitem><para><computeroutput>@property jets_truth_leps -&gt; dict</computeroutput>: Dictionary of jets associated with truth-level leptons.</para>
+</listitem><listitem><para><computeroutput>@property jet_leps -&gt; dict</computeroutput>: Dictionary of reconstructed jets associated with leptons.</para>
+</listitem><listitem><para><computeroutput>@property n_jets_lep -&gt; dict</computeroutput>: Dictionary of leptonic reconstructed jets counts.</para>
+</listitem><listitem><para><computeroutput>@property n_jets_had -&gt; dict</computeroutput>: Dictionary of hadronic reconstructed jets counts.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="MC20TopMatchingSelection_page_1MC20TopMatchingSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>TopMatching</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class TopMatching</computeroutput>: Declares <computeroutput>TopMatching</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef topmatching *tt</computeroutput>: A C++ pointer to a <computeroutput>topmatching</computeroutput> object, which is the specialized C++ implementation for top matching analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new topmatching()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;topmatching*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>TopMatching</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>topmatching</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>TopMatching</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures, specifically <computeroutput>as_dict</computeroutput> and <computeroutput>as_list</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc20/matching/matching.dox"/>
+  </compounddef>
+</doxygen>

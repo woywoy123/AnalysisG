@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="topjets_8dox" kind="file" language="C++">
+    <compoundname>topjets.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the TopJets Cython class, specialized for analyzing top-tagged jets and their parton associations in MC16 events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>topjets.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>TopJets<sp/>Cython<sp/>class,<sp/>specialized<sp/>for<sp/>analyzing<sp/>top-tagged<sp/>jets<sp/>and<sp/>their<sp/>parton<sp/>associations<sp/>in<sp/>MC16<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>TopJetsSelection_page<sp/>Top<sp/>Jets<sp/>Selection</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopJetsSelection_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`TopJets`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>selection<sp/>template<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>for<sp/>comprehensive<sp/>analysis<sp/>of<sp/>top-tagged<sp/>jets<sp/>and<sp/>their<sp/>underlying<sp/>parton<sp/>associations<sp/>in<sp/>Monte<sp/>Carlo<sp/>16<sp/>(MC16)<sp/>events.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>generic<sp/>`SelectionTemplate`<sp/>class,<sp/>extending<sp/>its<sp/>functionalities<sp/>to<sp/>extract<sp/>and<sp/>organize<sp/>detailed<sp/>information<sp/>about<sp/>jet<sp/>masses,<sp/>parton<sp/>contributions<sp/>to<sp/>jets,<sp/>and<sp/>the<sp/>relationship<sp/>between<sp/>jets<sp/>and<sp/>top<sp/>quarks.<sp/>This<sp/>class<sp/>facilitates<sp/>a<sp/>high-performance<sp/>extraction<sp/>and<sp/>structuring<sp/>of<sp/>top-jet<sp/>data<sp/>for<sp/>further<sp/>physics<sp/>analysis.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopJetsSelection_class<sp/>The<sp/>TopJets<sp/>Class</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>`TopJets`<sp/>is<sp/>a<sp/>`cdef<sp/>class`,<sp/>indicating<sp/>its<sp/>implementation<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.<sp/>It<sp/>inherits<sp/>from<sp/>`SelectionTemplate`,<sp/>thereby<sp/>gaining<sp/>all<sp/>the<sp/>base<sp/>functionalities<sp/>for<sp/>event<sp/>selection,<sp/>ROOT<sp/>file<sp/>interpretation,<sp/>and<sp/>weight<sp/>management.<sp/>Its<sp/>primary<sp/>role<sp/>is<sp/>to<sp/>encapsulate<sp/>a<sp/>C++<sp/>`topjets`<sp/>object,<sp/>which<sp/>likely<sp/>contains<sp/>the<sp/>logic<sp/>for<sp/>identifying<sp/>top-tagged<sp/>jets,<sp/>associating<sp/>them<sp/>with<sp/>partons,<sp/>and<sp/>calculating<sp/>relevant<sp/>kinematic<sp/>properties.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>TopJetsSelection_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent,<sp/>called<sp/>during<sp/>object<sp/>allocation.<sp/>It<sp/>initializes<sp/>a<sp/>new<sp/>C++<sp/>`topjets`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.ptr`<sp/>to<sp/>a<sp/>`topjets*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.tt`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Python<sp/>initializer.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;destructor&quot;<sp/>equivalent,<sp/>called<sp/>upon<sp/>object<sp/>deallocation.<sp/>It<sp/>deallocates<sp/>the<sp/>C++<sp/>`topjets`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.tt`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>TopJetsSelection_internal_methods<sp/>Internal<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>transform_dict_keys(self)`:</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>This<sp/>method<sp/>is<sp/>responsible<sp/>for<sp/>converting<sp/>the<sp/>C++<sp/>data<sp/>structures<sp/>within<sp/>the<sp/>underlying<sp/>`topjets`<sp/>object<sp/>into<sp/>Python<sp/>dictionaries<sp/>and<sp/>lists,<sp/>making<sp/>them<sp/>accessible<sp/>as<sp/>properties<sp/>of<sp/>the<sp/>`TopJets`<sp/>instance.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.top_mass`:<sp/>Populated<sp/>from<sp/>`self.tt.top_mass`<sp/>(masses<sp/>of<sp/>top<sp/>quarks).</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.jet_partons`:<sp/>Populated<sp/>from<sp/>`self.tt.jet_partons`<sp/>(partons<sp/>associated<sp/>with<sp/>jets).</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.jets_contribute`:<sp/>Populated<sp/>from<sp/>`self.tt.jets_contribute`<sp/>(contributions<sp/>of<sp/>jets<sp/>to<sp/>various<sp/>categories).</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.jet_top`:<sp/>Populated<sp/>from<sp/>`self.tt.jet_top`<sp/>(top<sp/>quarks<sp/>associated<sp/>with<sp/>jets).</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.jet_mass`:<sp/>Populated<sp/>from<sp/>`self.tt.jet_mass`<sp/>(masses<sp/>of<sp/>jets).</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.ntops_lost`:<sp/>Populated<sp/>from<sp/>`self.tt.ntops_lost`<sp/>(number<sp/>of<sp/>lost<sp/>top<sp/>quarks).</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>TopJetsSelection_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>The<sp/>following<sp/>properties<sp/>are<sp/>implicitly<sp/>defined<sp/>and<sp/>populated<sp/>by<sp/>the<sp/>`transform_dict_keys`<sp/>method,<sp/>providing<sp/>access<sp/>to<sp/>the<sp/>processed<sp/>top-jet<sp/>information:</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>top_mass<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>of<sp/>top<sp/>quark<sp/>masses.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>jet_partons<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>detailing<sp/>partons<sp/>associated<sp/>with<sp/>jets.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>jets_contribute<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>detailing<sp/>contributions<sp/>of<sp/>jets.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>jet_top<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>associating<sp/>jets<sp/>with<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>jet_mass<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>of<sp/>jet<sp/>masses.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>ntops_lost<sp/>-&gt;<sp/>list`:<sp/>List<sp/>indicating<sp/>the<sp/>number<sp/>of<sp/>lost<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopJetsSelection_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>The<sp/>`TopJets`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>TopJets`:<sp/>Declares<sp/>`TopJets`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>topjets<sp/>*tt`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`topjets`<sp/>object,<sp/>which<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>implementation<sp/>for<sp/>top-jet<sp/>analysis.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.ptr<sp/>=<sp/>new<sp/>topjets()`:<sp/>Initializes<sp/>the<sp/>base<sp/>`SelectionTemplate`&apos;s<sp/>C++<sp/>pointer.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.tt<sp/>=<sp/>&lt;topjets*&gt;self.ptr`:<sp/>This<sp/>line<sp/>demonstrates<sp/>C++<sp/>upcasting,<sp/>allowing<sp/>`TopJets`<sp/>to<sp/>fulfill<sp/>the<sp/>`SelectionTemplate`<sp/>interface<sp/>while<sp/>internally<sp/>managing<sp/>its<sp/>specific<sp/>`topjets`<sp/>data.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>SelectionTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`SelectionTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`TopJets`<sp/>inherits.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.selections.mc16.topjets.topjets<sp/>cimport<sp/>*`:<sp/>Imports<sp/>the<sp/>C++<sp/>`topjets`<sp/>class<sp/>declaration<sp/>from<sp/>its<sp/>`.pxd`<sp/>file.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>*`:<sp/>Imports<sp/>utility<sp/>functions<sp/>for<sp/>converting<sp/>between<sp/>C++<sp/>and<sp/>Python<sp/>data<sp/>structures,<sp/>specifically<sp/>`as_dict_dict_dict`,<sp/>`as_dict_dict`,<sp/>`as_dict`,<sp/>and<sp/>`as_list`.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/topjets/topjets.dox"/>
+  </compounddef>
+</doxygen>

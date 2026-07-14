@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="selection_module_page" kind="page">
+    <compoundname>selection_module_page</compoundname>
+    <title>Selection Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="selection_module_page_1selection_module_intro">
+<title>Introduction</title><para>The <computeroutput>selection</computeroutput> module provides the base template for defining and applying event selections in the |g-framework|. The <computeroutput>selection_template</computeroutput> class defines the common interface and functionality for all selection types.</para>
+</sect1>
+<sect1 id="selection_module_page_1selection_template_class">
+<title>The selection_template Class</title><para>The <computeroutput>selection_template</computeroutput> class is an abstract base class that defines the structure of an event selection.</para>
+<sect2 id="selection_module_page_1selection_template_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>selection_template()</computeroutput>: The constructor initializes the properties of the selection, such as <computeroutput>name</computeroutput>, <computeroutput>hash</computeroutput>, <computeroutput>tree</computeroutput>, <computeroutput>weight</computeroutput>, and <computeroutput>index</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>~selection_template()</computeroutput>: The destructor cleans up the allocated memory.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="selection_module_page_1selection_template_methods_virtual">
+<title>Virtual Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>selection_template* clone()</computeroutput>: Creates a copy of the selection object.</para>
+</listitem><listitem><para><computeroutput>bool selection(event_template* ev)</computeroutput>: This is the main selection method. It is intended to be overridden by derived classes to implement the selection logic. It should return <computeroutput>true</computeroutput> if the event passes the selection, and <computeroutput>false</computeroutput> otherwise.</para>
+</listitem><listitem><para><computeroutput>bool strategy(event_template* ev)</computeroutput>: This method is intended to be overridden by derived classes to implement a selection strategy.</para>
+</listitem><listitem><para><computeroutput>void merge(selection_template* sl2)</computeroutput>: This method is used to merge the results of two selection objects.</para>
+</listitem><listitem><para><computeroutput>void bulk_write(const long* ev, std::string* h)</computeroutput>: This method is used for bulk writing of selection results.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="selection_module_page_1selection_template_methods_building">
+<title>Building and Compiling</title><para><itemizedlist>
+<listitem><para><computeroutput>selection_template* build(event_template* ev)</computeroutput>: Builds a selection object from an event template.</para>
+</listitem><listitem><para><computeroutput>bool CompileEvent()</computeroutput>: This method applies the selection and strategy to the event.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="selection_module_page_1selection_template_methods_writing">
+<title>Writing Results</title><para><itemizedlist>
+<listitem><para><computeroutput>void write(std::vector&lt;particle_template*&gt;* particles, std::string name, particle_enum attrs)</computeroutput>: Writes the properties of a vector of particles to the output file.</para>
+</listitem><listitem><para><computeroutput>void bulk_write_out()</computeroutput>: Performs the bulk writing of the selection results.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="selection_module_page_1selection_template_methods_merging">
+<title>Merging Results</title><para><itemizedlist>
+<listitem><para><computeroutput>void merger(selection_template* sl2)</computeroutput>: Merges the results of another selection object into this one.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="selection_module_page_1selection_template_methods_properties">
+<title>Property Management</title><para>The class provides a number of setters and getters for accessing the selection&apos;s properties, such as:<itemizedlist>
+<listitem><para><computeroutput>set_name</computeroutput>, <computeroutput>get_name</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_hash</computeroutput>, <computeroutput>get_hash</computeroutput></para>
+</listitem><listitem><para><computeroutput>get_tree</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_weight</computeroutput>, <computeroutput>get_weight</computeroutput></para>
+</listitem><listitem><para><computeroutput>set_index</computeroutput> </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/selection/selection.dox"/>
+  </compounddef>
+</doxygen>

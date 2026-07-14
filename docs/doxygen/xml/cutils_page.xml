@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="cutils_page" kind="page">
+    <compoundname>cutils_page</compoundname>
+    <title>cutils</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="cutils_page_1cutils_intro">
+<title>Introduction</title><para>The <computeroutput>cutils</computeroutput> module provides a collection of common utility functions, many of which are implemented as CUDA kernels for GPU acceleration. These utilities are designed to support various computationally intensive operations across the AnalysisG framework, offering highly efficient implementations for frequently used tasks by leveraging parallel processing capabilities of NVIDIA GPUs.</para>
+</sect1>
+<sect1 id="cutils_page_1cutils_contents">
+<title>Contents</title><para>This module contains general-purpose utility functions, with a focus on GPU-accelerated operations. Specific contents will be detailed as they are implemented, emphasizing their CUDA-based nature where applicable. </para>
+</sect1>
+    </detaileddescription>
+    <location file="pyc/cutils.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2notification_2notification_8dox" kind="file" language="C++">
+    <compoundname>notification.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the notification class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>notification.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>notification<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>notification_module_page<sp/>Notification<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>notification_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`notification`<sp/>module<sp/>provides<sp/>a<sp/>simple<sp/>class<sp/>for<sp/>displaying<sp/>formatted<sp/>messages<sp/>and<sp/>progress<sp/>bars<sp/>in<sp/>the<sp/>console.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>notification_class<sp/>The<sp/>notification<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`notification`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>notification_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`notification()`:<sp/>The<sp/>constructor.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~notification()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>notification_methods_messaging<sp/>Messaging</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>success(std::string<sp/>message)`:<sp/>Displays<sp/>a<sp/>success<sp/>message<sp/>in<sp/>green.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>warning(std::string<sp/>message)`:<sp/>Displays<sp/>a<sp/>warning<sp/>message<sp/>in<sp/>yellow.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>failure(std::string<sp/>message)`:<sp/>Displays<sp/>a<sp/>failure<sp/>message<sp/>in<sp/>red.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>info(std::string<sp/>message)`:<sp/>Displays<sp/>an<sp/>informational<sp/>message<sp/>in<sp/>blue.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>notification_methods_progressbars<sp/>Progress<sp/>Bars</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>progressbar(float<sp/>lProgress,<sp/>std::string<sp/>title)`:<sp/>Displays<sp/>a<sp/>simple<sp/>progress<sp/>bar.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>progressbar(std::vector&lt;size_t&gt;*<sp/>threads,<sp/>std::vector&lt;size_t&gt;*<sp/>trgt,<sp/>std::vector&lt;std::string&gt;*<sp/>title)`:<sp/>Displays<sp/>multiple<sp/>progress<sp/>bars<sp/>for<sp/>multi-threaded<sp/>tasks.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>progressbar1(std::vector&lt;size_t&gt;*<sp/>threads,<sp/>size_t<sp/>l,<sp/>std::string<sp/>title)`:<sp/>A<sp/>helper<sp/>function<sp/>for<sp/>displaying<sp/>a<sp/>progress<sp/>bar<sp/>for<sp/>a<sp/>single<sp/>task<sp/>with<sp/>multiple<sp/>threads.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>progressbar2(std::vector&lt;size_t&gt;*<sp/>threads,<sp/>size_t*<sp/>l,<sp/>std::string*<sp/>title)`:<sp/>Another<sp/>helper<sp/>function<sp/>for<sp/>displaying<sp/>a<sp/>progress<sp/>bar.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>progressbar3(std::vector&lt;size_t&gt;*<sp/>threads,<sp/>std::vector&lt;size_t&gt;*<sp/>l,<sp/>std::vector&lt;std::string*&gt;*<sp/>title)`:<sp/>A<sp/>more<sp/>advanced<sp/>progress<sp/>bar<sp/>for<sp/>monitoring<sp/>multiple<sp/>threads<sp/>with<sp/>individual<sp/>titles.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>notification_methods_threading<sp/>Thread<sp/>Management</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>monitor(std::vector&lt;std::thread*&gt;*<sp/>thr)`:<sp/>Monitors<sp/>a<sp/>vector<sp/>of<sp/>threads<sp/>and<sp/>joins<sp/>them<sp/>when<sp/>they<sp/>are<sp/>finished.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>running(std::vector&lt;std::thread*&gt;*<sp/>thr,<sp/>std::vector&lt;size_t&gt;*<sp/>prg,<sp/>std::vector&lt;size_t&gt;*<sp/>trgt)`:<sp/>Checks<sp/>the<sp/>status<sp/>of<sp/>a<sp/>vector<sp/>of<sp/>threads<sp/>and<sp/>returns<sp/>the<sp/>number<sp/>of<sp/>running<sp/>threads.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/notification/notification.dox"/>
+  </compounddef>
+</doxygen>

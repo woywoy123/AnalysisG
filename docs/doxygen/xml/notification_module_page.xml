@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="notification_module_page" kind="page">
+    <compoundname>notification_module_page</compoundname>
+    <title>Notification Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="notification_module_page_1notification_module_intro">
+<title>Introduction</title><para>The <computeroutput>notification</computeroutput> module provides a simple class for displaying formatted messages and progress bars in the console.</para>
+</sect1>
+<sect1 id="notification_module_page_1notification_class">
+<title>The notification Class</title><para>The <computeroutput>notification</computeroutput> class is the main component of this module.</para>
+<sect2 id="notification_module_page_1notification_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>notification()</computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~notification()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="notification_module_page_1notification_methods_messaging">
+<title>Messaging</title><para><itemizedlist>
+<listitem><para><computeroutput>void success(std::string message)</computeroutput>: Displays a success message in green.</para>
+</listitem><listitem><para><computeroutput>void warning(std::string message)</computeroutput>: Displays a warning message in yellow.</para>
+</listitem><listitem><para><computeroutput>void failure(std::string message)</computeroutput>: Displays a failure message in red.</para>
+</listitem><listitem><para><computeroutput>void info(std::string message)</computeroutput>: Displays an informational message in blue.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="notification_module_page_1notification_methods_progressbars">
+<title>Progress Bars</title><para><itemizedlist>
+<listitem><para><computeroutput>void progressbar(float lProgress, std::string title)</computeroutput>: Displays a simple progress bar.</para>
+</listitem><listitem><para><computeroutput>void progressbar(std::vector&lt;size_t&gt;* threads, std::vector&lt;size_t&gt;* trgt, std::vector&lt;std::string&gt;* title)</computeroutput>: Displays multiple progress bars for multi-threaded tasks.</para>
+</listitem><listitem><para><computeroutput>void progressbar1(std::vector&lt;size_t&gt;* threads, size_t l, std::string title)</computeroutput>: A helper function for displaying a progress bar for a single task with multiple threads.</para>
+</listitem><listitem><para><computeroutput>void progressbar2(std::vector&lt;size_t&gt;* threads, size_t* l, std::string* title)</computeroutput>: Another helper function for displaying a progress bar.</para>
+</listitem><listitem><para><computeroutput>void progressbar3(std::vector&lt;size_t&gt;* threads, std::vector&lt;size_t&gt;* l, std::vector&lt;std::string*&gt;* title)</computeroutput>: A more advanced progress bar for monitoring multiple threads with individual titles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="notification_module_page_1notification_methods_threading">
+<title>Thread Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void monitor(std::vector&lt;std::thread*&gt;* thr)</computeroutput>: Monitors a vector of threads and joins them when they are finished.</para>
+</listitem><listitem><para><computeroutput>int running(std::vector&lt;std::thread*&gt;* thr, std::vector&lt;size_t&gt;* prg, std::vector&lt;size_t&gt;* trgt)</computeroutput>: Checks the status of a vector of threads and returns the number of running threads. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/notification/notification.dox"/>
+  </compounddef>
+</doxygen>

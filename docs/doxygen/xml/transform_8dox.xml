@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="transform_8dox" kind="file" language="C++">
+    <compoundname>transform.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the transform module within the AnalysisG.pyc framework, including its CUDA kernel implementations for data transformation utilities. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>transform.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>transform<sp/>module<sp/>within<sp/>the<sp/>AnalysisG.pyc<sp/>framework,<sp/>including<sp/>its<sp/>CUDA<sp/>kernel<sp/>implementations<sp/>for<sp/>data<sp/>transformation<sp/>utilities.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>transform_page<sp/>transform</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>transform_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`transform`<sp/>module<sp/>provides<sp/>high-performance<sp/>data<sp/>transformation<sp/>utilities,<sp/>optimized<sp/>with<sp/>Cython<sp/>and<sp/>accelerated<sp/>using<sp/>CUDA<sp/>kernels.<sp/>This<sp/>module<sp/>is<sp/>essential<sp/>for<sp/>efficiently<sp/>preparing<sp/>and<sp/>manipulating<sp/>data<sp/>for<sp/>analysis<sp/>and<sp/>machine<sp/>learning<sp/>tasks<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>leveraging<sp/>GPU<sp/>capabilities<sp/>for<sp/>rapid<sp/>processing.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>transform_contents<sp/>Contents</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>This<sp/>module<sp/>contains<sp/>optimized<sp/>data<sp/>transformation<sp/>functions,<sp/>many<sp/>of<sp/>which<sp/>leverage<sp/>CUDA<sp/>for<sp/>parallel<sp/>execution<sp/>on<sp/>GPUs.<sp/>Specific<sp/>contents<sp/>will<sp/>be<sp/>detailed<sp/>as<sp/>they<sp/>are<sp/>implemented,<sp/>highlighting<sp/>their<sp/>GPU-accelerated<sp/>nature<sp/>where<sp/>applicable.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="pyc/transform.dox"/>
+  </compounddef>
+</doxygen>

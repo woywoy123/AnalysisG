@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="PartonSelection_page" kind="page">
+    <compoundname>PartonSelection_page</compoundname>
+    <title>Parton Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="PartonSelection_page_1PartonSelection_intro">
+<title>Introduction</title><para>The <computeroutput>Parton</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of parton-level information and its association with jets in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed kinematic and energy contributions from partons and their corresponding truth-jets and reconstructed jets. This class facilitates a high-performance extraction and structuring of parton-level data for further physics analysis.</para>
+</sect1>
+<sect1 id="PartonSelection_page_1PartonSelection_class">
+<title>The Parton Class</title><para><computeroutput>Parton</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>parton</computeroutput> object, which likely contains the logic for matching partons to jets and calculating their kinematic properties and fractional contributions.</para>
+<sect2 id="PartonSelection_page_1PartonSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>parton</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>parton*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>parton</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PartonSelection_page_1PartonSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is responsible for converting the C++ data structures within the underlying <computeroutput>parton</computeroutput> object into Python dictionaries, making them accessible as properties of the <computeroutput>Parton</computeroutput> instance.<itemizedlist>
+<listitem><para><computeroutput>self.ntops_tjets_pt</computeroutput>: Populated from <computeroutput>self.tt.ntops_tjets_pt</computeroutput> (pT of truth-jets associated with top quarks).</para>
+</listitem><listitem><para><computeroutput>self.ntops_tjets_e</computeroutput>: Populated from <computeroutput>self.tt.ntops_tjets_e</computeroutput> (energy of truth-jets associated with top quarks).</para>
+</listitem><listitem><para><computeroutput>self.ntops_jets_pt</computeroutput>: Populated from <computeroutput>self.tt.ntops_jets_pt</computeroutput> (pT of reconstructed jets associated with top quarks).</para>
+</listitem><listitem><para><computeroutput>self.ntops_jets_e</computeroutput>: Populated from <computeroutput>self.tt.ntops_jets_e</computeroutput> (energy of reconstructed jets associated with top quarks).</para>
+</listitem><listitem><para><computeroutput>self.nparton_tjet_e</computeroutput>: Populated from <computeroutput>self.tt.nparton_tjet_e</computeroutput> (energy of partons in truth-jets).</para>
+</listitem><listitem><para><computeroutput>self.nparton_jet_e</computeroutput>: Populated from <computeroutput>self.tt.nparton_jet_e</computeroutput> (energy of partons in reconstructed jets).</para>
+</listitem><listitem><para><computeroutput>self.frac_parton_tjet_e</computeroutput>: Populated from <computeroutput>self.tt.frac_parton_tjet_e</computeroutput> (fractional energy of partons in truth-jets).</para>
+</listitem><listitem><para><computeroutput>self.frac_parton_jet_e</computeroutput>: Populated from <computeroutput>self.tt.frac_parton_jet_e</computeroutput> (fractional energy of partons in reconstructed jets).</para>
+</listitem><listitem><para><computeroutput>self.frac_ntop_tjet_contribution</computeroutput>: Populated from <computeroutput>self.tt.frac_ntop_tjet_contribution</computeroutput> (fractional contribution of top quarks to truth-jets).</para>
+</listitem><listitem><para><computeroutput>self.frac_ntop_jet_contribution</computeroutput>: Populated from <computeroutput>self.tt.frac_ntop_jet_contribution</computeroutput> (fractional contribution of top quarks to reconstructed jets).</para>
+</listitem><listitem><para><computeroutput>self.frac_mass_top</computeroutput>: Populated from <computeroutput>self.tt.frac_mass_top</computeroutput> (fractional mass of top quarks).</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="PartonSelection_page_1PartonSelection_properties">
+<title>Properties</title><para>The following properties are implicitly defined and populated by the <computeroutput>transform_dict_keys</computeroutput> method, providing access to the processed parton-level information:<itemizedlist>
+<listitem><para><computeroutput>@property ntops_tjets_pt -&gt; dict</computeroutput>: Dictionary of pT values for truth-jets associated with top quarks.</para>
+</listitem><listitem><para><computeroutput>@property ntops_tjets_e -&gt; dict</computeroutput>: Dictionary of energy values for truth-jets associated with top quarks.</para>
+</listitem><listitem><para><computeroutput>@property ntops_jets_pt -&gt; dict</computeroutput>: Dictionary of pT values for reconstructed jets associated with top quarks.</para>
+</listitem><listitem><para><computeroutput>@property ntops_jets_e -&gt; dict</computeroutput>: Dictionary of energy values for reconstructed jets associated with top quarks.</para>
+</listitem><listitem><para><computeroutput>@property nparton_tjet_e -&gt; dict</computeroutput>: Dictionary of energy values for partons within truth-jets.</para>
+</listitem><listitem><para><computeroutput>@property nparton_jet_e -&gt; dict</computeroutput>: Dictionary of energy values for partons within reconstructed jets.</para>
+</listitem><listitem><para><computeroutput>@property frac_parton_tjet_e -&gt; dict</computeroutput>: Dictionary of fractional energy contributions of partons within truth-jets.</para>
+</listitem><listitem><para><computeroutput>@property frac_parton_jet_e -&gt; dict</computeroutput>: Dictionary of fractional energy contributions of partons within reconstructed jets.</para>
+</listitem><listitem><para><computeroutput>@property frac_ntop_tjet_contribution -&gt; dict</computeroutput>: Dictionary of fractional contributions of top quarks to truth-jets.</para>
+</listitem><listitem><para><computeroutput>@property frac_ntop_jet_contribution -&gt; dict</computeroutput>: Dictionary of fractional contributions of top quarks to reconstructed jets.</para>
+</listitem><listitem><para><computeroutput>@property frac_mass_top -&gt; dict</computeroutput>: Dictionary of fractional mass contributions of top quarks.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="PartonSelection_page_1PartonSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>Parton</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class Parton</computeroutput>: Declares <computeroutput>Parton</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef parton *tt</computeroutput>: A C++ pointer to a <computeroutput>parton</computeroutput> object, which is the specialized C++ implementation for parton-level analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new parton()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;parton*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>Parton</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>parton</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>Parton</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures, specifically <computeroutput>as_dict</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/parton/parton.dox"/>
+  </compounddef>
+</doxygen>
