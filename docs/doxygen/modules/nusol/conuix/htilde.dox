@@ -1,0 +1,47 @@
+
+/**
+ * @file htilde.dox
+ * @brief Detailed documentation for the Conuix namespace, which provides tools for the kinematic reconstruction of particles.
+ *
+ * @page conuix_page Conuix Neutrino Solver
+ *
+ * @section conuix_intro Introduction
+ * The `Conuix` namespace provides a set of functions for the kinematic reconstruction of particles, particularly for solving the neutrino momentum in top quark decays. It is based on the "conformal solution" method, which involves a series of geometric transformations to solve for the neutrino's four-momentum.
+ *
+ * @section conuix_methods Methods
+ * The `Conuix` namespace contains the following functions:
+ *
+ * @subsection conuix_get_kinematic get_kinematic
+ * - `void Conuix::get_kinematic(particle_template* ptr, Conuix::kinematic_t* kin)`: Extracts the kinematic properties (beta, mass, energy) from a `particle_template` object and stores them in a `kinematic_t` struct.
+ *
+ * @subsection conuix_get_rotation get_rotation
+ * - `void Conuix::get_rotation(particle_template* jet, particle_template* lep, Conuix::rotation_t* rot)`: Calculates the rotation matrix required to align the lepton's momentum with the z-axis. This is a key step in the conformal solution method.
+ *
+ * @subsection conuix_get_psi_theta_mapping get_psi_theta_mapping
+ * - `void Conuix::get_psi_theta_mapping(Conuix::base_t* base, Conuix::thetapsi_t* msp)`: Calculates the mapping between the psi and theta angles, which are used to parameterize the neutrino's momentum.
+ *
+ * @subsection conuix_get_base get_base
+ * - `void Conuix::get_base(Conuix::kinematic_t* jet, Conuix::kinematic_t* lep, Conuix::base_t* bs)`: Calculates the base parameters for the conformal solution, including the omega and rbl values.
+ *
+ * @subsection conuix_get_pencil get_pencil
+ * - `void Conuix::get_pencil(Conuix::kinematic_t* lep, Conuix::kinematic_t* nu, Conuix::base_t* base, Conuix::pencil_t* pen)`: Calculates the parameters of the "pencil of circles," which represents the possible solutions for the neutrino's momentum.
+ *
+ * @subsection conuix_get_sx get_sx
+ * - `void Conuix::get_sx(Conuix::base_t* base, Conuix::Sx_t* sx)`: Calculates the parameters for the Sx component of the neutrino's momentum.
+ *
+ * @subsection conuix_get_sy get_sy
+ * - `void Conuix::get_sy(Conuix::base_t* base, Conuix::Sy_t* sy)`: Calculates the parameters for the Sy component of the neutrino's momentum.
+ *
+ * @subsection conuix_get_hmatrix get_hmatrix
+ * - `void Conuix::get_hmatrix(Conuix::base_t* base, Conuix::rotation_t* rot, Conuix::H_matrix_t* H)`: Calculates the H-matrix, which is the transformation matrix for the ellipse of possible neutrino solutions.
+ *
+ * @section conuix_structs Structs
+ * The `Conuix` namespace uses several structs to store the intermediate results of the calculations:
+ * - `kinematic_t`: Stores the kinematic properties of a particle.
+ * - `rotation_t`: Stores the rotation parameters.
+ * - `thetapsi_t`: Stores the psi-theta mapping parameters.
+ * - `base_t`: Stores the base parameters for the conformal solution.
+ * - `pencil_t`: Stores the parameters of the pencil of circles.
+ * - `Sx_t`, `Sy_t`: Store the parameters for the Sx and Sy components of the neutrino's momentum.
+ * - `H_matrix_t`: Stores the H-matrix.
+ */

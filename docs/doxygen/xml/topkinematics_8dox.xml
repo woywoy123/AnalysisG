@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="topkinematics_8dox" kind="file" language="C++">
+    <compoundname>topkinematics.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the TopKinematics Cython class, specialized for analyzing top quark kinematics in MC16 events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>topkinematics.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>TopKinematics<sp/>Cython<sp/>class,<sp/>specialized<sp/>for<sp/>analyzing<sp/>top<sp/>quark<sp/>kinematics<sp/>in<sp/>MC16<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>TopKinematicsSelection_page<sp/>Top<sp/>Kinematics<sp/>Selection</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopKinematicsSelection_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`TopKinematics`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>selection<sp/>template<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>for<sp/>comprehensive<sp/>analysis<sp/>of<sp/>top<sp/>quark<sp/>kinematics<sp/>in<sp/>Monte<sp/>Carlo<sp/>16<sp/>(MC16)<sp/>events.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>generic<sp/>`SelectionTemplate`<sp/>class,<sp/>extending<sp/>its<sp/>functionalities<sp/>to<sp/>extract<sp/>and<sp/>organize<sp/>detailed<sp/>information<sp/>about<sp/>resonant<sp/>and<sp/>spectator<sp/>top<sp/>quark<sp/>kinematics<sp/>(energy,<sp/>eta,<sp/>phi,<sp/>pT),<sp/>as<sp/>well<sp/>as<sp/>mass<sp/>and<sp/>Delta-R<sp/>(dR)<sp/>combinations.<sp/>This<sp/>class<sp/>facilitates<sp/>a<sp/>high-performance<sp/>extraction<sp/>and<sp/>structuring<sp/>of<sp/>top<sp/>quark<sp/>kinematic<sp/>data<sp/>for<sp/>further<sp/>physics<sp/>analysis.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopKinematicsSelection_helper_functions<sp/>Helper<sp/>Functions<sp/>(Python-style,<sp/>Cython-optimized)</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>These<sp/>functions<sp/>are<sp/>designed<sp/>to<sp/>be<sp/>used<sp/>as<sp/>callbacks<sp/>for<sp/>`self.root_leaves`<sp/>in<sp/>`SelectionTemplate`,<sp/>processing<sp/>data<sp/>as<sp/>it&apos;s<sp/>read<sp/>from<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>-<sp/>`def<sp/>res_data(zp,<sp/>data)`:</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Processes<sp/>kinematic<sp/>data<sp/>for<sp/>&quot;resonant&quot;<sp/>top<sp/>quarks.<sp/>It<sp/>extracts<sp/>the<sp/>kinematic<sp/>variable<sp/>(energy,<sp/>eta,<sp/>phi,<sp/>or<sp/>pT)<sp/>from<sp/>`data[1]`<sp/>and<sp/>appends<sp/>it<sp/>to<sp/>the<sp/>corresponding<sp/>list<sp/>in<sp/>`zp.res_top_kinematics`.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>zp<sp/>An<sp/>instance<sp/>of<sp/>`TopKinematics`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>data<sp/>A<sp/>tuple<sp/>`(name_string,<sp/>list_of_floats)`<sp/>where<sp/>`name_string`<sp/>indicates<sp/>the<sp/>kinematic<sp/>variable<sp/>and<sp/>`list_of_floats`<sp/>contains<sp/>the<sp/>values.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`def<sp/>spec_data(zp,<sp/>data)`:</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Processes<sp/>kinematic<sp/>data<sp/>for<sp/>&quot;spectator&quot;<sp/>top<sp/>quarks.<sp/>Similar<sp/>to<sp/>`res_data`,<sp/>but<sp/>appends<sp/>to<sp/>`zp.spec_top_kinematics`.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>zp<sp/>An<sp/>instance<sp/>of<sp/>`TopKinematics`.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>data<sp/>A<sp/>tuple<sp/>`(name_string,<sp/>list_of_floats)`<sp/>containing<sp/>the<sp/>data.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`def<sp/>mass_data(zp,<sp/>data)`:</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Processes<sp/>mass<sp/>combination<sp/>data<sp/>(e.g.,<sp/>&quot;RR&quot;,<sp/>&quot;RS&quot;,<sp/>&quot;SS&quot;<sp/>for<sp/>resonant-resonant,<sp/>resonant-spectator,<sp/>spectator-spectator<sp/>combinations).<sp/>It<sp/>extracts<sp/>the<sp/>mass<sp/>values<sp/>from<sp/>`data[1]`<sp/>and<sp/>appends<sp/>them<sp/>to<sp/>the<sp/>corresponding<sp/>list<sp/>in<sp/>`zp.mass_combi`.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>zp<sp/>An<sp/>instance<sp/>of<sp/>`TopKinematics`.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>data<sp/>A<sp/>tuple<sp/>`(name_string,<sp/>list_of_floats)`<sp/>containing<sp/>the<sp/>data.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`def<sp/>dr_data(zp,<sp/>data)`:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Processes<sp/>Delta-R<sp/>(dR)<sp/>combination<sp/>data<sp/>(e.g.,<sp/>&quot;RR&quot;,<sp/>&quot;RS&quot;,<sp/>&quot;SS&quot;).<sp/>It<sp/>extracts<sp/>the<sp/>dR<sp/>values<sp/>from<sp/>`data[1]`<sp/>and<sp/>appends<sp/>them<sp/>to<sp/>the<sp/>corresponding<sp/>list<sp/>in<sp/>`zp.deltaR`.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>zp<sp/>An<sp/>instance<sp/>of<sp/>`TopKinematics`.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>data<sp/>A<sp/>tuple<sp/>`(name_string,<sp/>list_of_floats)`<sp/>containing<sp/>the<sp/>data.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopKinematicsSelection_class<sp/>The<sp/>TopKinematics<sp/>Class</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>`TopKinematics`<sp/>is<sp/>a<sp/>`cdef<sp/>class`<sp/>that<sp/>inherits<sp/>from<sp/>`SelectionTemplate`.<sp/>It<sp/>is<sp/>tailored<sp/>for<sp/>collecting<sp/>and<sp/>organizing<sp/>kinematic<sp/>information<sp/>from<sp/>top<sp/>quarks<sp/>and<sp/>their<sp/>combinations.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>TopKinematicsSelection_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>`self.root_leaves`<sp/>to<sp/>define<sp/>specific<sp/>ROOT<sp/>branches<sp/>(`res_energy`,<sp/>`spec_pt`,<sp/>`mass_RR`,<sp/>`dr_SS`,<sp/>etc.)<sp/>and<sp/>associates<sp/>them<sp/>with<sp/>the<sp/>appropriate<sp/>helper<sp/>functions<sp/>(`res_data`,<sp/>`spec_data`,<sp/>`mass_data`,<sp/>`dr_data`)<sp/>for<sp/>data<sp/>processing<sp/>during<sp/>`InterpretROOT`.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>several<sp/>internal<sp/>Python<sp/>attributes<sp/>(`res_top_kinematics`,<sp/>`spec_top_kinematics`,<sp/>`mass_combi`,<sp/>`deltaR`)<sp/>to<sp/>`None`.<sp/>These<sp/>will<sp/>be<sp/>dynamically<sp/>populated<sp/>as<sp/>data<sp/>is<sp/>processed<sp/>by<sp/>the<sp/>helper<sp/>functions.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`topkinematics`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.ptr`<sp/>to<sp/>a<sp/>`topkinematics*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.tt`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Python<sp/>initializer.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Deallocates<sp/>the<sp/>C++<sp/>`topkinematics`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.tt`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>TopKinematicsSelection_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>transform_dict_keys(self)`:</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>method<sp/>is<sp/>inherited<sp/>from<sp/>`SelectionTemplate`<sp/>and<sp/>would<sp/>be<sp/>responsible<sp/>for<sp/>converting<sp/>C++<sp/>data<sp/>structures<sp/>to<sp/>Python<sp/>dictionaries.<sp/>Its<sp/>absence<sp/>here<sp/>suggests<sp/>that<sp/>the<sp/>data<sp/>is<sp/>directly<sp/>populated<sp/>into<sp/>Python<sp/>attributes<sp/>by<sp/>the<sp/>helper<sp/>functions.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>TopKinematicsSelection_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>The<sp/>following<sp/>properties<sp/>are<sp/>dynamically<sp/>populated<sp/>by<sp/>the<sp/>helper<sp/>functions<sp/>during<sp/>data<sp/>processing:</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>res_top_kinematics<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>containing<sp/>kinematic<sp/>data<sp/>(energy,<sp/>eta,<sp/>phi,<sp/>pT)<sp/>for<sp/>resonant<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>spec_top_kinematics<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>containing<sp/>kinematic<sp/>data<sp/>(energy,<sp/>eta,<sp/>phi,<sp/>pT)<sp/>for<sp/>spectator<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>mass_combi<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>containing<sp/>mass<sp/>combination<sp/>data<sp/>(RR,<sp/>RS,<sp/>SS).</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>deltaR<sp/>-&gt;<sp/>dict`:<sp/>Dictionary<sp/>containing<sp/>Delta-R<sp/>combination<sp/>data<sp/>(RR,<sp/>RS,<sp/>SS).</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*<sp/>@section<sp/>TopKinematicsSelection_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="61"><highlight class="comment"><sp/>*<sp/>The<sp/>`TopKinematics`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="62"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>TopKinematics`:<sp/>Declares<sp/>`TopKinematics`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="63"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>topkinematics<sp/>*tt`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`topkinematics`<sp/>object,<sp/>which<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>backend<sp/>for<sp/>top<sp/>quark<sp/>kinematic<sp/>analysis.</highlight></codeline>
+<codeline lineno="64"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.ptr<sp/>=<sp/>new<sp/>topkinematics()`:<sp/>Initializes<sp/>the<sp/>base<sp/>`SelectionTemplate`&apos;s<sp/>C++<sp/>pointer.</highlight></codeline>
+<codeline lineno="65"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.tt<sp/>=<sp/>&lt;topkinematics*&gt;self.ptr`:<sp/>This<sp/>line<sp/>demonstrates<sp/>C++<sp/>upcasting,<sp/>allowing<sp/>`TopKinematics`<sp/>to<sp/>fulfill<sp/>the<sp/>`SelectionTemplate`<sp/>interface<sp/>while<sp/>internally<sp/>managing<sp/>its<sp/>specific<sp/>`topkinematics`<sp/>data.</highlight></codeline>
+<codeline lineno="66"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>SelectionTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`SelectionTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`TopKinematics`<sp/>inherits.</highlight></codeline>
+<codeline lineno="67"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>as_dict`:<sp/>Imports<sp/>utility<sp/>functions<sp/>for<sp/>converting<sp/>between<sp/>C++<sp/>and<sp/>Python<sp/>data<sp/>structures<sp/>(though<sp/>`as_dict`<sp/>is<sp/>not<sp/>directly<sp/>used<sp/>in<sp/>the<sp/>provided<sp/>snippet,<sp/>it&apos;s<sp/>imported).</highlight></codeline>
+<codeline lineno="68"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/topkinematics/topkinematics.dox"/>
+  </compounddef>
+</doxygen>

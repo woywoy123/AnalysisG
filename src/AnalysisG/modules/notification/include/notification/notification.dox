@@ -1,0 +1,158 @@
+/**
+ * @file notification.h
+ * @brief Terminal logging and progress reporting utilities.
+ * @details Provides coloured console messages, single-bar progress bars, and
+ *          multi-threaded progress monitors used throughout the AnalysisG
+ *          framework.
+ */
+
+/**
+ * @class notification
+ * @brief Logging and progress-bar helper class.
+ * @details Provides four severity levels of coloured stdout messages:
+ *          success (green, ANSI 32), warning (yellow, ANSI 33), failure
+ *          (red, ANSI 31), and info (white, ANSI 37).  The ANSI colour codes
+ *          are configurable at runtime via the public integer members
+ *          @c _success, @c _warning, @c _failure, and @c _info.  Bold output
+ *          is controlled by the @c bold flag; all output can be suppressed
+ *          completely by setting @c shush @c = @c true.
+ *
+ *          In addition to message logging, @c notification supplies several
+ *          progress-bar helpers for displaying multi-threaded progress:
+ *          the @c progressbar overloads accept either a single fraction or
+ *          per-thread vectors of counts and labels; the static variants
+ *          @c progressbar1, @c progressbar2, and @c progressbar3 are
+ *          available as thread targets; @c running polls active threads and
+ *          updates the bars; @c monitor blocks until all threads finish.
+ *
+ *          The private @c caller integer is initialised from
+ *          @c std::this_thread::get_id() so that each thread's messages can
+ *          be attributed to the correct caller.  Classes that inherit from
+ *          @c notification — including @c tools, @c model_template,
+ *          @c dataloader, @c optimizer, @c metrics, @c metric_template,
+ *          @c lossfx, @c io, @c meta, and @c analysis — gain all of these
+ *          capabilities without qualification.
+ */
+
+/**
+ * @fn notification::notification()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn notification::~notification()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn void notification::success(std::string message)
+ * @brief Print a green success message to stdout.
+ * @param message Text to display.
+ */
+
+/**
+ * @fn void notification::warning(std::string message)
+ * @brief Print a yellow warning message to stdout.
+ * @param message Text to display.
+ */
+
+/**
+ * @fn void notification::failure(std::string message)
+ * @brief Print a red failure message to stdout.
+ * @param message Text to display.
+ */
+
+/**
+ * @fn void notification::info(std::string message)
+ * @brief Print a white info message to stdout.
+ * @param message Text to display.
+ */
+
+/**
+ * @fn void notification::progressbar(float prog, std::string title)
+ * @brief Display a single-bar progress indicator.
+ * @param prog  Fractional progress in [0, 1].
+ * @param title Label shown beside the bar.
+ */
+
+/**
+ * @fn void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title)
+ * @brief Display a multi-bar progress indicator for several threads.
+ * @param threads  Per-thread current progress counts.
+ * @param trgt     Per-thread target counts.
+ * @param title    Per-thread label strings.
+ */
+
+/**
+ * @fn int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt)
+ * @brief Check how many threads are still running and update progress bars.
+ * @param thr  Pointers to the managed threads.
+ * @param prg  Per-thread progress counters.
+ * @param trgt Per-thread target counts.
+ * @return Number of threads still running.
+ */
+
+/**
+ * @fn void notification::monitor(std::vector<std::thread*>* thr)
+ * @brief Block until all threads in @p thr have finished.
+ * @param thr Pointers to the threads to wait for.
+ */
+
+/**
+ * @fn void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::string title)
+ * @brief Static single-bar variant using a fixed target length.
+ * @param threads Per-thread progress counters.
+ * @param l       Target count.
+ * @param title   Label string.
+ */
+
+/**
+ * @fn void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title)
+ * @brief Static single-bar variant with a pointer to the target count.
+ * @param threads Per-thread progress counters.
+ * @param l       Pointer to the target count.
+ * @param title   Pointer to the label string.
+ */
+
+/**
+ * @fn void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title)
+ * @brief Static multi-bar variant with per-thread targets and labels.
+ * @param threads Per-thread progress counters.
+ * @param l       Per-thread target counts.
+ * @param title   Per-thread pointers to label strings.
+ */
+
+/**
+ * @var std::string notification::prefix
+ * @brief String prepended to every message; used to identify the caller.
+ */
+
+/**
+ * @var int notification::_warning
+ * @brief ANSI colour code for warning messages (default 33 = yellow).
+ */
+
+/**
+ * @var int notification::_failure
+ * @brief ANSI colour code for failure messages (default 31 = red).
+ */
+
+/**
+ * @var int notification::_success
+ * @brief ANSI colour code for success messages (default 32 = green).
+ */
+
+/**
+ * @var int notification::_info
+ * @brief ANSI colour code for info messages (default 37 = white).
+ */
+
+/**
+ * @var bool notification::bold
+ * @brief If @c true, messages are printed in bold.
+ */
+
+/**
+ * @var bool notification::shush
+ * @brief If @c true, all message output is suppressed.
+ */

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2meta_2meta_8dox" kind="file" language="C++">
+    <compoundname>meta.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the meta class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>meta.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>meta<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>meta_module_page<sp/>Meta<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>meta_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`meta`<sp/>module<sp/>provides<sp/>a<sp/>class<sp/>for<sp/>storing<sp/>and<sp/>accessing<sp/>metadata<sp/>associated<sp/>with<sp/>a<sp/>physics<sp/>analysis<sp/>dataset.<sp/>This<sp/>includes<sp/>information<sp/>about<sp/>the<sp/>dataset,<sp/>such<sp/>as<sp/>its<sp/>name,<sp/>DSID,<sp/>cross-section,<sp/>and<sp/>the<sp/>number<sp/>of<sp/>events,<sp/>as<sp/>well<sp/>as<sp/>information<sp/>about<sp/>the<sp/>individual<sp/>files<sp/>in<sp/>the<sp/>dataset.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>meta_class<sp/>The<sp/>meta<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`meta`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>meta_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`meta()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>properties<sp/>of<sp/>the<sp/>`meta`<sp/>object<sp/>by<sp/>setting<sp/>up<sp/>their<sp/>respective<sp/>getters.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~meta()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>meta_methods_parsing<sp/>Parsing<sp/>Metadata</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>parse_json(std::string<sp/>inpt)`:<sp/>Parses<sp/>a<sp/>JSON<sp/>string<sp/>containing<sp/>metadata<sp/>and<sp/>populates<sp/>the<sp/>`meta_data`<sp/>struct.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>compiler()`:<sp/>A<sp/>helper<sp/>method<sp/>for<sp/>`parse_json`<sp/>that<sp/>extracts<sp/>the<sp/>metadata<sp/>from<sp/>the<sp/>parsed<sp/>JSON<sp/>document.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>scan_data(TObject*<sp/>obj)`:<sp/>Scans<sp/>a<sp/>ROOT<sp/>object<sp/>(e.g.,<sp/>a<sp/>`TTree`<sp/>or<sp/>`TH1F`)<sp/>and<sp/>extracts<sp/>metadata<sp/>from<sp/>it.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>scan_sow(TObject*<sp/>obj)`:<sp/>A<sp/>helper<sp/>method<sp/>for<sp/>`scan_data`<sp/>that<sp/>specifically<sp/>handles<sp/>the<sp/>extraction<sp/>of<sp/>sum-of-weights<sp/>information.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>meta_methods_access<sp/>Accessing<sp/>Metadata</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>The<sp/>`meta`<sp/>class<sp/>provides<sp/>a<sp/>large<sp/>number<sp/>of<sp/>getter<sp/>methods<sp/>for<sp/>accessing<sp/>the<sp/>various<sp/>metadata<sp/>fields.<sp/>These<sp/>getters<sp/>are<sp/>implemented<sp/>as<sp/>`property`<sp/>objects,<sp/>which<sp/>allows<sp/>for<sp/>a<sp/>clean<sp/>and<sp/>consistent<sp/>interface.<sp/>Some<sp/>examples<sp/>include:</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`get_isMC(bool*<sp/>val,<sp/>meta*<sp/>m)`</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`get_cross_section_nb(double*<sp/>val,<sp/>meta*<sp/>m)`</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`get_dsid(unsigned<sp/>int*<sp/>val,<sp/>meta*<sp/>m)`</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`get_DatasetName(std::string*<sp/>val,<sp/>meta*<sp/>m)`</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`get_sum_of_weights(double*<sp/>val,<sp/>meta*<sp/>m)`</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>meta_structs<sp/>The<sp/>meta_t<sp/>and<sp/>weights_t<sp/>Structs</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>**meta_t**:<sp/>This<sp/>struct<sp/>holds<sp/>the<sp/>metadata<sp/>for<sp/>a<sp/>single<sp/>dataset.<sp/>It<sp/>contains<sp/>a<sp/>large<sp/>number<sp/>of<sp/>fields<sp/>for<sp/>storing<sp/>information<sp/>such<sp/>as<sp/>the<sp/>dataset<sp/>name,<sp/>DSID,<sp/>cross-section,<sp/>number<sp/>of<sp/>events,<sp/>etc.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>**weights_t**:<sp/>This<sp/>struct<sp/>is<sp/>used<sp/>to<sp/>store<sp/>sum-of-weights<sp/>information.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/meta/meta.dox"/>
+  </compounddef>
+</doxygen>

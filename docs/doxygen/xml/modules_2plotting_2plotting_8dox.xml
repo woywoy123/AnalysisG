@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2plotting_2plotting_8dox" kind="file" language="C++">
+    <compoundname>plotting.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the plotting class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>plotting.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>plotting<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>plotting_module_page<sp/>Plotting<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>plotting_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`plotting`<sp/>module<sp/>provides<sp/>a<sp/>class<sp/>for<sp/>creating<sp/>and<sp/>managing<sp/>various<sp/>types<sp/>of<sp/>plots,<sp/>including<sp/>histograms,<sp/>graphs,<sp/>and<sp/>ROC<sp/>curves.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>plotting_class<sp/>The<sp/>plotting<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`plotting`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>plotting_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`plotting()`:<sp/>The<sp/>constructor.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~plotting()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>the<sp/>allocated<sp/>memory,<sp/>including<sp/>the<sp/>ROC<sp/>data.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>plotting_methods_path<sp/>Path<sp/>Building</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>build_path()`:<sp/>Constructs<sp/>the<sp/>full<sp/>output<sp/>path<sp/>for<sp/>a<sp/>plot,<sp/>including<sp/>the<sp/>filename<sp/>and<sp/>extension.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>plotting_methods_data<sp/>Data<sp/>Handling</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`float<sp/>get_max(std::string<sp/>dim)`:<sp/>Returns<sp/>the<sp/>maximum<sp/>value<sp/>of<sp/>the<sp/>x<sp/>or<sp/>y<sp/>data.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`float<sp/>get_min(std::string<sp/>dim)`:<sp/>Returns<sp/>the<sp/>minimum<sp/>value<sp/>of<sp/>the<sp/>x<sp/>or<sp/>y<sp/>data.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`float<sp/>sum_of_weights()`:<sp/>Returns<sp/>the<sp/>sum<sp/>of<sp/>the<sp/>weights.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::tuple&lt;float,<sp/>float&gt;<sp/>mean_stdev(std::vector&lt;float&gt;*<sp/>data)`:<sp/>Calculates<sp/>the<sp/>mean<sp/>and<sp/>standard<sp/>deviation<sp/>of<sp/>a<sp/>vector<sp/>of<sp/>floats.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build_error()`:<sp/>Calculates<sp/>the<sp/>error<sp/>bars<sp/>for<sp/>the<sp/>y-data.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>plotting_methods_roc<sp/>ROC<sp/>Curves</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build_ROC(std::string<sp/>name,<sp/>int<sp/>kfold,<sp/>std::vector&lt;int&gt;*<sp/>label,<sp/>std::vector&lt;std::vector&lt;double&gt;&gt;*<sp/>scores)`:<sp/>Builds<sp/>the<sp/>data<sp/>for<sp/>a<sp/>Receiver<sp/>Operating<sp/>Characteristic<sp/>(ROC)<sp/>curve.<sp/>It<sp/>takes<sp/>the<sp/>true<sp/>labels<sp/>and<sp/>the<sp/>predicted<sp/>scores<sp/>as<sp/>input<sp/>and<sp/>stores<sp/>them<sp/>in<sp/>the<sp/>`roc_data`<sp/>and<sp/>`labels`<sp/>maps.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;roc_t&gt;<sp/>get_ROC()`:<sp/>Returns<sp/>a<sp/>vector<sp/>of<sp/>`roc_t`<sp/>structs,<sp/>which<sp/>contain<sp/>the<sp/>data<sp/>for<sp/>all<sp/>the<sp/>ROC<sp/>curves<sp/>that<sp/>have<sp/>been<sp/>built.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@section<sp/>roc_t_struct<sp/>The<sp/>roc_t<sp/>Struct</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>The<sp/>`roc_t`<sp/>struct<sp/>is<sp/>a<sp/>simple<sp/>data<sp/>container<sp/>for<sp/>the<sp/>information<sp/>needed<sp/>to<sp/>plot<sp/>a<sp/>ROC<sp/>curve.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>roc_t_members<sp/>Members</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>kfold`:<sp/>The<sp/>k-fold<sp/>index.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>cls`:<sp/>The<sp/>number<sp/>of<sp/>classes.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>model`:<sp/>The<sp/>name<sp/>of<sp/>the<sp/>model.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;std::vector&lt;int&gt;&gt;*<sp/>truth`:<sp/>A<sp/>pointer<sp/>to<sp/>the<sp/>true<sp/>labels.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;std::vector&lt;double&gt;&gt;*<sp/>scores`:<sp/>A<sp/>pointer<sp/>to<sp/>the<sp/>predicted<sp/>scores.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/plotting/plotting.dox"/>
+  </compounddef>
+</doxygen>

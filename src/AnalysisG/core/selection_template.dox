@@ -1,0 +1,40 @@
+/**
+ * @file selection_template.pxd
+ * @brief Cython declaration file for the @c selection_template C++ class.
+ * @details Wraps the event selection and strategy engine used to filter
+ *          physics events and accumulate per-event statistics.
+ */
+
+/**
+ * @class SelectionTemplate
+ * @brief Python wrapper for @c selection_template.
+ * @details Subclass this to implement event-level selections.  The framework
+ *          calls the subclass once per event; results, weights, and matched
+ *          meta-data are accumulated in the underlying C++ object.  The
+ *          public dict `root_leaves` is used by `InterpretROOT` to map leaf
+ *          names to processing callbacks.
+ *
+ * **Serialisation methods:**
+ * - `dump(path: str = "./pkl-data", name: str = "")` — Pickle this object to
+ *   `<path>/<name>.pkl`; `name` defaults to the C++ class name.
+ * - `load(path: str = "./pkl-data", name: str = "") -> SelectionTemplate | None`
+ *   — Unpickle and return a previously saved instance, or `None` on failure.
+ *
+ * **Data-access methods:**
+ * - `HashToWeightFile(hash_: str | list | dict) -> list[tuple]` — Map one or
+ *   more event hash strings back to `(filename, weight)` pairs stored in the
+ *   C++ `passed_weights` map.
+ *
+ * **Post-processing hooks:**
+ * - `Postprocessing()` — Called after `InterpretROOT` completes; override to
+ *   run any finalisation logic on the accumulated data.
+ * - `InterpretROOT(path: str, tree: str) -> SelectionTemplate` — Read a ROOT
+ *   file/path and process each entry through the callbacks registered in
+ *   `root_leaves`; calls `Postprocessing()` when finished.
+ *
+ * **Read-only properties:**
+ * - `PassedWeights` (dict[str, dict[str, float]]) — Nested dictionary of
+ *   per-file, per-event weights for events that passed the selection.
+ * - `GetMetaData` (dict[str, Meta]) — Dictionary mapping event hashes to the
+ *   corresponding `Meta` objects collected during the analysis run.
+ */

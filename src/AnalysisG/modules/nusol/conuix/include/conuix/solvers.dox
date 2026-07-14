@@ -1,0 +1,47 @@
+/**
+ * @file solvers.h (conuix)
+ * @brief Templated polynomial root finders for the Conuix neutrino solver.
+ * @details Provides @c long double specialisable root finders for linear,
+ *          quadratic, and cubic polynomials.
+ */
+
+/**
+ * @fn template<typename g> int linear(g a, g b, std::complex<g>* v0, double tol)
+ * @brief Solve @c a·x + b = 0.
+ * @tparam g Floating-point type.
+ * @param a   Coefficient of x.
+ * @param b   Constant term.
+ * @param v0  Output root.
+ * @param tol Near-zero tolerance (default 1e-14).
+ * @return Number of roots (0 if @p a is zero).
+ */
+
+/**
+ * @fn template<typename g> int quadratic(g a, g b, g c, std::complex<g>* v0, std::complex<g>* v1, double tol)
+ * @brief Solve @c a·x² + b·x + c = 0.
+ * @tparam g Floating-point type.
+ * @param a   Leading coefficient.
+ * @param b   Linear coefficient.
+ * @param c   Constant term.
+ * @param v0  First root.
+ * @param v1  Second root.
+ * @param tol Near-zero tolerance.
+ * @return Number of roots (1 for degenerate, 2 otherwise).
+ */
+
+/**
+ * @fn template<typename g> int cubic(g a, g b, g c, g d, std::complex<g>* v0, std::complex<g>* v1, std::complex<g>* v2, double tol)
+ * @brief Solve @c a·x³ + b·x² + c·x + d = 0 analytically.
+ * @details Uses Cardano's formula.  When @p a is near zero, falls back to the
+ *          quadratic solver.
+ * @tparam g Floating-point type.
+ * @param a   Cubic coefficient.
+ * @param b   Quadratic coefficient.
+ * @param c   Linear coefficient.
+ * @param d   Constant term.
+ * @param v0  First root.
+ * @param v1  Second root.
+ * @param v2  Third root.
+ * @param tol Near-zero tolerance.
+ * @return Number of roots found (1–3).
+ */

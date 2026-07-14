@@ -1,0 +1,35 @@
+/**
+ * @file metric_pagerank.dox
+ * @brief Detailed documentation for the PageRankMetric Cython class, intended for PageRank-related metrics.
+ *
+ * @page PageRankMetric_page PageRank Metric
+ *
+ * @section PageRankMetric_intro Introduction
+ * The `PageRankMetric` class, implemented in Cython, is designed to be a specialized metric within the AnalysisG framework for calculating and analyzing PageRank-related metrics on graph structures. It inherits from the `MetricTemplate` class, providing a foundation for integrating PageRank calculations into the broader analysis pipeline. While the provided snippet is incomplete, its purpose is to leverage an underlying C++ PageRank implementation for high-performance graph analysis.
+ *
+ * @section PageRankMetric_class The PageRankMetric Class
+ * `PageRankMetric` is a `cdef class` that inherits from `MetricTemplate`. This indicates its implementation as a Cython extension type, allowing for direct and optimized interaction with a C++ `pagerank_metric` object.
+ *
+ * @subsection PageRankMetric_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `pagerank_metric` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `pagerank_metric*` and assigns it to `self.mtr` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Cython destructor, responsible for deallocating the C++ `pagerank_metric` object.
+ *
+ * @section PageRankMetric_technical_details Technical Details
+ * - **Cython Implementation**: The class is implemented in Cython, enabling direct binding to C++ code for performance.
+ * - **C++ Backend**: It relies on an underlying C++ `pagerank_metric` class (presumably defined in a corresponding `.pxd` file) to perform the actual PageRank calculations.
+ * - **Inheritance**: Inherits from `MetricTemplate`, suggesting it integrates into the generic metric processing pipeline of AnalysisG.
+ *
+ * @section PageRankMetric_cpp_interaction C++ Interaction
+ * The `PageRankMetric` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class PageRankMetric`: Declares `PageRankMetric` as a Cython extension type.
+ * - `cdef pagerank_metric *ptr`: A C++ pointer to a `pagerank_metric` object, managed by the Cython class.
+ * - `cdef pagerank_metric *mtr`: An additional C++ pointer, likely for specialized access to the `pagerank_metric` object.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`.
+ * - `from AnalysisG.core.metric_template cimport MetricTemplate`: Imports the base `MetricTemplate` class, from which `PageRankMetric` inherits.
+ */

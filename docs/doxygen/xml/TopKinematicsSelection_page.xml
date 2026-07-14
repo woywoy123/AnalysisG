@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="TopKinematicsSelection_page" kind="page">
+    <compoundname>TopKinematicsSelection_page</compoundname>
+    <title>Top Kinematics Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="TopKinematicsSelection_page_1TopKinematicsSelection_intro">
+<title>Introduction</title><para>The <computeroutput>TopKinematics</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top quark kinematics in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed information about resonant and spectator top quark kinematics (energy, eta, phi, pT), as well as mass and Delta-R (dR) combinations. This class facilitates a high-performance extraction and structuring of top quark kinematic data for further physics analysis.</para>
+</sect1>
+<sect1 id="TopKinematicsSelection_page_1TopKinematicsSelection_helper_functions">
+<title>Helper Functions (Python-style, Cython-optimized)</title><para>These functions are designed to be used as callbacks for <computeroutput>self.root_leaves</computeroutput> in <computeroutput>SelectionTemplate</computeroutput>, processing data as it&apos;s read from ROOT files.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>def res_data(zp, data)</computeroutput>: Processes kinematic data for &quot;resonant&quot; top quarks. It extracts the kinematic variable (energy, eta, phi, or pT) from <computeroutput>data[1]</computeroutput> and appends it to the corresponding list in <computeroutput>zp.res_top_kinematics</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>zp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, list_of_floats)</computeroutput> where <computeroutput>name_string</computeroutput> indicates the kinematic variable and <computeroutput>list_of_floats</computeroutput> contains the values.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def spec_data(zp, data)</computeroutput>: Processes kinematic data for &quot;spectator&quot; top quarks. Similar to <computeroutput>res_data</computeroutput>, but appends to <computeroutput>zp.spec_top_kinematics</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>zp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, list_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def mass_data(zp, data)</computeroutput>: Processes mass combination data (e.g., &quot;RR&quot;, &quot;RS&quot;, &quot;SS&quot; for resonant-resonant, resonant-spectator, spectator-spectator combinations). It extracts the mass values from <computeroutput>data[1]</computeroutput> and appends them to the corresponding list in <computeroutput>zp.mass_combi</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>zp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, list_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def dr_data(zp, data)</computeroutput>: Processes Delta-R (dR) combination data (e.g., &quot;RR&quot;, &quot;RS&quot;, &quot;SS&quot;). It extracts the dR values from <computeroutput>data[1]</computeroutput> and appends them to the corresponding list in <computeroutput>zp.deltaR</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>zp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopKinematics</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, list_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="TopKinematicsSelection_page_1TopKinematicsSelection_class">
+<title>The TopKinematics Class</title><para><computeroutput>TopKinematics</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>SelectionTemplate</computeroutput>. It is tailored for collecting and organizing kinematic information from top quarks and their combinations.</para>
+<sect2 id="TopKinematicsSelection_page_1TopKinematicsSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent.<itemizedlist>
+<listitem><para>Initializes <computeroutput>self.root_leaves</computeroutput> to define specific ROOT branches (<computeroutput>res_energy</computeroutput>, <computeroutput>spec_pt</computeroutput>, <computeroutput>mass_RR</computeroutput>, <computeroutput>dr_SS</computeroutput>, etc.) and associates them with the appropriate helper functions (<computeroutput>res_data</computeroutput>, <computeroutput>spec_data</computeroutput>, <computeroutput>mass_data</computeroutput>, <computeroutput>dr_data</computeroutput>) for data processing during <computeroutput>InterpretROOT</computeroutput>.</para>
+</listitem><listitem><para>Initializes several internal Python attributes (<computeroutput>res_top_kinematics</computeroutput>, <computeroutput>spec_top_kinematics</computeroutput>, <computeroutput>mass_combi</computeroutput>, <computeroutput>deltaR</computeroutput>) to <computeroutput>None</computeroutput>. These will be dynamically populated as data is processed by the helper functions.</para>
+</listitem><listitem><para>Initializes a new C++ <computeroutput>topkinematics</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>topkinematics*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>topkinematics</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="TopKinematicsSelection_page_1TopKinematicsSelection_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: (Not explicitly defined in the provided snippet) This method is inherited from <computeroutput>SelectionTemplate</computeroutput> and would be responsible for converting C++ data structures to Python dictionaries. Its absence here suggests that the data is directly populated into Python attributes by the helper functions.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="TopKinematicsSelection_page_1TopKinematicsSelection_properties">
+<title>Properties</title><para>The following properties are dynamically populated by the helper functions during data processing:<itemizedlist>
+<listitem><para><computeroutput>@property res_top_kinematics -&gt; dict</computeroutput>: Dictionary containing kinematic data (energy, eta, phi, pT) for resonant top quarks.</para>
+</listitem><listitem><para><computeroutput>@property spec_top_kinematics -&gt; dict</computeroutput>: Dictionary containing kinematic data (energy, eta, phi, pT) for spectator top quarks.</para>
+</listitem><listitem><para><computeroutput>@property mass_combi -&gt; dict</computeroutput>: Dictionary containing mass combination data (RR, RS, SS).</para>
+</listitem><listitem><para><computeroutput>@property deltaR -&gt; dict</computeroutput>: Dictionary containing Delta-R combination data (RR, RS, SS).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="TopKinematicsSelection_page_1TopKinematicsSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>TopKinematics</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class TopKinematics</computeroutput>: Declares <computeroutput>TopKinematics</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef topkinematics *tt</computeroutput>: A C++ pointer to a <computeroutput>topkinematics</computeroutput> object, which is the specialized C++ backend for top quark kinematic analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new topkinematics()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;topkinematics*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>TopKinematics</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>topkinematics</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>TopKinematics</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport as_dict</computeroutput>: Imports utility functions for converting between C++ and Python data structures (though <computeroutput>as_dict</computeroutput> is not directly used in the provided snippet, it&apos;s imported). </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/topkinematics/topkinematics.dox"/>
+  </compounddef>
+</doxygen>

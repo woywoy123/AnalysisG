@@ -1,0 +1,48 @@
+
+/**
+ * @file event.dox
+ * @brief Detailed documentation for the event_template class and related components.
+ *
+ * @page event_module_page Event Module
+ *
+ * @section event_module_intro Introduction
+ * The `event` module provides the base template for representing a physics event in the |g-framework|. The `event_template` class defines the common interface and functionality for all event types.
+ *
+ * @section event_template_class The event_template Class
+ * The `event_template` class is an abstract base class that defines the structure of an event.
+ *
+ * @subsection event_template_ctor Constructor and Destructor
+ * - `event_template()`: The constructor initializes the properties of the event, such as `trees`, `branches`, `leaves`, `name`, `hash`, `tree`, `weight`, and `index`, by setting up their respective setters and getters.
+ * - `~event_template()`: The destructor cleans up the resources, including deregistering particles.
+ *
+ * @subsection event_template_methods_virtual Virtual Methods
+ * - `event_template* clone()`: Creates a copy of the event object. This is a pure virtual function that must be implemented by derived classes.
+ * - `void build(element_t* el)`: Populates the event's data members from an `element_t` object. This is a virtual function that can be overridden by derived classes.
+ * - `void CompileEvent()`: This method is intended to be overridden by derived classes to implement the logic for reconstructing the event, such as linking particles together.
+ *
+ * @subsection event_template_methods_building Event Building
+ * - `void build_mapping(std::map<std::string, data_t*>* evnt)`: Builds the internal mapping between the data leaves and the tree/branch structure.
+ * - `std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt)`: This is the main event building method. It uses the mapping created by `build_mapping` to construct `event_template` objects for each tree and populates them with data.
+ *
+ * @subsection event_template_methods_properties Property Management
+ * - `void set_trees(std::vector<std::string>* inpt, event_template* ev)`: Sets the tree names for the event.
+ * - `void set_branches(std::vector<std::string>* inpt, event_template* ev)`: Sets the branch names for the event.
+ * - `void add_leaf(std::string key, std::string val = "")`: Adds a leaf to the event.
+ * - `void get_leaves(std::vector<std::string>* inpt, event_template* ev)`: Retrieves all the leaf names.
+ * - `void set_name(std::string* name, event_template* ev)`: Sets the name of the event.
+ * - `void set_hash(std::string* path, event_template* ev)`: Generates and sets a hash for the event.
+ * - `void get_hash(std::string* val, event_template* ev)`: Retrieves the hash of the event.
+ * - `void set_weight(double* inpt, event_template* ev)`: Sets the event weight.
+ * - `void set_index(long* inpt, event_template* ev)`: Sets the event index.
+ *
+ * @subsection event_template_methods_particle Particle Management
+ * - `void flush_leaf_string()`: Clears the registered leaves, trees, and branches.
+ * - `void flush_particles()`: Clears all the particles from the event.
+ *
+ * @section name_namespace The name Namespace
+ * The `name` namespace provides utility functions for handling names.
+ *
+ * @subsection name_functions Functions
+ * - `std::string escapeXmlSpecialCharacters(const std::string& input)`: Escapes XML special characters in a string.
+ * - `std::string standardizeName(const std::string& name)`: Standardizes a name by converting it to lowercase with the first letter capitalized and escaping XML special characters.
+ */

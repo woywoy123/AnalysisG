@@ -1,0 +1,43 @@
+
+/**
+ * @file selection.dox
+ * @brief Detailed documentation for the selection_template class.
+ *
+ * @page selection_module_page Selection Module
+ *
+ * @section selection_module_intro Introduction
+ * The `selection` module provides the base template for defining and applying event selections in the |g-framework|. The `selection_template` class defines the common interface and functionality for all selection types.
+ *
+ * @section selection_template_class The selection_template Class
+ * The `selection_template` class is an abstract base class that defines the structure of an event selection.
+ *
+ * @subsection selection_template_ctor Constructor and Destructor
+ * - `selection_template()`: The constructor initializes the properties of the selection, such as `name`, `hash`, `tree`, `weight`, and `index`.
+ * - `~selection_template()`: The destructor cleans up the allocated memory.
+ *
+ * @subsection selection_template_methods_virtual Virtual Methods
+ * - `selection_template* clone()`: Creates a copy of the selection object.
+ * - `bool selection(event_template* ev)`: This is the main selection method. It is intended to be overridden by derived classes to implement the selection logic. It should return `true` if the event passes the selection, and `false` otherwise.
+ * - `bool strategy(event_template* ev)`: This method is intended to be overridden by derived classes to implement a selection strategy.
+ * - `void merge(selection_template* sl2)`: This method is used to merge the results of two selection objects.
+ * - `void bulk_write(const long* ev, std::string* h)`: This method is used for bulk writing of selection results.
+ *
+ * @subsection selection_template_methods_building Building and Compiling
+ * - `selection_template* build(event_template* ev)`: Builds a selection object from an event template.
+ * - `bool CompileEvent()`: This method applies the selection and strategy to the event.
+ *
+ * @subsection selection_template_methods_writing Writing Results
+ * - `void write(std::vector<particle_template*>* particles, std::string name, particle_enum attrs)`: Writes the properties of a vector of particles to the output file.
+ * - `void bulk_write_out()`: Performs the bulk writing of the selection results.
+ *
+ * @subsection selection_template_methods_merging Merging Results
+ * - `void merger(selection_template* sl2)`: Merges the results of another selection object into this one.
+ *
+ * @subsection selection_template_methods_properties Property Management
+ * The class provides a number of setters and getters for accessing the selection's properties, such as:
+ * - `set_name`, `get_name`
+ * - `set_hash`, `get_hash`
+ * - `get_tree`
+ * - `set_weight`, `get_weight`
+ * - `set_index`
+ */

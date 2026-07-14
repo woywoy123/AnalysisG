@@ -13,7 +13,7 @@ set(CMAKE_CUDA_ARCHITECTURES "all")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
-set(CMAKE_ANALYSISG_CUDA ON)
+option(CMAKE_ANALYSISG_CUDA "Build with CUDA support" ON)
 include(FetchContent)
 include(CheckLanguage)
 set(USE_SABI 1)
@@ -89,4 +89,18 @@ message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 add_subdirectory(src/AnalysisG)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
 
+#option(BUILD_DOC "Build documentation" OFF)
+#find_package(Doxygen)
+#if (DOXYGEN_FOUND AND BUILD_DOC)
+#set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/Doxyfile.in)
+#set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+#configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+#message("Doxygen build started")
+#add_custom_target( doc_doxygen ALL
+#COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+#WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#COMMENT "Generating documentation with Doxygen" VERBATIM)
+ 
+#else (DOXYGEN_FOUND)
+#message("Doxygen need to be installed to generate the doxygen documentation")
 

@@ -1,0 +1,51 @@
+/**
+ * @file topjets.dox
+ * @brief Detailed documentation for the TopJets Cython class, specialized for analyzing top-tagged jets and their parton associations in MC16 events.
+ *
+ * @page TopJetsSelection_page Top Jets Selection
+ *
+ * @section TopJetsSelection_intro Introduction
+ * The `TopJets` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top-tagged jets and their underlying parton associations in Monte Carlo 16 (MC16) events. It inherits from the generic `SelectionTemplate` class, extending its functionalities to extract and organize detailed information about jet masses, parton contributions to jets, and the relationship between jets and top quarks. This class facilitates a high-performance extraction and structuring of top-jet data for further physics analysis.
+ *
+ * @section TopJetsSelection_class The TopJets Class
+ * `TopJets` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `SelectionTemplate`, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ `topjets` object, which likely contains the logic for identifying top-tagged jets, associating them with partons, and calculating relevant kinematic properties.
+ *
+ * @subsection TopJetsSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `topjets` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `topjets*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `topjets` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection TopJetsSelection_internal_methods Internal Methods
+ * - `cdef void transform_dict_keys(self)`:
+ *   This method is responsible for converting the C++ data structures within the underlying `topjets` object into Python dictionaries and lists, making them accessible as properties of the `TopJets` instance.
+ *   - `self.top_mass`: Populated from `self.tt.top_mass` (masses of top quarks).
+ *   - `self.jet_partons`: Populated from `self.tt.jet_partons` (partons associated with jets).
+ *   - `self.jets_contribute`: Populated from `self.tt.jets_contribute` (contributions of jets to various categories).
+ *   - `self.jet_top`: Populated from `self.tt.jet_top` (top quarks associated with jets).
+ *   - `self.jet_mass`: Populated from `self.tt.jet_mass` (masses of jets).
+ *   - `self.ntops_lost`: Populated from `self.tt.ntops_lost` (number of lost top quarks).
+ *
+ * @subsection TopJetsSelection_properties Properties
+ * The following properties are implicitly defined and populated by the `transform_dict_keys` method, providing access to the processed top-jet information:
+ * - `@property top_mass -> dict`: Dictionary of top quark masses.
+ * - `@property jet_partons -> dict`: Dictionary detailing partons associated with jets.
+ * - `@property jets_contribute -> dict`: Dictionary detailing contributions of jets.
+ * - `@property jet_top -> dict`: Dictionary associating jets with top quarks.
+ * - `@property jet_mass -> dict`: Dictionary of jet masses.
+ * - `@property ntops_lost -> list`: List indicating the number of lost top quarks.
+ *
+ * @section TopJetsSelection_cpp_interaction C++ Interaction
+ * The `TopJets` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class TopJets`: Declares `TopJets` as a Cython extension type.
+ * - `cdef topjets *tt`: A C++ pointer to a `topjets` object, which is the specialized C++ implementation for top-jet analysis.
+ * - `self.ptr = new topjets()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <topjets*>self.ptr`: This line demonstrates C++ upcasting, allowing `TopJets` to fulfill the `SelectionTemplate` interface while internally managing its specific `topjets` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `TopJets` inherits.
+ * - `from AnalysisG.selections.mc16.topjets.topjets cimport *`: Imports the C++ `topjets` class declaration from its `.pxd` file.
+ * - `from AnalysisG.core.tools cimport *`: Imports utility functions for converting between C++ and Python data structures, specifically `as_dict_dict_dict`, `as_dict_dict`, `as_dict`, and `as_list`.
+ */

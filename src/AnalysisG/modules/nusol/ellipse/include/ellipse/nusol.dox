@@ -1,0 +1,225 @@
+/**
+ * @file nusol.h (ellipse)
+ * @brief Neutrino four-momentum wrapper and single-lepton neutrino solver.
+ * @details Declares @c wrapper (compact kinematic cache for one particle) and
+ *          @c nuelx (the analytic single-neutrino ellipse solver for one
+ *          b–lepton pair).  See arxiv:1305.1878 for the algorithm.
+ */
+
+/**
+ * @struct wrapper
+ * @brief Compact kinematic cache for one particle used by @c nuelx.
+ */
+
+/**
+ * @fn wrapper::wrapper(particle_template* p_)
+ * @brief Construct and pre-compute kinematic quantities from @p p_.
+ * @param p_ Source particle.
+ */
+
+/**
+ * @var double wrapper::p
+ * @brief Total momentum magnitude.
+ */
+
+/**
+ * @var double wrapper::m
+ * @brief Invariant mass.
+ */
+
+/**
+ * @var double wrapper::b
+ * @brief Relativistic β = p/E.
+ */
+
+/**
+ * @var double wrapper::phi
+ * @brief Azimuthal angle.
+ */
+
+/**
+ * @var double wrapper::theta
+ * @brief Polar angle.
+ */
+
+/**
+ * @var particle_template* wrapper::lnk
+ * @brief Pointer to the source particle.
+ */
+
+/**
+ * @class nuelx
+ * @brief Analytic solver for the single-top neutrino ellipse (one b–lepton
+ *        pair).
+ * @details Implements the H-tilde / pencil-of-conics approach from
+ *          arxiv:1305.1878.
+ */
+
+/**
+ * @fn nuelx::nuelx()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn nuelx::nuelx(particle_template* b, particle_template* l, double mW, double mT)
+ * @brief Construct with a b-quark, lepton, and mass constraints.
+ * @param b  Pointer to the b-quark.
+ * @param l  Pointer to the lepton.
+ * @param mW W-boson mass constraint in MeV.
+ * @param mT Top-quark mass constraint in MeV.
+ */
+
+/**
+ * @fn nuelx::~nuelx()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn double nuelx::Sx()
+ * @brief Return the x-shift parameter S_x.
+ */
+
+/**
+ * @fn double nuelx::Sy()
+ * @brief Return the y-shift parameter S_y.
+ */
+
+/**
+ * @fn double nuelx::w()
+ * @brief Return the ω kinematic constant.
+ */
+
+/**
+ * @fn double nuelx::w2()
+ * @brief Return ω².
+ */
+
+/**
+ * @fn double nuelx::om2()
+ * @brief Return Ω².
+ */
+
+/**
+ * @fn double nuelx::Z()
+ * @brief Return the Z kinematic variable.
+ */
+
+/**
+ * @fn double nuelx::Z2()
+ * @brief Return Z².
+ */
+
+/**
+ * @fn double nuelx::x0()
+ * @brief Return the x₀ centre-of-ellipse coordinate.
+ */
+
+/**
+ * @fn double nuelx::x1()
+ * @brief Return x₁.
+ */
+
+/**
+ * @fn double nuelx::y1()
+ * @brief Return y₁.
+ */
+
+/**
+ * @fn void nuelx::r_mT(double* mt1_, double* mt2_)
+ * @brief Compute the top-mass roots given the current parameters.
+ * @param mt1_ First root.
+ * @param mt2_ Second root.
+ */
+
+/**
+ * @fn void nuelx::r_mW(double* mw1_, double* mw2_)
+ * @brief Compute the W-mass roots.
+ * @param mw1_ First root.
+ * @param mw2_ Second root.
+ */
+
+/**
+ * @fn void nuelx::update(double mt, double mw)
+ * @brief Re-compute all internal quantities for new mass constraints.
+ * @param mt New top mass in MeV.
+ * @param mw New W mass in MeV.
+ */
+
+/**
+ * @fn void nuelx::flush()
+ * @brief Free all cached matrix objects.
+ */
+
+/**
+ * @fn mtx* nuelx::N()
+ * @brief Return (or compute) the N matrix.
+ * @return Pointer to the N matrix (owned by @c nuelx).
+ */
+
+/**
+ * @fn mtx* nuelx::H()
+ * @brief Return (or compute) the H matrix.
+ * @return Pointer to the H matrix.
+ */
+
+/**
+ * @fn mtx* nuelx::H_perp()
+ * @brief Return (or compute) the H⊥ matrix.
+ * @return Pointer to the H⊥ matrix.
+ */
+
+/**
+ * @fn mtx* nuelx::H_tilde()
+ * @brief Return (or compute) the H̃ (H-tilde) matrix.
+ * @return Pointer to H̃.
+ */
+
+/**
+ * @fn mtx* nuelx::K()
+ * @brief Return (or compute) the K matrix.
+ * @return Pointer to K.
+ */
+
+/**
+ * @fn mtx* nuelx::R_T()
+ * @brief Return (or compute) the rotation matrix R^T.
+ * @return Pointer to R^T.
+ */
+
+/**
+ * @fn void nuelx::Z2(double* A, double* B, double* C)
+ * @brief Compute the Z² coefficients A, B, C for the conic intersection.
+ * @param A Output coefficient.
+ * @param B Output coefficient.
+ * @param C Output coefficient.
+ */
+
+/**
+ * @fn void nuelx::misc()
+ * @brief Compute miscellaneous pre-computed kinematic constants.
+ */
+
+/**
+ * @var wrapper* nuelx::b
+ * @brief Kinematic cache for the b-quark.
+ */
+
+/**
+ * @var wrapper* nuelx::l
+ * @brief Kinematic cache for the lepton.
+ */
+
+/**
+ * @var conuic* nuelx::cnx
+ * @brief Pointer to the Conuix solver associated with this pair.
+ */
+
+/**
+ * @var double nuelx::mw
+ * @brief Current W-boson mass constraint in MeV.
+ */
+
+/**
+ * @var double nuelx::mt
+ * @brief Current top-quark mass constraint in MeV.
+ */

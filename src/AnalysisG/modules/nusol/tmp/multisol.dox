@@ -1,0 +1,9 @@
+/**
+ * @file multisol.h (tmp)
+ * @brief Root-level tmp copy of the multisol neutrino surface class.
+ * @details Identical in interface to the version in
+ *          @c tmp/multisol/include/multisol/multisol.h.  Refer to that file's
+ *          documentation for full details.
+ *
+ * @sa multisol.dox (tmp/multisol)
+ */

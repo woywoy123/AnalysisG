@@ -1,0 +1,49 @@
+
+/**
+ * @file io.dox
+ * @brief Detailed documentation for the io module.
+ *
+ * @page io_module_page I/O Module
+ *
+ * @section io_module_intro Introduction
+ * The `io` module provides the functionality for reading and writing data from and to ROOT and HDF5 files. It is a crucial component for data handling in the |g-framework|.
+ *
+ * @section io_class The io Class
+ * The `io` class is the main component of this module, providing a unified interface for I/O operations.
+ *
+ * @subsection io_ctor Constructor and Destructor
+ * - `io()`: The constructor initializes the `io` object.
+ * - `~io()`: The destructor cleans up the resources, including closing any open files.
+ *
+ * @subsection io_methods_settings Settings
+ * - `void import_settings(settings_t* params)`: Imports the settings for the I/O module, such as the path to the metacache and the name of the sum-of-weights tree.
+ *
+ * @subsection io_methods_root ROOT File Handling
+ * - `void check_root_file_paths()`: Checks the validity of the provided ROOT file paths.
+ * - `void root_key_paths(std::string path)`: Recursively scans a ROOT file and identifies the trees, branches, and leaves. It also scrapes metadata from the file.
+ * - `bool scan_keys()`: Scans the keys of all the registered ROOT files and builds the internal data structures for accessing the data.
+ * - `std::map<std::string, long> root_size()`: Returns the number of entries in each tree of the ROOT files.
+ * - `void root_begin()`: Initializes the data reading process from the ROOT files.
+ * - `std::map<std::string, data_t*>* get_data()`: Returns a map of `data_t` objects, which provide access to the data in the ROOT files.
+ * - `void root_end()`: Finalizes the data reading process and cleans up the resources.
+ *
+ * @subsection io_methods_hdf5 HDF5 File Handling
+ * - `bool start(std::string filename, std::string read_write)`: Opens an HDF5 file in either read or write mode.
+ * - `void end()`: Closes the HDF5 file.
+ * - `void read(graph_hdf5_w* out, std::string set_name)`: Reads a `graph_hdf5_w` object from a dataset in the HDF5 file.
+ * - `H5::DataSet* dataset(std::string set_name, hid_t type, long long unsigned int length)`: Creates a new dataset in the HDF5 file.
+ * - `H5::DataSet* dataset(std::string set_name)`: Opens an existing dataset in the HDF5 file.
+ * - `std::vector<std::string> dataset_names()`: Returns a list of all the dataset names in the HDF5 file.
+ *
+ * @section io_types Data Types
+ * The `io` module defines several data types for handling the data from ROOT and HDF5 files.
+ *
+ * @subsection io_types_data_t The data_t Struct
+ * The `data_t` struct is a data container for a single leaf in a ROOT tree. It provides methods for accessing the data in the leaf.
+ *
+ * @subsection io_types_graph_hdf5 The graph_hdf5 and graph_hdf5_w Structs
+ * The `graph_hdf5` and `graph_hdf5_w` structs are used for serializing and deserializing `graph_t` objects to and from HDF5 files.
+ *
+ * @subsection io_types_folds_t The folds_t Struct
+ * The `folds_t` struct is used for storing k-fold information.
+ */

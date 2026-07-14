@@ -1,0 +1,36 @@
+/**
+ * @file event.h
+ * @brief Lightweight event identification struct.
+ * @details Declares @c event_t, which carries the minimal state needed to
+ *          identify and weight a physics event.
+ */
+
+/**
+ * @struct event_t
+ * @brief Minimal event identification and state container.
+ */
+
+/**
+ * @var std::string event_t::name
+ * @brief Human-readable name of the event type.
+ */
+
+/**
+ * @var double event_t::weight
+ * @brief Event weight (default 1.0).
+ */
+
+/**
+ * @var long event_t::index
+ * @brief Sequential event index within the file (default -1 = unset).
+ */
+
+/**
+ * @var std::string event_t::hash
+ * @brief Unique hash string identifying this event.
+ */
+
+/**
+ * @var std::string event_t::tree
+ * @brief Name of the ROOT TTree from which this event was read.
+ */

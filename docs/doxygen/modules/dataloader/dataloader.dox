@@ -1,0 +1,44 @@
+
+/**
+ * @file dataloader.dox
+ * @brief Detailed documentation for the dataloader module.
+ *
+ * @page dataloader_module_page Dataloader Module
+ *
+ * @section dataloader_module_intro Introduction
+ * The `dataloader` module is responsible for managing the graph data, including loading, caching, batching, and splitting it into training, validation, and test sets.
+ *
+ * @section dataloader_class The dataloader Class
+ * The `dataloader` class is the main component of this module.
+ *
+ * @subsection dataloader_ctor Constructor and Destructor
+ * - `dataloader()`: The constructor initializes the data structures for storing the graphs and their indices.
+ * - `~dataloader()`: The destructor cleans up all the allocated memory, including the graph objects, data maps, and k-fold sets.
+ *
+ * @subsection dataloader_methods_data Data Handling
+ * - `void extract_data(graph_t* gr)`: Adds a `graph_t` object to the dataset. It also performs a cleaning step to avoid duplicating the data maps.
+ * - `void datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* cur_evnt)`: Transfers the graph data to a specific device (e.g., a GPU).
+ * - `void datatransfer(std::map<int, torch::TensorOptions*>* ops)`: Transfers the graph data to multiple devices in parallel.
+ *
+ * @subsection dataloader_methods_batching Batching
+ * - `std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep)`: This is the core method for creating batches of graphs. It takes a vector of `graph_t` objects and a model template, and returns a vector of batched graphs. The batching process involves concatenating the node and edge features of the individual graphs into larger tensors.
+ *
+ * @subsection dataloader_methods_dataset Dataset Management
+ * - `void generate_kfold_set(int k)`: Splits the training set into `k` folds for cross-validation.
+ * - `void generate_test_set(float percentage)`: Splits the entire dataset into a training set and a test set.
+ * - `std::vector<graph_t*>* get_k_train_set(int k)`: Returns the training set for a specific k-fold.
+ * - `std::vector<graph_t*>* get_k_validation_set(int k)`: Returns the validation set for a specific k-fold.
+ * - `std::vector<graph_t*>* get_test_set()`: Returns the test set.
+ * - `std::map<std::string, std::vector<graph_t*>>* get_inference()`: Returns the dataset organized by filename for inference.
+ * - `void dump_dataset(std::string path)`: Saves the k-fold information to a file.
+ * - `bool restore_dataset(std::string path)`: Restores the k-fold information from a file.
+ *
+ * @subsection dataloader_methods_cache Caching
+ * - `bool dump_graphs(std::string path, int threads)`: Serializes the graph objects and saves them to HDF5 files for caching. This is a multi-threaded process.
+ * - `void restore_graphs(std::vector<std::string> path, int threads)`: Restores the graph objects from HDF5 cache files.
+ * - `void restore_graphs(std::string path, int threads)`: A convenience method to restore graphs from a directory of HDF5 files.
+ *
+ * @subsection dataloader_methods_cuda CUDA Memory Management
+ * - `void cuda_memory_server()`: A server that runs in a separate thread to monitor and manage CUDA memory usage. It offloads graph data from the GPU to the CPU when the GPU memory is close to full.
+ * - `void start_cuda_server()`: Starts the CUDA memory server.
+ */

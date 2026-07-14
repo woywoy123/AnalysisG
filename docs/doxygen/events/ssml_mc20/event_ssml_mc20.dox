@@ -1,0 +1,30 @@
+/**
+ * @file event_ssml_mc20.dox
+ * @brief Detailed documentation for the SSML_MC20 Cython class, a specialized EventTemplate for SSML MC20 events.
+ *
+ * @page SSML_MC20Event_page SSML_MC20 Event
+ *
+ * @section SSML_MC20Event_intro Introduction
+ * The `SSML_MC20` class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to Semi-Supervised Machine Learning (SSML) Monte Carlo 20 (MC20) events. It inherits from the generic `EventTemplate` class, extending its functionalities to incorporate features and structures relevant for SSML MC20 processing. This class provides a high-performance interface to an underlying C++ event object tailored for SSML-based analyses.
+ *
+ * @section SSML_MC20Event_class The SSML_MC20 Class
+ * `SSML_MC20` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `EventTemplate`, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ `ssml_mc20` object, which likely contains specific data members and methods pertinent to SSML MC20 events.
+ *
+ * @subsection SSML_MC20Event_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `ssml_mc20` object and assigns its pointer to `self.ev`. It then upcasts `self.ev` to an `event_template*` and assigns it to `self.ptr`, allowing `SSML_MC20` to be treated as a generic `EventTemplate` while still managing its specialized C++ object.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `ssml_mc20` object pointed to by `self.ev`, ensuring proper memory management for the specialized event data. Note that `self.ptr` is not directly deleted here, as it points to `self.ev`.
+ *
+ * @section SSML_MC20Event_cpp_interaction C++ Interaction
+ * The `SSML_MC20` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class SSML_MC20`: Declares `SSML_MC20` as a Cython extension type.
+ * - `cdef ssml_mc20 *ev`: A C++ pointer to an `ssml_mc20` object, which is the specialized C++ representation of an SSML MC20 event.
+ * - `self.ptr = <event_template*>(self.ev)`: This line demonstrates C++ upcasting, where a pointer to a derived class (`ssml_mc20`) is assigned to a pointer to its base class (`event_template`). This allows `SSML_MC20` to fulfill the `EventTemplate` interface while internally managing its specific `ssml_mc20` data.
+ * - `from AnalysisG.core.event_template cimport EventTemplate`: Imports the base `EventTemplate` class, from which `SSML_MC20` inherits.
+ * - `from AnalysisG.events.ssml_mc20.event_ssml_mc20 cimport *`: Imports the C++ `ssml_mc20` class declaration from its `.pxd` file.
+ */

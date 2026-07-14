@@ -1,0 +1,30 @@
+
+/**
+ * @file typecasting.dox
+ * @brief Detailed documentation for the typecasting module.
+ *
+ * @page typecasting_module_page Typecasting Module
+ *
+ * @section typecasting_module_intro Introduction
+ * The `typecasting` module provides a set of classes and functions for handling and converting different data types, particularly between ROOT and PyTorch tensors.
+ *
+ * @section variable_t_class The variable_t Class
+ * The `variable_t` class is a versatile data container that can hold various data types, including scalars and vectors of different dimensions. It is used to interface between the data from ROOT files and the PyTorch tensors used in the machine learning models.
+ *
+ * @subsection variable_t_ctor Constructor and Destructor
+ * - `variable_t()`: The constructor.
+ * - `~variable_t()`: The destructor cleans up the allocated memory.
+ *
+ * @subsection variable_t_methods_processing Data Processing
+ * - `void process(torch::Tensor* data, std::string* varname, TTree* tr)`: This is the main processing method. It takes a PyTorch tensor and a variable name, determines the data type and dimensions of the tensor, and stores the data in the appropriate member variable. It also creates a branch in the ROOT tree if provided.
+ * - `void process(std::vector<...>* data, std::string* varname, TTree* tr)`: A set of overloaded methods for processing data from C++ vectors.
+ *
+ * @subsection variable_t_methods_type_switching Type Switching
+ * - `void build_switch(size_t s, torch::Tensor* tx)`: This method determines the data type and dimensionality of a PyTorch tensor and sets the `type` member variable accordingly.
+ *
+ * @section vector_cast_h The vector_cast.h Header
+ * The `vector_cast.h` header file provides a set of template functions for casting data between different vector types.
+ *
+ * @section root_cxx The root.cxx File
+ * The `root.cxx` file contains the implementations of the `process` methods for various C++ vector types. These methods are used to add data from C++ vectors to the `variable_t` object.
+ */

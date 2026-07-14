@@ -1,0 +1,478 @@
+/**
+ * @file particle_template.dox
+ * @brief Detailed documentation for the ParticleTemplate Cython class.
+ *
+ * @page ParticleTemplate_page ParticleTemplate
+ *
+ * @section ParticleTemplate_intro Introduction
+ * The `ParticleTemplate` class, implemented in Cython, serves as a fundamental building block within the AnalysisG framework for representing individual particles in high-energy physics events. It provides a comprehensive set of properties to describe a particle's kinematics, quantum numbers, and its relationship to other particles (e.g., parents, children, ancestors, descendants). This class is designed for high-performance data access and manipulation, leveraging an underlying C++ particle structure.
+ *
+ * @section ParticleTemplate_class The ParticleTemplate Class
+ * `ParticleTemplate` is a `cdef class`, indicating its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types, which is crucial for handling large numbers of particles and complex event topologies efficiently. It encapsulates a pointer (`self.ptr`) to a C++ `particle_template` object, managing its lifecycle and exposing its attributes as Python properties.
+ *
+ * @subsection ParticleTemplate_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. If the instance is not `ParticleTemplate` itself (i.e., it's a subclass), it returns immediately. Otherwise, it initializes a new C++ `particle_template` object and assigns its pointer to `self.ptr`.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer, intentionally left empty as primary initialization is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. If the instance is not `ParticleTemplate` itself, it returns. Otherwise, it deallocates the C++ `particle_template` object pointed to by `self.ptr`, ensuring proper memory management.
+ *
+ * @subsection ParticleTemplate_special_methods Special Methods
+ * - `__hash__(self)`:
+ *   Computes a hash value for the particle. It converts the first 8 characters of the C++ object's hash string to an integer.
+ *
+ * - `__eq__(self, other)`:
+ *   Compares two `ParticleTemplate` objects for equality. It first checks if `other` is an instance or subclass of `ParticleTemplate` using `is_self`. If so, it compares the underlying C++ `particle_template` objects.
+ *
+ * - `is_self(self, inpt) -> bool`:
+ *   A utility method to check if the given input `inpt` is an instance of `ParticleTemplate` or a subclass thereof.
+ *
+ * @subsection ParticleTemplate_properties Properties
+ * These properties provide controlled access to the various kinematic, quantum, and relational attributes of the encapsulated C++ `particle_template` object. Many properties have both getters and setters, allowing for both retrieval and modification of particle data.
+ *
+ * - `@property index -> int`:
+ *   Gets and sets the unique index of the particle within an event.
+ *
+ * - `@property px -> double`:
+ *   Gets and sets the x-component of the particle's momentum.
+ *
+ * - `@property py -> double`:
+ *   Gets and sets the y-component of the particle's momentum.
+ *
+ * - `@property pz -> double`:
+ *   Gets and sets the z-component of the particle's momentum.
+ *
+ * - `@property e -> double`:
+ *   Gets and sets the particle's energy.
+ *
+ * - `@property pt -> double`:
+ *   Gets and sets the particle's transverse momentum.
+ *
+ * - `@property eta -> double`:
+ *   Gets and sets the particle's pseudorapidity.
+ *
+ * - `@property phi -> double`:
+ *   Gets and sets the particle's azimuthal angle.
+ *
+ * - `@property m -> double`:
+ *   Gets and sets the particle's invariant mass.
+ *
+ * - `@property charge -> int`:
+ *   Gets and sets the particle's electric charge.
+ *
+ * - `@property pdgid -> int`:
+ *   Gets and sets the particle's PDG (Particle Data Group) ID.
+ *
+ * - `@property status -> int`:
+ *   Gets and sets the particle's status code.
+ *
+ * - `@property is_self_particle -> bool`:
+ *   Indicates if the particle is the "self" particle in a comparison.
+ *
+ * - `@property is_from_event -> bool`:
+ *   Indicates if the particle originates from the event.
+ *
+ * - `@property is_from_signal -> bool`:
+ *   Indicates if the particle originates from the signal process.
+ *
+ * - `@property is_from_pileup -> bool`:
+ *   Indicates if the particle originates from pile-up interactions.
+ *
+ * - `@property is_from_hardscatter -> bool`:
+ *   Indicates if the particle originates from the hard scatter process.
+ *
+ * - `@property is_from_parton -> bool`:
+ *   Indicates if the particle is a parton.
+ *
+ * - `@property is_from_truth -> bool`:
+ *   Indicates if the particle is a truth-level particle.
+ *
+ * - `@property is_from_reco -> bool`:
+ *   Indicates if the particle is a reconstructed-level particle.
+ *
+ * - `@property is_from_jet -> bool`:
+ *   Indicates if the particle is associated with a jet.
+ *
+ * - `@property is_from_lepton -> bool`:
+ *   Indicates if the particle is a lepton.
+ *
+ * - `@property is_from_photon -> bool`:
+ *   Indicates if the particle is a photon.
+ *
+ * - `@property is_from_neutrino -> bool`:
+ *   Indicates if the particle is a neutrino.
+ *
+ * - `@property is_from_tau -> bool`:
+ *   Indicates if the particle is a tau lepton.
+ *
+ * - `@property is_from_bjet -> bool`:
+ *   Indicates if the particle is a b-jet.
+ *
+ * - `@property is_from_cjet -> bool`:
+ *   Indicates if the particle is a c-jet.
+ *
+ * - `@property is_from_lightjet -> bool`:
+ *   Indicates if the particle is a light jet.
+ *
+ * - `@property is_from_top -> bool`:
+ *   Indicates if the particle is a top quark.
+ *
+ * - `@property is_from_w -> bool`:
+ *   Indicates if the particle is a W boson.
+ *
+ * - `@property is_from_z -> bool`:
+ *   Indicates if the particle is a Z boson.
+ *
+ * - `@property is_from_h -> bool`:
+ *   Indicates if the particle is a Higgs boson.
+ *
+ * - `@property is_from_gluon -> bool`:
+ *   Indicates if the particle is a gluon.
+ *
+ * - `@property is_from_quark -> bool`:
+ *   Indicates if the particle is a quark.
+ *
+ * - `@property is_from_electron -> bool`:
+ *   Indicates if the particle is an electron.
+ *
+ * - `@property is_from_muon -> bool`:
+ *   Indicates if the particle is a muon.
+ *
+ * - `@property is_from_photon -> bool`:
+ *   Indicates if the particle is a photon.
+ *
+ * - `@property is_from_tau -> bool`:
+ *   Indicates if the particle is a tau lepton.
+ *
+ * - `@property is_from_b -> bool`:
+ *   Indicates if the particle is a b quark.
+ *
+ * - `@property is_from_c -> bool`:
+ *   Indicates if the particle is a c quark.
+ *
+ * - `@property is_from_light -> bool`:
+ *   Indicates if the particle is a light quark.
+ *
+ * - `@property is_from_top_decay -> bool`:
+ *   Indicates if the particle is from a top quark decay.
+ *
+ * - `@property is_from_w_decay -> bool`:
+ *   Indicates if the particle is from a W boson decay.
+ *
+ * - `@property is_from_z_decay -> bool`:
+ *   Indicates if the particle is from a Z boson decay.
+ *
+ * - `@property is_from_h_decay -> bool`:
+ *   Indicates if the particle is from a Higgs boson decay.
+ *
+ * - `@property is_from_gluon_decay -> bool`:
+ *   Indicates if the particle is from a gluon decay.
+ *
+ * - `@property is_from_quark_decay -> bool`:
+ *   Indicates if the particle is from a quark decay.
+ *
+ * - `@property is_from_electron_decay -> bool`:
+ *   Indicates if the particle is from an electron decay.
+ *
+ * - `@property is_from_muon_decay -> bool`:
+ *   Indicates if the particle is from a muon decay.
+ *
+ * - `@property is_from_photon_decay -> bool`:
+ *   Indicates if the particle is from a photon decay.
+ *
+ * - `@property is_from_tau_decay -> bool`:
+ *   Indicates if the particle is from a tau lepton decay.
+ *
+ * - `@property is_from_b_decay -> bool`:
+ *   Indicates if the particle is from a b quark decay.
+ *
+ * - `@property is_from_c_decay -> bool`:
+ *   Indicates if the particle is from a c quark decay.
+ *
+ * - `@property is_from_light_decay -> bool`:
+ *   Indicates if the particle is from a light quark decay.
+ *
+ * - `@property is_from_top_parent -> bool`:
+ *   Indicates if the particle has a top quark as a direct parent.
+ *
+ * - `@property is_from_w_parent -> bool`:
+ *   Indicates if the particle has a W boson as a direct parent.
+ *
+ * - `@property is_from_z_parent -> bool`:
+ *   Indicates if the particle has a Z boson as a direct parent.
+ *
+ * - `@property is_from_h_parent -> bool`:
+ *   Indicates if the particle has a Higgs boson as a direct parent.
+ *
+ * - `@property is_from_gluon_parent -> bool`:
+ *   Indicates if the particle has a gluon as a direct parent.
+ *
+ * - `@property is_from_quark_parent -> bool`:
+ *   Indicates if the particle has a quark as a direct parent.
+ *
+ * - `@property is_from_electron_parent -> bool`:
+ *   Indicates if the particle has an electron as a direct parent.
+ *
+ * - `@property is_from_muon_parent -> bool`:
+ *   Indicates if the particle has a muon as a direct parent.
+ *
+ * - `@property is_from_photon_parent -> bool`:
+ *   Indicates if the particle has a photon as a direct parent.
+ *
+ * - `@property is_from_tau_parent -> bool`:
+ *   Indicates if the particle has a tau lepton as a direct parent.
+ *
+ * - `@property is_from_b_parent -> bool`:
+ *   Indicates if the particle has a b quark as a direct parent.
+ *
+ * - `@property is_from_c_parent -> bool`:
+ *   Indicates if the particle has a c quark as a direct parent.
+ *
+ * - `@property is_from_light_parent -> bool`:
+ *   Indicates if the particle has a light quark as a direct parent.
+ *
+ * - `@property is_from_top_child -> bool`:
+ *   Indicates if the particle has a top quark as a direct child.
+ *
+ * - `@property is_from_w_child -> bool`:
+ *   Indicates if the particle has a W boson as a direct child.
+ *
+ * - `@property is_from_z_child -> bool`:
+ *   Indicates if the particle has a Z boson as a direct child.
+ *
+ * - `@property is_from_h_child -> bool`:
+ *   Indicates if the particle has a Higgs boson as a direct child.
+ *
+ * - `@property is_from_gluon_child -> bool`:
+ *   Indicates if the particle has a gluon as a direct child.
+ *
+ * - `@property is_from_quark_child -> bool`:
+ *   Indicates if the particle has a quark as a direct child.
+ *
+ * - `@property is_from_electron_child -> bool`:
+ *   Indicates if the particle has an electron as a direct child.
+ *
+ * - `@property is_from_muon_child -> bool`:
+ *   Indicates if the particle has a muon as a direct child.
+ *
+ * - `@property is_from_photon_child -> bool`:
+ *   Indicates if the particle has a photon as a direct child.
+ *
+ * - `@property is_from_tau_child -> bool`:
+ *   Indicates if the particle has a tau lepton as a direct child.
+ *
+ * - `@property is_from_b_child -> bool`:
+ *   Indicates if the particle has a b quark as a direct child.
+ *
+ * - `@property is_from_c_child -> bool`:
+ *   Indicates if the particle has a c quark as a direct child.
+ *
+ * - `@property is_from_light_child -> bool`:
+ *   Indicates if the particle has a light quark as a direct child.
+ *
+ * - `@property is_from_top_ancestor -> bool`:
+ *   Indicates if the particle has a top quark as an ancestor (any level up the decay chain).
+ *
+ * - `@property is_from_w_ancestor -> bool`:
+ *   Indicates if the particle has a W boson as an ancestor.
+ *
+ * - `@property is_from_z_ancestor -> bool`:
+ *   Indicates if the particle has a Z boson as an ancestor.
+ *
+ * - `@property is_from_h_ancestor -> bool`:
+ *   Indicates if the particle has a Higgs boson as an ancestor.
+ *
+ * - `@property is_from_gluon_ancestor -> bool`:
+ *   Indicates if the particle has a gluon as an ancestor.
+ *
+ * - `@property is_from_quark_ancestor -> bool`:
+ *   Indicates if the particle has a quark as an ancestor.
+ *
+ * - `@property is_from_electron_ancestor -> bool`:
+ *   Indicates if the particle has an electron as an ancestor.
+ *
+ * - `@property is_from_muon_ancestor -> bool`:
+ *   Indicates if the particle has a muon as an ancestor.
+ *
+ * - `@property is_from_photon_ancestor -> bool`:
+ *   Indicates if the particle has a photon as an ancestor.
+ *
+ * - `@property is_from_tau_ancestor -> bool`:
+ *   Indicates if the particle has a tau lepton as an ancestor.
+ *
+ * - `@property is_from_b_ancestor -> bool`:
+ *   Indicates if the particle has a b quark as an ancestor.
+ *
+ * - `@property is_from_c_ancestor -> bool`:
+ *   Indicates if the particle has a c quark as an ancestor.
+ *
+ * - `@property is_from_light_ancestor -> bool`:
+ *   Indicates if the particle has a light quark as an ancestor.
+ *
+ * - `@property is_from_top_descendant -> bool`:
+ *   Indicates if the particle has a top quark as a descendant (any level down the decay chain).
+ *
+ * - `@property is_from_w_descendant -> bool`:
+ *   Indicates if the particle has a W boson as a descendant.
+ *
+ * - `@property is_from_z_descendant -> bool`:
+ *   Indicates if the particle has a Z boson as a descendant.
+ *
+ * - `@property is_from_h_descendant -> bool`:
+ *   Indicates if the particle has a Higgs boson as a descendant.
+ *
+ * - `@property is_from_gluon_descendant -> bool`:
+ *   Indicates if the particle has a gluon as a descendant.
+ *
+ * - `@property is_from_quark_descendant -> bool`:
+ *   Indicates if the particle has a quark as a descendant.
+ *
+ * - `@property is_from_electron_descendant -> bool`:
+ *   Indicates if the particle has an electron as a descendant.
+ *
+ * - `@property is_from_muon_descendant -> bool`:
+ *   Indicates if the particle has a muon as a descendant.
+ *
+ * - `@property is_from_photon_descendant -> bool`:
+ *   Indicates if the particle has a photon as a descendant.
+ *
+ * - `@property is_from_tau_descendant -> bool`:
+ *   Indicates if the particle has a tau lepton as a descendant.
+ *
+ * - `@property is_from_b_descendant -> bool`:
+ *   Indicates if the particle has a b quark as a descendant.
+ *
+ * - `@property is_from_c_descendant -> bool`:
+ *   Indicates if the particle has a c quark as a descendant.
+ *
+ * - `@property is_from_light_descendant -> bool`:
+ *   Indicates if the particle has a light quark as a descendant.
+ *
+ * - `@property parents -> list`:
+ *   Gets and sets a list of `ParticleTemplate` objects representing the direct parents of this particle.
+ *
+ * - `@property children -> list`:
+ *   Gets and sets a list of `ParticleTemplate` objects representing the direct children of this particle.
+ *
+ * - `@property ancestors -> list`:
+ *   Gets and sets a list of `ParticleTemplate` objects representing all ancestors of this particle in the decay chain.
+ *
+ * - `@property descendants -> list`:
+ *   Gets and sets a list of `ParticleTemplate` objects representing all descendants of this particle in the decay chain.
+ *
+ * - `@property is_final_state -> bool`:
+ *   Indicates if the particle is a final state particle.
+ *
+ * - `@property is_initial_state -> bool`:
+ *   Indicates if the particle is an initial state particle.
+ *
+ * - `@property is_intermediate_state -> bool`:
+ *   Indicates if the particle is an intermediate state particle.
+ *
+ * - `@property is_stable -> bool`:
+ *   Indicates if the particle is stable.
+ *
+ * - `@property is_unstable -> bool`:
+ *   Indicates if the particle is unstable.
+ *
+ * - `@property is_charged -> bool`:
+ *   Indicates if the particle is electrically charged.
+ *
+ * - `@property is_neutral -> bool`:
+ *   Indicates if the particle is electrically neutral.
+ *
+ * - `@property is_lepton -> bool`:
+ *   Indicates if the particle is a lepton.
+ *
+ * - `@property is_hadron -> bool`:
+ *   Indicates if the particle is a hadron.
+ *
+ * - `@property is_boson -> bool`:
+ *   Indicates if the particle is a boson.
+ *
+ * - `@property is_quark -> bool`:
+ *   Indicates if the particle is a quark.
+ *
+ * - `@property is_gluon -> bool`:
+ *   Indicates if the particle is a gluon.
+ *
+ * - `@property is_photon -> bool`:
+ *   Indicates if the particle is a photon.
+ *
+ * - `@property is_electron -> bool`:
+ *   Indicates if the particle is an electron.
+ *
+ * - `@property is_muon -> bool`:
+ *   Indicates if the particle is a muon.
+ *
+ * - `@property is_tau -> bool`:
+ *   Indicates if the particle is a tau lepton.
+ *
+ * - `@property is_neutrino -> bool`:
+ *   Indicates if the particle is a neutrino.
+ *
+ * - `@property is_b -> bool`:
+ *   Indicates if the particle is a b quark.
+ *
+ * - `@property is_c -> bool`:
+ *   Indicates if the particle is a c quark.
+ *
+ * - `@property is_light -> bool`:
+ *   Indicates if the particle is a light quark.
+ *
+ * - `@property is_top -> bool`:
+ *   Indicates if the particle is a top quark.
+ *
+ * - `@property is_w -> bool`:
+ *   Indicates if the particle is a W boson.
+ *
+ * - `@property is_z -> bool`:
+ *   Indicates if the particle is a Z boson.
+ *
+ * - `@property is_h -> bool`:
+ *   Indicates if the particle is a Higgs boson.
+ *
+ * - `@property is_jet -> bool`:
+ *   Indicates if the particle is a jet.
+ *
+ * - `@property is_bjet -> bool`:
+ *   Indicates if the particle is a b-tagged jet.
+ *
+ * - `@property is_cjet -> bool`:
+ *   Indicates if the particle is a c-tagged jet.
+ *
+ * - `@property is_lightjet -> bool`:
+ *   Indicates if the particle is a light-tagged jet.
+ *
+ * - `@property is_reco -> bool`:
+ *   Indicates if the particle is a reconstructed particle.
+ *
+ * - `@property is_truth -> bool`:
+ *   Indicates if the particle is a truth particle.
+ *
+ * - `@property is_parton -> bool`:
+ *   Indicates if the particle is a parton.
+ *
+ * - `@property is_hardscatter -> bool`:
+ *   Indicates if the particle is from the hard scatter.
+ *
+ * - `@property is_pileup -> bool`:
+ *   Indicates if the particle is from pileup.
+ *
+ * - `@property is_signal -> bool`:
+ *   Indicates if the particle is from the signal.
+ *
+ * - `@property is_event -> bool`:
+ *   Indicates if the particle is from the event.
+ *
+ * @section ParticleTemplate_cpp_interaction C++ Interaction
+ * The `ParticleTemplate` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class ParticleTemplate`: Declares `ParticleTemplate` as a Cython extension type.
+ * - `cdef particle_template *ptr`: A C++ pointer to a `particle_template` object, managed by the Cython class.
+ * - `from libcpp cimport vector`: Imports the C++ `std::vector` type.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, including `env` and `enc` for string conversions.
+ * - `from AnalysisG.core.particle_template cimport *`: Imports C++ declarations from `particle_template.pxd`, which defines `particle_template`.
+ */

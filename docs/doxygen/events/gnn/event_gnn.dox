@@ -1,0 +1,30 @@
+/**
+ * @file event_gnn.dox
+ * @brief Detailed documentation for the EventGNN Cython class, a specialized EventTemplate for Graph Neural Network (GNN) events.
+ *
+ * @page EventGNN_page EventGNN
+ *
+ * @section EventGNN_intro Introduction
+ * The `EventGNN` class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to Graph Neural Network (GNN) applications. It inherits from the generic `EventTemplate` class, extending its functionalities to incorporate features and structures relevant for GNN processing. This class provides a high-performance interface to an underlying C++ event object tailored for GNN-based analyses.
+ *
+ * @section EventGNN_class The EventGNN Class
+ * `EventGNN` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `EventTemplate`, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ `gnn_event` object, which likely contains specific data members and methods pertinent to GNN events.
+ *
+ * @subsection EventGNN_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `gnn_event` object and assigns its pointer to `self.ev`. It then upcasts `self.ev` to an `event_template*` and assigns it to `self.ptr`, allowing `EventGNN` to be treated as a generic `EventTemplate` while still managing its specialized C++ object.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `gnn_event` object pointed to by `self.ev`, ensuring proper memory management for the specialized event data. Note that `self.ptr` is not directly deleted here, as it points to `self.ev`.
+ *
+ * @section EventGNN_cpp_interaction C++ Interaction
+ * The `EventGNN` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class EventGNN`: Declares `EventGNN` as a Cython extension type.
+ * - `cdef gnn_event *ev`: A C++ pointer to a `gnn_event` object, which is the specialized C++ representation of a GNN event.
+ * - `self.ptr = <event_template*>(self.ev)`: This line demonstrates C++ upcasting, where a pointer to a derived class (`gnn_event`) is assigned to a pointer to its base class (`event_template`). This allows `EventGNN` to fulfill the `EventTemplate` interface while internally managing its specific `gnn_event` data.
+ * - `from AnalysisG.core.event_template cimport EventTemplate`: Imports the base `EventTemplate` class, from which `EventGNN` inherits.
+ * - `from AnalysisG.events.gnn.event_gnn cimport *`: Imports the C++ `gnn_event` class declaration from its `.pxd` file.
+ */

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="typecasting_8dox" kind="file" language="C++">
+    <compoundname>typecasting.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the typecasting module. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>typecasting.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>typecasting<sp/>module.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>typecasting_module_page<sp/>Typecasting<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>typecasting_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`typecasting`<sp/>module<sp/>provides<sp/>a<sp/>set<sp/>of<sp/>classes<sp/>and<sp/>functions<sp/>for<sp/>handling<sp/>and<sp/>converting<sp/>different<sp/>data<sp/>types,<sp/>particularly<sp/>between<sp/>ROOT<sp/>and<sp/>PyTorch<sp/>tensors.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>variable_t_class<sp/>The<sp/>variable_t<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`variable_t`<sp/>class<sp/>is<sp/>a<sp/>versatile<sp/>data<sp/>container<sp/>that<sp/>can<sp/>hold<sp/>various<sp/>data<sp/>types,<sp/>including<sp/>scalars<sp/>and<sp/>vectors<sp/>of<sp/>different<sp/>dimensions.<sp/>It<sp/>is<sp/>used<sp/>to<sp/>interface<sp/>between<sp/>the<sp/>data<sp/>from<sp/>ROOT<sp/>files<sp/>and<sp/>the<sp/>PyTorch<sp/>tensors<sp/>used<sp/>in<sp/>the<sp/>machine<sp/>learning<sp/>models.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>variable_t_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`variable_t()`:<sp/>The<sp/>constructor.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~variable_t()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>the<sp/>allocated<sp/>memory.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>variable_t_methods_processing<sp/>Data<sp/>Processing</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>process(torch::Tensor*<sp/>data,<sp/>std::string*<sp/>varname,<sp/>TTree*<sp/>tr)`:<sp/>This<sp/>is<sp/>the<sp/>main<sp/>processing<sp/>method.<sp/>It<sp/>takes<sp/>a<sp/>PyTorch<sp/>tensor<sp/>and<sp/>a<sp/>variable<sp/>name,<sp/>determines<sp/>the<sp/>data<sp/>type<sp/>and<sp/>dimensions<sp/>of<sp/>the<sp/>tensor,<sp/>and<sp/>stores<sp/>the<sp/>data<sp/>in<sp/>the<sp/>appropriate<sp/>member<sp/>variable.<sp/>It<sp/>also<sp/>creates<sp/>a<sp/>branch<sp/>in<sp/>the<sp/>ROOT<sp/>tree<sp/>if<sp/>provided.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>process(std::vector&lt;...&gt;*<sp/>data,<sp/>std::string*<sp/>varname,<sp/>TTree*<sp/>tr)`:<sp/>A<sp/>set<sp/>of<sp/>overloaded<sp/>methods<sp/>for<sp/>processing<sp/>data<sp/>from<sp/>C++<sp/>vectors.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>variable_t_methods_type_switching<sp/>Type<sp/>Switching</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build_switch(size_t<sp/>s,<sp/>torch::Tensor*<sp/>tx)`:<sp/>This<sp/>method<sp/>determines<sp/>the<sp/>data<sp/>type<sp/>and<sp/>dimensionality<sp/>of<sp/>a<sp/>PyTorch<sp/>tensor<sp/>and<sp/>sets<sp/>the<sp/>`type`<sp/>member<sp/>variable<sp/>accordingly.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@section<sp/>vector_cast_h<sp/>The<sp/>vector_cast.h<sp/>Header</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>The<sp/>`vector_cast.h`<sp/>header<sp/>file<sp/>provides<sp/>a<sp/>set<sp/>of<sp/>template<sp/>functions<sp/>for<sp/>casting<sp/>data<sp/>between<sp/>different<sp/>vector<sp/>types.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@section<sp/>root_cxx<sp/>The<sp/>root.cxx<sp/>File</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>The<sp/>`root.cxx`<sp/>file<sp/>contains<sp/>the<sp/>implementations<sp/>of<sp/>the<sp/>`process`<sp/>methods<sp/>for<sp/>various<sp/>C++<sp/>vector<sp/>types.<sp/>These<sp/>methods<sp/>are<sp/>used<sp/>to<sp/>add<sp/>data<sp/>from<sp/>C++<sp/>vectors<sp/>to<sp/>the<sp/>`variable_t`<sp/>object.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/typecasting/typecasting.dox"/>
+  </compounddef>
+</doxygen>

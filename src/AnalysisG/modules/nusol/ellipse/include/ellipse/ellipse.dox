@@ -1,0 +1,91 @@
+/**
+ * @file ellipse.h
+ * @brief Di-neutrino ellipse intersection solver.
+ * @details Declares @c nunu_t (a solved neutrino pair) and @c ellipse (the
+ *          engine that finds all physically consistent di-neutrino solutions
+ *          for a given set of b-quarks and leptons using the pencil-of-conics
+ *          method).
+ */
+
+/**
+ * @struct nunu_t
+ * @brief Holds one solved di-neutrino solution.
+ */
+
+/**
+ * @fn nunu_t::nunu_t()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn nunu_t::~nunu_t()
+ * @brief Destructor.  Frees all owned @c mtx objects.
+ */
+
+/**
+ * @var mtx* nunu_t::nu1
+ * @brief Four-momentum of the first neutrino.
+ */
+
+/**
+ * @var mtx* nunu_t::nu2
+ * @brief Four-momentum of the second neutrino.
+ */
+
+/**
+ * @var mtx* nunu_t::agl
+ * @brief Intersection angle(s) at which the solution was found.
+ */
+
+/**
+ * @var nuelx* nunu_t::nux1
+ * @brief Pointer to the @c nuelx engine used for the first neutrino.
+ */
+
+/**
+ * @var nuelx* nunu_t::nux2
+ * @brief Pointer to the @c nuelx engine used for the second neutrino.
+ */
+
+/**
+ * @class ellipse
+ * @brief Engine for finding di-neutrino solutions by intersecting pairs of
+ *        neutrino ellipses.
+ */
+
+/**
+ * @fn ellipse::~ellipse()
+ * @brief Destructor.
+ */
+
+/**
+ * @fn ellipse::ellipse(nusol_t* parameters)
+ * @brief Construct the solver from run parameters.
+ * @param parameters Pointer to the @c nusol_t run parameters.
+ */
+
+/**
+ * @fn void ellipse::prepare(double mt, double mw, std::vector<conuic*>* vnc)
+ * @brief Prepare all b–lepton pairings with mass constraints @p mt and @p mw.
+ * @param mt  Top-quark mass in MeV.
+ * @param mw  W-boson mass in MeV.
+ * @param vnc Optional list of @c conuic solvers to attach.
+ */
+
+/**
+ * @fn void ellipse::solve()
+ * @brief Find all di-neutrino solutions and populate @c solvs.
+ */
+
+/**
+ * @fn template<typename g> void ellipse::clear(g** val)
+ * @brief Delete the object pointed to by @p *val and set it to @c nullptr.
+ * @tparam g Object type.
+ * @param val Double pointer to the object to delete.
+ */
+
+/**
+ * @var std::map<double, nunu_t> ellipse::solvs
+ * @brief Map of violation score to solved di-neutrino pair.  Smaller scores
+ *        indicate solutions closer to the mass constraints.
+ */

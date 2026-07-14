@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="model_module_page" kind="page">
+    <compoundname>model_module_page</compoundname>
+    <title>Model Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="model_module_page_1model_module_intro">
+<title>Introduction</title><para>The <computeroutput>model</computeroutput> module provides the base template for defining and training machine learning models in the |g-framework|. The <computeroutput>model_template</computeroutput> class defines the common interface and functionality for all model types.</para>
+</sect1>
+<sect1 id="model_module_page_1model_template_class">
+<title>The model_template Class</title><para>The <computeroutput>model_template</computeroutput> class is an abstract base class that defines the structure of a machine learning model.</para>
+<sect2 id="model_module_page_1model_template_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>model_template()</computeroutput>: The constructor initializes the properties of the model, such as input and output features, and the device settings.</para>
+</listitem><listitem><para><computeroutput>~model_template()</computeroutput>: The destructor cleans up the resources, including the registered modules and output tensors.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="model_module_page_1model_template_methods_virtual">
+<title>Virtual Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>model_template* clone()</computeroutput>: Creates a copy of the model object.</para>
+</listitem><listitem><para><computeroutput>void forward(graph_t* data)</computeroutput>: This is the core method of the model, defining the forward pass. It is intended to be overridden by derived classes.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="model_module_page_1model_template_methods_config">
+<title>Configuration</title><para><itemizedlist>
+<listitem><para><computeroutput>void set_input_features(...)</computeroutput>: Sets the input features for the model.</para>
+</listitem><listitem><para><computeroutput>void set_output_features(...)</computeroutput>: Sets the output features and their corresponding loss functions.</para>
+</listitem><listitem><para><computeroutput>void set_device(std::string* dev, model_template* md)</computeroutput>: Sets the device (CPU or CUDA) for the model.</para>
+</listitem><listitem><para><computeroutput>void set_optimizer(std::string name)</computeroutput>: Sets the optimizer for the model.</para>
+</listitem><listitem><para><computeroutput>void initialize(optimizer_params_t* op_params)</computeroutput>: Initializes the model, including checking the parameters and building the optimizer.</para>
+</listitem><listitem><para><computeroutput>void import_settings(model_settings_t* setd)</computeroutput>: Imports the settings for the model.</para>
+</listitem><listitem><para><computeroutput>void clone_settings(model_settings_t* setd)</computeroutput>: Clones the settings of the model.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="model_module_page_1model_template_methods_training">
+<title>Training</title><para><itemizedlist>
+<listitem><para><computeroutput>void forward(graph_t* data, bool train)</computeroutput>: Performs a forward pass on a single graph, with an option to enable training mode.</para>
+</listitem><listitem><para><computeroutput>void forward(std::vector&lt;graph_t*&gt; data, bool train)</computeroutput>: Performs a forward pass on a batch of graphs.</para>
+</listitem><listitem><para><computeroutput>void train_sequence(bool train)</computeroutput>: Computes the loss for all the output features and, if in training mode, performs a backward pass and updates the model parameters.</para>
+</listitem><listitem><para><computeroutput>torch::Tensor* compute_loss(std::string pred, graph_enum feat)</computeroutput>: Computes the loss for a specific prediction.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="model_module_page_1model_template_methods_state">
+<title>State Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void save_state()</computeroutput>: Saves the state of the model and optimizer to files.</para>
+</listitem><listitem><para><computeroutput>bool restore_state()</computeroutput>: Restores the state of the model and optimizer from files.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="model_module_page_1model_template_methods_features">
+<title>Feature Handling</title><para><itemizedlist>
+<listitem><para><computeroutput>torch::Tensor* assign_features(...)</computeroutput>: Assigns features from a graph to the model&apos;s input/output tensors.</para>
+</listitem><listitem><para><computeroutput>void check_features(graph_t* data)</computeroutput>: Checks if all the required input and output features are present in the graph.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="model_module_page_1model_template_methods_modules">
+<title>Module Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void register_module(torch::nn::Sequential* data)</computeroutput>: Registers a PyTorch module with the model.</para>
+</listitem><listitem><para><computeroutput>void register_module(torch::nn::Sequential* data, mlp_init method)</computeroutput>: Registers a PyTorch module and initializes its weights. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/model/model.dox"/>
+  </compounddef>
+</doxygen>

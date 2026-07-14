@@ -1,0 +1,58 @@
+/**
+ * @file topmatching_mc20.dox
+ * @brief Detailed documentation for the TopMatching Cython class, specialized for analyzing top quark matching in MC20 events.
+ *
+ * @page MC20TopMatchingSelection_page MC20 Top Matching Selection
+ *
+ * @section MC20TopMatchingSelection_intro Introduction
+ * The `TopMatching` class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top quark matching in Monte Carlo 20 (MC20) events. It inherits from the generic `SelectionTemplate` class, extending its functionalities to extract and organize detailed information about truth-level top quarks, their children, truth-jets, and reconstructed jets, categorized by leptonicity and jet multiplicity. This class facilitates a high-performance extraction and structuring of top matching data for further physics analysis in the MC20 context.
+ *
+ * @section MC20TopMatchingSelection_class The TopMatching Class
+ * `TopMatching` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `SelectionTemplate`, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ `topmatching` object, which likely contains the logic for performing top quark matching and categorizing associated particles and jets.
+ *
+ * @subsection MC20TopMatchingSelection_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `topmatching` object and assigns its pointer to `self.ptr`. It then upcasts `self.ptr` to a `topmatching*` and assigns it to `self.tt` for specialized access.
+ *
+ * - `__init__(self)`:
+ *   (Not explicitly defined in the provided snippet) This would typically be the Python initializer.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `topmatching` object pointed to by `self.tt`, ensuring proper memory management.
+ *
+ * @subsection MC20TopMatchingSelection_internal_methods Internal Methods
+ * - `cdef void transform_dict_keys(self)`:
+ *   This method is responsible for converting the C++ data structures within the underlying `topmatching` object into Python dictionaries and lists, making them accessible as properties of the `TopMatching` instance.
+ *   - `self.truth_top`: Populated from `self.tt.truth_top` (truth-level top quarks).
+ *   - `self.no_children`: Populated from `self.tt.no_children` (information about top quarks with no children).
+ *   - `self.truth_children`: Populated from `self.tt.truth_children` (truth-level children of top quarks).
+ *   - `self.truth_jets`: Populated from `self.tt.truth_jets` (truth-level jets).
+ *   - `self.n_truth_jets_lep`: Populated from `self.tt.n_truth_jets_lep` (number of leptonic truth-jets).
+ *   - `self.n_truth_jets_had`: Populated from `self.tt.n_truth_jets_had` (number of hadronic truth-jets).
+ *   - `self.jets_truth_leps`: Populated from `self.tt.jets_truth_leps` (jets associated with truth-level leptons).
+ *   - `self.jet_leps`: Populated from `self.tt.jet_leps` (reconstructed jets associated with leptons).
+ *   - `self.n_jets_lep`: Populated from `self.tt.n_jets_lep` (number of leptonic reconstructed jets).
+ *   - `self.n_jets_had`: Populated from `self.tt.n_jets_had` (number of hadronic reconstructed jets).
+ *
+ * @subsection MC20TopMatchingSelection_properties Properties
+ * The following properties are implicitly defined and populated by the `transform_dict_keys` method, providing access to the processed top matching information:
+ * - `@property truth_top -> list`: List of truth-level top quarks.
+ * - `@property no_children -> list`: List of top quarks with no children.
+ * - `@property truth_children -> dict`: Dictionary of truth-level children of top quarks.
+ * - `@property truth_jets -> dict`: Dictionary of truth-level jets.
+ * - `@property n_truth_jets_lep -> dict`: Dictionary of leptonic truth-jets counts.
+ * - `@property n_truth_jets_had -> dict`: Dictionary of hadronic truth-jets counts.
+ * - `@property jets_truth_leps -> dict`: Dictionary of jets associated with truth-level leptons.
+ * - `@property jet_leps -> dict`: Dictionary of reconstructed jets associated with leptons.
+ * - `@property n_jets_lep -> dict`: Dictionary of leptonic reconstructed jets counts.
+ * - `@property n_jets_had -> dict`: Dictionary of hadronic reconstructed jets counts.
+ *
+ * @section MC20TopMatchingSelection_cpp_interaction C++ Interaction
+ * The `TopMatching` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class TopMatching`: Declares `TopMatching` as a Cython extension type.
+ * - `cdef topmatching *tt`: A C++ pointer to a `topmatching` object, which is the specialized C++ implementation for top matching analysis.
+ * - `self.ptr = new topmatching()`: Initializes the base `SelectionTemplate`'s C++ pointer.
+ * - `self.tt = <topmatching*>self.ptr`: This line demonstrates C++ upcasting, allowing `TopMatching` to fulfill the `SelectionTemplate` interface while internally managing its specific `topmatching` data.
+ * - `from AnalysisG.core.selection_template cimport SelectionTemplate`: Imports the base `SelectionTemplate` class, from which `TopMatching` inherits.
+ * - `from AnalysisG.core.tools cimport *`: Imports utility functions for converting between C++ and Python data structures, specifically `as_dict` and `as_list`.
+ */

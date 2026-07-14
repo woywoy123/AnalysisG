@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="typecasting_module_page" kind="page">
+    <compoundname>typecasting_module_page</compoundname>
+    <title>Typecasting Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="typecasting_module_page_1typecasting_module_intro">
+<title>Introduction</title><para>The <computeroutput>typecasting</computeroutput> module provides a set of classes and functions for handling and converting different data types, particularly between ROOT and PyTorch tensors.</para>
+</sect1>
+<sect1 id="typecasting_module_page_1variable_t_class">
+<title>The variable_t Class</title><para>The <computeroutput><ref refid="structvariable__t" kindref="compound">variable_t</ref></computeroutput> class is a versatile data container that can hold various data types, including scalars and vectors of different dimensions. It is used to interface between the data from ROOT files and the PyTorch tensors used in the machine learning models.</para>
+<sect2 id="typecasting_module_page_1variable_t_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput><ref refid="structvariable__t" kindref="compound">variable_t()</ref></computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~variable_t()</computeroutput>: The destructor cleans up the allocated memory.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="typecasting_module_page_1variable_t_methods_processing">
+<title>Data Processing</title><para><itemizedlist>
+<listitem><para><computeroutput>void process(torch::Tensor* data, std::string* varname, TTree* tr)</computeroutput>: This is the main processing method. It takes a PyTorch tensor and a variable name, determines the data type and dimensions of the tensor, and stores the data in the appropriate member variable. It also creates a branch in the ROOT tree if provided.</para>
+</listitem><listitem><para><computeroutput>void process(std::vector&lt;...&gt;* data, std::string* varname, TTree* tr)</computeroutput>: A set of overloaded methods for processing data from C++ vectors.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="typecasting_module_page_1variable_t_methods_type_switching">
+<title>Type Switching</title><para><itemizedlist>
+<listitem><para><computeroutput>void build_switch(size_t s, torch::Tensor* tx)</computeroutput>: This method determines the data type and dimensionality of a PyTorch tensor and sets the <computeroutput>type</computeroutput> member variable accordingly.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="typecasting_module_page_1vector_cast_h">
+<title>The vector_cast.h Header</title><para>The <computeroutput>vector_cast.h</computeroutput> header file provides a set of template functions for casting data between different vector types.</para>
+</sect1>
+<sect1 id="typecasting_module_page_1root_cxx">
+<title>The root.cxx File</title><para>The <computeroutput>root.cxx</computeroutput> file contains the implementations of the <computeroutput>process</computeroutput> methods for various C++ vector types. These methods are used to add data from C++ vectors to the <computeroutput><ref refid="structvariable__t" kindref="compound">variable_t</ref></computeroutput> object. </para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/typecasting/typecasting.dox"/>
+  </compounddef>
+</doxygen>

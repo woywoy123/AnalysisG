@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="ZPrimeSelection_page" kind="page">
+    <compoundname>ZPrimeSelection_page</compoundname>
+    <title>ZPrime Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="ZPrimeSelection_page_1ZPrimeSelection_intro">
+<title>Introduction</title><para>The <computeroutput>ZPrime</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of Z&apos; boson related selections in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed information about truth-level top quarks, children particles, truth-jets, and reconstructed jets associated with Z&apos; boson decays. This class facilitates a high-performance extraction and structuring of Z&apos; boson related data for further physics analysis.</para>
+</sect1>
+<sect1 id="ZPrimeSelection_page_1ZPrimeSelection_helper_functions">
+<title>Helper Functions (Python-style, Cython-optimized)</title><para>These functions are designed to be used as callbacks for <computeroutput>self.root_leaves</computeroutput> in <computeroutput>SelectionTemplate</computeroutput>, processing data as it&apos;s read from ROOT files.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>def fx(zp, data)</computeroutput>: A generic function to append data to a list attribute of the <computeroutput>ZPrime</computeroutput> instance. It takes an attribute name and a list of values. If the attribute already exists and is a list, it appends the new values; otherwise, it initializes it as a new list. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>zp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>ZPrime</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(attribute_name_string, list_of_values)</computeroutput> where <computeroutput>attribute_name_string</computeroutput> is the name of the attribute to update and <computeroutput>list_of_values</computeroutput> are the values to append.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="ZPrimeSelection_page_1ZPrimeSelection_class">
+<title>The ZPrime Class</title><para><computeroutput>ZPrime</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>SelectionTemplate</computeroutput>. It is tailored for collecting and organizing information related to Z&apos; boson analysis.</para>
+<sect2 id="ZPrimeSelection_page_1ZPrimeSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent.<itemizedlist>
+<listitem><para>Initializes <computeroutput>self.root_leaves</computeroutput> to define specific ROOT branches (<computeroutput>zprime_truth_tops</computeroutput>, <computeroutput>zprime_children</computeroutput>, <computeroutput>zprime_truthjets</computeroutput>, <computeroutput>zprime_jets</computeroutput>) and associates them with the <computeroutput>fx</computeroutput> helper function for data processing during <computeroutput>InterpretROOT</computeroutput>.</para>
+</listitem><listitem><para>Initializes a new C++ <computeroutput>zprime</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>zprime*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>zprime</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ZPrimeSelection_page_1ZPrimeSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is responsible for converting the C++ data structures within the underlying <computeroutput>zprime</computeroutput> object into Python attributes, making them accessible as properties of the <computeroutput>ZPrime</computeroutput> instance.<itemizedlist>
+<listitem><para><computeroutput>self.zprime_truth_tops</computeroutput>: Populated from <computeroutput>self.tt.zprime_truth_tops</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>self.zprime_children</computeroutput>: Populated from <computeroutput>self.tt.zprime_children</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>self.zprime_truthjets</computeroutput>: Populated from <computeroutput>self.tt.zprime_truthjets</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>self.zprime_jets</computeroutput>: Populated from <computeroutput>self.tt.zprime_jets</computeroutput>.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="ZPrimeSelection_page_1ZPrimeSelection_properties">
+<title>Properties</title><para>The following properties are implicitly defined and populated by the <computeroutput>transform_dict_keys</computeroutput> method, providing access to the processed Z&apos; boson related information:<itemizedlist>
+<listitem><para><computeroutput>@property zprime_truth_tops -&gt; list</computeroutput>: List of truth-level top quarks associated with the Z&apos; boson.</para>
+</listitem><listitem><para><computeroutput>@property zprime_children -&gt; list</computeroutput>: List of children particles associated with the Z&apos; boson.</para>
+</listitem><listitem><para><computeroutput>@property zprime_truthjets -&gt; list</computeroutput>: List of truth-jets associated with the Z&apos; boson.</para>
+</listitem><listitem><para><computeroutput>@property zprime_jets -&gt; list</computeroutput>: List of reconstructed jets associated with the Z&apos; boson.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="ZPrimeSelection_page_1ZPrimeSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>ZPrime</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class ZPrime</computeroutput>: Declares <computeroutput>ZPrime</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef zprime *tt</computeroutput>: A C++ pointer to a <computeroutput>zprime</computeroutput> object, which is the specialized C++ implementation for Z&apos; boson analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new zprime()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;zprime*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>ZPrime</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>zprime</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>ZPrime</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport as_dict, as_list</computeroutput>: Imports utility functions for converting between C++ and Python data structures. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/zprime/zprime.dox"/>
+  </compounddef>
+</doxygen>

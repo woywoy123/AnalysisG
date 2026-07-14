@@ -1,0 +1,56 @@
+
+/**
+ * @file particle.dox
+ * @brief Detailed documentation for the particle_template class and related components.
+ *
+ * @page particle_module_page Particle Module
+ *
+ * @section particle_module_intro Introduction
+ * The `particle` module provides the base template for representing a particle in the |g-framework|. The `particle_template` class defines the common interface and functionality for all particle types.
+ *
+ * @section particle_template_class The particle_template Class
+ * The `particle_template` class is an abstract base class that defines the structure of a particle.
+ *
+ * @subsection particle_template_ctor Constructor and Destructor
+ * - `particle_template()`: The constructor initializes the properties of the particle, such as `pt`, `eta`, `phi`, `e`, `mass`, `px`, `py`, `pz`, `pdgid`, `charge`, etc., by setting up their respective setters and getters.
+ * - `~particle_template()`: The destructor.
+ *
+ * @subsection particle_template_methods_virtual Virtual Methods
+ * - `particle_template* clone()`: Creates a copy of the particle object.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the particle's properties from an `element_t` object. This is a virtual function that can be overridden by derived classes.
+ *
+ * @subsection particle_template_methods_kinematics Kinematics
+ * - `void to_cartesian()`: Converts the particle's kinematics from polar to Cartesian coordinates.
+ * - `void to_polar()`: Converts the particle's kinematics from Cartesian to polar coordinates.
+ * - `double DeltaR(particle_template* part)`: Calculates the DeltaR distance between this particle and another.
+ *
+ * @subsection particle_template_methods_properties Property Management
+ * The class provides a large number of setters and getters for accessing the particle's properties, such as:
+ * - `set_pt`, `get_pt`
+ * - `set_eta`, `get_eta`
+ * - `set_phi`, `get_phi`
+ * - `set_e`, `get_e`
+ * - `set_mass`, `get_mass`
+ * - `set_px`, `get_px`
+ * - `set_py`, `get_py`
+ * - `set_pz`, `get_pz`
+ * - `set_pdgid`, `get_pdgid`
+ * - `set_charge`, `get_charge`
+ *
+ * @subsection particle_template_methods_relations Particle Relations
+ * - `void set_parents(std::map<std::string, particle_template*>* val, particle_template* prt)`: Sets the parents of the particle.
+ * - `void get_parents(std::map<std::string, particle_template*>* val, particle_template* prt)`: Retrieves the parents of the particle.
+ * - `void set_children(std::map<std::string, particle_template*>* val, particle_template* prt)`: Sets the children of the particle.
+ * - `void get_children(std::map<std::string, particle_template*>* val, particle_template* prt)`: Retrieves the children of the particle.
+ * - `bool register_child(particle_template* p)`: Registers a particle as a child.
+ * - `bool register_parent(particle_template* p)`: Registers a particle as a parent.
+ *
+ * @subsection particle_template_methods_identification Particle Identification
+ * - `bool is(std::vector<int> p)`: Checks if the particle's PDG ID is in a given list.
+ * - `void get_isb(bool* val, particle_template* prt)`: Checks if the particle is a b-quark.
+ * - `void get_isnu(bool* val, particle_template* prt)`: Checks if the particle is a neutrino.
+ * - `void get_islep(bool* val, particle_template* prt)`: Checks if the particle is a lepton.
+ *
+ * @section particle_t_struct The particle_t Struct
+ * The `particle_t` struct is a simple data container for the properties of a particle.
+ */

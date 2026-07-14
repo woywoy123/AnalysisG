@@ -1,0 +1,162 @@
+/**
+ * @file nusol.h (tmp/conuix)
+ * @brief Pre-production conics-based single b–lepton neutrino solver.
+ * @details Declares @c eig_t (eigenvalue pair), @c nuclx_t (pre-computed
+ *          kinematic constants for the hyperbolic surface), and @c nuclx (the
+ *          analytic H/H̃ matrix evaluator with characteristic polynomial).
+ *
+ * @note This is an in-development header.  The production implementation is
+ *       in @c modules/nusol/conuix.
+ */
+
+/**
+ * @struct eig_t
+ * @brief Stores a pair of complex eigenvalues.
+ */
+
+/**
+ * @var double eig_t::r1
+ * @brief Real part of the first eigenvalue.
+ */
+
+/**
+ * @var double eig_t::r2
+ * @brief Real part of the second eigenvalue.
+ */
+
+/**
+ * @var double eig_t::i1
+ * @brief Imaginary part of the first eigenvalue.
+ */
+
+/**
+ * @var double eig_t::i2
+ * @brief Imaginary part of the second eigenvalue.
+ */
+
+/**
+ * @struct nuclx_t
+ * @brief Pre-computed constants for the neutrino hyperbola surface
+ *        (double-precision version).
+ * @details Stores the conic coefficients (A…F), shift parameters (s0x, s0y),
+ *          rotation angle (ψ), eigenvalues (λ₁, λ₂), parametrisation
+ *          coefficients (Sx, Sy, mW, mT polynomials), and H/H̄ matrix
+ *          components.
+ */
+
+/**
+ * @fn nuclx_t::nuclx_t(particle_template* jet, particle_template* lep)
+ * @brief Construct and compute all constants for the (b-jet, lepton) pair.
+ * @param jet Pointer to the b-jet.
+ * @param lep Pointer to the lepton.
+ */
+
+/**
+ * @fn nuclx_t nuclx_t::from_sx_sy(double _sx, double _sy)
+ * @brief Compute the (u, v, t, z) parameterisation from (S_x, S_y).
+ * @return Updated @c nuclx_t with filled @c u, @c v, @c t_v, @c z_v.
+ */
+
+/**
+ * @fn nuclx_t nuclx_t::from_z_t(double _z, double _t)
+ * @brief Compute (S_x, S_y, m_W, m_T) from (z, t).
+ * @return Updated @c nuclx_t with filled @c sx_v, @c sy_v, @c mt_v, @c mw_v.
+ */
+
+/**
+ * @fn void nuclx_t::surface()
+ * @brief Compute the conic coefficients A–F.
+ */
+
+/**
+ * @fn void nuclx_t::shifts()
+ * @brief Compute the shift-to-centre parameters s0x, s0y.
+ */
+
+/**
+ * @fn void nuclx_t::sx()
+ * @brief Compute the S_x polynomial coefficients (a_x, b_x, c_x).
+ */
+
+/**
+ * @fn void nuclx_t::sy()
+ * @brief Compute the S_y polynomial coefficients (a_y, b_y, c_y).
+ */
+
+/**
+ * @fn void nuclx_t::mw()
+ * @brief Compute the mW polynomial coefficients (a_w, b_w).
+ */
+
+/**
+ * @fn void nuclx_t::mt()
+ * @brief Compute the mT polynomial coefficients (a_t, b_t, c_t).
+ */
+
+/**
+ * @fn void nuclx_t::polynomial()
+ * @brief Compute the characteristic polynomial coefficients (a_l…d_l).
+ */
+
+/**
+ * @fn void nuclx_t::critical_t0()
+ * @brief Compute the lower-bound t₀ where ∂P/∂λ can be zero.
+ */
+
+/**
+ * @fn void nuclx_t::H_bar()
+ * @brief Compute the pre-rotation H̄ matrix components.
+ */
+
+/**
+ * @fn void nuclx_t::H()
+ * @brief Compute the post-rotation H matrix components.
+ */
+
+/**
+ * @fn void nuclx_t::rotation()
+ * @brief Compute the decay-frame → lab-frame rotation matrix R^T.
+ */
+
+/**
+ * @class nuclx
+ * @brief Analytic H/H̃ matrix evaluator with characteristic polynomial.
+ */
+
+/**
+ * @fn nuclx::nuclx(particle_template* bjet, particle_template* lep)
+ * @brief Construct the evaluator for the (b-jet, lepton) pair.
+ * @param bjet Pointer to the b-jet.
+ * @param lep  Pointer to the lepton.
+ */
+
+/**
+ * @fn matrix_t nuclx::H(double z, double t)
+ * @brief Return the lab-frame H matrix at (z, t).
+ */
+
+/**
+ * @fn matrix_t nuclx::H_tilde(double z, double t)
+ * @brief Return H̃ at (z, t).
+ */
+
+/**
+ * @fn double nuclx::P(double lambda, double t, double z)
+ * @brief Evaluate the characteristic polynomial P(λ, t, z).
+ */
+
+/**
+ * @fn double nuclx::dP_dL(double lambda, double t, double z)
+ * @brief Evaluate ∂P/∂λ.
+ */
+
+/**
+ * @fn eig_t nuclx::dPl0(double t, double z)
+ * @brief Find the eigenvalues where ∂P/∂λ = 0.
+ * @warning This does not imply they are eigenvalues of H̃.
+ */
+
+/**
+ * @fn nuclx::~nuclx()
+ * @brief Destructor.
+ */

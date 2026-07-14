@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="lossfx_module_page" kind="page">
+    <compoundname>lossfx_module_page</compoundname>
+    <title>Loss Function and Optimizer Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="lossfx_module_page_1lossfx_module_intro">
+<title>Introduction</title><para>The <computeroutput>lossfx</computeroutput> module provides a unified interface for creating and managing various loss functions and optimizers from the PyTorch library.</para>
+</sect1>
+<sect1 id="lossfx_module_page_1lossfx_class">
+<title>The lossfx Class</title><para>The <computeroutput>lossfx</computeroutput> class is the main component of this module.</para>
+<sect2 id="lossfx_module_page_1lossfx_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>lossfx()</computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~lossfx()</computeroutput>: The destructor cleans up all the allocated loss function and optimizer objects.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="lossfx_module_page_1lossfx_methods_optimizer">
+<title>Optimizer Management</title><para><itemizedlist>
+<listitem><para><computeroutput>torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector&lt;torch::Tensor&gt;* params)</computeroutput>: This method builds and returns a PyTorch optimizer based on the provided parameters. It supports Adam, Adagrad, AdamW, LBFGS, RMSprop, and SGD.</para>
+</listitem><listitem><para><computeroutput>void build_adam(...)</computeroutput>, <computeroutput>void build_adagrad(...)</computeroutput>, etc.: These are helper methods for building the specific optimizer types.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="lossfx_module_page_1lossfx_methods_loss">
+<title>Loss Function Management</title><para><itemizedlist>
+<listitem><para><computeroutput>bool build_loss_function(loss_enum lss)</computeroutput>: This method creates an instance of a specific loss function. It supports a wide range of loss functions available in PyTorch, such as BCE, CrossEntropy, MSE, etc.</para>
+</listitem><listitem><para><computeroutput>torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss)</computeroutput>: This method calculates the loss given the predictions and truth values, using the specified loss function.</para>
+</listitem><listitem><para><computeroutput>torch::Tensor _fx_loss(...)</computeroutput>: These are helper methods for calculating the loss for each specific loss function type.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="lossfx_module_page_1lossfx_methods_weight_init">
+<title>Weight Initialization</title><para><itemizedlist>
+<listitem><para><computeroutput>void weight_init(torch::nn::Sequential* data, mlp_init method)</computeroutput>: This method initializes the weights of a neural network module using various initialization schemes, such as Xavier, Kaiming, normal, and uniform distributions.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="lossfx_module_page_1lossfx_methods_device">
+<title>Device Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void to(torch::TensorOptions* op)</computeroutput>: This method moves all the created loss function objects to a specific device (e.g., a GPU).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="lossfx_module_page_1lossfx_enums">
+<title>Enumerations</title><para>The module defines two enumerations for identifying the loss functions and optimizers:<itemizedlist>
+<listitem><para><computeroutput>loss_enum</computeroutput>: An enumeration of the supported loss functions.</para>
+</listitem><listitem><para><computeroutput>opt_enum</computeroutput>: An enumeration of the supported optimizers.</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="lossfx_module_page_1lossfx_switching">
+<title>String to Enum Conversion</title><para>The <computeroutput>switching.cxx</computeroutput> file contains helper functions for converting strings to the <computeroutput>loss_enum</computeroutput> and <computeroutput>opt_enum</computeroutput> enumerations.<itemizedlist>
+<listitem><para><computeroutput>loss_enum lossfx::loss_string(std::string name)</computeroutput></para>
+</listitem><listitem><para><computeroutput>opt_enum lossfx::optim_string(std::string name)</computeroutput> </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/lossfx/lossfx.dox"/>
+  </compounddef>
+</doxygen>

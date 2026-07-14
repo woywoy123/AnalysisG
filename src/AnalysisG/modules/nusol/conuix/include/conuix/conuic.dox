@@ -1,0 +1,127 @@
+/**
+ * @file conuic.h
+ * @brief Conuix single-pair solver using a Möbius-transform approach.
+ * @details @c conuic finds the optimal neutrino parameter τ for one b–lepton
+ *          pair by minimising a penalty function defined on the pencil of
+ *          conics formed by the top and W mass shells.
+ */
+
+/**
+ * @class conuic
+ * @brief Single b–lepton neutrino solver via Möbius / pencil-of-conics.
+ */
+
+/**
+ * @fn conuic::conuic(particle_template* jet, particle_template* lep)
+ * @brief Construct the solver for the (b-jet, lepton) pair.
+ * @param jet Pointer to the b-jet.
+ * @param lep Pointer to the lepton.
+ */
+
+/**
+ * @fn conuic::~conuic()
+ * @brief Destructor.
+ */
+
+/**
+ * @var long double conuic::tstar
+ * @brief Optimal τ value found by the solver.
+ */
+
+/**
+ * @var long double conuic::error
+ * @brief Residual penalty at @c tstar.
+ */
+
+/**
+ * @var long double conuic::theta
+ * @brief Angle associated with the optimal solution.
+ */
+
+/**
+ * @var bool conuic::converged
+ * @brief @c true if the solver converged.
+ */
+
+/**
+ * @var matrix_t conuic::vstar
+ * @brief Neutrino four-momentum vector at the optimal @c tstar.
+ */
+
+/**
+ * @fn long double conuic::Z2(long double Sx, long double Sy)
+ * @brief Evaluate Z² from the shift parameters.
+ * @param Sx x-shift.
+ * @param Sy y-shift.
+ * @return Z².
+ */
+
+/**
+ * @fn long double conuic::Sx(long double Tau, long double Z)
+ * @brief Evaluate S_x from (τ, Z).
+ * @param Tau τ parameter.
+ * @param Z   Z parameter.
+ * @return S_x.
+ */
+
+/**
+ * @fn long double conuic::Sy(long double Tau, long double Z)
+ * @brief Evaluate S_y from (τ, Z).
+ * @return S_y.
+ */
+
+/**
+ * @fn long double conuic::x1(long double t, long double Z)
+ * @brief Return the x₁ coordinate of the neutrino.
+ */
+
+/**
+ * @fn long double conuic::y1(long double t, long double Z)
+ * @brief Return the y₁ coordinate of the neutrino.
+ */
+
+/**
+ * @fn bool conuic::get_TauZ(long double sx, long double sy, long double* z, long double* t)
+ * @brief Compute (τ, Z) from the given (S_x, S_y) values.
+ * @param sx   S_x value.
+ * @param sy   S_y value.
+ * @param z    Output Z.
+ * @param t    Output τ.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn long double conuic::P(long double l, long double t, long double Z)
+ * @brief Evaluate the characteristic polynomial P(λ, τ, Z).
+ * @param l Lambda.
+ * @param t τ.
+ * @param Z Z.
+ * @return P value.
+ */
+
+/**
+ * @fn long double conuic::dPdt(long double l, long double t, long double Z)
+ * @brief Evaluate ∂P/∂τ.
+ * @return Derivative value.
+ */
+
+/**
+ * @fn bool conuic::mass_line(long double mW, long double mT, std::complex<long double>* z_, long double* t_)
+ * @brief Find the point on the mass line (mW, mT) closest to the neutrino
+ *        ellipse.
+ * @param mW  W-boson mass constraint.
+ * @param mT  Top-quark mass constraint.
+ * @param z_  Output Z value.
+ * @param t_  Output τ value.
+ * @return @c true if a solution was found.
+ */
+
+/**
+ * @fn void conuic::debug()
+ * @brief Print diagnostic information to stdout.
+ */
+
+/**
+ * @var atomics_t* conuic::cache
+ * @brief Pre-computed kinematic constants for this pair.
+ */

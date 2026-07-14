@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="optimizer_module_page" kind="page">
+    <compoundname>optimizer_module_page</compoundname>
+    <title>Optimizer Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="optimizer_module_page_1optimizer_module_intro">
+<title>Introduction</title><para>The <computeroutput>optimizer</computeroutput> module provides a class for managing the training, validation, and evaluation of machine learning models. It orchestrates the training loops, handles data loading and batching, and captures metrics.</para>
+</sect1>
+<sect1 id="optimizer_module_page_1optimizer_class">
+<title>The optimizer Class</title><para>The <computeroutput>optimizer</computeroutput> class is the main component of this module.</para>
+<sect2 id="optimizer_module_page_1optimizer_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>optimizer()</computeroutput>: The constructor initializes the <computeroutput>optimizer</computeroutput> object and creates a <computeroutput>metrics</computeroutput> object.</para>
+</listitem><listitem><para><computeroutput>~optimizer()</computeroutput>: The destructor cleans up the allocated resources, including the <computeroutput>metrics</computeroutput> object and the model sessions.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="optimizer_module_page_1optimizer_methods_import">
+<title>Importing Data and Models</title><para><itemizedlist>
+<listitem><para><computeroutput>void import_dataloader(dataloader* dl)</computeroutput>: Imports a <computeroutput>dataloader</computeroutput> object to be used for data loading and batching.</para>
+</listitem><listitem><para><computeroutput>void import_model_sessions(std::tuple&lt;model_template*, optimizer_params_t*&gt;* models)</computeroutput>: Imports the model and optimizer parameters for the training session. It also performs a test run to ensure that the model and parameters are correctly configured.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="optimizer_module_page_1optimizer_methods_training">
+<title>Training and Evaluation Loops</title><para><itemizedlist>
+<listitem><para><computeroutput>void training_loop(int k, int epoch)</computeroutput>: This method implements the training loop for a given k-fold and epoch. It iterates through the training data, performs the forward and backward passes, and captures the training metrics.</para>
+</listitem><listitem><para><computeroutput>void validation_loop(int k, int epoch)</computeroutput>: This method implements the validation loop. It iterates through the validation data, performs the forward pass (without gradient calculation), and captures the validation metrics.</para>
+</listitem><listitem><para><computeroutput>void evaluation_loop(int k, int epoch)</computeroutput>: This method implements the evaluation loop. It iterates through the test data, performs the forward pass, and captures the evaluation metrics.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="optimizer_module_page_1optimizer_methods_launch">
+<title>Launching the Model</title><para><itemizedlist>
+<listitem><para><computeroutput>void launch_model(int k)</computeroutput>: This method launches the training and evaluation process for a given k-fold. It iterates through the specified number of epochs and calls the training, validation, and evaluation loops accordingly. It also triggers the plotting of the metrics at the end of each epoch if in debug mode. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/optimizer/optimizer.dox"/>
+  </compounddef>
+</doxygen>

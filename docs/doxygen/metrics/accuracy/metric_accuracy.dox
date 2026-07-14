@@ -1,0 +1,64 @@
+/**
+ * @file metric_accuracy.dox
+ * @brief Detailed documentation for the AccuracyMetric Cython class, specialized for calculating and visualizing accuracy-related metrics, particularly ROC curves, for event-level predictions.
+ *
+ * @page AccuracyMetric_page Accuracy Metric
+ *
+ * @section AccuracyMetric_intro Introduction
+ * The `AccuracyMetric` class, implemented in Cython, is a specialized metric within the AnalysisG framework designed for comprehensive evaluation of model accuracy, particularly in the context of event-level predictions. It extends the `MetricTemplate` class, providing tailored functionalities for handling prediction scores, truth labels, and generating Receiver Operating Characteristic (ROC) curves. This class is crucial for assessing the performance of machine learning models in high-energy physics analyses.
+ *
+ * @section AccuracyMetric_external_declarations External C++ Function Declarations
+ * - `cdef void merge_data(vector[plt_roc_t*]* oux, vector[plt_roc_t*]* inx) except+ nogil`:
+ *   An external C++ function (declared in `<tools/merge_cast.h>`) used for merging vectors of `plt_roc_t*` objects. The `except+ nogil` indicates that this function can release the GIL and can raise C++ exceptions that are converted to Python exceptions.
+ *
+ * @section AccuracyMetric_helper_functions Helper Functions (C-style)
+ * These functions are implemented as C-style functions in Cython for performance optimization.
+ *
+ * - `cdef tuple mx_index(vector[double]* sc)`:
+ *   Finds the index and value of the maximum element within a C++ `std::vector<double>`.
+ *   @param sc A pointer to a C++ `std::vector<double>` representing scores.
+ *   @return A Python tuple `(index, max_score)`.
+ *
+ * - `cdef void get_data(AccuracyMetric vl, dict data, dict meta)`:
+ *   A callback function used by `MetricTemplate.InterpretROOT` to extract and store accuracy-related data from event data.
+ *   - It identifies the processing mode (training, validation, evaluation) from the `data` dictionary.
+ *   - Extracts `ntops` (number of true tops) and `score` (prediction scores).
+ *   - Stores `ntops_truth`, `edge_scores`, and `ntop_score` into the `AccuracyMetric` object's internal C++ structures, organized by mode, epoch, model, and k-fold.
+ *   @param vl An instance of `AccuracyMetric`.
+ *   @param data A Python dictionary containing event data.
+ *   @param meta A Python dictionary containing metadata (e.g., epoch, kfold, model_name).
+ *
+ * - `cdef vector[plt_roc_t*] make_roc(plt_roc_t* out, modelx_t* inx)`:
+ *   Prepares data for ROC curve generation. It iterates through the `ntops_truth` and `ntop_score` data within a `modelx_t` structure, creating `plt_roc_t` objects that encapsulate the scores and truth labels for each model and k-fold.
+ *   @param out A pointer to a `plt_roc_t` object (used as a base for model and variable names).
+ *   @param inx A pointer to a `modelx_t` object containing collected model data.
+ *   @return A C++ `std::vector` of `plt_roc_t*` objects, each representing a set of scores and truth for a specific ROC curve.
+ *
+ * @section AccuracyMetric_class The AccuracyMetric Class
+ * `AccuracyMetric` is a `cdef class` that inherits from `MetricTemplate`. It specializes in collecting and processing data relevant to classification accuracy, particularly for generating ROC curves.
+ *
+ * @subsection AccuracyMetric_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent.
+ *   - Initializes `self.root_leaves` to specify which branches from ROOT files should be read for accuracy metrics (e.g., "ntop_truth", "ntop_scores", "edge" for training, validation, and evaluation modes).
+ *   - Initializes `self.root_fx` to map these branches to the `get_data` helper function for processing.
+ *   - Initializes a new C++ `accuracy_metric` object and assigns its pointer to `self.mtx`. It then upcasts `self.mtx` to an `accuracy_metric*` and assigns it to `self.mtr` for specialized access.
+ *
+ * @subsection AccuracyMetric_methods Methods
+ * - `Postprocessing(self)`:
+ *   This method is called after all data has been interpreted from ROOT files. It orchestrates the generation and plotting of ROC curves.
+ *   - **Data Aggregation**: Iterates through `self.event_level` (a C++ map containing collected event data), aggregating data by epoch and model.
+ *   - **ROC Data Preparation**: For each epoch and model, it calls `make_roc` to create `plt_roc_t` objects containing scores and truth labels.
+ *   - **Parallel ROC Building**: Uses `cython.parallel.prange` to parallelize the process of building ROC data in the C++ backend. For each epoch, it creates an `ROC` object (from `AnalysisG.core.plotting`) and uses its `build_ROC` method to populate it with scores and truth.
+ *   - **Plotting**: Finally, it calls `rxc.__compile__()` on each `ROC` object to generate and save the ROC curve plots.
+ *
+ * @section AccuracyMetric_cpp_interaction C++ Interaction
+ * The `AccuracyMetric` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class AccuracyMetric`: Declares `AccuracyMetric` as a Cython extension type.
+ * - `cdef accuracy_metric *mtr`: A C++ pointer to an `accuracy_metric` object, which is the specialized C++ backend for accuracy calculations.
+ * - `cdef plt_roc_t*`, `cdef modelx_t*`: Pointers to C++ structs used for organizing ROC plotting data and model-specific data.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, including `has_string`.
+ * - `from AnalysisG.core.metric_template cimport MetricTemplate`: Imports the base `MetricTemplate` class, from which `AccuracyMetric` inherits.
+ * - `from cython.parallel import prange`: Enables parallel execution of loops, leveraging multiple CPU cores for faster processing.
+ * - `ROC rxc`: An instance of the `ROC` class from `AnalysisG.core.plotting`, used for generating ROC curve plots.
+ */

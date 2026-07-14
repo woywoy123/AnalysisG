@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="io_module_page" kind="page">
+    <compoundname>io_module_page</compoundname>
+    <title>I/O Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="io_module_page_1io_module_intro">
+<title>Introduction</title><para>The <computeroutput>io</computeroutput> module provides the functionality for reading and writing data from and to ROOT and HDF5 files. It is a crucial component for data handling in the |g-framework|.</para>
+</sect1>
+<sect1 id="io_module_page_1io_class">
+<title>The io Class</title><para>The <computeroutput>io</computeroutput> class is the main component of this module, providing a unified interface for I/O operations.</para>
+<sect2 id="io_module_page_1io_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>io()</computeroutput>: The constructor initializes the <computeroutput>io</computeroutput> object.</para>
+</listitem><listitem><para><computeroutput>~io()</computeroutput>: The destructor cleans up the resources, including closing any open files.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="io_module_page_1io_methods_settings">
+<title>Settings</title><para><itemizedlist>
+<listitem><para><computeroutput>void import_settings(settings_t* params)</computeroutput>: Imports the settings for the I/O module, such as the path to the metacache and the name of the sum-of-weights tree.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="io_module_page_1io_methods_root">
+<title>ROOT File Handling</title><para><itemizedlist>
+<listitem><para><computeroutput>void check_root_file_paths()</computeroutput>: Checks the validity of the provided ROOT file paths.</para>
+</listitem><listitem><para><computeroutput>void root_key_paths(std::string path)</computeroutput>: Recursively scans a ROOT file and identifies the trees, branches, and leaves. It also scrapes metadata from the file.</para>
+</listitem><listitem><para><computeroutput>bool scan_keys()</computeroutput>: Scans the keys of all the registered ROOT files and builds the internal data structures for accessing the data.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, long&gt; root_size()</computeroutput>: Returns the number of entries in each tree of the ROOT files.</para>
+</listitem><listitem><para><computeroutput>void root_begin()</computeroutput>: Initializes the data reading process from the ROOT files.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, data_t*&gt;* get_data()</computeroutput>: Returns a map of <computeroutput>data_t</computeroutput> objects, which provide access to the data in the ROOT files.</para>
+</listitem><listitem><para><computeroutput>void root_end()</computeroutput>: Finalizes the data reading process and cleans up the resources.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="io_module_page_1io_methods_hdf5">
+<title>HDF5 File Handling</title><para><itemizedlist>
+<listitem><para><computeroutput>bool start(std::string filename, std::string read_write)</computeroutput>: Opens an HDF5 file in either read or write mode.</para>
+</listitem><listitem><para><computeroutput>void end()</computeroutput>: Closes the HDF5 file.</para>
+</listitem><listitem><para><computeroutput>void read(graph_hdf5_w* out, std::string set_name)</computeroutput>: Reads a <computeroutput>graph_hdf5_w</computeroutput> object from a dataset in the HDF5 file.</para>
+</listitem><listitem><para><computeroutput>H5::DataSet* dataset(std::string set_name, hid_t type, long long unsigned int length)</computeroutput>: Creates a new dataset in the HDF5 file.</para>
+</listitem><listitem><para><computeroutput>H5::DataSet* dataset(std::string set_name)</computeroutput>: Opens an existing dataset in the HDF5 file.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;std::string&gt; dataset_names()</computeroutput>: Returns a list of all the dataset names in the HDF5 file.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="io_module_page_1io_types">
+<title>Data Types</title><para>The <computeroutput>io</computeroutput> module defines several data types for handling the data from ROOT and HDF5 files.</para>
+<sect2 id="io_module_page_1io_types_data_t">
+<title>The data_t Struct</title><para>The <computeroutput>data_t</computeroutput> struct is a data container for a single leaf in a ROOT tree. It provides methods for accessing the data in the leaf.</para>
+</sect2>
+<sect2 id="io_module_page_1io_types_graph_hdf5">
+<title>The graph_hdf5 and graph_hdf5_w Structs</title><para>The <computeroutput>graph_hdf5</computeroutput> and <computeroutput>graph_hdf5_w</computeroutput> structs are used for serializing and deserializing <computeroutput>graph_t</computeroutput> objects to and from HDF5 files.</para>
+</sect2>
+<sect2 id="io_module_page_1io_types_folds_t">
+<title>The folds_t Struct</title><para>The <computeroutput>folds_t</computeroutput> struct is used for storing k-fold information. </para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/io/io.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,68 @@
+/**
+ * @file memory.h (conuix)
+ * @brief Low-level @c long double matrix memory management utilities for the
+ *        Conuix solver.
+ * @details Provides functions to allocate, free, copy, add/subtract, scalar
+ *          multiply, transpose, and compute trace/determinant/element
+ *          accessors on raw @c long double** arrays.
+ */
+
+/**
+ * @fn long double** alloc(const int dim_i, const int dim_j)
+ * @brief Allocate a @p dim_i × @p dim_j array initialised to zero.
+ * @return Pointer to the new array.
+ */
+
+/**
+ * @fn long double** flush(long double** dmx, const int dim_i)
+ * @brief Free the 2D array @p dmx (which has @p dim_i rows) and return
+ *        @c nullptr.
+ * @param dmx   Array to free.
+ * @param dim_i Number of rows.
+ * @return @c nullptr.
+ */
+
+/**
+ * @fn void copy(long double** from, long double** to, const int dim_i, const int dim_j)
+ * @brief Deep-copy array @p from into @p to.
+ * @param from  Source array.
+ * @param to    Destination array.
+ * @param dim_i Rows.
+ * @param dim_j Columns.
+ */
+
+/**
+ * @fn void ops(long double** O, long double** A, long double** B, const int dim_i, const int dim_j, const float sign)
+ * @brief Compute @c O = A + sign*B element-wise.
+ * @param O     Output array.
+ * @param A     First input.
+ * @param B     Second input.
+ * @param dim_i Rows.
+ * @param dim_j Columns.
+ * @param sign  +1.0 for addition, -1.0 for subtraction.
+ */
+
+/**
+ * @fn void opm(long double** O, long double** A, const int dim_i, const int dim_j, const float c)
+ * @brief Multiply all elements of @p A by scalar @p c and store in @p O.
+ * @param O     Output array.
+ * @param A     Input array.
+ * @param dim_i Rows.
+ * @param dim_j Columns.
+ * @param c     Scalar multiplier.
+ */
+
+/**
+ * @fn void opt(long double** O, long double** A, const int dim_i, const int dim_j)
+ * @brief Transpose @p A and store in @p O.
+ */
+
+/**
+ * @fn long double _trace(long double** A)
+ * @brief Return the trace of the 3×3 matrix @p A.
+ */
+
+/**
+ * @fn long double _det(long double** v)
+ * @brief Return the determinant of the 3×3 matrix @p v.
+ */

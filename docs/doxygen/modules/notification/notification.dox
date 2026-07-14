@@ -1,0 +1,34 @@
+
+/**
+ * @file notification.dox
+ * @brief Detailed documentation for the notification class.
+ *
+ * @page notification_module_page Notification Module
+ *
+ * @section notification_module_intro Introduction
+ * The `notification` module provides a simple class for displaying formatted messages and progress bars in the console.
+ *
+ * @section notification_class The notification Class
+ * The `notification` class is the main component of this module.
+ *
+ * @subsection notification_ctor Constructor and Destructor
+ * - `notification()`: The constructor.
+ * - `~notification()`: The destructor.
+ *
+ * @subsection notification_methods_messaging Messaging
+ * - `void success(std::string message)`: Displays a success message in green.
+ * - `void warning(std::string message)`: Displays a warning message in yellow.
+ * - `void failure(std::string message)`: Displays a failure message in red.
+ * - `void info(std::string message)`: Displays an informational message in blue.
+ *
+ * @subsection notification_methods_progressbars Progress Bars
+ * - `void progressbar(float lProgress, std::string title)`: Displays a simple progress bar.
+ * - `void progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title)`: Displays multiple progress bars for multi-threaded tasks.
+ * - `void progressbar1(std::vector<size_t>* threads, size_t l, std::string title)`: A helper function for displaying a progress bar for a single task with multiple threads.
+ * - `void progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title)`: Another helper function for displaying a progress bar.
+ * - `void progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title)`: A more advanced progress bar for monitoring multiple threads with individual titles.
+ *
+ * @subsection notification_methods_threading Thread Management
+ * - `void monitor(std::vector<std::thread*>* thr)`: Monitors a vector of threads and joins them when they are finished.
+ * - `int running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt)`: Checks the status of a vector of threads and returns the number of running threads.
+ */

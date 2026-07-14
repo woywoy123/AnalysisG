@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="event_module_page" kind="page">
+    <compoundname>event_module_page</compoundname>
+    <title>Event Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="event_module_page_1event_module_intro">
+<title>Introduction</title><para>The <computeroutput>event</computeroutput> module provides the base template for representing a physics event in the |g-framework|. The <computeroutput>event_template</computeroutput> class defines the common interface and functionality for all event types.</para>
+</sect1>
+<sect1 id="event_module_page_1event_template_class">
+<title>The event_template Class</title><para>The <computeroutput>event_template</computeroutput> class is an abstract base class that defines the structure of an event.</para>
+<sect2 id="event_module_page_1event_template_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>event_template()</computeroutput>: The constructor initializes the properties of the event, such as <computeroutput>trees</computeroutput>, <computeroutput>branches</computeroutput>, <computeroutput>leaves</computeroutput>, <computeroutput>name</computeroutput>, <computeroutput>hash</computeroutput>, <computeroutput>tree</computeroutput>, <computeroutput>weight</computeroutput>, and <computeroutput>index</computeroutput>, by setting up their respective setters and getters.</para>
+</listitem><listitem><para><computeroutput>~event_template()</computeroutput>: The destructor cleans up the resources, including deregistering particles.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="event_module_page_1event_template_methods_virtual">
+<title>Virtual Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>event_template* clone()</computeroutput>: Creates a copy of the event object. This is a pure virtual function that must be implemented by derived classes.</para>
+</listitem><listitem><para><computeroutput>void build(element_t* el)</computeroutput>: Populates the event&apos;s data members from an <computeroutput>element_t</computeroutput> object. This is a virtual function that can be overridden by derived classes.</para>
+</listitem><listitem><para><computeroutput>void CompileEvent()</computeroutput>: This method is intended to be overridden by derived classes to implement the logic for reconstructing the event, such as linking particles together.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="event_module_page_1event_template_methods_building">
+<title>Event Building</title><para><itemizedlist>
+<listitem><para><computeroutput>void build_mapping(std::map&lt;std::string, data_t*&gt;* evnt)</computeroutput>: Builds the internal mapping between the data leaves and the tree/branch structure.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;std::string, event_template*&gt; build_event(std::map&lt;std::string, data_t*&gt;* evnt)</computeroutput>: This is the main event building method. It uses the mapping created by <computeroutput>build_mapping</computeroutput> to construct <computeroutput>event_template</computeroutput> objects for each tree and populates them with data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="event_module_page_1event_template_methods_properties">
+<title>Property Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void set_trees(std::vector&lt;std::string&gt;* inpt, event_template* ev)</computeroutput>: Sets the tree names for the event.</para>
+</listitem><listitem><para><computeroutput>void set_branches(std::vector&lt;std::string&gt;* inpt, event_template* ev)</computeroutput>: Sets the branch names for the event.</para>
+</listitem><listitem><para><computeroutput>void add_leaf(std::string key, std::string val = "")</computeroutput>: Adds a leaf to the event.</para>
+</listitem><listitem><para><computeroutput>void get_leaves(std::vector&lt;std::string&gt;* inpt, event_template* ev)</computeroutput>: Retrieves all the leaf names.</para>
+</listitem><listitem><para><computeroutput>void set_name(std::string* name, event_template* ev)</computeroutput>: Sets the name of the event.</para>
+</listitem><listitem><para><computeroutput>void set_hash(std::string* path, event_template* ev)</computeroutput>: Generates and sets a hash for the event.</para>
+</listitem><listitem><para><computeroutput>void get_hash(std::string* val, event_template* ev)</computeroutput>: Retrieves the hash of the event.</para>
+</listitem><listitem><para><computeroutput>void set_weight(double* inpt, event_template* ev)</computeroutput>: Sets the event weight.</para>
+</listitem><listitem><para><computeroutput>void set_index(long* inpt, event_template* ev)</computeroutput>: Sets the event index.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="event_module_page_1event_template_methods_particle">
+<title>Particle Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void flush_leaf_string()</computeroutput>: Clears the registered leaves, trees, and branches.</para>
+</listitem><listitem><para><computeroutput>void flush_particles()</computeroutput>: Clears all the particles from the event.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="event_module_page_1name_namespace">
+<title>The name Namespace</title><para>The <computeroutput>name</computeroutput> namespace provides utility functions for handling names.</para>
+<sect2 id="event_module_page_1name_functions">
+<title>Functions</title><para><itemizedlist>
+<listitem><para><computeroutput>std::string escapeXmlSpecialCharacters(const std::string&amp; input)</computeroutput>: Escapes XML special characters in a string.</para>
+</listitem><listitem><para><computeroutput>std::string standardizeName(const std::string&amp; name)</computeroutput>: Standardizes a name by converting it to lowercase with the first letter capitalized and escaping XML special characters. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/event/event.dox"/>
+  </compounddef>
+</doxygen>

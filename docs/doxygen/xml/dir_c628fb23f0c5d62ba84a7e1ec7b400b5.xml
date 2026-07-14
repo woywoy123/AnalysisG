@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="dir_c628fb23f0c5d62ba84a7e1ec7b400b5" kind="dir">
+    <compoundname>selections/mc20</compoundname>
+    <innerdir refid="dir_54fdcfa4280221a3a57777b53f7935d1">selections/mc20/matching</innerdir>
+    <innerdir refid="dir_90494a79c80303b5554f3296843e9aef">selections/mc20/topkinematics</innerdir>
+    <innerdir refid="dir_350d61c487fef4cce104db46804781df">selections/mc20/topmatching</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc20/"/>
+  </compounddef>
+</doxygen>

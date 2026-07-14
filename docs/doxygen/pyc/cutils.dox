@@ -1,0 +1,12 @@
+/**
+ * @file cutils.dox
+ * @brief Detailed documentation for the cutils module within the AnalysisG.pyc framework, specifically highlighting its CUDA kernel implementations.
+ *
+ * @page cutils_page cutils
+ *
+ * @section cutils_intro Introduction
+ * The `cutils` module provides a collection of common utility functions, many of which are implemented as CUDA kernels for GPU acceleration. These utilities are designed to support various computationally intensive operations across the AnalysisG framework, offering highly efficient implementations for frequently used tasks by leveraging parallel processing capabilities of NVIDIA GPUs.
+ *
+ * @section cutils_contents Contents
+ * This module contains general-purpose utility functions, with a focus on GPU-accelerated operations. Specific contents will be detailed as they are implemented, emphasizing their CUDA-based nature where applicable.
+ */

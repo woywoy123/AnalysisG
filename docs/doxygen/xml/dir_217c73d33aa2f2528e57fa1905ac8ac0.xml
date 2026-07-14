@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="dir_217c73d33aa2f2528e57fa1905ac8ac0" kind="dir">
+    <compoundname>selections/mc16</compoundname>
+    <innerdir refid="dir_22822b97f0af7f3754dc9599ed767a96">selections/mc16/childrenkinematics</innerdir>
+    <innerdir refid="dir_4fa79e83a97f3e176c62f00d26201ba1">selections/mc16/decaymodes</innerdir>
+    <innerdir refid="dir_b6d51eaf04b0c0b8b937b5e2a19354c6">selections/mc16/event</innerdir>
+    <innerdir refid="dir_f2bf50629a429bd12b7da059afdc6cf7">selections/mc16/parton</innerdir>
+    <innerdir refid="dir_e372460a25c959002ef56e8992cb7584">selections/mc16/topjets</innerdir>
+    <innerdir refid="dir_688adb0efc40cffe5835ad822e4a8040">selections/mc16/topkinematics</innerdir>
+    <innerdir refid="dir_ac80bb13f1aa2a9c9e1fca9c27fa37e5">selections/mc16/topmatching</innerdir>
+    <innerdir refid="dir_82f4a673a0ce8bbf4383134ac5390857">selections/mc16/toptruthjets</innerdir>
+    <innerdir refid="dir_6c54cb48c6bf200a6a67f010ec28294b">selections/mc16/zprime</innerdir>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="selections/mc16/"/>
+  </compounddef>
+</doxygen>

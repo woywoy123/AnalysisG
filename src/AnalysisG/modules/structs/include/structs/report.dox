@@ -1,0 +1,122 @@
+/**
+ * @file report.h
+ * @brief Training-progress report struct for a model epoch.
+ * @details @c model_report accumulates per-epoch loss and accuracy metrics for
+ *          each mode (training / validation / evaluation) and can format them
+ *          as a human-readable string.
+ */
+
+/**
+ * @struct model_report
+ * @brief Stores and formats the training progress of a single epoch for one
+ *        k-fold.
+ * @details Tracks per-epoch, per-mode (training / validation / evaluation)
+ *          loss and accuracy values at graph, node, and edge level, indexed
+ *          by feature name.  The @c current_lr vector records the learning
+ *          rate of each parameter group at the end of the epoch.
+ *
+ *          @c is_complete is set to @c true when the epoch loop finishes;
+ *          @c waiting_plot points to the @c metrics object that is waiting
+ *          to dump plots for this epoch (or @c nullptr).  @c progress tracks
+ *          fractional completion within an epoch; @c iters and @c num_evnt
+ *          count gradient updates and processed events respectively.
+ *
+ *          @c print() formats all maps as a multi-line human-readable string.
+ *          @c prx() formats one individual map with a given title prefix.
+ */
+
+/**
+ * @var int model_report::k
+ * @brief K-fold index for this report.
+ */
+
+/**
+ * @var int model_report::epoch
+ * @brief Epoch number for this report.
+ */
+
+/**
+ * @var bool model_report::is_complete
+ * @brief @c true once the epoch has finished processing.
+ */
+
+/**
+ * @var metrics* model_report::waiting_plot
+ * @brief Pointer to the @c metrics object waiting to produce plots for this
+ *        epoch, or @c nullptr if not applicable.
+ */
+
+/**
+ * @var std::vector<double> model_report::current_lr
+ * @brief Per-parameter-group learning rates at the end of this epoch.
+ */
+
+/**
+ * @var model_report::loss_graph
+ * @brief Graph-level loss values keyed by mode then feature name.
+ */
+
+/**
+ * @var model_report::loss_node
+ * @brief Node-level loss values keyed by mode then feature name.
+ */
+
+/**
+ * @var model_report::loss_edge
+ * @brief Edge-level loss values keyed by mode then feature name.
+ */
+
+/**
+ * @var model_report::accuracy_graph
+ * @brief Graph-level accuracy values keyed by mode then feature name.
+ */
+
+/**
+ * @var model_report::accuracy_node
+ * @brief Node-level accuracy values keyed by mode then feature name.
+ */
+
+/**
+ * @var model_report::accuracy_edge
+ * @brief Edge-level accuracy values keyed by mode then feature name.
+ */
+
+/**
+ * @var std::string model_report::run_name
+ * @brief Name of the training run (as passed to @c analysis::add_model).
+ */
+
+/**
+ * @var std::string model_report::mode
+ * @brief Current mode string (@c "training", @c "validation", or
+ *        @c "evaluation").
+ */
+
+/**
+ * @var long model_report::iters
+ * @brief Number of gradient-update iterations performed so far.
+ */
+
+/**
+ * @var long model_report::num_evnt
+ * @brief Number of events processed in the current epoch.
+ */
+
+/**
+ * @var float model_report::progress
+ * @brief Fractional progress through the epoch in [0, 1].
+ */
+
+/**
+ * @fn std::string model_report::print()
+ * @brief Format all accumulated metrics as a multi-line human-readable string.
+ * @return Formatted report string.
+ */
+
+/**
+ * @fn std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title)
+ * @brief Format one metric map (e.g. @c loss_graph) with the given title.
+ * @param data  Pointer to the metric map to format.
+ * @param title Section title to prepend.
+ * @return Formatted section string.
+ */

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="sampletracer_module_page" kind="page">
+    <compoundname>sampletracer_module_page</compoundname>
+    <title>Sample Tracer Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="sampletracer_module_page_1sampletracer_module_intro">
+<title>Introduction</title><para>The <computeroutput>sampletracer</computeroutput> module provides a class for tracing and processing samples in a multi-threaded environment. It is responsible for managing the data containers, distributing the processing tasks, and monitoring the progress.</para>
+</sect1>
+<sect1 id="sampletracer_module_page_1sampletracer_class">
+<title>The sampletracer Class</title><para>The <computeroutput>sampletracer</computeroutput> class is the main component of this module.</para>
+<sect2 id="sampletracer_module_page_1sampletracer_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>sampletracer()</computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~sampletracer()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="sampletracer_module_page_1sampletracer_methods_config">
+<title>Configuration</title><para><itemizedlist>
+<listitem><para><computeroutput>void silent()</computeroutput>: Sets the execution mode to silent (no progress output).</para>
+</listitem><listitem><para><computeroutput>void verbose()</computeroutput>: Sets the execution mode to verbose (with progress output).</para>
+</listitem><listitem><para><computeroutput>void set_output_path(std::string path)</computeroutput>: Sets the output path for the processed data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="sampletracer_module_page_1sampletracer_methods_data">
+<title>Data Management</title><para><itemizedlist>
+<listitem><para><computeroutput>bool add_meta_data(meta* meta_, std::string filename)</computeroutput>: Adds metadata for a given file.</para>
+</listitem><listitem><para><computeroutput>meta* get_meta_data(std::string filename)</computeroutput>: Retrieves the metadata for a given file.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;event_template*&gt; get_events(std::string label)</computeroutput>: Retrieves all the events with a specific label.</para>
+</listitem><listitem><para><computeroutput>bool add_event(event_template* ev, std::string label)</computeroutput>: Adds an event template to the tracer.</para>
+</listitem><listitem><para><computeroutput>bool add_graph(graph_template* gr, std::string label)</computeroutput>: Adds a graph template to the tracer.</para>
+</listitem><listitem><para><computeroutput>bool add_selection(selection_template* sel)</computeroutput>: Adds a selection template to the tracer.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="sampletracer_module_page_1sampletracer_methods_processing">
+<title>Processing</title><para><itemizedlist>
+<listitem><para><computeroutput>void compile_objects(int threads)</computeroutput>: This is the main processing method. It distributes the compilation of the events, graphs, and selections across multiple threads.</para>
+</listitem><listitem><para><computeroutput>void populate_dataloader(dataloader* dl)</computeroutput>: Populates a <computeroutput>dataloader</computeroutput> with the processed graph data.</para>
+</listitem><listitem><para><computeroutput>void fill_selections(std::map&lt;std::string, selection_template*&gt;* inpt)</computeroutput>: Fills a map of selection templates with the results of the selections.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="sampletracer_module_page_1sampletracer_methods_threading">
+<title>Thread Management</title><para><itemizedlist>
+<listitem><para><computeroutput>int running(std::vector&lt;std::thread*&gt;* threads_, std::vector&lt;size_t&gt;* handles, std::vector&lt;size_t&gt;* progres)</computeroutput>: Checks the status of the running threads.</para>
+</listitem><listitem><para><computeroutput>void monitor(std::vector&lt;std::thread*&gt;* threads_)</computeroutput>: Monitors the threads and joins them when they are finished. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/sampletracer/sampletracer.dox"/>
+  </compounddef>
+</doxygen>

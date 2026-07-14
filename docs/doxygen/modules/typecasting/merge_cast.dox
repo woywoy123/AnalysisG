@@ -1,0 +1,35 @@
+/**
+ * @file merge_cast.h
+ * @brief Detailed documentation for the merge_cast.h header.
+ *
+ * @section merge_cast_intro merge_cast.h
+ * The `merge_cast.h` header contains overloaded template utilities designed to cleanly 
+ * merge, sum, and contract nested C++ containers like `std::vector` and `std::map`. 
+ * These templates are extensively used in event aggregation and graph building to 
+ * combine data from multiple sources efficiently.
+ *
+ * @fn template <typename G> void merge_data(std::vector<G>* out, std::vector<G>* p2)
+ * @brief Appends elements of vector `p2` to the end of vector `out`.
+ * @param out Pointer to the destination vector.
+ * @param p2 Pointer to the source vector.
+ *
+ * @fn template <typename g, typename G> void merge_data(std::map<g, G>* out, std::map<g, G>* p2)
+ * @brief Recursively merges two maps. If keys overlap, it delegates to `merge_data` for the values.
+ * @param out Pointer to the destination map.
+ * @param p2 Pointer to the source map to be merged.
+ *
+ * @fn template <typename G> void sum_data(G* out, G* p2)
+ * @brief Sums a primitive or vector type in place (`*out += *p2`).
+ * @param out Pointer to the destination.
+ * @param p2 Pointer to the added value.
+ *
+ * @fn template <typename g, typename G> void sum_data(std::map<g, G>* out, std::map<g, G>* p2)
+ * @brief Recursively iterates over a map and applies `sum_data` to matching keys.
+ * @param out Pointer to the destination map.
+ * @param p2 Pointer to the map to be added.
+ *
+ * @fn template <typename g> void contract_data(std::vector<g>* out, std::vector<std::vector<g>>* p2)
+ * @brief Flattens a 2D vector `p2` and appends all its inner elements sequentially into the 1D vector `out`.
+ * @param out Pointer to the destination 1D vector.
+ * @param p2 Pointer to the source 2D vector.
+ */

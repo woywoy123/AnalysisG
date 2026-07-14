@@ -1,0 +1,67 @@
+/**
+ * @file graph_bsm_4tops.dox
+ * @brief Detailed documentation for specialized graph classes within the AnalysisG framework for BSM 4-top events.
+ *
+ * @page BSM4TopsGraphs_page BSM4Tops Graphs
+ *
+ * @section BSM4TopsGraphs_intro Introduction
+ * The `graph_bsm_4tops.pyx` module defines a collection of specialized graph classes tailored for Beyond Standard Model (BSM) 4-top quark production events within the AnalysisG framework. These classes, including `GraphTops`, `GraphChildren`, `GraphTruthJets`, `GraphTruthJetsNoNu`, `GraphJets`, `GraphJetsNoNu`, `GraphDetectorLep`, and `GraphDetector`, all inherit from the generic `GraphTemplate`. They encapsulate specific C++ graph types, providing a high-performance and Python-friendly interface to detailed graph structures relevant to BSM 4-top analyses.
+ *
+ * @section BSM4TopsGraphs_classes Specialized Graph Classes
+ * Each class below is a `cdef class`, indicating its implementation as a Cython extension type. They all inherit from `GraphTemplate`, gaining its base functionalities for graph indexing, tree association, and pre-selection management. Their primary role is to wrap a specific C++ graph object, allowing for specialized data access and manipulation.
+ *
+ * @subsection BSM4TopsGraphs_GraphTops_class GraphTops Class
+ * - **Introduction**: Represents a graph focused on top quarks in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_tops` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_tops` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphChildren_class GraphChildren Class
+ * - **Introduction**: Represents a graph focused on the children particles in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_children` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_children` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphTruthJets_class GraphTruthJets Class
+ * - **Introduction**: Represents a graph constructed from truth-level jets in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_truthjets` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_truthjets` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphTruthJetsNoNu_class GraphTruthJetsNoNu Class
+ * - **Introduction**: Represents a graph constructed from truth-level jets, excluding neutrinos, in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_truthjets_nonu` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_truthjets_nonu` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphJets_class GraphJets Class
+ * - **Introduction**: Represents a graph constructed from reconstructed jets in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_jets` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_jets` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphJetsNoNu_class GraphJetsNoNu Class
+ * - **Introduction**: Represents a graph constructed from reconstructed jets, excluding neutrinos, in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_jets_nonu` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_jets_nonu` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphDetectorLep_class GraphDetectorLep Class
+ * - **Introduction**: Represents a graph focusing on detector-level leptons in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_jets_detector_lep` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_jets_detector_lep` object via `self.ptr`.
+ *
+ * @subsection BSM4TopsGraphs_GraphDetector_class GraphDetector Class
+ * - **Introduction**: Represents a graph constructed from general detector-level objects in BSM 4-top events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_detector` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_detector` object via `self.ptr`.
+ *
+ * @section BSM4TopsGraphs_cpp_interaction C++ Interaction
+ * All classes in this module leverage Cython's capabilities for seamless C++ integration:
+ * - `cdef class ...`: Declares each class as a Cython extension type.
+ * - `cdef <cpp_type> *ptr`: A C++ pointer to a specific graph type (e.g., `graph_tops*`, `graph_jets*`), managed by the Cython class.
+ * - `from AnalysisG.core.graph_template cimport GraphTemplate`: Imports the base `GraphTemplate` class, from which all these specialized classes inherit.
+ * - `from AnalysisG.graphs.bsm_4tops.graph_bsm_4tops cimport *`: Imports the C++ graph class declarations from their `.pxd` file.
+ */

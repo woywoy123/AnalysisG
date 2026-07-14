@@ -1,0 +1,110 @@
+/**
+ * @file solvers.h (ellipse)
+ * @brief Polynomial root finders, matrix generators, low-level matrix
+ *        arithmetic, and conic-section utilities used by the ellipse neutrino
+ *        solver.
+ */
+
+/**
+ * @fn mtx* find_roots(double a, double b, double c)
+ * @brief Solve the quadratic @c a·x² + b·x + c = 0.
+ * @return Pointer to a matrix of roots (may be complex).
+ */
+
+/**
+ * @fn mtx* find_roots(double a, double b, double c, double d)
+ * @brief Solve the cubic @c a·x³ + b·x² + c·x + d = 0.
+ * @return Pointer to a matrix of roots.
+ */
+
+/**
+ * @fn mtx* solve_cubic(double a, double b, double c, double d)
+ * @brief Analytic cubic solver.
+ * @return Pointer to a 3×1 matrix of roots.
+ */
+
+/**
+ * @fn mtx* find_roots(double a, double b, double c, double d, double e)
+ * @brief Solve the quartic @c a·x⁴ + b·x³ + c·x² + d·x + e = 0.
+ * @return Pointer to a matrix of roots.
+ */
+
+/**
+ * @fn mtx* smatx(double px, double py, double pz)
+ * @brief Construct the 3×3 antisymmetric (cross-product) matrix for the
+ *        three-vector (px, py, pz).
+ * @return Pointer to the matrix.
+ */
+
+/**
+ * @fn mtx* Rz(double angle)
+ * @brief Rotation matrix about the z-axis by @p angle (radians).
+ * @return Pointer to the 3×3 rotation matrix.
+ */
+
+/**
+ * @fn mtx* Ry(double angle)
+ * @brief Rotation matrix about the y-axis.
+ * @return Pointer to the 3×3 rotation matrix.
+ */
+
+/**
+ * @fn mtx* Rx(double angle)
+ * @brief Rotation matrix about the x-axis.
+ * @return Pointer to the 3×3 rotation matrix.
+ */
+
+/**
+ * @fn mtx* unit()
+ * @brief Return a 3×3 identity matrix.
+ * @return Pointer to the identity matrix.
+ */
+
+/**
+ * @fn int intersections_ellipse_line(mtx* ellipse, mtx* line, mtx* pts)
+ * @brief Find the intersection points of an ellipse and a line in
+ *        homogeneous coordinates.
+ * @param ellipse 3×3 conic matrix.
+ * @param line    3×1 line vector.
+ * @param pts     Output 3×2 matrix of homogeneous intersection points.
+ * @return Number of intersections found (0, 1, or 2).
+ */
+
+/**
+ * @fn int intersection_ellipses(mtx* A, mtx* B, mtx** lines, mtx** pts, mtx** sols)
+ * @brief Find the intersection points of two conics @p A and @p B.
+ * @param A     First conic (3×3).
+ * @param B     Second conic (3×3).
+ * @param lines Output degenerate lines.
+ * @param pts   Output intersection points.
+ * @param sols  Output solution matrices.
+ * @return Number of solutions.
+ */
+
+/**
+ * @fn mtx* intersection_angle(mtx* H1, mtx* H2, mtx* MET, int* n_sols)
+ * @brief Compute the neutrino angle(s) satisfying the MET constraint.
+ * @param H1     First H-tilde matrix.
+ * @param H2     Second H-tilde matrix.
+ * @param MET    Missing transverse momentum vector.
+ * @param n_sols Output: number of solutions found.
+ * @return Pointer to a matrix of solution angles.
+ */
+
+/**
+ * @fn mtx make_ellipse(mtx* H, double angle)
+ * @brief Evaluate the neutrino ellipse parametrically at @p angle.
+ * @param H     H-tilde matrix.
+ * @param angle Parametric angle.
+ * @return 3-vector on the ellipse.
+ */
+
+/**
+ * @fn double distance(mtx* H1, double a1, mtx* H2, double a2)
+ * @brief Compute the spatial distance between two ellipse points.
+ * @param H1 First H-tilde.
+ * @param a1 Parametric angle on H1's ellipse.
+ * @param H2 Second H-tilde.
+ * @param a2 Parametric angle on H2's ellipse.
+ * @return Distance.
+ */

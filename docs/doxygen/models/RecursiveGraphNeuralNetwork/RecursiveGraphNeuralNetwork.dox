@@ -1,0 +1,54 @@
+/**
+ * @file RecursiveGraphNeuralNetwork.dox
+ * @brief Detailed documentation for the RecursiveGraphNeuralNetwork Cython class, a specialized Recursive Graph Neural Network (RGNN) model implementation.
+ *
+ * @page RecursiveGraphNeuralNetwork_page RecursiveGraphNeuralNetwork Model
+ *
+ * @section RecursiveGraphNeuralNetwork_intro Introduction
+ * The `RecursiveGraphNeuralNetwork` class, implemented in Cython, represents a specific implementation of a Recursive Graph Neural Network (RGNN) model within the AnalysisG framework. It inherits from the generic `ModelTemplate` class, extending its functionalities to incorporate features and structures relevant to the RGNN architecture. This class provides a high-performance interface to an underlying C++ RGNN model, enabling efficient training and inference for hierarchical graph-based data.
+ *
+ * @section RecursiveGraphNeuralNetwork_class The RecursiveGraphNeuralNetwork Class
+ * `RecursiveGraphNeuralNetwork` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `ModelTemplate`, thereby gaining all the base functionalities for managing input/output graph features, device settings, and checkpoint paths. Its primary role is to encapsulate a C++ `recursivegraphneuralnetwork` object, which likely contains the core RGNN model logic and parameters.
+ *
+ * @subsection RecursiveGraphNeuralNetwork_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `recursivegraphneuralnetwork` object with default parameters (1024, 0.1) and assigns its pointer to `self.rnn`. It then assigns `self.rnn` to `self.nn_ptr`, allowing `RecursiveGraphNeuralNetwork` to be treated as a generic `ModelTemplate` while still managing its specialized C++ object.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `recursivegraphneuralnetwork` object pointed to by `self.nn_ptr` (which is `self.rnn`), ensuring proper memory management for the specialized model.
+ *
+ * @subsection RecursiveGraphNeuralNetwork_properties Properties
+ * These properties provide controlled access to specific parameters and configurations of the Recursive Graph Neural Network model.
+ *
+ * - `@property dx -> int`:
+ *   Gets and sets the `_dx` parameter of the underlying C++ `recursivegraphneuralnetwork` object. This likely relates to the dimension of the node features.
+ *
+ * - `@property x -> int`:
+ *   Gets and sets the `_x` parameter of the underlying C++ `recursivegraphneuralnetwork` object. This likely relates to the input feature dimension.
+ *
+ * - `@property output -> int`:
+ *   Gets and sets the `_output` parameter of the underlying C++ `recursivegraphneuralnetwork` object. This likely relates to the output dimension of the model.
+ *
+ * - `@property rep -> int`:
+ *   Gets and sets the `_rep` parameter of the underlying C++ `recursivegraphneuralnetwork` object. This likely relates to the number of message passing steps or repetitions.
+ *
+ * - `@property is_mc -> bool`:
+ *   Gets and sets the `is_mc` flag of the underlying C++ `recursivegraphneuralnetwork` object. This likely indicates whether the model is processing Monte Carlo data.
+ *
+ * - `@property res_mass -> double`:
+ *   Gets and sets the `res_mass` parameter of the underlying C++ `recursivegraphneuralnetwork` object. This likely relates to a resonance mass used in the model.
+ *
+ * - `@property drop_out -> double`:
+ *   Gets and sets the `drop_out` rate of the underlying C++ `recursivegraphneuralnetwork` object. This is a regularization parameter.
+ *
+ * @section RecursiveGraphNeuralNetwork_cpp_interaction C++ Interaction
+ * The `RecursiveGraphNeuralNetwork` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class RecursiveGraphNeuralNetwork`: Declares `RecursiveGraphNeuralNetwork` as a Cython extension type.
+ * - `cdef recursivegraphneuralnetwork *rnn`: A C++ pointer to a `recursivegraphneuralnetwork` object, which is the specialized C++ implementation of the RGNN model.
+ * - `self.nn_ptr = self.rnn`: This line demonstrates how the base `ModelTemplate`'s C++ pointer (`nn_ptr`) is made to point to the specialized `recursivegraphneuralnetwork` object, allowing `RecursiveGraphNeuralNetwork` to fulfill the `ModelTemplate` interface.
+ * - `from AnalysisG.core.model_template cimport ModelTemplate`: Imports the base `ModelTemplate` class, from which `RecursiveGraphNeuralNetwork` inherits.
+ * - `from AnalysisG.models.RecursiveGraphNeuralNetwork.RecursiveGraphNeuralNetwork cimport recursivegraphneuralnetwork`: Imports the C++ `recursivegraphneuralnetwork` class declaration from its `.pxd` file.
+ */

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="meta_module_page" kind="page">
+    <compoundname>meta_module_page</compoundname>
+    <title>Meta Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="meta_module_page_1meta_module_intro">
+<title>Introduction</title><para>The <computeroutput>meta</computeroutput> module provides a class for storing and accessing metadata associated with a physics analysis dataset. This includes information about the dataset, such as its name, DSID, cross-section, and the number of events, as well as information about the individual files in the dataset.</para>
+</sect1>
+<sect1 id="meta_module_page_1meta_class">
+<title>The meta Class</title><para>The <computeroutput>meta</computeroutput> class is the main component of this module.</para>
+<sect2 id="meta_module_page_1meta_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>meta()</computeroutput>: The constructor initializes the properties of the <computeroutput>meta</computeroutput> object by setting up their respective getters.</para>
+</listitem><listitem><para><computeroutput>~meta()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="meta_module_page_1meta_methods_parsing">
+<title>Parsing Metadata</title><para><itemizedlist>
+<listitem><para><computeroutput>void parse_json(std::string inpt)</computeroutput>: Parses a JSON string containing metadata and populates the <computeroutput>meta_data</computeroutput> struct.</para>
+</listitem><listitem><para><computeroutput>void compiler()</computeroutput>: A helper method for <computeroutput>parse_json</computeroutput> that extracts the metadata from the parsed JSON document.</para>
+</listitem><listitem><para><computeroutput>void scan_data(TObject* obj)</computeroutput>: Scans a ROOT object (e.g., a <computeroutput>TTree</computeroutput> or <computeroutput>TH1F</computeroutput>) and extracts metadata from it.</para>
+</listitem><listitem><para><computeroutput>void scan_sow(TObject* obj)</computeroutput>: A helper method for <computeroutput>scan_data</computeroutput> that specifically handles the extraction of sum-of-weights information.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="meta_module_page_1meta_methods_access">
+<title>Accessing Metadata</title><para>The <computeroutput>meta</computeroutput> class provides a large number of getter methods for accessing the various metadata fields. These getters are implemented as <computeroutput>property</computeroutput> objects, which allows for a clean and consistent interface. Some examples include:<itemizedlist>
+<listitem><para><computeroutput>get_isMC(bool* val, meta* m)</computeroutput></para>
+</listitem><listitem><para><computeroutput>get_cross_section_nb(double* val, meta* m)</computeroutput></para>
+</listitem><listitem><para><computeroutput>get_dsid(unsigned int* val, meta* m)</computeroutput></para>
+</listitem><listitem><para><computeroutput>get_DatasetName(std::string* val, meta* m)</computeroutput></para>
+</listitem><listitem><para><computeroutput>get_sum_of_weights(double* val, meta* m)</computeroutput></para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="meta_module_page_1meta_structs">
+<title>The meta_t and weights_t Structs</title><para><itemizedlist>
+<listitem><para><bold>meta_t</bold>: This struct holds the metadata for a single dataset. It contains a large number of fields for storing information such as the dataset name, DSID, cross-section, number of events, etc.</para>
+</listitem><listitem><para><bold>weights_t</bold>: This struct is used to store sum-of-weights information. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/meta/meta.dox"/>
+  </compounddef>
+</doxygen>

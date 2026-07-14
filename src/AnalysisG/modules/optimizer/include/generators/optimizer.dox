@@ -1,0 +1,103 @@
+/**
+ * @file optimizer.h
+ * @brief Training loop orchestrator.
+ * @details @c optimizer inherits @c tools and @c notification and drives the
+ *          training, validation, and evaluation loops for a single model
+ *          session.
+ */
+
+/**
+ * @class optimizer
+ * @brief Drives the training, validation, and evaluation loops.
+ * @details Inherits @c tools and @c notification.  Receives a @c dataloader
+ *          and a (model, optimizer-params) tuple via @c import_dataloader and
+ *          @c import_model_sessions respectively.  For each k-fold it
+ *          instantiates a separate copy of the model (stored in
+ *          @c kfold_sessions) and registers a @c model_report in @c reports.
+ *
+ *          @c launch_model(k) runs all training, validation, and evaluation
+ *          epochs for fold @p k, delegating to @c training_loop,
+ *          @c validation_loop, and @c evaluation_loop.  Each loop iterates
+ *          over the corresponding split from @c dataloader, calls
+ *          @c model_template::forward, accumulates losses in @c _losses, and
+ *          updates the @c model_report.  The @c metrics object is notified
+ *          after each epoch so it can capture histograms.
+ *
+ *          The @c m_settings member controls epochs, batch size, k-folds,
+ *          and which phases (training/validation/evaluation) to run.
+ */
+
+/**
+ * @fn optimizer::optimizer()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn optimizer::~optimizer()
+ * @brief Destructor.
+ */
+
+/**
+ * @var settings_t optimizer::m_settings
+ * @brief Copy of the run settings (epochs, batch size, etc.).
+ */
+
+/**
+ * @fn void optimizer::import_dataloader(dataloader* dl)
+ * @brief Attach the dataloader to this optimizer.
+ * @param dl Pointer to the dataloader.
+ */
+
+/**
+ * @fn void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models)
+ * @brief Import a model/optimizer-config tuple and initialise the model for
+ *        all k-folds.
+ * @param models Pointer to the (model, config) tuple.
+ */
+
+/**
+ * @fn void optimizer::training_loop(int k, int epoch)
+ * @brief Execute one training epoch for k-fold @p k.
+ * @param k     K-fold index.
+ * @param epoch Epoch number.
+ */
+
+/**
+ * @fn void optimizer::validation_loop(int k, int epoch)
+ * @brief Execute one validation epoch for k-fold @p k.
+ * @param k     K-fold index.
+ * @param epoch Epoch number.
+ */
+
+/**
+ * @fn void optimizer::evaluation_loop(int k, int epoch)
+ * @brief Execute one evaluation epoch for k-fold @p k.
+ * @param k     K-fold index.
+ * @param epoch Epoch number.
+ */
+
+/**
+ * @fn void optimizer::launch_model(int k)
+ * @brief Run all training/validation/evaluation epochs for k-fold @p k.
+ * @param k K-fold index.
+ */
+
+/**
+ * @var std::map<int, model_template*> optimizer::kfold_sessions
+ * @brief Map of k-fold index to the model instance for that fold.
+ */
+
+/**
+ * @var std::map<std::string, model_report*> optimizer::reports
+ * @brief Map of run name to the associated epoch report.
+ */
+
+/**
+ * @var metrics* optimizer::metric
+ * @brief Pointer to the metrics accumulator (not owned).
+ */
+
+/**
+ * @var dataloader* optimizer::loader
+ * @brief Pointer to the dataloader (not owned).
+ */

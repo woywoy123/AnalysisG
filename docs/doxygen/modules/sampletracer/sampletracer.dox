@@ -1,0 +1,39 @@
+
+/**
+ * @file sampletracer.dox
+ * @brief Detailed documentation for the sampletracer class.
+ *
+ * @page sampletracer_module_page Sample Tracer Module
+ *
+ * @section sampletracer_module_intro Introduction
+ * The `sampletracer` module provides a class for tracing and processing samples in a multi-threaded environment. It is responsible for managing the data containers, distributing the processing tasks, and monitoring the progress.
+ *
+ * @section sampletracer_class The sampletracer Class
+ * The `sampletracer` class is the main component of this module.
+ *
+ * @subsection sampletracer_ctor Constructor and Destructor
+ * - `sampletracer()`: The constructor.
+ * - `~sampletracer()`: The destructor.
+ *
+ * @subsection sampletracer_methods_config Configuration
+ * - `void silent()`: Sets the execution mode to silent (no progress output).
+ * - `void verbose()`: Sets the execution mode to verbose (with progress output).
+ * - `void set_output_path(std::string path)`: Sets the output path for the processed data.
+ *
+ * @subsection sampletracer_methods_data Data Management
+ * - `bool add_meta_data(meta* meta_, std::string filename)`: Adds metadata for a given file.
+ * - `meta* get_meta_data(std::string filename)`: Retrieves the metadata for a given file.
+ * - `std::vector<event_template*> get_events(std::string label)`: Retrieves all the events with a specific label.
+ * - `bool add_event(event_template* ev, std::string label)`: Adds an event template to the tracer.
+ * - `bool add_graph(graph_template* gr, std::string label)`: Adds a graph template to the tracer.
+ * - `bool add_selection(selection_template* sel)`: Adds a selection template to the tracer.
+ *
+ * @subsection sampletracer_methods_processing Processing
+ * - `void compile_objects(int threads)`: This is the main processing method. It distributes the compilation of the events, graphs, and selections across multiple threads.
+ * - `void populate_dataloader(dataloader* dl)`: Populates a `dataloader` with the processed graph data.
+ * - `void fill_selections(std::map<std::string, selection_template*>* inpt)`: Fills a map of selection templates with the results of the selections.
+ *
+ * @subsection sampletracer_methods_threading Thread Management
+ * - `int running(std::vector<std::thread*>* threads_, std::vector<size_t>* handles, std::vector<size_t>* progres)`: Checks the status of the running threads.
+ * - `void monitor(std::vector<std::thread*>* threads_)`: Monitors the threads and joins them when they are finished.
+ */

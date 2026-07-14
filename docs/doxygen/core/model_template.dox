@@ -1,0 +1,79 @@
+/**
+ * @file model_template.dox
+ * @brief Detailed documentation for the ModelTemplate Cython class.
+ *
+ * @page ModelTemplate_page ModelTemplate
+ *
+ * @section ModelTemplate_intro Introduction
+ * The `ModelTemplate` class, implemented in Cython, serves as a foundational base for machine learning models within the AnalysisG framework. It provides a standardized interface for managing input and output features for graph-based data, as well as configuring the computational device and model checkpoints. This class is designed to be inherited by specific model implementations, offering common functionalities and efficient interaction with an underlying C++ model structure.
+ *
+ * @section ModelTemplate_class The ModelTemplate Class
+ * `ModelTemplate` is a `cdef class`, indicating its implementation as a Cython extension type. This design allows for direct and optimized interaction with C++ objects and types, which is crucial for performance in machine learning applications. It encapsulates a pointer (`self.nn_ptr`) to a C++ `model_template` object, managing its lifecycle and exposing its parameters as Python properties.
+ *
+ * @subsection ModelTemplate_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes `self.rename` to `False`. If the instance is not `ModelTemplate` itself (i.e., it's a subclass), it returns immediately. Otherwise, it initializes a new C++ `model_template` object and assigns its pointer to `self.nn_ptr`.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer, intentionally left empty as primary initialization is handled by `__cinit__`.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. If the instance is not `ModelTemplate` itself, it returns. Otherwise, it deallocates the C++ `model_template` object pointed to by `self.nn_ptr`, ensuring proper memory management.
+ *
+ * @subsection ModelTemplate_internal_methods Internal Methods
+ * - `cdef dict conv(self, map[string, string]* inpt)`:
+ *   An internal helper method to convert a C++ `map<string, string>` (passed as a pointer) into a Python dictionary. It iterates through the C++ map and uses `env` to convert C++ strings to Python strings for both keys and values.
+ *   @param inpt A pointer to a C++ `map<string, string>`.
+ *   @return A Python dictionary.
+ *
+ * - `cdef map[string, string] cond(self, dict inpt)`:
+ *   An internal helper method to convert a Python dictionary into a C++ `map<string, string>`. It iterates through the Python dictionary and uses `enc` to convert Python strings to C++ strings for both keys and values. If `self.rename` is `False`, it also sets the C++ model's name to the Python class name.
+ *   @param inpt A Python dictionary.
+ *   @return A C++ `map<string, string>`.
+ *
+ * @subsection ModelTemplate_properties Properties
+ * These properties provide controlled access to the configuration and state of the `ModelTemplate`.
+ *
+ * - `@property o_graph`:
+ *   Gets and sets a dictionary representing output graph features. The getter converts a C++ map to a Python dict using `conv`. The setter converts a Python dict to a C++ map using `cond`.
+ *
+ * - `@property o_node`:
+ *   Gets and sets a dictionary representing output node features. Similar conversion logic as `o_graph`.
+ *
+ * - `@property o_edge`:
+ *   Gets and sets a dictionary representing output edge features. Similar conversion logic as `o_graph`.
+ *
+ * - `@property i_graph`:
+ *   Gets and sets a list of input graph features. The getter converts a C++ vector to a Python list using `env_vec`. The setter converts a Python list to a C++ vector using `enc_list`.
+ *
+ * - `@property i_node`:
+ *   Gets and sets a list of input node features. Similar conversion logic as `i_graph`.
+ *
+ * - `@property i_edge`:
+ *   Gets and sets a list of input edge features. Similar conversion logic as `i_graph`.
+ *
+ * - `@property device`:
+ *   Gets and sets the computational device (e.g., "cpu", "cuda:0") as a string.
+ *
+ * - `@property checkpoint_path`:
+ *   Gets and sets the path to the model checkpoint file as a string.
+ *
+ * - `@property weight_name`:
+ *   Gets and sets the name of the weight to be used by the model as a string.
+ *
+ * - `@property tree_name`:
+ *   Gets and sets the name of the ROOT tree associated with the model as a string.
+ *
+ * - `@property name`:
+ *   Gets and sets the name of the model. If `self.rename` is `False`, it defaults to the Python class name. Setting this property explicitly sets `self.rename` to `True` and updates the C++ model's name.
+ *
+ * @section ModelTemplate_cpp_interaction C++ Interaction
+ * The `ModelTemplate` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class ModelTemplate`: Declares `ModelTemplate` as a Cython extension type.
+ * - `cdef model_template *nn_ptr`: A C++ pointer to a `model_template` object, managed by the Cython class.
+ * - `from libcpp.string cimport string`: Imports the C++ `std::string` type.
+ * - `from libcpp.map cimport map, pair`: Imports C++ `std::map` and `std::pair` types.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, including `env`, `enc`, `env_vec`, `enc_list` for string and list conversions.
+ * - `from AnalysisG.core.model_template cimport model_template`: Imports the C++ `model_template` class declaration from its `.pxd` file.
+ * - `cython.operator.dereference as deref`: Used to dereference C++ pointers.
+ */

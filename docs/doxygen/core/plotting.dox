@@ -1,0 +1,397 @@
+/**
+ * @file plotting.dox
+ * @brief Detailed documentation for the plotting.pyx Cython module, providing a comprehensive suite of tools for generating various types of plots in the AnalysisG framework.
+ *
+ * @page PlottingModule_page Plotting Module
+ *
+ * @section PlottingModule_intro Introduction
+ * The `plotting.pyx` module is a powerful and flexible component of the AnalysisG framework, designed for generating high-quality scientific plots. It leverages Cython for performance optimization and integrates seamlessly with popular Python plotting libraries such as `matplotlib`, `mplhep` (for ATLAS-style plots), `boost_histogram` for efficient histogramming, and `numpy` for numerical operations. This module provides base classes for common plotting tasks (1D and 2D histograms, line plots, ROC curves) and includes utilities for histogram manipulation and statistical tests.
+ *
+ * @section PlottingModule_helper_functions Helper Functions
+ *
+ * @subsection PlottingModule_ratio_function ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False, this_hist = None)
+ * Calculates and plots the ratio of two histograms.
+ * @param H1 The numerator histogram (boost_histogram object).
+ * @param H2 The denominator histogram (boost_histogram object).
+ * @param axis The matplotlib axis object to plot on.
+ * @param ylabel The label for the y-axis of the ratio plot.
+ * @param normalize If `True`, normalizes both histograms before calculating the ratio.
+ * @param yerror If `True`, calculates and displays y-errors for the ratio.
+ * @param this_hist An instance of a plotting class (e.g., `TH1F`) to inherit font size and other styling.
+ * @return A dictionary containing the ratio histogram, axis, color, histtype, markersize, and an `axhline` at 1.
+ *
+ * @subsection PlottingModule_chi2_function chi2(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False, this_hist = None)
+ * Calculates and plots a chi-squared-like difference between two histograms.
+ * @param H1 The observed histogram (boost_histogram object).
+ * @param H2 The expected histogram (boost_histogram object).
+ * @param axis The matplotlib axis object to plot on.
+ * @param ylabel The label for the y-axis (though it's overridden by a specific chi-squared expression).
+ * @param normalize If `True`, normalizes both histograms before calculating the difference.
+ * @param yerror If `True`, calculates and displays y-errors (currently set to 0).
+ * @param this_hist An instance of a plotting class (e.g., `TH1F`) to inherit font size and other styling.
+ * @return A dictionary containing the difference histogram, axis, color, marker, histtype, markersize, and an additional string with the calculated chi-squared value.
+ *
+ * @section PlottingModule_BasePlotting_class The BasePlotting Class
+ * `BasePlotting` is a `cdef class` that serves as the foundational class for all plotting objects within this module. It provides common functionalities such as figure initialization, plot resetting, saving figures, and managing various plot aesthetics and configurations.
+ *
+ * @subsection BasePlotting_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent. Initializes a new C++ `plotting` object (`self.ptr`) and sets up `matplotlib` (`self.matpl`). Initializes flags for axis limits.
+ *
+ * - `__init__(self, inpt = None)`:
+ *   The Python initializer. If `inpt` (a dictionary) is provided, it attempts to set various attributes of `self` from `inpt["data"]`.
+ *
+ * - `__dealloc__(self)`:
+ *   Deallocates the C++ `plotting` object pointed to by `self.ptr`.
+ *
+ * @subsection BasePlotting_internal_methods Internal Methods
+ * - `cdef void __figure__(self, dict com = {"nrows" : 1, "ncols" : 1})`:
+ *   Creates a new matplotlib figure and axes based on the provided configuration `com`. It sets the figure size and attempts to set autoscale on the axes.
+ *
+ * - `cdef void __resetplt__(self)`:
+ *   Clears the current matplotlib figure, closes all figures, resets matplotlib's default runtime configuration parameters, and then calls `__figure__` to create a new default figure.
+ *
+ * - `cdef dict __compile__(self, bool raw = False)`:
+ *   An abstract internal method intended to be overridden by subclasses. It's responsible for compiling the plot data and returning a dictionary of plotting parameters.
+ *
+ * @subsection BasePlotting_methods Methods
+ * - `__reduce__(self)`:
+ *   Implements the `__reduce__` protocol for pickling `BasePlotting` objects, allowing them to be serialized and deserialized. It saves non-callable attributes.
+ *
+ * - `dump(self, str path = "", str name = "")`:
+ *   Saves the current plotting object to a pickle file.
+ *   @param path The directory path to save the file. Defaults to `self.ptr.output_path`.
+ *   @param name The filename (without extension). Defaults to `self.ptr.filename`.
+ *
+ * - `load(self, str path = "", str name = "")`:
+ *   Loads a plotting object from a pickle file.
+ *   @param path The directory path to load from. Defaults to `self.ptr.output_path`.
+ *   @param name The filename (without extension). Defaults to `self.ptr.filename`.
+ *   @return The loaded plotting object or `None` if loading fails.
+ *
+ * - `__add__(self, BasePlotting other)`:
+ *   Implements the addition operator for `BasePlotting` objects. It concatenates the `x_data`, `y_data`, and `weights` from `other` into `self`.
+ *
+ * - `__radd__(self, other)`:
+ *   Implements reverse addition. If `other` is not a `BasePlotting` instance, it creates a new `BasePlotting` object and adds `self` to it.
+ *
+ * - `cdef list __ticks__(self, float s, float e, float st)`:
+ *   Internal helper to generate a list of tick values given a start, end, and step.
+ *
+ * - `SaveFigure(self)`:
+ *   Generates and saves the plot to a file.
+ *   - It first calls `__resetplt__`.
+ *   - If `self.Style` is "ATLAS", it applies `mplhep.style.ATLAS` and sets `DPI` to 800.
+ *   - It configures `matplotlib.rcParams` with various font, axis, legend, and title sizes, and LaTeX settings if `UseLateX` is enabled.
+ *   - Calls `__compile__` to prepare the plot data.
+ *   - Sets plot titles, labels, and scales (logarithmic if specified).
+ *   - Configures x and y-axis ticks based on `xStep`, `yStep`, or `variable_x_bins`/`variable_y_bins`.
+ *   - Sets the figure size.
+ *   - Saves the figure in both its final format and a raw `.pgf` format (if LaTeX is used).
+ *   - Includes error handling for plotting failures.
+ *
+ * @subsection BasePlotting_properties Properties
+ * These properties control the visual appearance and configuration of the plots.
+ *
+ * - `@property Hatch -> str`:
+ *   Gets and sets the hatch pattern for filled areas.
+ *
+ * - `@property DPI -> int`:
+ *   Gets and sets the dots per inch (resolution) for saved figures.
+ *
+ * - `@property Style -> str`:
+ *   Gets and sets the plotting style (e.g., "ATLAS").
+ *
+ * - `@property CapSize -> float`:
+ *   Gets and sets the size of the error bar caps.
+ *
+ * - `@property ErrorBars -> bool`:
+ *   Gets and sets whether error bars should be displayed.
+ *
+ * - `@property Filename -> str`:
+ *   Gets and sets the base filename for saving plots.
+ *
+ * - `@property OutputDirectory -> str`:
+ *   Gets and sets the output directory path for saved plots.
+ *
+ * - `@property FontSize -> float`:
+ *   Gets and sets the base font size for text elements.
+ *
+ * - `@property AxisSize -> float`:
+ *   Gets and sets the font size for axis labels.
+ *
+ * - `@property LegendSize -> float`:
+ *   Gets and sets the font size for the legend.
+ *
+ * - `@property TitleSize -> float`:
+ *   Gets and sets the font size for the plot title.
+ *
+ * - `@property UseLateX -> bool`:
+ *   Gets and sets whether LaTeX rendering should be used for text.
+ *
+ * - `@property xScaling -> float`:
+ *   Gets and sets the scaling factor for the figure's width.
+ *
+ * - `@property yScaling -> float`:
+ *   Gets and sets the scaling factor for the figure's height.
+ *
+ * - `@property AutoScaling -> bool`:
+ *   Gets and sets whether axes should auto-scale.
+ *
+ * - `@property LineStyle -> str`:
+ *   Gets and sets the line style for plots.
+ *
+ * - `@property Title -> str`:
+ *   Gets and sets the main title of the plot. If `ShowCount` is true and data exists, it appends the sum of counts to the title.
+ *
+ * - `@property xTitle -> str`:
+ *   Gets and sets the label for the x-axis.
+ *
+ * - `@property yTitle -> str`:
+ *   Gets and sets the label for the y-axis. Supports `<units>` placeholder for bin width.
+ *
+ * - `@property xLogarithmic -> bool`:
+ *   Gets and sets whether the x-axis should be logarithmic.
+ *
+ * - `@property yLogarithmic -> bool`:
+ *   Gets and sets whether the y-axis should be logarithmic.
+ *
+ * - `@property xStep -> float`:
+ *   Gets and sets the step size for x-axis ticks.
+ *
+ * - `@property yStep -> float`:
+ *   Gets and sets the step size for y-axis ticks.
+ *
+ * - `@property xMin -> float`:
+ *   Gets and sets the minimum value for the x-axis. Setting this also sets `self.set_xmin = True`.
+ *
+ * - `@property yMin -> float`:
+ *   Gets and sets the minimum value for the y-axis. Setting this also sets `self.set_ymin = True`.
+ *
+ * - `@property xMax -> float`:
+ *   Gets and sets the maximum value for the x-axis. Setting this also sets `self.set_xmax = True`.
+ *
+ * - `@property yMax -> float`:
+ *   Gets and sets the maximum value for the y-axis. Setting this also sets `self.set_ymax = True`.
+ *
+ * - `@property Overflow -> str`:
+ *   Gets and sets how histogram overflow bins are handled ("sum" or "none").
+ *
+ * - `@property Color -> str`:
+ *   Gets and sets the primary color for the plot. If not set, a random hex color is generated.
+ *
+ * - `@property Colors -> list`:
+ *   Gets and sets a list of colors to be used for multiple plots.
+ *
+ * @section PlottingModule_TH1F_class The TH1F Class
+ * `TH1F` is a `cdef class` that inherits from `BasePlotting` and is designed to represent and plot 1D histograms.
+ *
+ * @subsection TH1F_cinit_dealloc Constructors
+ * - `__cinit__(self)`:
+ *   Sets the C++ `plotting` object's prefix to "TH1F".
+ *
+ * - `__init__(self, inpt = None, **kwargs)`:
+ *   Initializes `self.Histograms` and `self.Histogram`. If `kwargs` are provided, they are converted to an `inpt` dictionary. It then attempts to set various attributes from `inpt["data"]`.
+ *
+ * @subsection TH1F_properties Properties
+ * - `@property xData -> list`:
+ *   Gets and sets the raw x-data for the histogram.
+ *
+ * - `@property xBins`:
+ *   Gets and sets the number of bins for the x-axis (if regular binning) or a list of bin edges (if variable binning).
+ *
+ * - `@property CrossSection -> float`:
+ *   Gets and sets the cross-section value, used for scaling.
+ *
+ * - `@property IntegratedLuminosity -> float`:
+ *   Gets and sets the integrated luminosity, used for scaling.
+ *
+ * - `@property HistFill -> str`:
+ *   Gets and sets the histogram fill style (e.g., "step", "fill").
+ *
+ * - `@property Stacked -> bool`:
+ *   Gets and sets whether multiple histograms should be stacked.
+ *
+ * - `@property LineWidth -> float`:
+ *   Gets and sets the line width for histogram outlines.
+ *
+ * - `@property Alpha -> float`:
+ *   Gets and sets the transparency (alpha) value for filled histograms.
+ *
+ * - `@property Density -> bool`:
+ *   Gets and sets whether the histogram should be normalized to represent a probability density.
+ *
+ * - `@property counts -> list`:
+ *   Returns the counts (values) of the histogram after compilation.
+ *
+ * - `@property Marker -> str`:
+ *   Gets and sets the marker style for error bars or points.
+ *
+ * - `@property xLabels -> dict`:
+ *   Gets and sets a dictionary for custom x-axis labels (for categorical histograms).
+ *
+ * - `@property Weights -> list`:
+ *   Gets and sets a list of weights to be applied to the x-data during histogram filling.
+ *
+ * - `@property ShowCount -> bool`:
+ *   Gets and sets whether the total count should be displayed in the title.
+ *
+ * @subsection TH1F_methods Methods
+ * - `FX(self, val = None)`:
+ *   Sets the function to be used for ratio or chi-squared plots. Accepts "ratio", "chi2" (case-insensitive strings), or a callable function. Defaults to `ratio`.
+ *
+ * - `KStest(self, TH1F hist)`:
+ *   Performs a Kolmogorov-Smirnov (KS) test between the current histogram's data and another `TH1F` histogram.
+ *   @param hist Another `TH1F` object for comparison.
+ *   @return The result of `scipy.stats.ks_2samp`.
+ *
+ * @subsection TH1F_internal_methods Internal Methods
+ * - `cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = "Uncertainty", str color = "k")`:
+ *   Internal method to plot error bands using `matplotlib.pyplot.fill_between`.
+ *
+ * - `cdef __get_error_seg__(self, plot, str label = "Uncertainty", str color = "k")`:
+ *   Extracts error segment data from a matplotlib errorbar plot and calls `__error__` to draw the error band.
+ *
+ * - `cdef float scale_f(self)`:
+ *   Calculates the scaling factor based on `CrossSection` and `IntegratedLuminosity`.
+ *
+ * - `cdef dict factory(self)`:
+ *   Creates a dictionary of common plotting parameters for `mplhep.histplot`.
+ *
+ * - `cdef __build__(self)`:
+ *   Constructs a `boost_histogram` object based on the configured `xData`, `xBins`, `xMin`, `xMax`, `xLabels`, `Weights`, `Density`, and `ApplyScaling`.
+ *
+ * - `cdef dict __compile__(self, bool raw = False)`:
+ *   The core method for compiling and rendering 1D histograms.
+ *   - Determines x and y-axis limits.
+ *   - Handles single histograms, multiple histograms, and stacked histograms.
+ *   - Integrates ratio/chi-squared plots if `Histogram` and `Histograms` are both present.
+ *   - Manages error bar plotting and legend generation.
+ *
+ * @section PlottingModule_TH2F_class The TH2F Class
+ * `TH2F` is a `cdef class` that inherits from `BasePlotting` and is designed to represent and plot 2D histograms.
+ *
+ * @subsection TH2F_cinit_dealloc Constructors
+ * - `__cinit__(self)`:
+ *   Sets the C++ `plotting` object's prefix to "TH2F".
+ *
+ * - `__init__(self, inpt = None, **kwargs)`:
+ *   Initializes `self.Color` to "plasma". If `kwargs` are provided, they are converted to an `inpt` dictionary. It then attempts to set various attributes from `inpt["data"]`.
+ *
+ * @subsection TH2F_properties Properties
+ * - `@property yBins`:
+ *   Gets and sets the number of bins for the y-axis (if regular binning) or a list of bin edges (if variable binning).
+ *
+ * - `@property xBins`:
+ *   Gets and sets the number of bins for the x-axis (if regular binning) or a list of bin edges (if variable binning).
+ *
+ * - `@property xLabels -> dict`:
+ *   Gets and sets a dictionary for custom x-axis labels.
+ *
+ * - `@property yLabels -> dict`:
+ *   Gets and sets a dictionary for custom y-axis labels.
+ *
+ * - `@property xData -> list`:
+ *   Gets and sets the raw x-data for the 2D histogram.
+ *
+ * - `@property yData -> list`:
+ *   Gets and sets the raw y-data for the 2D histogram.
+ *
+ * - `@property Weights -> list`:
+ *   Gets and sets a list of weights to be applied to the data during histogram filling.
+ *
+ * @subsection TH2F_internal_methods Internal Methods
+ * - `cdef __build__(self)`:
+ *   Constructs a 2D `boost_histogram` object based on the configured `xData`, `yData`, `xBins`, `yBins`, `xMin`, `xMax`, `yMin`, `yMax`, and `Weights`.
+ *
+ * - `cdef dict __compile__(self, bool raw = False)`:
+ *   The core method for compiling and rendering 2D histograms using `mplhep.hist2dplot`. It also configures the color bar and axis limits.
+ *
+ * @section PlottingModule_TLine_class The TLine Class
+ * `TLine` is a `cdef class` that inherits from `BasePlotting` and is designed to represent and plot lines or scatter plots with optional error bars.
+ *
+ * @subsection TLine_cinit_dealloc Constructors
+ * - `__cinit__(self)`:
+ *   Sets the C++ `plotting` object's prefix to "TLine".
+ *
+ * - `__init__(self, inpt = None, **kwargs)`:
+ *   Initializes `self.Lines` and `self.Marker`. If `kwargs` are provided, they are converted to an `inpt` dictionary. It then attempts to set various attributes from `inpt["data"]`.
+ *
+ * @subsection TLine_properties Properties
+ * - `@property xData -> list`:
+ *   Gets and sets the x-coordinates of the line/points.
+ *
+ * - `@property yData -> list`:
+ *   Gets and sets the y-coordinates of the line/points.
+ *
+ * - `@property Marker -> str`:
+ *   Gets and sets the marker style for points.
+ *
+ * - `@property yDataUp -> list`:
+ *   Gets and sets the upper error values for the y-coordinates.
+ *
+ * - `@property yDataDown -> list`:
+ *   Gets and sets the lower error values for the y-coordinates.
+ *
+ * - `@property LineWidth -> float`:
+ *   Gets and sets the width of the line.
+ *
+ * @subsection TLine_internal_methods Internal Methods
+ * - `cdef void factory(self)`:
+ *   Configures and plots a single line or scatter plot using `matplotlib.pyplot.plot` or `matplotlib.pyplot.errorbar`, based on `xData`, `yData`, `yDataUp`, `yDataDown`, `ErrorBars`, `LineStyle`, `Color`, `Marker`, `LineWidth`, `CapSize`, and `Title`.
+ *
+ * - `cdef dict __compile__(self, bool raw = False)`:
+ *   The core method for compiling and rendering line plots.
+ *   - Handles plotting of multiple `TLine` objects stored in `self.Lines`.
+ *   - Determines and sets x and y-axis limits.
+ *   - Configures legend and title.
+ *
+ * @section PlottingModule_ROC_class The ROC Class
+ * `ROC` is a `cdef class` that inherits from `TLine` and is specifically designed for plotting Receiver Operating Characteristic (ROC) curves. It integrates with `sklearn.metrics` for ROC curve calculation and AUC (Area Under the Curve) computation.
+ *
+ * @subsection ROC_cinit_dealloc Constructors
+ * - `__cinit__(self)`:
+ *   Initializes `self.num_cls`, `self.inits`, `self.Binary`. Sets the C++ `plotting` object's prefix to "ROC Curve". Attempts to import `sklearn.metrics` and sets `self.inits` accordingly, issuing a warning if import fails.
+ *
+ * - `__init__(self, inpt = None, **kwargs)`:
+ *   Initializes `self.Lines` and `self.auc`. Sets default `xTitle`, `yTitle`, `xMax`, `yMax`, `xMin`, `yMin` appropriate for ROC curves.
+ *
+ * @subsection ROC_properties Properties
+ * - `@property Scores`:
+ *   Sets the prediction scores for ROC curve calculation. Accepts various input formats (list of lists, dictionary mapping names/integers to lists/tuples). It calls `self.ptr.build_ROC` to pass data to the C++ backend.
+ *
+ * - `@property Truth`:
+ *   Sets the true labels for ROC curve calculation. Accepts various input formats (list of integers, dictionary mapping names/integers to lists/tuples). It calls `self.ptr.build_ROC` to pass data to the C++ backend.
+ *
+ * - `@property Titles -> list`:
+ *   Gets and sets a list of titles for individual ROC curves.
+ *
+ * - `@property AUC -> dict`:
+ *   Returns a dictionary containing the calculated AUC values for each ROC curve.
+ *
+ * - `@property xData` (Overridden):
+ *   Overrides the `xData` property from `TLine`. Issues a warning if used, suggesting `Scores` instead.
+ *
+ * - `@property yData` (Overridden):
+ *   Overrides the `yData` property from `TLine`. Issues a warning if used, suggesting `Truth` instead.
+ *
+ * @subsection ROC_internal_methods Internal Methods
+ * - `cdef void factory(self)`:
+ *   Overrides the `factory` method from `TLine`. It is intentionally left empty as ROC curve plotting is handled by `__compile__`.
+ *
+ * - `cdef dict __compile__(self, bool raw = False)`:
+ *   The core method for compiling and rendering ROC curves.
+ *   - Checks if `sklearn` was successfully imported and if `roc_data` is available from the C++ backend.
+ *   - Uses `sklearn.metrics.roc_curve` and `sklearn.metrics.auc` to calculate FPR, TPR, and AUC for each class.
+ *   - (Commented out in source) Intended to plot individual ROC curves using `TLine` objects and display AUC values.
+ *
+ * @section PlottingModule_cpp_interaction C++ Interaction
+ * The `plotting.pyx` module extensively uses Cython's capabilities for seamless C++ integration:
+ * - `cdef class ...`: Declares classes as Cython extension types.
+ * - `cdef plotting *ptr`: A C++ pointer to a `plotting` object, managed by the Cython class.
+ * - `from libcpp.string cimport string`, `from libcpp.vector cimport vector`, `from libcpp.map cimport map`, `from libcpp cimport bool, float`: Imports C++ standard library types.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, including `env`, `enc`, `env_vec`, `enc_list`, `as_basic_udict`, `as_umap`, `merge_data`.
+ * - `from AnalysisG.core.plotting cimport plotting`: Imports the C++ `plotting` class declaration from its `.pxd` file.
+ * - `cython.operator.dereference as dref`: Used to dereference C++ pointers.
+ * - `scipy.stats`, `matplotlib.pyplot`, `boost_histogram`, `mplhep`, `numpy`, `random`, `pathlib`, `pickle`: Python libraries used for statistical tests, plotting, histogramming, numerical operations, random number generation, path manipulation, and object serialization.
+ */

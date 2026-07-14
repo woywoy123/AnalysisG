@@ -1,0 +1,412 @@
+/**
+ * @file graph_template.h
+ * @brief Graph data struct (@c graph_t) and base class for user-defined graph
+ *        objects (@c graph_template).
+ * @details Provides the core GNN data container and the framework for building
+ *          node/edge/graph features from particle collections.
+ */
+
+/**
+ * @struct graph_t
+ * @brief Runtime container for a single graph's input features, truth labels,
+ *        edge index, and device-resident tensors.
+ * @details Stores input features (@c data_graph/@c data_node/@c data_edge),
+ *          truth labels (@c truth_graph/@c truth_node/@c truth_edge), a COO
+ *          edge-index tensor, an event-weight tensor, and a batch-index tensor.
+ *          All tensors are cached per CUDA device index (in the @c dev_* maps)
+ *          so that multi-GPU training can transfer data without repeated
+ *          host-to-device copies.
+ *
+ *          The @c has_feature(graph_enum, name, dev) method is the unified
+ *          lookup entry-point for all feature categories.  Friends
+ *          @c graph_template and @c dataloader have write access to the private
+ *          tensor storage.  The @c in_use counter is managed by @c dataloader
+ *          to implement a simple object pool.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_truth_graph(std::string _name, g* mdl)
+ * @brief Retrieve the truth graph-level tensor named @p _name on the device
+ *        of model @p mdl.
+ * @tparam g A model type with a @c device_index member.
+ * @param _name Feature name.
+ * @param mdl   Pointer to the model.
+ * @return Pointer to the tensor, or @c nullptr if not found.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_truth_node(std::string _name, g* mdl)
+ * @brief Retrieve the truth node-level tensor named @p _name.
+ * @tparam g A model type with a @c device_index member.
+ * @param _name Feature name.
+ * @param mdl   Pointer to the model.
+ * @return Pointer to the tensor, or @c nullptr.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_truth_edge(std::string _name, g* mdl)
+ * @brief Retrieve the truth edge-level tensor named @p _name.
+ * @tparam g A model type with a @c device_index member.
+ * @param _name Feature name.
+ * @param mdl   Pointer to the model.
+ * @return Pointer to the tensor, or @c nullptr.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_data_graph(std::string _name, g* mdl)
+ * @brief Retrieve the input data graph-level tensor named @p _name.
+ * @tparam g A model type with a @c device_index member.
+ * @param _name Feature name.
+ * @param mdl   Pointer to the model.
+ * @return Pointer to the tensor, or @c nullptr.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_data_node(std::string _name, g* mdl)
+ * @brief Retrieve the input data node-level tensor named @p _name.
+ * @tparam g A model type with a @c device_index member.
+ * @param _name Feature name.
+ * @param mdl   Pointer to the model.
+ * @return Pointer to the tensor, or @c nullptr.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_data_edge(std::string _name, g* mdl)
+ * @brief Retrieve the input data edge-level tensor named @p _name.
+ * @tparam g A model type with a @c device_index member.
+ * @param _name Feature name.
+ * @param mdl   Pointer to the model.
+ * @return Pointer to the tensor, or @c nullptr.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_edge_index(g* mdl)
+ * @brief Retrieve the COO edge-index tensor for model @p mdl's device.
+ * @tparam g A model type with a @c device_index member.
+ * @param mdl Pointer to the model.
+ * @return Pointer to the edge-index tensor, or @c nullptr.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_event_weight(g* mdl)
+ * @brief Retrieve the event-weight tensor.
+ * @tparam g A model type with a @c device_index member.
+ * @param mdl Pointer to the model.
+ * @return Pointer to the weight tensor.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_batch_index(g* mdl)
+ * @brief Retrieve the batch-assignment index tensor.
+ * @tparam g A model type with a @c device_index member.
+ * @param mdl Pointer to the model.
+ * @return Pointer to the batch-index tensor.
+ */
+
+/**
+ * @fn template<typename g> torch::Tensor* graph_t::get_batched_events(g* mdl)
+ * @brief Retrieve the global event-index tensor for the batch.
+ * @tparam g A model type with a @c device_index member.
+ * @param mdl Pointer to the model.
+ * @return Pointer to the tensor.
+ */
+
+/**
+ * @fn torch::Tensor* graph_t::has_feature(graph_enum tp, std::string _name, int dev)
+ * @brief Generic feature lookup by type, name, and device index.
+ * @param tp    Feature category (@c graph_enum).
+ * @param _name Feature name.
+ * @param dev   Device index.
+ * @return Pointer to the tensor, or @c nullptr.
+ */
+
+/**
+ * @fn void graph_t::add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * @brief Register truth graph-level tensors from @p data with index map @p maps.
+ */
+
+/**
+ * @fn void graph_t::add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * @brief Register truth node-level tensors.
+ */
+
+/**
+ * @fn void graph_t::add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * @brief Register truth edge-level tensors.
+ */
+
+/**
+ * @fn void graph_t::add_data_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * @brief Register input data graph-level tensors.
+ */
+
+/**
+ * @fn void graph_t::add_data_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * @brief Register input data node-level tensors.
+ */
+
+/**
+ * @fn void graph_t::add_data_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps)
+ * @brief Register input data edge-level tensors.
+ */
+
+/**
+ * @fn void graph_t::transfer_to_device(torch::TensorOptions* dev)
+ * @brief Copy all tensors to the device described by @p dev.
+ * @param dev Device options.
+ */
+
+/**
+ * @fn void graph_t::_purge_all()
+ * @brief Delete all owned tensor data.
+ */
+
+/**
+ * @var int graph_t::num_nodes
+ * @brief Number of nodes in this graph.
+ */
+
+/**
+ * @var long graph_t::event_index
+ * @brief Global event index.
+ */
+
+/**
+ * @var double graph_t::event_weight
+ * @brief Event weight (default 1.0).
+ */
+
+/**
+ * @var bool graph_t::preselection
+ * @brief Result of the graph's pre-selection flag.
+ */
+
+/**
+ * @var std::vector<long> graph_t::batched_events
+ * @brief Global event indices of all graphs combined in the batch.
+ */
+
+/**
+ * @var std::vector<std::string*> graph_t::batched_filenames
+ * @brief Source filenames of all graphs combined in the batch.
+ */
+
+/**
+ * @var std::string* graph_t::hash
+ * @brief Pointer to the event hash string (not owned).
+ */
+
+/**
+ * @var std::string* graph_t::filename
+ * @brief Pointer to the source file path (not owned).
+ */
+
+/**
+ * @var std::string* graph_t::graph_name
+ * @brief Pointer to the graph type name (not owned).
+ */
+
+/**
+ * @var c10::DeviceType graph_t::device
+ * @brief Device on which data tensors reside (default CPU).
+ */
+
+/**
+ * @var int graph_t::in_use
+ * @brief Reference count / in-use flag for the dataloader pool.
+ */
+
+/**
+ * @fn bool fulltopo(particle_template*, particle_template*)
+ * @brief Default topology function that connects all pairs of nodes.
+ * @return Always @c true.
+ */
+
+/**
+ * @class graph_template
+ * @brief Base class for user-defined graph objects that build GNN input
+ *        features from particle collections.
+ * @details Inherits @c tools.  Users subclass @c graph_template, override
+ *          @c CompileEvent to call the @c add_*_feature template methods to
+ *          register feature tensors, optionally override @c PreSelection to
+ *          discard graphs before feature computation, and override @c clone
+ *          to return a new empty instance.
+ *
+ *          @c define_particle_nodes registers the particle collection that
+ *          forms the graph nodes.  @c define_topology sets the
+ *          edge-connectivity predicate — any two-particle function returning
+ *          @c bool is accepted; the default @c fulltopo connects every pair.
+ *
+ *          The @c add_*_truth_feature methods name the tensor with a @c "T-"
+ *          prefix; @c add_*_data_feature uses @c "D-".  @c get_event<G>()
+ *          provides typed access to the underlying @c event_template.
+ */
+
+/**
+ * @fn graph_template::graph_template()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn virtual graph_template::~graph_template()
+ * @brief Virtual destructor.
+ */
+
+/**
+ * @fn virtual graph_template* graph_template::clone()
+ * @brief Create an empty clone.  Override in subclasses.
+ * @return New instance.
+ */
+
+/**
+ * @fn virtual void graph_template::CompileEvent()
+ * @brief Build all graph features from the current event.  Override in
+ *        subclasses.
+ */
+
+/**
+ * @fn virtual bool graph_template::PreSelection()
+ * @brief Apply a pre-selection cut.  Return @c false to discard the graph.
+ * @return @c true if the graph passes selection.
+ */
+
+/**
+ * @fn void graph_template::define_particle_nodes(std::vector<particle_template*>* prt)
+ * @brief Register the particle list that forms the graph nodes.
+ * @param prt Pointer to the particle vector.
+ */
+
+/**
+ * @fn void graph_template::define_topology(std::function<bool(particle_template*, particle_template*)> fx)
+ * @brief Set the edge connectivity function.
+ * @param fx Function returning @c true for pairs (i, j) that should be
+ *           connected by a directed edge.
+ */
+
+/**
+ * @fn void graph_template::flush_particles()
+ * @brief Delete all internally allocated particle objects.
+ */
+
+/**
+ * @fn bool graph_template::operator==(graph_template& p)
+ * @brief Equality comparison based on graph hash.
+ * @param p Other graph.
+ * @return @c true if hashes match.
+ */
+
+/**
+ * @var cproperty<long, graph_template> graph_template::index
+ * @brief Event index.
+ */
+
+/**
+ * @var cproperty<double, graph_template> graph_template::weight
+ * @brief Event weight.
+ */
+
+/**
+ * @var cproperty<bool, graph_template> graph_template::preselection
+ * @brief Pre-selection result flag.
+ */
+
+/**
+ * @var cproperty<std::string, graph_template> graph_template::hash
+ * @brief Unique graph hash.
+ */
+
+/**
+ * @var cproperty<std::string, graph_template> graph_template::tree
+ * @brief ROOT TTree name.
+ */
+
+/**
+ * @var cproperty<std::string, graph_template> graph_template::name
+ * @brief Graph type name.
+ */
+
+/**
+ * @var int graph_template::threadIdx
+ * @brief Index of the worker thread processing this graph (default -1).
+ */
+
+/**
+ * @var std::string graph_template::filename
+ * @brief Source file path.
+ */
+
+/**
+ * @var meta* graph_template::meta_data
+ * @brief Pointer to dataset metadata (not owned).
+ */
+
+/**
+ * @fn template<typename G> G* graph_template::get_event()
+ * @brief Return a pointer to the underlying event cast to type @c G.
+ * @tparam G Event type derived from @c event_template.
+ * @return Pointer to the event.
+ */
+
+/**
+ * @fn template<typename G, typename O, typename X> void graph_template::add_graph_truth_feature(O* ev, X fx, std::string _name)
+ * @brief Add a scalar truth feature at graph level using getter @p fx on
+ *        event @p ev.
+ * @tparam G Feature value type.
+ * @tparam O Event type.
+ * @tparam X Getter function type @c void(G*, O*).
+ * @param ev    Pointer to the event.
+ * @param fx    Getter callback.
+ * @param _name Feature name.
+ */
+
+/**
+ * @fn template<typename G, typename O, typename X> void graph_template::add_graph_data_feature(O* ev, X fx, std::string _name)
+ * @brief Add a scalar input feature at graph level.
+ * @tparam G Feature value type.
+ * @tparam O Event type.
+ * @tparam X Getter function type.
+ * @param ev    Pointer to the event.
+ * @param fx    Getter callback.
+ * @param _name Feature name.
+ */
+
+/**
+ * @fn template<typename G, typename O, typename X> void graph_template::add_node_truth_feature(X fx, std::string _name)
+ * @brief Add a per-node truth feature vector by calling getter @p fx on each
+ *        node particle.
+ * @tparam G Feature value type.
+ * @tparam O Particle type.
+ * @tparam X Getter function type @c void(G*, O*).
+ * @param fx    Getter callback applied to each node.
+ * @param _name Feature name.
+ */
+
+/**
+ * @fn template<typename G, typename O, typename X> void graph_template::add_node_data_feature(X fx, std::string _name)
+ * @brief Add a per-node input feature vector.
+ * @tparam G Feature value type.
+ * @tparam O Particle type.
+ * @tparam X Getter function type.
+ * @param fx    Getter callback.
+ * @param _name Feature name.
+ */
+
+/**
+ * @fn template<typename G, typename O, typename X> void graph_template::add_edge_truth_feature(X fx, std::string _name)
+ * @brief Add a per-edge truth feature vector for all connected node pairs.
+ * @tparam G Feature value type.
+ * @tparam O Particle type.
+ * @tparam X Getter function type accepting @c std::tuple<O*,O*>*.
+ * @param fx    Getter callback.
+ * @param _name Feature name.
+ */
+
+/**
+ * @fn template<typename G, typename O, typename X> void graph_template::add_edge_data_feature(X fx, std::string _name)
+ * @brief Add a per-edge input feature vector for all connected node pairs.
+ * @tparam G Feature value type.
+ * @tparam O Particle type.
+ * @tparam X Getter function type.
+ * @param fx    Getter callback.
+ * @param _name Feature name.
+ */

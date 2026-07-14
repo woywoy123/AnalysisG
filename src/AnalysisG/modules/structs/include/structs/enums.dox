@@ -1,0 +1,439 @@
+/**
+ * @file enums.h
+ * @brief Framework-wide enumeration types used to identify data categories,
+ *        optimizers, loss functions, schedulers, graph element types, run
+ *        modes, and particle attributes.
+ */
+
+
+/**
+ * @var data_enum::d
+ * @brief Scalar @c double.
+ */
+/**
+ * @var data_enum::v_d
+ * @brief @c std::vector<double>.
+ */
+/**
+ * @var data_enum::vv_d
+ * @brief @c std::vector<std::vector<double>>.
+ */
+/**
+ * @var data_enum::vvv_d
+ * @brief @c std::vector<std::vector<std::vector<double>>>.
+ */
+/**
+ * @var data_enum::f
+ * @brief Scalar @c float.
+ */
+/**
+ * @var data_enum::v_f
+ * @brief @c std::vector<float>.
+ */
+/**
+ * @var data_enum::vv_f
+ * @brief @c std::vector<std::vector<float>>.
+ */
+/**
+ * @var data_enum::vvv_f
+ * @brief @c std::vector<std::vector<std::vector<float>>>.
+ */
+/**
+ * @var data_enum::l
+ * @brief Scalar @c long.
+ */
+/**
+ * @var data_enum::v_l
+ * @brief @c std::vector<long>.
+ */
+/**
+ * @var data_enum::vv_l
+ * @brief @c std::vector<std::vector<long>>.
+ */
+/**
+ * @var data_enum::vvv_l
+ * @brief @c std::vector<std::vector<std::vector<long>>>.
+ */
+/**
+ * @var data_enum::i
+ * @brief Scalar @c int.
+ */
+/**
+ * @var data_enum::v_i
+ * @brief @c std::vector<int>.
+ */
+/**
+ * @var data_enum::vv_i
+ * @brief @c std::vector<std::vector<int>>.
+ */
+/**
+ * @var data_enum::vvv_i
+ * @brief @c std::vector<std::vector<std::vector<int>>>.
+ */
+/**
+ * @var data_enum::ull
+ * @brief Scalar @c unsigned long long.
+ */
+/**
+ * @var data_enum::v_ull
+ * @brief @c std::vector<unsigned long long>.
+ */
+/**
+ * @var data_enum::vv_ull
+ * @brief @c std::vector<std::vector<unsigned long long>>.
+ */
+/**
+ * @var data_enum::vvv_ull
+ * @brief @c std::vector<std::vector<std::vector<unsigned long long>>>.
+ */
+/**
+ * @var data_enum::b
+ * @brief Scalar @c bool.
+ */
+/**
+ * @var data_enum::v_b
+ * @brief @c std::vector<bool>.
+ */
+/**
+ * @var data_enum::vv_b
+ * @brief @c std::vector<std::vector<bool>>.
+ */
+/**
+ * @var data_enum::vvv_b
+ * @brief @c std::vector<std::vector<std::vector<bool>>>.
+ */
+/**
+ * @var data_enum::ui
+ * @brief Scalar @c unsigned int.
+ */
+/**
+ * @var data_enum::v_ui
+ * @brief @c std::vector<unsigned int>.
+ */
+/**
+ * @var data_enum::vv_ui
+ * @brief @c std::vector<std::vector<unsigned int>>.
+ */
+/**
+ * @var data_enum::vvv_ui
+ * @brief @c std::vector<std::vector<std::vector<unsigned int>>>.
+ */
+/**
+ * @var data_enum::c
+ * @brief Scalar @c char.
+ */
+/**
+ * @var data_enum::v_c
+ * @brief @c std::vector<char>.
+ */
+/**
+ * @var data_enum::vv_c
+ * @brief @c std::vector<std::vector<char>>.
+ */
+/**
+ * @var data_enum::vvv_c
+ * @brief @c std::vector<std::vector<std::vector<char>>>.
+ */
+/**
+ * @var data_enum::undef
+ * @brief Type is unknown / undefined.
+ */
+/**
+ * @var data_enum::unset
+ * @brief Type has not yet been assigned.
+ */
+
+/**
+ * @var opt_enum::adam
+ * @brief Adam optimizer.
+ */
+/**
+ * @var opt_enum::adagrad
+ * @brief Adagrad optimizer.
+ */
+/**
+ * @var opt_enum::adamw
+ * @brief AdamW optimizer.
+ */
+/**
+ * @var opt_enum::lbfgs
+ * @brief L-BFGS optimizer.
+ */
+/**
+ * @var opt_enum::rmsprop
+ * @brief RMSprop optimizer.
+ */
+/**
+ * @var opt_enum::sgd
+ * @brief Stochastic gradient descent optimizer.
+ */
+/**
+ * @var opt_enum::invalid_optimizer
+ * @brief Sentinel value indicating no valid optimizer was selected.
+ */
+
+/**
+ * @var mlp_init::uniform
+ * @brief Uniform random initialisation.
+ */
+/**
+ * @var mlp_init::normal
+ * @brief Normal (Gaussian) random initialisation.
+ */
+/**
+ * @var mlp_init::xavier_normal
+ * @brief Xavier normal initialisation.
+ */
+/**
+ * @var mlp_init::xavier_uniform
+ * @brief Xavier uniform initialisation.
+ */
+/**
+ * @var mlp_init::kaiming_uniform
+ * @brief Kaiming (He) uniform initialisation.
+ */
+/**
+ * @var mlp_init::kaiming_normal
+ * @brief Kaiming (He) normal initialisation.
+ */
+
+/**
+ * @var loss_enum::bce
+ * @brief Binary cross-entropy loss.
+ */
+/**
+ * @var loss_enum::bce_with_logits
+ * @brief Binary cross-entropy with logits loss.
+ */
+/**
+ * @var loss_enum::cosine_embedding
+ * @brief Cosine embedding loss.
+ */
+/**
+ * @var loss_enum::cross_entropy
+ * @brief Cross-entropy loss.
+ */
+/**
+ * @var loss_enum::ctc
+ * @brief CTC loss.
+ */
+/**
+ * @var loss_enum::hinge_embedding
+ * @brief Hinge embedding loss.
+ */
+/**
+ * @var loss_enum::huber
+ * @brief Huber loss.
+ */
+/**
+ * @var loss_enum::kl_div
+ * @brief Kullback-Leibler divergence loss.
+ */
+/**
+ * @var loss_enum::l1
+ * @brief L1 (mean absolute error) loss.
+ */
+/**
+ * @var loss_enum::margin_ranking
+ * @brief Margin ranking loss.
+ */
+/**
+ * @var loss_enum::mse
+ * @brief Mean squared error loss.
+ */
+/**
+ * @var loss_enum::multi_label_margin
+ * @brief Multi-label margin loss.
+ */
+/**
+ * @var loss_enum::multi_label_soft_margin
+ * @brief Multi-label soft margin loss.
+ */
+/**
+ * @var loss_enum::multi_margin
+ * @brief Multi-margin loss.
+ */
+/**
+ * @var loss_enum::nll
+ * @brief Negative log-likelihood loss.
+ */
+/**
+ * @var loss_enum::poisson_nll
+ * @brief Poisson NLL loss.
+ */
+/**
+ * @var loss_enum::smooth_l1
+ * @brief Smooth L1 loss.
+ */
+/**
+ * @var loss_enum::soft_margin
+ * @brief Soft margin loss.
+ */
+/**
+ * @var loss_enum::triplet_margin
+ * @brief Triplet margin loss.
+ */
+/**
+ * @var loss_enum::triplet_margin_with_distance
+ * @brief Triplet margin with distance loss.
+ */
+/**
+ * @var loss_enum::invalid_loss
+ * @brief Sentinel value indicating no valid loss was selected.
+ */
+
+/**
+ * @var scheduler_enum::steplr
+ * @brief Step-based learning-rate decay (StepLR).
+ */
+/**
+ * @var scheduler_enum::reducelronplateauscheduler
+ * @brief Reduce LR on plateau scheduler.
+ */
+/**
+ * @var scheduler_enum::lrscheduler
+ * @brief Generic LR scheduler base.
+ */
+/**
+ * @var scheduler_enum::invalid_scheduler
+ * @brief Sentinel value indicating no valid scheduler was selected.
+ */
+
+/**
+ * @var graph_enum::data_graph
+ * @brief Input feature tensor at graph level.
+ */
+/**
+ * @var graph_enum::data_node
+ * @brief Input feature tensor at node level.
+ */
+/**
+ * @var graph_enum::data_edge
+ * @brief Input feature tensor at edge level.
+ */
+/**
+ * @var graph_enum::truth_graph
+ * @brief Ground-truth label tensor at graph level.
+ */
+/**
+ * @var graph_enum::truth_node
+ * @brief Ground-truth label tensor at node level.
+ */
+/**
+ * @var graph_enum::truth_edge
+ * @brief Ground-truth label tensor at edge level.
+ */
+/**
+ * @var graph_enum::edge_index
+ * @brief COO edge-index tensor ([2, num_edges]).
+ */
+/**
+ * @var graph_enum::weight
+ * @brief Per-event weight tensor.
+ */
+/**
+ * @var graph_enum::batch_index
+ * @brief Batch-assignment index tensor for batched graphs.
+ */
+/**
+ * @var graph_enum::batch_events
+ * @brief Global event indices of all graphs in the batch.
+ */
+/**
+ * @var graph_enum::pred_graph
+ * @brief Model prediction tensor at graph level.
+ */
+/**
+ * @var graph_enum::pred_node
+ * @brief Model prediction tensor at node level.
+ */
+/**
+ * @var graph_enum::pred_edge
+ * @brief Model prediction tensor at edge level.
+ */
+/**
+ * @var graph_enum::pred_extra
+ * @brief Miscellaneous model prediction tensor.
+ */
+
+/**
+ * @var mode_enum::training
+ * @brief Model is in training mode.
+ */
+/**
+ * @var mode_enum::validation
+ * @brief Model is in validation mode.
+ */
+/**
+ * @var mode_enum::evaluation
+ * @brief Model is in evaluation (test/inference) mode.
+ */
+
+/**
+ * @var particle_enum::index
+ * @brief Particle index in the event.
+ */
+/**
+ * @var particle_enum::pdgid
+ * @brief PDG Monte Carlo particle ID.
+ */
+/**
+ * @var particle_enum::pt
+ * @brief Transverse momentum.
+ */
+/**
+ * @var particle_enum::eta
+ * @brief Pseudorapidity.
+ */
+/**
+ * @var particle_enum::phi
+ * @brief Azimuthal angle.
+ */
+/**
+ * @var particle_enum::energy
+ * @brief Energy.
+ */
+/**
+ * @var particle_enum::px
+ * @brief x-component of momentum.
+ */
+/**
+ * @var particle_enum::pz
+ * @brief z-component of momentum.
+ */
+/**
+ * @var particle_enum::py
+ * @brief y-component of momentum.
+ */
+/**
+ * @var particle_enum::mass
+ * @brief Invariant mass.
+ */
+/**
+ * @var particle_enum::charge
+ * @brief Electric charge.
+ */
+/**
+ * @var particle_enum::is_b
+ * @brief Flag: particle is a b-quark/hadron.
+ */
+/**
+ * @var particle_enum::is_lep
+ * @brief Flag: particle is a lepton.
+ */
+/**
+ * @var particle_enum::is_nu
+ * @brief Flag: particle is a neutrino.
+ */
+/**
+ * @var particle_enum::is_add
+ * @brief Flag: additional particle classification.
+ */
+/**
+ * @var particle_enum::pmc
+ * @brief Bulk Cartesian four-momentum write-out (px, py, pz, e).
+ */
+/**
+ * @var particle_enum::pmu
+ * @brief Bulk polar four-momentum write-out (pt, eta, phi, e).
+ */

@@ -1,0 +1,43 @@
+/**
+ * @file graph_exp_mc20.dox
+ * @brief Detailed documentation for specialized graph classes within the AnalysisG framework for experimental MC20 events.
+ *
+ * @page ExpMC20Graphs_page ExpMC20 Graphs
+ *
+ * @section ExpMC20Graphs_intro Introduction
+ * The `graph_exp_mc20.pyx` module defines a collection of specialized graph classes tailored for experimental Monte Carlo 20 (MC20) events within the AnalysisG framework. These classes, including `GraphJets`, `GraphJetsNoNu`, `GraphDetectorLep`, and `GraphDetector`, all inherit from the generic `GraphTemplate`. They encapsulate specific C++ graph types, providing a high-performance and Python-friendly interface to detailed graph structures relevant to experimental MC20 analyses.
+ *
+ * @section ExpMC20Graphs_classes Specialized Graph Classes
+ * Each class below is a `cdef class`, indicating its implementation as a Cython extension type. They all inherit from `GraphTemplate`, gaining its base functionalities for graph indexing, tree association, and pre-selection management. Their primary role is to wrap a specific C++ graph object, allowing for specialized data access and manipulation.
+ *
+ * @subsection ExpMC20Graphs_GraphJets_class GraphJets Class
+ * - **Introduction**: Represents a graph constructed from reconstructed jets in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_jets` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_jets` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Graphs_GraphJetsNoNu_class GraphJetsNoNu Class
+ * - **Introduction**: Represents a graph constructed from reconstructed jets, excluding neutrinos, in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_jets_nonu` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_jets_nonu` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Graphs_GraphDetectorLep_class GraphDetectorLep Class
+ * - **Introduction**: Represents a graph focusing on detector-level leptons in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_jets_detector_lep` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_jets_detector_lep` object via `self.ptr`.
+ *
+ * @subsection ExpMC20Graphs_GraphDetector_class GraphDetector Class
+ * - **Introduction**: Represents a graph constructed from general detector-level objects in experimental MC20 events.
+ * - `__cinit__(self)`: Initializes a new C++ `graph_detector` object and assigns its pointer to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `graph_detector` object via `self.ptr`.
+ *
+ * @section ExpMC20Graphs_cpp_interaction C++ Interaction
+ * All classes in this module leverage Cython's capabilities for seamless C++ integration:
+ * - `cdef class ...`: Declares each class as a Cython extension type.
+ * - `cdef <cpp_type> *ptr`: A C++ pointer to a specific graph type (e.g., `graph_jets*`, `graph_detector*`), managed by the Cython class.
+ * - `from AnalysisG.core.graph_template cimport GraphTemplate`: Imports the base `GraphTemplate` class, from which all these specialized classes inherit.
+ * - `from AnalysisG.graphs.exp_mc20.graph_exp_mc20 cimport *`: Imports the C++ graph class declarations from their `.pxd` file.
+ */

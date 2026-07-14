@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="structs_module_page" kind="page">
+    <compoundname>structs_module_page</compoundname>
+    <title>Structs Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="structs_module_page_1structs_module_intro">
+<title>Introduction</title><para>The <computeroutput>structs</computeroutput> module provides a collection of data structures that are used throughout the |g-framework| for storing and managing data.</para>
+</sect1>
+<sect1 id="structs_module_page_1bsc_t_class">
+<title>The bsc_t Class</title><para>The <computeroutput>bsc_t</computeroutput> class is a base class for handling basic data types and their conversions.</para>
+<sect2 id="structs_module_page_1bsc_t_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>data_enum root_type_translate(std::string* root_str)</computeroutput>: Translates a ROOT type string into a <computeroutput>data_enum</computeroutput> value.</para>
+</listitem><listitem><para><computeroutput>std::string as_string()</computeroutput>: Converts the current data type to a string representation.</para>
+</listitem><listitem><para><computeroutput>void flush_buffer()</computeroutput>: Flushes the data buffer.</para>
+</listitem><listitem><para><computeroutput>bool element(...)</computeroutput>: A set of overloaded methods for accessing the data in the buffer.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="structs_module_page_1element_t_struct">
+<title>The element_t Struct</title><para>The <computeroutput>element_t</computeroutput> struct represents a single entry in a ROOT tree, providing access to the data in the leaves.</para>
+<sect2 id="structs_module_page_1element_t_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void set_meta()</computeroutput>: Sets the metadata for the event.</para>
+</listitem><listitem><para><computeroutput>bool next()</computeroutput>: Moves to the next event in the tree.</para>
+</listitem><listitem><para><computeroutput>bool boundary()</computeroutput>: Checks if the end of the tree has been reached.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="structs_module_page_1data_t_struct">
+<title>The data_t Struct</title><para>The <computeroutput>data_t</computeroutput> struct is a data container for a single leaf in a ROOT tree.</para>
+<sect2 id="structs_module_page_1data_t_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>void initialize()</computeroutput>: Initializes the data container by opening the ROOT file and setting up the tree and leaf pointers.</para>
+</listitem><listitem><para><computeroutput>bool next()</computeroutput>: Moves to the next event in the tree.</para>
+</listitem><listitem><para><computeroutput>void fetch_buffer()</computeroutput>: Fetches the data from the ROOT file into the buffer.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="structs_module_page_1optimizer_params_t_struct">
+<title>The optimizer_params_t Struct</title><para>The <computeroutput>optimizer_params_t</computeroutput> struct holds the parameters for a PyTorch optimizer. It provides a set of properties for setting the various optimizer parameters, such as learning rate, weight decay, etc.</para>
+</sect1>
+<sect1 id="structs_module_page_1other_structs">
+<title>Other Structs</title><para>The module also defines several other structs for data storage and management:<itemizedlist>
+<listitem><para><computeroutput>graph_hdf5_w</computeroutput>, <computeroutput>graph_hdf5</computeroutput>: Structs for serializing and deserializing graph data to and from HDF5 files.</para>
+</listitem><listitem><para><computeroutput>model_report</computeroutput>: A struct for storing the report of a model&apos;s training progress.</para>
+</listitem><listitem><para><computeroutput>folds_t</computeroutput>: A struct for storing k-fold information.</para>
+</listitem><listitem><para><computeroutput>write_t</computeroutput>, <computeroutput>writer</computeroutput>: Classes for writing data to ROOT files.</para>
+</listitem><listitem><para><computeroutput><ref refid="structvariable__t" kindref="compound">variable_t</ref></computeroutput>: A class for handling variables of different types. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="modules/structs/structs.dox"/>
+  </compounddef>
+</doxygen>

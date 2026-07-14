@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2io_2io_8dox" kind="file" language="C++">
+    <compoundname>io.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the io module. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>io.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>io<sp/>module.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>io_module_page<sp/>I/O<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>io_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`io`<sp/>module<sp/>provides<sp/>the<sp/>functionality<sp/>for<sp/>reading<sp/>and<sp/>writing<sp/>data<sp/>from<sp/>and<sp/>to<sp/>ROOT<sp/>and<sp/>HDF5<sp/>files.<sp/>It<sp/>is<sp/>a<sp/>crucial<sp/>component<sp/>for<sp/>data<sp/>handling<sp/>in<sp/>the<sp/>|g-framework|.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>io_class<sp/>The<sp/>io<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`io`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module,<sp/>providing<sp/>a<sp/>unified<sp/>interface<sp/>for<sp/>I/O<sp/>operations.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`io()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>`io`<sp/>object.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~io()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>the<sp/>resources,<sp/>including<sp/>closing<sp/>any<sp/>open<sp/>files.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_methods_settings<sp/>Settings</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>import_settings(settings_t*<sp/>params)`:<sp/>Imports<sp/>the<sp/>settings<sp/>for<sp/>the<sp/>I/O<sp/>module,<sp/>such<sp/>as<sp/>the<sp/>path<sp/>to<sp/>the<sp/>metacache<sp/>and<sp/>the<sp/>name<sp/>of<sp/>the<sp/>sum-of-weights<sp/>tree.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_methods_root<sp/>ROOT<sp/>File<sp/>Handling</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>check_root_file_paths()`:<sp/>Checks<sp/>the<sp/>validity<sp/>of<sp/>the<sp/>provided<sp/>ROOT<sp/>file<sp/>paths.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>root_key_paths(std::string<sp/>path)`:<sp/>Recursively<sp/>scans<sp/>a<sp/>ROOT<sp/>file<sp/>and<sp/>identifies<sp/>the<sp/>trees,<sp/>branches,<sp/>and<sp/>leaves.<sp/>It<sp/>also<sp/>scrapes<sp/>metadata<sp/>from<sp/>the<sp/>file.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>scan_keys()`:<sp/>Scans<sp/>the<sp/>keys<sp/>of<sp/>all<sp/>the<sp/>registered<sp/>ROOT<sp/>files<sp/>and<sp/>builds<sp/>the<sp/>internal<sp/>data<sp/>structures<sp/>for<sp/>accessing<sp/>the<sp/>data.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>long&gt;<sp/>root_size()`:<sp/>Returns<sp/>the<sp/>number<sp/>of<sp/>entries<sp/>in<sp/>each<sp/>tree<sp/>of<sp/>the<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>root_begin()`:<sp/>Initializes<sp/>the<sp/>data<sp/>reading<sp/>process<sp/>from<sp/>the<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;std::string,<sp/>data_t*&gt;*<sp/>get_data()`:<sp/>Returns<sp/>a<sp/>map<sp/>of<sp/>`data_t`<sp/>objects,<sp/>which<sp/>provide<sp/>access<sp/>to<sp/>the<sp/>data<sp/>in<sp/>the<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>root_end()`:<sp/>Finalizes<sp/>the<sp/>data<sp/>reading<sp/>process<sp/>and<sp/>cleans<sp/>up<sp/>the<sp/>resources.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_methods_hdf5<sp/>HDF5<sp/>File<sp/>Handling</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>start(std::string<sp/>filename,<sp/>std::string<sp/>read_write)`:<sp/>Opens<sp/>an<sp/>HDF5<sp/>file<sp/>in<sp/>either<sp/>read<sp/>or<sp/>write<sp/>mode.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>end()`:<sp/>Closes<sp/>the<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>read(graph_hdf5_w*<sp/>out,<sp/>std::string<sp/>set_name)`:<sp/>Reads<sp/>a<sp/>`graph_hdf5_w`<sp/>object<sp/>from<sp/>a<sp/>dataset<sp/>in<sp/>the<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`H5::DataSet*<sp/>dataset(std::string<sp/>set_name,<sp/>hid_t<sp/>type,<sp/>long<sp/>long<sp/>unsigned<sp/>int<sp/>length)`:<sp/>Creates<sp/>a<sp/>new<sp/>dataset<sp/>in<sp/>the<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`H5::DataSet*<sp/>dataset(std::string<sp/>set_name)`:<sp/>Opens<sp/>an<sp/>existing<sp/>dataset<sp/>in<sp/>the<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;std::string&gt;<sp/>dataset_names()`:<sp/>Returns<sp/>a<sp/>list<sp/>of<sp/>all<sp/>the<sp/>dataset<sp/>names<sp/>in<sp/>the<sp/>HDF5<sp/>file.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@section<sp/>io_types<sp/>Data<sp/>Types</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>The<sp/>`io`<sp/>module<sp/>defines<sp/>several<sp/>data<sp/>types<sp/>for<sp/>handling<sp/>the<sp/>data<sp/>from<sp/>ROOT<sp/>and<sp/>HDF5<sp/>files.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_types_data_t<sp/>The<sp/>data_t<sp/>Struct</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>The<sp/>`data_t`<sp/>struct<sp/>is<sp/>a<sp/>data<sp/>container<sp/>for<sp/>a<sp/>single<sp/>leaf<sp/>in<sp/>a<sp/>ROOT<sp/>tree.<sp/>It<sp/>provides<sp/>methods<sp/>for<sp/>accessing<sp/>the<sp/>data<sp/>in<sp/>the<sp/>leaf.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_types_graph_hdf5<sp/>The<sp/>graph_hdf5<sp/>and<sp/>graph_hdf5_w<sp/>Structs</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_hdf5`<sp/>and<sp/>`graph_hdf5_w`<sp/>structs<sp/>are<sp/>used<sp/>for<sp/>serializing<sp/>and<sp/>deserializing<sp/>`graph_t`<sp/>objects<sp/>to<sp/>and<sp/>from<sp/>HDF5<sp/>files.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>io_types_folds_t<sp/>The<sp/>folds_t<sp/>Struct</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>The<sp/>`folds_t`<sp/>struct<sp/>is<sp/>used<sp/>for<sp/>storing<sp/>k-fold<sp/>information.</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/io/io.dox"/>
+  </compounddef>
+</doxygen>

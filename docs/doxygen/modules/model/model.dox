@@ -1,0 +1,48 @@
+
+/**
+ * @file model.dox
+ * @brief Detailed documentation for the model_template class and related components.
+ *
+ * @page model_module_page Model Module
+ *
+ * @section model_module_intro Introduction
+ * The `model` module provides the base template for defining and training machine learning models in the |g-framework|. The `model_template` class defines the common interface and functionality for all model types.
+ *
+ * @section model_template_class The model_template Class
+ * The `model_template` class is an abstract base class that defines the structure of a machine learning model.
+ *
+ * @subsection model_template_ctor Constructor and Destructor
+ * - `model_template()`: The constructor initializes the properties of the model, such as input and output features, and the device settings.
+ * - `~model_template()`: The destructor cleans up the resources, including the registered modules and output tensors.
+ *
+ * @subsection model_template_methods_virtual Virtual Methods
+ * - `model_template* clone()`: Creates a copy of the model object.
+ * - `void forward(graph_t* data)`: This is the core method of the model, defining the forward pass. It is intended to be overridden by derived classes.
+ *
+ * @subsection model_template_methods_config Configuration
+ * - `void set_input_features(...)`: Sets the input features for the model.
+ * - `void set_output_features(...)`: Sets the output features and their corresponding loss functions.
+ * - `void set_device(std::string* dev, model_template* md)`: Sets the device (CPU or CUDA) for the model.
+ * - `void set_optimizer(std::string name)`: Sets the optimizer for the model.
+ * - `void initialize(optimizer_params_t* op_params)`: Initializes the model, including checking the parameters and building the optimizer.
+ * - `void import_settings(model_settings_t* setd)`: Imports the settings for the model.
+ * - `void clone_settings(model_settings_t* setd)`: Clones the settings of the model.
+ *
+ * @subsection model_template_methods_training Training
+ * - `void forward(graph_t* data, bool train)`: Performs a forward pass on a single graph, with an option to enable training mode.
+ * - `void forward(std::vector<graph_t*> data, bool train)`: Performs a forward pass on a batch of graphs.
+ * - `void train_sequence(bool train)`: Computes the loss for all the output features and, if in training mode, performs a backward pass and updates the model parameters.
+ * - `torch::Tensor* compute_loss(std::string pred, graph_enum feat)`: Computes the loss for a specific prediction.
+ *
+ * @subsection model_template_methods_state State Management
+ * - `void save_state()`: Saves the state of the model and optimizer to files.
+ * - `bool restore_state()`: Restores the state of the model and optimizer from files.
+ *
+ * @subsection model_template_methods_features Feature Handling
+ * - `torch::Tensor* assign_features(...)`: Assigns features from a graph to the model's input/output tensors.
+ * - `void check_features(graph_t* data)`: Checks if all the required input and output features are present in the graph.
+ *
+ * @subsection model_template_methods_modules Module Management
+ * - `void register_module(torch::nn::Sequential* data)`: Registers a PyTorch module with the model.
+ * - `void register_module(torch::nn::Sequential* data, mlp_init method)`: Registers a PyTorch module and initializes its weights.
+ */

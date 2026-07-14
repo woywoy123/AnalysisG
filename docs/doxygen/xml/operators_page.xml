@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="operators_page" kind="page">
+    <compoundname>operators_page</compoundname>
+    <title>operators</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="operators_page_1operators_intro">
+<title>Introduction</title><para>The <computeroutput>operators</computeroutput> module provides a suite of optimized mathematical and logical operators, implemented with Cython and accelerated using CUDA kernels. These operators are designed to perform common computational tasks with high efficiency, particularly beneficial for large-scale data processing and numerical simulations within the AnalysisG framework.</para>
+</sect1>
+<sect1 id="operators_page_1operators_contents">
+<title>Contents</title><para>This module contains optimized operator functions, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable. </para>
+</sect1>
+    </detaileddescription>
+    <location file="pyc/operators.dox"/>
+  </compounddef>
+</doxygen>

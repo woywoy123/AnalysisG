@@ -1,0 +1,48 @@
+/**
+ * @file grift.dox
+ * @brief Detailed documentation for the Grift Cython class, a specialized Graph Neural Network (GNN) model implementation.
+ *
+ * @page GriftModel_page Grift Model
+ *
+ * @section GriftModel_intro Introduction
+ * The `Grift` class, implemented in Cython, represents a specific implementation of a Graph Neural Network (GNN) model within the AnalysisG framework. It inherits from the generic `ModelTemplate` class, extending its functionalities to incorporate features and structures relevant to the Grift architecture. This class provides a high-performance interface to an underlying C++ GNN model, enabling efficient training and inference for graph-based data.
+ *
+ * @section GriftModel_class The Grift Class
+ * `Grift` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `ModelTemplate`, thereby gaining all the base functionalities for managing input/output graph features, device settings, and checkpoint paths. Its primary role is to encapsulate a C++ `grift` object, which likely contains the core GNN model logic and parameters.
+ *
+ * @subsection GriftModel_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `grift` object and assigns its pointer to `self.rnn`. It then assigns `self.rnn` to `self.nn_ptr`, allowing `Grift` to be treated as a generic `ModelTemplate` while still managing its specialized C++ object.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `grift` object pointed to by `self.rnn`, ensuring proper memory management for the specialized model.
+ *
+ * @subsection GriftModel_properties Properties
+ * These properties provide controlled access to specific parameters and configurations of the Grift GNN model.
+ *
+ * - `@property xrec -> int`:
+ *   Gets and sets the `_xrec` parameter of the underlying C++ `grift` object. This likely relates to the number of recurrent steps or input features.
+ *
+ * - `@property x -> int`:
+ *   Gets and sets the `_xin` parameter of the underlying C++ `grift` object. This likely relates to the input feature dimension.
+ *
+ * - `@property is_mc -> bool`:
+ *   Gets and sets the `is_mc` flag of the underlying C++ `grift` object. This likely indicates whether the model is processing Monte Carlo data.
+ *
+ * - `@property drop_out -> double`:
+ *   Gets and sets the `drop_out` rate of the underlying C++ `grift` object. This is a regularization parameter.
+ *
+ * - `@property PageRank -> bool`:
+ *   Gets and sets the `pagerank` flag of the underlying C++ `grift` object. This likely enables or disables PageRank-related features within the model.
+ *
+ * @section GriftModel_cpp_interaction C++ Interaction
+ * The `Grift` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class Grift`: Declares `Grift` as a Cython extension type.
+ * - `cdef grift *rnn`: A C++ pointer to a `grift` object, which is the specialized C++ implementation of the GNN model.
+ * - `self.nn_ptr = self.rnn`: This line demonstrates how the base `ModelTemplate`'s C++ pointer (`nn_ptr`) is made to point to the specialized `grift` object, allowing `Grift` to fulfill the `ModelTemplate` interface.
+ * - `from AnalysisG.core.model_template cimport ModelTemplate`: Imports the base `ModelTemplate` class, from which `Grift` inherits.
+ * - `from AnalysisG.models.Grift.grift cimport *`: Imports the C++ `grift` class declaration from its `.pxd` file.
+ */

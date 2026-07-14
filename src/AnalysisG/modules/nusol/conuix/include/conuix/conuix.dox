@@ -1,0 +1,43 @@
+/**
+ * @file conuix.h
+ * @brief Multi-pair di-neutrino solver using the Conuix algorithm.
+ * @details @c conuix wraps a set of @c conuic single-pair solvers and
+ *          orchestrates the search for the best di-neutrino configuration.
+ */
+
+/**
+ * @class conuix
+ * @brief Orchestrates multi-pair Conuix neutrino reconstruction.
+ */
+
+/**
+ * @fn conuix::conuix(nusol_t* params)
+ * @brief Construct and initialise all @c conuic sub-solvers.
+ * @param params Pointer to the @c nusol_t run parameters.
+ */
+
+/**
+ * @fn conuix::~conuix()
+ * @brief Destructor.  Frees all owned @c conuic objects.
+ */
+
+/**
+ * @fn std::vector<particle_template*> conuix::nunu_make()
+ * @brief Run all sub-solvers and build the reconstructed neutrino candidates.
+ * @return Vector of reconstructed @c particle_template objects.
+ */
+
+/**
+ * @var std::vector<conuic*>* conuix::cnx
+ * @brief List of @c conuic solvers (one per b–lepton pair).
+ */
+
+/**
+ * @var nusol_t* conuix::params
+ * @brief Pointer to the run parameters.
+ */
+
+/**
+ * @var std::string conuix::prefix
+ * @brief Optional log prefix string.
+ */

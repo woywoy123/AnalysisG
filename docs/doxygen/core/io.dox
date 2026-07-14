@@ -1,0 +1,120 @@
+/**
+ * @file io.dox
+ * @brief Detailed documentation for the IO Cython class.
+ *
+ * @page IOCython_page IO
+ *
+ * @section IOCython_intro Introduction
+ * The `IO` class, implemented in Cython, is a critical component of the AnalysisG framework, providing high-performance input/output operations primarily for ROOT files. It acts as an interface between the Python environment and an underlying C++ I/O engine, enabling efficient data reading, metadata management, and iteration over complex event structures. This class is designed to streamline the process of accessing and processing experimental data, often involving large datasets.
+ *
+ * @section IOCython_class The IO Class
+ * `IO` is a `cdef class`, signifying its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types, which is essential for handling ROOT files efficiently. It encapsulates a pointer (`self.ptr`) to a C++ `io` object, managing its lifecycle and exposing its functionalities to Python.
+ *
+ * @subsection IOCython_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `io` object and assigns its pointer to `self.ptr`. It also initializes `self.data_ops` to `NULL` and `self.meta_data` as an empty Python dictionary. It triggers a PCM (presumably "Progress Control Mechanism") using `self.ptr.trigger_pcm()`.
+ *
+ * - `__init__(self, root = [])`:
+ *   The Python initializer. It takes an optional `root` argument, which can be a list of ROOT file paths or a single path string. It initializes `self.prg` (for `tqdm` progress bar) to `None` and sets `self.Files` property based on the `root` input.
+ *   @param root A list of ROOT file paths or a single ROOT file path string.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It calls `self.ptr.root_end()` to finalize ROOT operations and then deallocates the C++ `io` object pointed to by `self.ptr`, ensuring proper memory management.
+ *
+ * @subsection IOCython_special_methods Special Methods (Iterator Protocol)
+ * The `IO` class implements the Python iterator protocol, allowing it to be used directly in `for` loops.
+ *
+ * - `__len__(self)`:
+ *   Returns the maximum number of entries across all ROOT files managed by the `IO` object. This is typically used by `tqdm` to determine the total progress.
+ *   @return The maximum size (number of entries) of the ROOT files.
+ *
+ * - `__iter__(self)`:
+ *   Initializes the iterator. If a progress bar (`self.prg`) is not already initialized, it creates a `tqdm` instance. It then calls `self.ptr.root_begin()` to prepare the C++ I/O engine for reading and retrieves the data operations pointer (`self.data_ops`). It also clears `self.skip` (a dictionary used to track processed files) and returns `self`.
+ *   @return The `IO` class instance, configured as an iterator.
+ *
+ * - `__next__(self)`:
+ *   Retrieves the next data item during iteration.
+ *   - It iterates through the `data_ops` (a C++ map of file paths to `data_t` pointers).
+ *   - For each file, it checks `self.skip` to see if it has been fully processed.
+ *   - It uses `switch_board(itr.second)` to convert the C++ `data_t` object into a Python dictionary, merging it into `output`.
+ *   - It updates `self.skip` for the current file based on `itr.second.next()`, which advances the C++ data pointer.
+ *   - If no data is retrieved (i.e., `output` is empty), it means iteration is complete, so it calls `self.ptr.root_end()`, resets `self.prg`, and raises `StopIteration`.
+ *   - It updates the `tqdm` progress bar and adds the `filename` to the output dictionary.
+ *   @return A dictionary containing the next data item from the ROOT files.
+ *   @throws StopIteration When all data from all configured ROOT files has been processed.
+ *
+ * @subsection IOCython_methods Methods
+ * - `cpdef dict MetaData(self)`:
+ *   Retrieves metadata associated with the ROOT files. It populates `self.meta_data` by iterating through `self.ptr.meta_data` (a C++ map of file paths to `meta` objects). For each `meta` object, it creates a Python `Meta` object and potentially enables PyAMI processing if `self.EnablePyAMI` is true.
+ *   @return A dictionary where keys are file paths (Python strings) and values are `Meta` objects containing metadata.
+ *
+ * - `cpdef void ScanKeys(self)`:
+ *   Triggers the underlying C++ I/O engine to scan the keys (trees, branches, leaves) present in the configured ROOT files. This populates the `self.ptr.keys` structure.
+ *
+ * - `cpdef void begin(self)`:
+ *   Explicitly calls `self.ptr.root_begin()` to initialize the ROOT I/O structure. This is typically handled by `__iter__` but can be called manually.
+ *
+ * - `cpdef void end(self)`:
+ *   Explicitly calls `self.ptr.root_end()` to finalize the ROOT I/O structure and release resources. This is typically handled by `__dealloc__` or `__next__` (on `StopIteration`) but can be called manually.
+ *
+ * @subsection IOCython_properties Properties
+ * These properties provide controlled access to the configuration and state of the `IO` object.
+ *
+ * - `@property Verbose`:
+ *   Controls the verbosity of the underlying C++ I/O operations.
+ *   - `@Verbose.getter Verbose(self)`: Returns `True` if verbose output is enabled, `False` otherwise.
+ *   - `@Verbose.setter Verbose(self, bool val)`: Sets the verbosity. `True` enables verbose, `False` disables it.
+ *
+ * - `@property EnablePyAMI`:
+ *   Controls whether PyAMI (ATLAS Metadata Interface) integration is enabled for metadata processing.
+ *   - `@EnablePyAMI.getter EnablePyAMI(self)`: Returns `True` if PyAMI is enabled, `False` otherwise.
+ *   - `@EnablePyAMI.setter EnablePyAMI(self, val)`: Sets the PyAMI state.
+ *
+ * - `@property MetaCachePath`:
+ *   Manages the file path for caching metadata.
+ *   - `@MetaCachePath.getter MetaCachePath(self)`: Returns the metadata cache path as a Python string.
+ *   - `@MetaCachePath.setter MetaCachePath(self, val)`: Sets the metadata cache path.
+ *
+ * - `@property Trees`:
+ *   Manages the list of ROOT tree names to be read.
+ *   - `@Trees.getter Trees(self)`: Returns a list of tree names as Python strings.
+ *   - `@Trees.setter Trees(self, val)`: Sets the tree names. Accepts a single string or a list of strings.
+ *
+ * - `@property SumOfWeightsTreeName`:
+ *   Manages the name of the ROOT tree that contains the sum of weights information.
+ *   - `@SumOfWeightsTreeName.getter SumOfWeightsTreeName(self)`: Returns the sum of weights tree name as a Python string.
+ *   - `@SumOfWeightsTreeName.setter SumOfWeightsTreeName(self, str val)`: Sets the sum of weights tree name.
+ *
+ * - `@property Branches`:
+ *   Manages the list of ROOT branch names to be read.
+ *   - `@Branches.getter Branches(self)`: Returns a list of branch names as Python strings.
+ *   - `@Branches.setter Branches(self, val)`: Sets the branch names. Accepts a single string or a list of strings.
+ *
+ * - `@property Leaves`:
+ *   Manages the list of ROOT leaf names to be read.
+ *   - `@Leaves.getter Leaves(self)`: Returns a list of leaf names as Python strings.
+ *   - `@Leaves.setter Leaves(self, val)`: Sets the leaf names. Accepts a single string or a list of strings.
+ *
+ * - `@property Files`:
+ *   Manages the list of ROOT file paths to be processed.
+ *   - `@Files.getter Files(self)`: Returns a list of valid ROOT file paths as Python strings. It calls `self.ptr.check_root_file_paths()` to validate paths.
+ *   - `@Files.setter Files(self, val)`: Sets the ROOT file paths. Accepts a single string or a list of strings. It clears existing files if `val` is empty and then validates the new paths.
+ *
+ * - `@property Keys`:
+ *   Retrieves a nested dictionary representing the structure of keys (trees, branches, leaves) found in the ROOT files. It calls `self.ptr.scan_keys()` to ensure the keys are up-to-date.
+ *   @return A dictionary: `filename -> tree_name -> branch_name -> [leaf_names]`.
+ *
+ * @section IOCython_cpp_interaction C++ Interaction
+ * The `IO` class heavily relies on Cython's capabilities for seamless C++ integration:
+ * - `cdef class IO`: Declares `IO` as a Cython extension type.
+ * - `cdef io *ptr`: A C++ pointer to an `io` object, managed by the Cython class.
+ * - `from libcpp cimport bool, map, pair, string, vector`: Imports C++ standard library types.
+ * - `from AnalysisG.core.io cimport io`: Imports the C++ `io` class declaration from its `.pxd` file.
+ * - `from AnalysisG.core.tools cimport *`, `from AnalysisG.core.meta cimport Meta, meta`, `from AnalysisG.core.structs cimport data_t, data_enum, switch_board`: Imports C++ declarations from corresponding `.pxd` files.
+ * - `tqdm`: Used for displaying progress bars in the console.
+ * - `dereference as deref`: Used to dereference C++ pointers.
+ * - `env`, `enc`, `env_vec`, `enc_list`: Utility functions (presumably from `AnalysisG.core.tools`) for converting between Python and C++ data types (strings, lists, vectors).
+ * - `data_t*`: Pointer to a C++ `data_t` structure, representing data from a ROOT tree entry.
+ * - `meta*`: Pointer to a C++ `meta` structure, representing metadata.
+ * - `switch_board`: A function (likely from `AnalysisG.core.structs`) to convert C++ `data_t` to a Python dictionary.
+ */

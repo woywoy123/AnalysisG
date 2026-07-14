@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2tools_2tools_8dox" kind="file" language="C++">
+    <compoundname>tools.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the tools module. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>tools.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>tools<sp/>module.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>tools_module_page<sp/>Tools<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>tools_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`tools`<sp/>module<sp/>provides<sp/>a<sp/>collection<sp/>of<sp/>utility<sp/>functions<sp/>for<sp/>file<sp/>system<sp/>operations,<sp/>string<sp/>manipulation,<sp/>and<sp/>data<sp/>encoding/decoding.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>tools_class<sp/>The<sp/>tools<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`tools`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module,<sp/>providing<sp/>a<sp/>set<sp/>of<sp/>static<sp/>methods<sp/>for<sp/>various<sp/>tasks.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>tools_methods_io<sp/>File<sp/>System<sp/>Operations</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>create_path(std::string<sp/>input_path)`:<sp/>Creates<sp/>a<sp/>directory<sp/>path.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>rename(std::string<sp/>start,<sp/>std::string<sp/>target)`:<sp/>Renames<sp/>a<sp/>file<sp/>or<sp/>directory.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>delete_path(std::string<sp/>input_path)`:<sp/>Deletes<sp/>a<sp/>file<sp/>or<sp/>directory.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>is_file(std::string<sp/>path)`:<sp/>Checks<sp/>if<sp/>a<sp/>path<sp/>points<sp/>to<sp/>an<sp/>existing<sp/>file.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;std::string&gt;<sp/>ls(std::string<sp/>path,<sp/>std::string<sp/>ext<sp/>=<sp/>&quot;&quot;)`:<sp/>Lists<sp/>the<sp/>files<sp/>in<sp/>a<sp/>directory,<sp/>with<sp/>an<sp/>optional<sp/>extension<sp/>filter.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>absolute_path(std::string<sp/>path)`:<sp/>Returns<sp/>the<sp/>absolute<sp/>path<sp/>of<sp/>a<sp/>given<sp/>path.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>tools_methods_string<sp/>String<sp/>Manipulation</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>replace(std::string*<sp/>in,<sp/>std::string<sp/>to_repl,<sp/>std::string<sp/>repl_w)`:<sp/>Replaces<sp/>all<sp/>occurrences<sp/>of<sp/>a<sp/>substring<sp/>in<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;std::string&gt;<sp/>split(std::string<sp/>inpt,<sp/>std::string<sp/>search)`:<sp/>Splits<sp/>a<sp/>string<sp/>by<sp/>a<sp/>delimiter.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::vector&lt;std::string&gt;<sp/>split(std::string<sp/>in,<sp/>size_t<sp/>n)`:<sp/>Splits<sp/>a<sp/>string<sp/>into<sp/>chunks<sp/>of<sp/>a<sp/>given<sp/>size.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>hash(std::string<sp/>input,<sp/>int<sp/>len<sp/>=<sp/>18)`:<sp/>Computes<sp/>a<sp/>hash<sp/>of<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>to_string(double<sp/>val)`:<sp/>Converts<sp/>a<sp/>double<sp/>to<sp/>a<sp/>string.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>to_string(double<sp/>val,<sp/>int<sp/>prec)`:<sp/>Converts<sp/>a<sp/>double<sp/>to<sp/>a<sp/>string<sp/>with<sp/>a<sp/>specified<sp/>precision.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>has_string(std::string*<sp/>inpt,<sp/>std::string<sp/>trg)`:<sp/>Checks<sp/>if<sp/>a<sp/>string<sp/>contains<sp/>a<sp/>substring.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>ends_with(std::string*<sp/>inpt,<sp/>std::string<sp/>val)`:<sp/>Checks<sp/>if<sp/>a<sp/>string<sp/>ends<sp/>with<sp/>a<sp/>given<sp/>value.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>has_value(std::vector&lt;std::string&gt;*<sp/>data,<sp/>std::string<sp/>trg)`:<sp/>Checks<sp/>if<sp/>a<sp/>vector<sp/>of<sp/>strings<sp/>contains<sp/>a<sp/>given<sp/>value.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>lower(std::string*<sp/>in)`:<sp/>Converts<sp/>a<sp/>string<sp/>to<sp/>lowercase.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>tools_methods_encoding<sp/>Base64<sp/>Encoding/Decoding</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>encode64(std::string*<sp/>data)`:<sp/>Encodes<sp/>a<sp/>string<sp/>using<sp/>Base64.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>encode64(unsigned<sp/>char<sp/>const*<sp/>bytes_to_encode,<sp/>unsigned<sp/>int<sp/>in_len)`:<sp/>Encodes<sp/>a<sp/>byte<sp/>array<sp/>using<sp/>Base64.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>decode64(std::string*<sp/>inpt)`:<sp/>Decodes<sp/>a<sp/>Base64-encoded<sp/>string.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>decode64(std::string<sp/>const&amp;<sp/>encoded_string)`:<sp/>Decodes<sp/>a<sp/>Base64-encoded<sp/>string.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/tools/tools.dox"/>
+  </compounddef>
+</doxygen>

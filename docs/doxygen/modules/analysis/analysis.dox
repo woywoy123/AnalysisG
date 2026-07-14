@@ -1,0 +1,394 @@
+/**
+ * @file analysis.dox
+ * @brief Detailed documentation for the AnalysisG::analysis class.
+ *
+ * This file provides comprehensive technical documentation for the `AnalysisG::analysis` class,
+ * covering its purpose, internal mechanisms, member variables, and public/private member functions.
+ * The `analysis` class serves as the core orchestrator for the entire analysis workflow within
+ * the bsm4tops-gnn-analysis framework, managing data loading, event and graph building,
+ * selection application, metric calculation, and model training/inference.
+ */
+
+/**
+ * @class AnalysisG::analysis
+ * @brief Core orchestrator for the bsm4tops-gnn-analysis framework.
+ *
+ * The `AnalysisG::analysis` class is the central component responsible for managing and executing
+ * the various stages of a physics analysis, from data input and processing to model training
+ * and inference. It integrates functionalities from several other modules, including
+ * data loading (`dataloader`), sample tracing (`sampletracer`), I/O operations (`io`),
+ * event and graph building, selection application, metric evaluation, and model management.
+ *
+ * This class provides a high-level interface for users to define their analysis pipeline
+ * by adding samples, event/graph templates, selections, metrics, and models. It handles
+ * the intricate details of data flow, caching, multi-threading, and interaction with
+ * external libraries like ROOT and potentially CUDA for accelerated computing.
+ *
+ * @details
+ * The `analysis` class follows a structured approach to manage the analysis workflow:
+ * - **Initialization:** Sets up paths, initializes helper objects (`tracer`, `loader`, `reader`),
+ *   and prepares the environment for PCM (Plugin-in C++ Modules) compilation if necessary.
+ *   It dynamically compiles meta-data structs and other necessary components using `gSystem`
+ *   and `std::thread` for parallel compilation.
+ * - **Configuration:** Users configure the analysis by adding various components:
+ *   - `add_samples`: Specifies input ROOT files and their corresponding labels.
+ *   - `add_event_template`: Defines how raw events are transformed into structured event objects.
+ *   - `add_graph_template`: Specifies how event objects are converted into graph representations.
+ *   - `add_selection_template`: Applies cuts and filters to events or graphs.
+ *   - `add_metric_template`: Defines metrics for evaluating models or analysis performance.
+ *   - `add_model`: Registers models for training or inference, optionally with optimizer parameters.
+ * - **Execution (`start()` method):**
+ *   - Initializes settings, including debug mode and thread count.
+ *   - Checks and manages data caching for graphs.
+ *   - Orchestrates the building of events, selections, and graphs.
+ *   - Compiles tracer objects for efficient data processing.
+ *   - Builds the data loader, preparing data for training/inference.
+ *   - Manages metric fold creation.
+ *   - Handles graph caching (dumping and restoring).
+ *   - Initiates model training sessions (if configured) by starting a CUDA server and building the project.
+ *   - Initiates model inference sessions (if configured) by starting a CUDA server.
+ *
+ * The class extensively uses `std::map` and `std::vector` for managing various configurations
+ * and data structures, ensuring flexibility and scalability. It also leverages ROOT's
+ * `RDataFrame` for efficient data processing and `TSystem` for file system interactions
+ * and dynamic code compilation.
+ */
+
+/**
+ * @brief Constructor for the analysis class.
+ *
+ * Initializes the `analysis` object, setting up default prefixes, and allocating memory
+ * for internal data structures such as `tags`, `tracer`, `loader`, and `reader`.
+ * It also handles the dynamic compilation of PCM (Plugin-in C++ Modules) files,
+ * specifically for meta-data structs (`meta_t`, `weights_t`) and other components.
+ * This involves setting up ROOT's `gSystem` build directory and dynamically loading
+ * compiled modules to ensure all necessary C++ components are available at runtime.
+ *
+ * @details
+ * The constructor performs the following key operations:
+ * - Sets `prefix` to "Analysis".
+ * - Initializes `tags` (a vector of `folds_t`), `tracer` (a `sampletracer`),
+ *   `loader` (a `dataloader`), and `reader` (an `io` object).
+ * - Determines the current absolute path.
+ * - Creates a directory for PCM files (`dict_path/pcm/`) and sets it as ROOT's build directory.
+ * - Changes the current directory to the PCM directory, adds it to the dynamic path,
+ *   and sets `TSystem::kAclicMode` to `TSystem::kOpt` for optimized compilation.
+ * - Uses `std::thread` to parallelize the compilation of `meta_t` and `weights_t`
+ *   structs from `dict_path/structs/include/structs/meta.h`, and then `buildAll`.
+ * - Restores the original current directory after compilation.
+ */
+analysis::analysis()
+
+/**
+ * @brief Destructor for the analysis class.
+ *
+ * Cleans up allocated resources and flushes any remaining data.
+ * It iterates through the `tags` vector to flush data for each fold,
+ * and then deallocates memory for `tags`, `trainer`, `model_metrics`,
+ * `metric_names`, `loader`, `tracer`, and `reader`.
+ *
+ * @details
+ * The destructor ensures proper memory management and resource release.
+ * - Calls `flush_data()` on each `folds_t` object within the `tags` vector.
+ * - Deletes the `tags` vector.
+ * - Calls a generic `flush` utility function for `trainer`, `model_metrics`,
+ *   and `metric_names` to ensure their contents are properly deallocated.
+ * - Deletes the `dataloader`, `sampletracer`, and `io` objects.
+ */
+analysis::~analysis()
+
+/**
+ * @brief Adds a sample path and its corresponding label to the analysis.
+ *
+ * This method registers an input data file (e.g., a ROOT file) with a user-defined
+ * label. This label is used to group samples and apply specific event or graph
+ * templates to them.
+ *
+ * @param path The absolute or relative path to the input data file (e.g., a ROOT file).
+ * @param label A string label to associate with this sample path.
+ */
+void analysis::add_samples(std::string path, std::string label)
+
+/**
+ * @brief Adds an event template to the analysis.
+ *
+ * Event templates define how raw data from input files are processed and
+ * transformed into structured event objects. Each template is associated
+ * with a unique label, allowing different processing logic for different
+ * types of events or samples.
+ *
+ * @param ev A pointer to an `event_template` object. The `analysis` class
+ *           takes ownership of this pointer.
+ * @param label A string label to associate with this event template.
+ */
+void analysis::add_event_template(event_template* ev, std::string label)
+
+/**
+ * @brief Adds a graph template to the analysis.
+ *
+ * Graph templates specify how structured event objects are converted into
+ * graph representations, which are typically used for Graph Neural Network (GNN)
+ * processing. Each graph template has a unique name and is associated with
+ * a sample label.
+ *
+ * @param ev A pointer to a `graph_template` object. The `analysis` class
+ *           takes ownership of this pointer.
+ * @param label A string label to associate with the sample(s) for which
+ *              this graph template should be applied.
+ */
+void analysis::add_graph_template(graph_template* ev, std::string label)
+
+/**
+ * @brief Adds a selection template to the analysis.
+ *
+ * Selection templates define criteria for filtering events or graphs based on
+ * specific physics conditions or properties. These selections are applied
+ * during the analysis workflow to focus on relevant data.
+ *
+ * @param sel A pointer to a `selection_template` object. The `analysis` class
+ *            takes ownership of this pointer.
+ */
+void analysis::add_selection_template(selection_template* sel)
+
+/**
+ * @brief Adds a metric template and links it to a model template.
+ *
+ * This method associates a `metric_template` with a `model_template`,
+ * enabling the evaluation of a specific model's performance using the
+ * defined metric. If the linking fails, the program will abort.
+ *
+ * @param mx A pointer to a `metric_template` object. The `analysis` class
+ *           takes ownership of this pointer.
+ * @param mdl A pointer to a `model_template` object to which the metric
+ *            will be linked.
+ * @throws std::runtime_error if the metric cannot be linked to the model.
+ */
+void analysis::add_metric_template(metric_template* mx, model_template* mdl)
+
+/**
+ * @brief Adds a model for training with specified optimizer parameters.
+ *
+ * This overload registers a `model_template` along with its `optimizer_params_t`
+ * for a training session. Each training session is identified by a unique `run_name`.
+ *
+ * @param model A pointer to a `model_template` object representing the model
+ *              to be trained. The `analysis` class takes ownership of this pointer.
+ * @param op A pointer to an `optimizer_params_t` object containing parameters
+ *           for the optimizer used during training. The `analysis` class takes
+ *           ownership of this pointer.
+ * @param run_name A unique string identifier for this training run.
+ */
+void analysis::add_model(model_template* model, optimizer_params_t* op, std::string run_name)
+
+/**
+ * @brief Adds a model for inference.
+ *
+ * This overload registers a `model_template` for an inference session.
+ * Each inference session is identified by a unique `run_name`.
+ *
+ * @param model A pointer to a `model_template` object representing the model
+ *              to be used for inference. The `analysis` class takes ownership
+ *              of this pointer.
+ * @param run_name A unique string identifier for this inference run.
+ */
+void analysis::add_model(model_template* model, std::string run_name)
+
+/**
+ * @brief Builds the project structure, including output paths for models and metrics.
+ *
+ * This method ensures that all necessary output directories for model checkpoints
+ * and metric results are created and properly configured based on the `m_settings`.
+ * It iterates through registered models and metrics to set their respective output paths.
+ */
+void analysis::build_project()
+
+/**
+ * @brief Checks the graph cache for existing H5 files.
+ *
+ * This method scans the specified `graph_cache` directory for `.h5` files
+ * and determines which events/graphs have already been processed and cached.
+ * It populates the `in_cache` and `skip_event_build` maps to optimize
+ * subsequent event and graph building steps, avoiding redundant processing.
+ *
+ * @details
+ * - Iterates through `file_labels` to get input ROOT files and their labels.
+ * - For each file, it checks if corresponding graph templates exist.
+ * - Generates expected cache file names based on input file names and graph types.
+ * - Compares expected cache files with actual files in the `graph_cache` directory.
+ * - Sets `in_cache[file_n][graph_type/fname]` to `true` if a cached file exists, `false` otherwise.
+ * - Sets `skip_event_build[file_n]` to `true` if all graphs for a given file are cached.
+ */
+void analysis::check_cache()
+
+/**
+ * @brief Fetches pre-tagged event information.
+ *
+ * If `m_settings.pretagevents` is enabled, this method reads pre-tagged event
+ * information (e.g., k-folds for cross-validation) from a specified training dataset.
+ * This information is stored in the `tags` member variable.
+ *
+ * @details
+ * - Creates an `io` object to read data.
+ * - Opens the `m_settings.training_dataset` in "read" mode.
+ * - Reads "kfolds" data into the `tags` vector.
+ * - Closes the `io` object and deallocates it.
+ */
+void analysis::fetchtags()
+
+/**
+ * @brief Starts the analysis workflow.
+ *
+ * This is the main entry point for initiating the analysis. It orchestrates
+ * the entire process, including cache checking, event building, selection
+ * application, graph building, data loading, metric calculation, and
+ * model training/inference.
+ *
+ * @details
+ * The `start()` method performs a sequence of operations:
+ * - Sets `tracer->shush` based on `m_settings.debug_mode` and adjusts thread count.
+ * - Calls `fetchtags()` if `m_settings.pretagevents` is true.
+ * - Creates the main output path.
+ * - If not already started, it prints a "Starting Analysis Session!" message,
+ *   calls `check_cache()`, and `build_events()`.
+ * - If `event_labels` and `graph_labels` are empty, it uses the `reader` to
+ *   scan ROOT files and populate `meta_data`.
+ * - Enables implicit multi-threading for ROOT with `m_settings.threads`.
+ * - Configures the `dataloader` with `m_settings`.
+ * - Builds selections (`build_selections()`) if `selection_names` are present.
+ * - Builds graphs (`build_graphs()`) if `graph_labels` are present.
+ * - Compiles tracer objects.
+ * - Fills selections if `selection_names` are present.
+ * - Builds the data loader (`build_dataloader(false)`).
+ * - Builds metric folds (`build_metric_folds()`).
+ * - Handles graph caching:
+ *   - Dumps graphs if `m_settings.build_cache` is true and `loader->data_set` is not empty.
+ *   - Restores graphs from cache if `pth_cache` is set and `file_labels` are present.
+ * - Builds metrics (`build_metric()`).
+ * - If `model_sessions` are present (training):
+ *   - Checks for dataset availability.
+ *   - Builds the data loader (`build_dataloader(true)`).
+ *   - Starts the CUDA server.
+ *   - Calls `build_project()`.
+ *   - Calls `build_model_session()`.
+ * - If `model_inference` are present (inference):
+ *   - Checks for dataset availability.
+ *   - Starts the CUDA server.
+ *   - Calls `build_inference()`.
+ * - Returns `failure` message if no dataset is found for training/inference.
+ */
+void analysis::start()
+
+/**
+ * @var std::string AnalysisG::analysis::prefix
+ * @brief A string prefix used for logging and identification, typically "Analysis".
+ */
+
+/**
+ * @var std::vector<folds_t>* AnalysisG::analysis::tags
+ * @brief Pointer to a vector of `folds_t` objects, used for storing pre-tagged event information,
+ *        such as k-folds for cross-validation.
+ */
+
+/**
+ * @var sampletracer* AnalysisG::analysis::tracer
+ * @brief Pointer to a `sampletracer` object, responsible for tracing and managing samples
+ *        throughout the analysis workflow.
+ */
+
+/**
+ * @var dataloader* AnalysisG::analysis::loader
+ * @brief Pointer to a `dataloader` object, responsible for loading and managing data
+ *        for training and inference.
+ */
+
+/**
+ * @var io* AnalysisG::analysis::reader
+ * @brief Pointer to an `io` object, used for input/output operations, such as reading
+ *        ROOT files and managing meta-data.
+ */
+
+/**
+ * @var std::map<std::string, std::string> AnalysisG::analysis::file_labels
+ * @brief A map storing input file paths as keys and their corresponding string labels as values.
+ */
+
+/**
+ * @var std::map<std::string, event_template*> AnalysisG::analysis::event_labels
+ * @brief A map storing event template labels as keys and pointers to `event_template` objects as values.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, graph_template*>> AnalysisG::analysis::graph_labels
+ * @brief A nested map storing sample labels as outer keys, graph template names as inner keys,
+ *        and pointers to `graph_template` objects as values.
+ */
+
+/**
+ * @var std::map<std::string, selection_template*> AnalysisG::analysis::selection_names
+ * @brief A map storing selection template names as keys and pointers to `selection_template` objects as values.
+ */
+
+/**
+ * @var std::map<std::string, model_template*> AnalysisG::analysis::model_metrics
+ * @brief A map storing model names as keys and pointers to `model_template` objects associated with metrics.
+ */
+
+/**
+ * @var std::map<std::string, metric_template*> AnalysisG::analysis::metric_names
+ * @brief A map storing metric names as keys and pointers to `metric_template` objects.
+ */
+
+/**
+ * @var std::vector<std::string> AnalysisG::analysis::model_session_names
+ * @brief A vector storing unique run names for model training sessions.
+ */
+
+/**
+ * @var std::vector<std::tuple<model_template*, optimizer_params_t*>> AnalysisG::analysis::model_sessions
+ * @brief A vector of tuples, where each tuple contains a pointer to a `model_template` and
+ *        a pointer to `optimizer_params_t` for a training session.
+ */
+
+/**
+ * @var std::map<std::string, model_template*> AnalysisG::analysis::model_inference
+ * @brief A map storing run names as keys and pointers to `model_template` objects for inference sessions.
+ */
+
+/**
+ * @var settings AnalysisG::analysis::m_settings
+ * @brief An instance of the `settings` struct, containing various configuration parameters
+ *        for the analysis, such as output paths, debug mode, and thread count.
+ */
+
+/**
+ * @var std::map<std::string, std::map<std::string, bool>> AnalysisG::analysis::in_cache
+ * @brief A nested map indicating whether specific graphs for a given file are present in the cache.
+ *        Outer key: file path, Inner key: graph type / filename, Value: boolean (true if in cache).
+ */
+
+/**
+ * @var std::map<std::string, bool> AnalysisG::analysis::skip_event_build
+ * @brief A map indicating whether event building should be skipped for a given file,
+ *        typically if all associated graphs are already in the cache.
+ */
+
+/**
+ * @var std::map<std::string, std::string> AnalysisG::analysis::graph_types
+ * @brief A map storing graph type names as keys and their corresponding string representations (currently unused, but intended for type tracking).
+ */
+
+/**
+ * @var bool AnalysisG::analysis::started
+ * @brief A boolean flag indicating whether the analysis session has been started.
+ */
+
+/**
+ * @var meta_data_t AnalysisG::analysis::meta_data
+ * @brief An instance of `meta_data_t`, storing meta-information about the dataset,
+ *        such as event counts and branch availability.
+ */
+
+/**
+ * @var trainer AnalysisG::analysis::trainer
+ * @brief An instance of the `trainer` class, responsible for managing model training.
+ */

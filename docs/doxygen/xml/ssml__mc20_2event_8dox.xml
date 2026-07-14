@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="ssml__mc20_2event_8dox" kind="file" language="C++">
+    <compoundname>event.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the ssml_mc20 event class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>event.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>ssml_mc20<sp/>event<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>ssml_mc20_event_page<sp/>ssml_mc20<sp/>Event</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>ssml_mc20_event_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`ssml_mc20`<sp/>class<sp/>is<sp/>a<sp/>specialization<sp/>of<sp/>the<sp/>`event_template`<sp/>and<sp/>is<sp/>designed<sp/>to<sp/>handle<sp/>events<sp/>from<sp/>the<sp/>Same-Sign-Muon-Lepton<sp/>analysis<sp/>for<sp/>Run<sp/>3<sp/>(MC20).<sp/>It<sp/>defines<sp/>the<sp/>structure<sp/>of<sp/>the<sp/>event,<sp/>including<sp/>the<sp/>particles<sp/>and<sp/>their<sp/>relationships,<sp/>and<sp/>provides<sp/>methods<sp/>for<sp/>building<sp/>and<sp/>compiling<sp/>the<sp/>event<sp/>from<sp/>the<sp/>input<sp/>data.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>ssml_mc20_event_class<sp/>The<sp/>ssml_mc20<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`ssml_mc20`<sp/>class<sp/>inherits<sp/>from<sp/>`event_template`<sp/>and<sp/>implements<sp/>its<sp/>virtual<sp/>methods<sp/>to<sp/>provide<sp/>event-specific<sp/>functionality.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_event_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`ssml_mc20()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>event<sp/>by<sp/>setting<sp/>its<sp/>name,<sp/>defining<sp/>the<sp/>data<sp/>leaves<sp/>to<sp/>be<sp/>read<sp/>from<sp/>the<sp/>input<sp/>tree,<sp/>and<sp/>registering<sp/>the<sp/>particle<sp/>types<sp/>that<sp/>are<sp/>expected<sp/>in<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~ssml_mc20()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>any<sp/>resources<sp/>allocated<sp/>by<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_event_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`event_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>new<sp/>instance<sp/>of<sp/>the<sp/>`ssml_mc20`<sp/>event.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build(element_t*<sp/>el)`:<sp/>Populates<sp/>the<sp/>event&apos;s<sp/>data<sp/>members<sp/>(event<sp/>number,<sp/>weights,<sp/>MET,<sp/>etc.)<sp/>from<sp/>the<sp/>input<sp/>data<sp/>element.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>method<sp/>of<sp/>the<sp/>class.<sp/>It<sp/>reconstructs<sp/>the<sp/>event<sp/>by<sp/>linking<sp/>the<sp/>various<sp/>particles<sp/>together.<sp/>This<sp/>includes:</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Associating<sp/>tops<sp/>with<sp/>their<sp/>parent<sp/>Z&apos;<sp/>boson.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Linking<sp/>partons<sp/>to<sp/>their<sp/>corresponding<sp/>jets,<sp/>truth<sp/>jets,<sp/>muons,<sp/>and<sp/>electrons.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Matching<sp/>various<sp/>particle<sp/>collections<sp/>(partons,<sp/>electrons,<sp/>muons,<sp/>jets,<sp/>truth<sp/>jets)<sp/>to<sp/>their<sp/>parent<sp/>tops.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Vectorizing<sp/>the<sp/>particle<sp/>collections<sp/>for<sp/>easier<sp/>access.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_event_attributes<sp/>Event<sp/>Attributes</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>The<sp/>`ssml_mc20`<sp/>event<sp/>contains<sp/>a<sp/>wide<sp/>range<sp/>of<sp/>attributes,<sp/>including:</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>**Event<sp/>Information**:<sp/>`eventNumber`,<sp/>`event_category`.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>**Weights**:<sp/>`weight_mc`,<sp/>`weight_pileup`,<sp/>`weight_jvt_effSF`,<sp/>`weight_lep_tightSF`,<sp/>`weight_ftag_effSF`,<sp/>`weight_beamspot`.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>**Kinematic<sp/>Variables**:<sp/>`HT_all`,<sp/>`met`,<sp/>`phi`,<sp/>`met_sum`.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>**Selection<sp/>Flags**:<sp/>`pass_ssee`,<sp/>`pass_ssem`,<sp/>`pass_ssmm`,<sp/>`pass_eem_zveto`,<sp/>etc.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>**Particle<sp/>Counts**:<sp/>`n_electrons`,<sp/>`n_fjets`,<sp/>`n_jets`,<sp/>`n_leptons`,<sp/>`n_muons`.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ssml_mc20_event_particles<sp/>Particle<sp/>Collections</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>The<sp/>`ssml_mc20`<sp/>event<sp/>contains<sp/>the<sp/>following<sp/>particle<sp/>collections:</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_zprime`:<sp/>A<sp/>map<sp/>of<sp/>Z&apos;<sp/>bosons.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_tops`:<sp/>A<sp/>map<sp/>of<sp/>top<sp/>quarks.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_truthjets`:<sp/>A<sp/>map<sp/>of<sp/>truth<sp/>jets.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_partons`:<sp/>A<sp/>map<sp/>of<sp/>partons.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_leptons`:<sp/>A<sp/>map<sp/>of<sp/>leptons.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_electrons`:<sp/>A<sp/>map<sp/>of<sp/>electrons.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_muons`:<sp/>A<sp/>map<sp/>of<sp/>muons.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>-<sp/>`m_jets`:<sp/>A<sp/>map<sp/>of<sp/>jets.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>After<sp/>`CompileEvent()`<sp/>is<sp/>called,<sp/>these<sp/>maps<sp/>are<sp/>used<sp/>to<sp/>populate<sp/>the<sp/>following<sp/>vector<sp/>collections<sp/>for<sp/>easier<sp/>access:</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>-<sp/>`Tops`</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>-<sp/>`Zprime`</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`Detector`<sp/>(a<sp/>combined<sp/>collection<sp/>of<sp/>jets,<sp/>muons,<sp/>and<sp/>electrons)</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`Leptons`<sp/>(a<sp/>combined<sp/>collection<sp/>of<sp/>muons<sp/>and<sp/>electrons)</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`Leptsn`<sp/>(a<sp/>collection<sp/>of<sp/>`lepton`<sp/>objects)</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`Electrons`</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="events/ssml_mc20/event.dox"/>
+  </compounddef>
+</doxygen>

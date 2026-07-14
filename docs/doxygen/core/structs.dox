@@ -1,0 +1,35 @@
+/**
+ * @file structs.dox
+ * @brief Detailed documentation for the structs.pyx Cython module, focusing on type-safe data conversion between C++ and Python.
+ *
+ * @page StructsModule_page Structs Module
+ *
+ * @section StructsModule_intro Introduction
+ * The `structs.pyx` module is a crucial, albeit small, component within the AnalysisG framework. Its primary role is to facilitate type-safe and efficient conversion of complex C++ data structures, specifically `data_t` objects, into Python dictionaries. This module acts as a bridge, allowing Python code to seamlessly access and interpret data that is managed and processed at the C++ level, ensuring data integrity and performance.
+ *
+ * @section StructsModule_elements_function elements(basic* null, data_t* data)
+ * This is a helper function designed to extract an element from a `data_t` object. It uses a type-hinting null pointer (`basic* null`) to guide Cython's type inference during the conversion process.
+ *
+ * @param null A null pointer of a specific C++ type (e.g., `vector<vector<float>>*`) used by Cython for type inference during the `data.element()` call. This parameter is not used for its value.
+ * @param data A pointer to a C++ `data_t` object from which the element is to be extracted.
+ * @return A Python dictionary containing the extracted element, where the key is `data.path` and the value is the converted C++ element. Returns an empty dictionary if the element cannot be extracted.
+ *
+ * @section StructsModule_switch_board_function switch_board(data_t* data)
+ * The `switch_board` function is the central dispatcher for converting a C++ `data_t` object into a Python dictionary. It inspects the `type` member of the `data_t` object (which is an enum `data_enum`) to determine the underlying C++ data type. Based on this type, it dispatches the call to the `elements` helper function with the appropriate type casting, ensuring that the C++ data is correctly interpreted and converted into a Python object.
+ *
+ * This function handles a wide range of C++ data types, including:
+ * - Vectors of vectors of floats, doubles, longs, ints, and booleans (`vvv_f`, `vvv_d`, `vvv_l`, `vvv_i`, `vvv_b`).
+ * - Vectors of floats, doubles, longs, ints, booleans, and chars (`vv_f`, `vv_d`, `vv_l`, `vv_i`, `vv_b`, `vv_c`).
+ * - Single floats, doubles, longs, ints, booleans, and chars (`v_f`, `v_d`, `v_l`, `v_i`, `v_b`, `v_c`).
+ * - Unsigned long long and unsigned int (`v_ull`, `v_ui`).
+ *
+ * @param data A pointer to a C++ `data_t` object whose content needs to be converted to a Python dictionary.
+ * @return A Python dictionary representing the converted data from the `data_t` object. Returns an empty dictionary if the `data_t`'s type is not recognized or supported.
+ *
+ * @section StructsModule_technical_details Technical Details
+ * - **Cython Implementation**: The module is written in Cython (`.pyx`), allowing it to directly interact with C++ types and pointers.
+ * - **C++ `data_t`**: This is a C++ struct (defined in a corresponding `.pxd` file) that likely encapsulates a generic data type along with metadata like its path and an enum indicating its actual type.
+ * - **C++ `data_enum`**: An enumeration (also defined in a `.pxd` file) that specifies the various data types that `data_t` can hold.
+ * - **Type Casting**: The `switch_board` function heavily relies on explicit type casting (e.g., `<vector[vector[float ]]*>(NULL)`) to correctly inform Cython about the expected C++ type when calling `data.element()`. This is a common Cython pattern for working with templated or generic C++ functions.
+ * - **`cdef dict`**: Cython's way of declaring a Python dictionary that can be efficiently manipulated within Cython code.
+ */

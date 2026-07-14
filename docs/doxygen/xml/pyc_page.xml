@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="pyc_page" kind="page">
+    <compoundname>pyc_page</compoundname>
+    <title>AnalysisG.pyc</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="pyc_page_1pyc_intro">
+<title>Introduction</title><para>The <computeroutput>AnalysisG.pyc</computeroutput> package is a collection of Cython-optimized modules designed to enhance the performance of various data analysis tasks within the AnalysisG framework. By leveraging Cython, these modules provide significant speed improvements for computationally intensive operations, bridging the gap between Python&apos;s ease of use and C/C++&apos;s execution speed.</para>
+</sect1>
+<sect1 id="pyc_page_1pyc_contents">
+<title>Contents</title><para>This package contains several sub-modules, each focusing on specific optimized functionalities:<itemizedlist>
+<listitem><para><computeroutput>cutils</computeroutput>: Common utility functions.</para>
+</listitem><listitem><para><computeroutput>graph</computeroutput>: Graph-related operations and data structures.</para>
+</listitem><listitem><para><computeroutput>interface</computeroutput>: Interfaces for interacting with external libraries or systems.</para>
+</listitem><listitem><para><computeroutput>nusol</computeroutput>: Neutrino solver utilities.</para>
+</listitem><listitem><para><computeroutput>operators</computeroutput>: Optimized mathematical or logical operators.</para>
+</listitem><listitem><para><computeroutput>physics</computeroutput>: Physics-related calculations and constants.</para>
+</listitem><listitem><para><computeroutput>transform</computeroutput>: Data transformation utilities. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="pyc/pyc.dox"/>
+  </compounddef>
+</doxygen>

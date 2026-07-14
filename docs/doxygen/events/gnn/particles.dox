@@ -1,0 +1,44 @@
+
+/**
+ * @file particles.dox
+ * @brief Detailed documentation for the particles in the gnn_event.
+ *
+ * @page gnn_particles_page gnn_event Particles
+ *
+ * This page provides detailed documentation for the various particle classes used in the `gnn_event`. These classes are used to represent the input nodes to the GNN and the reconstructed particles.
+ *
+ * @section gnn_particles_particle_gnn GNN Particle
+ * The `particle_gnn` class represents a single node in the input graph for the GNN.
+ *
+ * @subsection gnn_particles_particle_gnn_ctor Constructor
+ * - `particle_gnn()`: Initializes the particle type to "gnn-particle" and defines the data leaves to be read from the input tree.
+ *
+ * @subsection gnn_particles_particle_gnn_methods Methods
+ * - `particle_template* clone()`: Creates a new instance of the `particle_gnn` particle.
+ * - `void build(std::map<std::string, particle_template*>* prt, element_t* el)`: Populates the `particle_gnn` particle's properties from the input data.
+ *
+ * @subsection gnn_particles_particle_gnn_attributes Attributes
+ * - `lep`: A boolean flag indicating if the particle is a lepton.
+ *
+ * @section gnn_particles_top Top
+ * The `top` class represents a reconstructed top quark. It inherits from `particle_template`.
+ *
+ * @subsection gnn_particles_top_ctor Constructor
+ * - `top()`: Initializes the particle type to "top".
+ *
+ * @subsection gnn_particles_top_attributes Attributes
+ * - `av_score`: The average PageRank score of the nodes in the cluster that formed this top quark.
+ * - `n_leps`: The number of leptons in the cluster.
+ * - `n_nodes`: The number of nodes in the cluster.
+ *
+ * @section gnn_particles_zprime Z'
+ * The `zprime` class represents a reconstructed Z' boson. It inherits from `particle_template`.
+ *
+ * @subsection gnn_particles_zprime_ctor Constructor
+ * - `zprime()`: Initializes the particle type to "zprime".
+ *
+ * @subsection gnn_particles_zprime_attributes Attributes
+ * - `av_score`: The average PageRank score of the nodes in the cluster that formed this Z' boson.
+ * - `n_leps`: The number of leptons in the cluster.
+ * - `n_nodes`: The number of nodes in the cluster.
+ */

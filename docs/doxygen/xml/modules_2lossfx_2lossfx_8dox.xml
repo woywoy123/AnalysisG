@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2lossfx_2lossfx_8dox" kind="file" language="C++">
+    <compoundname>lossfx.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the lossfx module. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>lossfx.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>lossfx<sp/>module.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>lossfx_module_page<sp/>Loss<sp/>Function<sp/>and<sp/>Optimizer<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>lossfx_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`lossfx`<sp/>module<sp/>provides<sp/>a<sp/>unified<sp/>interface<sp/>for<sp/>creating<sp/>and<sp/>managing<sp/>various<sp/>loss<sp/>functions<sp/>and<sp/>optimizers<sp/>from<sp/>the<sp/>PyTorch<sp/>library.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>lossfx_class<sp/>The<sp/>lossfx<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`lossfx`<sp/>class<sp/>is<sp/>the<sp/>main<sp/>component<sp/>of<sp/>this<sp/>module.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>lossfx_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`lossfx()`:<sp/>The<sp/>constructor.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~lossfx()`:<sp/>The<sp/>destructor<sp/>cleans<sp/>up<sp/>all<sp/>the<sp/>allocated<sp/>loss<sp/>function<sp/>and<sp/>optimizer<sp/>objects.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>lossfx_methods_optimizer<sp/>Optimizer<sp/>Management</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`torch::optim::Optimizer*<sp/>build_optimizer(optimizer_params_t*<sp/>op,<sp/>std::vector&lt;torch::Tensor&gt;*<sp/>params)`:<sp/>This<sp/>method<sp/>builds<sp/>and<sp/>returns<sp/>a<sp/>PyTorch<sp/>optimizer<sp/>based<sp/>on<sp/>the<sp/>provided<sp/>parameters.<sp/>It<sp/>supports<sp/>Adam,<sp/>Adagrad,<sp/>AdamW,<sp/>LBFGS,<sp/>RMSprop,<sp/>and<sp/>SGD.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>build_adam(...)`,<sp/>`void<sp/>build_adagrad(...)`,<sp/>etc.:<sp/>These<sp/>are<sp/>helper<sp/>methods<sp/>for<sp/>building<sp/>the<sp/>specific<sp/>optimizer<sp/>types.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>lossfx_methods_loss<sp/>Loss<sp/>Function<sp/>Management</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>build_loss_function(loss_enum<sp/>lss)`:<sp/>This<sp/>method<sp/>creates<sp/>an<sp/>instance<sp/>of<sp/>a<sp/>specific<sp/>loss<sp/>function.<sp/>It<sp/>supports<sp/>a<sp/>wide<sp/>range<sp/>of<sp/>loss<sp/>functions<sp/>available<sp/>in<sp/>PyTorch,<sp/>such<sp/>as<sp/>BCE,<sp/>CrossEntropy,<sp/>MSE,<sp/>etc.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`torch::Tensor<sp/>loss(torch::Tensor*<sp/>pred,<sp/>torch::Tensor*<sp/>truth,<sp/>loss_enum<sp/>lss)`:<sp/>This<sp/>method<sp/>calculates<sp/>the<sp/>loss<sp/>given<sp/>the<sp/>predictions<sp/>and<sp/>truth<sp/>values,<sp/>using<sp/>the<sp/>specified<sp/>loss<sp/>function.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`torch::Tensor<sp/>_fx_loss(...)`:<sp/>These<sp/>are<sp/>helper<sp/>methods<sp/>for<sp/>calculating<sp/>the<sp/>loss<sp/>for<sp/>each<sp/>specific<sp/>loss<sp/>function<sp/>type.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>lossfx_methods_weight_init<sp/>Weight<sp/>Initialization</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>weight_init(torch::nn::Sequential*<sp/>data,<sp/>mlp_init<sp/>method)`:<sp/>This<sp/>method<sp/>initializes<sp/>the<sp/>weights<sp/>of<sp/>a<sp/>neural<sp/>network<sp/>module<sp/>using<sp/>various<sp/>initialization<sp/>schemes,<sp/>such<sp/>as<sp/>Xavier,<sp/>Kaiming,<sp/>normal,<sp/>and<sp/>uniform<sp/>distributions.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>lossfx_methods_device<sp/>Device<sp/>Management</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>to(torch::TensorOptions*<sp/>op)`:<sp/>This<sp/>method<sp/>moves<sp/>all<sp/>the<sp/>created<sp/>loss<sp/>function<sp/>objects<sp/>to<sp/>a<sp/>specific<sp/>device<sp/>(e.g.,<sp/>a<sp/>GPU).</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@section<sp/>lossfx_enums<sp/>Enumerations</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>The<sp/>module<sp/>defines<sp/>two<sp/>enumerations<sp/>for<sp/>identifying<sp/>the<sp/>loss<sp/>functions<sp/>and<sp/>optimizers:</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>`loss_enum`:<sp/>An<sp/>enumeration<sp/>of<sp/>the<sp/>supported<sp/>loss<sp/>functions.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>`opt_enum`:<sp/>An<sp/>enumeration<sp/>of<sp/>the<sp/>supported<sp/>optimizers.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@section<sp/>lossfx_switching<sp/>String<sp/>to<sp/>Enum<sp/>Conversion</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>The<sp/>`switching.cxx`<sp/>file<sp/>contains<sp/>helper<sp/>functions<sp/>for<sp/>converting<sp/>strings<sp/>to<sp/>the<sp/>`loss_enum`<sp/>and<sp/>`opt_enum`<sp/>enumerations.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`loss_enum<sp/>lossfx::loss_string(std::string<sp/>name)`</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`opt_enum<sp/>lossfx::optim_string(std::string<sp/>name)`</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/lossfx/lossfx.dox"/>
+  </compounddef>
+</doxygen>

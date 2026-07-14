@@ -1,0 +1,76 @@
+/**
+ * @file tools.h
+ * @brief C++ utility class and the @c merge_data / @c sum_data helper functions.
+ * @details Provides the @c tools (file system, string,
+ *          math helpers) and the full set of @c merge_data and @c sum_data
+ *          overloads used to merge C++ containers across threads/events.
+ */
+
+/**
+ * @cdef cppclass tools
+ * @brief C++ utility base class.
+ * @details Provides:
+ *          - File system utilities: @c create_path, @c delete_path,
+ *            @c is_file, @c rename, @c absolute_path, @c ls.
+ *          - String utilities: @c replace, @c has_substring, @c ends_with,
+ *            @c has_value, @c split, @c hash, @c encode64, @c decode64.
+ *          - Math utilities: @c abs, @c discretize.
+ */
+
+/**
+ * @fn void merge_data(map[string, vector[T]]* out, map[string, vector[T]]* p2)
+ * @brief Merge map @p p2 into @p out by concatenating vectors.
+ * @tparam T int, float, double, or bool.
+ */
+
+/**
+ * @fn void sum_data(vector[T]* out, vector[T]* p2)
+ * @brief Element-wise addition of @p p2 into @p out.
+ * @tparam T int, float, double, or bool.
+ */
+
+/**
+ * @class Tools
+ * @brief Python wrapper for @c tools.
+ * @details Exposes the C++ `tools` utility class to Python.  Every method
+ *          is a thin Cython wrapper around the corresponding C++ member.
+ *
+ * **File-system methods:**
+ * - `create_path(path: str) -> bool` — Create the directory tree at `path`
+ *   (equivalent to `mkdir -p`); returns True on success.
+ * - `delete_path(path: str) -> bool` — Recursively remove the directory tree
+ *   at `path`; returns True on success.
+ * - `is_file(path: str) -> bool` — Return True if `path` refers to an
+ *   existing regular file.
+ * - `rename(src: str, dst: str) -> bool` — Rename/move `src` to `dst`;
+ *   returns True on success.
+ * - `ls(path: str) -> list` — List all files under `path`; returns a sorted
+ *   list of paths.
+ *
+ * **String utility methods:**
+ * - `replace(s: str, old: str, new: str) -> str` — Replace all occurrences
+ *   of `old` in `s` with `new` and return the result.
+ * - `has_substring(s: str, sub: str) -> bool` — Return True if `sub` is a
+ *   substring of `s`.
+ * - `ends_with(s: str, suffix: str) -> bool` — Return True if `s` ends with
+ *   the string `suffix`.
+ * - `has_value(container, val) -> bool` — Return True if `val` is present in
+ *   `container`.
+ * - `split(s: str, delim: str) -> list` — Split `s` on the delimiter string
+ *   `delim` and return the resulting list of substrings.
+ *
+ * **Hashing / encoding methods:**
+ * - `hash(data: str, lx: int = 0) -> str` — Return a hex hash of `data`
+ *   using `std::hash<std::string>`, formatted as `"0x" + 16 hex digits`
+ *   (e.g. `"0x181021084a9123e3"`, 18 chars for a 64-bit hash).  When
+ *   `lx = 0` the result is zero-padded to at least 36 characters.  When
+ *   `lx > 0` and the raw result is shorter than `lx` characters, it is
+ *   zero-padded to exactly `lx` characters.
+ * - `encode64(s: str) -> str` — Base-64 encode `s`.
+ * - `decode64(s: str) -> str` — Base-64 decode `s`.
+ *
+ * **Data-partitioning / math methods:**
+ * - `discretize(val: float, bins: int) -> int` — Map a continuous value into
+ *   one of `bins` integer buckets.
+ * - `abs(val) -> float` — Return the absolute value of `val`.
+ */

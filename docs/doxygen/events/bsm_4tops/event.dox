@@ -1,0 +1,50 @@
+
+/**
+ * @file event.dox
+ * @brief Detailed documentation for the bsm_4tops event class.
+ *
+ * @page bsm_4tops_event_page bsm_4tops Event
+ *
+ * @section bsm_4tops_event_intro Introduction
+ * The `bsm_4tops` class is a specialization of the `event_template` and is designed to handle events from the 4-top-quark analysis (BSM). It defines the structure of the event, including the particles and their relationships, and provides methods for building and compiling the event from the input data.
+ *
+ * @section bsm_4tops_event_class The bsm_4tops Class
+ * The `bsm_4tops` class inherits from `event_template` and implements its virtual methods to provide event-specific functionality.
+ *
+ * @subsection bsm_4tops_event_ctor Constructor and Destructor
+ * - `bsm_4tops()`: The constructor initializes the event by setting its name, defining the data leaves to be read from the input tree, and registering the particle types that are expected in the event.
+ * - `~bsm_4tops()`: The destructor cleans up any resources allocated by the event.
+ *
+ * @subsection bsm_4tops_event_methods Methods
+ * - `event_template* clone()`: Creates a new instance of the `bsm_4tops` event. This is used by the framework to create copies of the event for parallel processing.
+ * - `void build(element_t* el)`: Populates the event's data members (event number, pile-up, missing transverse energy, etc.) from the input data element.
+ * - `void CompileEvent()`: This is the core method of the class. It reconstructs the event by linking the various particles together. This includes:
+ *   - Sorting the particles by their index.
+ *   - Associating top children with their parent tops.
+ *   - Linking truth jets to their constituent tops.
+ *   - Matching truth jet partons to truth jets and top children.
+ *   - Linking reconstructed jets to their constituent tops.
+ *   - Matching reconstructed jet partons to jets and top children.
+ *   - Matching leptons (electrons and muons) to their corresponding top children.
+ *   - Vectorizing the particle collections for easier access.
+ *
+ * @subsection bsm_4tops_event_particles Particle Collections
+ * The `bsm_4tops` event contains the following particle collections:
+ * - `m_Tops`: A map of top quarks in the event.
+ * - `m_Children`: A map of the decay products of the top quarks.
+ * - `m_TruthJets`: A map of truth-level jets.
+ * - `m_TruthJetParton`: A map of partons associated with truth jets.
+ * - `m_Jets`: A map of reconstructed jets.
+ * - `m_JetParton`: A map of partons associated with reconstructed jets.
+ * - `m_Electrons`: A map of electrons in the event.
+ * - `m_Muons`: A map of muons in the event.
+ *
+ * After `CompileEvent()` is called, these maps are used to populate the following vector collections for easier access:
+ * - `Tops`
+ * - `Children`
+ * - `TruthJets`
+ * - `Jets`
+ * - `Electrons`
+ * - `Muons`
+ * - `DetectorObjects` (a combined collection of jets, muons, and electrons)
+ */

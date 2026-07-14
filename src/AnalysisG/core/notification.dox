@@ -1,0 +1,32 @@
+/**
+ * @file notification.pxd
+ * @brief Cython declaration file for the @c notification C++ class.
+ * @details Wraps the @c notification base class that provides structured
+ *          console output (success, warning, failure, info) and progress bars.
+ */
+
+/**
+ * @class Notification
+ * @brief Python wrapper for @c notification.
+ * @details Exposes the C++ `notification` console-output backend to Python.
+ *          Most AnalysisG classes inherit from `Notification` indirectly via
+ *          their C++ base.  Constructing this class directly is useful for
+ *          standalone diagnostic printing.
+ *
+ * The underlying C++ `notification` object exposes the following interface
+ * (consumed by C++ subclasses and Cython wrappers):
+ *
+ * - `success(msg: bytes)` — Print a green-coloured success message prefixed
+ *   with the class `prefix` string.
+ * - `warning(msg: bytes)` — Print a yellow-coloured warning message.
+ * - `failure(msg: bytes)` — Print a red-coloured failure/error message.
+ * - `info(msg: bytes)` — Print a neutral informational message.
+ * - `progressbar(prg, title)` — Draw a single-thread progress bar.
+ *
+ * **C++ fields available to subclass wrappers:**
+ * - `prefix` (bytes) — Tag prepended to every printed line.
+ * - `shush` (bool) — If True suppress all output (used by `IO.Verbose`).
+ * - `bold` (bool) — If True use bold ANSI formatting.
+ * - `_success`, `_warning`, `_failure`, `_info` (int) — Counters for the
+ *   number of messages of each type emitted since construction.
+ */

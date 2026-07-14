@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="zprime_8dox" kind="file" language="C++">
+    <compoundname>zprime.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the ZPrime Cython class, specialized for analyzing Z&apos; boson related selections in MC16 events. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>zprime.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>ZPrime<sp/>Cython<sp/>class,<sp/>specialized<sp/>for<sp/>analyzing<sp/>Z&apos;<sp/>boson<sp/>related<sp/>selections<sp/>in<sp/>MC16<sp/>events.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@page<sp/>ZPrimeSelection_page<sp/>ZPrime<sp/>Selection</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>@section<sp/>ZPrimeSelection_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>The<sp/>`ZPrime`<sp/>class,<sp/>implemented<sp/>in<sp/>Cython,<sp/>is<sp/>a<sp/>specialized<sp/>selection<sp/>template<sp/>within<sp/>the<sp/>AnalysisG<sp/>framework,<sp/>designed<sp/>for<sp/>comprehensive<sp/>analysis<sp/>of<sp/>Z&apos;<sp/>boson<sp/>related<sp/>selections<sp/>in<sp/>Monte<sp/>Carlo<sp/>16<sp/>(MC16)<sp/>events.<sp/>It<sp/>inherits<sp/>from<sp/>the<sp/>generic<sp/>`SelectionTemplate`<sp/>class,<sp/>extending<sp/>its<sp/>functionalities<sp/>to<sp/>extract<sp/>and<sp/>organize<sp/>detailed<sp/>information<sp/>about<sp/>truth-level<sp/>top<sp/>quarks,<sp/>children<sp/>particles,<sp/>truth-jets,<sp/>and<sp/>reconstructed<sp/>jets<sp/>associated<sp/>with<sp/>Z&apos;<sp/>boson<sp/>decays.<sp/>This<sp/>class<sp/>facilitates<sp/>a<sp/>high-performance<sp/>extraction<sp/>and<sp/>structuring<sp/>of<sp/>Z&apos;<sp/>boson<sp/>related<sp/>data<sp/>for<sp/>further<sp/>physics<sp/>analysis.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@section<sp/>ZPrimeSelection_helper_functions<sp/>Helper<sp/>Functions<sp/>(Python-style,<sp/>Cython-optimized)</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>These<sp/>functions<sp/>are<sp/>designed<sp/>to<sp/>be<sp/>used<sp/>as<sp/>callbacks<sp/>for<sp/>`self.root_leaves`<sp/>in<sp/>`SelectionTemplate`,<sp/>processing<sp/>data<sp/>as<sp/>it&apos;s<sp/>read<sp/>from<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>-<sp/>`def<sp/>fx(zp,<sp/>data)`:</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/><sp/><sp/>A<sp/>generic<sp/>function<sp/>to<sp/>append<sp/>data<sp/>to<sp/>a<sp/>list<sp/>attribute<sp/>of<sp/>the<sp/>`ZPrime`<sp/>instance.<sp/>It<sp/>takes<sp/>an<sp/>attribute<sp/>name<sp/>and<sp/>a<sp/>list<sp/>of<sp/>values.<sp/>If<sp/>the<sp/>attribute<sp/>already<sp/>exists<sp/>and<sp/>is<sp/>a<sp/>list,<sp/>it<sp/>appends<sp/>the<sp/>new<sp/>values;<sp/>otherwise,<sp/>it<sp/>initializes<sp/>it<sp/>as<sp/>a<sp/>new<sp/>list.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>zp<sp/>An<sp/>instance<sp/>of<sp/>`ZPrime`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/><sp/><sp/>@param<sp/>data<sp/>A<sp/>tuple<sp/>`(attribute_name_string,<sp/>list_of_values)`<sp/>where<sp/>`attribute_name_string`<sp/>is<sp/>the<sp/>name<sp/>of<sp/>the<sp/>attribute<sp/>to<sp/>update<sp/>and<sp/>`list_of_values`<sp/>are<sp/>the<sp/>values<sp/>to<sp/>append.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@section<sp/>ZPrimeSelection_class<sp/>The<sp/>ZPrime<sp/>Class</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>`ZPrime`<sp/>is<sp/>a<sp/>`cdef<sp/>class`<sp/>that<sp/>inherits<sp/>from<sp/>`SelectionTemplate`.<sp/>It<sp/>is<sp/>tailored<sp/>for<sp/>collecting<sp/>and<sp/>organizing<sp/>information<sp/>related<sp/>to<sp/>Z&apos;<sp/>boson<sp/>analysis.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ZPrimeSelection_cinit_dealloc<sp/>Constructors<sp/>and<sp/>Destructors</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`__cinit__(self)`:</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/><sp/><sp/>The<sp/>Cython<sp/>&quot;constructor&quot;<sp/>equivalent.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>`self.root_leaves`<sp/>to<sp/>define<sp/>specific<sp/>ROOT<sp/>branches<sp/>(`zprime_truth_tops`,<sp/>`zprime_children`,<sp/>`zprime_truthjets`,<sp/>`zprime_jets`)<sp/>and<sp/>associates<sp/>them<sp/>with<sp/>the<sp/>`fx`<sp/>helper<sp/>function<sp/>for<sp/>data<sp/>processing<sp/>during<sp/>`InterpretROOT`.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>Initializes<sp/>a<sp/>new<sp/>C++<sp/>`zprime`<sp/>object<sp/>and<sp/>assigns<sp/>its<sp/>pointer<sp/>to<sp/>`self.ptr`.<sp/>It<sp/>then<sp/>upcasts<sp/>`self.ptr`<sp/>to<sp/>a<sp/>`zprime*`<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>`self.tt`<sp/>for<sp/>specialized<sp/>access.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`__init__(self)`:</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/><sp/><sp/>(Not<sp/>explicitly<sp/>defined<sp/>in<sp/>the<sp/>provided<sp/>snippet)<sp/>This<sp/>would<sp/>typically<sp/>be<sp/>the<sp/>Python<sp/>initializer.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`__dealloc__(self)`:</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/><sp/><sp/>Deallocates<sp/>the<sp/>C++<sp/>`zprime`<sp/>object<sp/>pointed<sp/>to<sp/>by<sp/>`self.tt`,<sp/>ensuring<sp/>proper<sp/>memory<sp/>management.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ZPrimeSelection_internal_methods<sp/>Internal<sp/>Methods</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>void<sp/>transform_dict_keys(self)`:</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/><sp/><sp/>This<sp/>method<sp/>is<sp/>responsible<sp/>for<sp/>converting<sp/>the<sp/>C++<sp/>data<sp/>structures<sp/>within<sp/>the<sp/>underlying<sp/>`zprime`<sp/>object<sp/>into<sp/>Python<sp/>attributes,<sp/>making<sp/>them<sp/>accessible<sp/>as<sp/>properties<sp/>of<sp/>the<sp/>`ZPrime`<sp/>instance.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.zprime_truth_tops`:<sp/>Populated<sp/>from<sp/>`self.tt.zprime_truth_tops`.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.zprime_children`:<sp/>Populated<sp/>from<sp/>`self.tt.zprime_children`.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.zprime_truthjets`:<sp/>Populated<sp/>from<sp/>`self.tt.zprime_truthjets`.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/><sp/><sp/>-<sp/>`self.zprime_jets`:<sp/>Populated<sp/>from<sp/>`self.tt.zprime_jets`.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>ZPrimeSelection_properties<sp/>Properties</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>The<sp/>following<sp/>properties<sp/>are<sp/>implicitly<sp/>defined<sp/>and<sp/>populated<sp/>by<sp/>the<sp/>`transform_dict_keys`<sp/>method,<sp/>providing<sp/>access<sp/>to<sp/>the<sp/>processed<sp/>Z&apos;<sp/>boson<sp/>related<sp/>information:</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>zprime_truth_tops<sp/>-&gt;<sp/>list`:<sp/>List<sp/>of<sp/>truth-level<sp/>top<sp/>quarks<sp/>associated<sp/>with<sp/>the<sp/>Z&apos;<sp/>boson.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>zprime_children<sp/>-&gt;<sp/>list`:<sp/>List<sp/>of<sp/>children<sp/>particles<sp/>associated<sp/>with<sp/>the<sp/>Z&apos;<sp/>boson.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>zprime_truthjets<sp/>-&gt;<sp/>list`:<sp/>List<sp/>of<sp/>truth-jets<sp/>associated<sp/>with<sp/>the<sp/>Z&apos;<sp/>boson.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`@property<sp/>zprime_jets<sp/>-&gt;<sp/>list`:<sp/>List<sp/>of<sp/>reconstructed<sp/>jets<sp/>associated<sp/>with<sp/>the<sp/>Z&apos;<sp/>boson.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>@section<sp/>ZPrimeSelection_cpp_interaction<sp/>C++<sp/>Interaction</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>The<sp/>`ZPrime`<sp/>class<sp/>leverages<sp/>Cython&apos;s<sp/>capabilities<sp/>for<sp/>seamless<sp/>C++<sp/>integration:</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>class<sp/>ZPrime`:<sp/>Declares<sp/>`ZPrime`<sp/>as<sp/>a<sp/>Cython<sp/>extension<sp/>type.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>-<sp/>`cdef<sp/>zprime<sp/>*tt`:<sp/>A<sp/>C++<sp/>pointer<sp/>to<sp/>a<sp/>`zprime`<sp/>object,<sp/>which<sp/>is<sp/>the<sp/>specialized<sp/>C++<sp/>implementation<sp/>for<sp/>Z&apos;<sp/>boson<sp/>analysis.</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.ptr<sp/>=<sp/>new<sp/>zprime()`:<sp/>Initializes<sp/>the<sp/>base<sp/>`SelectionTemplate`&apos;s<sp/>C++<sp/>pointer.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*<sp/>-<sp/>`self.tt<sp/>=<sp/>&lt;zprime*&gt;self.ptr`:<sp/>This<sp/>line<sp/>demonstrates<sp/>C++<sp/>upcasting,<sp/>allowing<sp/>`ZPrime`<sp/>to<sp/>fulfill<sp/>the<sp/>`SelectionTemplate`<sp/>interface<sp/>while<sp/>internally<sp/>managing<sp/>its<sp/>specific<sp/>`zprime`<sp/>data.</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.selection_template<sp/>cimport<sp/>SelectionTemplate`:<sp/>Imports<sp/>the<sp/>base<sp/>`SelectionTemplate`<sp/>class,<sp/>from<sp/>which<sp/>`ZPrime`<sp/>inherits.</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>-<sp/>`from<sp/>AnalysisG.core.tools<sp/>cimport<sp/>as_dict,<sp/>as_list`:<sp/>Imports<sp/>utility<sp/>functions<sp/>for<sp/>converting<sp/>between<sp/>C++<sp/>and<sp/>Python<sp/>data<sp/>structures.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="selections/mc16/zprime/zprime.dox"/>
+  </compounddef>
+</doxygen>

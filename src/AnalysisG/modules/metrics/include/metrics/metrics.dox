@@ -1,0 +1,173 @@
+/**
+ * @file metrics.h
+ * @brief Built-in loss, accuracy, and mass-histogram tracking for GNN models.
+ * @details Declares @c analytics_t (per-model per-epoch histogram container)
+ *          and @c metrics (the tracker class that inherits @c tools and
+ *          @c notification).
+ */
+
+/**
+ * @struct analytics_t
+ * @brief Per-epoch, per-model histogram container for loss, accuracy, and
+ *        invariant-mass distributions.
+ * @details Aggregates all ROOT histogram objects (@c TH1F) for one registered
+ *          model over all epochs.  Histograms are indexed by @c mode_enum
+ *          (training / validation / evaluation) and feature name.  Separate
+ *          maps are kept for graph-level, node-level, and edge-level loss and
+ *          accuracy, plus predicted and truth invariant-mass distributions.
+ *          @c purge() calls @c destroy() on each map and then deletes the
+ *          @c report.  Owned by @c metrics and indexed by k-fold.
+ */
+
+/**
+ * @var model_template* analytics_t::model
+ * @brief Pointer to the model associated with this analytics entry.
+ */
+
+/**
+ * @var model_report* analytics_t::report
+ * @brief Pointer to the epoch report for this model.
+ */
+
+/**
+ * @var int analytics_t::this_epoch
+ * @brief Epoch number.
+ */
+
+/**
+ * @var analytics_t::loss_graph
+ * @brief Per-mode, per-feature graph-level loss histograms.
+ */
+
+/**
+ * @var analytics_t::loss_node
+ * @brief Per-mode, per-feature node-level loss histograms.
+ */
+
+/**
+ * @var analytics_t::loss_edge
+ * @brief Per-mode, per-feature edge-level loss histograms.
+ */
+
+/**
+ * @var analytics_t::accuracy_graph
+ * @brief Per-mode, per-feature graph-level accuracy histograms.
+ */
+
+/**
+ * @var analytics_t::accuracy_node
+ * @brief Per-mode, per-feature node-level accuracy histograms.
+ */
+
+/**
+ * @var analytics_t::accuracy_edge
+ * @brief Per-mode, per-feature edge-level accuracy histograms.
+ */
+
+/**
+ * @var analytics_t::pred_mass_edge
+ * @brief Per-mode, per-variable predicted invariant-mass histograms.
+ */
+
+/**
+ * @var analytics_t::truth_mass_edge
+ * @brief Per-mode, per-variable ground-truth invariant-mass histograms.
+ */
+
+/**
+ * @fn void analytics_t::purge()
+ * @brief Delete all histogram objects and the report.
+ */
+
+/**
+ * @fn void analytics_t::destroy(std::map<mode_enum, std::map<std::string, TH1F*>>* data)
+ * @brief Delete all @c TH1F objects in @p data.
+ * @param data Map of histograms to destroy.
+ */
+
+/**
+ * @class metrics
+ * @brief Registers model outputs, accumulates histograms epoch by epoch, and
+ *        writes loss/accuracy/mass plots.
+ * @details Inherits @c tools and @c notification.  Central tracker for GNN
+ *          training metrics.  Each @c model_template is registered with
+ *          @c register_model, which allocates an @c analytics_t and a
+ *          @c model_report in the internal @c registry, keyed by k-fold.
+ *
+ *          Each time @c capture is called (once per epoch per mode), it scans
+ *          the model's current output/loss tensors and fills the appropriate
+ *          @c TH1F histograms in the @c analytics_t.  The @c dump_plots,
+ *          @c dump_loss_plots, @c dump_accuracy_plots, and @c dump_mass_plots
+ *          methods produce ROOT canvases written to @c output_path.
+ *
+ *          The @c m_settings member is copied from the top-level @c analysis
+ *          settings and controls histogram binning (@c nbins, @c max_range,
+ *          @c logy) and which k-fold indices to process.
+ */
+
+/**
+ * @fn metrics::metrics()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn metrics::~metrics()
+ * @brief Destructor.
+ */
+
+/**
+ * @var std::string metrics::output_path
+ * @brief Directory where plots are written.
+ */
+
+/**
+ * @var const std::vector<Color_t> metrics::colors_h
+ * @brief Default ROOT colour palette for histograms.
+ */
+
+/**
+ * @var settings_t metrics::m_settings
+ * @brief Copy of the run settings used to configure histogram binning and
+ *        range.
+ */
+
+/**
+ * @fn void metrics::dump_plots(int k)
+ * @brief Write all plot types for k-fold @p k.
+ * @param k K-fold index.
+ */
+
+/**
+ * @fn void metrics::dump_loss_plots(int k)
+ * @brief Write loss-curve plots for k-fold @p k.
+ * @param k K-fold index.
+ */
+
+/**
+ * @fn void metrics::dump_accuracy_plots(int k)
+ * @brief Write accuracy-curve plots for k-fold @p k.
+ * @param k K-fold index.
+ */
+
+/**
+ * @fn void metrics::dump_mass_plots(int k)
+ * @brief Write invariant-mass distribution plots for k-fold @p k.
+ * @param k K-fold index.
+ */
+
+/**
+ * @fn model_report* metrics::register_model(model_template* model, int kfold)
+ * @brief Register a model for tracking and return its report object.
+ * @param model Pointer to the model.
+ * @param kfold K-fold index.
+ * @return Pointer to the new @c model_report.
+ */
+
+/**
+ * @fn void metrics::capture(mode_enum, int kfold, int epoch, int smpl_len)
+ * @brief Accumulate the current model outputs into histograms.
+ * @param mode     Current run mode.
+ * @param kfold    K-fold index.
+ * @param epoch    Epoch number.
+ * @param smpl_len Number of samples in the current batch.
+ */

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="edge_8dox" kind="file" language="C++">
+    <compoundname>edge.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the Edge class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>edge.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>Edge<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>Edge_page<sp/>Edge</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>Edge_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`Edge`<sp/>class<sp/>represents<sp/>a<sp/>connection<sp/>between<sp/>two<sp/>`Node`<sp/>objects<sp/>in<sp/>a<sp/>graph.<sp/>It<sp/>is<sp/>a<sp/>fundamental<sp/>component<sp/>of<sp/>the<sp/>graph<sp/>data<sp/>structure<sp/>within<sp/>the<sp/>|g-framework|<sp/>and<sp/>is<sp/>used<sp/>to<sp/>model<sp/>relationships<sp/>and<sp/>interactions<sp/>between<sp/>nodes.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>Edge_class<sp/>The<sp/>Edge<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`Edge`<sp/>class<sp/>provides<sp/>a<sp/>simple<sp/>yet<sp/>powerful<sp/>interface<sp/>for<sp/>creating<sp/>and<sp/>managing<sp/>edges<sp/>in<sp/>a<sp/>graph.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>Edge_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>An<sp/>`Edge`<sp/>object<sp/>can<sp/>have<sp/>the<sp/>following<sp/>attributes:</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>**source**:<sp/>A<sp/>pointer<sp/>to<sp/>the<sp/>source<sp/>`Node`<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>**destination**:<sp/>A<sp/>pointer<sp/>to<sp/>the<sp/>destination<sp/>`Node`<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>**weight**:<sp/>A<sp/>numerical<sp/>value<sp/>representing<sp/>the<sp/>weight<sp/>or<sp/>strength<sp/>of<sp/>the<sp/>connection.<sp/>Defaults<sp/>to<sp/>1.0.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>**features**:<sp/>A<sp/>map<sp/>of<sp/>key-value<sp/>pairs<sp/>representing<sp/>the<sp/>edge&apos;s<sp/>features.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>Edge_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>The<sp/>`Edge`<sp/>class<sp/>provides<sp/>the<sp/>following<sp/>methods:</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`Edge(Node*<sp/>source,<sp/>Node*<sp/>destination,<sp/>double<sp/>weight<sp/>=<sp/>1.0)`:<sp/>Constructor<sp/>that<sp/>creates<sp/>a<sp/>new<sp/>`Edge`<sp/>connecting<sp/>the<sp/>given<sp/>source<sp/>and<sp/>destination<sp/>nodes.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`Node*<sp/>get_source()<sp/>const`:<sp/>Returns<sp/>the<sp/>source<sp/>node<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`Node*<sp/>get_destination()<sp/>const`:<sp/>Returns<sp/>the<sp/>destination<sp/>node<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`double<sp/>get_weight()<sp/>const`:<sp/>Returns<sp/>the<sp/>weight<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_weight(double<sp/>weight)`:<sp/>Sets<sp/>the<sp/>weight<sp/>of<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_feature(const<sp/>std::string&amp;<sp/>key,<sp/>const<sp/>boost::any&amp;<sp/>value)`:<sp/>Adds<sp/>a<sp/>feature<sp/>to<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`boost::any<sp/>get_feature(const<sp/>std::string&amp;<sp/>key)<sp/>const`:<sp/>Retrieves<sp/>a<sp/>feature<sp/>from<sp/>the<sp/>edge.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@section<sp/>Edge_example<sp/>Example<sp/>Usage</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@code{.cpp}</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>two<sp/>nodes</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>Node<sp/>node1(1);</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>Node<sp/>node2(2);</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>an<sp/>edge<sp/>connecting<sp/>the<sp/>two<sp/>nodes<sp/>with<sp/>a<sp/>weight<sp/>of<sp/>0.5</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>Edge<sp/>edge(&amp;node1,<sp/>&amp;node2,<sp/>0.5);</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>//<sp/>Add<sp/>the<sp/>edge<sp/>to<sp/>the<sp/>nodes</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>node1.add_edge(&amp;edge);</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>node2.add_edge(&amp;edge);</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>//<sp/>Get<sp/>the<sp/>source<sp/>and<sp/>destination<sp/>nodes<sp/>from<sp/>the<sp/>edge</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>Node*<sp/>source<sp/>=<sp/>edge.get_source();</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>Node*<sp/>destination<sp/>=<sp/>edge.get_destination();</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>//<sp/>Get<sp/>the<sp/>weight<sp/>of<sp/>the<sp/>edge</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>double<sp/>weight<sp/>=<sp/>edge.get_weight();</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>@endcode</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="core/edge.dox"/>
+  </compounddef>
+</doxygen>

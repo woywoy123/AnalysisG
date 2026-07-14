@@ -1,0 +1,163 @@
+/**
+ * @file dataloader.h
+ * @brief Dataset management with k-fold splits, batching, and CUDA data
+ *        transfer.
+ * @details @c dataloader inherits @c notification and @c tools and manages the
+ *          complete lifecycle of @c graph_t data: building k-fold splits,
+ *          assembling mini-batches, serialising/deserialising graph cache
+ *          files, and transferring tensors to CUDA devices.
+ */
+
+/**
+ * @class dataloader
+ * @brief Manages graph datasets for k-fold cross-validation and mini-batch
+ *        construction.
+ * @details Inherits @c notification and @c tools.  Manages the complete
+ *          lifecycle of @c graph_t data: ingesting graphs via @c extract_data,
+ *          building stratified k-fold training/validation splits with
+ *          @c generate_kfold_set, assembling mini-batches via @c build_batch,
+ *          and transferring tensors to one or more CUDA devices via the
+ *          @c datatransfer overloads.
+ *
+ *          Serialisation to HDF5 graph-cache files is provided by
+ *          @c dump_graphs; the complementary @c restore_graphs overloads
+ *          reload graphs from single files or whole directories in parallel.
+ *          The k-fold assignment itself can be saved and reloaded with
+ *          @c dump_dataset/@c restore_dataset so that folds are reproducible
+ *          across runs.
+ *
+ *          When CUDA is enabled, @c start_cuda_server launches a background
+ *          thread that monitors GPU memory usage.  Friend class @c analysis
+ *          has access to private configuration members such as @c setting.
+ */
+
+/**
+ * @fn dataloader::dataloader()
+ * @brief Default constructor.
+ */
+
+/**
+ * @fn dataloader::~dataloader()
+ * @brief Destructor.  Frees all owned graph data.
+ */
+
+/**
+ * @fn std::vector<graph_t*>* dataloader::get_k_train_set(int k)
+ * @brief Return the training set for k-fold @p k.
+ * @param k K-fold index.
+ * @return Pointer to the training graph vector.
+ */
+
+/**
+ * @fn std::vector<graph_t*>* dataloader::get_k_validation_set(int k)
+ * @brief Return the validation set for k-fold @p k.
+ * @param k K-fold index.
+ * @return Pointer to the validation graph vector.
+ */
+
+/**
+ * @fn std::vector<graph_t*>* dataloader::get_test_set()
+ * @brief Return the evaluation (test) set.
+ * @return Pointer to the test graph vector.
+ */
+
+/**
+ * @fn std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep)
+ * @brief Assemble a mini-batch from @p data for model @p mdl.
+ * @param data Pointer to the source graph set.
+ * @param mdl  Pointer to the model (used for device and batch-size info).
+ * @param rep  Pointer to the epoch report (updated with progress).
+ * @return Pointer to the assembled batch vector.
+ */
+
+/**
+ * @fn static void dataloader::safe_delete(std::vector<graph_t*>* data)
+ * @brief Delete all graphs in @p data and clear the vector.
+ * @param data Vector of graph pointers to delete.
+ */
+
+/**
+ * @fn dataloader::get_inference()
+ * @brief Return all graphs keyed by source filename for inference.
+ * @return Pointer to the inference data map.
+ */
+
+/**
+ * @fn void dataloader::generate_test_set(float percentage)
+ * @brief Randomly split the dataset; @p percentage% goes to the evaluation set.
+ * @param percentage Percentage of data to use for evaluation (default 50).
+ */
+
+/**
+ * @fn void dataloader::generate_kfold_set(int k)
+ * @brief Generate @p k training/validation splits using k-fold tags.
+ * @param k Number of folds.
+ */
+
+/**
+ * @fn void dataloader::dump_dataset(std::string path)
+ * @brief Serialise the current k-fold assignment to a file at @p path.
+ * @param path Output file path.
+ */
+
+/**
+ * @fn bool dataloader::restore_dataset(std::string path)
+ * @brief Restore a k-fold assignment from a file at @p path.
+ * @param path Input file path.
+ * @return @c true on success.
+ */
+
+/**
+ * @fn std::vector<graph_t*> dataloader::get_random(int num)
+ * @brief Return @p num randomly selected graphs.
+ * @param num Number of graphs to sample (default 5).
+ * @return Vector of graph pointers.
+ */
+
+/**
+ * @fn void dataloader::extract_data(graph_t* gr)
+ * @brief Extract a @c graph_t and register it in the dataset.
+ * @param gr Pointer to the graph.
+ */
+
+/**
+ * @fn void dataloader::datatransfer(torch::TensorOptions* op, size_t* num_events, size_t* prg_events)
+ * @brief Transfer all graph tensors to the device specified by @p op.
+ * @param op          Device options.
+ * @param num_events  Pointer to the total event counter.
+ * @param prg_events  Pointer to the progress counter.
+ */
+
+/**
+ * @fn void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops)
+ * @brief Transfer graphs to multiple devices simultaneously.
+ * @param ops Map of device index to options.
+ */
+
+/**
+ * @fn bool dataloader::dump_graphs(std::string path, int threads)
+ * @brief Serialise all graph data to HDF5 files in directory @p path using
+ *        @p threads parallel workers.
+ * @param path    Output directory.
+ * @param threads Number of parallel threads (default 10).
+ * @return @c true on success.
+ */
+
+/**
+ * @fn void dataloader::restore_graphs(std::vector<std::string> paths, int threads)
+ * @brief Deserialise graphs from HDF5 files at @p paths.
+ * @param paths   List of HDF5 file paths.
+ * @param threads Number of parallel threads.
+ */
+
+/**
+ * @fn void dataloader::restore_graphs(std::string paths, int threads)
+ * @brief Deserialise graphs from all HDF5 files in directory @p paths.
+ * @param paths   Directory containing HDF5 files.
+ * @param threads Number of parallel threads.
+ */
+
+/**
+ * @fn void dataloader::start_cuda_server()
+ * @brief Start the background CUDA memory management thread.
+ */

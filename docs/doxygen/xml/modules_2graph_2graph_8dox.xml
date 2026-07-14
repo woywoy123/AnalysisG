@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2graph_2graph_8dox" kind="file" language="C++">
+    <compoundname>graph.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the graph_template and graph_t classes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>graph.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>graph_template<sp/>and<sp/>graph_t<sp/>classes.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>graph_module_page<sp/>Graph<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>graph_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph`<sp/>module<sp/>provides<sp/>the<sp/>base<sp/>template<sp/>for<sp/>representing<sp/>a<sp/>physics<sp/>event<sp/>as<sp/>a<sp/>graph,<sp/>and<sp/>the<sp/>data<sp/>structure<sp/>for<sp/>storing<sp/>the<sp/>graph<sp/>information.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>graph_template_class<sp/>The<sp/>graph_template<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_template`<sp/>class<sp/>is<sp/>an<sp/>abstract<sp/>base<sp/>class<sp/>that<sp/>defines<sp/>the<sp/>structure<sp/>and<sp/>features<sp/>of<sp/>a<sp/>graph.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_template_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>properties<sp/>of<sp/>the<sp/>graph,<sp/>such<sp/>as<sp/>`name`,<sp/>`preselection`,<sp/>`hash`,<sp/>`tree`,<sp/>`index`,<sp/>and<sp/>`weight`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~graph_template()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_template_methods_virtual<sp/>Virtual<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>graph<sp/>object.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>CompileEvent()`:<sp/>This<sp/>method<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>derived<sp/>classes<sp/>to<sp/>implement<sp/>the<sp/>logic<sp/>for<sp/>constructing<sp/>the<sp/>graph<sp/>from<sp/>an<sp/>event.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>PreSelection()`:<sp/>A<sp/>virtual<sp/>method<sp/>for<sp/>applying<sp/>a<sp/>preselection<sp/>to<sp/>the<sp/>event<sp/>before<sp/>building<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_template_methods_building<sp/>Graph<sp/>Building</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_template*<sp/>build(event_template*<sp/>ev)`:<sp/>Builds<sp/>a<sp/>graph<sp/>from<sp/>an<sp/>event<sp/>template.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define_particle_nodes(std::vector&lt;particle_template*&gt;*<sp/>prt)`:<sp/>Defines<sp/>the<sp/>nodes<sp/>of<sp/>the<sp/>graph<sp/>from<sp/>a<sp/>vector<sp/>of<sp/>particles.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define_topology(std::function&lt;bool(particle_template*,<sp/>particle_template*)&gt;<sp/>fx)`:<sp/>Defines<sp/>the<sp/>topology<sp/>of<sp/>the<sp/>graph<sp/>based<sp/>on<sp/>a<sp/>given<sp/>function.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>double_neutrino(...)`:<sp/>A<sp/>method<sp/>for<sp/>reconstructing<sp/>two<sp/>neutrinos<sp/>in<sp/>the<sp/>event<sp/>using<sp/>a<sp/>combinatorial<sp/>algorithm.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_template_methods_features<sp/>Feature<sp/>Management</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_graph_feature(...)`:<sp/>Adds<sp/>a<sp/>graph-level<sp/>feature.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_node_feature(...)`:<sp/>Adds<sp/>a<sp/>node-level<sp/>feature.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_edge_feature(...)`:<sp/>Adds<sp/>an<sp/>edge-level<sp/>feature.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_t*<sp/>data_export()`:<sp/>Exports<sp/>the<sp/>graph<sp/>data<sp/>into<sp/>a<sp/>`graph_t`<sp/>object.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>@section<sp/>graph_t_struct<sp/>The<sp/>graph_t<sp/>Struct</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>The<sp/>`graph_t`<sp/>struct<sp/>is<sp/>a<sp/>data<sp/>structure<sp/>for<sp/>storing<sp/>the<sp/>graph<sp/>information<sp/>in<sp/>a<sp/>way<sp/>that<sp/>is<sp/>suitable<sp/>for<sp/>machine<sp/>learning<sp/>models.</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_t_methods_add<sp/>Adding<sp/>Data</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_truth_graph(...)`,<sp/>`void<sp/>add_truth_node(...)`,<sp/>`void<sp/>add_truth_edge(...)`:<sp/>Add<sp/>truth-level<sp/>features<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_data_graph(...)`,<sp/>`void<sp/>add_data_node(...)`,<sp/>`void<sp/>add_data_edge(...)`:<sp/>Add<sp/>data-level<sp/>(reconstructed)<sp/>features<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_t_methods_access<sp/>Accessing<sp/>Data</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`torch::Tensor*<sp/>has_feature(graph_enum<sp/>tp,<sp/>std::string<sp/>name,<sp/>int<sp/>dev)`:<sp/>Retrieves<sp/>a<sp/>feature<sp/>tensor<sp/>from<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_t_methods_device<sp/>Device<sp/>Management</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>transfer_to_device(torch::TensorOptions*<sp/>dev)`:<sp/>Transfers<sp/>the<sp/>graph<sp/>data<sp/>to<sp/>a<sp/>specific<sp/>device<sp/>(e.g.,<sp/>a<sp/>GPU).</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>graph_t_methods_serialization<sp/>Serialization</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>serialize(graph_hdf5*<sp/>m_hdf5)`:<sp/>Serializes<sp/>the<sp/>graph<sp/>data<sp/>into<sp/>an<sp/>HDF5-compatible<sp/>format.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>deserialize(graph_hdf5*<sp/>m_hdf5)`:<sp/>Deserializes<sp/>the<sp/>graph<sp/>data<sp/>from<sp/>an<sp/>HDF5-compatible<sp/>format.</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/graph/graph.dox"/>
+  </compounddef>
+</doxygen>

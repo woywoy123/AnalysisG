@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="metric_module_page" kind="page">
+    <compoundname>metric_module_page</compoundname>
+    <title>Metric Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="metric_module_page_1metric_module_intro">
+<title>Introduction</title><para>The <computeroutput>metric</computeroutput> module provides the base template for defining and calculating metrics in the |g-framework|. It is designed to be flexible and extensible, allowing users to implement their own custom metrics.</para>
+</sect1>
+<sect1 id="metric_module_page_1metric_template_class">
+<title>The metric_template Class</title><para>The <computeroutput>metric_template</computeroutput> class is an abstract base class that defines the interface for all metric classes.</para>
+<sect2 id="metric_module_page_1metric_template_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>metric_template()</computeroutput>: The constructor initializes the properties of the metric, such as <computeroutput>name</computeroutput>, <computeroutput>run_names</computeroutput>, and <computeroutput>variables</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>~metric_template()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metric_module_page_1metric_template_methods_virtual">
+<title>Virtual Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>metric_template* clone()</computeroutput>: Creates a copy of the metric object.</para>
+</listitem><listitem><para><computeroutput>void define_metric(metric_t* mtx)</computeroutput>: This is the core method for calculating the metric. It is intended to be overridden by derived classes.</para>
+</listitem><listitem><para><computeroutput>void define_variables()</computeroutput>: This method is used to register the output variables for the metric.</para>
+</listitem><listitem><para><computeroutput>void event()</computeroutput>: This method is called for each event.</para>
+</listitem><listitem><para><computeroutput>void batch()</computeroutput>: This method is called for each batch of events.</para>
+</listitem><listitem><para><computeroutput>void end()</computeroutput>: This method is called at the end of the processing.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metric_module_page_1metric_template_methods_linking">
+<title>Linking</title><para><itemizedlist>
+<listitem><para><computeroutput>bool link(model_template* mdl)</computeroutput>: Links a model to the metric.</para>
+</listitem><listitem><para><computeroutput>void link(std::string hsx, std::vector&lt;graph_t*&gt;* data, mode_enum mx)</computeroutput>: Links a batch of data to the metric.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metric_module_page_1metric_template_methods_execution">
+<title>Execution</title><para><itemizedlist>
+<listitem><para><computeroutput>void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg)</computeroutput>: This method orchestrates the execution of the metric calculation. It iterates through the data, calls the <computeroutput>define_metric</computeroutput> method, and writes the results to an output file.</para>
+</listitem><listitem><para><computeroutput>void define(std::vector&lt;metric_t*&gt;* vr, std::vector&lt;size_t&gt;* num, std::vector&lt;std::string*&gt;* title, size_t* offset)</computeroutput>: This method prepares the metric for execution by creating <computeroutput>metric_t</computeroutput> objects for each model, epoch, and k-fold.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="metric_module_page_1metric_t_struct">
+<title>The metric_t Struct</title><para>The <computeroutput>metric_t</computeroutput> struct is a data container that holds all the necessary information for calculating a metric for a specific model, epoch, and k-fold.</para>
+<sect2 id="metric_module_page_1metric_t_members">
+<title>Members</title><para><itemizedlist>
+<listitem><para><computeroutput>model_template* mdlx</computeroutput>: A pointer to the model template.</para>
+</listitem><listitem><para><computeroutput>std::string* pth</computeroutput>: The path to the model checkpoint.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;graph_enum, std::vector&lt;std::string&gt;&gt;* vars</computeroutput>: A map of the required variables for the metric.</para>
+</listitem><listitem><para><computeroutput>std::map&lt;graph_enum, std::vector&lt;variable_t*&gt;&gt;* handl</computeroutput>: A map of the variable handlers.</para>
+</listitem><listitem><para><computeroutput>int kfold</computeroutput>, <computeroutput>int epoch</computeroutput>, <computeroutput>int device</computeroutput>, <computeroutput>int index</computeroutput>: The k-fold, epoch, device, and index of the metric.</para>
+</listitem><listitem><para><computeroutput>mode_enum train_mode</computeroutput>: The training mode (training, validation, or evaluation).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="metric_module_page_1metric_t_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>template &lt;typename T&gt; T get(graph_enum, std::string)</computeroutput>: A template method for retrieving a variable from the metric. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/metric/metric.dox"/>
+  </compounddef>
+</doxygen>

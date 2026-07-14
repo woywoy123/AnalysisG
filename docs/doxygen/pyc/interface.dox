@@ -1,0 +1,12 @@
+/**
+ * @file interface.dox
+ * @brief Detailed documentation for the interface module within the AnalysisG.pyc framework, potentially including CUDA-accelerated interfaces.
+ *
+ * @page interface_page interface
+ *
+ * @section interface_intro Introduction
+ * The `interface` module provides optimized interfaces for interacting with various components, potentially including external libraries or hardware, within the AnalysisG framework. These interfaces are designed for high-performance data exchange and control, and may leverage Cython and CUDA kernels for accelerated operations where direct hardware interaction or high-throughput data transfer is required.
+ *
+ * @section interface_contents Contents
+ * This module contains definitions for various interfaces. Specific contents will be detailed as they are implemented, noting any CUDA-accelerated components.
+ */

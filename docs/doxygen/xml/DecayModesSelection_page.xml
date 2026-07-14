@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="DecayModesSelection_page" kind="page">
+    <compoundname>DecayModesSelection_page</compoundname>
+    <title>Decay Modes Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="DecayModesSelection_page_1DecayModesSelection_intro">
+<title>Introduction</title><para>The <computeroutput>DecayModes</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top quark decay modes in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed information about resonant and spectator top quark decays, including their modes, charges, PDG IDs, and lepton statistics. This class facilitates a high-performance extraction and structuring of decay mode data for further physics analysis.</para>
+</sect1>
+<sect1 id="DecayModesSelection_page_1DecayModesSelection_class">
+<title>The DecayModes Class</title><para><computeroutput>DecayModes</computeroutput> is a <computeroutput>cdef class</computeroutput>, indicating its implementation as a Cython extension type. It inherits from <computeroutput>SelectionTemplate</computeroutput>, thereby gaining all the base functionalities for event selection, ROOT file interpretation, and weight management. Its primary role is to encapsulate a C++ <computeroutput>decaymodes</computeroutput> object, which likely contains the logic for identifying and categorizing top quark decay products.</para>
+<sect2 id="DecayModesSelection_page_1DecayModesSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent, called during object allocation. It initializes a new C++ <computeroutput>decaymodes</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>decaymodes*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: The Cython &quot;destructor&quot; equivalent, called upon object deallocation. It deallocates the C++ <computeroutput>decaymodes</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="DecayModesSelection_page_1DecayModesSelection_internal_methods">
+<title>Internal Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is responsible for converting the C++ data structures within the underlying <computeroutput>decaymodes</computeroutput> object into Python dictionaries and lists, making them accessible as properties of the <computeroutput>DecayModes</computeroutput> instance.<itemizedlist>
+<listitem><para><computeroutput>self.res_top_modes</computeroutput>: Populated from <computeroutput>self.tt.res_top_modes</computeroutput> (resonant top decay modes).</para>
+</listitem><listitem><para><computeroutput>self.res_top_charges</computeroutput>: Populated from <computeroutput>self.tt.res_top_charges</computeroutput> (resonant top charges).</para>
+</listitem><listitem><para><computeroutput>self.res_top_pdgid</computeroutput>: Populated from <computeroutput>self.tt.res_top_pdgid</computeroutput> (resonant top PDG IDs).</para>
+</listitem><listitem><para><computeroutput>self.spec_top_modes</computeroutput>: Populated from <computeroutput>self.tt.spec_top_modes</computeroutput> (spectator top decay modes).</para>
+</listitem><listitem><para><computeroutput>self.spec_top_charges</computeroutput>: Populated from <computeroutput>self.tt.spec_top_charges</computeroutput> (spectator top charges).</para>
+</listitem><listitem><para><computeroutput>self.spec_top_pdgid</computeroutput>: Populated from <computeroutput>self.tt.spec_top_pdgid</computeroutput> (spectator top PDG IDs).</para>
+</listitem><listitem><para><computeroutput>self.all_pdgid</computeroutput>: Populated from <computeroutput>self.tt.all_pdgid</computeroutput> (all PDG IDs encountered).</para>
+</listitem><listitem><para><computeroutput>self.signal_region</computeroutput>: Populated from <computeroutput>self.tt.signal_region</computeroutput> (information about the signal region).</para>
+</listitem><listitem><para><computeroutput>self.lepton_statistics</computeroutput>: Populated from <computeroutput>self.tt.lepton_statistics</computeroutput> (statistics related to leptons).</para>
+</listitem><listitem><para><computeroutput>self.ntops</computeroutput>: Populated from <computeroutput>self.tt.ntops</computeroutput> (number of top quarks).</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="DecayModesSelection_page_1DecayModesSelection_properties">
+<title>Properties</title><para>The following properties are implicitly defined and populated by the <computeroutput>transform_dict_keys</computeroutput> method, providing access to the processed decay mode information:<itemizedlist>
+<listitem><para><computeroutput>@property res_top_modes -&gt; dict</computeroutput>: Dictionary of resonant top decay modes.</para>
+</listitem><listitem><para><computeroutput>@property res_top_charges -&gt; dict</computeroutput>: Dictionary of resonant top charges.</para>
+</listitem><listitem><para><computeroutput>@property res_top_pdgid -&gt; dict</computeroutput>: Dictionary of resonant top PDG IDs.</para>
+</listitem><listitem><para><computeroutput>@property spec_top_modes -&gt; dict</computeroutput>: Dictionary of spectator top decay modes.</para>
+</listitem><listitem><para><computeroutput>@property spec_top_charges -&gt; dict</computeroutput>: Dictionary of spectator top charges.</para>
+</listitem><listitem><para><computeroutput>@property spec_top_pdgid -&gt; dict</computeroutput>: Dictionary of spectator top PDG IDs.</para>
+</listitem><listitem><para><computeroutput>@property all_pdgid -&gt; dict</computeroutput>: Dictionary of all encountered PDG IDs.</para>
+</listitem><listitem><para><computeroutput>@property signal_region -&gt; dict</computeroutput>: Dictionary containing information about the signal region.</para>
+</listitem><listitem><para><computeroutput>@property lepton_statistics -&gt; dict</computeroutput>: Dictionary containing lepton statistics.</para>
+</listitem><listitem><para><computeroutput>@property ntops -&gt; list</computeroutput>: List of number of top quarks.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="DecayModesSelection_page_1DecayModesSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>DecayModes</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class DecayModes</computeroutput>: Declares <computeroutput>DecayModes</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef decaymodes *tt</computeroutput>: A C++ pointer to a <computeroutput>decaymodes</computeroutput> object, which is the specialized C++ implementation for decay mode analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new decaymodes()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;decaymodes*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>DecayModes</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>decaymodes</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>DecayModes</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures, specifically <computeroutput>as_dict</computeroutput> and <computeroutput>as_basic_dict</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/decaymodes/decaymodes.dox"/>
+  </compounddef>
+</doxygen>

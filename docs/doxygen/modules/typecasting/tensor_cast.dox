@@ -1,0 +1,45 @@
+/**
+ * @file tensor_cast.h
+ * @brief Detailed documentation for the tensor_cast.h header.
+ *
+ * @section tensor_cast_intro tensor_cast.h
+ * The `tensor_cast.h` header contains template logic used to safely rebuild 
+ * N-dimensional `torch::Tensor` objects from nested C++ `std::vector` types. 
+ * This is effectively the inverse operation to `vector_cast.h`, primarily used 
+ * when reconstructing tensors from ROOT event buffers.
+ *
+ * @fn template <typename G> void scout_dim(const std::vector<G>* vec, int* mx_dim)
+ * @brief Recursively explores a nested vector structure to find its maximum inner dimensionality.
+ * @param vec Pointer to the input nested vector.
+ * @param mx_dim Pointer to the integer storing the discovered maximum dimension.
+ *
+ * @fn template <typename g> void nulls(const std::vector<g>* d, int* mx_dim)
+ * @brief Pads ragged nested vectors with default null/negative-one values to ensure uniform dimensionality.
+ * @param d Pointer to the vector to be padded.
+ * @param mx_dim Pointer to the required dimension size.
+ *
+ * @fn template <typename g> bool standard(const std::vector<g>* vec, int* mx_dim)
+ * @brief Validates and forcefully standardizes the shape of a vector by applying padding.
+ * @param vec Pointer to the vector to validate.
+ * @param mx_dim Pointer to the target maximum dimension.
+ * @return True if the vector shape matches expectations.
+ *
+ * @fn template <typename G, typename g> static void as_primitive(std::vector<G>* data, std::vector<g>* linear, std::vector<signed long>* dims, unsigned int depth)
+ * @brief Flattens a dynamically typed nested vector into a continuous 1D primitive array and logs its original shape.
+ * @param data Pointer to the input multi-dimensional vector.
+ * @param linear Pointer to the output 1D flattened vector.
+ * @param dims Pointer to the vector tracking the discovered dimension shapes.
+ * @param depth Current recursive depth.
+ *
+ * @fn template <typename G, typename g> static torch::Tensor build_tensor(std::vector<G>* _data, at::ScalarType _op, g, torch::TensorOptions* op)
+ * @brief Orchestrates the compilation of a nested vector back into a contiguous PyTorch tensor.
+ *
+ * It utilizes `scout_dim` and `standard` to ensure uniform shape, flattens the vector 
+ * using `as_primitive`, and uses `torch::from_blob` to initialize the target tensor without 
+ * excessive data copies where possible.
+ *
+ * @param _data Pointer to the source nested C++ vector.
+ * @param _op The target `torch::dtype` enum.
+ * @param op Tensor configuration options (e.g., target device).
+ * @return The reconstructed `torch::Tensor` object.
+ */

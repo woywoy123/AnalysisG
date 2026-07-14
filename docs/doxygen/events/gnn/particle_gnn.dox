@@ -1,0 +1,32 @@
+/**
+ * @file particle_gnn.dox
+ * @brief Detailed documentation for specialized particle classes within the AnalysisG framework for Graph Neural Network (GNN) events.
+ *
+ * @page GNNParticles_page GNN Particles
+ *
+ * @section GNNParticles_intro Introduction
+ * The `particle_gnn.pyx` module defines a collection of specialized particle classes tailored for Graph Neural Network (GNN) applications within the AnalysisG framework. These classes, including `Top` and `ZPrime`, both inherit from the generic `ParticleTemplate`. They encapsulate specific C++ particle types, providing a high-performance and Python-friendly interface to detailed particle information relevant to GNN-based analyses.
+ *
+ * @section GNNParticles_classes Specialized Particle Classes
+ * Each class below is a `cdef class`, indicating its implementation as a Cython extension type. They all inherit from `ParticleTemplate`, gaining its base functionalities for kinematic, quantum, and relational properties. Their primary role is to wrap a specific C++ particle object, allowing for specialized data access and manipulation.
+ *
+ * @subsection GNNParticles_Top_class Top Class
+ * - **Introduction**: Represents a top quark particle in GNN events.
+ * - `__cinit__(self)`: Initializes a new C++ `top` object and assigns its pointer to `self.prt`. It then upcasts `self.prt` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `top` object via `self.prt`.
+ *
+ * @subsection GNNParticles_ZPrime_class ZPrime Class
+ * - **Introduction**: Represents a Z' boson particle in GNN events.
+ * - `__cinit__(self)`: Initializes a new C++ `zprime` object and assigns its pointer to `self.prt`. It then upcasts `self.prt` to a `particle_template*` and assigns it to `self.ptr`.
+ * - `__init__(self)`: Python initializer, intentionally empty.
+ * - `__dealloc__(self)`: Deallocates the C++ `zprime` object via `self.prt`.
+ *
+ * @section GNNParticles_cpp_interaction C++ Interaction
+ * All classes in this module leverage Cython's capabilities for seamless C++ integration:
+ * - `cdef class ...`: Declares each class as a Cython extension type.
+ * - `cdef <cpp_type> *prt`: A C++ pointer to a specific particle type (e.g., `top*`, `zprime*`), managed by the Cython class.
+ * - `self.ptr = <particle_template*>(self.prt)`: This line demonstrates C++ upcasting, where a pointer to a derived class (e.g., `top*`) is assigned to a pointer to its base class (`particle_template*`). This allows the specialized particle classes to fulfill the `ParticleTemplate` interface while internally managing their specific C++ particle data.
+ * - `from AnalysisG.events.gnn.particle_gnn cimport *`: Imports the C++ particle class declarations from their `.pxd` file.
+ * - `from AnalysisG.core.particle_template cimport ParticleTemplate`: Imports the base `ParticleTemplate` class, from which all these specialized classes inherit.
+ */

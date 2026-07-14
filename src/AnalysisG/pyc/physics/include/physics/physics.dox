@@ -1,0 +1,88 @@
+/**
+ * @file physics.h (pyc)
+ * @brief Internal CUDA/C++ implementation of relativistic kinematic
+ *        computations.
+ * @details Declares the @c physics_ namespace.  All functions accept pointers
+ *          to tensors and return @c torch::Tensor.  These are wrapped by the
+ *          public @c pyc::physics API in @c pyc.h.
+ */
+
+/**
+ * @namespace physics_
+ * @brief Internal namespace for batched relativistic kinematics.
+ */
+
+/**
+ * @fn torch::Tensor physics_::P2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Compute |p|² from individual components.
+ * @param px [N], @param py [N], @param pz [N].
+ * @return [N] |p|².
+ */
+
+/**
+ * @fn torch::Tensor physics_::P2(torch::Tensor* pmc)
+ * @brief Compute |p|² from stacked [N, 4] Cartesian momenta.
+ * @param pmc [N, 4].
+ * @return [N] |p|².
+ */
+
+/**
+ * @fn torch::Tensor physics_::P(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Compute |p| = √(px² + py² + pz²).
+ */
+
+/**
+ * @fn torch::Tensor physics_::Beta2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute β² = |p|²/E².
+ */
+
+/**
+ * @fn torch::Tensor physics_::Beta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute β = |p|/E.
+ */
+
+/**
+ * @fn torch::Tensor physics_::M2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute m² = E² - |p|².
+ */
+
+/**
+ * @fn torch::Tensor physics_::M(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute invariant mass m = √|m²|.
+ */
+
+/**
+ * @fn torch::Tensor physics_::Mt2(torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute transverse mass squared.
+ * @param pz [N] z-momentum.
+ * @param e  [N] energy.
+ * @return [N] mT².
+ */
+
+/**
+ * @fn torch::Tensor physics_::Mt(torch::Tensor* pz, torch::Tensor* e)
+ * @brief Compute transverse mass.
+ */
+
+/**
+ * @fn torch::Tensor physics_::Theta(torch::Tensor* pmc)
+ * @brief Compute polar angle θ from stacked [N, 4] Cartesian momenta.
+ */
+
+/**
+ * @fn torch::Tensor physics_::Theta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz)
+ * @brief Compute polar angle θ from individual components.
+ */
+
+/**
+ * @fn torch::Tensor physics_::DeltaR(torch::Tensor* pmu1, torch::Tensor* pmu2)
+ * @brief Compute ΔR from two stacked [N, 4] polar four-momenta.
+ * @param pmu1 [N, 4] (pT, η, φ, E).
+ * @param pmu2 [N, 4].
+ * @return [N] ΔR = √(Δη² + Δφ²).
+ */
+
+/**
+ * @fn torch::Tensor physics_::DeltaR(torch::Tensor* eta1, torch::Tensor* eta2, torch::Tensor* phi1, torch::Tensor* phi2)
+ * @brief Compute ΔR from individual η and φ tensors.
+ */

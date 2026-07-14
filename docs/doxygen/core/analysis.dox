@@ -1,0 +1,175 @@
+/**
+ * @file analysis.dox
+ * @brief Detailed documentation for the Analysis Cython class, the central orchestrator for data management and processing in the AnalysisG framework.
+ *
+ * @page Analysis_page Analysis
+ *
+ * @section Analysis_intro Introduction
+ * The `Analysis` class, implemented in Cython, serves as the primary entry point and orchestrator for managing and executing data processing workflows within the AnalysisG framework. It provides a comprehensive interface for configuring and running complex analyses, including the integration of samples, event and graph templates, selection criteria, metric calculations, and machine learning models. This class is designed to streamline the entire analysis pipeline, from data input to result generation, leveraging a high-performance C++ backend for critical operations.
+ *
+ * @section Analysis_factory_function factory(title, total)
+ * A helper function to create and configure a `tqdm` progress bar instance.
+ * @param title The descriptive title for the progress bar.
+ * @param total The total number of iterations or steps for the progress bar.
+ * @return A `tqdm` progress bar instance, configured to be dynamic, leave output, and display a description.
+ *
+ * @section Analysis_class The Analysis Class
+ * `Analysis` is a `cdef class`, signifying its implementation as a Cython extension type. This design enables direct and optimized interaction with an underlying C++ `analysis` object, which handles the heavy lifting of data processing, threading, and resource management. The Python `Analysis` class provides a user-friendly interface to configure and control this powerful backend.
+ *
+ * @subsection Analysis_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `analysis` object (`self.ana`) and sets up empty Python lists for storing references to added templates (`selections_`, `graphs_`, `events_`, `models_`, `optim_`) and a dictionary for metadata (`meta_`).
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer, intentionally left empty as primary initialization is handled by `__cinit__`.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `analysis` object pointed to by `self.ana` and explicitly calls `gc.collect()` to encourage garbage collection of associated Python objects.
+ *
+ * @subsection Analysis_methods Methods
+ * - `AddSamples(self, str path, str label)`:
+ *   Adds data samples to the analysis. These samples are typically ROOT files or directories containing them.
+ *   @param path The file path (or directory) to the samples.
+ *   @param label A descriptive label for these samples.
+ *
+ * - `AddEvent(self, EventTemplate ev, str label)`:
+ *   Registers an `EventTemplate` with the analysis. This template defines how event-level data should be structured and processed.
+ *   @param ev An instance of `EventTemplate`.
+ *   @param label A label for this event template.
+ *
+ * - `AddGraph(self, GraphTemplate ev, str label)`:
+ *   Registers a `GraphTemplate` with the analysis. This template defines how graph-level data should be structured and processed.
+ *   @param ev An instance of `GraphTemplate`.
+ *   @param label A label for this graph template.
+ *
+ * - `AddSelection(self, SelectionTemplate selc)`:
+ *   Registers a `SelectionTemplate` with the analysis. This template defines specific criteria for event selection.
+ *   @param selc An instance of `SelectionTemplate`.
+ *
+ * - `AddMetric(self, MetricTemplate mex, ModelTemplate mdl)`:
+ *   Registers a `MetricTemplate` with an associated `ModelTemplate` for evaluation.
+ *   @param mex An instance of `MetricTemplate`.
+ *   @param mdl An instance of `ModelTemplate` that the metric will evaluate.
+ *
+ * - `AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name)`:
+ *   Registers a `ModelTemplate` for training, along with its `OptimizerConfig`.
+ *   @param model An instance of `ModelTemplate`.
+ *   @param op An instance of `OptimizerConfig` specifying the optimizer parameters.
+ *   @param run_name A name for this training run.
+ *
+ * - `AddModelInference(self, ModelTemplate model, str run_name = "run_name")`:
+ *   Registers a `ModelTemplate` specifically for inference (prediction) tasks.
+ *   @param model An instance of `ModelTemplate`.
+ *   @param run_name A name for this inference run. Defaults to "run_name".
+ *
+ * - `Start(self)`:
+ *   Initiates the entire analysis process. This method orchestrates the execution of samples, events, graphs, selections, metrics, and models according to the configured settings.
+ *   - **Metadata Handling**: Attempts to load cached metadata from `meta_state.pkl`. If `FetchMeta` is enabled, it fetches new metadata using the `Meta` class and caches it.
+ *   - **C++ Backend Start**: Calls `self.ana.start()` to begin the C++-level processing.
+ *   - **Progress Tracking**: Enters a loop to monitor the progress of the C++ backend using `self.ana.progress()`, `self.ana.progress_mode()`, and `self.ana.progress_report()`. It uses `tqdm` progress bars (created by the `factory` function) to display real-time progress.
+ *   - **Dynamic Progress Bars**: Dynamically creates and updates progress bars for different stages or components of the analysis.
+ *   - **Completion Check**: Continuously checks `self.ana.is_complete()` to determine when all tasks are finished.
+ *   - **Reporting**: Prints progress reports and model reports as they become available from the C++ backend.
+ *   - **Error Handling**: Catches `KeyboardInterrupt` to allow graceful exit during long-running processes.
+ *   - **Thread Management**: Calls `self.ana.attach_threads()` to manage C++ threads.
+ *   - **Post-processing**: Calls `transform_dict_keys()` on all registered `SelectionTemplate` instances.
+ *
+ * @subsection Analysis_properties Properties
+ * These properties provide extensive configuration options for controlling the behavior of the analysis.
+ *
+ * - `@property SumOfWeightsTreeName -> str`:
+ *   Gets and sets the name of the ROOT tree containing sum-of-weights information.
+ *
+ * - `@property OutputPath -> str`:
+ *   Gets and sets the base directory path where analysis outputs (e.g., plots, caches, metadata) will be saved.
+ *
+ * - `@property kFolds -> int`:
+ *   Gets and sets the total number of k-folds for cross-validation.
+ *
+ * - `@property kFold -> list`:
+ *   Gets and sets a specific k-fold (or list of k-folds) to process.
+ *
+ * - `@property GetMetaData -> MetaLookup`:
+ *   Retrieves a `MetaLookup` object populated with the metadata collected during the analysis. If metadata is missing, it logs a warning.
+ *
+ * - `@property Epochs -> int`:
+ *   Gets and sets the number of training epochs for models.
+ *
+ * - `@property NumExamples -> int`:
+ *   Gets and sets the number of examples to process.
+ *
+ * - `@property TrainingDataset -> str`:
+ *   Gets and sets the path to the training dataset file (e.g., HDF5). Automatically appends ".h5" if not present.
+ *
+ * - `@property TrainSize -> float`:
+ *   Gets and sets the fraction of data to use for training (e.g., 0.8 for 80%).
+ *
+ * - `@property Training -> bool`:
+ *   Gets and sets whether training should be performed.
+ *
+ * - `@property Validation -> bool`:
+ *   Gets and sets whether validation should be performed.
+ *
+ * - `@property Evaluation -> bool`:
+ *   Gets and sets whether evaluation should be performed.
+ *
+ * - `@property ContinueTraining -> bool`:
+ *   Gets and sets whether to continue training from a previous checkpoint.
+ *
+ * - `@property nBins -> int`:
+ *   Gets and sets the default number of bins for histograms.
+ *
+ * - `@property Refresh -> int`:
+ *   Gets and sets the refresh rate for progress bars (in milliseconds).
+ *
+ * - `@property MaxRange -> int`:
+ *   Gets and sets the maximum range for certain data processing operations.
+ *
+ * - `@property VarPt -> str`:
+ *   Gets and sets the variable name for transverse momentum (pT).
+ *
+ * - `@property VarEta -> str`:
+ *   Gets and sets the variable name for pseudorapidity (eta).
+ *
+ * - `@property VarPhi -> str`:
+ *   Gets and sets the variable name for azimuthal angle (phi).
+ *
+ * - `@property VarEnergy -> str`:
+ *   Gets and sets the variable name for energy.
+ *
+ * - `@property Targets -> list`:
+ *   Gets and sets a list of target variables for machine learning tasks.
+ *
+ * - `@property DebugMode -> bool`:
+ *   Gets and sets whether debug mode is enabled, providing more verbose output.
+ *
+ * - `@property Threads -> int`:
+ *   Gets and sets the number of threads to use for parallel processing.
+ *
+ * - `@property GraphCache -> str`:
+ *   Gets and sets the path to the graph cache directory.
+ *
+ * - `@property BatchSize -> int`:
+ *   Gets and sets the batch size for data processing and model training.
+ *
+ * - `@property FetchMeta -> bool`:
+ *   Gets and sets whether metadata should be fetched from external sources (e.g., PyAMI).
+ *
+ * - `@property BuildCache -> bool`:
+ *   Gets and sets whether to build a data cache.
+ *
+ * - `@property PreTagEvents -> bool`:
+ *   Gets and sets whether events should be pre-tagged.
+ *
+ * - `@property SaveSelectionToROOT -> bool`:
+ *   Gets and sets whether selected events should be saved to a ROOT file.
+ *
+ * @section Analysis_cpp_interaction C++ Interaction
+ * The `Analysis` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class Analysis`: Declares `Analysis` as a Cython extension type.
+ * - `cdef analysis *ana`: A C++ pointer to an `analysis` object, managed by the Cython class.
+ * - `from libcpp cimport bool, string, map, pair`: Imports C++ standard library types.
+ * - `from AnalysisG.core.meta cimport *`, `from AnalysisG.core.tools cimport *`, `from AnalysisG.core.lossfx cimport *`, `from AnalysisG.core.event_template cimport *`, `from AnalysisG.core.graph_template cimport *`, `from AnalysisG.core.selection_template cimport *`, `from AnalysisG.core.metric_template cimport *`, `from AnalysisG.core.model_template cimport *`: Imports C++ declarations from corresponding `.pxd` files and Python classes.
+ * - `from AnalysisG.core.analysis cimport analysis`: Imports the C++ `analysis` class declaration from its `.pxd` file.
+ * - `tqdm`, `pickle`, `gc`, `time.sleep`: Python libraries used for progress bars, object serialization, garbage collection, and pausing execution.
+ */

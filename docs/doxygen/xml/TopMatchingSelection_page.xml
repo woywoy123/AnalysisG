@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="TopMatchingSelection_page" kind="page">
+    <compoundname>TopMatchingSelection_page</compoundname>
+    <title>Top Matching Selection</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="TopMatchingSelection_page_1TopMatchingSelection_intro">
+<title>Introduction</title><para>The <computeroutput>TopMatching</computeroutput> class, implemented in Cython, is a specialized selection template within the AnalysisG framework, designed for comprehensive analysis of top quark matching in Monte Carlo 16 (MC16) events. It inherits from the generic <computeroutput>SelectionTemplate</computeroutput> class, extending its functionalities to extract and organize detailed information about various mass definitions (truth-level top, children, truth-jets, reconstructed jets), leptonicity, and jet multiplicities. This class facilitates a high-performance extraction and structuring of top matching data for further physics analysis.</para>
+</sect1>
+<sect1 id="TopMatchingSelection_page_1TopMatchingSelection_helper_functions">
+<title>Helper Functions (C-style)</title><para>These functions are designed to be used as callbacks for <computeroutput>self.root_leaves</computeroutput> in <computeroutput>SelectionTemplate</computeroutput>, processing data as it&apos;s read from ROOT files.</para>
+<para><itemizedlist>
+<listitem><para><computeroutput>cdef void fx_mass(TopMatching xl, tuple data)</computeroutput>: Processes mass-related data. It takes a <computeroutput>TopMatching</computeroutput> instance and a tuple <computeroutput>(name_string, vector_of_floats)</computeroutput>. Based on <computeroutput>name_string</computeroutput>, it merges the <computeroutput>vector_of_floats</computeroutput> into the corresponding mass-related attribute of the <computeroutput>TopMatching</computeroutput> instance (e.g., <computeroutput>top_mass</computeroutput>, <computeroutput>topchildren_mass</computeroutput>). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>xl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopMatching</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_floats)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def fx_lep(TopMatching xl, tuple data)</computeroutput>: Processes leptonicity-related data. Similar to <computeroutput>fx_mass</computeroutput>, but merges <computeroutput>vector_of_bools</computeroutput> into attributes like <computeroutput>topchildren_islep</computeroutput>, <computeroutput>toptruthjets_islep</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>xl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopMatching</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_bools)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem><listitem><para><computeroutput>def fx_njx(TopMatching xl, tuple data)</computeroutput>: Processes jet count and PDG ID data. Merges <computeroutput>vector_of_ints</computeroutput> into attributes like <computeroutput>toptruthjets_njets</computeroutput>, <computeroutput>topjets_leptons_njets</computeroutput>, <computeroutput>topjets_leptons_pdgid</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>xl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An instance of <computeroutput>TopMatching</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>data</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A tuple <computeroutput>(name_string, vector_of_ints)</computeroutput> containing the data.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+<sect1 id="TopMatchingSelection_page_1TopMatchingSelection_class">
+<title>The TopMatching Class</title><para><computeroutput>TopMatching</computeroutput> is a <computeroutput>cdef class</computeroutput> that inherits from <computeroutput>SelectionTemplate</computeroutput>. It is tailored for collecting and organizing information related to top quark matching.</para>
+<sect2 id="TopMatchingSelection_page_1TopMatchingSelection_cinit_dealloc">
+<title>Constructors and Destructors</title><para><itemizedlist>
+<listitem><para><computeroutput>__cinit__(self)</computeroutput>: The Cython &quot;constructor&quot; equivalent.<itemizedlist>
+<listitem><para>Initializes <computeroutput>self.root_leaves</computeroutput> to define specific ROOT branches and associates them with the appropriate helper functions (<computeroutput>fx_mass</computeroutput>, <computeroutput>fx_lep</computeroutput>, <computeroutput>fx_njx</computeroutput>) for data processing during <computeroutput>InterpretROOT</computeroutput>.</para>
+</listitem><listitem><para>Initializes several internal Python dictionaries (<computeroutput>n_truth_jets_lep</computeroutput>, <computeroutput>n_truth_jets_had</computeroutput>, <computeroutput>n_jets_lep</computeroutput>, <computeroutput>n_jets_had</computeroutput>) for structured storage of processed data.</para>
+</listitem><listitem><para>Initializes a new C++ <computeroutput>topmatching</computeroutput> object and assigns its pointer to <computeroutput>self.ptr</computeroutput>. It then upcasts <computeroutput>self.ptr</computeroutput> to a <computeroutput>topmatching*</computeroutput> and assigns it to <computeroutput>self.tt</computeroutput> for specialized access.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>__init__(self)</computeroutput>: (Not explicitly defined in the provided snippet) This would typically be the Python initializer.</para>
+</listitem><listitem><para><computeroutput>__dealloc__(self)</computeroutput>: Deallocates the C++ <computeroutput>topmatching</computeroutput> object pointed to by <computeroutput>self.tt</computeroutput>, ensuring proper memory management.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="TopMatchingSelection_page_1TopMatchingSelection_methods">
+<title>Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>Postprocessing(self)</computeroutput>: This method is called after all data has been interpreted from ROOT files. It performs extensive organization and structuring of the raw matching data collected by the helper functions into meaningful Python dictionaries.<itemizedlist>
+<listitem><para><bold>Initialization</bold>: Initializes various dictionaries (<computeroutput>truth_top</computeroutput>, <computeroutput>truth_children</computeroutput>, <computeroutput>truth_jets</computeroutput>, <computeroutput>jets_truth_leps</computeroutput>, <computeroutput>jet_leps</computeroutput>) to store categorized mass values.</para>
+</listitem><listitem><para><bold>Categorization by Leptonicity</bold>: Iterates through collected <computeroutput>islep</computeroutput> flags and corresponding masses to categorize particles/jets as leptonic or hadronic, populating the initialized dictionaries.</para>
+</listitem><listitem><para><bold>Jet Multiplicity Categorization</bold>: Further categorizes jets based on their multiplicity (<computeroutput>njets</computeroutput>) for both truth-level and reconstructed jets.</para>
+</listitem><listitem><para><bold>Lepton PDG ID Categorization</bold>: For leptonic jets, it categorizes by lepton PDG ID.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><computeroutput>cdef void transform_dict_keys(self)</computeroutput>: This method is a placeholder from <computeroutput>SelectionTemplate</computeroutput> and is intentionally left empty in this implementation.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="TopMatchingSelection_page_1TopMatchingSelection_properties">
+<title>Properties</title><para>The following properties are dynamically populated by the helper functions and <computeroutput>Postprocessing</computeroutput> method:<itemizedlist>
+<listitem><para><computeroutput>top_mass -&gt; vector[float]</computeroutput>: Raw mass values for top quarks.</para>
+</listitem><listitem><para><computeroutput>topchildren_mass -&gt; vector[float]</computeroutput>: Raw mass values for top children.</para>
+</listitem><listitem><para><computeroutput>toptruthjets_mass -&gt; vector[float]</computeroutput>: Raw mass values for truth jets from tops.</para>
+</listitem><listitem><para><computeroutput>topjets_children_mass -&gt; vector[float]</computeroutput>: Raw mass values for children of top jets.</para>
+</listitem><listitem><para><computeroutput>topjets_leptons_mass -&gt; vector[float]</computeroutput>: Raw mass values for leptons from top jets.</para>
+</listitem><listitem><para><computeroutput>topchildren_islep -&gt; vector[bool]</computeroutput>: Leptonicity flags for top children.</para>
+</listitem><listitem><para><computeroutput>toptruthjets_islep -&gt; vector[bool]</computeroutput>: Leptonicity flags for truth jets from tops.</para>
+</listitem><listitem><para><computeroutput>topjets_children_islep -&gt; vector[bool]</computeroutput>: Leptonicity flags for children of top jets.</para>
+</listitem><listitem><para><computeroutput>topjets_leptons_islep -&gt; vector[bool]</computeroutput>: Leptonicity flags for leptons from top jets.</para>
+</listitem><listitem><para><computeroutput>toptruthjets_njets -&gt; vector[int]</computeroutput>: Number of jets for truth jets from tops.</para>
+</listitem><listitem><para><computeroutput>topjets_leptons_njets -&gt; vector[int]</computeroutput>: Number of jets for leptons from top jets.</para>
+</listitem><listitem><para><computeroutput>topjets_leptons_pdgid -&gt; vector[int]</computeroutput>: PDG IDs for leptons from top jets.</para>
+</listitem><listitem><para><computeroutput>truth_top -&gt; dict</computeroutput>: Processed truth-level top quark masses.</para>
+</listitem><listitem><para><computeroutput>truth_children -&gt; dict</computeroutput>: Processed truth-level children masses, categorized by leptonicity.</para>
+</listitem><listitem><para><computeroutput>truth_jets -&gt; dict</computeroutput>: Processed truth-level jet masses, categorized by leptonicity and jet multiplicity.</para>
+</listitem><listitem><para><computeroutput>jets_truth_leps -&gt; dict</computeroutput>: Processed masses of jets associated with truth-level leptons, categorized by leptonicity.</para>
+</listitem><listitem><para><computeroutput>jet_leps -&gt; dict</computeroutput>: Processed masses of jets associated with leptons, categorized by leptonicity and PDG ID.</para>
+</listitem><listitem><para><computeroutput>n_truth_jets_lep -&gt; dict</computeroutput>: Number of truth jets (leptonic).</para>
+</listitem><listitem><para><computeroutput>n_truth_jets_had -&gt; dict</computeroutput>: Number of truth jets (hadronic).</para>
+</listitem><listitem><para><computeroutput>n_jets_lep -&gt; dict</computeroutput>: Number of reconstructed jets (leptonic).</para>
+</listitem><listitem><para><computeroutput>n_jets_had -&gt; dict</computeroutput>: Number of reconstructed jets (hadronic).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="TopMatchingSelection_page_1TopMatchingSelection_cpp_interaction">
+<title>C++ Interaction</title><para>The <computeroutput>TopMatching</computeroutput> class leverages Cython&apos;s capabilities for seamless C++ integration:<itemizedlist>
+<listitem><para><computeroutput>cdef class TopMatching</computeroutput>: Declares <computeroutput>TopMatching</computeroutput> as a Cython extension type.</para>
+</listitem><listitem><para><computeroutput>cdef topmatching *tt</computeroutput>: A C++ pointer to a <computeroutput>topmatching</computeroutput> object, which is the specialized C++ implementation for top matching analysis.</para>
+</listitem><listitem><para><computeroutput>self.ptr = new topmatching()</computeroutput>: Initializes the base <computeroutput>SelectionTemplate</computeroutput>&apos;s C++ pointer.</para>
+</listitem><listitem><para><computeroutput>self.tt = &lt;topmatching*&gt;self.ptr</computeroutput>: This line demonstrates C++ upcasting, allowing <computeroutput>TopMatching</computeroutput> to fulfill the <computeroutput>SelectionTemplate</computeroutput> interface while internally managing its specific <computeroutput>topmatching</computeroutput> data.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.selection_template cimport SelectionTemplate</computeroutput>: Imports the base <computeroutput>SelectionTemplate</computeroutput> class, from which <computeroutput>TopMatching</computeroutput> inherits.</para>
+</listitem><listitem><para><computeroutput>from AnalysisG.core.tools cimport *</computeroutput>: Imports utility functions for converting between C++ and Python data structures, specifically <computeroutput>merge_data</computeroutput>. </para>
+</listitem></itemizedlist>
+</para>
+</sect1>
+    </detaileddescription>
+    <location file="selections/mc16/topmatching/topmatching.dox"/>
+  </compounddef>
+</doxygen>

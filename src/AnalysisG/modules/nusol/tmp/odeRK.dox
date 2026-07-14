@@ -1,0 +1,10 @@
+/**
+ * @file odeRK.dox
+ * @brief Runge-Kutta 4 ODE integrator for multi-neutrino ellipse alignment
+ *        (root-level tmp variant).
+ * @details Identical in interface to the version in
+ *          @c tmp/multisol/include/multisol/_odeRK.h.  Refer to that file's
+ *          documentation for full details.
+ *
+ * @sa _odeRK.dox
+ */

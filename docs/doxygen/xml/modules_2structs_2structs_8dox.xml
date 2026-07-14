@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="modules_2structs_2structs_8dox" kind="file" language="C++">
+    <compoundname>structs.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the various data structures used in the |g-framework|. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>structs.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>various<sp/>data<sp/>structures<sp/>used<sp/>in<sp/>the<sp/>|g-framework|.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>structs_module_page<sp/>Structs<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>structs_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`structs`<sp/>module<sp/>provides<sp/>a<sp/>collection<sp/>of<sp/>data<sp/>structures<sp/>that<sp/>are<sp/>used<sp/>throughout<sp/>the<sp/>|g-framework|<sp/>for<sp/>storing<sp/>and<sp/>managing<sp/>data.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>bsc_t_class<sp/>The<sp/>bsc_t<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`bsc_t`<sp/>class<sp/>is<sp/>a<sp/>base<sp/>class<sp/>for<sp/>handling<sp/>basic<sp/>data<sp/>types<sp/>and<sp/>their<sp/>conversions.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>bsc_t_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`data_enum<sp/>root_type_translate(std::string*<sp/>root_str)`:<sp/>Translates<sp/>a<sp/>ROOT<sp/>type<sp/>string<sp/>into<sp/>a<sp/>`data_enum`<sp/>value.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string<sp/>as_string()`:<sp/>Converts<sp/>the<sp/>current<sp/>data<sp/>type<sp/>to<sp/>a<sp/>string<sp/>representation.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>flush_buffer()`:<sp/>Flushes<sp/>the<sp/>data<sp/>buffer.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>element(...)`:<sp/>A<sp/>set<sp/>of<sp/>overloaded<sp/>methods<sp/>for<sp/>accessing<sp/>the<sp/>data<sp/>in<sp/>the<sp/>buffer.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@section<sp/>element_t_struct<sp/>The<sp/>element_t<sp/>Struct</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>`element_t`<sp/>struct<sp/>represents<sp/>a<sp/>single<sp/>entry<sp/>in<sp/>a<sp/>ROOT<sp/>tree,<sp/>providing<sp/>access<sp/>to<sp/>the<sp/>data<sp/>in<sp/>the<sp/>leaves.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>element_t_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>set_meta()`:<sp/>Sets<sp/>the<sp/>metadata<sp/>for<sp/>the<sp/>event.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>next()`:<sp/>Moves<sp/>to<sp/>the<sp/>next<sp/>event<sp/>in<sp/>the<sp/>tree.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>boundary()`:<sp/>Checks<sp/>if<sp/>the<sp/>end<sp/>of<sp/>the<sp/>tree<sp/>has<sp/>been<sp/>reached.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>@section<sp/>data_t_struct<sp/>The<sp/>data_t<sp/>Struct</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>The<sp/>`data_t`<sp/>struct<sp/>is<sp/>a<sp/>data<sp/>container<sp/>for<sp/>a<sp/>single<sp/>leaf<sp/>in<sp/>a<sp/>ROOT<sp/>tree.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>data_t_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>initialize()`:<sp/>Initializes<sp/>the<sp/>data<sp/>container<sp/>by<sp/>opening<sp/>the<sp/>ROOT<sp/>file<sp/>and<sp/>setting<sp/>up<sp/>the<sp/>tree<sp/>and<sp/>leaf<sp/>pointers.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>next()`:<sp/>Moves<sp/>to<sp/>the<sp/>next<sp/>event<sp/>in<sp/>the<sp/>tree.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>fetch_buffer()`:<sp/>Fetches<sp/>the<sp/>data<sp/>from<sp/>the<sp/>ROOT<sp/>file<sp/>into<sp/>the<sp/>buffer.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@section<sp/>optimizer_params_t_struct<sp/>The<sp/>optimizer_params_t<sp/>Struct</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>The<sp/>`optimizer_params_t`<sp/>struct<sp/>holds<sp/>the<sp/>parameters<sp/>for<sp/>a<sp/>PyTorch<sp/>optimizer.<sp/>It<sp/>provides<sp/>a<sp/>set<sp/>of<sp/>properties<sp/>for<sp/>setting<sp/>the<sp/>various<sp/>optimizer<sp/>parameters,<sp/>such<sp/>as<sp/>learning<sp/>rate,<sp/>weight<sp/>decay,<sp/>etc.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>@section<sp/>other_structs<sp/>Other<sp/>Structs</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>The<sp/>module<sp/>also<sp/>defines<sp/>several<sp/>other<sp/>structs<sp/>for<sp/>data<sp/>storage<sp/>and<sp/>management:</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`graph_hdf5_w`,<sp/>`graph_hdf5`:<sp/>Structs<sp/>for<sp/>serializing<sp/>and<sp/>deserializing<sp/>graph<sp/>data<sp/>to<sp/>and<sp/>from<sp/>HDF5<sp/>files.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`model_report`:<sp/>A<sp/>struct<sp/>for<sp/>storing<sp/>the<sp/>report<sp/>of<sp/>a<sp/>model&apos;s<sp/>training<sp/>progress.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`folds_t`:<sp/>A<sp/>struct<sp/>for<sp/>storing<sp/>k-fold<sp/>information.</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>-<sp/>`write_t`,<sp/>`writer`:<sp/>Classes<sp/>for<sp/>writing<sp/>data<sp/>to<sp/>ROOT<sp/>files.</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>-<sp/>`variable_t`:<sp/>A<sp/>class<sp/>for<sp/>handling<sp/>variables<sp/>of<sp/>different<sp/>types.</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/structs/structs.dox"/>
+  </compounddef>
+</doxygen>

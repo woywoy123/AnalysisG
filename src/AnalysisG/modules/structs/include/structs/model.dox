@@ -1,0 +1,306 @@
+/**
+ * @file model.h
+ * @brief Structs for model configuration and optimizer parameters.
+ * @details Declares @c model_settings_t (snapshot of a model's configuration),
+ *          @c loss_opt (loss-function options), and @c optimizer_params_t
+ *          (typed optimizer hyper-parameters with setter callbacks).
+ */
+
+/**
+ * @struct model_settings_t
+ * @brief Snapshot of a @c model_template configuration suitable for
+ *        serialisation and transfer between objects.
+ */
+
+/**
+ * @var opt_enum model_settings_t::e_optim
+ * @brief Optimizer type enum.
+ */
+
+/**
+ * @var std::string model_settings_t::s_optim
+ * @brief Optimizer type as a string (e.g. @c "adam").
+ */
+
+/**
+ * @var std::string model_settings_t::weight_name
+ * @brief Name of the event-weight leaf in the ROOT tree.
+ */
+
+/**
+ * @var std::string model_settings_t::tree_name
+ * @brief Name of the ROOT TTree to read from.
+ */
+
+/**
+ * @var std::string model_settings_t::model_name
+ * @brief Human-readable model name.
+ */
+
+/**
+ * @var std::string model_settings_t::model_device
+ * @brief PyTorch device string (e.g. @c "cpu" or @c "cuda:0").
+ */
+
+/**
+ * @var std::string model_settings_t::model_checkpoint_path
+ * @brief Path where model checkpoints are saved.
+ */
+
+/**
+ * @var bool model_settings_t::inference_mode
+ * @brief @c true when the model is used for inference only.
+ */
+
+/**
+ * @var bool model_settings_t::is_mc
+ * @brief @c true if the dataset is Monte Carlo simulation.
+ */
+
+/**
+ * @var std::map<std::string, std::string> model_settings_t::o_graph
+ * @brief Output feature names to loss-function names (graph level).
+ */
+
+/**
+ * @var std::map<std::string, std::string> model_settings_t::o_node
+ * @brief Output feature names to loss-function names (node level).
+ */
+
+/**
+ * @var std::map<std::string, std::string> model_settings_t::o_edge
+ * @brief Output feature names to loss-function names (edge level).
+ */
+
+/**
+ * @var std::vector<std::string> model_settings_t::i_graph
+ * @brief Names of requested input graph-level features.
+ */
+
+/**
+ * @var std::vector<std::string> model_settings_t::i_node
+ * @brief Names of requested input node-level features.
+ */
+
+/**
+ * @var std::vector<std::string> model_settings_t::i_edge
+ * @brief Names of requested input edge-level features.
+ */
+
+/**
+ * @struct loss_opt
+ * @brief Options controlling the behaviour of a loss function.
+ */
+
+/**
+ * @var loss_enum loss_opt::fx
+ * @brief Loss function type (default @c invalid_loss).
+ */
+
+/**
+ * @var bool loss_opt::mean
+ * @brief Use @c torch::kMean reduction.
+ */
+
+/**
+ * @var bool loss_opt::sum
+ * @brief Use @c torch::kSum reduction.
+ */
+
+/**
+ * @var bool loss_opt::none
+ * @brief Use @c torch::kNone reduction.
+ */
+
+/**
+ * @var bool loss_opt::swap
+ * @brief Enable the @c swap option (TripletMargin).
+ */
+
+/**
+ * @var bool loss_opt::full
+ * @brief Enable the @c full option (KLDiv).
+ */
+
+/**
+ * @var bool loss_opt::batch_mean
+ * @brief Use @c torch::kBatchMean reduction (KLDiv).
+ */
+
+/**
+ * @var bool loss_opt::target
+ * @brief Enable @c log_target (KLDiv).
+ */
+
+/**
+ * @var bool loss_opt::zero_inf
+ * @brief Enable @c zero_infinity (CTC).
+ */
+
+/**
+ * @var bool loss_opt::defaults
+ * @brief If @c true, use the loss function's default options.
+ */
+
+/**
+ * @var int loss_opt::ignore
+ * @brief Index to ignore in cross-entropy/NLL (default 1000 = disabled).
+ */
+
+/**
+ * @var int loss_opt::blank
+ * @brief Blank token index for CTC (default 0).
+ */
+
+/**
+ * @var double loss_opt::margin
+ * @brief Margin value for margin-based losses.
+ */
+
+/**
+ * @var double loss_opt::beta
+ * @brief Beta parameter for Huber/SmoothL1.
+ */
+
+/**
+ * @var double loss_opt::eps
+ * @brief Epsilon for numerical stability.
+ */
+
+/**
+ * @var double loss_opt::smoothing
+ * @brief Label-smoothing factor for cross-entropy.
+ */
+
+/**
+ * @var double loss_opt::delta
+ * @brief Delta parameter for Huber loss.
+ */
+
+/**
+ * @var std::vector<double> loss_opt::weight
+ * @brief Per-class weight vector for cross-entropy and NLL.
+ */
+
+/**
+ * @class optimizer_params_t
+ * @brief Typed hyper-parameter set for a PyTorch optimizer.
+ * @details Wraps each hyper-parameter as a @c cproperty so that setting one
+ *          automatically records that it was explicitly provided (the
+ *          corresponding @c m_* flag is set to @c true).
+ */
+
+/**
+ * @fn optimizer_params_t::optimizer_params_t()
+ * @brief Constructor.  Registers setter callbacks for all hyper-parameters.
+ */
+
+/**
+ * @var std::string optimizer_params_t::optimizer
+ * @brief Optimizer name string (e.g. @c "adam").
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::lr
+ * @brief Learning rate.
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::lr_decay
+ * @brief Learning-rate decay (Adagrad).
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::weight_decay
+ * @brief L2 weight-decay regularisation.
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::initial_accumulator_value
+ * @brief Initial accumulator value (Adagrad).
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::eps
+ * @brief Epsilon for numerical stability.
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::tolerance_grad
+ * @brief Gradient tolerance (L-BFGS).
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::tolerance_change
+ * @brief Function value/parameter change tolerance (L-BFGS).
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::alpha
+ * @brief Alpha / smoothing constant (RMSprop).
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::momentum
+ * @brief Momentum factor (SGD / RMSprop).
+ */
+
+/**
+ * @var cproperty<double, optimizer_params_t> optimizer_params_t::dampening
+ * @brief Dampening for momentum (SGD).
+ */
+
+/**
+ * @var cproperty<bool, optimizer_params_t> optimizer_params_t::amsgrad
+ * @brief Enable AMSGrad variant of Adam/AdamW.
+ */
+
+/**
+ * @var cproperty<bool, optimizer_params_t> optimizer_params_t::centered
+ * @brief Centered RMSprop.
+ */
+
+/**
+ * @var cproperty<bool, optimizer_params_t> optimizer_params_t::nesterov
+ * @brief Nesterov momentum (SGD).
+ */
+
+/**
+ * @var cproperty<int, optimizer_params_t> optimizer_params_t::max_iter
+ * @brief Maximum number of iterations per optimisation step (L-BFGS).
+ */
+
+/**
+ * @var cproperty<int, optimizer_params_t> optimizer_params_t::max_eval
+ * @brief Maximum number of function evaluations per step (L-BFGS).
+ */
+
+/**
+ * @var cproperty<int, optimizer_params_t> optimizer_params_t::history_size
+ * @brief History size for L-BFGS.
+ */
+
+/**
+ * @var cproperty<std::tuple<float,float>, optimizer_params_t> optimizer_params_t::betas
+ * @brief Adam β₁/β₂ coefficients.
+ */
+
+/**
+ * @var cproperty<std::vector<float>, optimizer_params_t> optimizer_params_t::beta_hack
+ * @brief Alternative way to set β₁/β₂ as a vector (for Cython compatibility).
+ */
+
+/**
+ * @var std::string optimizer_params_t::scheduler
+ * @brief Scheduler type string (e.g. @c "steplr").
+ */
+
+/**
+ * @var unsigned int optimizer_params_t::step_size
+ * @brief StepLR step size (default 1).
+ */
+
+/**
+ * @var double optimizer_params_t::gamma
+ * @brief Multiplicative factor for LR decay (default 0.1).
+ */

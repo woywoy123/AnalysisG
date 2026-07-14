@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="graph_8dox" kind="file" language="C++">
+    <compoundname>graph.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the Graph class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>graph.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>Graph<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>Graph_page<sp/>Graph</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>Graph_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`Graph`<sp/>class<sp/>is<sp/>a<sp/>central<sp/>component<sp/>of<sp/>the<sp/>|g-framework|,<sp/>representing<sp/>a<sp/>graph<sp/>data<sp/>structure<sp/>composed<sp/>of<sp/>`Node`<sp/>and<sp/>`Edge`<sp/>objects.<sp/>It<sp/>provides<sp/>a<sp/>comprehensive<sp/>set<sp/>of<sp/>tools<sp/>for<sp/>building,<sp/>manipulating,<sp/>and<sp/>analyzing<sp/>complex<sp/>graph<sp/>structures<sp/>in<sp/>the<sp/>context<sp/>of<sp/>high-energy<sp/>physics<sp/>analysis.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>Graph_class<sp/>The<sp/>Graph<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`Graph`<sp/>class<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>a<sp/>flexible<sp/>and<sp/>efficient<sp/>container<sp/>for<sp/>graph-based<sp/>data.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>Graph_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>A<sp/>`Graph`<sp/>object<sp/>can<sp/>have<sp/>the<sp/>following<sp/>attributes:</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>**nodes**:<sp/>A<sp/>list<sp/>of<sp/>`Node`<sp/>objects<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>**edges**:<sp/>A<sp/>list<sp/>of<sp/>`Edge`<sp/>objects<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>**features**:<sp/>A<sp/>map<sp/>of<sp/>key-value<sp/>pairs<sp/>representing<sp/>the<sp/>graph&apos;s<sp/>global<sp/>features.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>Graph_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>`Graph`<sp/>class<sp/>provides<sp/>the<sp/>following<sp/>methods:</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`Graph()`:<sp/>Default<sp/>constructor<sp/>that<sp/>creates<sp/>an<sp/>empty<sp/>`Graph`.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_node(Node*<sp/>node)`:<sp/>Adds<sp/>a<sp/>node<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_edge(Edge*<sp/>edge)`:<sp/>Adds<sp/>an<sp/>edge<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`const<sp/>std::vector&lt;Node*&gt;&amp;<sp/>get_nodes()<sp/>const`:<sp/>Returns<sp/>the<sp/>list<sp/>of<sp/>nodes<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`const<sp/>std::vector&lt;Edge*&gt;&amp;<sp/>get_edges()<sp/>const`:<sp/>Returns<sp/>the<sp/>list<sp/>of<sp/>edges<sp/>in<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`Node*<sp/>get_node(int<sp/>id)<sp/>const`:<sp/>Retrieves<sp/>a<sp/>node<sp/>from<sp/>the<sp/>graph<sp/>by<sp/>its<sp/>ID.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_feature(const<sp/>std::string&amp;<sp/>key,<sp/>const<sp/>boost::any&amp;<sp/>value)`:<sp/>Adds<sp/>a<sp/>global<sp/>feature<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>-<sp/>`boost::any<sp/>get_feature(const<sp/>std::string&amp;<sp/>key)<sp/>const`:<sp/>Retrieves<sp/>a<sp/>global<sp/>feature<sp/>from<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>apply_transform(const<sp/>std::function&lt;void(Graph*)&gt;&amp;<sp/>transform_func)`:<sp/>Applies<sp/>a<sp/>transformation<sp/>function<sp/>to<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@section<sp/>Graph_algorithms<sp/>Graph<sp/>Algorithms</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>The<sp/>`Graph`<sp/>class<sp/>also<sp/>provides<sp/>implementations<sp/>of<sp/>common<sp/>graph<sp/>algorithms,<sp/>such<sp/>as:</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>-<sp/>**Breadth-First<sp/>Search<sp/>(BFS)**:<sp/>`std::vector&lt;Node*&gt;<sp/>bfs(Node*<sp/>start_node)`</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>-<sp/>**Depth-First<sp/>Search<sp/>(DFS)**:<sp/>`std::vector&lt;Node*&gt;<sp/>dfs(Node*<sp/>start_node)`</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>-<sp/>**Dijkstra&apos;s<sp/>Algorithm**:<sp/>`std::map&lt;Node*,<sp/>double&gt;<sp/>dijkstra(Node*<sp/>start_node)`</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>@section<sp/>Graph_example<sp/>Example<sp/>Usage</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>@code{.cpp}</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>a<sp/>new<sp/>graph</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>Graph<sp/>graph;</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>and<sp/>add<sp/>nodes<sp/>to<sp/>the<sp/>graph</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>Node<sp/>node1(1);</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>Node<sp/>node2(2);</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>graph.add_node(&amp;node1);</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>graph.add_node(&amp;node2);</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>and<sp/>add<sp/>an<sp/>edge<sp/>to<sp/>the<sp/>graph</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>Edge<sp/>edge(&amp;node1,<sp/>&amp;node2);</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>graph.add_edge(&amp;edge);</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>//<sp/>Add<sp/>a<sp/>global<sp/>feature<sp/>to<sp/>the<sp/>graph</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>graph.add_feature(&quot;event_number&quot;,<sp/>12345);</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>//<sp/>Perform<sp/>a<sp/>Breadth-First<sp/>Search<sp/>starting<sp/>from<sp/>node1</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>std::vector&lt;Node*&gt;<sp/>bfs_result<sp/>=<sp/>graph.bfs(&amp;node1);</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*<sp/>@endcode</highlight></codeline>
+<codeline lineno="60"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="core/graph.dox"/>
+  </compounddef>
+</doxygen>

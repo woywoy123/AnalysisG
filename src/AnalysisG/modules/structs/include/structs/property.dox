@@ -1,0 +1,125 @@
+/**
+ * @file property.h
+ * @brief Generic property wrapper that supports custom getter and setter
+ *        callbacks.
+ * @details Provides the @c cproperty<T, G> class template, which wraps a
+ *          value of type @c T and optionally calls user-provided setter/getter
+ *          functions on assignment and conversion.
+ */
+
+/**
+ * @fn template<typename T, typename G> void x_setter(T*, G*)
+ * @brief Default no-op setter.  Does nothing.
+ * @tparam T Value type.
+ * @tparam G Owner object type.
+ */
+
+/**
+ * @fn template<typename T, typename G> void x_getter(T*, G*)
+ * @brief Default no-op getter.  Does nothing.
+ * @tparam T Value type.
+ * @tparam G Owner object type.
+ */
+
+/**
+ * @class cproperty
+ * @brief Typed property with optional setter and getter callbacks.
+ * @tparam T Value type stored by the property.
+ * @tparam G Owner class type.  A pointer to the owner is passed to the
+ *            setter/getter so they can read or update related state.
+ * @details Wraps a value of type @c T and optionally calls user-provided
+ *          static (or std::function) setter and getter functions on
+ *          assignment and conversion.
+ *
+ *          **Registration** — @c set_setter/@c set_getter register the
+ *          callbacks; @c set_object sets the owner pointer that is passed as
+ *          the second argument to each callback.
+ *
+ *          **Assignment** — @c operator=(const T& val) stores the value and,
+ *          if a setter is registered, immediately calls
+ *          @c setter(&data, obj).  This allows side-effects such as keeping
+ *          Cartesian and polar four-momentum consistent in
+ *          @c particle_template.
+ *
+ *          **Reading** — the implicit conversion @c operator T() and the
+ *          address-of @c operator&() both invoke @c getter(&data, obj) if
+ *          registered before returning the value.  This allows lazy
+ *          computation of derived quantities such as @c hash or @c mass.
+ *
+ *          The @c clear() method resets @c data to @c T() only when a getter
+ *          is registered (indicating the value is always computed on demand).
+ *          The comparison operators @c operator== and @c operator!= test
+ *          against the stored @c data without invoking any callback.
+ */
+
+/**
+ * @fn cproperty::cproperty()
+ * @brief Default constructor.  Initialises the wrapped value with @c T().
+ */
+
+/**
+ * @fn void cproperty::set_setter(std::function<void(T*, G*)> c)
+ * @brief Register a setter callback.
+ * @param c Function called with a pointer to the internal value and a pointer
+ *          to the owner object each time the property is assigned.
+ */
+
+/**
+ * @fn void cproperty::set_getter(std::function<void(T*, G*)> c)
+ * @brief Register a getter callback.
+ * @param c Function called with a pointer to the internal value and a pointer
+ *          to the owner object each time the property is read.
+ */
+
+/**
+ * @fn void cproperty::set_object(G* _obj)
+ * @brief Set the owner object pointer passed to the callbacks.
+ * @param _obj Pointer to the owning object.
+ */
+
+/**
+ * @fn cproperty& cproperty::operator=(const T& val)
+ * @brief Assign a new value and invoke the setter callback if registered.
+ * @param val New value.
+ * @return Reference to @c *this.
+ */
+
+/**
+ * @fn T cproperty::operator+(const T& val)
+ * @brief Return the sum of the stored value and @p val.
+ * @param val Value to add.
+ * @return Sum.
+ */
+
+/**
+ * @fn bool cproperty::operator==(const T& val)
+ * @brief Compare the stored value with @p val for equality.
+ * @param val Value to compare.
+ * @return @c true if equal.
+ */
+
+/**
+ * @fn bool cproperty::operator!=(const T& val)
+ * @brief Compare the stored value with @p val for inequality.
+ * @param val Value to compare.
+ * @return @c true if not equal.
+ */
+
+/**
+ * @fn cproperty::operator T()
+ * @brief Implicit conversion to @c T.  Invokes the getter callback if
+ *        registered.
+ * @return Current value.
+ */
+
+/**
+ * @fn T* cproperty::operator&()
+ * @brief Address-of operator.  Invokes the getter callback if registered and
+ *        returns a pointer to the internal value.
+ * @return Pointer to the stored value.
+ */
+
+/**
+ * @fn void cproperty::clear()
+ * @brief Reset the stored value to @c T() if a getter is registered.
+ */

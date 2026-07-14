@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="graph_page" kind="page">
+    <compoundname>graph_page</compoundname>
+    <title>graph</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="graph_page_1graph_intro">
+<title>Introduction</title><para>The <computeroutput>graph</computeroutput> module provides high-performance functionalities for graph-related operations and data structures, optimized with Cython and accelerated using CUDA kernels. This module is crucial for efficiently processing and manipulating graph representations of data within the AnalysisG framework, particularly for tasks requiring significant computational resources.</para>
+</sect1>
+<sect1 id="graph_page_1graph_contents">
+<title>Contents</title><para>This module contains optimized graph processing functions and data structures, many of which leverage CUDA for parallel execution on GPUs. Specific contents will be detailed as they are implemented, highlighting their GPU-accelerated nature where applicable. </para>
+</sect1>
+    </detaileddescription>
+    <location file="pyc/graph.dox"/>
+  </compounddef>
+</doxygen>

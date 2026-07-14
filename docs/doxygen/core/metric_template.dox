@@ -1,0 +1,79 @@
+/**
+ * @file metric_template.dox
+ * @brief Detailed documentation for the MetricTemplate Cython class.
+ *
+ * @page MetricTemplate_page MetricTemplate
+ *
+ * @section MetricTemplate_intro Introduction
+ * The `MetricTemplate` class, implemented in Cython, serves as a robust and high-performance base for defining and calculating various metrics within the AnalysisG framework. It is specifically designed to handle the complex task of interpreting and processing data from ROOT files, often generated in high-energy physics experiments. This class provides mechanisms for managing run names, variables, and a sophisticated `InterpretROOT` method that leverages parallel processing for efficient data extraction and metric computation.
+ *
+ * @section MetricTemplate_class The MetricTemplate Class
+ * `MetricTemplate` is a `cdef class`, indicating its nature as a Cython extension type. This allows for direct and optimized interaction with underlying C++ data structures and algorithms, crucial for performance-intensive tasks like ROOT file I/O and data processing. It encapsulates a C++ `metric_template` object and provides a Python-friendly interface to its functionalities.
+ *
+ * @subsection MetricTemplate_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `metric_template` object and assigns its pointer to `self.mtx`. It also initializes `self.root_leaves` and `self.root_fx` as empty Python dictionaries, which are used to configure ROOT file interpretation.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer, intentionally left empty as primary initialization is handled by `__cinit__`.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `metric_template` object pointed to by `self.mtx`, ensuring proper memory cleanup.
+ *
+ * @subsection MetricTemplate_special_methods Special Methods
+ * - `__name__(self)`:
+ *   Returns the name of the underlying C++ metric object as a Python string, using the `env` utility function for conversion.
+ *
+ * @subsection MetricTemplate_properties Properties
+ * These properties provide controlled access to the configuration and state of the `MetricTemplate`.
+ *
+ * - `@property RunNames`:
+ *   Retrieves a dictionary of run names (C++ `map<string, string>`) associated with the metric. The C++ map is converted to a Python dictionary using `as_basic_dict`.
+ *   - `@RunNames.setter RunNames(self, dict val)`:
+ *     Sets the run names. The input Python dictionary `val` is converted to a C++ `map<string, string>` using `as_map` and assigned to `self.mtx.run_names`.
+ *
+ * - `@property Variables`:
+ *   Retrieves a list of variables (C++ `vector<string>`) managed by the metric. The C++ vector is converted to a Python list using `env_vec`.
+ *   - `@Variables.setter Variables(self, list val)`:
+ *     Sets the list of variables. The input Python list `val` is converted to a C++ `vector<string>` using `enc_list` and assigned to `self.mtx.variables`.
+ *
+ * @subsection MetricTemplate_methods Methods
+ * - `Postprocessing(self)`:
+ *   An empty placeholder method intended to be overridden by subclasses for any post-processing steps required after metric calculation.
+ *
+ * - `InterpretROOT(self, str path, list epochs = [], list kfolds = [])`:
+ *   This is the core method for interpreting and processing data from ROOT files. It orchestrates the reading of ROOT files, filtering by epochs and k-folds, and applying user-defined functions (`root_fx`) to extracted data.
+ *   - **Parameters**:
+ *     - `path` (str): The path to the ROOT file(s). Can be a directory, a specific `.root` file, or a path ending with `/` (which implies `/*`).
+ *     - `epochs` (list, optional): A list of epoch numbers to filter the ROOT files. Defaults to an empty list (no filtering).
+ *     - `kfolds` (list, optional): A list of k-fold numbers to filter the ROOT files. Defaults to an empty list (no filtering).
+ *   - **Functionality**:
+ *     - **Configuration Check**: Verifies that `self.root_leaves` (a dictionary mapping tree names to lists of leaves) and `self.root_fx` (a dictionary mapping tree/leaf names to functions) are properly set. If not, it logs failure messages and returns `self`.
+ *     - **Path Normalization**: Adjusts the `path` argument to ensure it's suitable for file globbing (e.g., adds `*` if it's a directory).
+ *     - **File Filtering**: Uses `self.ptr.ls` (a C++ function) to list ROOT files and then filters them based on provided `epochs` and `kfolds`. `prange` is used for parallel processing of file paths.
+ *     - **Data Structure Initialization**: Initializes various C++ maps and vectors (`idx_map`, `endx`, `pause`, `lsx`, `mxf`, `mapfx`, `mapdx`, `mapx`) to manage file indexing, processing state, and data mapping.
+ *     - **Leaf and Function Mapping**: Iterates through `self.root_leaves` and `self.root_fx` to build internal mappings (`mapfx`, `mapdx`) that link ROOT tree/leaf combinations to their corresponding processing functions.
+ *     - **ROOT I/O Setup**: Initializes an `IO` object (presumably from `AnalysisG.core.io`) with the filtered ROOT file paths. It configures the `IO` object with the `Trees` and `Leaves` to be read based on `self.root_leaves`.
+ *     - **Iterative Data Processing Loop**:
+ *       - Enters a `while keep_going` loop to iteratively read and process data from the ROOT files.
+ *       - **Metric Function Execution**: For each configured `root_fx`, it gathers data (`itx`) and calls the associated function, passing `self`, the extracted data, and metadata (epoch, kfold, filename).
+ *       - **File Advancement**: Uses `prange` to advance the internal pointers of the `data_t` objects (representing entries in ROOT trees) for all active files.
+ *       - **Metadata Extraction**: Extracts metadata like `kfold`, `epoch`, and `model_name` from the current file path.
+ *       - **Progress Reporting**: Updates a progress bar (`iox.prg`) with the current file being processed.
+ *       - **Pause/Unpause Logic**: Manages `pause` and `endx` flags to control which files are actively being read and when a file has been fully processed.
+ *       - **Loop Termination**: The loop continues as long as `keep_going` is true, which is set to false when all files have been fully processed.
+ *     - **Postprocessing Call**: After the main processing loop, it calls `self.Postprocessing()`.
+ *     - **Return Value**: Returns `self` for method chaining.
+ *
+ * @section MetricTemplate_cpp_interaction C++ Interaction
+ * `MetricTemplate` extensively uses Cython's capabilities to bridge Python and C++:
+ * - `cdef class MetricTemplate`: Declares it as a Cython extension type.
+ * - `cdef metric_template *mtx`: A C++ pointer to an `metric_template` object.
+ * - `from libcpp cimport string, map, pair, vector`: Imports C++ standard library types.
+ * - `from AnalysisG.core.tools cimport *`, `from AnalysisG.core.meta cimport *`, `from AnalysisG.core.structs cimport *`: Imports C++ declarations from corresponding `.pxd` files.
+ * - `cython.parallel.prange`: Enables parallel execution of loops, leveraging multiple CPU cores for faster processing.
+ * - `cython.operator.dereference as deref`: Used to dereference C++ pointers.
+ * - `env`, `enc`, `env_vec`, `enc_list`, `as_basic_dict`, `as_map`: Utility functions (likely from `AnalysisG.core.tools`) for converting between Python and C++ data types (strings, lists, dictionaries, vectors, maps).
+ * - `data_t* dt`: Pointer to a C++ `data_t` structure, likely representing a single entry from a ROOT tree.
+ * - `IO iox`: An instance of a Cython-wrapped C++ I/O class for ROOT file handling.
+ */

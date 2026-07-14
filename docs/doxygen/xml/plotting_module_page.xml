@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="plotting_module_page" kind="page">
+    <compoundname>plotting_module_page</compoundname>
+    <title>Plotting Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="plotting_module_page_1plotting_module_intro">
+<title>Introduction</title><para>The <computeroutput>plotting</computeroutput> module provides a class for creating and managing various types of plots, including histograms, graphs, and ROC curves.</para>
+</sect1>
+<sect1 id="plotting_module_page_1plotting_class">
+<title>The plotting Class</title><para>The <computeroutput>plotting</computeroutput> class is the main component of this module.</para>
+<sect2 id="plotting_module_page_1plotting_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>plotting()</computeroutput>: The constructor.</para>
+</listitem><listitem><para><computeroutput>~plotting()</computeroutput>: The destructor cleans up the allocated memory, including the ROC data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="plotting_module_page_1plotting_methods_path">
+<title>Path Building</title><para><itemizedlist>
+<listitem><para><computeroutput>std::string build_path()</computeroutput>: Constructs the full output path for a plot, including the filename and extension.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="plotting_module_page_1plotting_methods_data">
+<title>Data Handling</title><para><itemizedlist>
+<listitem><para><computeroutput>float get_max(std::string dim)</computeroutput>: Returns the maximum value of the x or y data.</para>
+</listitem><listitem><para><computeroutput>float get_min(std::string dim)</computeroutput>: Returns the minimum value of the x or y data.</para>
+</listitem><listitem><para><computeroutput>float sum_of_weights()</computeroutput>: Returns the sum of the weights.</para>
+</listitem><listitem><para><computeroutput>std::tuple&lt;float, float&gt; mean_stdev(std::vector&lt;float&gt;* data)</computeroutput>: Calculates the mean and standard deviation of a vector of floats.</para>
+</listitem><listitem><para><computeroutput>void build_error()</computeroutput>: Calculates the error bars for the y-data.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="plotting_module_page_1plotting_methods_roc">
+<title>ROC Curves</title><para><itemizedlist>
+<listitem><para><computeroutput>void build_ROC(std::string name, int kfold, std::vector&lt;int&gt;* label, std::vector&lt;std::vector&lt;double&gt;&gt;* scores)</computeroutput>: Builds the data for a Receiver Operating Characteristic (ROC) curve. It takes the true labels and the predicted scores as input and stores them in the <computeroutput>roc_data</computeroutput> and <computeroutput>labels</computeroutput> maps.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;roc_t&gt; get_ROC()</computeroutput>: Returns a vector of <computeroutput>roc_t</computeroutput> structs, which contain the data for all the ROC curves that have been built.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="plotting_module_page_1roc_t_struct">
+<title>The roc_t Struct</title><para>The <computeroutput>roc_t</computeroutput> struct is a simple data container for the information needed to plot a ROC curve.</para>
+<sect2 id="plotting_module_page_1roc_t_members">
+<title>Members</title><para><itemizedlist>
+<listitem><para><computeroutput>int kfold</computeroutput>: The k-fold index.</para>
+</listitem><listitem><para><computeroutput>int cls</computeroutput>: The number of classes.</para>
+</listitem><listitem><para><computeroutput>std::string model</computeroutput>: The name of the model.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;std::vector&lt;int&gt;&gt;* truth</computeroutput>: A pointer to the true labels.</para>
+</listitem><listitem><para><computeroutput>std::vector&lt;std::vector&lt;double&gt;&gt;* scores</computeroutput>: A pointer to the predicted scores. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/plotting/plotting.dox"/>
+  </compounddef>
+</doxygen>

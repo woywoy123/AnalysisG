@@ -1,0 +1,29 @@
+/**
+ * @file event_exp_mc20.dox
+ * @brief Detailed documentation for the ExpMC20 Cython class, a specialized EventTemplate for experimental MC20 events.
+ *
+ * @page ExpMC20Event_page ExpMC20 Event
+ *
+ * @section ExpMC20Event_intro Introduction
+ * The `ExpMC20` class, implemented in Cython, is a specialized event template within the AnalysisG framework, designed to handle data specific to experimental Monte Carlo 20 (MC20) events. It inherits from the generic `EventTemplate` class, extending its functionalities to incorporate features and structures relevant to this particular dataset. This class provides a high-performance interface to an underlying C++ event object tailored for experimental MC20 analysis.
+ *
+ * @section ExpMC20Event_class The ExpMC20 Class
+ * `ExpMC20` is a `cdef class`, indicating its implementation as a Cython extension type. It inherits from `EventTemplate`, thereby gaining all the base functionalities for event indexing, weighting, and tree/branch management. Its primary role is to encapsulate a C++ `exp_mc20` object, which likely contains specific data members and methods pertinent to experimental MC20 events.
+ *
+ * @subsection ExpMC20Event_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, called during object allocation. It initializes a new C++ `exp_mc20` object and assigns its pointer to `self.exp`. Crucially, it then upcasts `self.exp` to an `event_template*` and assigns it to `self.ptr`, allowing `ExpMC20` to be treated as a generic `EventTemplate` while still managing its specialized C++ object.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer. This method is intentionally left empty, as initialization logic is handled by `__cinit__` and the underlying C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It deallocates the C++ `exp_mc20` object pointed to by `self.exp` (via `self.ptr`), ensuring proper memory management for the specialized event data.
+ *
+ * @section ExpMC20Event_cpp_interaction C++ Interaction
+ * The `ExpMC20` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class ExpMC20`: Declares `ExpMC20` as a Cython extension type.
+ * - `cdef exp_mc20 *exp`: A C++ pointer to an `exp_mc20` object, which is the specialized C++ representation of an experimental MC20 event.
+ * - `self.ptr = <event_template*>(self.exp)`: This line demonstrates C++ upcasting, where a pointer to a derived class (`exp_mc20`) is assigned to a pointer to its base class (`event_template`). This allows `ExpMC20` to fulfill the `EventTemplate` interface while internally managing its specific `exp_mc20` data.
+ * - `from AnalysisG.core.event_template cimport EventTemplate`: Imports the base `EventTemplate` class, from which `ExpMC20` inherits.
+ */

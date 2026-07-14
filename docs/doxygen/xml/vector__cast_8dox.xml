@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="vector__cast_8dox" kind="file" language="C++">
+    <compoundname>vector_cast.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the vector_cast.h header. </para>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="vector__cast_8dox_1vector_cast_intro">
+<title>vector_cast.h</title><para>The <computeroutput>vector_cast.h</computeroutput> header contains the core templates and structures used to serialize N-dimensional PyTorch tensors into standard C++ containers, making them fully compatible with CERN ROOT&apos;s <computeroutput>TTree</computeroutput> and <computeroutput>TBranch</computeroutput> systems. </para>
+</sect1>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/>@file<sp/>vector_cast.dox</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>vector_cast.h<sp/>header.</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>@section<sp/>vector_cast_intro<sp/>vector_cast.h</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>The<sp/>`vector_cast.h`<sp/>header<sp/>contains<sp/>the<sp/>core<sp/>templates<sp/>and<sp/>structures<sp/>used<sp/></highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*<sp/>to<sp/>serialize<sp/>N-dimensional<sp/>PyTorch<sp/>tensors<sp/>into<sp/>standard<sp/>C++<sp/>containers,<sp/></highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>making<sp/>them<sp/>fully<sp/>compatible<sp/>with<sp/>CERN<sp/>ROOT&apos;s<sp/>`TTree`<sp/>and<sp/>`TBranch`<sp/>systems.</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>@fn<sp/>bool<sp/>_transfer(torch::Tensor*<sp/>data,<sp/>torch::Tensor*<sp/>cpux)</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Transfers<sp/>tensor<sp/>memory<sp/>across<sp/>devices<sp/>securely.</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>the<sp/>source<sp/>PyTorch<sp/>tensor<sp/>(potentially<sp/>on<sp/>GPU).</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*<sp/>@param<sp/>cpux<sp/>Pointer<sp/>to<sp/>the<sp/>destination<sp/>CPU<sp/>tensor.</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@return<sp/>True<sp/>if<sp/>transfer<sp/>was<sp/>successful,<sp/>false<sp/>otherwise.</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>G&gt;<sp/>std::vector&lt;std::vector&lt;G&gt;&gt;<sp/>chunking(std::vector&lt;G&gt;*<sp/>v,<sp/>int<sp/>N)</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Chunks<sp/>a<sp/>flattened<sp/>1D<sp/>vector<sp/>into<sp/>a<sp/>2D<sp/>vector<sp/>with<sp/>chunk<sp/>size<sp/>N.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@param<sp/>v<sp/>Pointer<sp/>to<sp/>the<sp/>flattened<sp/>source<sp/>vector.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>@param<sp/>N<sp/>The<sp/>chunk<sp/>size<sp/>or<sp/>inner<sp/>dimension<sp/>stride.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>2D<sp/>vector<sp/>representing<sp/>the<sp/>chunked<sp/>data.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>g&gt;<sp/>void<sp/>tensor_vector(std::vector&lt;g&gt;*<sp/>trgt,<sp/>std::vector&lt;g&gt;*<sp/>chnks,<sp/>std::vector&lt;signed<sp/>long&gt;*<sp/>dims,<sp/>int<sp/>next_dim)</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Base<sp/>case<sp/>recursive<sp/>function<sp/>for<sp/>nesting<sp/>flattened<sp/>vectors<sp/>based<sp/>on<sp/>tensor<sp/>dimensionality.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>@param<sp/>trgt<sp/>The<sp/>target<sp/>nested<sp/>vector.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>@param<sp/>chnks<sp/>The<sp/>flattened<sp/>chunk.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@param<sp/>dims<sp/>The<sp/>dimensions<sp/>of<sp/>the<sp/>original<sp/>tensor.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>@param<sp/>next_dim<sp/>The<sp/>current<sp/>recursive<sp/>dimension<sp/>depth.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*<sp/>@fn<sp/>template<sp/>&lt;typename<sp/>G,<sp/>typename<sp/>g&gt;<sp/>bool<sp/>tensor_to_vector(torch::Tensor*<sp/>data,<sp/>std::vector&lt;G&gt;*<sp/>out,<sp/>std::vector&lt;signed<sp/>long&gt;*<sp/>dims,<sp/>g)</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Core<sp/>recursive<sp/>function<sp/>mapping<sp/>a<sp/>PyTorch<sp/>tensor<sp/>to<sp/>a<sp/>C++<sp/>`std::vector`<sp/>of<sp/>matching<sp/>dimensionality.</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@param<sp/>data<sp/>Pointer<sp/>to<sp/>the<sp/>input<sp/>`torch::Tensor`.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>@param<sp/>out<sp/>Pointer<sp/>to<sp/>the<sp/>pre-allocated<sp/>output<sp/>`std::vector`.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>@param<sp/>dims<sp/>Pointer<sp/>to<sp/>the<sp/>tensor<sp/>sizes.</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@return<sp/>True<sp/>if<sp/>successful.</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>@fn<sp/>std::vector&lt;signed<sp/>long&gt;<sp/>tensor_size(torch::Tensor*<sp/>inpt)</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Extracts<sp/>and<sp/>returns<sp/>the<sp/>size/shape<sp/>array<sp/>of<sp/>a<sp/>tensor.</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>@param<sp/>inpt<sp/>The<sp/>input<sp/>tensor.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>@return<sp/>A<sp/>vector<sp/>containing<sp/>the<sp/>dimensions<sp/>of<sp/>the<sp/>tensor.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="41" refid="structvariable__t" refkind="compound"><highlight class="comment"><sp/>*<sp/>@struct<sp/>variable_t</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Container<sp/>bridging<sp/>PyTorch<sp/>tensors<sp/>and<sp/>ROOT<sp/>`TBranch`.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>The<sp/>`variable_t`<sp/>structure<sp/>dynamically<sp/>maps<sp/>PyTorch<sp/>tensors<sp/>by<sp/>type<sp/>and<sp/>dimensionality<sp/></highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>using<sp/>`tensor_to_vector`<sp/>and<sp/>safely<sp/>assigns<sp/>the<sp/>resulting<sp/>nested<sp/>`std::vector`<sp/>directly<sp/></highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>to<sp/>a<sp/>`TBranch`<sp/>memory<sp/>address<sp/>for<sp/>ultra-fast<sp/>serialization.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>@var<sp/>variable_t::variable_name</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>@brief<sp/>The<sp/>name<sp/>of<sp/>the<sp/>`TBranch`<sp/>this<sp/>variable<sp/>will<sp/>be<sp/>bound<sp/>to.</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*<sp/>@var<sp/>variable_t::failed_branch</highlight></codeline>
+<codeline lineno="52"><highlight class="comment"><sp/>*<sp/>@brief<sp/>True<sp/>if<sp/>the<sp/>`TBranch`<sp/>could<sp/>not<sp/>be<sp/>successfully<sp/>created<sp/>or<sp/>linked.</highlight></codeline>
+<codeline lineno="53"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="54"><highlight class="comment"><sp/>*<sp/>@fn<sp/>void<sp/>variable_t::process(torch::Tensor*<sp/>data,<sp/>std::string*<sp/>varname,<sp/>TTree*<sp/>tr)</highlight></codeline>
+<codeline lineno="55"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Deduces<sp/>tensor<sp/>type<sp/>and<sp/>assigns<sp/>it<sp/>to<sp/>the<sp/>internal<sp/>branch<sp/>buffer.</highlight></codeline>
+<codeline lineno="56"><highlight class="comment"><sp/>*<sp/>@param<sp/>data<sp/>The<sp/>incoming<sp/>`torch::Tensor`<sp/>for<sp/>the<sp/>current<sp/>event.</highlight></codeline>
+<codeline lineno="57"><highlight class="comment"><sp/>*<sp/>@param<sp/>varname<sp/>The<sp/>requested<sp/>branch<sp/>name.</highlight></codeline>
+<codeline lineno="58"><highlight class="comment"><sp/>*<sp/>@param<sp/>tr<sp/>The<sp/>parent<sp/>`TTree`<sp/>where<sp/>the<sp/>branch<sp/>is<sp/>stored.</highlight></codeline>
+<codeline lineno="59"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/typecasting/vector_cast.dox"/>
+  </compounddef>
+</doxygen>

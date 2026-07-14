@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="graph_module_page" kind="page">
+    <compoundname>graph_module_page</compoundname>
+    <title>Graph Module</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<sect1 id="graph_module_page_1graph_module_intro">
+<title>Introduction</title><para>The <computeroutput>graph</computeroutput> module provides the base template for representing a physics event as a graph, and the data structure for storing the graph information.</para>
+</sect1>
+<sect1 id="graph_module_page_1graph_template_class">
+<title>The graph_template Class</title><para>The <computeroutput>graph_template</computeroutput> class is an abstract base class that defines the structure and features of a graph.</para>
+<sect2 id="graph_module_page_1graph_template_ctor">
+<title>Constructor and Destructor</title><para><itemizedlist>
+<listitem><para><computeroutput>graph_template()</computeroutput>: The constructor initializes the properties of the graph, such as <computeroutput>name</computeroutput>, <computeroutput>preselection</computeroutput>, <computeroutput>hash</computeroutput>, <computeroutput>tree</computeroutput>, <computeroutput>index</computeroutput>, and <computeroutput>weight</computeroutput>.</para>
+</listitem><listitem><para><computeroutput>~graph_template()</computeroutput>: The destructor.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="graph_module_page_1graph_template_methods_virtual">
+<title>Virtual Methods</title><para><itemizedlist>
+<listitem><para><computeroutput>graph_template* clone()</computeroutput>: Creates a copy of the graph object.</para>
+</listitem><listitem><para><computeroutput>void CompileEvent()</computeroutput>: This method is intended to be overridden by derived classes to implement the logic for constructing the graph from an event.</para>
+</listitem><listitem><para><computeroutput>bool PreSelection()</computeroutput>: A virtual method for applying a preselection to the event before building the graph.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="graph_module_page_1graph_template_methods_building">
+<title>Graph Building</title><para><itemizedlist>
+<listitem><para><computeroutput>graph_template* build(event_template* ev)</computeroutput>: Builds a graph from an event template.</para>
+</listitem><listitem><para><computeroutput>void define_particle_nodes(std::vector&lt;particle_template*&gt;* prt)</computeroutput>: Defines the nodes of the graph from a vector of particles.</para>
+</listitem><listitem><para><computeroutput>void define_topology(std::function&lt;bool(particle_template*, particle_template*)&gt; fx)</computeroutput>: Defines the topology of the graph based on a given function.</para>
+</listitem><listitem><para><computeroutput>bool double_neutrino(...)</computeroutput>: A method for reconstructing two neutrinos in the event using a combinatorial algorithm.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="graph_module_page_1graph_template_methods_features">
+<title>Feature Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void add_graph_feature(...)</computeroutput>: Adds a graph-level feature.</para>
+</listitem><listitem><para><computeroutput>void add_node_feature(...)</computeroutput>: Adds a node-level feature.</para>
+</listitem><listitem><para><computeroutput>void add_edge_feature(...)</computeroutput>: Adds an edge-level feature.</para>
+</listitem><listitem><para><computeroutput>graph_t* data_export()</computeroutput>: Exports the graph data into a <computeroutput>graph_t</computeroutput> object.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+<sect1 id="graph_module_page_1graph_t_struct">
+<title>The graph_t Struct</title><para>The <computeroutput>graph_t</computeroutput> struct is a data structure for storing the graph information in a way that is suitable for machine learning models.</para>
+<sect2 id="graph_module_page_1graph_t_methods_add">
+<title>Adding Data</title><para><itemizedlist>
+<listitem><para><computeroutput>void add_truth_graph(...)</computeroutput>, <computeroutput>void add_truth_node(...)</computeroutput>, <computeroutput>void add_truth_edge(...)</computeroutput>: Add truth-level features to the graph.</para>
+</listitem><listitem><para><computeroutput>void add_data_graph(...)</computeroutput>, <computeroutput>void add_data_node(...)</computeroutput>, <computeroutput>void add_data_edge(...)</computeroutput>: Add data-level (reconstructed) features to the graph.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="graph_module_page_1graph_t_methods_access">
+<title>Accessing Data</title><para><itemizedlist>
+<listitem><para><computeroutput>torch::Tensor* has_feature(graph_enum tp, std::string name, int dev)</computeroutput>: Retrieves a feature tensor from the graph.</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="graph_module_page_1graph_t_methods_device">
+<title>Device Management</title><para><itemizedlist>
+<listitem><para><computeroutput>void transfer_to_device(torch::TensorOptions* dev)</computeroutput>: Transfers the graph data to a specific device (e.g., a GPU).</para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+<sect2 id="graph_module_page_1graph_t_methods_serialization">
+<title>Serialization</title><para><itemizedlist>
+<listitem><para><computeroutput>void serialize(graph_hdf5* m_hdf5)</computeroutput>: Serializes the graph data into an HDF5-compatible format.</para>
+</listitem><listitem><para><computeroutput>void deserialize(graph_hdf5* m_hdf5)</computeroutput>: Deserializes the graph data from an HDF5-compatible format. </para>
+</listitem></itemizedlist>
+</para>
+</sect2>
+</sect1>
+    </detaileddescription>
+    <location file="modules/graph/graph.dox"/>
+  </compounddef>
+</doxygen>

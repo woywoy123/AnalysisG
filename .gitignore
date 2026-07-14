@@ -1,36 +1,10 @@
-# Random build related directories
-**/__pycache__
-**/build
-**/*.egg*
-**/gnn-analysis
-**/.apptainer
-**/.local
-**/build**
-scripts/source_this.sh
-
-# Cache types 
-**.hdf5
-**.pkl
-**.root
-**/ProjectName
-local/**/*.png
-**.h5
-**.pt
-**.pth
-**.pgf
-
-# Cython and C++ compiler code 
-**.pyc
-**.so
-**.c
-**.cpp
-**cfg.h
-**AutoDict*
-**.root
-**.valid
-**.pdf
-
-# Vim related swaps 
-**.swp
-
 doxygen_output
+
+# Testing stuff 
+**/.tox
+**/.coverage*
+
+# Doxygen documentation
+doxygen-docs/
+unscoped/
+*.deb

@@ -1,0 +1,54 @@
+/**
+ * @file graph_template.dox
+ * @brief Detailed documentation for the GraphTemplate Cython class.
+ *
+ * @page GraphTemplate_page GraphTemplate
+ *
+ * @section GraphTemplate_intro Introduction
+ * The `GraphTemplate` class is a Cython-implemented component within the AnalysisG framework, designed as a foundational template for graph-based data structures. Similar to `EventTemplate`, it provides a high-performance interface to an underlying C++ graph object, facilitating efficient graph manipulation and access within the Python environment. This class is intended to be inherited by more specialized graph implementations, offering common functionalities for graph indexing, tree association, and pre-selection management.
+ *
+ * @section GraphTemplate_class The GraphTemplate Class
+ * `GraphTemplate` is a `cdef class`, signifying its implementation as a Cython extension type. This allows for direct and optimized interaction with C++ objects and types. It encapsulates a pointer (`self.ptr`) to a C++ `graph_template` object, managing its lifecycle and exposing its attributes and methods to Python.
+ *
+ * @subsection GraphTemplate_cinit_dealloc Constructors and Destructors
+ * - `__cinit__(self)`:
+ *   The Cython "constructor" equivalent, invoked during object allocation. If the instance is a subclass of `GraphTemplate`, it returns immediately. Otherwise, it instantiates a new C++ `graph_template` object and assigns its memory address to `self.ptr`.
+ *
+ * - `__init__(self)`:
+ *   The standard Python initializer, deliberately left empty as primary initialization is handled by `__cinit__` and the encapsulated C++ object.
+ *
+ * - `__dealloc__(self)`:
+ *   The Cython "destructor" equivalent, called upon object deallocation. It checks if the instance is `GraphTemplate` itself before deallocating the C++ `graph_template` object pointed to by `self.ptr`, ensuring proper memory management.
+ *
+ * @subsection GraphTemplate_special_methods Special Methods
+ * - `__hash__(self)`:
+ *   Generates a hash value for the graph object. It converts the first 8 characters of the C++ object's hash string to an integer.
+ *
+ * - `__eq__(self, other)`:
+ *   Determines equality between two `GraphTemplate` objects. It first verifies if `other` is an instance or subclass of `GraphTemplate` using `is_self`. If valid, it compares the underlying C++ `graph_template` objects for equality.
+ *
+ * - `is_self(self, inpt) -> bool`:
+ *   A helper method to ascertain if the provided input `inpt` is an instance of `GraphTemplate` or one of its derived classes.
+ *
+ * @subsection GraphTemplate_properties Properties
+ * These properties offer controlled access to the data members of the encapsulated C++ `graph_template` object.
+ *
+ * - `@property index`:
+ *   Retrieves the integer index of the graph.
+ *
+ * - `@property Tree`:
+ *   Retrieves the name of the primary ROOT tree associated with the graph as a Python string. It utilizes the `env` utility function for C++ to Python string conversion.
+ *
+ * - `@property PreSelection`:
+ *   Retrieves the pre-selection status or value associated with the graph.
+ *   - `@PreSelection.setter PreSelection(self, val)`:
+ *     Sets the pre-selection status or value for the graph.
+ *
+ * @section GraphTemplate_cpp_interaction C++ Interaction
+ * The `GraphTemplate` class leverages Cython's capabilities for seamless C++ integration:
+ * - `cdef class GraphTemplate`: Declares `GraphTemplate` as a Cython extension type.
+ * - `cdef graph_template *ptr`: A C++ pointer to a `graph_template` object, managed by the Cython class.
+ * - `from libcpp cimport int`: Imports the C++ `int` type.
+ * - `from AnalysisG.core.tools cimport *`: Imports C++ declarations from `tools.pxd`, likely including `env` for string conversions.
+ * - `env(self.ptr.tree)`: This function (presumably from `AnalysisG.core.tools`) handles the conversion from C++ `std::string` to Python `str`.
+ */

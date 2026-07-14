@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="classAnalysisG_1_1analysis" kind="class" language="C++" prot="public">
+    <compoundname>AnalysisG::analysis</compoundname>
+    <briefdescription>
+<para>Core orchestrator for the bsm4tops-gnn-analysis framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">AnalysisG::analysis</ref></computeroutput> class is the central component responsible for managing and executing the various stages of a physics analysis, from data input and processing to model training and inference. It integrates functionalities from several other modules, including data loading (<computeroutput>dataloader</computeroutput>), sample tracing (<computeroutput>sampletracer</computeroutput>), I/O operations (<computeroutput>io</computeroutput>), event and graph building, selection application, metric evaluation, and model management.</para>
+<para>This class provides a high-level interface for users to define their analysis pipeline by adding samples, event/graph templates, selections, metrics, and models. It handles the intricate details of data flow, caching, multi-threading, and interaction with external libraries like ROOT and potentially CUDA for accelerated computing.</para>
+<para>The <computeroutput><ref refid="classAnalysisG_1_1analysis" kindref="compound">analysis</ref></computeroutput> class follows a structured approach to manage the analysis workflow:<itemizedlist>
+<listitem><para><bold>Initialization:</bold> Sets up paths, initializes helper objects (<computeroutput>tracer</computeroutput>, <computeroutput>loader</computeroutput>, <computeroutput>reader</computeroutput>), and prepares the environment for PCM (Plugin-in C++ Modules) compilation if necessary. It dynamically compiles meta-data structs and other necessary components using <computeroutput>gSystem</computeroutput> and <computeroutput>std::thread</computeroutput> for parallel compilation.</para>
+</listitem><listitem><para><bold>Configuration:</bold> Users configure the analysis by adding various components:<itemizedlist>
+<listitem><para><computeroutput>add_samples</computeroutput>: Specifies input ROOT files and their corresponding labels.</para>
+</listitem><listitem><para><computeroutput>add_event_template</computeroutput>: Defines how raw events are transformed into structured event objects.</para>
+</listitem><listitem><para><computeroutput>add_graph_template</computeroutput>: Specifies how event objects are converted into graph representations.</para>
+</listitem><listitem><para><computeroutput>add_selection_template</computeroutput>: Applies cuts and filters to events or graphs.</para>
+</listitem><listitem><para><computeroutput>add_metric_template</computeroutput>: Defines metrics for evaluating models or analysis performance.</para>
+</listitem><listitem><para><computeroutput>add_model</computeroutput>: Registers models for training or inference, optionally with optimizer parameters.</para>
+</listitem></itemizedlist>
+</para>
+</listitem><listitem><para><bold>Execution (<computeroutput>start()</computeroutput> method):</bold><itemizedlist>
+<listitem><para>Initializes settings, including debug mode and thread count.</para>
+</listitem><listitem><para>Checks and manages data caching for graphs.</para>
+</listitem><listitem><para>Orchestrates the building of events, selections, and graphs.</para>
+</listitem><listitem><para>Compiles tracer objects for efficient data processing.</para>
+</listitem><listitem><para>Builds the data loader, preparing data for training/inference.</para>
+</listitem><listitem><para>Manages metric fold creation.</para>
+</listitem><listitem><para>Handles graph caching (dumping and restoring).</para>
+</listitem><listitem><para>Initiates model training sessions (if configured) by starting a CUDA server and building the project.</para>
+</listitem><listitem><para>Initiates model inference sessions (if configured) by starting a CUDA server.</para>
+</listitem></itemizedlist>
+</para>
+</listitem></itemizedlist>
+</para>
+<para>The class extensively uses <computeroutput>std::map</computeroutput> and <computeroutput>std::vector</computeroutput> for managing various configurations and data structures, ensuring flexibility and scalability. It also leverages ROOT&apos;s <computeroutput>RDataFrame</computeroutput> for efficient data processing and <computeroutput>TSystem</computeroutput> for file system interactions and dynamic code compilation. </para>
+    </detaileddescription>
+    <location file="modules/analysis/analysis.dox" line="13" column="1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

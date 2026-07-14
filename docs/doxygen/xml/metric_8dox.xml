@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.15.0" xml:lang="en-US">
+  <compounddef id="metric_8dox" kind="file" language="C++">
+    <compoundname>metric.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the metric_template and metric_t classes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>metric.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>metric_template<sp/>and<sp/>metric_t<sp/>classes.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>metric_module_page<sp/>Metric<sp/>Module</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>metric_module_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`metric`<sp/>module<sp/>provides<sp/>the<sp/>base<sp/>template<sp/>for<sp/>defining<sp/>and<sp/>calculating<sp/>metrics<sp/>in<sp/>the<sp/>|g-framework|.<sp/>It<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>flexible<sp/>and<sp/>extensible,<sp/>allowing<sp/>users<sp/>to<sp/>implement<sp/>their<sp/>own<sp/>custom<sp/>metrics.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>metric_template_class<sp/>The<sp/>metric_template<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`metric_template`<sp/>class<sp/>is<sp/>an<sp/>abstract<sp/>base<sp/>class<sp/>that<sp/>defines<sp/>the<sp/>interface<sp/>for<sp/>all<sp/>metric<sp/>classes.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>metric_template_ctor<sp/>Constructor<sp/>and<sp/>Destructor</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>-<sp/>`metric_template()`:<sp/>The<sp/>constructor<sp/>initializes<sp/>the<sp/>properties<sp/>of<sp/>the<sp/>metric,<sp/>such<sp/>as<sp/>`name`,<sp/>`run_names`,<sp/>and<sp/>`variables`.</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>`~metric_template()`:<sp/>The<sp/>destructor.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>metric_template_methods_virtual<sp/>Virtual<sp/>Methods</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>-<sp/>`metric_template*<sp/>clone()`:<sp/>Creates<sp/>a<sp/>copy<sp/>of<sp/>the<sp/>metric<sp/>object.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define_metric(metric_t*<sp/>mtx)`:<sp/>This<sp/>is<sp/>the<sp/>core<sp/>method<sp/>for<sp/>calculating<sp/>the<sp/>metric.<sp/>It<sp/>is<sp/>intended<sp/>to<sp/>be<sp/>overridden<sp/>by<sp/>derived<sp/>classes.</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define_variables()`:<sp/>This<sp/>method<sp/>is<sp/>used<sp/>to<sp/>register<sp/>the<sp/>output<sp/>variables<sp/>for<sp/>the<sp/>metric.</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>event()`:<sp/>This<sp/>method<sp/>is<sp/>called<sp/>for<sp/>each<sp/>event.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>batch()`:<sp/>This<sp/>method<sp/>is<sp/>called<sp/>for<sp/>each<sp/>batch<sp/>of<sp/>events.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>end()`:<sp/>This<sp/>method<sp/>is<sp/>called<sp/>at<sp/>the<sp/>end<sp/>of<sp/>the<sp/>processing.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>metric_template_methods_linking<sp/>Linking</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`bool<sp/>link(model_template*<sp/>mdl)`:<sp/>Links<sp/>a<sp/>model<sp/>to<sp/>the<sp/>metric.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>link(std::string<sp/>hsx,<sp/>std::vector&lt;graph_t*&gt;*<sp/>data,<sp/>mode_enum<sp/>mx)`:<sp/>Links<sp/>a<sp/>batch<sp/>of<sp/>data<sp/>to<sp/>the<sp/>metric.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>metric_template_methods_execution<sp/>Execution</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>execute(metric_t*<sp/>mtx,<sp/>metric_template*<sp/>obj,<sp/>size_t*<sp/>prg,<sp/>std::string*<sp/>msg)`:<sp/>This<sp/>method<sp/>orchestrates<sp/>the<sp/>execution<sp/>of<sp/>the<sp/>metric<sp/>calculation.<sp/>It<sp/>iterates<sp/>through<sp/>the<sp/>data,<sp/>calls<sp/>the<sp/>`define_metric`<sp/>method,<sp/>and<sp/>writes<sp/>the<sp/>results<sp/>to<sp/>an<sp/>output<sp/>file.</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>define(std::vector&lt;metric_t*&gt;*<sp/>vr,<sp/>std::vector&lt;size_t&gt;*<sp/>num,<sp/>std::vector&lt;std::string*&gt;*<sp/>title,<sp/>size_t*<sp/>offset)`:<sp/>This<sp/>method<sp/>prepares<sp/>the<sp/>metric<sp/>for<sp/>execution<sp/>by<sp/>creating<sp/>`metric_t`<sp/>objects<sp/>for<sp/>each<sp/>model,<sp/>epoch,<sp/>and<sp/>k-fold.</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*<sp/>@section<sp/>metric_t_struct<sp/>The<sp/>metric_t<sp/>Struct</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>The<sp/>`metric_t`<sp/>struct<sp/>is<sp/>a<sp/>data<sp/>container<sp/>that<sp/>holds<sp/>all<sp/>the<sp/>necessary<sp/>information<sp/>for<sp/>calculating<sp/>a<sp/>metric<sp/>for<sp/>a<sp/>specific<sp/>model,<sp/>epoch,<sp/>and<sp/>k-fold.</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>metric_t_members<sp/>Members</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>-<sp/>`model_template*<sp/>mdlx`:<sp/>A<sp/>pointer<sp/>to<sp/>the<sp/>model<sp/>template.</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::string*<sp/>pth`:<sp/>The<sp/>path<sp/>to<sp/>the<sp/>model<sp/>checkpoint.</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;graph_enum,<sp/>std::vector&lt;std::string&gt;&gt;*<sp/>vars`:<sp/>A<sp/>map<sp/>of<sp/>the<sp/>required<sp/>variables<sp/>for<sp/>the<sp/>metric.</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>-<sp/>`std::map&lt;graph_enum,<sp/>std::vector&lt;variable_t*&gt;&gt;*<sp/>handl`:<sp/>A<sp/>map<sp/>of<sp/>the<sp/>variable<sp/>handlers.</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>kfold`,<sp/>`int<sp/>epoch`,<sp/>`int<sp/>device`,<sp/>`int<sp/>index`:<sp/>The<sp/>k-fold,<sp/>epoch,<sp/>device,<sp/>and<sp/>index<sp/>of<sp/>the<sp/>metric.</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>-<sp/>`mode_enum<sp/>train_mode`:<sp/>The<sp/>training<sp/>mode<sp/>(training,<sp/>validation,<sp/>or<sp/>evaluation).</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>metric_t_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*<sp/>-<sp/>`template<sp/>&lt;typename<sp/>T&gt;<sp/>T<sp/>get(graph_enum,<sp/>std::string)`:<sp/>A<sp/>template<sp/>method<sp/>for<sp/>retrieving<sp/>a<sp/>variable<sp/>from<sp/>the<sp/>metric.</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="modules/metric/metric.dox"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,41 @@
+/**
+ * @file event_template.pxd
+ * @brief Cython declaration file for the @c event_template C++ class.
+ * @details Wraps the @c event_template class that defines how a set of ROOT
+ *          tree data (trees/branches/leaves) is assembled into a physics
+ *          event.
+ */
+
+/**
+ * @class EventTemplate
+ * @brief Python wrapper for @c event_template.
+ * @details Subclass this to define a physics event.  The C++ engine calls
+ *          the constructor of the subclass for every entry in the configured
+ *          ROOT trees and populates the declared properties from the
+ *          corresponding branches/leaves.
+ *
+ * **Special methods:**
+ * - `is_self(inpt) -> bool` — Return True if `inpt` is an `EventTemplate`
+ *   or a subclass instance.
+ * - `__eq__(other) -> bool` — True when both wrap equivalent
+ *   `event_template` instances (C++ equality).
+ * - `__hash__() -> int` — Integer hash derived from the first 8 hex digits
+ *   of the internal hash string.
+ *
+ * **Read/write properties:**
+ * - `index` (float, default `0.0`) — Event index within the tree.  The type
+ *   is **float** (not int); assigning a string stores a leaf name for later
+ *   ROOT branch mapping (the float value remains `0.0` until data is read).
+ * - `weight` (float, default `0.0`) — Per-event weight.  The type is
+ *   **float** (not int); string assignment stores a leaf name for ROOT
+ *   branch mapping.
+ * - `Tree` (str, default `''`) — Primary tree name this event is built from.
+ * - `Trees` (list, default `[]`) — All tree names to read; accepts a single
+ *   string or a list of strings.
+ * - `Branches` (list, default `[]`) — Branch names to read; accepts a single
+ *   string or a list of strings.
+ *
+ * **Read-only property:**
+ * - `Name` (str, default `''`) — Name of the event class as registered with
+ *   the C++ backend (derived from `event_template::name`).
+ */

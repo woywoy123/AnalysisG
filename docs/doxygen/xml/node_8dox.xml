@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.14.0" xml:lang="en-US">
+  <compounddef id="node_8dox" kind="file" language="C++">
+    <compoundname>node.dox</compoundname>
+    <briefdescription>
+<para>Detailed documentation for the Node class. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment"></highlight></codeline>
+<codeline lineno="2"><highlight class="comment">/**</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/>@file<sp/>node.dox</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>@brief<sp/>Detailed<sp/>documentation<sp/>for<sp/>the<sp/>Node<sp/>class.</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>@page<sp/>Node_page<sp/>Node</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>@section<sp/>Node_intro<sp/>Introduction</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>The<sp/>`Node`<sp/>class<sp/>is<sp/>a<sp/>fundamental<sp/>component<sp/>of<sp/>the<sp/>graph<sp/>data<sp/>structure<sp/>within<sp/>the<sp/>|g-framework|.<sp/>It<sp/>represents<sp/>a<sp/>single<sp/>vertex<sp/>in<sp/>a<sp/>graph<sp/>and<sp/>is<sp/>designed<sp/>to<sp/>be<sp/>highly<sp/>flexible<sp/>and<sp/>extensible.<sp/>Each<sp/>node<sp/>can<sp/>store<sp/>a<sp/>variety<sp/>of<sp/>attributes,<sp/>including<sp/>physics<sp/>properties<sp/>(e.g.,<sp/>momentum,<sp/>energy),<sp/>detector<sp/>information,<sp/>and<sp/>machine<sp/>learning<sp/>features.</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*<sp/>@section<sp/>Node_class<sp/>The<sp/>Node<sp/>Class</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>The<sp/>`Node`<sp/>class<sp/>provides<sp/>a<sp/>comprehensive<sp/>interface<sp/>for<sp/>creating,<sp/>manipulating,<sp/>and<sp/>querying<sp/>nodes<sp/>in<sp/>a<sp/>graph.</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>Node_attributes<sp/>Attributes</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>A<sp/>`Node`<sp/>object<sp/>can<sp/>have<sp/>the<sp/>following<sp/>attributes:</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>-<sp/>**id**:<sp/>A<sp/>unique<sp/>identifier<sp/>for<sp/>the<sp/>node<sp/>within<sp/>the<sp/>graph.</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>-<sp/>**features**:<sp/>A<sp/>map<sp/>of<sp/>key-value<sp/>pairs<sp/>representing<sp/>the<sp/>node&apos;s<sp/>features.<sp/>These<sp/>can<sp/>be<sp/>of<sp/>any<sp/>type<sp/>and<sp/>are<sp/>used<sp/>to<sp/>store<sp/>information<sp/>such<sp/>as<sp/>particle<sp/>properties,<sp/>detector<sp/>measurements,<sp/>or<sp/>any<sp/>other<sp/>relevant<sp/>data.</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>-<sp/>**edges**:<sp/>A<sp/>list<sp/>of<sp/>`Edge`<sp/>objects<sp/>connected<sp/>to<sp/>this<sp/>node.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>@subsection<sp/>Node_methods<sp/>Methods</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>`Node`<sp/>class<sp/>provides<sp/>the<sp/>following<sp/>methods:</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>-<sp/>`Node(int<sp/>id)`:<sp/>Constructor<sp/>that<sp/>creates<sp/>a<sp/>new<sp/>`Node`<sp/>with<sp/>the<sp/>given<sp/>ID.</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>-<sp/>`int<sp/>get_id()<sp/>const`:<sp/>Returns<sp/>the<sp/>ID<sp/>of<sp/>the<sp/>node.</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_feature(const<sp/>std::string&amp;<sp/>key,<sp/>const<sp/>boost::any&amp;<sp/>value)`:<sp/>Adds<sp/>a<sp/>feature<sp/>to<sp/>the<sp/>node.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>-<sp/>`boost::any<sp/>get_feature(const<sp/>std::string&amp;<sp/>key)<sp/>const`:<sp/>Retrieves<sp/>a<sp/>feature<sp/>from<sp/>the<sp/>node.</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*<sp/>-<sp/>`void<sp/>add_edge(Edge*<sp/>edge)`:<sp/>Adds<sp/>an<sp/>edge<sp/>to<sp/>the<sp/>node.</highlight></codeline>
+<codeline lineno="28"><highlight class="comment"><sp/>*<sp/>-<sp/>`const<sp/>std::vector&lt;Edge*&gt;&amp;<sp/>get_edges()<sp/>const`:<sp/>Returns<sp/>the<sp/>list<sp/>of<sp/>edges<sp/>connected<sp/>to<sp/>the<sp/>node.</highlight></codeline>
+<codeline lineno="29"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="30"><highlight class="comment"><sp/>*<sp/>@section<sp/>Node_example<sp/>Example<sp/>Usage</highlight></codeline>
+<codeline lineno="31"><highlight class="comment"><sp/>*<sp/>@code{.cpp}</highlight></codeline>
+<codeline lineno="32"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>a<sp/>new<sp/>node<sp/>with<sp/>ID<sp/>1</highlight></codeline>
+<codeline lineno="33"><highlight class="comment"><sp/>*<sp/>Node<sp/>node1(1);</highlight></codeline>
+<codeline lineno="34"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="35"><highlight class="comment"><sp/>*<sp/>//<sp/>Add<sp/>some<sp/>features<sp/>to<sp/>the<sp/>node</highlight></codeline>
+<codeline lineno="36"><highlight class="comment"><sp/>*<sp/>node1.add_feature(&quot;pt&quot;,<sp/>50.0);</highlight></codeline>
+<codeline lineno="37"><highlight class="comment"><sp/>*<sp/>node1.add_feature(&quot;eta&quot;,<sp/>1.2);</highlight></codeline>
+<codeline lineno="38"><highlight class="comment"><sp/>*<sp/>node1.add_feature(&quot;phi&quot;,<sp/>0.5);</highlight></codeline>
+<codeline lineno="39"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="40"><highlight class="comment"><sp/>*<sp/>//<sp/>Get<sp/>a<sp/>feature<sp/>from<sp/>the<sp/>node</highlight></codeline>
+<codeline lineno="41"><highlight class="comment"><sp/>*<sp/>double<sp/>pt<sp/>=<sp/>boost::any_cast&lt;double&gt;(node1.get_feature(&quot;pt&quot;));</highlight></codeline>
+<codeline lineno="42"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="43"><highlight class="comment"><sp/>*<sp/>//<sp/>Create<sp/>another<sp/>node<sp/>and<sp/>an<sp/>edge<sp/>to<sp/>connect<sp/>them</highlight></codeline>
+<codeline lineno="44"><highlight class="comment"><sp/>*<sp/>Node<sp/>node2(2);</highlight></codeline>
+<codeline lineno="45"><highlight class="comment"><sp/>*<sp/>Edge<sp/>edge(&amp;node1,<sp/>&amp;node2);</highlight></codeline>
+<codeline lineno="46"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="47"><highlight class="comment"><sp/>*<sp/>//<sp/>Add<sp/>the<sp/>edge<sp/>to<sp/>both<sp/>nodes</highlight></codeline>
+<codeline lineno="48"><highlight class="comment"><sp/>*<sp/>node1.add_edge(&amp;edge);</highlight></codeline>
+<codeline lineno="49"><highlight class="comment"><sp/>*<sp/>node2.add_edge(&amp;edge);</highlight></codeline>
+<codeline lineno="50"><highlight class="comment"><sp/>*<sp/>@endcode</highlight></codeline>
+<codeline lineno="51"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="core/node.dox"/>
+  </compounddef>
+</doxygen>
