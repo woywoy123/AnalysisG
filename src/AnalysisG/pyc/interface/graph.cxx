@@ -190,3 +190,13 @@ torch::Dict<std::string, torch::Tensor> pyc::graph::cycle_aggregation(
     return pyc::std_to_dict(&out); 
 }
 
+
+torch::Dict<std::string, torch::Tensor> pyc::graph::next_selection(
+    torch::Tensor event_idx, torch::Tensor batch_idx, torch::Tensor node_idx, torch::Tensor edge_idx, long max_node
+){
+    changedev(&event_idx); 
+    std::map<std::string, torch::Tensor> out; 
+    out = graph_::next_selection(&event_idx, &batch_idx, &node_idx, &edge_idx, max_node); 
+    return pyc::std_to_dict(&out); 
+}
+

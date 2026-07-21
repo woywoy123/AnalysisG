@@ -10,6 +10,8 @@
 #include <operators/operators.h>
 #endif
 
+torch::TensorOptions pyc::MakeOp(torch::Tensor* tn){return MakeOp(tn);}
+
 torch::Tensor pyc::operators::Dot(torch::Tensor v1, torch::Tensor v2){
     changedev(&v1); 
     return operators_::Dot(&v1, &v2); 

@@ -1,7 +1,7 @@
 #include <tools/tools.h>
 #include <string>
 
-void tools::replace(std::string* in, std::string to_repl, std::string repl_w) {
+void AnalysisG::tooling::replace(std::string* in, std::string to_repl, std::string repl_w) {
     std::size_t pos = 0; 
     std::size_t ppos; 
     std::string buf; 
@@ -19,7 +19,7 @@ void tools::replace(std::string* in, std::string to_repl, std::string repl_w) {
     in -> swap(buf); 
 }
 
-std::vector<std::string> tools::split(std::string inpt, std::string search) {
+std::vector<std::string> AnalysisG::tooling::split(std::string inpt, std::string search) {
     size_t pos = 0;
     size_t s_dim = search.length();
     size_t index = 0;
@@ -34,7 +34,7 @@ std::vector<std::string> tools::split(std::string inpt, std::string search) {
     return out;
 }
 
-std::vector<std::string> tools::split(std::string in, size_t n){
+std::vector<std::string> AnalysisG::tooling::split(std::string in, size_t n){
     size_t x = 0; 
     std::vector<std::string> out = {""}; 
     for (size_t i(0); i < in.size(); ++i){
@@ -44,14 +44,14 @@ std::vector<std::string> tools::split(std::string in, size_t n){
     return out; 
 }
 
-std::string tools::get_splits(std::string* in, std::string delm, int index){
-    std::vector<std::string> spl = tools::split(*in, delm); 
+std::string AnalysisG::tooling::get_splits(const std::string* in, std::string delm, int index){
+    std::vector<std::string> spl = AnalysisG::tooling::split(*in, delm); 
     return (index < int(spl.size())) ? spl[spl.size() + index] : "xxxxxxxxxxxxxx"; 
 }
 
 
 
-std::string tools::hash(std::string input, int len) {
+std::string AnalysisG::tooling::hash(std::string input, int len) {
     std::hash<std::string> hasher; 
     std::stringstream ss; 
     ss << "0x" << std::hex << hasher(input); 
@@ -62,33 +62,33 @@ std::string tools::hash(std::string input, int len) {
     return out; 
 }
 
-std::string tools::to_string(double val, int prec){
+std::string AnalysisG::tooling::to_string(double val, int prec){
     std::stringstream ss; 
     if (prec > -1){ss.precision(prec);}
     ss << std::fixed << val; 
     return ss.str(); 
 }
 
-std::string tools::to_string(long double val, int prec){
+std::string AnalysisG::tooling::to_string(long double val, int prec){
     std::stringstream ss; 
     if (prec > -1){ss.precision(prec);}
     ss << std::fixed << val; 
     return ss.str(); 
 }
 
-bool tools::has_string(const std::string* inpt, std::string trg){
+bool AnalysisG::tooling::has_string(const std::string* inpt, std::string trg){
     std::size_t f = inpt -> find(trg); 
     if (f != std::string::npos){return true;}
     return false; 
 }
 
-bool tools::ends_with(const std::string* inpt, std::string val){
+bool AnalysisG::tooling::ends_with(const std::string* inpt, std::string val){
     if (inpt -> size() < val.size()){return false;}
     std::string l = inpt -> substr(inpt -> size() - val.size(), inpt -> size()-1); 
     return val == l; 
 }
 
-bool tools::has_value(const std::vector<std::string>* data, std::string trg){
+bool AnalysisG::tooling::has_value(const std::vector<std::string>* data, std::string trg){
     for (size_t x(0); x < data -> size(); ++x){
         if (trg != data -> at(x)){continue;}
         return true; 
@@ -96,7 +96,7 @@ bool tools::has_value(const std::vector<std::string>* data, std::string trg){
     return false; 
 }
 
-std::string tools::lower(std::string* in){
+std::string AnalysisG::tooling::lower(const std::string* in){
     std::string out = *in;
     for (size_t t(0); t < in -> size(); ++t){out[t] = std::tolower(out[t]);}
     return out;
@@ -110,11 +110,11 @@ static const std::string base64_chars =
 bool is_base64(unsigned char c){return (isalnum(c) || (c == '+') || (c == '/'));}
 
 
-std::string tools::encode64(std::string* data){
-    return tools::encode64(reinterpret_cast<unsigned char const*>(data -> c_str()), data -> size()); 
+std::string AnalysisG::tooling::encode64(const std::string* data){
+    return AnalysisG::tooling::encode64(reinterpret_cast<unsigned char const*>(data -> c_str()), data -> size()); 
 }
 
-std::string tools::encode64(unsigned char const* bytes_to_encode, unsigned int in_len){
+std::string AnalysisG::tooling::encode64(unsigned char const* bytes_to_encode, unsigned int in_len){
     std::string ret;
     int i = 0;
     int j = 0;
@@ -148,21 +148,21 @@ std::string tools::encode64(unsigned char const* bytes_to_encode, unsigned int i
 
  
 
-std::string tools::decode64(std::string* inpt){
-    return tools::decode64(*inpt); 
+std::string AnalysisG::tooling::decode64(std::string inpt){
+    return AnalysisG::tooling::decode64(&inpt); 
 }
 
 
-std::string tools::decode64(std::string const& encoded_string){
-    size_t in_len = encoded_string.size();
+std::string AnalysisG::tooling::decode64(const std::string* encoded_string){
+    size_t in_len = encoded_string -> size();
     size_t i = 0;
     size_t j = 0;
     int in_ = 0;
     unsigned char char_array_4[4], char_array_3[3];
     std::string ret;
 
-    while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
-        char_array_4[i++] = encoded_string[in_]; in_++;
+    while (in_len-- && ((*encoded_string)[in_] != '=') && is_base64((*encoded_string)[in_])) {
+        char_array_4[i++] = (*encoded_string)[in_]; in_++;
         if (i ==4) {
             for (i = 0; i <4; i++){char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));}
             char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
@@ -183,4 +183,11 @@ std::string tools::decode64(std::string const& encoded_string){
         for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
     }
     return ret;
+}
+
+int AnalysisG::tooling::count(const std::string* str, const std::string sub){
+    int count = 0;
+    std::string::size_type pos = 0;
+    while ((pos = str -> find(sub, pos)) != std::string::npos){++count; ++pos;}
+    return count;
 }

@@ -11,13 +11,15 @@ enum class network {
 }; 
 
 struct NetOps {
-    NetOps(network nt);
-    NetOps(network nt, long v1); 
-    std::string Name(int nxt); 
-    void Apply(torch::nn::Sequential* nn, int nxt); 
+    NetOps(network ntwk);
+    NetOps(network ntwk, long l1, long l2 = -1); 
+    std::string Name(int x1, int x1p, int depth); 
+    void Apply(torch::nn::Sequential* nn, NetOps* opx); 
 
-    network nt = network::invalid; 
+    network ntwk = network::invalid; 
     long _l1 = -1;
+    long _l2 = -1; 
+    long depth = -1; 
     
     torch::nn::Linear*     n1 = nullptr;  
     torch::nn::LayerNorm*  n2 = nullptr;
@@ -52,12 +54,13 @@ namespace utils {
     
     torch::Tensor format(torch::Tensor* tn, long int l); 
     torch::Tensor format(torch::Tensor* tn, long int l1, long int l2); 
-    
+   
     torch::Tensor lzero(torch::Tensor* tn); 
     torch::Tensor lzero(torch::Tensor* tn, torch::Tensor ix); 
 
     torch::Tensor mzero(long int i, long int l); 
     torch::Tensor mzero(long int i, long int l, bool form); 
+    torch::Tensor lones(torch::Tensor* tn, long int l1, long int l2, long int l3); 
     
     bool isnull(torch::Tensor* inpt); 
     bool isnull(torch::Tensor  inpt); 
@@ -66,22 +69,40 @@ namespace utils {
     torch::Tensor get_edge( recyclx* ml, graph_t* data); 
     torch::Tensor get_batch(recyclx* ml, graph_t* data); 
     torch::Tensor get_event(recyclx* ml, graph_t* data); 
-   
+    torch::Tensor build_pmc(recyclx* ml, graph_t* data); 
 
     // -------- ACTIVATIONS --------- //
-    torch::nn::Linear    make_Fx(torch::nn::Linear* tn,    long int n = -1, long int m = -1); 
-    torch::nn::LayerNorm make_Fx(torch::nn::LayerNorm* tn, long int n = -1, long int m = -1); 
-    torch::nn::Dropout   make_Fx(torch::nn::Dropout* tn,   long int n = -1, long int m = -1); 
-    torch::nn::ReLU      make_Fx(torch::nn::ReLU* tn,      long int n = -1, long int m = -1); 
-    torch::nn::SiLU      make_Fx(torch::nn::SiLU* tn,      long int n = -1, long int m = -1); 
-    torch::nn::Sigmoid   make_Fx(torch::nn::Sigmoid* tn,   long int n = -1, long int m = -1); 
-    torch::nn::PReLU     make_Fx(torch::nn::PReLU* tn,     long int n = -1, long int m = -1); 
-    torch::nn::LeakyReLU make_Fx(torch::nn::LeakyReLU* tn, long int n = -1, long int m = -1); 
-    torch::nn::Tanh      make_Fx(torch::nn::Tanh*      tn, long int n = -1, long int m = -1); 
+    torch::nn::Linear    make_Fx(torch::nn::Linear*    tn, NetOps* opx); 
+    torch::nn::LayerNorm make_Fx(torch::nn::LayerNorm* tn, NetOps* opx); 
+    torch::nn::Dropout   make_Fx(torch::nn::Dropout*   tn, NetOps* opx); 
+    torch::nn::ReLU      make_Fx(torch::nn::ReLU*      tn, NetOps* opx); 
+    torch::nn::SiLU      make_Fx(torch::nn::SiLU*      tn, NetOps* opx); 
+    torch::nn::Sigmoid   make_Fx(torch::nn::Sigmoid*   tn, NetOps* opx); 
+    torch::nn::PReLU     make_Fx(torch::nn::PReLU*     tn, NetOps* opx); 
+    torch::nn::LeakyReLU make_Fx(torch::nn::LeakyReLU* tn, NetOps* opx); 
+    torch::nn::Tanh      make_Fx(torch::nn::Tanh*      tn, NetOps* opx); 
 
     torch::nn::Sequential* make_Network(std::string title, std::vector<NetOps>);  
-    torch::Tensor NRecode(recyclx* ml, torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn); 
-    torch::Tensor build_pmc(recyclx* ml, graph_t* data); 
+    
+    torch::Tensor NRecode(
+        recyclx* ml, torch::Tensor pmc, torch::Tensor num_node, torch::Tensor* node_rnn
+    ); 
+
+    torch::Tensor NDecode(
+        recyclx* ml, torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor* Nenc
+    ); 
+
+    torch::Tensor Message(
+        recyclx* ml, torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor* Nenc
+    ); 
+
+    torch::Tensor Message(
+        recyclx* ml, torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor* Nenc
+    ); 
+
+    torch::Tensor TopEdge(
+        recyclx* ml, torch::Tensor trk_i, torch::Tensor trk_j, torch::Tensor pmc, torch::Tensor* Nenc
+    ); 
 }
 
 

@@ -30,6 +30,8 @@ namespace pyc {
     torch::Tensor tensorize(std::vector<std::vector<long>>* inpt);
     torch::Tensor tensorize(std::vector<double>* inpt);
     torch::Tensor tensorize(std::vector<long>* inpt); 
+    torch::TensorOptions MakeOp(torch::Tensor* tn); 
+
 
     template <typename g>
     std::vector<double> as_pmc(g* p){return {p -> px, p -> py, p -> pz, p -> e};}
@@ -245,7 +247,11 @@ namespace pyc {
                 torch::Tensor edge_index, torch::Tensor edge_scores, torch::Tensor pmc, 
                 double alpha = 0.85, double threshold = 0.5, double norm_low = 1e-6, long timeout = 1e6, long num_cls = 2
         ); 
-         
+
+        torch::Dict<std::string, torch::Tensor> next_selection(
+            torch::Tensor event_idx, torch::Tensor batch_idx, torch::Tensor node_idx, torch::Tensor edge_idx, long max_node
+        ); 
+ 
         namespace polar {
             torch::Dict<std::string, torch::Tensor> edge_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu

@@ -50,6 +50,9 @@ torch::Tensor utils::format(torch::Tensor* tn, long int l1, long int l2){
     return tn -> view({l1, l2}).contiguous();
 }
 
+torch::Tensor utils::lones(torch::Tensor* tn, long int l1, long int l2, long int l3){
+    return -torch::ones({l1, l2, l3}).to(tn -> dtype()).to(tn -> device());
+}
 
 torch::Tensor utils::lzero(torch::Tensor* tn){
     return torch::zeros_like({*tn});

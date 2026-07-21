@@ -6,7 +6,7 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
         torch::Tensor* cluster_map, torch::Tensor* features
 ){
     const unsigned int n_nodes = cluster_map -> size({0});
-    const unsigned int ij_node = cluster_map -> size({1}); 
+    const unsigned int ij_node = cluster_map -> view({int(n_nodes), -1}).size({1}); 
     const unsigned int n_feat  = features -> size({1}); 
     const unsigned int e_nodes = features -> size({0}); 
 
@@ -34,8 +34,8 @@ std::map<std::string, torch::Tensor> graph_::unique_aggregation(
     uniq = uniq.narrow(1, 0, maxi.max().item<long>()); 
     std::map<std::string, torch::Tensor> out; 
     out["node-sum"] = output.clone(); 
-    out["maxi"] = maxi.clone(); 
-    out["unique"] = uniq.clone();
+    out["maxi"]     = maxi.view({-1, 1}).clone(); 
+    out["unique"]   = uniq.clone();
     return out; 
 }
 
@@ -132,3 +132,31 @@ std::map<std::string, torch::Tensor> graph_::cycle_aggregation(
 }
 
 
+std::map<std::string, torch::Tensor> graph_::next_selection(
+        torch::Tensor* event_idx, torch::Tensor* batch_idx, 
+        torch::Tensor*  node_idx, torch::Tensor* edge_idx, 
+        long max_node
+){
+    const unsigned int evn_idx = event_idx -> size(0);
+    const unsigned int bth_idx = batch_idx -> size(0);
+    const unsigned int edg_idx = edge_idx -> size({1});
+    const unsigned int nod_idx = max_node; 
+
+    const dim3 ths = dim3(1024); 
+    const dim3 bls = blk_(edg_idx, 1024); 
+
+    torch::Tensor mrk_idx = -torch::ones({evn_idx, nod_idx, nod_idx}, MakeOp(node_idx)); 
+    AT_DISPATCH_ALL_TYPES(mrk_idx.scalar_type(), "next_selection", [&]{ 
+        _next_selection<scalar_t, 64, 64><<<bls, ths>>>(
+                        mrk_idx.packed_accessor64<long, 3, torch::RestrictPtrTraits>(),
+                   event_idx -> packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                   batch_idx -> packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                   node_idx  -> packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                   edge_idx  -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                        evn_idx, bth_idx, edg_idx, nod_idx);
+    });
+
+    std::map<std::string, torch::Tensor> out; 
+    out["node"] = mrk_idx; 
+    return out; //{"node" : mrk_idx}; 
+}

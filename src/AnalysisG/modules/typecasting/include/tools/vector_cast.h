@@ -7,60 +7,12 @@
 #include <ATen/cuda/CUDAContext.h>
 #endif
 
+#include <tools/tools.h>
 #include <structs/meta.h>
 #include <structs/base.h>
 #include <torch/torch.h>
 #include <TTree.h>
 #include <vector>
-
-bool _transfer(torch::Tensor* data, torch::Tensor* cpux); 
-
-template <typename G>
-std::vector<std::vector<G>> chunking(std::vector<G>* v, int N){
-    size_t n = v -> size(); 
-    typename std::vector<std::vector<G>> out; 
-    for (size_t ib = 0; ib < n; ib += N){
-        size_t end = ib + N; 
-        if (end > n){ end = n; }
-        out.push_back(std::vector<G>(v -> begin() + ib, v -> begin() + end)); 
-    }
-    return out; 
-}
-
-template <typename g>
-void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>*, int){
-    trgt -> insert(trgt -> end(), chnks -> begin(), chnks -> end());  
-}
-
-
-template <typename G, typename g>
-void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<signed long>* dims, int next_dim = 0){
-    std::vector<std::vector<g>> chnk_n = chunking(chnks, (*dims)[next_dim]);
-    for (size_t x(0); x < chnk_n.size(); ++x){
-        G tmp = {}; 
-        tensor_vector(&tmp, &chnk_n[x], dims, next_dim-1); 
-        trgt -> push_back(tmp); 
-    }
-}
-
-
-template <typename G, typename g>
-bool tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g){
-    torch::Tensor cpux = torch::empty(data -> sizes(), torch::device(torch::kCPU).pinned_memory(true).dtype(data -> dtype())); 
-    if (!_transfer(data, &cpux)){return false;}
-    cpux = cpux.reshape({-1}); 
-    typename std::vector<g> linear(static_cast<g*>(cpux.data_ptr()), static_cast<g*>(cpux.data_ptr()) + cpux.numel()); 
-    tensor_vector(out, &linear, dims, dims -> size()-1); 
-    return true; 
-}
-
-std::vector<signed long> tensor_size(torch::Tensor* inpt);
-
-template <typename g>
-void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
-    std::vector<signed long> s = tensor_size(data); 
-    tensor_to_vector(data, out, &s, g()); 
-}
 
 struct write_t; 
 
@@ -73,6 +25,7 @@ struct variable_t: public bsc_t
 
         void create_meta(meta_t* mt);
         void build_switch(size_t s, torch::Tensor* tx); 
+
         void process(torch::Tensor* data, std::string* varname, TTree* tr);
 
         // =========================== Add your type (3) =========================== //

@@ -10,8 +10,6 @@ class recyclx: public model_template
         model_template* clone() override;
         void forward(graph_t*) override; 
 
-        torch::Tensor message(torch::Tensor trk_i,  torch::Tensor trk_j, torch::Tensor pmc); 
-
         // Neural Network Parameters
         int _hidden = 1024; 
         int _xrec = 128; 
@@ -27,12 +25,12 @@ class recyclx: public model_template
 
         torch::nn::Sequential* rnn_x        = nullptr; 
         torch::nn::Sequential* rnn_dx       = nullptr; 
+        torch::nn::Sequential* rnn_hxx      = nullptr; 
+        torch::nn::Sequential* echo_code    = nullptr; 
+
         torch::nn::Sequential* rnn_top_edge = nullptr;
         torch::nn::Sequential* rnn_res_edge = nullptr; 
-        torch::nn::Sequential* rnn_hxx      = nullptr; 
-
-        torch::nn::Sequential* autoenc = nullptr; 
-        torch::nn::Sequential* autodec = nullptr; 
+        torch::nn::Sequential* autoenc      = nullptr; 
 
         torch::nn::Sequential* mlp_ntop = nullptr; 
         torch::nn::Sequential* mlp_sig  = nullptr; 
@@ -40,6 +38,17 @@ class recyclx: public model_template
         torch::Tensor  x_nulls; 
         torch::Tensor dx_nulls; 
         torch::Tensor te_nulls; 
+
+        const std::string key_smi = "maxi"; 
+        const std::string key_idx = "unique"; 
+        const std::string key_smx = "node-sum"; 
+
+        const std::string key_idu = "cls::1::node-indices"; 
+        const std::string key_smu = "cls::1::node-sum"; 
+ 
+ 
+
+
 }; 
 
 #endif

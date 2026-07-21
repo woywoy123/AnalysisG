@@ -1,6 +1,5 @@
 set(HEADER_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/tools/tensor_cast.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/tools/merge_cast.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/tools/vector_cast.h
 )
 
@@ -8,11 +7,12 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/typecasting.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/root.cxx
 )
-add_library(ctypecasting ${SOURCE_FILES})
-target_include_directories(ctypecasting PRIVATE include/tools)
-target_include_directories(ctypecasting PUBLIC include)
-target_link_libraries(ctypecasting PUBLIC ${TORCH_LIBRARIES} ${ROOT_LIBRARIES} cstructs)
-target_compile_options(ctypecasting PRIVATE -fPIC)
+add_library(ag_module_cvariable ${SOURCE_FILES})
+target_include_directories(ag_module_cvariable PRIVATE include/tools)
+target_include_directories(ag_module_cvariable PUBLIC include)
+target_link_libraries(ag_module_cvariable PUBLIC ${TORCH_LIBRARIES} ${ROOT_LIBRARIES} cstructs)
+target_compile_options(ag_module_cvariable PRIVATE -fPIC)
+
 
 if(CMAKE_ANALYSISG_CUDA)
 target_compile_definitions(ctypecasting PRIVATE PYC_CUDA ON)

@@ -142,6 +142,53 @@ __global__ void _unique_sum(
 }
 
 
+template <typename scalar_t, size_t size_x, size_t size_y>
+__global__ void _next_selection(
+              torch::PackedTensorAccessor64<long, 3, torch::RestrictPtrTraits> out, 
+        const torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> event_idx, 
+        const torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> batch_idx, 
+        const torch::PackedTensorAccessor64<long, 1, torch::RestrictPtrTraits> node_idx,
+        const torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> edge_idx,
+        const unsigned int dim_z, const unsigned int dim_y, 
+        const unsigned int dim_x, const unsigned int dim_n
+){
+    __shared__ int _edges[size_x][size_y];  
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const bool lw = idx < dim_x; 
+
+    if (idx < dim_x){
+        const long src   = edge_idx[0][idx]; 
+        const long dst   = edge_idx[1][idx];
+    
+        const long bsrc  = batch_idx[src]; 
+        const long bdst  = batch_idx[dst]; 
+        out[bsrc][src % dim_n][dst % dim_n] = (src == dst);
+    }
+    __syncthreads; 
+
+    
+
+    //const long evnt  = evnt_idx[idz]; 
+    //const long bth_i = batch_idx[src];
+    //const long ndx_i =  node_idx[src];
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
 template <typename scalar_t, size_t size_x, size_t size_y> 
 __global__ void _cycle_build(
         const torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> clu_map, 
