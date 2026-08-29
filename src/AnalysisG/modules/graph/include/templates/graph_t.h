@@ -82,7 +82,7 @@ class graph_t :
         void add_data_edge(  std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
 
         void transfer_to_device(torch::TensorOptions* dev); 
-        void _purge_all(bool data_maps = false); 
+        void _purge_all(); 
 
         long    num_nodes    = 0; 
         long    event_index  = 0; 

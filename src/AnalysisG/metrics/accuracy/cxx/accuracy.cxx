@@ -102,7 +102,8 @@ void accuracy_metric::define_metric(metric_t* mtx){
         this -> _global_edge_accuracy[c]++; 
         bh_acc[ibx][c]++; 
     }
-
+    
+    this -> rate_time(1); 
     this -> global_edge_accuracy = acc(&this -> _global_edge_accuracy); 
     std::map<int, std::map<int, int>>::iterator itx; 
     for (itx = bh_acc.begin(); itx != bh_acc.end(); ++itx){

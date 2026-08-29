@@ -160,6 +160,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         delete io_g; 
     }
 
+    force_load = true; 
     std::map<std::string, int> load_hash; 
     bool eval  = this -> setting -> evaluation; 
     bool fold  = this -> setting -> validation;
@@ -239,18 +240,14 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p];
-            bool pre = gr -> preselection; 
-            if (pre){continue;}
-            if (force_load){gr -> preselection = true;}
-            std::string hash = (*gr -> hash); 
-            (*restored)[hash] = gr; 
+            (*restored)[(*gr -> hash)] = gr; 
             (*datax)[p] = nullptr; 
         }
         this -> vflush(datax); 
         this -> pflush(&datax); 
     }
     cache_rebuild.clear(); 
-    prg -> join(); delete prg; prg = nullptr; 
+    this -> tflush(&prg); 
     return restored; 
 }
 
@@ -258,12 +255,14 @@ void dataloader::restore_graphs(std::vector<std::string> path, int threads, bool
     std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, threads, force_load); 
     std::map<std::string, graph_t*>::iterator itr; 
     for (itr = restored -> begin(); itr != restored -> end(); ++itr){
-        this -> extract_data(itr -> second);
+        graph_t* gr = itr -> second; 
+        if (gr -> preselection && !force_load){continue;}
+        this -> extract_data(gr);
         (*restored)[itr -> first] = nullptr; 
     }
     this -> success("Restored " + std::to_string(restored -> size()) + " Graphs from cache!"); 
-    restored -> clear(); 
-    delete restored; 
+    this -> mflush(restored); 
+    this -> pflush(&restored); 
 }
 
 void dataloader::restore_graphs(std::string path, int threads, bool force_load){

@@ -1,6 +1,6 @@
 from samples.training import Splitting
-from samples.main import Samples
 from training.config import MatrixCfg
+from samples.main import Samples
 import os
 
 #smpl = Samples("/home/tnom6927/Downloads/mc16-full/")

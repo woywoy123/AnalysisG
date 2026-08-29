@@ -28,7 +28,7 @@ void tools::delete_path(std::string input_path){
 }
 
 bool tools::is_file(std::string path){
-    return !std::filesystem::is_directory(path); 
+    return std::filesystem::is_regular_file(path); 
 }
 
 std::vector<std::string> tools::ls(std::string path, std::string ext){

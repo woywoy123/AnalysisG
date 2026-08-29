@@ -1,5 +1,5 @@
 cmake_language(CALL cybuild core core structs "")
-cmake_language(CALL cybuild core core notification "")
+cmake_language(CALL cybuild core core notification ctypecasting;ctools)
 cmake_language(CALL cybuild core core tools ctypecasting;structs)
 cmake_language(CALL cybuild core core meta cnotification)
 cmake_language(CALL cybuild core core io cmeta;cnotification)

@@ -1,29 +1,38 @@
 import AnalysisG
-from AnalysisG import Analysis
-from AnalysisG.core.tools import Tools
+from AnalysisG import *
+from AnalysisG.core import Analysis
+from AnalysisG.models  import Grift
 from AnalysisG.metrics import AccuracyMetric
+
 from AnalysisG.graphs.bsm_4tops import *
-from AnalysisG.models import *
+from AnalysisG.events.bsm_4tops import *
 
 from atomics import *
 
-
-base_dir   = "/scratch/tnom6927/"
+base_dir   = "/CERN/thesis-data/gnn-model/"
 base_model = "Grift"
 
-train_path = base_dir + "model-package/gnn-update"
-graph_index_tr = base_dir + "model-package/Graphs/graph_jets_detector_lep"
-graph_index_ev = base_dir + "model-package/evaluation/graph_jets_detector_lep"
-graph_train    = base_dir + "model-package/Graphs/GraphDetectorLep_train.h5"
+rn = Runtime(base_dir)
+rn.training.path   = "training/base/GraphDetectorLep/"
+rn.training.graphs("graph_jets_detector_lep", GraphDetectorLep())
+rn.meta.meta  = "data/meta"
 
-runs = []
-tl = Tools()
-for i in tl.ls(train_path, ""):
-    if not i.endswith(".pt"): continue
-    if "optimizer" in i: continue
-    ss = Sessions(train_path)
-    ss.parse(i)
-    runs.append(ss)
+rn.evaluation.path = "data/evaluation"
+rn.evaluation.graphs("data/evaluation", GraphDetectorLep())
+rn.kfolds.path = "data/k-folds/GraphdetectorLep_train.h5"
+rn.kfolds.folds = 10
+rn.kfolds.epoch = 200
+params = [
+    ("MRK-1", "adam"   , {"lr" : 1e-3}                                         , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-2", "adam"   , {"lr" : 1e-3, "amsgrad" : True}                       , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-3", "sgd"    , {"lr" : 1e-3}                                         , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-4", "sgd"    , {"lr" : 1e-3, "momentum": 0.20 , "nesterov" : True}   , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-5", "sgd"    , {"lr" : 1e-3, "momentum": 0.10 , "nesterov" : True}   , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-6", "adamw"  , {"lr" : 1e-3, "amsgrad" : True}                       , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-7", "rmsprop", {"lr" : 1e-3, "momentum": 0.10 , "centered": True}    , "steplr", {"gamma" : 0.85, "step_size"  : 10}), 
+    ("MRK-8", "adagrad", {"lr" : 1e-3, "amsgrad": True}                        , "steplr", {"gamma" : 0.85, "step_size"  : 10})
+]
+
 
 varx = [
     ["truth", "graph",    "ntops"],
@@ -35,19 +44,31 @@ varx = [
     ["data", "graph", "index"]
 ]
 
-prm = ModelParams()
-prm.variables = varx
-prm.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
-prm.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
-prm.i_node  = ["pt", "eta", "phi", "energy"]
-prm.i_graph = ["met", "phi"]
-prm.train_set = graph_train
-prm.graph_trn = graph_index_tr
-prm.graph_evl = graph_index_ev
-prm.batch_size  = 50
+for i in params: 
+    cfg = Model(i[0], Grift).optimizer(i[1], i[2]).scheduler(i[3], i[4]).device(0)
+    cfg = rn.models.add(cfg)
+    cfg.variables = varx
+    cfg.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
+    cfg.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
+    cfg.i_node  = ["pt", "eta", "phi", "energy"]
+    cfg.i_graph = ["met", "phi"]
+    cfg.batch_size  = 50
+    break
 
-ml = ModelEnv(runs, prm)
-ml.compile()
+
+
+
+
+
+print(rn.compile())
+
+
+
+
+
+
+
+exit()
 
 rn = {i.tag : i.abs for i in ml.sessions}
 vr = list(set(sum([i.variables for i in ml.sessions], [])))

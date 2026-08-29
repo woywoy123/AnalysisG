@@ -83,12 +83,6 @@ void analysis::build_inference(){
         std::vector<variable_t>* content = new std::vector<variable_t>(); 
         content -> reserve(sx);
 
-        // TODO
-        //std::map<std::string, meta*>::iterator itt = this -> meta_data.begin();
-        //for (; itt != this -> meta_data.end(); ++itt){
-        //    std::cout << fname << " | " << itt -> first << std::endl; 
-        //}
-
         // --- Scan the inputs
         int index = 0; 
         index = add_content(&md -> m_i_graph, content, index, "g_i_"); 
@@ -129,14 +123,15 @@ void analysis::build_inference(){
         if (batched_data[t]){this -> loader -> safe_delete(batched_data[t]);}
         batched_data[t] = nullptr;
     }
-
+    
     for (its = dl -> begin(); its != dl -> end(); ++its){
         its -> second.clear(); 
         its -> second.shrink_to_fit(); 
     }
-
-    dl -> clear(); delete dl; dl = nullptr; 
+    dl -> clear();
+    this -> pflush(&dl); 
     if (!thr_){return this -> failure("No models were executed...");}
-    thr_ -> join(); delete thr_; thr_ = nullptr; 
+    thr_ -> join(); 
+    this -> pflush(&thr_); 
     this -> success("Model inference completed!"); 
 }

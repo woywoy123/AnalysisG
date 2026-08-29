@@ -82,7 +82,9 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
-  
+ 
+    bool skp = this -> hash_map.count(*gr -> hash) > 0; 
+    if (skp){gr -> is_owner = true; delete gr; return;}
     std::string* name = gr -> graph_name; 
     if (name){
         std::string* fame = this -> graph_names[*name]; 
@@ -90,11 +92,10 @@ void dataloader::extract_data(graph_t* gr){
         gr -> graph_name = this -> graph_names[*name];
         this -> pflush(&name);
     }
-
+    
     this -> hash_map[*gr -> hash] = this -> idk; 
     this -> data_index -> push_back(this -> idk); 
     this -> data_set -> push_back(gr); 
-    if (gr -> preselection){this -> test_set -> push_back(this -> idk);}
     this -> idk++; 
 }
 

@@ -14,7 +14,6 @@ from cython.operator cimport dereference as deref
 cdef class MetricTemplate:
     def __cinit__(self): 
         self.mtx = NULL 
-        #new metric_template()
         self.root_leaves = {}
         self.root_fx = {}
 

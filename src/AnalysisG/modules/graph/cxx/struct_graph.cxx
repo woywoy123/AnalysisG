@@ -44,7 +44,7 @@ void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){this -> mflush(da
 void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){this -> mflush(data);}
 void graph_t::_purge_data(std::vector<torch::Tensor*>* data){this -> vflush(data);}
 
-void graph_t::_purge_all(bool data_maps){
+void graph_t::_purge_all(){
     this -> _purge_data(this -> data_graph); 
     this -> _purge_data(this -> data_node); 
     this -> _purge_data(this -> data_edge); 
@@ -56,9 +56,11 @@ void graph_t::_purge_all(bool data_maps){
     this -> pflush(&this -> data_graph );
     this -> pflush(&this -> data_node  ); 
     this -> pflush(&this -> data_edge  );
+
     this -> pflush(&this -> truth_graph);
     this -> pflush(&this -> truth_node );
     this -> pflush(&this -> truth_edge );
+
     this -> pflush(&this -> edge_index );
 
     this -> dev_data_graph.clear(); 
@@ -74,18 +76,16 @@ void graph_t::_purge_all(bool data_maps){
     this -> dev_batch_index.clear(); 
 
     this -> pflush(&this -> hash); 
-    if (this -> graph_name){
-        this -> pflush(&this -> data_map_graph); 
-        this -> pflush(&this -> data_map_node);       
-        this -> pflush(&this -> data_map_edge);      
-
-        this -> pflush(&this -> truth_map_graph); 
-        this -> pflush(&this -> truth_map_node);  
-        this -> pflush(&this -> truth_map_edge);   
-        this -> pflush(&this -> graph_name); 
-    }
-
     if (!this -> is_owner){return;}
+    //this -> pflush(&this -> data_map_graph); 
+    //this -> pflush(&this -> data_map_node);       
+    //this -> pflush(&this -> data_map_edge);      
+
+    //this -> pflush(&this -> truth_map_graph); 
+    //this -> pflush(&this -> truth_map_node);  
+    //this -> pflush(&this -> truth_map_edge);   
+
+    this -> pflush(&this -> graph_name); 
     this -> pflush(&this -> filename); 
 
 }

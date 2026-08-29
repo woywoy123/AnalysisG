@@ -27,7 +27,6 @@ struct metric_t :
         metric_t(); 
         ~metric_t(); 
     
-
         int kfold = 0;
         int epoch = 0; 
         int device = 0; 
@@ -112,7 +111,6 @@ class metric_model_t :
 
         metric_t*          metric = nullptr; 
         metric_template*    metrx = nullptr; 
-
 }; 
 
 class metric_template: 
@@ -179,8 +177,7 @@ class metric_template:
         void safe_delete(std::vector<g*>* particles){
             for (size_t x(0); x < particles -> size(); ++x){
                 if (particles -> at(x) -> _is_marked){continue;}
-                delete particles -> at(x); 
-                (*particles)[x] = nullptr; 
+                this -> pflush(&particles -> at(x)); 
             }
         }
 
@@ -242,7 +239,7 @@ class metric_template:
 
         void static set_variables(std::vector<std::string>*, metric_template*); 
         void static get_variables(std::vector<std::string>*, metric_template*);
-        void static execute(metric_model_t* mtx, size_t* prg, std::string* msg); 
+        void static execute(metric_model_t* mtx, tracing_t* tr); 
 
 
 }; 

@@ -181,10 +181,6 @@ void analysis::start(){
     std::string pth_cache = this -> m_settings.graph_cache; 
     bool build_gr_cache   = this -> m_settings.build_cache; 
     bool load_gr_cache    = pth_cache.size() > 0; 
-
-    std::map<std::string, bool>* root_f = &this -> reader -> root_files; 
-
-
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");
@@ -194,6 +190,7 @@ void analysis::start(){
     }
 
     if (!this -> started){
+        std::map<std::string, bool>* root_f = &this -> reader -> root_files; 
         if (!this -> event_labels.size() && !this -> graph_labels.size()){
             this -> reader -> import_settings(&this -> m_settings); 
             std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
@@ -212,25 +209,24 @@ void analysis::start(){
     if (load_gr_cache && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
-
     this -> tracer -> compile_objects(threads_, intra_th); 
-  
+    
     if (this -> selection_names.size()){
         return this -> tracer -> fill_selections(&this -> selection_names);
-    } 
-    this -> build_dataloader(false); 
-    this -> build_metric_folds();
-
-    if (load_gr_cache  && this -> dsize()){this -> loader -> dump_graphs(pth_cache, threads_);}
-    if (build_gr_cache && this -> dsize()){this -> success("Graph Caches Build: " + pth_cache);}
+    }
+    this -> tracer -> populate_dataloader(this -> loader);
+    if (build_gr_cache && this -> dsize()){
+        this -> loader -> dump_graphs(pth_cache, threads_);
+        this -> success("Graph Caches Build: " + pth_cache);
+    }
     else if (load_gr_cache && this -> file_labels.size()){
         std::vector<std::string> cached = {}; 
         std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
         for (; itg != this -> graph_types.end(); ++itg){
             std::map<std::string, std::string>::iterator itc = this -> file_labels.begin(); 
             for (; itc != this -> file_labels.end(); ++itc){
-
                 std::string fname = itc -> first; 
+
                 fname = this -> get_splits(&fname, "/"); 
                 fname = this -> hash(fname) + "-" + fname; 
                 this -> replace(&fname, ".root", ".h5"); 
@@ -241,22 +237,25 @@ void analysis::start(){
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (load_gr_cache){this -> loader -> restore_graphs(pth_cache, threads_);}
-    
-    if (!this -> build_metric()){return;}
+    this -> build_dataloader(true); 
+
     if (this -> model_sessions.size()){
         if (!this -> dsize()){return this -> failure("No Dataset was found from training. Aborting...");}
-        this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
-        this -> build_dataloader(true); 
         this -> loader -> start_cuda_server(); 
         this -> build_project(); 
         this -> build_model_session();  
     }
 
     if (this -> model_inference.size()){
-        if (!this -> dsize()){
-            return this -> failure("No Dataset was found for inference. Aborting...");
-        }
+        if (!this -> dsize()){return this -> failure("No Dataset was found for inference. Aborting...");}
         this -> loader -> start_cuda_server(); 
         this -> build_inference(); 
+    }
+
+    if (this -> model_metrics.size()){
+        if (!this -> dsize()){return this -> failure("No Dataset was found for inference. Aborting...");}
+        this -> loader -> start_cuda_server(); 
+        this -> build_metric_folds();
+        this -> build_metric(); 
     }
 }

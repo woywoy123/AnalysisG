@@ -2,6 +2,7 @@
 #include <string>
 
 void tools::replace(std::string* in, std::string to_repl, std::string repl_w) {
+    if (to_repl.empty()) { return; }
     std::size_t pos = 0; 
     std::size_t ppos; 
     std::string buf; 
@@ -20,6 +21,7 @@ void tools::replace(std::string* in, std::string to_repl, std::string repl_w) {
 }
 
 std::vector<std::string> tools::split(std::string inpt, std::string search) {
+    if (search.empty()) { return {inpt}; }
     size_t pos = 0;
     size_t s_dim = search.length();
     size_t index = 0;
@@ -44,12 +46,11 @@ std::vector<std::string> tools::split(std::string in, size_t n){
     return out; 
 }
 
+
 std::string tools::get_splits(std::string* in, std::string delm, int index){
     std::vector<std::string> spl = tools::split(*in, delm); 
     return (index < int(spl.size())) ? spl[spl.size() + index] : "xxxxxxxxxxxxxx"; 
 }
-
-
 
 std::string tools::hash(std::string input, int len) {
     std::hash<std::string> hasher; 
@@ -83,9 +84,7 @@ bool tools::has_string(const std::string* inpt, std::string trg){
 }
 
 bool tools::ends_with(const std::string* inpt, std::string val){
-    if (inpt -> size() < val.size()){return false;}
-    std::string l = inpt -> substr(inpt -> size() - val.size(), inpt -> size()-1); 
-    return val == l; 
+    return inpt->size() >= val.size() && inpt->substr(inpt->size() - val.size()) == val;
 }
 
 bool tools::has_value(const std::vector<std::string>* data, std::string trg){
@@ -164,7 +163,7 @@ std::string tools::decode64(std::string const& encoded_string){
     while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
         char_array_4[i++] = encoded_string[in_]; in_++;
         if (i ==4) {
-            for (i = 0; i <4; i++){char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));}
+            for (i = 0; i < 4; i++){char_array_4[i] = static_cast<unsigned char>(base64_chars.find(char_array_4[i]));}
             char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
             char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
             char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
@@ -175,8 +174,8 @@ std::string tools::decode64(std::string const& encoded_string){
     }
     
     if (i) {
-        for (j = i; j <4; j++){char_array_4[j] = 0;}
-        for (j = 0; j <4; j++){char_array_4[j] = static_cast<unsigned char>(base64_chars.find(char_array_4[j]));}
+        for (j = i; j < 4; j++){char_array_4[j] = 0;}
+        for (j = 0; j < 4; j++){char_array_4[j] = static_cast<unsigned char>(base64_chars.find(char_array_4[j]));}
         char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
         char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
         char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];

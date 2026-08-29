@@ -81,5 +81,5 @@ add_subdirectory(metrics)
 add_subdirectory(models)
 add_subdirectory(core)
 
-install(FILES __init__.pxd DESTINATION AnalysisG)
-install(FILES __init__.py  DESTINATION AnalysisG)
+file(INSTALL __init__.pxd DESTINATION . )
+file(INSTALL __init__.py  DESTINATION . )

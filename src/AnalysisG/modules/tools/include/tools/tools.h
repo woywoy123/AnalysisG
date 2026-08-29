@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <thread>
 #include <map>
 
 class tools
@@ -183,7 +184,8 @@ class tools
             }
             data -> clear(); 
         }
-
+    
+        static void tflush(std::thread** p); 
 
 }; 
 

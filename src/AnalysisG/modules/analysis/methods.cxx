@@ -104,8 +104,8 @@ void analysis::execution(
             TTree* tx = tmp -> Get<TTree>(key -> GetName());
             size_t l = tx -> GetEntries();
             if (l != ds){break;}
-            delete content; content = nullptr; 
-            delete tmp; tmp = nullptr; 
+            mdx -> pflush(&content); 
+            mdx -> pflush(&tmp); 
             (*msg) = "\033[1;33m (Already Completed) " + (*msg) + "\033[0m"; 
             *prg = ds; 
             return;
@@ -118,8 +118,8 @@ void analysis::execution(
     if(!md -> restore_state()){
         (*msg) = "\033[1;31m (Missing Model) " + (*msg) + "\033[0m"; 
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        delete content; content = nullptr; 
-        delete md; md = nullptr; 
+        mdx -> pflush(&content); 
+        mdx -> pflush(&tmp); 
         (*prg) = ds; 
         return; 
     }
@@ -204,13 +204,14 @@ void analysis::execution(
         (*msg) = "\033[1;32m (Done) " + (*msg) + "\033[0m";
     }
 
-    delete md; md = nullptr; 
+    mdx -> pflush(&md);
     t -> Write("", TObject::kOverwrite);
     t -> ResetBranchAddresses(); 
     f -> Close(); 
     f -> Delete(); 
+    mdx -> pflush(&content); 
+    mdx -> pflush(&tmp); 
     delete f;
-    delete content; content = nullptr; 
     (*prg) = ds;
 }
 

@@ -63,6 +63,7 @@ class notification
         int  running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt); 
         void monitor(std::vector<std::thread*>* thr); 
         
+        void rate_time(int sec); 
         multithreaded_t* make_threads(size_t num_jobs, int num_threads);  
         bool await_threads(multithreaded_t* thr, bool monitor); 
 

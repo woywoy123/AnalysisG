@@ -65,12 +65,12 @@ ana.AddGraph(tt, "tmp")
 
 for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
 
-#ana.GraphCache = "./ProjectName/"
 ana.Threads = 12
 ana.kFolds = 10
 ana.Epochs = 100
 ana.TrainSize = 100
-ana.TrainingDataset = "./ProjectName/sample.h5"
+ana.GraphCache = "./ProjectName1/"
+ana.TrainingDataset = "./ProjectName1/sample.h5"
 ana.kFold = [1] 
 ana.BatchSize = 10
 #ana.DebugMode = True

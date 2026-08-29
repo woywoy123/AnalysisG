@@ -7,7 +7,6 @@ from libcpp.map cimport pair, map
 from libcpp.vector cimport vector
 from cython.parallel cimport prange
 
-from AnalysisG import auth_pyami
 from AnalysisG.core.structs cimport meta_t, weights_t
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport *

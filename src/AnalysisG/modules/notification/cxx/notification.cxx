@@ -229,6 +229,11 @@ multithreaded_t* notification::make_threads(size_t num_jobs, int num_threads){
     return thr;   
 }
 
+void notification::rate_time(int sec){
+    std::this_thread::sleep_for(std::chrono::seconds(sec));
+}
+
+
 bool notification::await_threads(multithreaded_t* thr, bool monitor){
     int cnt = 0; 
     for (size_t x(0); x < thr -> job_length; ++x){
