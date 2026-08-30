@@ -9,6 +9,32 @@ void metric_template::get_name(std::string* name, metric_template* ev){
     *name = ev -> _name; 
 }
 
+void metric_template::get_variables(
+    std::vector<std::string>* rn_name, metric_template* ev
+){ 
+    std::map<std::string, std::string>::iterator itx = ev -> _variables.begin(); 
+    for (; itx != ev -> _variables.end(); ++itx){rn_name -> push_back(itx -> first);}
+}
+
+void metric_template::get_run_name(
+    std::map<std::string, std::string>* rn_name, metric_template* ev
+){ 
+    *rn_name = ev -> _run_names; 
+}
+
+std::vector<int> metric_template::get_kfolds(){
+    std::vector<int> out = {}; 
+    std::map<int, bool> oux = {}; 
+    for (size_t x(0); x < this -> data -> size(); ++x){
+        metric_model_t* wrk = this -> data -> at(x); 
+        if (oux[wrk -> kfold]){continue;}
+        if (wrk -> kfold < 0){continue;}
+        oux[wrk -> kfold] = true;
+        out.push_back(wrk -> kfold); 
+    }
+    return out; 
+}
+
 void metric_template::set_run_name(std::map<std::string, std::string>* rn_name, metric_template* ev){
     std::string msgn = "Invalid Syntax for RunNames. Expected: <ModelName>::epoch-<X>::k-<X>.pt"; 
     std::string pthn = "Invalid Path. Cannot find the model state: "; 
@@ -39,7 +65,7 @@ void metric_template::set_run_name(std::map<std::string, std::string>* rn_name, 
 
 void metric_template::set_variables(std::vector<std::string>* rn_name, metric_template* ev){
     std::string msgn = "Invalid Syntax for Variables. Expected: "; 
-    msgn += "<ModelName>::<Level>(data, truth, prediction)"; 
+    msgn += "<ModelName>::<Level>(data, truth, prediction, batch)"; 
     msgn += "::<Type(edge, node, graph, extra)>"; 
     msgn += "::<variable>(index, pt, njets, ...)"; 
 
@@ -49,28 +75,36 @@ void metric_template::set_variables(std::vector<std::string>* rn_name, metric_te
         std::vector<std::string> varK = ev -> split(nn_, "::");
         if (varK.size() != 4){ev -> failure(msgn); return;}
         std::string mdl = varK[0]; 
+        std::string lvl = varK[1];
+        std::string typ = varK[2]; 
         std::string var = varK[3]; 
 
-        bool has_t = varK[1] == "truth"; 
-        bool has_d = varK[1] == "data"; 
-        bool has_p = varK[1] == "prediction"; 
+        bool has_t = tools::has_string(&lvl, "truth"); 
+        bool has_d = tools::has_string(&lvl, "data"); 
+        bool has_p = tools::has_string(&lvl, "prediction"); 
+        bool has_b = tools::has_string(&lvl, "batch"); 
 
-        bool is_g  = varK[2] == "graph"; 
-        bool is_n  = varK[2] == "node"; 
-        bool is_e  = varK[2] == "edge"; 
-        bool is_p  = varK[2] == "extra"; 
+        bool is_g  = tools::has_string(&typ, "graph"); 
+        bool is_n  = tools::has_string(&typ, "node"); 
+        bool is_e  = tools::has_string(&typ, "edge"); 
+        bool is_p  = tools::has_string(&typ, "extra"); 
         
         graph_enum type; 
         if      (has_d && is_e && var == "index"){type = graph_enum::edge_index;}
-        else if (has_d && is_n && var == "index"){type = graph_enum::batch_index;}
-        else if (has_d && is_g && var == "index"){type = graph_enum::batch_events;}
+        else if (has_d && is_n && var == "index"){type = graph_enum::node_index;}
         else if (has_d && is_g && var == "weight"){type = graph_enum::weight;}
+
+        else if (has_b && is_g && var == "index"){type = graph_enum::batch_events;}
+        else if (has_b && is_n && var == "index"){type = graph_enum::batch_index;}
+        
         else if (has_t && is_g){type = graph_enum::truth_graph;}
         else if (has_t && is_n){type = graph_enum::truth_node;}
         else if (has_t && is_e){type = graph_enum::truth_edge;}
+
         else if (has_d && is_g){type = graph_enum::data_graph;}
         else if (has_d && is_n){type = graph_enum::data_node;}
         else if (has_d && is_e){type = graph_enum::data_edge;}
+
         else if (has_p && is_g){type = graph_enum::pred_graph;}
         else if (has_p && is_n){type = graph_enum::pred_node;}
         else if (has_p && is_e){type = graph_enum::pred_edge;}

@@ -5,14 +5,11 @@
 
 void analysis::build_metric_folds(){
     if (!this -> model_metrics.size()){return;}
-    std::vector<int> kfolds = {};
     std::map<std::string, metric_template*>::iterator itm = this -> metric_names.begin();
     for (; itm != this -> metric_names.end(); ++itm){
         std::vector<int> kf = itm -> second -> get_kfolds(); 
-        this -> unique_key(&kf, &kfolds); 
+        this -> unique_key(&kf, &this -> m_settings.kfold); 
     }
-    for (size_t x(0); x < kfolds.size(); ++x){kfolds[x];}
-    this -> m_settings.kfold = kfolds;
 }
 
 bool analysis::build_metric(){
@@ -47,7 +44,6 @@ bool analysis::build_metric(){
     bool tr = this -> m_settings.training; 
     bool va = this -> m_settings.validation; 
     bool ev = this -> m_settings.evaluation; 
-    bool debug_mode = this -> m_settings.debug_mode + !threads_;  
 
     std::string pth_cache = this -> m_settings.graph_cache; 
     std::map<mode_enum, std::string> spl_cache = model_mode(&this -> m_settings.splt_graph_cache); 
@@ -63,7 +59,6 @@ bool analysis::build_metric(){
         this -> failure("No Dataset was found for metrics. Aborting...");
         return false; 
     }
-    abort(); 
     
     long smpls = 0; 
     std::vector<metric_model_t*> que = {}; 
@@ -82,29 +77,31 @@ bool analysis::build_metric(){
         for (size_t x(0); x < mt -> data -> size(); ++x){
             metric_model_t* wrk = mt -> data -> at(x); 
             if ( !wrk -> verify() ){wrk -> failure("ERROR"); continue;}
-            wrk -> metrx = mt; que.push_back(wrk); 
+            wrk -> metrx = mt -> clone(1); que.push_back(wrk); 
         } 
     } 
     this -> loader -> datatransfer(&dev_map);
-    multithreaded_t* thr = this -> make_threads(que.size(), threads_); 
-        
+
     // ------------------ Begin the loop ------------------- //
     std::map<std::string, std::vector<graph_t*>*> batch_cache = {}; 
+    multithreaded_t* thr = this -> make_threads(que.size(), 1); 
     for (size_t x(0); x < que.size(); ++x){
         metric_model_t* wrk = que[x];  
         size_t tf = 0; 
         tf += lamb(tr, mode_enum::training  , wrk, &batch_cache); 
         tf += lamb(va, mode_enum::validation, wrk, &batch_cache); 
         tf += lamb(ev, mode_enum::evaluation, wrk, &batch_cache); 
-        //tracing_t* th = thr -> traces -> at(x); 
-        //th -> register_thread(new std::thread(wrk -> metrx -> execute, wrk, th), tf); 
-        //while (await_threads(thr, true)){this -> rate_time(1);}
+        tracing_t* th = thr -> traces -> at(x); 
+        th -> register_thread(new std::thread(wrk -> metrx -> execute, wrk, th), tf); 
+        while (this -> await_threads(thr, true)){}
         smpls += tf; 
     }
-
+    this -> rate_time(1); 
+    while (this -> await_threads(thr, true)){}; 
     std::string msg = "Total Number Events: "; 
     msg += std::to_string(smpls) + " of Jobs Assigned: "; 
     msg += std::to_string(que.size()) + " Using "; 
     msg += std::to_string(threads_) + " Workers"; 
-    this -> info(msg);     
+    this -> info(msg);   
+    return true;   
 }

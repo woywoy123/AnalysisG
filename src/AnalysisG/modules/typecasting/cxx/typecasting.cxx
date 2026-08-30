@@ -32,8 +32,7 @@ void variable_t::create_meta(meta_t* mtf){
     this -> tt -> Branch("MetaData", mtf); 
     this -> tt -> Fill(); 
     this -> tt -> Write("", TObject::kOverwrite);  
-    delete this -> tt; 
-    this -> tt = nullptr; 
+    delete this -> tt; this -> tt = nullptr; 
     this -> mtx = nullptr; 
 }
 

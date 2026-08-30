@@ -29,7 +29,7 @@ void analysis::build_graphs(){
     this -> success("Finished Building Graphs from events"); 
 }
 
-void analysis::build_dataloader(bool make_set){
+void analysis::build_dataloader(bool force){
     std::string path_data = this -> m_settings.training_dataset; 
     if (this -> is_file(path_data)){this -> loader -> restore_dataset(path_data); return;}
     this -> loader -> generate_test_set(this -> m_settings.train_size);

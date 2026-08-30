@@ -62,6 +62,7 @@ void graph_t::_purge_all(){
     this -> pflush(&this -> truth_edge );
 
     this -> pflush(&this -> edge_index );
+    this -> pflush(&this -> node_index ); 
 
     this -> dev_data_graph.clear(); 
     this -> dev_data_node.clear(); 
@@ -72,6 +73,7 @@ void graph_t::_purge_all(){
     this -> dev_truth_edge.clear(); 
 
     this -> dev_edge_index.clear(); 
+    this -> dev_node_index.clear(); 
     this -> dev_event_weight.clear(); 
     this -> dev_batch_index.clear(); 
 
@@ -109,13 +111,17 @@ torch::Tensor* graph_t::has_feature(graph_enum tp, std::string _name, int dev){
         case graph_enum::data_edge   : pos_ = this -> data_map_edge  ; dev_mp = &this -> dev_data_edge  ; _name = "D-" + _name; break;  
         case graph_enum::data_node   : pos_ = this -> data_map_node  ; dev_mp = &this -> dev_data_node  ; _name = "D-" + _name; break;  
         case graph_enum::data_graph  : pos_ = this -> data_map_graph ; dev_mp = &this -> dev_data_graph ; _name = "D-" + _name; break;  
+
         case graph_enum::truth_edge  : pos_ = this -> truth_map_edge ; dev_mp = &this -> dev_truth_edge ; _name = "T-" + _name; break;  
         case graph_enum::truth_node  : pos_ = this -> truth_map_node ; dev_mp = &this -> dev_truth_node ; _name = "T-" + _name; break;  
         case graph_enum::truth_graph : pos_ = this -> truth_map_graph; dev_mp = &this -> dev_truth_graph; _name = "T-" + _name; break;  
+
         case graph_enum::edge_index  : return (this -> dev_edge_index.count(dev)) ?     &this -> dev_edge_index[dev]     : nullptr; 
-        case graph_enum::weight      : return (this -> dev_event_weight.count(dev)) ?   &this -> dev_event_weight[dev]   : nullptr; 
+        case graph_enum::node_index  : return (this -> dev_node_index.count(dev)) ?     &this -> dev_node_index[dev]     : nullptr;
+
         case graph_enum::batch_index : return (this -> dev_batch_index.count(dev)) ?    &this -> dev_batch_index[dev]    : nullptr; 
         case graph_enum::batch_events: return (this -> dev_batched_events.count(dev)) ? &this -> dev_batched_events[dev] : nullptr; 
+        case graph_enum::weight      : return (this -> dev_event_weight.count(dev)) ?   &this -> dev_event_weight[dev]   : nullptr; 
         default: return nullptr; 
     }
     return this -> return_any(pos_, dev_mp, _name, dev); 
@@ -140,6 +146,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_data_graph[dev_] , this -> data_graph , dev);  
     this -> _transfer_to_device(&this -> dev_data_node[dev_]  , this -> data_node  , dev); 
     this -> _transfer_to_device(&this -> dev_data_edge[dev_]  , this -> data_edge  , dev); 
+
     this -> _transfer_to_device(&this -> dev_truth_graph[dev_], this -> truth_graph, dev); 
     this -> _transfer_to_device(&this -> dev_truth_node[dev_] , this -> truth_node , dev); 
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
@@ -154,8 +161,9 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &op); 
 
     this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device(), true); 
-    this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true); 
     this -> dev_batched_events[dev_] = bi.clone().to(dev -> device(), true);
+    this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true); 
+    this -> dev_node_index[dev_]     = this -> node_index -> to(dev -> device(), true); 
     this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device(), true); 
     torch::cuda::synchronize(dev_); 
     this -> device = dev_in;
@@ -271,6 +279,8 @@ void graph_t::deserialize(graph_hdf5* m_hdf5){
     this -> meta_deserialize(this -> truth_map_edge , &m_hdf5 -> truth_map_edge );   
 
     this -> edge_index = this -> meta_deserialize(&m_hdf5 -> edge_index); 
+    this -> node_index = new torch::Tensor(torch::arange(this -> num_nodes)); 
+
     this -> data_graph = new std::vector<torch::Tensor*>();  
     this -> data_node  = new std::vector<torch::Tensor*>();  
     this -> data_edge  = new std::vector<torch::Tensor*>();  
@@ -286,6 +296,7 @@ void graph_t::deserialize(graph_hdf5* m_hdf5){
     this -> meta_deserialize(this -> truth_graph, &m_hdf5 -> truth_graph);       
     this -> meta_deserialize(this -> truth_node , &m_hdf5 -> truth_node );       
     this -> meta_deserialize(this -> truth_edge , &m_hdf5 -> truth_edge );       
+
     this -> is_owner = true; 
 }
 

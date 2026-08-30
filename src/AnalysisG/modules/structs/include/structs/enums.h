@@ -75,8 +75,9 @@ enum class scheduler_enum{
 enum class graph_enum {
     data_graph , data_node , data_edge,
     truth_graph, truth_node, truth_edge,
-    edge_index, weight, batch_index, batch_events, 
-    pred_graph, pred_node, pred_edge, pred_extra
+    pred_graph, pred_node, pred_edge, pred_extra,
+    edge_index, node_index, 
+    weight, batch_index, batch_events
 }; 
 
 enum class mode_enum {

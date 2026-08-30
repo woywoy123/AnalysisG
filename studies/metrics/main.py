@@ -55,11 +55,6 @@ for i in params:
     cfg.batch_size  = 50
     break
 
-
-
-
-
-
 print(rn.compile())
 
 

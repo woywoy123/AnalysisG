@@ -52,7 +52,12 @@ class graph_t :
         torch::Tensor* get_data_edge(std::string _name, g* mdl){
             return this -> has_feature(graph_enum::data_edge, _name, mdl -> device_index); 
         }
-        
+
+        template <typename g>
+        torch::Tensor* get_node_index(g* mdl){
+            return this -> has_feature(graph_enum::node_index, "", mdl -> device_index); 
+        }
+
         template <typename g>
         torch::Tensor* get_edge_index(g* mdl){
             return this -> has_feature(graph_enum::edge_index, "", mdl -> device_index); 
@@ -107,6 +112,7 @@ class graph_t :
         std::mutex mut; 
 
         torch::Tensor* edge_index = nullptr; 
+        torch::Tensor* node_index = nullptr; 
         std::map<std::string, int>* data_map_graph = nullptr; 
         std::map<std::string, int>* data_map_node  = nullptr;         
         std::map<std::string, int>* data_map_edge  = nullptr;         
@@ -132,6 +138,8 @@ class graph_t :
         std::map<int, std::vector<torch::Tensor>> dev_truth_edge  = {};
 
         std::map<int, torch::Tensor> dev_edge_index   = {}; 
+        std::map<int, torch::Tensor> dev_node_index   = {}; 
+
         std::map<int, torch::Tensor> dev_batch_index  = {}; 
         std::map<int, torch::Tensor> dev_event_weight = {};
         std::map<int, torch::Tensor> dev_batched_events = {};  

@@ -181,6 +181,8 @@ void analysis::start(){
     std::string pth_cache = this -> m_settings.graph_cache; 
     bool build_gr_cache   = this -> m_settings.build_cache; 
     bool load_gr_cache    = pth_cache.size() > 0; 
+    if (load_gr_cache && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
+
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");
@@ -206,20 +208,20 @@ void analysis::start(){
     ROOT::EnableImplicitMT(threads_); 
     this -> loader -> setting = &this -> m_settings; 
 
-    if (load_gr_cache && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
     this -> tracer -> compile_objects(threads_, intra_th); 
-    
     if (this -> selection_names.size()){
         return this -> tracer -> fill_selections(&this -> selection_names);
     }
+    
+    this -> build_metric_folds();
     this -> tracer -> populate_dataloader(this -> loader);
     if (build_gr_cache && this -> dsize()){
         this -> loader -> dump_graphs(pth_cache, threads_);
         this -> success("Graph Caches Build: " + pth_cache);
     }
-    else if (load_gr_cache && this -> file_labels.size()){
+    if (load_gr_cache && this -> file_labels.size()){
         std::vector<std::string> cached = {}; 
         std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
         for (; itg != this -> graph_types.end(); ++itg){
@@ -237,6 +239,7 @@ void analysis::start(){
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (load_gr_cache){this -> loader -> restore_graphs(pth_cache, threads_);}
+
     this -> build_dataloader(true); 
 
     if (this -> model_sessions.size()){
@@ -254,8 +257,6 @@ void analysis::start(){
 
     if (this -> model_metrics.size()){
         if (!this -> dsize()){return this -> failure("No Dataset was found for inference. Aborting...");}
-        this -> loader -> start_cuda_server(); 
-        this -> build_metric_folds();
         this -> build_metric(); 
     }
 }

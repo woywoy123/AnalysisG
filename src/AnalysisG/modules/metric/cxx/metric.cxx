@@ -2,6 +2,12 @@
 #include <templates/metric_template.h>
 #include <structs/switchboards.h>
 
+#ifdef PYC_CUDA
+#include <c10/core/DeviceType.h>
+#include <c10/cuda/CUDAStream.h>
+#include <ATen/cuda/CUDAContext.h>
+#endif
+
 metric_t::metric_t(){}
 metric_t::~metric_t(){
     if (!this -> handl){return;}
@@ -10,36 +16,52 @@ metric_t::~metric_t(){
         for (size_t x(0); x < itv -> second.size(); ++x){
             if (!itv -> second[x]){continue;}
             itv -> second[x] -> clear = true; 
-            delete itv -> second[x]; 
-            itv -> second[x] = nullptr; 
+            this -> pflush(&itv -> second[x]); 
         }
     }
-    delete this -> handl; 
-    if (this -> vars){delete this -> vars;}
+    this -> pflush(&this -> handl); 
+    this -> pflush(&this -> vars); 
 }
-
 
 void metric_t::import_mapping(std::map<graph_enum, std::vector<std::string>> mapping){
-    tools::pflush(&this -> vars);  
+    this -> pflush(&this -> vars);  
     this -> vars = new std::map<graph_enum, std::vector<std::string>>(mapping); 
-    this -> build(); 
 } 
-
-void metric_t::import_model(model_template* _mdl){
-    this -> mdlx = _mdl; 
-    this -> device = _mdl -> m_option -> device().index();  
-    this -> mdlx -> inference_mode = true; 
-}
-
 
 void metric_t::import_graphs(std::vector<graph_t*>* grs){
     this -> batch_graphs = grs; 
+    if (!grs){return;}
     this -> nx = 0; this -> ny = grs -> size(); 
 }
 
+void metric_t::import_model(model_template* _mdl){
+    this -> mdlx   = _mdl; 
+    this -> device = _mdl -> m_option -> device().index();  
+    this -> mdlx -> inference_mode = true; 
+    this -> build(); 
+}
+
+
+void metric_t::print(){
+    std::string out = " ======================== \n"; 
+    std::map<graph_enum, std::map<std::string, size_t>>::iterator it; 
+    for (it = this -> v_maps.begin(); it != this -> v_maps.end(); ++it){
+        std::string base = enums_to_string(it -> first); 
+        std::map<std::string, size_t>::iterator ix; 
+        for (ix = it -> second.begin(); ix != it -> second.end(); ++ix){
+            out += base + ix -> first + ": ";
+            out += (h_maps[it -> first][ix -> first]) ? "true" : "false";
+            out += "\n";   
+        }
+    }
+    out += " ======================== \n"; 
+    std::cout << out << std::endl;
+}
+
+
 
 void metric_t::build(){
-    if (!this -> vars){this -> warning("Need mapping for vars"); return;}
+    if (!this -> vars){this -> coms -> message("Mapping to variables not provided."); return;}
     if (!this -> handl){this -> handl = new std::map< graph_enum, std::vector< variable_t*> >();}
      
     std::map<graph_enum, std::vector<std::string>>::iterator it;
@@ -63,10 +85,32 @@ std::string* metric_t::get_filename(long unsigned int idx){
 
 std::string metric_t::mode(){return model_mode(this -> _mode);}
 
+
+bool metric_t::next(){
+    if (!this -> batch_graphs   ){return false;}
+    if (this -> nx >= this -> ny){
+        #if _server
+        c10::cuda::CUDACachingAllocator::emptyCache();
+        #endif
+        return false;
+    }
+    this -> gr_i        =  this -> batch_graphs -> at(this -> nx);
+    this -> batch_files = &this -> gr_i -> batched_filenames; 
+
+    torch::NoGradGuard no_grd;  
+    this -> mdlx -> forward(this -> gr_i, false);
+    this -> getPrediction(); 
+    this -> index = this -> nx; 
+    this -> coms -> next(); 
+    this -> nx++; 
+
+    return true; 
+}
+
 void metric_t::getPrediction(){
     if (!this -> vars){
-        this -> warning("Provide the output mapping");
-        this -> warning("std::map<graph_enum, std::vector<std::string>>"); 
+        this -> coms -> message("Provide the output mapping");
+        this -> coms -> message("std::map<graph_enum, std::vector<std::string>>"); 
         return; 
     }
 
@@ -94,16 +138,19 @@ void metric_t::getPrediction(){
                 case graph_enum::data_edge : tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
                 
                 case graph_enum::edge_index  : tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
-                case graph_enum::weight      : tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
+                case graph_enum::node_index  : tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
+
                 case graph_enum::batch_index : tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
                 case graph_enum::batch_events: tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
+                case graph_enum::weight      : tnx = this -> gr_i -> has_feature(grm, va_, dv); break;
                 default: break; 
             }
+
             if (!tnx){
                 std::string mx = "\033[1;31m Could not find: "; 
                 mx += enums_to_string(vit -> first) + va_; 
-                this -> warning(mx + " (try enabling inference mode). Skipping... \033[0m"); 
-                std::this_thread::sleep_for(std::chrono::seconds(1));
+                this -> coms -> message(mx + " (try enabling inference mode). Skipping... \033[0m"); 
+                this -> rate_time(1); 
                 continue;
             }
             vx_ -> flush_buffer(); 
@@ -111,21 +158,6 @@ void metric_t::getPrediction(){
         }
     }
 }
-
-bool metric_t::next(){
-    if (!this -> batch_graphs   ){return false;}
-    if (this -> nx >= this -> ny){return false;}
-    this -> gr_i        =  this -> batch_graphs -> at(this -> nx);
-    this -> batch_files = &this -> gr_i -> batched_filenames; 
-    if (this -> mdlx){this -> mdlx -> forward(this -> gr_i, false);}
-    this -> getPrediction(); 
-    this -> index = this -> nx; 
-    this -> nx++; 
-    return true; 
-}
-
-
-
 
 
 

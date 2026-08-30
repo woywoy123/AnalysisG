@@ -37,7 +37,7 @@ void metric_template::flush_garbage(){
     for (itr = this -> garbage.begin(); itr != this -> garbage.end(); ++itr){
         for (size_t x(0); x < itr -> second.size(); ++x){
             if (!itr -> second[x] -> _is_marked){continue;}
-            delete itr -> second[x];
+            this -> pflush(&itr -> second[x]); 
         }
         itr -> second.clear(); 
     }

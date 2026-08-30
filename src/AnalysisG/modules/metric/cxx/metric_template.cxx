@@ -39,40 +39,14 @@ metric_template* metric_template::clone(int i){
     mtx -> _epoch_kfold  = this -> _epoch_kfold;
 
     std::vector<metric_model_t*>* v = this -> data; 
-    this -> data = mtx -> data; 
-    mtx -> data = v; 
+    this -> data = mtx -> data; mtx -> data = v; 
     return mtx;
 }
 
 void metric_template::define_metric(metric_t*){}
 void metric_template::define_variables(metric_t*){}; 
 void metric_template::define_variables(){}; 
-
-void metric_template::event(){}; 
-void metric_template::batch(){}; 
 void metric_template::end(){}; 
 void metric_template::start(metric_t*){}; 
 
-void metric_template::get_variables(std::vector<std::string>* rn_name, metric_template* ev){ 
-    std::map<std::string, std::string>::iterator itx = ev -> _variables.begin(); 
-    for (; itx != ev -> _variables.end(); ++itx){rn_name -> push_back(itx -> first);}
-}
 
-void metric_template::get_run_name(
-        std::map<std::string, std::string>* rn_name, metric_template* ev
-){ 
-    *rn_name = ev -> _run_names; 
-}
-
-std::vector<int> metric_template::get_kfolds(){
-    std::vector<int> out = {}; 
-    std::map<int, bool> oux = {}; 
-    for (size_t x(0); x < this -> data -> size(); ++x){
-        metric_model_t* wrk = this -> data -> at(x); 
-        if (oux[wrk -> kfold]){continue;}
-        if (wrk -> kfold < 0){continue;}
-        oux[wrk -> kfold] = true;
-        out.push_back(wrk -> kfold); 
-    }
-    return out; 
-}

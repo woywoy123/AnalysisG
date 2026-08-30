@@ -45,7 +45,6 @@ void   tracing_t::register_thread(std::thread* thr, size_t x){
     (*this -> reg -> threads)[this -> threadIdx] = thr;
     (*this -> reg -> target )[this -> threadIdx] = x; 
     (*this -> reg -> status )[this -> threadIdx] = 1; 
-    thr -> detach(); 
 }
 
 

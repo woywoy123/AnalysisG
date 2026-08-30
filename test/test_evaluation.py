@@ -34,15 +34,24 @@ mx.Variables = [
         "MRK-1::data::node::eta",
         "MRK-1::data::node::phi",
         "MRK-1::data::node::energy",
-
-        "MRK-1::truth::graph::ntops", 
-        "MRK-1::prediction::extra::ntops_score", 
-
-        "MRK-1::truth::edge::top_edge",
-        "MRK-1::prediction::extra::top_edge_score", 
+        "MRK-1::data::node::is_lep",
+        "MRK-1::data::node::is_b",
 
         "MRK-1::data::node::index",
         "MRK-1::data::edge::index", 
+        
+        "MRK-1::data::graph::num_jets",
+        "MRK-1::data::graph::num_leps", 
+ 
+        "MRK-1::batch::node::index",
+        "MRK-1::batch::graph::index",
+
+        "MRK-1::prediction::extra::ntops_score", 
+        "MRK-1::prediction::extra::top_edge_score", 
+
+        "MRK-1::truth::graph::ntops", 
+        "MRK-1::truth::edge::top_edge",
+
 ]
 
 #my = PageRankMetric()
@@ -68,23 +77,23 @@ mx.Variables = [
 #        "MRK-1::data::edge::index", 
 #]
 #
+
 ana = Analysis()
-ana.AddEvent(ev, "tmp")
-ana.AddGraph(gr, "tmp")
-ana.AddSamples(root2, "tmp")
-ana.TrainSize = 50
-#ana.BatchSize = 2
-##ana.kFold = [1, 2, 3]
-ana.kFolds = 10
-ana.BuildCache = True
-ana.GraphCache = "./ProjectName/"
+#ana.AddEvent(ev, "tmp")
+#ana.AddGraph(gr, "tmp")
+#ana.AddSamples(root2, "tmp")
+#ana.TrainSize = 50
+#ana.kFolds = 10
+#ana.BuildCache = True
+ana.GraphCache = "./ProjectName/graph_truthjets"
 ana.TrainingDataset = "./ProjectName/sample.h5"
 ana.Threads = 2
 
 ana.AddMetric(mx, gn)
 #ana.AddMetric(my, gn)
 
-ana.Validation = True
+ana.BatchSize  = 4
+ana.Validation = False
 ana.Evaluation = True
 ana.Training   = True
 ana.Start()

@@ -160,7 +160,6 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         delete io_g; 
     }
 
-    force_load = true; 
     std::map<std::string, int> load_hash; 
     bool eval  = this -> setting -> evaluation; 
     bool fold  = this -> setting -> validation;
@@ -200,7 +199,8 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         ior.start(fname, "read"); 
 
         data_set_[fname] = ior.dataset_names();  
-        for (size_t l(0); l < data_set_[fname].size() * (force_load); ++l){load_hash[data_set_[fname][l]] = -1;}
+        size_t ld = data_set_[fname].size() * (force_load && !kv.size()); 
+        for (size_t l(0); l < ld; ++l){load_hash[data_set_[fname][l]] = -1;}
         if (load_hash.size()){
             std::vector<std::string>* check = &data_set_[fname]; 
             std::vector<std::string>::iterator itx = check -> begin(); 

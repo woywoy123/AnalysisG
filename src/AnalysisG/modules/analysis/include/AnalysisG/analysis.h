@@ -61,7 +61,7 @@ class analysis:
         bool build_metric(); 
         void build_metric_folds();
 
-        void build_dataloader(bool training); 
+        void build_dataloader(bool force); 
         void fetchtags(); 
         bool started = false;  
 

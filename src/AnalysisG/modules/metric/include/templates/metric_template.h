@@ -20,7 +20,35 @@ class analysis;
 class model_template;
 class metric_template; 
 
+
+
+
+template <typename T> 
+struct router_t {
+    router_t(std::string tree, std::string leaf){
+        this -> tr_name = tree; 
+        this -> lf_name = leaf; 
+    } 
+
+    T training; 
+    T validation; 
+    T evaluation; 
+    T* get(mode_enum mode){
+        switch(mode){
+            case mode_enum::training:   return &this -> training; 
+            case mode_enum::validation: return &this -> validation;
+            case mode_enum::evaluation: return &this -> evaluation; 
+            default: return nullptr; 
+        }
+        return nullptr; 
+    }
+    std::string lf_name = ""; 
+    std::string tr_name = ""; 
+
+}; 
+
 struct metric_t : 
+    public tools,
     public notification 
 {
     public: 
@@ -38,16 +66,19 @@ struct metric_t :
         template <typename g>
         g get(graph_enum grx, std::string _name){
             g out = g(); 
-            if (!this -> h_maps[grx][_name]){this -> warning(this -> emsg + _name); return out;}
+            if (!this -> h_maps[grx][_name]){
+                this -> coms -> message(this -> emsg + _name); return out;
+            }
             size_t idx = this -> v_maps[grx][_name]; 
             variable_t* v = (*this -> handl)[grx][idx]; 
-            if (!v){this -> warning(this -> emsg + _name ); return out;}
+            if (!v){this -> coms -> message(this -> emsg + _name ); return out;}
 
             if (v -> element(&out)){return out;}
-            this -> warning(this -> emsx + v -> as_string() + " -> " + _name);
+            this -> coms -> message(this -> emsx + v -> as_string() + " -> " + _name);
             return out; 
         }
 
+        void print(); 
         void import_model(model_template* _mdl); 
         void import_graphs(std::vector<graph_t*>* grx); 
         void import_mapping(std::map<graph_enum, std::vector<std::string>> mapping); 
@@ -67,9 +98,10 @@ struct metric_t :
         model_template* mdlx = nullptr;
         std::string*     pth = nullptr;
         graph_t*        gr_i = nullptr; 
+        tracing_t*      coms = nullptr;
 
-        const std::string emsg = "METRIC_T::Variable not found: ";
-        const std::string emsx = "METRIC_T::Expected Type: ";
+        const std::string emsg = "metric_t::Variable not found: ";
+        const std::string emsx = "metric_t::Expected Type: ";
 
         std::vector<graph_t*>*                   batch_graphs = nullptr; 
         std::vector<std::string*>*                batch_files = nullptr;  
@@ -124,13 +156,10 @@ class metric_template:
         virtual void define_metric(   metric_t* v); 
         virtual void define_variables(metric_t* v); 
         virtual void define_variables(); 
-
         virtual void start(metric_t*); 
+        virtual void end(); 
 
         virtual metric_template* clone(); 
-        virtual void event();
-        virtual void batch();
-        virtual void end(); 
 
         std::vector<int> get_kfolds(); 
         cproperty<std::string, metric_template>                             name; 
@@ -147,6 +176,13 @@ class metric_template:
             this -> handle = new writer();
             this -> handle -> create(this -> output_path); 
             this -> handle -> process(&tree, &__name, t); 
+        }
+
+        template <typename T>
+        void register_output(router_t<T>* t){ 
+            this -> register_output(t -> tr_name + "_training"  , t -> lf_name, t -> get(mode_enum::training  )); 
+            this -> register_output(t -> tr_name + "_validation", t -> lf_name, t -> get(mode_enum::validation)); 
+            this -> register_output(t -> tr_name + "_evaluation", t -> lf_name, t -> get(mode_enum::evaluation)); 
         }
 
         template <typename T>
@@ -167,6 +203,7 @@ class metric_template:
                 if (maps[ch -> at(x) -> hash]){continue;}
                 maps[ch -> at(x) -> hash] = true;
                 prt -> iadd(ch -> at(x));
+                prt -> register_children(ch -> at(x)); 
             }
             std::string hash_ = prt -> hash; 
             this -> garbage[hash_].push_back((particle_template*)prt); 
@@ -222,11 +259,8 @@ class metric_template:
         std::map<std::string, std::vector<particle_template*>>                 garbage = {}; 
         std::map<std::string, std::map<int, std::map<int, size_t>>>       _epoch_kfold = {};
 
-
-
         void flush_garbage(); 
         bool link(model_template*);
-
         virtual metric_template* clone(int i); 
 
         std::map<int, torch::TensorOptions*> get_devices(); 

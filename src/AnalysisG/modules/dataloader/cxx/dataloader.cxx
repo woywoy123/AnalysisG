@@ -33,7 +33,6 @@ dataloader::~dataloader(){
     this -> pflush(&this -> data_index); 
     this -> pflush(&this -> test_set); 
     this -> pflush(&this -> train_set); 
-
 }
 
 void dataloader::shuffle(std::vector<unsigned long>* idx){
@@ -238,6 +237,8 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
         torch::Tensor bi = torch::from_blob(gr -> batched_events.data(), {(long)inpt -> size()}, opx); 
 
         gr -> dev_edge_index[dev_]     = torch::cat(_edge_index, {-1}); 
+        gr -> dev_node_index[dev_]     = torch::Tensor(torch::arange(gr -> num_nodes)); 
+
         gr -> dev_event_weight[dev_]   = torch::cat(_event_weight, {0}); 
         gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device(), true);
         gr -> dev_batched_events[dev_] = bi.clone().to(op -> device(), true); 

@@ -2,6 +2,8 @@
 #define AVERAGE_METRIC_H
 
 #include <templates/metric_template.h>
+#include <metrics/pagerank.h>
+#include <unordered_map>
 
 class accuracy_metric: public metric_template
 {
@@ -10,27 +12,47 @@ class accuracy_metric: public metric_template
         ~accuracy_metric() override; 
         accuracy_metric* clone() override; 
 
-        void start(metric_t* mtx) override; 
         void define_metric(metric_t* mtx) override; 
         void define_variables(metric_t* mtx) override; 
-
-        void event() override; 
         void end() override; 
 
-    private: 
-        std::string mode = ""; 
-        long idx = 0; 
-        float edge_accuracy = 0;
-        float global_edge_accuracy = 0; 
-        
-        std::vector<std::string> paths = {}; 
-        int ntop_truth = 0; 
-        std::vector<float> ntop_scores = {}; 
+        std::vector<long>               event_index(metric_t* mtx);
+        std::vector<long>               batch_index(metric_t* mtx);
 
-        std::vector<float> ntops_accuracy = {}; 
-        std::map<int, int> _global_edge_accuracy = {}; 
-        std::map<int, std::map<int, int>> ntop_accuracy = {}; 
+        std::vector<std::vector<int>>   edge_index(metric_t* mtx);
+        std::vector<std::vector<int>>   top_edge_truth(metric_t* mtx); 
+        std::vector<std::vector<float>> top_edge_score(metric_t* mtx);
+
+        std::vector<std::vector<int>>   ntops_truth(metric_t* mtx);
+        std::vector<std::vector<float>> ntops_score(metric_t* mtx);
+        std::vector<particle_template*> build_particles(metric_t* mtx); 
+        
+        std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>* mx); 
+        void pagerank(event_idx* evnt); 
+        void pagerank(
+                std::map<int, std::map<std::string, particle_template*>>* clust, 
+                std::map<std::string, std::vector<particle_template*>>* out,
+                std::map<std::string, float>* bin_out,
+                std::map<int, std::map<int, float>>* bin_data
+        ); 
+
+
+
+    private: 
+        double alpha = 0.85; 
+        double norm_lim = 1e-6; 
+        long max_itr = 1e6; 
+
+        router_t<int>                ntops_prd{"event_accuracy", "ntops_prd"}; 
+        router_t<int>                ntops_tru{"event_accuracy", "ntops_tru"}; 
+        router_t<int>                 proc_idx{"event_accuracy", "process_idx"}; 
+        router_t<float>               edge_prd{"event_accuracy", "edge"}; 
+        router_t<std::vector<float>> ntops_scores{"event_accuracy", "ntops_scores"}; 
 }; 
+
+
+
+
 
 struct cdata_t {
     int kfold = -1;

@@ -3,50 +3,46 @@
 #include <structs/switchboards.h>
 
 void metric_template::execute(metric_model_t* mtx, tracing_t* tr){
-    //size_t* prg, std::string* msg){
+    metric_template*   mt = mtx -> metrx; 
     model_template*   mdl = mtx -> model -> clone(1);
     mdl -> model_checkpoint_path = mtx -> checkpoint_path; 
     mdl -> restore_state(); 
-   
+
     metric_t* mx = mtx -> metric; 
     mx -> kfold  = mtx -> kfold; 
     mx -> epoch  = mtx -> epoch;
-
-    mx -> import_model(mdl); 
     mx -> import_mapping(mtx -> variables); 
+    mx -> import_model(mdl); 
 
     std::map< mode_enum , std::vector<graph_t*>* > batches = mtx -> batches;
 
-    metric_template*  mt = mtx -> metrx -> clone(); 
     mt -> define_variables(mx); 
     mx -> _mode = mode_enum::training; 
     mx -> import_graphs(batches[mode_enum::training]); 
+    mx -> coms = tr; 
+    mt -> start(mx); 
     while (mx -> next()){
-        mt -> start(mx); 
-        mt -> define_metric(mx); tr -> next(); 
+        mt -> define_metric(mx);
         mt -> flush_garbage(); 
     }
 
     mx -> _mode = mode_enum::validation;
     mx -> import_graphs(batches[mode_enum::validation]); 
     while (mx -> next()){
-        mt -> start(mx); 
-        mt -> define_metric(mx); tr -> next();  
+        mt -> define_metric(mx); 
         mt -> flush_garbage(); 
     }
 
     mx -> _mode = mode_enum::evaluation; 
     mx -> import_graphs(batches[mode_enum::evaluation]); 
     while (mx -> next()){
-        mt -> start(mx); 
-        mt -> define_metric(mx); tr -> next();  
+        mt -> define_metric(mx); 
         mt -> flush_garbage(); 
     }
     mt -> end(); 
-    tr -> finished(); 
     tools::pflush(&mdl); 
-    tools::pflush(&mt); 
-    //tools::pflush(&mx); 
+    tools::pflush(&mx); 
+    tr -> finished(); 
 
 }
 

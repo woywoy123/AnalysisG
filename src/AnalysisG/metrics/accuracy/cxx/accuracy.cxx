@@ -4,68 +4,55 @@ accuracy_metric::~accuracy_metric(){}
 accuracy_metric* accuracy_metric::clone(){return new accuracy_metric();}
 accuracy_metric::accuracy_metric(){this -> name = "accuracy";}
 
+std::vector<long> accuracy_metric::event_index(metric_t* mtx){
+    return mtx -> get<std::vector<long>>( graph_enum::batch_events, "index");
+}
+
+std::vector<long> accuracy_metric::batch_index(metric_t* mtx){
+    return mtx -> get<std::vector<long>>( graph_enum::batch_index, "index");
+}
+
+std::vector<std::vector<int>> accuracy_metric::edge_index(metric_t* mtx){
+    return mtx -> get<std::vector<std::vector<int>>>( graph_enum::edge_index, "index");
+}
+
+std::vector<std::vector<int>> accuracy_metric::top_edge_truth(metric_t* mtx){
+    return mtx -> get<std::vector<std::vector<int>>>( graph_enum::truth_edge, "top_edge");
+}
+
+std::vector<std::vector<float>> accuracy_metric::top_edge_score(metric_t* mtx){
+    return mtx -> get<std::vector<std::vector<float>>>( graph_enum::pred_extra, "top_edge_score");
+}
+
+std::vector<std::vector<float>> accuracy_metric::ntops_score(metric_t* mtx){
+    return mtx -> get<std::vector<std::vector<float>>>( graph_enum::pred_extra, "ntops_score");
+}
+
+std::vector<std::vector<int>> accuracy_metric::ntops_truth(metric_t* mtx){
+    return mtx -> get<std::vector<std::vector<int>>>( graph_enum::truth_graph, "ntops");
+}
+
+std::vector<particle_template*> accuracy_metric::build_particles(metric_t* mtx){
+    std::vector<std::vector<double>> e   = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "energy");
+    std::vector<std::vector<double>> pt  = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "pt");
+    std::vector<std::vector<double>> phi = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "phi");
+    std::vector<std::vector<double>> eta = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "eta");
+    return make_particle(&pt, &eta, &phi, &e);
+}
+
 void accuracy_metric::define_variables(metric_t* mtx){
     this -> output_path = "./ProjectName/metrics/accuracy/epoch-" + std::to_string(mtx -> epoch) + "/";  
     this -> create_path(this -> output_path); 
     this -> output_path += "kfold-" + std::to_string(mtx -> kfold) + ".root"; 
 
-    this -> register_output("event_accuracy_training"   , "edge", &this -> edge_accuracy); 
-    this -> register_output("event_accuracy_validation" , "edge", &this -> edge_accuracy); 
-    this -> register_output("event_accuracy_evaluation" , "edge", &this -> edge_accuracy); 
-
-    this -> register_output("event_accuracy_training"   , "ntop_scores", &this -> ntop_scores); 
-    this -> register_output("event_accuracy_validation" , "ntop_scores", &this -> ntop_scores); 
-    this -> register_output("event_accuracy_evaluation" , "ntop_scores", &this -> ntop_scores); 
-
-    this -> register_output("event_accuracy_training"   , "ntop_truth", &this -> ntop_truth); 
-    this -> register_output("event_accuracy_validation" , "ntop_truth", &this -> ntop_truth); 
-    this -> register_output("event_accuracy_evaluation" , "ntop_truth", &this -> ntop_truth); 
-
-    this -> register_output("global_accuracy_training"  , "edge", &this -> global_edge_accuracy); 
-    this -> register_output("global_accuracy_validation", "edge", &this -> global_edge_accuracy); 
-    this -> register_output("global_accuracy_evaluation", "edge", &this -> global_edge_accuracy); 
-
-    this -> register_output("global_accuracy_training"  , "ntops", &this -> ntops_accuracy); 
-    this -> register_output("global_accuracy_validation", "ntops", &this -> ntops_accuracy); 
-    this -> register_output("global_accuracy_evaluation", "ntops", &this -> ntops_accuracy); 
+    this -> register_output(&this -> ntops_prd); 
+    this -> register_output(&this -> ntops_tru); 
+    this -> register_output(&this -> ntops_scores); 
 }
 
-void accuracy_metric::end(){
-    this -> ntops_accuracy = std::vector<float>(5, 0);
-
-    for (int x(0); x < 5; ++x){
-        int c(0); int f(0); 
-        for (int y(0); y < 5; ++y){
-            if (x == y){c = this -> ntop_accuracy[x][y];}
-            else {f += this -> ntop_accuracy[x][y];}
-        }
-        if ((f + c) == 0){this -> ntops_accuracy[x] = 1.0;}
-        else {this -> ntops_accuracy[x] = float(c) / float(f + c);}
-    }
-    this -> write("global_accuracy_" + this -> mode,  "edge", &this -> global_edge_accuracy, true); 
-    this -> write("global_accuracy_" + this -> mode, "ntops", &this -> ntops_accuracy, true); 
-}
-
-void accuracy_metric::start(metric_t* mtx){
-    std::vector<long> batch_idx = mtx -> get<std::vector<long>>( graph_enum::batch_events, "index");    
-    for (size_t x(0); x < batch_idx.size(); ++x){
-        std::string* fname = mtx -> get_filename(x); 
-        std::vector<std::string> spl = this -> split(*fname, "/"); 
-        std::string dataset = spl[spl.size() -2];
-        spl = this -> split(spl[spl.size()-1], ".root"); 
-        std::string fnamex  = spl[0];
-        this -> paths.push_back(dataset + "-" + fnamex); 
-    }
-}
-
-void accuracy_metric::event(){
-    this -> write("event_accuracy_" + this -> mode, "ntop_scores", &this -> ntop_scores,   true);
-    this -> write("event_accuracy_" + this -> mode, "ntop_truth" , &this -> ntop_truth,    true);
-    this -> write("event_accuracy_" + this -> mode, "edge"       , &this -> edge_accuracy, true);
-}
+void accuracy_metric::end(){}
 
 void accuracy_metric::define_metric(metric_t* mtx){
-    auto acc  =[](std::map<int, int>* acx){return float((*acx)[1]) / float((*acx)[0] + (*acx)[1]);};
     auto maxv =[](std::vector<float>* acx) -> int {
         int idx = 0; 
         float v = acx -> at(0); 
@@ -75,43 +62,43 @@ void accuracy_metric::define_metric(metric_t* mtx){
         }
         return idx; 
     }; 
-  
-    std::vector<long>              batch_idx = mtx -> get<std::vector<long>>( graph_enum::batch_index            , "index");   
-    std::vector<std::vector<int>>  edge_idx  = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::edge_index, "index");
-    std::vector<std::vector<float>> edge_sc  = mtx -> get<std::vector<std::vector<float>>>(graph_enum::pred_extra, "top_edge_score"); 
-    std::vector<std::vector<int>>   edge_tr  = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::truth_edge, "top_edge"); 
-    
-    std::vector<std::vector<int>>   graph_ntops_tru = mtx -> get<std::vector<std::vector<int>>>(  graph_enum::truth_graph, "ntops"); 
-    std::vector<std::vector<float>> graph_ntops_prd = mtx -> get<std::vector<std::vector<float>>>(graph_enum::pred_extra , "ntops_score");
-    if (!this -> mode.size()){this -> mode = mtx -> mode();}
-    this -> mode = mtx -> mode(); 
 
-    this -> start(mtx); 
-    for (size_t x(0); x < graph_ntops_tru.size(); ++x){
-        int n_tp = maxv(&graph_ntops_prd[x]); 
-        int n_tt = graph_ntops_tru[x][0]; 
-        this -> ntop_accuracy[n_tt][n_tp]++;
-    }
+    std::vector<std::vector<int>>   edge_ix = this -> edge_index(mtx); 
+    std::vector<std::vector<float>> edge_sc = this -> top_edge_score(mtx); 
+    std::vector<std::vector<int>>   edge_tr = this -> top_edge_truth(mtx); 
+    std::vector<std::vector<int>>   ntops_tr = this -> ntops_truth(mtx); 
+    std::vector<std::vector<float>> ntops_sc = this -> ntops_score(mtx);
+    std::vector<particle_template*> ptx = this -> build_particles(mtx); 
 
-    std::map<int, std::map<int, int>> bh_acc = {}; 
-    for (size_t x(0); x < edge_sc.size(); ++x){
-        long src = edge_idx[0][x]; 
-        int ed_t =  edge_tr[x][0]; 
-        int ibx = batch_idx[src]; 
-        int c = int(int(edge_sc[x][0] <= edge_sc[x][1]) == ed_t);
-        this -> _global_edge_accuracy[c]++; 
-        bh_acc[ibx][c]++; 
+    std::vector<long> btch_ix = this -> batch_index(mtx); 
+    std::vector<long> evnt_ix = this -> event_index(mtx); 
+        
+    int num_nodes = 0; 
+    for (size_t x(0); x < evnt_ix.size(); ++x){
+        event_idx evnt; 
+        evnt.edge_index.push_back({}); 
+        evnt.edge_index.push_back({}); 
+        for (size_t y(0); y < edge_ix[0].size(); ++y){
+            if (btch_ix[edge_ix[0][y]] != evnt_ix[x]){continue;}
+            evnt.edge_index[0].push_back(edge_ix[0][y] - num_nodes); 
+            evnt.edge_index[1].push_back(edge_ix[1][y] - num_nodes); 
+            evnt.top_edge_score.push_back(edge_sc[y]); 
+            evnt.top_edge_truth.push_back(edge_tr[y][0]); 
+            evnt.top_edge_pred.push_back(maxv(&edge_sc[y])); 
+        }
+        for (size_t y(0); y < btch_ix.size(); ++y){
+            if (evnt_ix[x] != btch_ix[y]){continue;}
+            evnt.ptx.push_back(ptx[y]); 
+            num_nodes += 1;
+        }
+        evnt.n_tops_truth = ntops_tr[x][0]; 
+        evnt.n_tops_score = ntops_sc[x]; 
+        evnt.n_tops_pred  = maxv(&evnt.n_tops_score); 
+        evnt.file = mtx -> get_filename(x); 
+        evnt.process_ix = int(process_sample(evnt.file)); 
+        this -> pagerank(&evnt); 
     }
-    
-    this -> rate_time(1); 
-    this -> global_edge_accuracy = acc(&this -> _global_edge_accuracy); 
-    std::map<int, std::map<int, int>>::iterator itx; 
-    for (itx = bh_acc.begin(); itx != bh_acc.end(); ++itx){
-        this -> edge_accuracy = acc(&itx -> second); 
-        this -> ntop_scores = graph_ntops_prd[itx -> first];  
-        this -> ntop_truth  = graph_ntops_tru[itx -> first][0]; 
-        this -> event(); 
-    }
-    this -> paths.clear(); 
 }
+
+
 

@@ -49,17 +49,21 @@ std::string enums_to_string(graph_enum gr){
         case graph_enum::truth_graph:  return "truth::graph::"; 
         case graph_enum::truth_node :  return "truth::node::"; 
         case graph_enum::truth_edge :  return "truth::edge::"; 
-        case graph_enum::pred_graph:   return "prediction::graph::"; 
-        case graph_enum::pred_node :   return "prediction::node::"; 
-        case graph_enum::pred_edge :   return "prediction::edge::"; 
+
         case graph_enum::data_graph:   return "data::graph::"; 
         case graph_enum::data_node :   return "data::node::"; 
         case graph_enum::data_edge :   return "data::edge::"; 
-        case graph_enum::pred_extra  : return "prediction::extra::"; 
-        case graph_enum::edge_index  : return "data::edge::"; 
-        case graph_enum::batch_index : return "data::node:"; 
-        case graph_enum::weight      : return "data::graph::"; 
+
+        case graph_enum::node_index:   return "data::node::"; 
+        case graph_enum::edge_index:   return "data::edge::"; 
+        case graph_enum::batch_index:  return "data::node:"; 
+
+        case graph_enum::weight:       return "data::graph::"; 
         case graph_enum::batch_events: return "data::graph::"; 
+        case graph_enum::pred_graph:   return "prediction::graph::"; 
+        case graph_enum::pred_node :   return "prediction::node::"; 
+        case graph_enum::pred_edge :   return "prediction::edge::"; 
+        case graph_enum::pred_extra:   return "prediction::extra::"; 
         default: return "undef"; 
     }
 }
