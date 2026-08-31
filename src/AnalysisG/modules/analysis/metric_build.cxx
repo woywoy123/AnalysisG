@@ -75,16 +75,16 @@ bool analysis::build_metric(){
             dev_map[itt -> first] = itt -> second;
         }
         for (size_t x(0); x < mt -> data -> size(); ++x){
-            metric_model_t* wrk = mt -> data -> at(x); 
+            metric_model_t* wrk = mt -> data -> at(x);
             if ( !wrk -> verify() ){wrk -> failure("ERROR"); continue;}
-            wrk -> metrx = mt -> clone(1); que.push_back(wrk); 
+            wrk -> metrx = mt -> clone(0); que.push_back(wrk); 
         } 
     } 
     this -> loader -> datatransfer(&dev_map);
 
     // ------------------ Begin the loop ------------------- //
     std::map<std::string, std::vector<graph_t*>*> batch_cache = {}; 
-    multithreaded_t* thr = this -> make_threads(que.size(), 1); 
+    multithreaded_t* thr = this -> make_threads(que.size(), threads_); 
     for (size_t x(0); x < que.size(); ++x){
         metric_model_t* wrk = que[x];  
         size_t tf = 0; 
@@ -93,10 +93,9 @@ bool analysis::build_metric(){
         tf += lamb(ev, mode_enum::evaluation, wrk, &batch_cache); 
         tracing_t* th = thr -> traces -> at(x); 
         th -> register_thread(new std::thread(wrk -> metrx -> execute, wrk, th), tf); 
-        while (this -> await_threads(thr, true)){}
+        while (this -> await_threads(thr, true)){} 
         smpls += tf; 
     }
-    this -> rate_time(1); 
     while (this -> await_threads(thr, true)){}; 
     std::string msg = "Total Number Events: "; 
     msg += std::to_string(smpls) + " of Jobs Assigned: "; 

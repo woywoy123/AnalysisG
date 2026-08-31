@@ -149,15 +149,6 @@ process_t process_sample(std::string* name) {
 } 
 
 
-particle::particle(){}
-particle::particle(double _pt, double _eta, double _phi, double _mass){
-    this -> mass = _mass; this -> eta = _eta; 
-    this -> phi = _phi;   this -> pt = _pt; 
-}
-
-particle::~particle(){}
-
-
 std::vector<particle_template*> accuracy_metric::build_top(std::map<int, std::map<int, particle_template*>>* mx){
     std::vector<particle_template*> out = {}; 
     std::map<double, particle_template*> tops_ = {}; 
@@ -277,7 +268,6 @@ void accuracy_metric::pagerank(event_idx* mtx){
         int src = mtx -> edge_index[0][x]; 
         int dst = mtx -> edge_index[1][x];  
 
-        std::cout << src << " " << dst << std::endl; 
         float top_0 = mtx -> top_edge_score[x][0]; 
         float top_1 = mtx -> top_edge_score[x][1]; 
 
@@ -309,7 +299,10 @@ void accuracy_metric::pagerank(event_idx* mtx){
 
     std::map<std::string, float>::iterator itr = reco_tops_pagerank.begin();
     for (; itr != reco_tops_pagerank.end(); ++itr){
-        mtx -> reco_tops_pr.push_back(this -> sum(reco_tops_pr[itr -> first])); 
+        particle_template* px = nullptr; 
+        this -> sum(&reco_tops_pr[itr -> first], &px); 
+        if (!px){continue;}
+        mtx -> reco_tops_pr.push_back(px); 
         mtx -> reco_scores_pr.push_back(reco_tops_pagerank[itr -> first]); 
     }
 
@@ -320,7 +313,10 @@ void accuracy_metric::pagerank(event_idx* mtx){
 
     itr = reco_tops_unpagerank.begin();
     for (; itr != reco_tops_unpagerank.end(); ++itr){
-        mtx -> reco_tops_upr.push_back(this -> sum(reco_tops_upr[itr -> first])); 
+        particle_template* px = nullptr; 
+        this -> sum(&reco_tops_upr[itr -> first], &px); 
+        if (!px){continue;}
+        mtx -> reco_tops_upr.push_back(px); 
         mtx -> reco_scores_upr.push_back(reco_tops_unpagerank[itr -> first]); 
     }
 }

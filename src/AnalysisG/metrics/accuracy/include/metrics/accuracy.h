@@ -45,13 +45,42 @@ class accuracy_metric: public metric_template
 
         router_t<int>                ntops_prd{"event_accuracy", "ntops_prd"}; 
         router_t<int>                ntops_tru{"event_accuracy", "ntops_tru"}; 
-        router_t<int>                 proc_idx{"event_accuracy", "process_idx"}; 
-        router_t<float>               edge_prd{"event_accuracy", "edge"}; 
+        router_t<int>                proc_idx{"event_accuracy", "process_idx"}; 
+        router_t<float>              edge_prd{"event_accuracy", "average_edge"}; 
         router_t<std::vector<float>> ntops_scores{"event_accuracy", "ntops_scores"}; 
+
+        router_t<std::vector<double>> particles_pt{"event_accuracy", "particle_pt"}; 
+        router_t<std::vector<double>> particles_eta{"event_accuracy", "particle_eta"}; 
+        router_t<std::vector<double>> particles_phi{"event_accuracy", "particle_phi"}; 
+        router_t<std::vector<double>> particles_energy{"event_accuracy", "particle_energy"}; 
+        router_t<std::vector<int   >> particles_chn{"event_accuracy", "particle_chn"}; 
+
+        router_t<std::vector<double>>  tops_pr_pt{"event_accuracy", "tops_pr_pt"}; 
+        router_t<std::vector<double>>  tops_pr_eta{"event_accuracy", "tops_pr_eta"}; 
+        router_t<std::vector<double>>  tops_pr_phi{"event_accuracy", "tops_pr_phi"}; 
+        router_t<std::vector<double>>  tops_pr_mass{"event_accuracy", "tops_pr_mass"}; 
+        router_t<std::vector<float >>  tops_pr_scr{"event_accuracy", "tops_pr_mass"}; 
+        router_t<std::vector<int   >>  tops_pr_chn{"event_accuracy", "tops_pr_chn"}; 
+
+        router_t<std::vector<double>> tops_upr_pt{"event_accuracy", "tops_upr_pt"}; 
+        router_t<std::vector<double>> tops_upr_eta{"event_accuracy", "tops_upr_eta"}; 
+        router_t<std::vector<double>> tops_upr_phi{"event_accuracy", "tops_upr_phi"}; 
+        router_t<std::vector<double>> tops_upr_mass{"event_accuracy", "tops_upr_mass"}; 
+        router_t<std::vector<float >> tops_upr_scr{"event_accuracy", "tops_upr_score"}; 
+        router_t<std::vector<int   >> tops_upr_chn{"event_accuracy", "tops_upr_chn"}; 
+
+        router_t<std::vector<double>> tops_nom_pt{"event_accuracy", "tops_nominal_pt"}; 
+        router_t<std::vector<double>> tops_nom_eta{"event_accuracy", "tops_nominal_eta"}; 
+        router_t<std::vector<double>> tops_nom_phi{"event_accuracy", "tops_nominal_phi"}; 
+        router_t<std::vector<double>> tops_nom_mass{"event_accuracy", "tops_nominal_mass"}; 
+        router_t<std::vector<int   >> tops_nom_chn{"event_accuracy", "tops_nominal_chn"}; 
+
+        router_t<std::vector<double>> tops_tru_pt{"event_accuracy", "tops_truth_pt"}; 
+        router_t<std::vector<double>> tops_tru_eta{"event_accuracy", "tops_truth_eta"}; 
+        router_t<std::vector<double>> tops_tru_phi{"event_accuracy", "tops_truth_phi"}; 
+        router_t<std::vector<double>> tops_tru_mass{"event_accuracy", "tops_truth_mass"}; 
+        router_t<std::vector<int   >> tops_tru_chn{"event_accuracy", "tops_truth_chn"}; 
 }; 
-
-
-
 
 
 struct cdata_t {

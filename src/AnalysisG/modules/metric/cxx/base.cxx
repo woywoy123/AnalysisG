@@ -40,8 +40,9 @@ void metric_template::execute(metric_model_t* mtx, tracing_t* tr){
         mt -> flush_garbage(); 
     }
     mt -> end(); 
+    if (mt -> handle){mt -> handle -> close();}
     tools::pflush(&mdl); 
-    tools::pflush(&mx); 
+    tools::pflush(&mtx->metric); 
     tr -> finished(); 
 
 }

@@ -32,7 +32,6 @@ void write_t::close(){
     
     if (this -> file){
         this -> file -> Close();
-//        this -> file -> Delete(); 
         delete this -> file; 
         this -> file = nullptr;
     }
@@ -58,15 +57,7 @@ variable_t* write_t::process(std::string* name){
 
 writer::writer(){}
 writer::~writer(){
-    std::map<std::string, write_t*>::iterator it = this -> handle.begin();
-    for (; it != this -> handle.end(); ++it){
-        it -> second -> file = nullptr;
-        it -> second -> close(); 
-        delete it -> second; it -> second = nullptr; 
-    }
-    this -> handle.clear(); 
-    this -> head -> close();
-    delete this -> head;
+    this -> close();
 }
 
 void writer::create(std::string out){
@@ -90,7 +81,17 @@ void writer::write(std::string* tree){
 }
 
 void writer::close(){
+    std::map<std::string, write_t*>::iterator it = this -> handle.begin();
+    for (; it != this -> handle.end(); ++it){
+        it -> second -> file = nullptr; 
+        it -> second -> close();
+        delete it -> second;
+    }
+    this -> handle.clear();
+
     if (!this -> head){return;}
     this -> head -> close(); 
+    delete this -> head;
+    this -> head = nullptr;
 }
 

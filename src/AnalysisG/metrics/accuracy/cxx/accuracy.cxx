@@ -37,7 +37,15 @@ std::vector<particle_template*> accuracy_metric::build_particles(metric_t* mtx){
     std::vector<std::vector<double>> pt  = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "pt");
     std::vector<std::vector<double>> phi = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "phi");
     std::vector<std::vector<double>> eta = mtx -> get<std::vector<std::vector<double>>>(graph_enum::data_node, "eta");
-    return make_particle(&pt, &eta, &phi, &e);
+    
+    std::vector<particle_template*> ptx = make_particle(&pt, &eta, &phi, &e);
+    std::vector<std::vector<int>> is_lep = mtx -> get<std::vector<std::vector<int>>>(graph_enum::data_node, "is_lep");
+    
+    for (size_t x = 0; x < ptx.size(); ++x){
+        if (is_lep.empty() || x >= is_lep.size()){ continue; }
+        if (is_lep[x][0]){ ptx[x] -> pdgid = 11; } 
+    }
+    return ptx;
 }
 
 void accuracy_metric::define_variables(metric_t* mtx){
@@ -53,6 +61,25 @@ void accuracy_metric::define_variables(metric_t* mtx){
 void accuracy_metric::end(){}
 
 void accuracy_metric::define_metric(metric_t* mtx){
+    auto get_var =[this](
+            metric_t* mtx, std::vector<particle_template*>* ptr, auto* rt, particle_enum val
+    ) -> void{
+        typename std::decay<decltype(rt->training)>::type _vl = {}; 
+        for (size_t x(0); x < ptr -> size(); ++x){
+            switch(val){
+                case particle_enum::pt: _vl.push_back(ptr -> at(x) -> pt );  break; 
+                case particle_enum::eta: _vl.push_back(ptr -> at(x) -> eta);  break; 
+                case particle_enum::phi: _vl.push_back(ptr -> at(x) -> phi);  break; 
+                case particle_enum::mass: _vl.push_back(ptr -> at(x) -> mass); break; 
+                case particle_enum::energy: _vl.push_back(ptr -> at(x) -> e  );  break; 
+                case particle_enum::is_lep: _vl.push_back(ptr -> at(x) -> is_lep ); break; 
+                default: break;
+            }
+        }
+        rt -> write(this, mtx, &_vl);  
+    }; 
+
+
     auto maxv =[](std::vector<float>* acx) -> int {
         int idx = 0; 
         float v = acx -> at(0); 
@@ -62,6 +89,22 @@ void accuracy_metric::define_metric(metric_t* mtx){
         }
         return idx; 
     }; 
+
+    auto edge_acc =[](std::vector<int>* pred, std::vector<int>* truth) -> float {
+        if (!pred->size()) { return 0.0; }
+        float t_pos = 0, p_pos = 0;
+        float t_neg = 0, p_neg = 0;
+        for (size_t i(0); i < pred -> size(); ++i) {
+            t_pos += truth -> at(i) == 1; p_pos += pred -> at(i) == 1; 
+            t_neg += truth -> at(i) == 0; p_neg += pred -> at(i) == 0; 
+        }
+        float acc_pos = (t_pos > 0) ? (p_pos / t_pos) : 0.0;
+        float acc_neg = (t_neg > 0) ? (p_neg / t_neg) : 0.0;
+        if (t_pos > 0 && t_neg > 0) return (acc_pos + acc_neg) / 2.0;
+        if (t_pos > 0) return acc_pos;
+        return acc_neg;
+    };
+
 
     std::vector<std::vector<int>>   edge_ix = this -> edge_index(mtx); 
     std::vector<std::vector<float>> edge_sc = this -> top_edge_score(mtx); 
@@ -97,6 +140,46 @@ void accuracy_metric::define_metric(metric_t* mtx){
         evnt.file = mtx -> get_filename(x); 
         evnt.process_ix = int(process_sample(evnt.file)); 
         this -> pagerank(&evnt); 
+       
+        get_var(mtx, &evnt.ptx, &this -> particles_pt, particle_enum::pt); 
+        get_var(mtx, &evnt.ptx, &this -> particles_eta, particle_enum::eta); 
+        get_var(mtx, &evnt.ptx, &this -> particles_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.ptx, &this -> particles_energy, particle_enum::energy); 
+        get_var(mtx, &evnt.ptx, &this -> particles_chn, particle_enum::is_lep); 
+                       
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_pt, particle_enum::pt); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_eta, particle_enum::eta); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_mass, particle_enum::mass); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_chn, particle_enum::is_lep); 
+        this -> tops_pr_scr.write(this, mtx, &evnt.reco_scores_pr);
+                       
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_pt, particle_enum::pt); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_eta, particle_enum::eta); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_mass, particle_enum::mass); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_chn, particle_enum::is_lep); 
+        this -> tops_upr_scr.write(this, mtx, &evnt.reco_scores_upr);
+                       
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_pt, particle_enum::pt); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_eta, particle_enum::eta); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_mass, particle_enum::mass); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_chn, particle_enum::is_lep); 
+                       
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_pt, particle_enum::pt); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_eta, particle_enum::eta); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_mass, particle_enum::mass); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_chn, particle_enum::is_lep); 
+
+        float avg_edge = edge_acc(&evnt.top_edge_pred, &evnt.top_edge_truth);
+
+        this -> ntops_prd.write(this, mtx, &evnt.n_tops_pred); 
+        this -> ntops_tru.write(this, mtx, &evnt.n_tops_truth); 
+        this -> proc_idx.write(this, mtx, &evnt.process_ix); 
+        this -> edge_prd.write(this, mtx, &avg_edge); 
+        this -> ntops_scores.write(this, mtx, &evnt.n_tops_score, true); 
     }
 }
 

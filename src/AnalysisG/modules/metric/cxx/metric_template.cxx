@@ -31,15 +31,18 @@ metric_template* metric_template::clone(){return new metric_template();}
 metric_template* metric_template::clone(int i){
     metric_template* mtx = this -> clone(); 
     mtx -> outdir        = this -> outdir;
-    mtx -> lnks          = this -> lnks; this -> lnks.clear(); 
+    mtx -> lnks          = this -> lnks; 
 
     mtx -> _var_type     = this -> _var_type; 
     mtx -> _variables    = this -> _variables; 
     mtx -> _run_names    = this -> _run_names; 
     mtx -> _epoch_kfold  = this -> _epoch_kfold;
 
-    std::vector<metric_model_t*>* v = this -> data; 
-    this -> data = mtx -> data; mtx -> data = v; 
+    if (i == 1){
+        this -> lnks.clear(); 
+        std::vector<metric_model_t*>* v = this -> data; 
+        this -> data = mtx -> data; mtx -> data = v; 
+    }
     return mtx;
 }
 

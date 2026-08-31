@@ -16,12 +16,10 @@
 #include <tools/tools.h>
 
 struct graph_t; 
+struct metric_t; 
 class analysis; 
 class model_template;
 class metric_template; 
-
-
-
 
 template <typename T> 
 struct router_t {
@@ -42,6 +40,8 @@ struct router_t {
         }
         return nullptr; 
     }
+    
+    void write(metric_template* mtx, metric_t* mti, T* inpt, bool fill = false); 
     std::string lf_name = ""; 
     std::string tr_name = ""; 
 
@@ -87,6 +87,7 @@ struct metric_t :
     private: 
         friend metric_template; 
         friend analysis; 
+        template<typename U> friend struct router_t;
 
         void build(); 
         void getPrediction(); 
@@ -203,7 +204,7 @@ class metric_template:
                 if (maps[ch -> at(x) -> hash]){continue;}
                 maps[ch -> at(x) -> hash] = true;
                 prt -> iadd(ch -> at(x));
-                prt -> register_children(ch -> at(x)); 
+                prt -> register_child(ch -> at(x)); 
             }
             std::string hash_ = prt -> hash; 
             this -> garbage[hash_].push_back((particle_template*)prt); 
@@ -278,5 +279,12 @@ class metric_template:
 
 }; 
 
+template <typename T>
+void router_t<T>::write(metric_template* mtx, metric_t* mti, T* inpt, bool fill){
+    T* val = this -> get(mti -> _mode);  
+    std::string md = mti -> mode(); 
+    *val = *inpt; 
+    mtx -> write(this -> tr_name + "_" + md, this -> lf_name, val, fill);
+}
 
 #endif

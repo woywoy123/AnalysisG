@@ -170,14 +170,14 @@ metric_model_t::~metric_model_t(){
 }
 
 bool metric_model_t::verify(){
-    if (!this -> model ){return false;}
-    if (!this -> metrx ){return false;}
-    if (!this -> dev   ){return false;}
-    if (!this -> metric){return false;}
-    if (!this -> run_name.size()){return false;}
-    if (!this -> checkpoint_path.size()){return false;}
-    if (this -> kfold < 0){return false;}
-    if (this -> epoch < 0){return false;}
+    if (!this -> model ){std::cout << "no model " << this->epoch << std::endl; return false;}
+    if (!this -> metrx ){std::cout << "no metrx " << this->epoch << std::endl; return false;}
+    if (!this -> dev   ){std::cout << "no dev " << this->epoch << std::endl; return false;}
+    if (!this -> metric){std::cout << "no metric " << this->epoch << std::endl; return false;}
+    if (!this -> run_name.size()){std::cout << "no run_name " << this->epoch << std::endl; return false;}
+    if (!this -> checkpoint_path.size()){std::cout << "no checkpoint_path " << this->epoch << std::endl; return false;}
+    if (this -> kfold < 0){std::cout << "bad kfold " << this->epoch << std::endl; return false;}
+    if (this -> epoch < 0){std::cout << "bad epoch " << this->epoch << std::endl; return false;}
     return true; 
 }
 

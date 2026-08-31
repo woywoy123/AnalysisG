@@ -23,9 +23,9 @@ mode_enum model_mode(std::string* val){
 
 std::string model_mode(mode_enum st){
     switch (st){
-        case mode_enum::training:   return "Training";
-        case mode_enum::validation: return "Validation";
-        case mode_enum::evaluation: return "Evaluation";
+        case mode_enum::training:   return "training";
+        case mode_enum::validation: return "validation";
+        case mode_enum::evaluation: return "evaluation";
         default: break;
     }
     return ""; 

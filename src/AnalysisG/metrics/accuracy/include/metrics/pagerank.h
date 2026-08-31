@@ -1,7 +1,7 @@
 #ifndef AVERAGE_METRIC_PR_H
 #define AVERAGE_METRIC_PR_H
 
-enum class process_t : int {
+enum process_t : int {
     t_tchan, 
     t_schan, 
     tW,
@@ -82,23 +82,6 @@ namespace processtype {
     constexpr process_t lvvv = process_t::lvvv; 
 }; 
 
-class particle {
-    
-    public:
-        particle();
-        particle(double _pt, double _eta, double _phi, double _mass); 
-
-        ~particle();
-        double pt    = 0; 
-        double eta   = 0; 
-        double phi   = 0; 
-        double mass  = 0; 
-        double chi2  = 0; 
-        double PR    = 0; 
-        int leptonic = 0; 
-}; 
-
-
 process_t process_sample(std::string* name);
 process_t process_sample(process_t prc);
 
@@ -123,6 +106,7 @@ struct event_idx {
 
     std::vector<particle_template*> nominal_tops; 
     std::vector<particle_template*> truth_tops; 
+
 }; 
 
 
