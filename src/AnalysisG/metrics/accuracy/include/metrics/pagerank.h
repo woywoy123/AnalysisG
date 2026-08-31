@@ -1,6 +1,10 @@
 #ifndef AVERAGE_METRIC_PR_H
 #define AVERAGE_METRIC_PR_H
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 enum process_t : int {
     t_tchan, 
     t_schan, 

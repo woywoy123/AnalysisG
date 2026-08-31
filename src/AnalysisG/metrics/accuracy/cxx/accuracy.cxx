@@ -40,10 +40,10 @@ std::vector<particle_template*> accuracy_metric::build_particles(metric_t* mtx){
     
     std::vector<particle_template*> ptx = make_particle(&pt, &eta, &phi, &e);
     std::vector<std::vector<int>> is_lep = mtx -> get<std::vector<std::vector<int>>>(graph_enum::data_node, "is_lep");
-    
-    for (size_t x = 0; x < ptx.size(); ++x){
-        if (is_lep.empty() || x >= is_lep.size()){ continue; }
-        if (is_lep[x][0]){ ptx[x] -> pdgid = 11; } 
+    std::vector<std::vector<int>> is_bq  = mtx -> get<std::vector<std::vector<int>>>(graph_enum::data_node, "is_b");
+    for (size_t x(0); x < ptx.size(); ++x){
+        if (is_lep[x][0] > 0){ptx[x] -> pdgid = 11;}
+        if ( is_bq[x][0] > 0){ptx[x] -> pdgid = 5;}
     }
     return ptx;
 }
@@ -66,19 +66,35 @@ void accuracy_metric::define_metric(metric_t* mtx){
     ) -> void{
         typename std::decay<decltype(rt->training)>::type _vl = {}; 
         for (size_t x(0); x < ptr -> size(); ++x){
+            int passed = 1; 
+            particle_template* ptr_ = ptr -> at(x); 
+            std::map<std::string, particle_template*> ch = ptr_ -> children; 
+            if (ch.size() > 0){
+                std::vector<particle_template*> ch_ = this -> vectorize(&ch); 
+                int b(0), l(0), n(0); 
+                for (size_t y(0); y < ch_.size(); ++y){
+                    if (ch_[y] -> is_b){b += 1;}
+                    else if (ch_[y] -> is_lep){l += 1;}
+                    else {n += 1;}
+                } 
+                if      (l > 0  &&  b > 0 && ch_.size() > 2){passed = +2;} // leptonic
+                else if (b >= 1 && n <= 2 && ch_.size() < 5){passed = -2;} // boosted tops merging
+                passed = (1000 * n + 100 * l + 10 * b + std::abs(passed)) * sgn(passed); 
+            }
+            else {passed = ( 100 * int(ptr_ -> is_lep) + 10 * int(ptr_ -> is_b) );}
+
             switch(val){
-                case particle_enum::pt: _vl.push_back(ptr -> at(x) -> pt );  break; 
-                case particle_enum::eta: _vl.push_back(ptr -> at(x) -> eta);  break; 
-                case particle_enum::phi: _vl.push_back(ptr -> at(x) -> phi);  break; 
-                case particle_enum::mass: _vl.push_back(ptr -> at(x) -> mass); break; 
+                case particle_enum::pt:     _vl.push_back(ptr -> at(x) -> pt );  break; 
+                case particle_enum::eta:    _vl.push_back(ptr -> at(x) -> eta);  break; 
+                case particle_enum::phi:    _vl.push_back(ptr -> at(x) -> phi);  break; 
+                case particle_enum::mass:   _vl.push_back(ptr -> at(x) -> mass); break; 
                 case particle_enum::energy: _vl.push_back(ptr -> at(x) -> e  );  break; 
-                case particle_enum::is_lep: _vl.push_back(ptr -> at(x) -> is_lep ); break; 
+                case particle_enum::is_lep: _vl.push_back(passed); break; 
                 default: break;
             }
         }
         rt -> write(this, mtx, &_vl);  
     }; 
-
 
     auto maxv =[](std::vector<float>* acx) -> int {
         int idx = 0; 
@@ -100,8 +116,8 @@ void accuracy_metric::define_metric(metric_t* mtx){
         }
         float acc_pos = (t_pos > 0) ? (p_pos / t_pos) : 0.0;
         float acc_neg = (t_neg > 0) ? (p_neg / t_neg) : 0.0;
-        if (t_pos > 0 && t_neg > 0) return (acc_pos + acc_neg) / 2.0;
-        if (t_pos > 0) return acc_pos;
+        if (t_pos > 0 && t_neg > 0){return (acc_pos + acc_neg) / 2.0;}
+        if (t_pos > 0){return acc_pos;}
         return acc_neg;
     };
 
