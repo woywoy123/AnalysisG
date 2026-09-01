@@ -19,7 +19,7 @@ def test_particle_template():
     x = ParticleTemplate()
     y = ParticleTemplate()
     assert x.hash == y.hash
-    assert len(x.hash) == 28
+    assert len(x.hash) == 18
 
     # Testing setter function
     vals = [207050.75, 0.5622375011444092, 2.262759208679199, 296197.3125]
@@ -138,14 +138,14 @@ def test_particle_template():
 
     tp.Children += [tc1]
     tp.Children += [tc2]
-    tp.Children.append(tc3)
-    tp.Children.append(tc3)
-    tc1.Parent.append(tp)
-    tc1.Parent.append(tp)
-    tc3.Parent.append(tp)
+    tp.Children += [tc3]
+    tp.Children += [tc3]
+    tc1.Parents += [tp]
+    tc1.Parents += [tp]
+    tc3.Parents += [tp]
 
     assert len(tp.Children) == 3
-    assert len(tc1.Parent) == 1
+    assert len(tc1.Parents) == 1
 
     tp.Children[0].px = val[0]
     assert tc1.px == val[0]

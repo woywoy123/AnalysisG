@@ -13,7 +13,7 @@ add_custom_command(OUTPUT c${name}.cpp DEPENDS
     ${ANALYSISG_SOURCE_DIR}/${path}/${name}.pxd
 VERBATIM COMMAND Python::Interpreter -m cython 
     --capi-reexport-cincludes 
-    --no-docstrings
+    
     --verbose 
     --output-file c${name}.cpp
     --cplus ${ANALYSISG_SOURCE_DIR}/${path}/${name}.pyx
@@ -33,7 +33,7 @@ foreach(cyx IN LISTS PYX)
         ${ANALYSISG_SOURCE_DIR}/${path}/${name_}.pxd
     VERBATIM COMMAND Python::Interpreter -m cython 
         --capi-reexport-cincludes 
-        --no-docstrings
+        
         --verbose 
         --output-file c${name_}.cpp
         --cplus ${PYX} ${ANALYSISG_SOURCE_DIR}/${path}/${name_}.pyx
@@ -56,7 +56,7 @@ add_custom_command(OUTPUT c${name}.cpp DEPENDS
     ${ANALYSISG_SOURCE_DIR}/${path}/${name}.pyx 
 VERBATIM COMMAND Python::Interpreter -m cython 
     --capi-reexport-cincludes
-    --no-docstrings
+    
     --verbose 
     --output-file c${name}.cpp
     --cplus ${ANALYSISG_SOURCE_DIR}/${path}/${name}.pyx

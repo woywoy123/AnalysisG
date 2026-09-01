@@ -49,12 +49,12 @@ def test_reading_root():
                 assert b"nominal.weight_pileup.weight_pileup" in i
                 assert b"nominal.met_phi.met_phi" in i
                 len_nom += 1
+
         assert len(set(mt_x)) == 2000
         assert len(set(pt_x)) == 165 # covers indexing problems
         assert len_truth == 2000
         assert len_nom == 165
         del io
-        exit()
 
 def test_random():
     import time 

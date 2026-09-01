@@ -1,9 +1,9 @@
 class KFolds:
     def __init__(self, base_dir):
-        self.path     = None
-        self.base_dir = None
+        self.base_dir = base_dir
         self.folds    = None
         self.epochs   = None
+        self.split    = {}
 
     @property
     def _fdir(self): return pfix(self.base_dir, self.path)
@@ -37,6 +37,10 @@ class ModelParams:
         self.checkpoints[loc] = ss
         if ss.epoch not in self.epochs: self.epochs[ss.epoch] = {}
         self.epochs[ss.epoch][ss.kfold] = session
+    
+    def node(self, prefx, nf):  self.variables += ["::" + prefx + "::node::" + nf]
+    def edge(self, prefx, nf):  self.variables += ["::" + prefx + "::edge::" + nf]
+    def graph(self, prefx, nf): self.variables += ["::" + prefx + "::graph::" + nf]
+    def extra(self, prefx, nf): self.variables += ["::" + prefx + "::extra::" + nf] 
 
-
-
+    

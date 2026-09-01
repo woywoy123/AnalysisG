@@ -1,6 +1,9 @@
 # distutils: language=c++
 # cython: language_level=3
+# cython: binding=True
+# cython: embedsignature=True
 
+"""Module docstring test"""
 from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.map cimport pair, map

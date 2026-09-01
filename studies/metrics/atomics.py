@@ -73,8 +73,7 @@ class Runtime:
         self.meta       = meta(base_dir)
         self.stats      = Statistics(base_dir)
 
-    def compile(self):
-
+    def SampleParams(self):
         camp = -1
         filepath = self.meta.meta + "/" + self.meta.fullsamples
         f = open(filepath, "r")
@@ -106,13 +105,32 @@ class Runtime:
             logical = self.stats.daods[logical]
             logical.eval = True
             self.stats.eval.append(logical)
-    
+   
+    def ModelTasks(self):
+        for i in self.models_data.values():
+            print(i)
+
+        exit()
+
+
+
+
+
+
         ct = Tools()        
         for i in self.models._data.values():
             fd = self.training._fdir + "/" + i.model.impl.__name__ + "/" + i.model.name +  "/*" 
             for k in ct.ls(fd, "model.pt"): i.add(k)
             self.stats.models[i.name] = i.epochs
         return self.stats
+
+
+
+
+
+
+
+
 
 
 

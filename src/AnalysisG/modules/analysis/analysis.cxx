@@ -66,7 +66,7 @@ void analysis::add_selection_template(selection_template* sel){
 }
 
 void analysis::add_metric_template(metric_template* mx, model_template* mdl){
-    std::string name_m = std::string(mx -> name) + "/" + std::string(mdl -> name); 
+    std::string name_m = std::string(mx -> name) + "/" + std::string(mdl -> name) + "/" + std::string(mdl -> device); 
     bool dup = this -> metric_names.count(name_m); 
     if (dup){this -> warning("Duplicate input"); return;}
     metric_template* cl = mx -> clone(1); 

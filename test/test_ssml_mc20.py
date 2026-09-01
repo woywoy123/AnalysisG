@@ -6,7 +6,7 @@ from AnalysisG.events import SSML_MC20
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.models import Grift
 
-ttbar = "/home/tnom6927/Downloads/mc20/user.rqian.503575.MGPy8EG.DAOD_PHYS.e8307_s3797_r13167_p6490.2024-11-23_output"
+ttbar = "...." 
 
 ev = SSML_MC20()
 gr = GraphDetector()
