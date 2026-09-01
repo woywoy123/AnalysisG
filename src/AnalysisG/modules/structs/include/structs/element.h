@@ -17,7 +17,9 @@
 #include <vector>
 #include <map>
 
-struct data_t: public bsc_t 
+struct data_t: 
+    public bsc_t, 
+    public tools
 {
     public:
         data_t(); 

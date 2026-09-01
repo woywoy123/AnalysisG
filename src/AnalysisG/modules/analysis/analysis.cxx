@@ -100,7 +100,7 @@ void analysis::build_project(){
     }
     std::map<std::string, metric_template*>::iterator itm = this -> metric_names.begin();
     for (; itm != this -> metric_names.end(); ++itm){
-        itm -> second -> outdir = model_path + "/metrics/" + itm -> first;
+        itm -> second -> output_path = model_path + "/metrics/" + itm -> first;
     }
 }
 

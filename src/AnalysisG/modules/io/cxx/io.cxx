@@ -10,17 +10,12 @@ io::~io(){
     this -> root_end(); 
     std::map<std::string, TFile*>::iterator itr = this -> files_open.begin(); 
     for (; itr != this -> files_open.end(); ++itr){
+        if (!itr -> second){continue;}
         if (itr -> second -> IsOpen()){itr -> second -> Close();}
         itr -> second -> Delete(); 
-        delete itr -> second;
+        this -> pflush(&itr -> second); 
     }
-
-    std::map<std::string, meta*>::iterator itm = this -> meta_data.begin(); 
-    for (; itm != this -> meta_data.end(); ++itm){
-        if (!itm -> second){continue;}
-        delete itm -> second;
-    }
-    this -> meta_data.clear(); 
+    this -> mflush(&this -> meta_data);
 }
 
 void io::import_settings(settings_t* params){

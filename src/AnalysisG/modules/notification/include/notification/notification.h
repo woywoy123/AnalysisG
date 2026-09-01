@@ -16,7 +16,13 @@ struct tracing_t {
     void next(); 
     void finished(); 
     void register_thread(std::thread* thr, size_t x); 
+    void info(std::string msg);
     void message(std::string msg); 
+
+    void success(std::string msg); 
+    void warning(std::string msg);
+    void failure(std::string msg); 
+
     size_t index();
  
     size_t     threadIdx = 0;   

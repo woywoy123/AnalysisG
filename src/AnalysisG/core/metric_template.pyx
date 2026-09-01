@@ -45,6 +45,14 @@ cdef class MetricTemplate:
         cdef vector[string] o = self.mtx.variables
         return env_vec(&o)
 
+    @property 
+    def OutputPath(self): 
+        return env(self.mtx.output_path)
+
+    @OutputPath.setter
+    def OutputPath(self, str val): 
+        self.mtx.output_path = enc(val)
+
     @Variables.setter
     def Variables(self, list val): 
         self.mtx.variables = enc_list(val)

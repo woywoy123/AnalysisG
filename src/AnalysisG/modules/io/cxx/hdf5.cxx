@@ -28,21 +28,18 @@ bool io::start(std::string filename, std::string read_write){
 void io::end(){
     if (this -> file){
         this -> file -> close(); 
-        delete this -> file; 
-        this -> file = nullptr; 
+        this -> pflush(&this -> file);
     }
-
     std::map<std::string, H5::DataSet*>::iterator itr; 
-    for (itr = this -> data_w.begin(); itr != this -> data_w.end(); ++itr){itr -> second -> close(); delete itr -> second;}
-    for (itr = this -> data_r.begin(); itr != this -> data_r.end(); ++itr){itr -> second -> close(); delete itr -> second;}
-    this -> data_w.clear(); 
-    this -> data_r.clear();
+    for (itr = this -> data_w.begin(); itr != this -> data_w.end(); ++itr){itr -> second -> close();}
+    for (itr = this -> data_r.begin(); itr != this -> data_r.end(); ++itr){itr -> second -> close();}
+    this -> mflush(&this -> data_w); 
+    this -> mflush(&this -> data_r);
 }
 
 H5::DataSet* io::dataset(std::string set_name, hid_t type, long long unsigned int length){
     if (!this -> file){return nullptr;}
     if (this -> data_w.count(set_name)){return this -> data_w[set_name];}
-
     hsize_t dim[1] = {length}; 
     H5::DataSpace space(1, dim);
     H5::Exception::dontPrint(); 

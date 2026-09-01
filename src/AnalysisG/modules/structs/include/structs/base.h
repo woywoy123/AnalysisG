@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <structs/enums.h> // <---- go here first
+#include <tools/tools.h>
 
 void buildPCM(std::string name, std::string incl, bool exl); 
 void registerInclude(std::string name, bool is_abs = false); 
@@ -95,7 +96,7 @@ struct bsc_t {
         bool flush_buffer(std::vector<T>** data){
             if (!(*data)){return false;}
             if (!this -> clear){(*data) -> clear(); return true;}
-            delete (*data); (*data) = nullptr;
+            tools::pflush(data); 
             return true; 
         } 
 
@@ -103,7 +104,7 @@ struct bsc_t {
         bool flush_buffer(T** data){
             if (!(*data)){return false;}
             if (!this -> clear){(**data) = 0; return true;}
-            else {delete (*data); (*data) = nullptr;}
+            tools::pflush(data); 
             return true; 
         } 
 

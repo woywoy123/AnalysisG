@@ -4,6 +4,10 @@ accuracy_metric::~accuracy_metric(){}
 accuracy_metric* accuracy_metric::clone(){return new accuracy_metric();}
 accuracy_metric::accuracy_metric(){this -> name = "accuracy";}
 
+void accuracy_metric::start(metric_t* mtx){
+    this -> filename = this -> output_path + "/data" +  + ".root"; 
+}
+
 std::vector<long> accuracy_metric::event_index(metric_t* mtx){
     return mtx -> get<std::vector<long>>( graph_enum::batch_events, "index");
 }
@@ -49,22 +53,21 @@ std::vector<particle_template*> accuracy_metric::build_particles(metric_t* mtx){
 }
 
 void accuracy_metric::define_variables(metric_t* mtx){
-    this -> output_path = "./ProjectName/metrics/accuracy/epoch-" + std::to_string(mtx -> epoch) + "/";  
-    this -> create_path(this -> output_path); 
-    this -> output_path += "kfold-" + std::to_string(mtx -> kfold) + ".root"; 
-
+    if (!this -> output_path.size()){this -> output_path  = "./ProjectName/metrics/accuracy/";}
+    this -> output_path += mtx -> run_name;
+    this -> start(mtx); 
+    this -> create_path(this -> output_path);
     this -> register_output(&this -> ntops_prd); 
     this -> register_output(&this -> ntops_tru); 
     this -> register_output(&this -> ntops_scores); 
 }
 
-void accuracy_metric::end(){}
 
 void accuracy_metric::define_metric(metric_t* mtx){
     auto get_var =[this](
             metric_t* mtx, std::vector<particle_template*>* ptr, auto* rt, particle_enum val
     ) -> void{
-        typename std::decay<decltype(rt->training)>::type _vl = {}; 
+        typename std::decay<decltype(rt -> training)>::type _vl = {}; 
         for (size_t x(0); x < ptr -> size(); ++x){
             int passed = 1; 
             particle_template* ptr_ = ptr -> at(x); 
@@ -108,26 +111,27 @@ void accuracy_metric::define_metric(metric_t* mtx){
 
     auto edge_acc =[](std::vector<int>* pred, std::vector<int>* truth) -> float {
         if (!pred->size()) { return 0.0; }
-        float t_pos = 0, p_pos = 0;
-        float t_neg = 0, p_neg = 0;
+        float tp = 0, tn = 0;
+        float fp = 0, fn = 0;
         for (size_t i(0); i < pred -> size(); ++i) {
-            t_pos += truth -> at(i) == 1; p_pos += pred -> at(i) == 1; 
-            t_neg += truth -> at(i) == 0; p_neg += pred -> at(i) == 0; 
+            int t = truth -> at(i); 
+            int p = pred -> at(i); 
+            tp += (t == 1) * (p == 1); 
+            tn += (t == 1) * (p == 0); 
+            fp += (t == 0) * (p == 1); 
+            fn += (t == 0) * (p == 0); 
         }
-        float acc_pos = (t_pos > 0) ? (p_pos / t_pos) : 0.0;
-        float acc_neg = (t_neg > 0) ? (p_neg / t_neg) : 0.0;
-        if (t_pos > 0 && t_neg > 0){return (acc_pos + acc_neg) / 2.0;}
-        if (t_pos > 0){return acc_pos;}
-        return acc_neg;
+        return (tp + fn) / (tp + tn + fn + fp);
     };
 
 
-    std::vector<std::vector<int>>   edge_ix = this -> edge_index(mtx); 
-    std::vector<std::vector<float>> edge_sc = this -> top_edge_score(mtx); 
-    std::vector<std::vector<int>>   edge_tr = this -> top_edge_truth(mtx); 
+    std::vector<std::vector<int>>   edge_ix  = this -> edge_index(mtx); 
+    std::vector<std::vector<float>> edge_sc  = this -> top_edge_score(mtx); 
+    std::vector<std::vector<int>>   edge_tr  = this -> top_edge_truth(mtx); 
+
     std::vector<std::vector<int>>   ntops_tr = this -> ntops_truth(mtx); 
     std::vector<std::vector<float>> ntops_sc = this -> ntops_score(mtx);
-    std::vector<particle_template*> ptx = this -> build_particles(mtx); 
+    std::vector<particle_template*> ptx      = this -> build_particles(mtx); 
 
     std::vector<long> btch_ix = this -> batch_index(mtx); 
     std::vector<long> evnt_ix = this -> event_index(mtx); 
@@ -150,51 +154,52 @@ void accuracy_metric::define_metric(metric_t* mtx){
             evnt.ptx.push_back(ptx[y]); 
             num_nodes += 1;
         }
+        
+        evnt.file = mtx -> get_filename(x); 
         evnt.n_tops_truth = ntops_tr[x][0]; 
         evnt.n_tops_score = ntops_sc[x]; 
         evnt.n_tops_pred  = maxv(&evnt.n_tops_score); 
-        evnt.file = mtx -> get_filename(x); 
-        evnt.process_ix = int(process_sample(evnt.file)); 
+        evnt.process_ix   = int(process_sample(evnt.file)); 
         this -> pagerank(&evnt); 
        
-        get_var(mtx, &evnt.ptx, &this -> particles_pt, particle_enum::pt); 
-        get_var(mtx, &evnt.ptx, &this -> particles_eta, particle_enum::eta); 
-        get_var(mtx, &evnt.ptx, &this -> particles_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.ptx, &this -> particles_pt,     particle_enum::pt); 
+        get_var(mtx, &evnt.ptx, &this -> particles_eta,    particle_enum::eta); 
+        get_var(mtx, &evnt.ptx, &this -> particles_phi,    particle_enum::phi); 
         get_var(mtx, &evnt.ptx, &this -> particles_energy, particle_enum::energy); 
-        get_var(mtx, &evnt.ptx, &this -> particles_chn, particle_enum::is_lep); 
+        get_var(mtx, &evnt.ptx, &this -> particles_chn,    particle_enum::is_lep); 
                        
-        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_pt, particle_enum::pt); 
-        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_eta, particle_enum::eta); 
-        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_pt,   particle_enum::pt); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_eta,  particle_enum::eta); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_phi,  particle_enum::phi); 
         get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_mass, particle_enum::mass); 
-        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_chn, particle_enum::is_lep); 
+        get_var(mtx, &evnt.reco_tops_pr, &this -> tops_pr_chn,  particle_enum::is_lep); 
         this -> tops_pr_scr.write(this, mtx, &evnt.reco_scores_pr);
                        
-        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_pt, particle_enum::pt); 
-        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_eta, particle_enum::eta); 
-        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_pt,   particle_enum::pt); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_eta,  particle_enum::eta); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_phi,  particle_enum::phi); 
         get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_mass, particle_enum::mass); 
-        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_chn, particle_enum::is_lep); 
+        get_var(mtx, &evnt.reco_tops_upr, &this -> tops_upr_chn,  particle_enum::is_lep); 
         this -> tops_upr_scr.write(this, mtx, &evnt.reco_scores_upr);
                        
-        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_pt, particle_enum::pt); 
-        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_eta, particle_enum::eta); 
-        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_pt,   particle_enum::pt); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_eta,  particle_enum::eta); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_phi,  particle_enum::phi); 
         get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_mass, particle_enum::mass); 
-        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_chn, particle_enum::is_lep); 
+        get_var(mtx, &evnt.nominal_tops, &this -> tops_nom_chn,  particle_enum::is_lep); 
                        
-        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_pt, particle_enum::pt); 
-        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_eta, particle_enum::eta); 
-        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_phi, particle_enum::phi); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_pt,   particle_enum::pt); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_eta,  particle_enum::eta); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_phi,  particle_enum::phi); 
         get_var(mtx, &evnt.truth_tops, &this -> tops_tru_mass, particle_enum::mass); 
-        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_chn, particle_enum::is_lep); 
+        get_var(mtx, &evnt.truth_tops, &this -> tops_tru_chn,  particle_enum::is_lep); 
 
         float avg_edge = edge_acc(&evnt.top_edge_pred, &evnt.top_edge_truth);
 
-        this -> ntops_prd.write(this, mtx, &evnt.n_tops_pred); 
-        this -> ntops_tru.write(this, mtx, &evnt.n_tops_truth); 
-        this -> proc_idx.write(this, mtx, &evnt.process_ix); 
-        this -> edge_prd.write(this, mtx, &avg_edge); 
+        this -> ntops_prd.write(this,    mtx, &evnt.n_tops_pred); 
+        this -> ntops_tru.write(this,    mtx, &evnt.n_tops_truth); 
+        this -> proc_idx.write(this,     mtx, &evnt.process_ix); 
+        this -> edge_prd.write(this,     mtx, &avg_edge); 
         this -> ntops_scores.write(this, mtx, &evnt.n_tops_score, true); 
     }
 }

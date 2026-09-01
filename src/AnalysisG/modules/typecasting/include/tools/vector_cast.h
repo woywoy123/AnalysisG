@@ -46,10 +46,11 @@ void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<sign
 
 template <typename G, typename g>
 bool tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g){
-    torch::Tensor cpux = torch::empty(data -> sizes(), torch::device(torch::kCPU).pinned_memory(true).dtype(data -> dtype())); 
-    if (!_transfer(data, &cpux)){return false;}
-    cpux = cpux.reshape({-1}); 
-    typename std::vector<g> linear(static_cast<g*>(cpux.data_ptr()), static_cast<g*>(cpux.data_ptr()) + cpux.numel()); 
+    torch::Tensor cuvx = data -> reshape({-1}); 
+    int64_t nl = cuvx.numel();  
+    torch::Tensor cpux = torch::empty({nl}, torch::device(torch::kCPU).pinned_memory(true).dtype(data -> dtype())); 
+    if (!_transfer(&cuvx, &cpux)){return false;}
+    typename std::vector<g> linear(static_cast<g*>(cpux.data_ptr()), static_cast<g*>(cpux.data_ptr()) + nl); 
     tensor_vector(out, &linear, dims, dims -> size()-1); 
     return true; 
 }

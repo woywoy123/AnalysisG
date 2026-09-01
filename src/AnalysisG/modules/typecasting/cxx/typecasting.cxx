@@ -1,11 +1,12 @@
 #include <vector_cast.h>
+#include <tools/tools.h>
 
 bool _transfer(torch::Tensor* data, torch::Tensor* cpux){
-//    c10::cuda::CUDAStream strx = at::cuda::getStreamFromPool(false, data -> device().index()); 
-//    at::cuda::setCurrentCUDAStream(strx); 
-//    AT_CUDA_CHECK(cudaStreamSynchronize(strx)); 
+    if (!data -> device().is_cuda()){return true;}
     cpux -> copy_(*data, true);
-    torch::cuda::synchronize(data -> device().index()); 
+    c10::cuda::CUDAStream strx = at::cuda::getCurrentCUDAStream(data -> device().index()); 
+    strx.synchronize(); 
+//    torch::cuda::synchronize(data -> device().index()); 
     if (!cpux -> is_pinned()){return false;}
     return true; 
 }
@@ -32,7 +33,7 @@ void variable_t::create_meta(meta_t* mtf){
     this -> tt -> Branch("MetaData", mtf); 
     this -> tt -> Fill(); 
     this -> tt -> Write("", TObject::kOverwrite);  
-    delete this -> tt; this -> tt = nullptr; 
+    tools::pflush(&this -> tt);
     this -> mtx = nullptr; 
 }
 

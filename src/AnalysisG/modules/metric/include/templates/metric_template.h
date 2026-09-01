@@ -62,19 +62,20 @@ struct metric_t :
 
         std::string mode(); 
         std::string* get_filename(long unsigned int idx); 
+        std::string run_name; 
 
         template <typename g>
         g get(graph_enum grx, std::string _name){
             g out = g(); 
             if (!this -> h_maps[grx][_name]){
-                this -> coms -> message(this -> emsg + _name); return out;
+                this -> coms -> warning(this -> emsg + _name); return out;
             }
             size_t idx = this -> v_maps[grx][_name]; 
             variable_t* v = (*this -> handl)[grx][idx]; 
-            if (!v){this -> coms -> message(this -> emsg + _name ); return out;}
+            if (!v){this -> coms -> warning(this -> emsg + _name ); return out;}
 
             if (v -> element(&out)){return out;}
-            this -> coms -> message(this -> emsx + v -> as_string() + " -> " + _name);
+            this -> coms -> warning(this -> emsx + v -> as_string() + " -> " + _name);
             return out; 
         }
 
@@ -139,11 +140,10 @@ class metric_model_t :
         std::map< mode_enum , std::vector<graph_t*>* >     batches = {}; 
         std::map< graph_enum, std::vector<std::string> > variables = {}; 
 
-        model_template*     model = nullptr; 
         torch::TensorOptions* dev = nullptr; 
-
         metric_t*          metric = nullptr; 
         metric_template*    metrx = nullptr; 
+        model_template*     model = nullptr; 
 }; 
 
 class metric_template: 
@@ -167,6 +167,7 @@ class metric_template:
         cproperty<std::vector<std::string>, metric_template>           variables; 
         cproperty<std::map<std::string, std::string>, metric_template> run_names; 
 
+        std::string filename = ""; 
         std::string output_path = ""; 
         std::string _name = "metric-template"; 
 
@@ -175,7 +176,7 @@ class metric_template:
         void register_output(std::string tree, std::string __name, T* t){ 
             if (this -> handle){return this -> handle -> process(&tree, &__name, t);}
             this -> handle = new writer();
-            this -> handle -> create(this -> output_path); 
+            this -> handle -> create(this -> filename); 
             this -> handle -> process(&tree, &__name, t); 
         }
 
@@ -248,9 +249,8 @@ class metric_template:
 
     private:
         friend analysis;
-        writer* handle = nullptr; 
-        std::vector<metric_model_t*>* data = nullptr; 
-        std::map<std::string, writer*> _handles = {}; 
+        writer*                          handle = nullptr; 
+        std::vector<metric_model_t*>*      data = nullptr; 
          
         std::string outdir  = "";
         std::map<std::string, std::string>                                  _variables = {}; 

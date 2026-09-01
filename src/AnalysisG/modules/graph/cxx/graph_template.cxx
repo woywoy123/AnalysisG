@@ -41,11 +41,7 @@ void graph_template::flush_particles(){
     this -> _topological_index = {}; 
     this -> nodes = {}; 
     this -> node_particles = {}; 
-    for (size_t x(0); x < this -> garbage.size(); ++x){
-        if (!this -> garbage[x]){continue;}
-        delete this -> garbage[x];
-    }
-    this -> garbage.clear();  
+    this -> vflush(&this -> garbage); 
 }
 
 void graph_template::define_particle_nodes(std::vector<particle_template*>* prt){

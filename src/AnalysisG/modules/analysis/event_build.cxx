@@ -131,6 +131,6 @@ void analysis::build_events(){
     }
     while (this -> await_threads(thr, true)){}
     this -> success("Finished Building Events"); 
-    delete thr; 
+    this -> pflush(&thr); 
     this -> reader = new io(); 
 }

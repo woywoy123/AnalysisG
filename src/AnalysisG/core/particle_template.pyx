@@ -79,7 +79,7 @@ cdef class ParticleTemplate:
     def __radd__(self, other):
         if isinstance(other, int) and other == 0: 
             return self.clone().__iadd__(self)
-        if self.is_self(other): return self.__iadd__(other)
+        if self.is_self(other): return other.__add__(self)
         return self
 
     def __eq__(self, other):

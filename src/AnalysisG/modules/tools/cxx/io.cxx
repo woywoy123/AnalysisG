@@ -4,10 +4,10 @@
 #include <unistd.h>
 
 void tools::create_path(std::string input_path){
-    bool f = false;
-    if (tools::split(input_path, ".").size() > 1){f = true;}
-
+    tools::replace(&input_path, "./", ""); 
+    bool f = tools::is_file(input_path);
     std::vector<std::string> cuts = tools::split(input_path, "/"); 
+    
     std::string path = ""; 
     for (unsigned int x(0); x < cuts.size() - f; ++x){
         path += cuts[x] + "/"; 

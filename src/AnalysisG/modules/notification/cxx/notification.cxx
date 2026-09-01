@@ -25,6 +25,13 @@ multithreaded_t::multithreaded_t(size_t lgt, int num_thr){
 }
 
 multithreaded_t::~multithreaded_t(){
+    if (this -> threads){
+        for (size_t x = 0; x < this -> threads -> size(); ++x){
+            this -> tflush(&(*this -> threads)[x]);
+        }
+    }
+    this -> tflush(&this -> ptr);
+
     this -> vflush(this -> threads); 
     this -> vflush(this -> traces);
 
@@ -40,12 +47,18 @@ size_t tracing_t::index(){return (*this -> idx);}
 void   tracing_t::next(){(*this -> idx)++;}
 void   tracing_t::finished(){(*this -> status) = 0;}
 
-void   tracing_t::message(std::string msg){(*this -> coms) = msg;}
+void tracing_t::info(std::string msg){(*this -> coms) = msg;}
+void tracing_t::message(std::string msg){(*this -> coms) = "\033[1;37m " + msg + "\033[0m";}
+void tracing_t::warning(std::string msg){(*this -> coms) = "\033[1;33m " + msg + "\033[0m";}
+void tracing_t::success(std::string msg){(*this -> coms) = "\033[1;32m " + msg + "\033[0m";}
+void tracing_t::failure(std::string msg){(*this -> coms) = "\033[1;31m " + msg + "\033[0m";}
+
 void   tracing_t::register_thread(std::thread* thr, size_t x){
     (*this -> reg -> threads)[this -> threadIdx] = thr;
     (*this -> reg -> target )[this -> threadIdx] = x; 
     (*this -> reg -> status )[this -> threadIdx] = 1; 
 }
+
 
 
 
@@ -185,11 +198,7 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
         n.progressbar(&prx, &totl, &vec);  
         cwhite = prx.size();
     }
-
-    for (size_t x(0); x < bars.size(); ++x){
-        if (!bars[x]){continue;}
-        delete bars[x];
-    }
+    tools::vflush(&bars); 
 } 
 
 void notification::monitor(std::vector<std::thread*>* thr){
@@ -199,9 +208,7 @@ void notification::monitor(std::vector<std::thread*>* thr){
         for (size_t x(0); x < thr -> size(); ++x){
             if (!(*thr)[x]){--exec; continue;}
             if (!(*thr)[x] -> joinable()){continue;}
-            (*thr)[x] -> join(); 
-            delete (*thr)[x]; 
-            (*thr)[x] = nullptr; 
+            tools::tflush(&(*thr)[x]); 
             --exec; 
         }
     }
@@ -214,9 +221,7 @@ int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* p
         if (!(*trgt)[x] && !(*prg)[x]){continue;}
         if (!(*thr)[x] -> joinable()){++idx; continue;}
         if ((*trgt)[x] != (*prg)[x]){++idx; continue;}
-        (*thr)[x] -> join(); 
-        delete (*thr)[x]; 
-        (*thr)[x] = nullptr; 
+        tools::tflush(&(*thr)[x]); 
     }
     return int(idx); 
 }
@@ -245,8 +250,6 @@ bool notification::await_threads(multithreaded_t* thr, bool monitor){
     if (monitor && cnt > 0){return true;}
 
     if (!monitor){return false;} 
-    if (!thr -> ptr){return false;}
-    thr -> ptr -> join(); delete thr -> ptr; thr -> ptr = nullptr;   
     return false; 
 }
 

@@ -20,11 +20,11 @@ void io::trigger_pcm(){
     std::string mta = std::string(dict_path) + "structs/include/structs/meta.h"; 
     std::thread* tm = nullptr; 
     tm = new std::thread(buildDict, "meta_t"   , mta); 
-    tm -> join(); delete tm; 
+    this -> tflush(&tm); 
     tm = new std::thread(buildDict, "weights_t", mta); 
-    tm -> join(); delete tm; 
+    this -> tflush(&tm); 
     tm = new std::thread(buildAll); 
-    tm -> join(); delete tm; 
+    this -> tflush(&tm); 
     gSystem -> ChangeDirectory(cur.c_str()); 
 }
 
@@ -185,8 +185,7 @@ bool io::scan_keys(){
         if (!this -> files_open.count(itr -> first)){
             this -> file_root = new TFile(itr -> first.c_str(), "READ");
             if (this -> file_root -> IsZombie()){
-                delete this -> file_root; 
-                this -> file_root = nullptr; 
+                this -> pflush(&this -> file_root); 
                 continue;
             }
             this -> file_root -> SetTitle(itr -> first.c_str()); 
@@ -364,12 +363,10 @@ void io::root_end(){
         it -> second -> clear = true; 
         it -> second -> flush(); 
         if (!fx){fx = it -> second -> files_t;}
-        delete it -> second;
-        it -> second = nullptr; 
+        this -> pflush(&it -> second); 
     }
-    if (fx){delete fx;}
+    this -> pflush(&fx); 
     this -> iters -> clear(); 
-    delete this -> iters; 
-    this -> iters = nullptr; 
+    this -> pflush(&this -> iters);  
 }
 

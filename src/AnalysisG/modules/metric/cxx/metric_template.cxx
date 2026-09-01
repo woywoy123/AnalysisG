@@ -19,20 +19,16 @@ metric_template::metric_template(){
 }
 
 metric_template::~metric_template(){
-    if (this -> handle){this -> handle -> close();}
-    this -> pflush(&this -> handle); 
     this -> vflush( this -> data); 
     this -> pflush(&this -> data);  
-    this -> mflush(&this -> _handles); 
 }
 
 metric_template* metric_template::clone(){return new metric_template();}
 
 metric_template* metric_template::clone(int i){
     metric_template* mtx = this -> clone(); 
-    mtx -> outdir        = this -> outdir;
     mtx -> lnks          = this -> lnks; 
-
+    mtx -> output_path   = this -> output_path; 
     mtx -> _var_type     = this -> _var_type; 
     mtx -> _variables    = this -> _variables; 
     mtx -> _run_names    = this -> _run_names; 
@@ -51,5 +47,4 @@ void metric_template::define_variables(metric_t*){};
 void metric_template::define_variables(){}; 
 void metric_template::end(){}; 
 void metric_template::start(metric_t*){}; 
-
 

@@ -1,5 +1,6 @@
 #include <structs/element.h>
 #include <structs/meta.h>
+#include <tools/tools.h>
 
 void element_t::set_meta(){
     std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
@@ -42,12 +43,11 @@ void data_t::flush(){
     this -> leaf   = nullptr; 
     this -> branch = nullptr; 
     this -> tree   = nullptr; 
-    if (this -> files_s){delete this -> files_s; this -> files_s = nullptr;}
-    if (this -> files_i){delete this -> files_i; this -> files_i = nullptr;}
+    tools::pflush(&this -> files_s); 
+    tools::pflush(&this -> files_i); 
     if (!this -> file){return;}
     this -> file -> Delete(); 
-    delete this -> file; 
-    this -> file = nullptr; 
+    tools::pflush(&this -> file); 
 }
 
 void data_t::initialize(){
@@ -58,7 +58,7 @@ void data_t::initialize(){
         if (this -> file){
             this -> file -> Close();
             this -> file -> Delete();
-            delete this -> file; 
+            tools::pflush(&this -> file); 
         }
         (*this -> files_t)[this -> file_index -1] = nullptr; 
         this -> file = _c -> Open(_c -> GetTitle()); 

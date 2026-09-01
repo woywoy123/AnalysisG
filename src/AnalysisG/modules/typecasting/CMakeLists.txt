@@ -11,7 +11,7 @@ set(SOURCE_FILES
 add_library(ctypecasting ${SOURCE_FILES})
 target_include_directories(ctypecasting PRIVATE include/tools)
 target_include_directories(ctypecasting PUBLIC include)
-target_link_libraries(ctypecasting PUBLIC ${TORCH_LIBRARIES} ${ROOT_LIBRARIES} cstructs)
+target_link_libraries(ctypecasting PUBLIC ${TORCH_LIBRARIES} ${ROOT_LIBRARIES} cstructs ctools)
 target_compile_options(ctypecasting PRIVATE -fPIC)
 
 if(CMAKE_ANALYSISG_CUDA)

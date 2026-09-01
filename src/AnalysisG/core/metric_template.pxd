@@ -13,9 +13,10 @@ from cython.operator cimport dereference as deref
 cdef extern from "<templates/metric_template.h>" nogil:
     cdef cppclass metric_template(tools, notification):
         metric_template() except+ nogil
-        string name
         map[string, string] run_names
         vector[string] variables
+        string output_path
+        string name
 
 cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* epochs, string* prefx) nogil:
     cdef tools tl

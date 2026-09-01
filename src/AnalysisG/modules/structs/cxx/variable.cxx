@@ -20,7 +20,9 @@ void write_t::create(std::string tr_name, std::string path){
     if (this -> data){return;}
     this -> tree = new TTree(tr_name.c_str(), "data"); 
     this -> tree -> SetCacheSize(10000000U); 
+    this -> tree -> SetAutoFlush(10000000U); 
     this -> data = new std::map<std::string, variable_t*>(); 
+
 }
 
 void write_t::close(){
@@ -32,6 +34,7 @@ void write_t::close(){
     
     if (this -> file){
         this -> file -> Close();
+        
         delete this -> file; 
         this -> file = nullptr;
     }

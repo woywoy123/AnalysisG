@@ -93,10 +93,11 @@ bool analysis::build_metric(){
         tf += lamb(ev, mode_enum::evaluation, wrk, &batch_cache); 
         tracing_t* th = thr -> traces -> at(x); 
         th -> register_thread(new std::thread(wrk -> metrx -> execute, wrk, th), tf); 
-        while (this -> await_threads(thr, true)){} 
+        while (this -> await_threads(thr, false)){} 
         smpls += tf; 
     }
     while (this -> await_threads(thr, true)){}; 
+    this -> pflush(&thr); 
     std::string msg = "Total Number Events: "; 
     msg += std::to_string(smpls) + " of Jobs Assigned: "; 
     msg += std::to_string(que.size()) + " Using "; 

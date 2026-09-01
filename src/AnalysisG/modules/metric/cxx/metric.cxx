@@ -61,7 +61,7 @@ void metric_t::print(){
 
 
 void metric_t::build(){
-    if (!this -> vars){this -> coms -> message("Mapping to variables not provided."); return;}
+    if (!this -> vars){this -> coms -> warning("Mapping to variables not provided."); return;}
     if (!this -> handl){this -> handl = new std::map< graph_enum, std::vector< variable_t*> >();}
      
     std::map<graph_enum, std::vector<std::string>>::iterator it;
@@ -108,12 +108,7 @@ bool metric_t::next(){
 }
 
 void metric_t::getPrediction(){
-    if (!this -> vars){
-        this -> coms -> message("Provide the output mapping");
-        this -> coms -> message("std::map<graph_enum, std::vector<std::string>>"); 
-        return; 
-    }
-
+    if (!this -> vars){return this -> coms -> warning("No model output provided.");}
     size_t dv = this -> device;
     std::map<graph_enum, std::map<std::string, size_t> >::iterator vit;
     for (vit = this -> v_maps.begin(); vit != this -> v_maps.end(); ++vit){
@@ -147,9 +142,7 @@ void metric_t::getPrediction(){
             }
 
             if (!tnx){
-                std::string mx = "\033[1;31m Could not find: "; 
-                mx += enums_to_string(vit -> first) + va_; 
-                this -> coms -> message(mx + " (try enabling inference mode). Skipping... \033[0m"); 
+                this -> coms -> warning("Could not find: " + enums_to_string(vit -> first) + va_ + " . Skipping..."); 
                 this -> rate_time(1); 
                 continue;
             }
@@ -170,14 +163,15 @@ metric_model_t::~metric_model_t(){
 }
 
 bool metric_model_t::verify(){
-    if (!this -> model ){std::cout << "no model " << this->epoch << std::endl; return false;}
-    if (!this -> metrx ){std::cout << "no metrx " << this->epoch << std::endl; return false;}
-    if (!this -> dev   ){std::cout << "no dev " << this->epoch << std::endl; return false;}
-    if (!this -> metric){std::cout << "no metric " << this->epoch << std::endl; return false;}
-    if (!this -> run_name.size()){std::cout << "no run_name " << this->epoch << std::endl; return false;}
-    if (!this -> checkpoint_path.size()){std::cout << "no checkpoint_path " << this->epoch << std::endl; return false;}
-    if (this -> kfold < 0){std::cout << "bad kfold " << this->epoch << std::endl; return false;}
-    if (this -> epoch < 0){std::cout << "bad epoch " << this->epoch << std::endl; return false;}
+    std::string epc = std::to_string(this -> epoch); 
+    if (!this -> model ){std::cout << "no model "    + epc << std::endl; return false;}
+    if (!this -> metrx ){std::cout << "no metrx "    + epc << std::endl; return false;}
+    if (!this -> dev   ){std::cout << "no dev "      + epc << std::endl; return false;}
+    if (!this -> metric){std::cout << "no metric "   + epc << std::endl; return false;}
+    if (this -> kfold < 0){std::cout << "bad kfold " + epc << std::endl; return false;}
+    if (this -> epoch < 0){std::cout << "bad epoch " + epc << std::endl; return false;}
+    if (!this -> run_name.size()){std::cout << "no run_name " + epc << std::endl; return false;}
+    if (!this -> checkpoint_path.size()){std::cout << "no checkpoint_path " + epc << std::endl; return false;} 
     return true; 
 }
 

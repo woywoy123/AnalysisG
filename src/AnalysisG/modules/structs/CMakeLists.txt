@@ -11,5 +11,5 @@ set(SOURCE_FILES
 add_library(cstructs ${SOURCE_FILES})
 target_include_directories(cstructs PRIVATE include/structs)
 target_include_directories(cstructs PUBLIC include ${ROOT_INCLUDE_DIRS})
-target_link_libraries(cstructs PUBLIC ${ROOT_LIBRARIES} ctypecasting)
+target_link_libraries(cstructs PUBLIC ${ROOT_LIBRARIES} ctypecasting ctools)
 target_compile_options(cstructs PRIVATE -fPIC -Wshadow)
