@@ -1,4 +1,4 @@
-#include <metrics/accuracy.h>
+#include <metrics/samples.h>
 #include <string>
 
 collector::collector(){}
@@ -84,10 +84,10 @@ std::map<std::string, std::vector<cdata_t*>> collector::get_plts(){
     this -> epochs.clear(); 
     this -> kfolds.clear(); 
 
-    this -> unique_key(&tmp_m , &this -> model_names);
-    this -> unique_key(&tmp_e , &this -> modes); 
-    this -> unique_key(&tmp_ep, &this -> epochs); 
-    this -> unique_key(&tmp_kf, &this -> kfolds);  
+    //this -> unique_key(&tmp_m , &this -> model_names);
+    //this -> unique_key(&tmp_e , &this -> modes); 
+    //this -> unique_key(&tmp_ep, &this -> epochs); 
+    //this -> unique_key(&tmp_kf, &this -> kfolds);  
     return out; 
 }
 

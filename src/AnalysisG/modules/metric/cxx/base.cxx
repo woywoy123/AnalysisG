@@ -8,24 +8,27 @@ void metric_template::execute(metric_model_t* mtx, tracing_t* tr){
         metric_template* mt_, mode_enum md
     ) -> void {
         if (!mtx_ -> batches[md]){return;}
-        std::string val = "Starting "; 
+        std::string val = "[" + mx_ -> run_name + "]: "; 
         switch(md){
-            case mode_enum::training:   val += "Training";   break; 
-            case mode_enum::validation: val += "Validation"; break; 
-            case mode_enum::evaluation: val += "Evaluation"; break; 
+            case mode_enum::training:   val += "training";   break; 
+            case mode_enum::validation: val += "validation"; break; 
+            case mode_enum::evaluation: val += "evaluation"; break; 
             default: return; 
         }
 
-        mx_ -> _mode = md; 
-        mx_ -> coms -> info(val + " Loop");
+        mx_ -> _mode = md;
+        mx_ -> coms -> info(val);
         mx_ -> import_graphs(mtx_ -> batches[md]); 
-        if (!mt_ -> filename.size()){mt_ -> define_variables(mx_);}
+        mt_ -> session = mx_; 
+        mt_ -> define_variables(mx_);
         mt_ -> start(mx_); 
         while (mx_ -> next()){
             mt_ -> define_metric(mx_);
             mt_ -> flush_garbage(); 
         }
         mt_ -> end(); 
+        mt_ -> handle -> close();
+        tools::pflush(&mt_ -> handle); 
     }; 
 
     metric_template*   mt = mtx -> metrx; 
@@ -46,8 +49,7 @@ void metric_template::execute(metric_model_t* mtx, tracing_t* tr){
     lambd(mx, mtx, mt, mode_enum::training); 
     lambd(mx, mtx, mt, mode_enum::validation); 
     lambd(mx, mtx, mt, mode_enum::evaluation); 
-    if (mt -> handle){mt -> handle -> close();}
-    //tr -> success("FINISHED!"); 
+    
     tools::pflush(&mdl); 
     tools::pflush(&mtx -> metric);
     tr -> finished(); 

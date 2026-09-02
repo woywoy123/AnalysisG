@@ -60,9 +60,11 @@ struct metric_t :
         int device = 0; 
         long index = 0; 
 
-        std::string mode(); 
         std::string* get_filename(long unsigned int idx); 
         std::string run_name; 
+        
+        std::string mode(); 
+        mode_enum _mode; 
 
         template <typename g>
         g get(graph_enum grx, std::string _name){
@@ -95,7 +97,6 @@ struct metric_t :
 
         size_t nx = 0; 
         size_t ny = 0; 
-        mode_enum _mode; 
 
         model_template* mdlx = nullptr;
         std::string*     pth = nullptr;
@@ -173,18 +174,16 @@ class metric_template:
 
         // --------------------------- functions --------------------------- //
         template <typename T>
+        void register_output(std::string tree, router_t<T>* t){
+            this -> register_output(tree, t -> lf_name, t -> get(this -> session -> _mode)); 
+        }
+
+        template <typename T>
         void register_output(std::string tree, std::string __name, T* t){ 
             if (this -> handle){return this -> handle -> process(&tree, &__name, t);}
             this -> handle = new writer();
             this -> handle -> create(this -> filename); 
             this -> handle -> process(&tree, &__name, t); 
-        }
-
-        template <typename T>
-        void register_output(router_t<T>* t){ 
-            this -> register_output(t -> tr_name + "_training"  , t -> lf_name, t -> get(mode_enum::training  )); 
-            this -> register_output(t -> tr_name + "_validation", t -> lf_name, t -> get(mode_enum::validation)); 
-            this -> register_output(t -> tr_name + "_evaluation", t -> lf_name, t -> get(mode_enum::evaluation)); 
         }
 
         template <typename T>
@@ -251,6 +250,7 @@ class metric_template:
         friend analysis;
         writer*                          handle = nullptr; 
         std::vector<metric_model_t*>*      data = nullptr; 
+        metric_t*                       session = nullptr; 
          
         std::string outdir  = "";
         std::map<std::string, std::string>                                  _variables = {}; 
@@ -282,9 +282,9 @@ class metric_template:
 template <typename T>
 void router_t<T>::write(metric_template* mtx, metric_t* mti, T* inpt, bool fill){
     T* val = this -> get(mti -> _mode);  
-    std::string md = mti -> mode(); 
+    std::string md = this -> tr_name + "_" + mti -> mode(); 
     *val = *inpt; 
-    mtx -> write(this -> tr_name + "_" + md, this -> lf_name, val, fill);
+    mtx -> write(md, this -> lf_name, val, fill);
 }
 
 #endif

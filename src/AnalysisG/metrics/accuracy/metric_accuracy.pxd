@@ -12,7 +12,9 @@ from AnalysisG.core.roc cimport *
 cdef extern from "<metrics/accuracy.h>":
     cdef cppclass accuracy_metric(metric_template):
         accuracy_metric() except+
-   
+
+
+cdef extern from "<metrics/samples.h>":
     cdef struct cdata_t:
         int kfold
         vector[int] ntops_truth
