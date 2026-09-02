@@ -49,6 +49,7 @@ void analysis::add_samples(std::string path, std::string label){
         return; 
     }
     else {return;}
+    std::cout << path << std::endl; 
     if (!this -> ends_with(&path, ".root")){return;}
     this -> file_labels[path] = label;   
 }

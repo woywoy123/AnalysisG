@@ -15,7 +15,12 @@ void io::read(graph_hdf5_w* out, std::string set_name){
 bool io::start(std::string filename, std::string read_write){
     hid_t mode; 
     bool f = this -> is_file(filename); 
-    if (!f){this -> create_path(filename);}
+    if (!f){
+        std::string pth = this -> absolute_path(filename); 
+        std::string fname = this -> get_splits(&pth, "/");
+        this -> replace(&pth, fname, ""); 
+        this -> create_path(pth);
+    }
     if (this -> file){return true;}
     if (read_write == "write" && !f){mode = H5F_ACC_TRUNC;}
     else if (read_write == "write" && f){mode = H5F_ACC_RDWR;}

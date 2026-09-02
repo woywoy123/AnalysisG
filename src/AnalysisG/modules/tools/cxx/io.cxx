@@ -59,5 +59,5 @@ std::vector<std::string> tools::ls(std::string path, std::string ext){
 }
 
 std::string tools::absolute_path(std::string path){
-    return std::filesystem::canonical(path).string(); 
+    return std::filesystem::weakly_canonical(path).string(); 
 }

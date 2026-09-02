@@ -119,8 +119,8 @@ struct variable_t: public bsc_t
        
         template <typename g>
         void add_data(g* var, g*& tx, std::string* name, TTree* tr = nullptr){
-            if (!tx){this -> variable_name = *name; tx = new g();}
             if (!var){return;}
+            if (!tx){this -> variable_name = *name; tx = new g();}
             *tx = *var; 
             if (this -> tb || !this -> tt){return;}
             if (tr){this -> tt = tr;}
