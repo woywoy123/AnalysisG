@@ -21,7 +21,11 @@ rn.evaluation.path = "data/evaluation"
 rn.evaluation.graphs("data/evaluation", GraphDetectorLep())
 
 rn.kfolds.path = "data/k-folds/GraphdetectorLep_train.h5"
-rn.kfolds.split = {"training" : , "validation", "evaluation"]
+rn.kfolds.split = {
+        "training"   : base_dir + "metrics/accuracy/training", 
+        "validation" : base_dir + "metrics/accuracy/validation", 
+        "evaluation" : base_dir + "metrics/accuracy/evaluation"
+}
 
 rn.kfolds.folds = 10
 rn.kfolds.epoch = 200
@@ -67,7 +71,10 @@ for i in params:
     cfg.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
     cfg.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
     cfg.batch_size  = 50
-    break
 
-
-
+out = ""
+for i in rn.stats.kfolds:
+    out += str(rn.stats.kfolds[i]) + "\n"
+open("sets.txt", "w").write(out)
+#rn.SampleParams()
+#rn.ModelTasks()

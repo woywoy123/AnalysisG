@@ -83,6 +83,7 @@ class Statistics:
         self.train     = []
         self.eval      = []
 
+        self.kfolds    = {}
         self.models    = {}
 
     def __str__(self):
@@ -96,6 +97,7 @@ class Statistics:
                     summary[mc][prc]["post"] += prc.daods[k].pstcut
                     summary[mc][prc]["pre"]  += prc.daods[k].precut
                     summary[mc][prc]["n-samples"] += 1
+
         out = "======================= SAMPLE DATA ========================="
         for i in summary:
             out += "--------------- campaign: " + str(i) + " -----------------------\n"
@@ -109,7 +111,7 @@ class Statistics:
         out += "\n\n\n"
         out += "======================= Training ========================="
         for i in self.models:
-            out += "model: " + i + " \n"
+            out += "model: " + str(i) + " \n"
             for j in sorted(self.models[i]):
                 out += "epoch: " + marg(j, 3, False) + " "
                 out += "kfolds: " + str(sorted(list(self.models[i][j]))) + "\n"

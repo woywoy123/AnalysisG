@@ -2,8 +2,10 @@ from AnalysisG.core import IO
 from AnalysisG.core import Tools
 from AnalysisG.core import Notification
 from AnalysisG.core.lossfx import OptimizerConfig
+
+from custom_models import ModelParams, session, KFolds
 from samples import *
-from models import *
+import pickle
 
 class meta:
 
@@ -40,10 +42,15 @@ class Model:
         self.impl = impl
         self.optim = OptimizerConfig()
         self._device = None
+        self._kgen  = None
         self._data  = {}
+        self._kfold = {}
 
     def add(self, model):
         self._data[model.name] = ModelParams(model, self)
+        self._kfold[model.name] = {
+            k : KFolds(self._kgen.split[k], self._kgen).model(model) for k  in self._kgen.split
+        }
         return self._data[model.name]
 
     def optimizer(self, name, params):
@@ -68,10 +75,13 @@ class Runtime:
         self.training   = Samples("training"  , base_dir)
         self.metrics    = Samples("metrics"   , base_dir)
 
-        self.models     = Model("model"       , base_dir)
         self.kfolds     = KFolds(base_dir)
+        self.models     = Model("model", base_dir)
+        self.models._kgen = self.kfolds
         self.meta       = meta(base_dir)
         self.stats      = Statistics(base_dir)
+        try: self.stats = pickle.load(open("cache.pkl", "rb"))
+        except FileNotFoundError: pass
 
     def SampleParams(self):
         camp = -1
@@ -107,59 +117,43 @@ class Runtime:
             self.stats.eval.append(logical)
    
     def ModelTasks(self):
-        for i in self.models_data.values():
-            print(i)
-
-        exit()
-
-
-
-
-
-
-        ct = Tools()        
+        ct = Tools() 
+    
+        x = 0
         for i in self.models._data.values():
-            fd = self.training._fdir + "/" + i.model.impl.__name__ + "/" + i.model.name +  "/*" 
-            for k in ct.ls(fd, "model.pt"): i.add(k)
-            self.stats.models[i.name] = i.epochs
+            fd  = self.training._fdir + "/" + i.model.impl.__name__ + "/" + i.model.name +  "/" 
+            for kt in self.models._kfold:
+                for t in self.models._kfold[kt]:
+                    for l in self.models._kfold[kt][t].combinations():
+
+                        pth = fd + "state/" + l._kdir
+                        fk = l._ddir + "/" + t + ".root"
+
+                        try: self.stats.kfolds[fk]; continue
+                        except: pass 
+
+                        fwt, fkt = ct.is_file(pth), ct.is_file(fk)
+                        l.mode = t
+                        
+                        self.stats.kfolds[fk] = l
+                        try:    self.stats.models[l.modeln][l.epoch][l.folds] = l
+                        except: self.stats.models[l.modeln][l.epoch] = {l.folds : l}
+
+                        if not fwt: continue
+                        if not fkt: continue
+                        x += 1
+                        if x % 50 == 0: pickle.dump(self.stats, open("cache.pkl", "wb"))
+
+                        io = IO()
+                        io.Files = [fk]
+                        io.Trees = "accuracy_" + t
+                        io.Leaves = "dsid"
+                        l.ndata = len([f for f in io])
+                        if not l.ndata: print("BROKEN"); continue
+
+                        l.missing = False
+                        l.smpl_l  = fk
+
+        pickle.dump(self.stats, open("cache.pkl", "wb"))
         return self.stats
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#        
-#
-#        
-#        
-#        
-#
-#
-#
-#        io = IO()
-#        if self.meta is not None:
-#            io.EnablePyAMI = True
-#            io.MetaCachePath = self.meta.meta
-#
-#        # ---- check the sample directory ----- #
-#        if self.training.path is not None: 
-#            io.Files = self.training._fdir
-#            io.Trees = ["nominal"]
-#            io.Leaves = ["weight_mc"]
-#
-#
-#        
-#
-#
-#
-#
