@@ -31,9 +31,13 @@ FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(rapidjson)
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
 
+set(USE_CUDSS ON)
+set(USE_CUDNN ON)
+set(USE_CUFILE ON)
 if(CMAKE_ANALYSISG_CUDA)
 check_language(CUDA)
 enable_language(CUDA)
+find_package(CUDA REQUIRED)
 message(STATUS "INSTALLING EXTENSIONS WITH CUDA!")
 string(REGEX REPLACE ".[0-9][0-9]|\\." "" CUDA_V ${CMAKE_CUDA_COMPILER_VERSION})
 message(STATUS "CMAKE_CUDA_COMPILER = ${CMAKE_CUDA_COMPILER}")
@@ -54,22 +58,6 @@ find_package(Torch REQUIRED CONFIG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 
-#FetchContent_Declare(HDF5
-#GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
-#GIT_TAG origin/hdf5_1_14_5
-#FIND_PACKAGE_ARGS)
-#set(BUILD_TESTING "" OFF)
-#set(HDF5_BUILD_CPP_LIB "" ON)
-#set(HDF5_BUILD_SHARED_LIBS "" ON)
-#set(HDF5_BUILD_EXAMPLES "" OFF)
-#set(HDF5_ENABLE_SZIP_SUPPORT "" OFF)
-#set(HDF5_ENABLE_SZIP_ENCODING "" OFF)
-#set(HDF5_ENABLE_Z_LIB_SUPPORT "" OFF)
-#FetchContent_MakeAvailable(HDF5)
-#list(APPEND CMAKE_PREFIX_PATH ${HDF5_SOURCE_DIR})
-
-#find_package(HDF5   NAMES hdf5 COMPONENTS cpp-shared REQUIRED)
-#find_package(CUDAToolkit 12.6 REQUIRED)
 find_package(HDF5   REQUIRED COMPONENTS CXX)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(ROOT   COMPONENTS RIO Tree Core REQUIRED)
@@ -83,19 +71,6 @@ message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
 message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 
 add_subdirectory(src/AnalysisG)
-file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
+#file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
 
-#option(BUILD_DOC "Build documentation" OFF)
-#find_package(Doxygen)
-#if (DOXYGEN_FOUND AND BUILD_DOC)
-#set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/Doxyfile.in)
-#set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-#configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-#message("Doxygen build started")
-#add_custom_target( doc_doxygen ALL
-#COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-#WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#COMMENT "Generating documentation with Doxygen" VERBATIM)
-#else (DOXYGEN_FOUND)
-#message("Doxygen need to be installed to generate the doxygen documentation")
 

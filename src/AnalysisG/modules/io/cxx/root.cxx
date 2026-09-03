@@ -34,29 +34,23 @@ void io::check_root_file_paths(){
 
     this -> success("Checking File Path:"); 
     for (; itr != this -> root_files.end(); ++itr){
+        std::string fname = itr -> first; 
         int l = itr -> first.size(); 
-        std::string last = itr -> first.substr(l - 1); 
-        if (last == "*"){
+        if (this -> ends_with(&fname, "*")){
             std::vector<std::string> files = this -> ls(itr -> first.substr(0, l-1), ".root"); 
             for (std::string x : files){tmp[x] = true;}
             continue; 
         }
-
-        last = itr -> first; 
-        if (!this -> ends_with(&last, ".root")){
-            std::vector<std::string> f = this -> ls(last, ".root"); 
-            for (size_t x(0); x < f.size(); ++x){
-                this -> success(f[x]);
-                tmp[f[x]] = true; 
-            }
+        if (this -> ends_with(&fname, ".root") && this -> is_file(fname)){
+            this -> success(fname); tmp[fname] = true; 
             continue;
         }
         if (!this -> is_file(itr -> first)){
-            this -> warning("File: " + itr -> first + " not found..."); 
+            this -> warning("File: " + fname + " not found..."); 
             continue;
         }
         this -> success(itr -> first); 
-        tmp[this -> absolute_path(itr -> first)] = true; 
+        tmp[this -> absolute_path(fname)] = true; 
     }
     this -> root_files = tmp; 
 }
