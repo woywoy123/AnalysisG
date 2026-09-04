@@ -16,6 +16,7 @@ cdef class MetricTemplate:
         self.mtx = NULL 
         self.root_leaves = {}
         self.root_fx = {}
+        self.var_seq = {"run-name" : None, "variables" : None}
 
     def __init__(self): 
         if self.mtx is not NULL: return
@@ -26,7 +27,6 @@ cdef class MetricTemplate:
         if self.mtx is NULL: return 
         del self.mtx
 
-
     def __name__(self): return env(self.mtx.name)
 
     @property
@@ -35,27 +35,33 @@ cdef class MetricTemplate:
         return as_basic_dict(&o)
 
     @RunNames.setter
-    def RunNames(self, dict val): 
+    def RunNames(self, dict val):
         cdef map[string, string] o
         as_map(val, &o)
         self.mtx.run_names = o
+        self.var_seq["run-name"] = True
+        if self.var_seq["variables"] is None: return
+        self.Variables = self.var_seq["variables"]
 
     @property
-    def Variables(self): 
+    def Variables(self):
         cdef vector[string] o = self.mtx.variables
         return env_vec(&o)
 
-    @property 
+    @Variables.setter
+    def Variables(self, list val):
+        if self.var_seq["run-name"] is None:
+            self.var_seq["variables"] = val
+            return
+        self.mtx.variables = enc_list(val)
+
+    @property
     def OutputPath(self): 
         return env(self.mtx.output_path)
 
     @OutputPath.setter
     def OutputPath(self, str val): 
         self.mtx.output_path = enc(val)
-
-    @Variables.setter
-    def Variables(self, list val): 
-        self.mtx.variables = enc_list(val)
 
     def Postprocessing(self): pass
 
@@ -69,7 +75,7 @@ cdef class MetricTemplate:
         if   path.endswith("/"): path += "*"
         elif path.endswith(".root"): pass
         else: path += "*"
-       
+
         cdef long ix, il
         cdef int kfold, epoch
 
