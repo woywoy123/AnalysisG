@@ -163,8 +163,11 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device(), true); 
     this -> dev_batched_events[dev_] = bi.clone().to(dev -> device(), true);
     this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true); 
+
+    if (!this -> node_index){this -> node_index = new torch::Tensor(torch::arange(this -> num_nodes));}
     this -> dev_node_index[dev_]     = this -> node_index -> to(dev -> device(), true); 
     this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device(), true); 
+
     torch::cuda::synchronize(dev_); 
     this -> device = dev_in;
     lk.unlock(); 

@@ -101,8 +101,8 @@ void metrics::dump_mass_plots(int k){
         can -> Update();
             
         std::string path_ = out_pth + ith -> first;
-        path_ += "/fold_" + std::to_string(k+1) + "/";
-        path_ += "epoch_" + std::to_string(an -> this_epoch+1) + ".png"; 
+        path_ += "/fold-" + std::to_string(k+1) + "/";
+        path_ += "epoch-" + std::to_string(an -> this_epoch+1) + ".png"; 
         this -> create_path(path_); 
         can -> SaveAs(path_.c_str()); 
         can -> Close();

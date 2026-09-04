@@ -10,6 +10,9 @@ void tools::create_path(std::string input_path){
     
     std::string path = ""; 
     for (unsigned int x(0); x < cuts.size() - f; ++x){
+        if (x == cuts.size()-1 && tools::has_string(&cuts[x], ".")){
+            continue;
+        }
         path += cuts[x] + "/"; 
         mkdir(path.c_str(), S_IRWXU);
     }
