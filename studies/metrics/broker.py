@@ -1,5 +1,6 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
+import pickle
 import json
 
 class task:
@@ -20,6 +21,7 @@ class task:
 class Database:
 
     def __init__(self):
+        self.chkp = 0
         x = 0 
         self.tasks = open("sets.txt", "r").readlines()
         self.pending = {}
@@ -38,7 +40,10 @@ class Database:
         self.training   = [i for i in self.tasks if i.mode == "training"]
         self.validation = [i for i in self.tasks if i.mode == "validation"]
         self.evaluation = [i for i in self.tasks if i.mode == "evaluation"]
+
 db = Database()
+try: db = pickle.load(open("db.pkl", "rb"))
+except: print("DB initialize")
 
 class TaskBroker(BaseHTTPRequestHandler):
 
@@ -46,23 +51,39 @@ class TaskBroker(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
-        
+        hst = parse_qs(urlparse(self.path).query).get("task_id", [None])[0]
+
+        db.chkp+=1
         if   len(db.training):   tk = db.training.pop()
         elif len(db.validation): tk = db.validation.pop()
         else: tk = db.evaluation.pop()
 
-        tsk = {"kfold": tk.kfold, "epoch" : tk.epoch, "model" : tk.model, "mode": tk.mode}
+        try: db.pending[hst]
+        except: db.pending[hst] = tk.mode
+        if db.pending[hst] == tk.mode:
+            tsk = {
+                    "kfold": tk.kfold, "epoch" : tk.epoch,
+                    "model" : tk.model, "mode": tk.mode,
+                    "status" : "run"
+            }
+            tk.host = hst
+        else:
+            db.training   += [tk] * tk.mode == "training"
+            db.validation += [tk] * tk.mode == "validation"
+            db.evaluation += [tk] * tk.mode == "evaluation"
+            tsk = {"status" : "idl"}
         self.wfile.write(json.dumps(tsk).encode("utf-8"))
-        tk.host = parse_qs(urlparse(self.path).query).get("task_id", [None])[0]
-        db.pending[tk] = False
 
         print("_____ Pending: "   , len(db.pending)   , "____")
         print("_____ Training: "  , len(db.training)  , "____")
         print("_____ Validation: ", len(db.validation), "____")
         print("_____ Evaluation: ", len(db.evaluation), "____")
+        if db.chkp % 20: return
+        pickle.dump(db, open("db.pkl", "wb"))
+        print("DB STASHED")
 
 def run_server(port = 2301):
-    httpd = HTTPServer(("localhost", port), TaskBroker)
+    httpd = HTTPServer(("0.0.0.0", port), TaskBroker)
     try: httpd.serve_forever()
     except KeyboardInterrupt: httpd.server_close()
 

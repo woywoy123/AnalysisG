@@ -18,6 +18,10 @@ cdef extern from "<templates/metric_template.h>" nogil:
         string output_path
         string name
 
+
+
+
+
 cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* epochs, string* prefx) nogil:
     cdef tools tl
     cdef string ix
@@ -58,3 +62,4 @@ cdef class MetricTemplate(Tools):
     cdef metric_template* mtx
     cdef public dict root_leaves
     cdef public dict root_fx
+    cdef dict var_seq

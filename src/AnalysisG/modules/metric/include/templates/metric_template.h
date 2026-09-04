@@ -70,6 +70,7 @@ struct metric_t :
         g get(graph_enum grx, std::string _name){
             g out = g(); 
             if (!this -> h_maps[grx][_name]){
+                this -> print(); 
                 this -> coms -> warning(this -> emsg + _name); return out;
             }
             size_t idx = this -> v_maps[grx][_name]; 
