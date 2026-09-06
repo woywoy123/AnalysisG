@@ -10,9 +10,7 @@ multithreaded_t::multithreaded_t(size_t lgt, int num_thr){
     this -> coms     = new std::vector<std::string*>(lgt, nullptr); 
     this -> traces   = new std::vector<tracing_t*>(lgt, nullptr); 
     for (size_t x(0); x < lgt; ++x){
-        (*this -> coms)[x]   = new std::string("");
-        (*this -> coms)[x] -> reserve(400);
-
+        (*this -> coms)[x]   = new std::string( "[Thread ]" + tools::to_string(x) );
         (*this -> traces)[x] = new tracing_t(); 
         (*this -> traces)[x] -> coms      =  (*this -> coms)[x]; 
         (*this -> traces)[x] -> idx       = &(*this -> progress)[x]; 
@@ -41,6 +39,8 @@ multithreaded_t::~multithreaded_t(){
     this -> pflush(&this -> threads); 
     this -> pflush(&this -> target); 
     this -> pflush(&this -> traces); 
+
+    this -> vflush(&this -> coms); 
     this -> pflush(&this -> coms); 
 }
 
@@ -48,20 +48,17 @@ size_t tracing_t::index(){return (*this -> idx);}
 void   tracing_t::next(){(*this -> idx)++;}
 void   tracing_t::finished(){(*this -> status) = 0;}
 
-void tracing_t::info(std::string msg){(*this -> coms) = msg;}
-void tracing_t::message(std::string msg){(*this -> coms) = "\033[1;37m " + msg + "\033[0m";}
-void tracing_t::warning(std::string msg){(*this -> coms) = "\033[1;33m " + msg + "\033[0m";}
-void tracing_t::success(std::string msg){(*this -> coms) = "\033[1;32m " + msg + "\033[0m";}
-void tracing_t::failure(std::string msg){(*this -> coms) = "\033[1;31m " + msg + "\033[0m";}
+void tracing_t::info(std::string msg){this -> coms -> assign(msg.c_str());}
+void tracing_t::message(std::string msg){this -> coms -> assign("\033[1;37m " + msg + "\033[0m");}
+void tracing_t::warning(std::string msg){this -> coms -> assign("\033[1;33m " + msg + "\033[0m");}
+void tracing_t::success(std::string msg){this -> coms -> assign("\033[1;32m " + msg + "\033[0m");}
+void tracing_t::failure(std::string msg){this -> coms -> assign("\033[1;31m " + msg + "\033[0m");}
 
 void   tracing_t::register_thread(std::thread* thr, size_t x){
     (*this -> reg -> threads)[this -> threadIdx] = thr;
     (*this -> reg -> target )[this -> threadIdx] = x; 
     (*this -> reg -> status )[this -> threadIdx] = 1; 
 }
-
-
-
 
 
 notification::notification(){}
@@ -119,10 +116,11 @@ void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>
     const char cFilled[] = "#####################################";
     const char cEmpty[]  = "                                     ";
     for (size_t x(0); x < trgt -> size(); ++x){
+        std::string tl = (*title)[x]; 
         float prg = float(threads -> at(x)) / float(trgt -> at(x)); 
         size_t lFilledStart = (sizeof(cFilled) - 1) * (1 - prg);
         size_t lEmptyStart  = (sizeof(cFilled) - 1) * prg;
-        std::cout << title -> at(x) << " [" << cFilled + lFilledStart << cEmpty + lEmptyStart << "] ";  
+        std::cout << tl << " [" << cFilled + lFilledStart << cEmpty + lEmptyStart << "] ";  
         std::cout << std::fixed << std::setprecision(4) << prg*100 << "%\n"; 
     }
     std::cout << std::flush; 
@@ -154,17 +152,17 @@ void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::st
 void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title){
     notification n = notification();
     if (!title){return;}
-    std::vector<std::string*> bars(l -> size(), nullptr); 
-    for (size_t x(0); x < l -> size(); ++x){
-        std::string* bi = nullptr; 
-        if (title && (*title)[x]){bi = (*title)[x];}
-        else {bi = new std::string("[Thread: " + std::to_string(x+1) + "]");}
-        bars[x] = bi; 
-    }
-
     float prgs = 0; 
     size_t cwhite = 0; 
     while (prgs < 1.0){
+        std::vector<std::string*> bars(l -> size(), nullptr); 
+        for (size_t x(0); x < l -> size(); ++x){
+            std::string* bi = nullptr; 
+            if (title && (*title)[x]){bi = new std::string( *(*title)[x] );}
+            else {bi = new std::string("[Thread: " + std::to_string(x+1) + "]");}
+            bars[x] = bi; 
+        }
+
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         size_t xl = n.sum(l);  
         size_t xp = n.sum(threads);
@@ -179,7 +177,7 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
         for (size_t x(0); x < bars.size(); ++x){
             if (!(*threads)[x]){continue;}
             if ((*threads)[x] == (*l)[x]){continue;}
-            vec.push_back(std::string(bars[x] -> c_str()));
+            vec.push_back(*bars[x]);
             prx.push_back((*threads)[x]);
             totl.push_back((*l)[x]); 
             ln = (bars[x] -> size() < ln) ? ln : bars[x] -> size(); 
@@ -191,15 +189,15 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
 
         for (size_t x(0); x < prx.size()-1; ++x){
             size_t t = vec[x].size(); 
-            for (size_t y(t); y < ln; ++y){vec[x]+= " ";}
+            for (size_t y(t); y < ln; ++y){vec[x] += " ";}
         }
 
         for (size_t x(0); x < cwhite; ++x){std::cout << "\033[F\x1b[2K";}
         std::cout << std::flush; 
         n.progressbar(&prx, &totl, &vec);  
         cwhite = prx.size();
+        tools::vflush(&bars); 
     }
-    tools::vflush(&bars); 
 } 
 
 void notification::monitor(std::vector<std::thread*>* thr){
@@ -242,14 +240,12 @@ void notification::rate_time(int sec){
 bool notification::await_threads(multithreaded_t* thr, bool monitor){
     int cnt = 0; 
     for (size_t x(0); x < thr -> job_length; ++x){
-        tracing_t* tr = thr -> traces -> at(x); 
         if (!(*thr -> status )[x]){continue;}
         if (!(*thr -> threads)[x]){continue;}
         ++cnt; 
     }
     if (cnt > thr -> num_threads && !monitor){return true;}
     if (monitor && cnt > 0){return true;}
-
     if (!monitor){return false;} 
     return false; 
 }
