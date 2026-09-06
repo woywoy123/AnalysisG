@@ -33,6 +33,7 @@ multithreaded_t::~multithreaded_t(){
 
     this -> vflush(this -> threads); 
     this -> vflush(this -> traces);
+    this -> vflush(this -> coms); 
 
     this -> pflush(&this -> status); 
     this -> pflush(&this -> progress); 
@@ -40,7 +41,6 @@ multithreaded_t::~multithreaded_t(){
     this -> pflush(&this -> target); 
     this -> pflush(&this -> traces); 
 
-    this -> vflush(&this -> coms); 
     this -> pflush(&this -> coms); 
 }
 
