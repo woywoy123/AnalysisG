@@ -24,6 +24,7 @@ bool analysis::build_metric(){
         key += "|model-mode:" + model_mode(mt); 
         key += "|kfold-" + std::to_string(mx -> kfold); 
         key += "|>"; 
+        key = this -> hash(key); 
         if (cx -> count(key)){mx -> batches[mt] = (*cx)[key]; return 0;}
         std::vector<graph_t*>* smpl = nullptr; 
         switch(mt){
@@ -60,8 +61,8 @@ bool analysis::build_metric(){
         return false; 
     }
     
-    long smpls = 0; 
     std::vector<metric_model_t*> que = {}; 
+    std::vector<unsigned long> radnx = {}; 
     std::map<int, torch::TensorOptions*> dev_map; 
     std::map<std::string, metric_template*>::iterator itm = this -> metric_names.begin();
     for (; itm != this -> metric_names.end(); ++itm){
@@ -78,15 +79,18 @@ bool analysis::build_metric(){
             metric_model_t* wrk = mt -> data -> at(x);
             if ( !wrk -> verify() ){wrk -> failure("ERROR"); continue;}
             wrk -> metrx = mt -> clone(0); que.push_back(wrk); 
+            radnx.push_back(radnx.size()); 
         } 
     } 
     this -> loader -> datatransfer(&dev_map);
-
+    this -> loader -> shuffle(&radnx); 
     // ------------------ Begin the loop ------------------- //
+    long smpls = 0; 
     std::map<std::string, std::vector<graph_t*>*> batch_cache = {}; 
     multithreaded_t* thr = this -> make_threads(que.size(), threads_); 
     for (size_t x(0); x < que.size(); ++x){
-        metric_model_t* wrk = que[x];  
+        unsigned long idx = radnx[x]; 
+        metric_model_t* wrk = que[idx];  
         size_t tf = 0; 
         tf += lamb(tr, mode_enum::training  , wrk, &batch_cache); 
         tf += lamb(va, mode_enum::validation, wrk, &batch_cache); 

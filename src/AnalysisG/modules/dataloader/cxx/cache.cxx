@@ -143,7 +143,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         fname = this -> get_splits(&fname, "/"); 
         (*th_ -> maxlength) = data_set_.size() + ( (!data_k) ? 0 : data_k -> size() ); 
         if (data_k){
-            th_ -> info("[Reading][k-fold] " + fname); 
+            th_ -> info("[Reading][k-fold][" + fname + "]"); 
             const bool eval  = this -> setting -> evaluation; 
             const bool fold  = this -> setting -> validation;
             const bool train = this -> setting -> training; 
@@ -151,26 +151,25 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             for (size_t x(0); x < data_k -> size(); ++x){
                 const folds_t* kf = &(*data_k)[x]; 
                 std::string hash = std::string(kf -> hash); 
-                if (load_hash[hash]){continue;}
+                if (load_hash[hash] == 4){continue;}
                 th_ -> next();
 
                 load_hash[hash] = 1; 
                 int* vl = &load_hash[hash]; 
-                (*vl)  += (kf -> is_eval && eval) * 2; 
-                if ((*vl) == 2){continue;}
-                int k_ = kf -> k +1; 
+                (*vl)  += (kf -> is_eval && eval) * 3; 
+                if ((*vl) == 4){continue;}
                 for (size_t k(0); k < kv -> size(); ++k){
-                    if ((*kv)[k] != k_){continue;}
-                    *vl  = 2 * fold  * kf -> is_valid; 
+                    if ((*kv)[k] != kf -> k + 1){continue;}
+                    *vl += 2 * fold  * kf -> is_valid; 
                     *vl += 2 * train * kf -> is_train; 
                     break;
                 }
             }
-            th_ -> info("[Finished][k-fold]");
+            th_ -> info("[Finished][k-fold][" + fname + "]");
         }
 
         this -> rate_time(1); 
-        th_ -> info("[Mapping] " + fname);
+        th_ -> info("[Mapping][" + fname + "]");
         for (size_t x(0); x < data_set_.size(); ++x){
             std::string hx =  data_set_[x]; 
             if (load_hash[hx] < 2 && data_k){continue;}
@@ -178,13 +177,12 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             kfold_r.push_back(hx); 
             th_ -> next(); 
         }
-        th_ -> info("[Finished] Mapping");
+        th_ -> info("[Finished][Mapping][" + fname + "]");
         this -> rate_time(1); 
 
         (*th_ -> idx) = 0;
         (*th_ -> maxlength) = kfold_r.size(); 
-
-        th_ -> info("[Graphs](" + this -> to_string(kfold_r.size()) + ") " + fname);
+        th_ -> success("[Graphs](" + this -> to_string(kfold_r.size()) + ")[" + fname + "]");
         c_gr -> assign(kfold_r.size(), nullptr);  
         for (size_t x(0); x < kfold_r.size(); ++x){
             std::string hx = kfold_r[x]; 
@@ -199,7 +197,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             th_ -> next(); 
             if (x){continue;}
             this -> rate_time(1); 
-            th_ -> info("[Reading] " + fname); 
+            th_ -> success("[Reading] " + fname); 
         }
         ior.end();
         th_ -> finished(); 

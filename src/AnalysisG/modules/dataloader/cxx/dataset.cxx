@@ -184,8 +184,6 @@ void dataloader::dump_dataset(std::string path){
 
 bool dataloader::restore_dataset(std::string path){
     if (!path.size()){return true;}
-    if (this -> k_fold_training.size()){return true;}
-
     std::vector<folds_t> data = {}; 
     io* io_g = new io(); 
     io_g -> start(path, "read"); 
@@ -193,6 +191,9 @@ bool dataloader::restore_dataset(std::string path){
     io_g -> end(); 
     delete io_g; 
 
+    this -> mflush(&this -> k_fold_training); 
+    this -> mflush(&this -> k_fold_validation); 
+    this -> train_set -> clear(); 
     for (size_t x(0); x < data.size(); ++x){
         folds_t* kf = &data[x];
         std::string hash = std::string(kf -> hash); 
@@ -207,8 +208,9 @@ bool dataloader::restore_dataset(std::string path){
             this -> k_fold_training[kv]   = new std::vector<unsigned long>();
             this -> k_fold_validation[kv] = new std::vector<unsigned long>(); 
         }
+
         std::vector<unsigned long>* bin = nullptr; 
-        if (kf -> is_train){     bin = this -> k_fold_training[kv];}
+        if      (kf -> is_train){bin = this -> k_fold_training[kv];}
         else if (kf -> is_valid){bin = this -> k_fold_validation[kv];}
         else {continue;}
         bin -> push_back(index); 
