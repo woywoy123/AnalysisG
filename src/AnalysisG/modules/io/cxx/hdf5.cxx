@@ -26,6 +26,7 @@ bool io::start(std::string filename, std::string read_write){
     else if (read_write == "write" && f){mode = H5F_ACC_RDWR;}
     else if (read_write == "read" && f){mode = H5F_ACC_RDONLY;}
     else {return false;}
+
     this -> file = new H5::H5File(filename.c_str(), mode);
     return true; 
 }

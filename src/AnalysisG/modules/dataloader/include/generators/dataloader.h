@@ -96,7 +96,7 @@ class dataloader:
         std::vector< std::map<std::string, int>* > data_map_edge  = {}; 
 
 
-        std::map<std::string, unsigned long> hash_map = {}; 
+        std::map<std::string, long> hash_map = {}; 
         std::vector<graph_t*>*  gr_test = nullptr; 
         std::vector<graph_t*>* data_set = nullptr; 
 

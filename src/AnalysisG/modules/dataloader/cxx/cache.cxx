@@ -130,124 +130,126 @@ bool dataloader::dump_graphs(std::string path, int threads){
 }
 
 std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::string> cache_, int threads, bool force_load){
-    auto threaded_reader = [](
-            std::string pth, std::vector<std::string>* gr_ev, std::vector<graph_t*>* c_gr, size_t* prg
-    ){
-        io* ior = new io();
-        ior -> start(pth, "read"); 
-        for (size_t p(0); p < gr_ev -> size(); ++p){
+    auto threaded_reader = [this](
+            std::string fname, std::vector<graph_t*>* c_gr, 
+            const std::vector<folds_t>* data_k, tracing_t* th_
+    ) -> void {
+        std::map<std::string, int> load_hash; 
+        std::string path = this -> setting -> training_dataset; 
+        bool rds = path.size() > 0; 
+        if (rds){
+            th_ -> info("Reading k-Fold"); 
+            const bool eval  = this -> setting -> evaluation; 
+            const bool fold  = this -> setting -> validation;
+            const bool train = this -> setting -> training; 
+            const std::vector<int>* kv = &this -> setting -> kfold; 
+            (*th_ -> maxlength) = data_k -> size(); 
+            for (size_t x(0); x < data_k -> size(); ++x){
+                const folds_t* kf = &(*data_k)[x]; 
+                std::string hash = std::string(kf -> hash); 
+                th_ -> next();
+                if (load_hash[hash]){continue;}
+                int* vl = &load_hash[hash]; 
+                *vl    = 1; 
+                (*vl) += (kf -> is_eval && eval); 
+                if ((*vl) == 2){continue;}
+                int k_ = kf -> k +1; 
+                for (size_t k(0); k < kv -> size(); ++k){
+                    if ((*kv)[k] != k_){continue;}
+                    *vl  = fold  * kf -> is_valid; 
+                    *vl += train * kf -> is_train; 
+                    break;
+                }
+            }
+            th_ -> success("Finished k-Fold");
+            this -> rate_time(1); 
+        }
+
+        io ior = io();
+        ior.start(fname, "read"); 
+
+        (*th_ -> idx) = 0;
+        fname = this -> get_splits(&fname, "/"); 
+        th_ -> info("[Mapping] " + fname);
+
+        std::vector<std::string> kfold_r; 
+        const std::vector<std::string> data_set_ = ior.dataset_names(); 
+        (*th_ -> maxlength) = kfold_r.size(); 
+        for (size_t x(0); x < data_set_.size(); ++x){
+            std::string hx =  data_set_[x]; 
+            int*        vl = &load_hash[hx]; 
+            th_ -> next(); 
+//            if (rds && !vl){continue;}
+//            if (rds &&  vl && *vl == 0){continue;}
+//            if (this -> hash_map.count(hx)){continue;}
+            kfold_r.push_back(hx); 
+        }
+
+        (*th_ -> idx) = 0;
+        (*th_ -> maxlength) = kfold_r.size(); 
+        this -> rate_time(1); 
+        th_ -> info("[Found Graphs](" + this -> to_string(kfold_r.size()) + ") " + fname);
+        c_gr -> assign(kfold_r.size(), nullptr);  
+        for (size_t x(0); x < kfold_r.size(); ++x){
+            std::string hx = kfold_r[x]; 
             graph_hdf5_w datar = graph_hdf5_w(); 
-            ior -> read(&datar, (*gr_ev)[p]);
+            ior.read(&datar, hx);
             graph_hdf5 w = graph_hdf5(); 
             datar.import_gr(&w); 
             datar.flush_data(); 
             graph_t* gx = new graph_t();
             gx -> deserialize(&w); 
-            (*c_gr)[p] = gx;
-            (*prg) = p+1; 
+            (*c_gr)[x] = gx;
+            th_ -> next(); 
+            if (x){continue;}
+            th_ -> info("[Reading] " + fname); 
         }
-        delete ior;
+        ior.end();
+        th_ -> finished(); 
     }; 
 
-
-    std::vector<folds_t> data_k = {}; 
-    std::string path = this -> setting -> training_dataset; 
-    if (path.size()){
-        io* io_g = new io(); 
-        io_g -> start(path  , "read"); 
-        io_g -> read(&data_k, "kfolds"); 
-        io_g -> end(); 
-        delete io_g; 
-    }
-
-    std::map<std::string, int> load_hash; 
-    bool eval  = this -> setting -> evaluation; 
-    bool fold  = this -> setting -> validation;
-    bool train = this -> setting -> training; 
-    std::vector<int> kv = this -> setting -> kfold; 
-    for (size_t x(0); x < data_k.size(); ++x){
-        std::string hash = std::string(data_k[x].hash);
-        data_k[x].flush_data();
-        if (this -> hash_map.count(hash)){continue;}
-        if (load_hash.count(hash)){continue;}
-    
-        if (data_k[x].is_eval && eval){
-            load_hash[hash] = 1; 
-            continue;
-        }
-        for (size_t k(0); k < kv.size(); ++k){
-            if (kv[k] != data_k[x].k+1){continue;}
-            load_hash[hash] = fold * data_k[x].is_valid + train * data_k[x].is_train; 
-            break;
-        }
-    }
-
-    size_t len_cache = 0; 
-    std::vector<size_t> trgt = {};
-    std::vector<size_t> handles = {};
     std::vector<std::string> cache_io = {}; 
     std::map<std::string, std::vector<std::string>> data_set_; 
     for (size_t x(0); x < cache_.size(); ++x){
         std::string fname = cache_[x]; 
-        std::vector<std::string> spl = this -> split(fname, "/"); 
-
-        std::string fname_ = spl[spl.size()-1]; 
+        std::string fname_ = this -> get_splits(&fname, "/"); 
         if (!this -> has_string(&fname_, "0x")){continue;}
+        if ( this -> has_string(&fname_, ".0x")){continue;}
         cache_io.push_back(fname); 
-
-        io ior = io();
-        ior.start(fname, "read"); 
-
-        data_set_[fname] = ior.dataset_names();  
-        size_t ld = data_set_[fname].size() * (force_load && !kv.size()); 
-        for (size_t l(0); l < ld; ++l){load_hash[data_set_[fname][l]] = -1;}
-        if (load_hash.size()){
-            std::vector<std::string>* check = &data_set_[fname]; 
-            std::vector<std::string>::iterator itx = check -> begin(); 
-            for (; itx != check -> end();){itx = (load_hash[*itx]) ? ++itx : check -> erase(itx);}
-        }
-
-        len_cache += data_set_[fname].size();
-        trgt.push_back(data_set_[fname].size()); 
-        handles.push_back(0); 
-        ior.end(); 
-        this -> progressbar(float((x+1)) / float(cache_.size()), "Checking HDF5 size: " + fname_); 
     }
 
-    std::map<std::string, graph_t*>* restored = new std::map<std::string, graph_t*>(); 
-    if (!len_cache){return restored;}
-
-    std::string title = "Reading HDF5"; 
-    std::thread* prg = new std::thread(this -> progressbar2, &handles, &len_cache, &title); 
-
-    int tidx = 0; 
-    std::vector<std::thread*> th_(cache_io.size(), nullptr); 
+    std::string path = this -> setting -> training_dataset; 
+    std::vector<folds_t> data_k = {}; 
+    io io_g = io(); 
+    io_g.start(path, "read"); 
+    io_g.read(&data_k, "kfolds"); 
+    io_g.end();      
+ 
+    multithreaded_t* th = this -> make_threads(cache_io.size(), threads); 
     std::vector<std::vector<graph_t*>*> cache_rebuild(cache_io.size(), nullptr); 
-    for (size_t x(0); x < cache_io.size(); ++x, ++tidx){
-        std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
-        title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
-        std::vector<std::string>* gr_ev = &data_set_[cache_io[x]];
-        if (!gr_ev -> size()){continue;}
+    for (size_t x(0); x < cache_io.size(); ++x){
+        std::string fname = cache_io[x]; 
+        cache_rebuild[x] = new std::vector<graph_t*>(); 
+        tracing_t* th_ = th -> traces -> at(x); 
+        th_ -> register_thread(new std::thread(threaded_reader, fname, cache_rebuild[x], &data_k, th_), 1); 
+        while (this -> await_threads(th, false)){}
+    } 
+    while (this -> await_threads(th, true)){}
+    for (size_t x(0); x < data_k.size(); ++x){data_k[x].flush_data();}
 
-        cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
-        th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], &handles[x]); 
-        while (tidx >= threads){tidx = this -> running(&th_, &handles, &trgt);}
-    }
-    this -> monitor(&th_); 
-
+    std::cout << ":::::::::::::" << std::endl; 
+    std::map<std::string, graph_t*>* restored = new std::map<std::string, graph_t*>(); 
+    return restored; 
     for (size_t x(0); x < cache_rebuild.size(); ++x){
         std::vector<graph_t*>* datax = cache_rebuild[x]; 
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
-            graph_t* gr = (*datax)[p];
-            (*restored)[(*gr -> hash)] = gr; 
-            (*datax)[p] = nullptr; 
+            graph_t* gr = (*datax)[p]; 
+            (*restored)[(*gr -> hash)] = gr;
         }
-        this -> vflush(datax); 
         this -> pflush(&datax); 
     }
     cache_rebuild.clear(); 
-    this -> tflush(&prg); 
     return restored; 
 }
 

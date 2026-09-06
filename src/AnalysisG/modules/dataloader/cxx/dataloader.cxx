@@ -64,13 +64,12 @@ void dataloader::clean_data_elements(
         hit = int(x); break;
     } 
     if (hit >= 0){
-        delete *data_map; 
+        this -> pflush(data_map); 
         *data_map = (*loader_map)[hit];
         return; 
     }
-
     loader_map -> push_back( new std::map<std::string, int>(*dd) ); 
-    delete *data_map; 
+    this -> pflush(data_map); 
     *data_map = (*loader_map)[loader_map -> size() - 1]; 
 }
 
@@ -107,30 +106,28 @@ void dataloader::datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* 
             *handle = f+1;
         }
     };
-
     if (num_ev){*num_ev = this -> data_set -> size();}
     lamb(this -> data_set, op, cur_evnt); 
 }
 
 void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops){
-    auto lamb = [this](torch::TensorOptions* op, size_t* num_ev, size_t* prg){this -> datatransfer(op, num_ev, prg);};
-
-    size_t num_thr = 0;  
-    std::vector<std::thread*> trans(ops -> size(), nullptr); 
-    std::vector<std::string*> titles(ops -> size(), nullptr); 
-    std::vector<size_t> num_events(ops -> size(), 0); 
-    std::vector<size_t> prg_events(ops -> size(), 0);
+    auto lamb = [this](torch::TensorOptions* op, tracing_t* th_){
+        th_ -> info("Progress on device: " + this -> to_string(int(op -> device_index()))); 
+        this -> datatransfer(op, th_ -> maxlength, th_ -> idx);
+        th_ -> finished(); 
+    };
 
     this -> info("Transferring graphs to device" + std::string((ops -> size() > 1) ? "s" : "")); 
+    int x = -1; 
+    multithreaded_t* thr = this -> make_threads(ops -> size(), ops -> size()); 
     std::map<int, torch::TensorOptions*>::iterator ito = ops -> begin();
-    for (; ito != ops -> end(); ++ito, ++num_thr){
-        trans[num_thr]  = new std::thread(lamb, ito -> second, &num_events[num_thr], &prg_events[num_thr]); 
-        titles[num_thr] = new std::string("Progress on device:" + std::to_string(ito -> first)); 
+    for (; ito != ops -> end(); ++ito){
+        tracing_t* th = thr -> traces -> at(++x); 
+        th -> register_thread(new std::thread(lamb, ito -> second, th), 1); 
     }
-    std::thread* thr = new std::thread(this -> progressbar3, &prg_events, &num_events, &titles); 
-    this -> monitor(&trans); 
+    while(this -> await_threads(thr, true)){}
     this -> success("Transfer Complete!"); 
-    thr -> join(); delete thr; thr = nullptr; 
+    this -> pflush(&thr); 
 }
 
 
@@ -173,9 +170,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     };  
 
     auto build_graph = [this, g_data, n_data, e_data, g_truth, n_truth, e_truth, collect](
-            std::vector<graph_t*>* inpt, 
-            std::vector<graph_t*>* out, 
-            model_template* __mdl, 
+            std::vector<graph_t*>* inpt, std::vector<graph_t*>* out, model_template* __mdl, 
             size_t index, size_t* prg = nullptr
     ){
         torch::TensorOptions* op = __mdl -> m_option; 
@@ -272,7 +267,6 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* _data, mod
     int thr = this -> setting -> threads * 12; 
     std::vector<std::thread*> th_(batched.size(), nullptr); 
     for (size_t i(0); i < batched.size(); ++i){
-        if (thr == 1){build_graph(&batched[i], out, _mdl, i); continue;}
         th_[i] = new std::thread(build_graph, &batched[i], out, _mdl, i, &prg[i]);
         while (r > thr){r = this -> running(&th_, &prg, &trgt);}
         ++r; 

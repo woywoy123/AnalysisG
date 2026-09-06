@@ -195,13 +195,13 @@ bool dataloader::restore_dataset(std::string path){
 
     for (size_t x(0); x < data.size(); ++x){
         folds_t* kf = &data[x];
-        int kv = kf -> k;  
         std::string hash = std::string(kf -> hash); 
         kf -> flush_data();
         if (!this -> hash_map.count(hash)){continue;}
-
         unsigned long index = this -> hash_map[hash]; 
         if (kf -> is_eval){this -> test_set -> push_back(index); continue;}
+
+        int kv = kf -> k;  
         if (!kv){this -> train_set -> push_back(index);}
         if (!this -> k_fold_training.count(kv)){
             this -> k_fold_training[kv]   = new std::vector<unsigned long>();
