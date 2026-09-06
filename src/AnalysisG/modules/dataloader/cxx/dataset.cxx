@@ -191,9 +191,9 @@ bool dataloader::restore_dataset(std::string path){
     io_g -> end(); 
     delete io_g; 
 
-    this -> mflush(&this -> k_fold_training); 
-    this -> mflush(&this -> k_fold_validation); 
-    this -> train_set -> clear(); 
+    //this -> mflush(&this -> k_fold_training); 
+    //this -> mflush(&this -> k_fold_validation); 
+    //this -> train_set -> clear(); 
     for (size_t x(0); x < data.size(); ++x){
         folds_t* kf = &data[x];
         std::string hash = std::string(kf -> hash); 

@@ -24,7 +24,7 @@ bool analysis::build_metric(){
         key += "|model-mode:" + model_mode(mt); 
         key += "|kfold-" + std::to_string(mx -> kfold); 
         key += "|>"; 
-        key = this -> hash(key); 
+
         if (cx -> count(key)){mx -> batches[mt] = (*cx)[key]; return 0;}
         std::vector<graph_t*>* smpl = nullptr; 
         switch(mt){

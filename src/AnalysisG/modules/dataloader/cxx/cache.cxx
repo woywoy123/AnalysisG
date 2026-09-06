@@ -151,17 +151,18 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             for (size_t x(0); x < data_k -> size(); ++x){
                 const folds_t* kf = &(*data_k)[x]; 
                 std::string hash = std::string(kf -> hash); 
-                if (load_hash[hash] == 4){continue;}
                 th_ -> next();
-
-                load_hash[hash] = 1; 
+                if (load_hash[hash] > 0){continue;}
+                if (load_hash[hash] == 2 && eval ){continue;}
+                if (load_hash[hash] == 3 && train){continue;}
+                if (load_hash[hash] == 4 && fold ){continue;}
                 int* vl = &load_hash[hash]; 
-                (*vl)  += (kf -> is_eval && eval) * 3; 
-                if ((*vl) == 4){continue;}
+                (*vl)  = (kf -> is_eval && eval) * 2; 
+                if ((*vl) == 2){continue;}
                 for (size_t k(0); k < kv -> size(); ++k){
                     if ((*kv)[k] != kf -> k + 1){continue;}
-                    *vl += 2 * fold  * kf -> is_valid; 
-                    *vl += 2 * train * kf -> is_train; 
+                    *vl = 3 * train * kf -> is_train; 
+                    *vl = 4 * fold  * kf -> is_valid; 
                     break;
                 }
             }
@@ -172,7 +173,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         th_ -> info("[Mapping][" + fname + "]");
         for (size_t x(0); x < data_set_.size(); ++x){
             std::string hx =  data_set_[x]; 
-            if (load_hash[hx] < 2 && data_k){continue;}
+            if (!load_hash[hx] && !data_k){continue;}
             if (this -> hash_map.count(hx)){continue;}
             kfold_r.push_back(hx); 
             th_ -> next(); 
@@ -212,6 +213,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if ( this -> has_string(&fname_, ".0x")){continue;}
         cache_io.push_back(fname); 
     }
+
 
     std::string path = this -> setting -> training_dataset; 
     std::vector<folds_t> data_k = {}; 

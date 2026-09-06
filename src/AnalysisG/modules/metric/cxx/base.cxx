@@ -8,13 +8,17 @@ void metric_template::execute(metric_model_t* mtx, tracing_t* tr){
         metric_template* mt_, mode_enum md
     ) -> void {
         if (!mtx_ -> batches[md]){return;}
-        std::string val = "[" + mx_ -> run_name + "]: "; 
+        std::string val = "["; 
         switch(md){
             case mode_enum::training:   val += "training";   break; 
             case mode_enum::validation: val += "validation"; break; 
             case mode_enum::evaluation: val += "evaluation"; break; 
             default: return; 
         }
+
+        int s = mtx_ -> batches[md] -> size(); 
+        val += "][" + mx_ -> run_name;
+        val += "]["  + tools::to_string(s) + "]"; 
 
         mx_ -> _mode = md;
         mx_ -> coms -> info(val);
