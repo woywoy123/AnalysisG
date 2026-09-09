@@ -41,6 +41,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
         io* wrt = new io(); 
         wrt -> start(fname, "write"); 
         std::vector<std::string> spl = this -> split(fname, "/"); 
+        (*tr -> maxlength) = datax.size(); 
         tr -> message("Writing HDF5 -> " + spl[spl.size()-1]);  
         for (size_t l(0); l < datax.size(); ++l){
             graph_hdf5_w* h5wrt = &std::get<0>(*datax[l]); 
@@ -52,6 +53,29 @@ bool dataloader::dump_graphs(std::string path, int threads){
         delete wrt;     
         tr -> finished(); 
     }; 
+
+    auto validate = [this](std::map<std::string, graph_t*>* data, bool* state, tracing_t* thr_){
+        bool vld = true; (*thr_ -> maxlength) = data -> size();  
+        thr_ -> info("CHECKING HASHES"); 
+        std::map<std::string, graph_t*>::iterator itr = data -> begin(); 
+        for (; itr != data -> end(); ++itr){
+            thr_ -> next(); 
+            graph_t* dt = itr -> second; 
+            if (!this -> hash_map.count(*dt -> hash)){vld = false; break;}
+            long hid = this -> hash_map[*dt -> hash];
+            std::string* hxt = (*this -> data_set)[hid] -> hash; 
+            vld *= (*dt -> hash) == (*hxt); 
+            if (vld){thr_ -> success("[VALID]"); continue;}
+            thr_ -> success("[INVALID]: EXPECTED -> " + *hxt + " GOT -> " + *dt -> hash);
+            this -> rate_time(1); 
+            break;
+        } 
+        thr_ -> finished(); 
+        (*state) = vld; 
+        this -> mflush(data);
+        this -> pflush(&data);  
+    }; 
+
 
     if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
     size_t x = (this -> data_set -> size()/threads); 
@@ -84,7 +108,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
             id = (this -> ends_with(&path, "/")) ? path + id : path + "/" + id; 
             for (int i : *itr -> second){collect[id].push_back(&(*serials[t])[i]);}
             idx += itr -> second -> size();  
-            delete itr -> second;
+            this -> pflush(&itr -> second); 
         }
     }
     std::vector<std::map<std::string, std::vector<int>*>>().swap(fnames); 
@@ -112,18 +136,13 @@ bool dataloader::dump_graphs(std::string path, int threads){
     }
 
     this -> info("Validating Graph Cache..."); 
-    std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, threads); 
-
-    bool valid = true;
-    for (x = 0; x < this -> data_set -> size(); ++x){
-        graph_t* dt = (*this -> data_set)[x]; 
-        valid = valid && restored -> count(*dt -> hash);
-        if (valid){continue;}
-        break;
-    }
-    this -> mflush(restored); 
-    this -> pflush(&restored);  
-
+    std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, threads, true); 
+ 
+    bool valid = restored -> size() > 0;  
+    thr = this -> make_threads(1, 1); 
+    tracing_t* tr = (*thr -> traces)[0]; 
+    tr -> register_thread( new std::thread(validate, restored, &valid, tr), 1); 
+    while (this -> await_threads(thr, true)){}
     if (valid){this -> success("Graph cache has been validated!"); return true;}
     this -> failure("The stored cache could not be verified, manually delete the cache folder"); 
     return false;
@@ -132,7 +151,8 @@ bool dataloader::dump_graphs(std::string path, int threads){
 std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::string> cache_, int threads, bool force_load){
     auto threaded_reader = [this](
             std::string fname, std::vector<graph_t*>* c_gr, 
-            const std::vector<folds_t>* data_k, tracing_t* th_
+            const std::vector<folds_t>* data_k, bool forced_, 
+            tracing_t* th_
     ) -> void {
         std::map<std::string, int> load_hash; 
 
@@ -142,7 +162,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         const std::vector<std::string> data_set_ = ior.dataset_names(); 
         fname = this -> get_splits(&fname, "/"); 
         (*th_ -> maxlength) = data_set_.size() + ( (!data_k) ? 0 : data_k -> size() ); 
-        if (data_k){
+        if (data_k && !forced_){
             th_ -> info("[Reading][k-fold][" + fname + "]"); 
             const bool eval  = this -> setting -> evaluation; 
             const bool fold  = this -> setting -> validation;
@@ -169,12 +189,13 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             th_ -> info("[Finished][k-fold][" + fname + "]");
         }
 
+        if (forced_){(*th_ -> maxlength) = data_set_.size();}
         this -> rate_time(1); 
         th_ -> info("[Mapping][" + fname + "]");
         for (size_t x(0); x < data_set_.size(); ++x){
             std::string hx =  data_set_[x]; 
-            if (!load_hash[hx] && !data_k){continue;}
-            if (this -> hash_map.count(hx)){continue;}
+            if (!load_hash[hx] && !data_k && !forced_){continue;}
+            if (this -> hash_map.count(hx) && !forced_){continue;}
             kfold_r.push_back(hx); 
             th_ -> next(); 
         }
@@ -204,6 +225,8 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         th_ -> finished(); 
     }; 
 
+
+
     std::vector<std::string> cache_io = {}; 
     std::map<std::string, std::vector<std::string>> data_set_; 
     for (size_t x(0); x < cache_.size(); ++x){
@@ -214,13 +237,12 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         cache_io.push_back(fname); 
     }
 
-
     std::string path = this -> setting -> training_dataset; 
     std::vector<folds_t> data_k = {}; 
     io io_g = io(); 
     io_g.start(path, "read"); 
     io_g.read(&data_k, "kfolds"); 
-    io_g.end();      
+    io_g.end();
  
     multithreaded_t* th = this -> make_threads(cache_io.size(), threads); 
     std::vector<std::vector<graph_t*>*> cache_rebuild(cache_io.size(), nullptr); 
@@ -228,7 +250,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         std::string fname = cache_io[x]; 
         cache_rebuild[x] = new std::vector<graph_t*>(); 
         tracing_t* th_ = th -> traces -> at(x); 
-        th_ -> register_thread(new std::thread(threaded_reader, fname, cache_rebuild[x], &data_k, th_), 10); 
+        th_ -> register_thread(new std::thread(threaded_reader, fname, cache_rebuild[x], &data_k, force_load, th_), 10); 
         while (this -> await_threads(th, false)){}
     } 
     while (this -> await_threads(th, true)){}
@@ -250,14 +272,16 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
 void dataloader::restore_graphs(std::vector<std::string> path, int threads, bool force_load){
     std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, threads, force_load); 
+    
+    size_t ln = 0; size_t lr = 0;  
     std::map<std::string, graph_t*>::iterator itr; 
     for (itr = restored -> begin(); itr != restored -> end(); ++itr){
         graph_t* gr = itr -> second; 
-        if (gr -> preselection && !force_load){continue;}
+        if (gr -> preselection && !force_load){lr++; continue;}
         this -> extract_data(gr);
-        (*restored)[itr -> first] = nullptr; 
+        (*restored)[itr -> first] = nullptr; ++ln; 
     }
-    this -> success("Restored " + std::to_string(restored -> size()) + " Graphs from cache!"); 
+    this -> success("Restored " + std::to_string(ln) + " and Rejected " + std::to_string(lr) + " Graphs from cache!"); 
     this -> mflush(restored); 
     this -> pflush(&restored); 
 }
