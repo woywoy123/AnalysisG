@@ -72,8 +72,8 @@ float edge_f1(std::vector<int>* pred, std::vector<int>* truth){
         int t = truth -> at(i); 
         int p = pred -> at(i); 
         tp += (t == 1) * (p == 1); 
-        tn += (t == 1) * (p == 0); 
-        fp += (t == 0) * (p == 1); 
+        tn += (t == 0) * (p == 1); 
+        fp += (t == 1) * (p == 0); 
         fn += (t == 0) * (p == 0); 
     }
     return (tp + fn) / (tp + tn + fn + fp);

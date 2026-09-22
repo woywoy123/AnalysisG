@@ -26,8 +26,6 @@ class accuracy_metric: public metric_template
         std::vector<std::vector<int>>   ntops_truth(metric_t* mtx);
         std::vector<std::vector<float>> ntops_score(metric_t* mtx);
 
-
-
         std::vector<particle_template*> build_particles(metric_t* mtx); 
         std::vector<particle_template*> build_top(std::map<int, std::map<int, particle_template*>>* mx); 
         void pagerank(event_idx* evnt); 
@@ -40,7 +38,10 @@ class accuracy_metric: public metric_template
 
     
         template <typename T>
-        void write_var(metric_t* mtx, std::vector<particle_template*>* ptr, router_t<std::vector<T>>* rt, particle_enum val){
+        void write_var(
+                metric_t* mtx, std::vector<particle_template*>* ptr, 
+                router_t<std::vector<T>>* rt, particle_enum val
+        ){
             typename std::vector<T> _vl = {}; 
             for (size_t x(0); x < ptr -> size(); ++x){
                 int passed = 1; 

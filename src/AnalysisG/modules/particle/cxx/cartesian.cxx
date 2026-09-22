@@ -33,9 +33,10 @@ void particle_template::get_pz(double* val, particle_template* prt){
 void particle_template::to_cartesian(){
     particle_t* p = &this -> data; 
     if (!p -> cartesian){ return; }
+    double mt = std::sqrt((p -> pt * p -> pt) + (p -> mass * p -> mass)); 
     p -> px = (p -> pt)*std::cos(p -> phi); 
     p -> py = (p -> pt)*std::sin(p -> phi); 
-    p -> pz = (p -> pt)*std::sinh(p -> eta); 
+    p -> pz = (p -> e )*std::tanh(p -> eta); 
     p -> cartesian = false; 
 }
 

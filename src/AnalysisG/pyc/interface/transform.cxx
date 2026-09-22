@@ -20,9 +20,9 @@ torch::Tensor pyc::transform::combined::Pt(torch::Tensor pmc){
     return transform_::Pt(&px, &py); 
 }
 
-torch::Tensor pyc::transform::separate::Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz){
-    changedev(&px); 
-    return transform_::Eta(&px, &py, &pz); 
+torch::Tensor pyc::transform::separate::Eta(torch::Tensor pz, torch::Tensor e){
+    changedev(&pz); 
+    return transform_::Eta(&pz, &e); 
 }
 
 torch::Tensor pyc::transform::combined::Eta(torch::Tensor pmc){
@@ -36,20 +36,10 @@ torch::Tensor pyc::transform::separate::Phi(torch::Tensor px, torch::Tensor py){
 }
 
 torch::Tensor pyc::transform::combined::Phi(torch::Tensor pmc){
+    changedev(&pmc); 
     torch::Tensor px = pmc.index({torch::indexing::Slice(), 0});
     torch::Tensor py = pmc.index({torch::indexing::Slice(), 1}); 
-    changedev(&px); 
     return transform_::Phi(&px, &py); 
-}
-
-torch::Tensor pyc::transform::separate::PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz){
-    changedev(&px); 
-    return transform_::PtEtaPhi(&px, &py, &pz); 
-}
-
-torch::Tensor pyc::transform::combined::PtEtaPhi(torch::Tensor pmc){
-    changedev(&pmc); 
-    return transform_::PtEtaPhi(&pmc); 
 }
 
 torch::Tensor pyc::transform::separate::PtEtaPhiE(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e){
@@ -86,26 +76,16 @@ torch::Tensor pyc::transform::combined::Py(torch::Tensor pmu){
     return transform_::Py(&pt, &phi); 
 }
 
-torch::Tensor pyc::transform::separate::Pz(torch::Tensor pt, torch::Tensor eta){
-    changedev(&pt);
-    return transform_::Pz(&pt, &eta); 
+torch::Tensor pyc::transform::separate::Pz(torch::Tensor e, torch::Tensor eta){
+    changedev(&e); 
+    return transform_::Pz(&e, &eta); 
 }
 
 torch::Tensor pyc::transform::combined::Pz(torch::Tensor pmu){
     changedev(&pmu); 
-    torch::Tensor pt  = pmu.index({torch::indexing::Slice(), 0});
+    torch::Tensor e = pmu.index({torch::indexing::Slice(), 3});
     torch::Tensor eta = pmu.index({torch::indexing::Slice(), 1}); 
-    return transform_::Pz(&pt, &eta); 
-}
-
-torch::Tensor pyc::transform::separate::PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){
-    changedev(&phi); 
-    return transform_::PxPyPz(&pt, &eta, &phi); 
-}
-
-torch::Tensor pyc::transform::combined::PxPyPz(torch::Tensor pmu){
-    changedev(&pmu); 
-    return transform_::PxPyPz(&pmu); 
+    return transform_::Pz(&e, &eta); 
 }
 
 torch::Tensor pyc::transform::separate::PxPyPzE(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e){

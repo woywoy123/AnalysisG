@@ -20,15 +20,15 @@ torch::Tensor pyc::physics::cartesian::combined::P2(torch::Tensor pmc){
     return physics_::P2(&pmc); 
 }
 
-torch::Tensor pyc::physics::polar::separate::P2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){
+torch::Tensor pyc::physics::polar::separate::P2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e){
     changedev(&phi); 
-    torch::Tensor pmc = transform_::PxPyPz(&pt, &eta, &phi); 
+    torch::Tensor pmc = transform_::PxPyPzE(&pt, &eta, &phi, &e); 
     return physics_::P2(&pmc); 
 }
 
 torch::Tensor pyc::physics::polar::combined::P2(torch::Tensor pmu){
     changedev(&pmu); 
-    torch::Tensor pmc = transform_::PxPyPz(&pmu); 
+    torch::Tensor pmc = transform_::PxPyPzE(&pmu); 
     return physics_::P2(&pmc); 
 }
 
@@ -44,15 +44,15 @@ torch::Tensor pyc::physics::cartesian::combined::P(torch::Tensor pmc){
 }
 
 
-torch::Tensor pyc::physics::polar::separate::P(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){
+torch::Tensor pyc::physics::polar::separate::P(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e){
     changedev(&pt); 
-    torch::Tensor pmc = transform_::PxPyPz(&pt, &eta, &phi); 
+    torch::Tensor pmc = transform_::PxPyPzE(&pt, &eta, &phi, &e); 
     return physics_::P(&pmc); 
 }
 
 torch::Tensor pyc::physics::polar::combined::P(torch::Tensor pmu){
     changedev(&pmu); 
-    torch::Tensor pmc = transform_::PxPyPz(&pmu); 
+    torch::Tensor pmc = transform_::PxPyPzE(&pmu); 
     return physics_::P(&pmc); 
 }
 
@@ -165,7 +165,7 @@ torch::Tensor pyc::physics::cartesian::combined::Mt2(torch::Tensor pmc){
 
 torch::Tensor pyc::physics::polar::separate::Mt2(torch::Tensor pt, torch::Tensor eta, torch::Tensor e){
     changedev(&pt); 
-    torch::Tensor pz = transform_::Pz(&pt, &eta); 
+    torch::Tensor pz = transform_::Pz(&e, &eta); 
     return physics_::Mt2(&pz, &e); 
 }
 
@@ -187,7 +187,7 @@ torch::Tensor pyc::physics::cartesian::combined::Mt(torch::Tensor pmc){
 
 torch::Tensor pyc::physics::polar::separate::Mt(torch::Tensor pt, torch::Tensor eta, torch::Tensor e){
     changedev(&pt); 
-    torch::Tensor pz = transform_::Pz(&pt, &eta); 
+    torch::Tensor pz = transform_::Pz(&e, &eta); 
     return physics_::Mt(&pz, &e); 
 }
 
@@ -208,33 +208,34 @@ torch::Tensor pyc::physics::cartesian::combined::Theta(torch::Tensor pmc){
 }
 
 
-torch::Tensor pyc::physics::polar::separate::Theta(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){
+torch::Tensor pyc::physics::polar::separate::Theta(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e){
     changedev(&pt); 
-    torch::Tensor pmc = transform_::PxPyPz(&pt, &eta, &phi); 
+    torch::Tensor pmc = transform_::PxPyPzE(&pt, &eta, &phi, &e); 
     return physics_::Theta(&pmc); 
 }
 
 torch::Tensor pyc::physics::polar::combined::Theta(torch::Tensor pmu){
     changedev(&pmu); 
-    torch::Tensor pmc = transform_::PxPyPz(&pmu); 
+    torch::Tensor pmc = transform_::PxPyPzE(&pmu); 
     return physics_::Theta(&pmc); 
 }
 
 torch::Tensor pyc::physics::cartesian::separate::DeltaR(
         torch::Tensor px1, torch::Tensor px2, 
         torch::Tensor py1, torch::Tensor py2, 
-        torch::Tensor pz1, torch::Tensor pz2
+        torch::Tensor pz1, torch::Tensor pz2,
+        torch::Tensor e1, torch::Tensor e2
 ){
     changedev(&px1);
-    torch::Tensor pmu1 = transform_::PtEtaPhi(&px1, &py1, &pz1); 
-    torch::Tensor pmu2 = transform_::PtEtaPhi(&px2, &py2, &pz2); 
+    torch::Tensor pmu1 = transform_::PtEtaPhiE(&px1, &py1, &pz1, &e1); 
+    torch::Tensor pmu2 = transform_::PtEtaPhiE(&px2, &py2, &pz2, &e2); 
     return physics_::DeltaR(&pmu1, &pmu2); 
 }
 
 torch::Tensor pyc::physics::cartesian::combined::DeltaR(torch::Tensor pmc1, torch::Tensor pmc2){
     changedev(&pmc1); 
-    torch::Tensor pmu1 = transform_::PtEtaPhi(&pmc1); 
-    torch::Tensor pmu2 = transform_::PtEtaPhi(&pmc2); 
+    torch::Tensor pmu1 = transform_::PtEtaPhiE(&pmc1); 
+    torch::Tensor pmu2 = transform_::PtEtaPhiE(&pmc2); 
     return physics_::DeltaR(&pmu1, &pmu2); 
 }
 

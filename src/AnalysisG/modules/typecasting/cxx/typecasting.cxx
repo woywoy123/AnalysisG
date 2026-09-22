@@ -4,8 +4,10 @@
 bool _transfer(torch::Tensor* data, torch::Tensor* cpux){
     if (!data -> device().is_cuda()){return true;}
     cpux -> copy_(*data, true);
+#ifdef PYC_CUDA
     c10::cuda::CUDAStream strx = at::cuda::getCurrentCUDAStream(data -> device().index()); 
     strx.synchronize(); 
+#endif
 //    torch::cuda::synchronize(data -> device().index()); 
     if (!cpux -> is_pinned()){return false;}
     return true; 

@@ -16,7 +16,6 @@ void accuracy_metric::define_variables(metric_t* mtx){
         this -> create_path(this -> output_path);
     }
     this -> start(mtx); 
-
 }
 
 
@@ -94,10 +93,10 @@ void accuracy_metric::define_metric(metric_t* mtx){
         this -> write_var(mtx, &evnt.truth_tops, &this -> tops_tru_chn,  particle_enum::is_lep); 
         float avg_edge = edge_f1(&evnt.top_edge_pred, &evnt.top_edge_truth);
 
-        this -> ntops_prd.write(this,    mtx, &evnt.n_tops_pred); 
-        this -> ntops_tru.write(this,    mtx, &evnt.n_tops_truth); 
-        this -> proc_idx.write(this,     mtx, &evnt.process_ix); 
-        this -> edge_prd.write(this,     mtx, &avg_edge); 
+        this -> ntops_prd.write(   this, mtx, &evnt.n_tops_pred); 
+        this -> ntops_tru.write(   this, mtx, &evnt.n_tops_truth); 
+        this -> proc_idx.write(    this, mtx, &evnt.process_ix); 
+        this -> edge_prd.write(    this, mtx, &avg_edge); 
         this -> ntops_scores.write(this, mtx, &evnt.n_tops_score, true); 
     }
 }

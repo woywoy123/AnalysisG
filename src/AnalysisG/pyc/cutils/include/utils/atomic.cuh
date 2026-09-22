@@ -60,29 +60,30 @@ __device__ scalar_t minus_mod(scalar_t* diff){
     return M_PI - fabs(fmod(fabs(*diff),  2*M_PI) - M_PI); 
 }
 
-template <typename scalar_t>
-__device__ scalar_t px_(scalar_t* _pt, scalar_t* _phi){return (*_pt) * cos(*_phi);}
 
 template <typename scalar_t>
-__device__ scalar_t py_(scalar_t* _pt, scalar_t* _phi){return (*_pt) * sin(*_phi);}
+__device__ scalar_t px_(scalar_t _pt, scalar_t _phi){return _pt * cos(_phi);}
 
 template <typename scalar_t>
-__device__ scalar_t pz_(scalar_t* _pt, scalar_t* _eta){return (*_pt) * ((*_eta) ? sinh(*_eta) : 0);}
+__device__ scalar_t py_(scalar_t _pt, scalar_t _phi){return _pt * sin(_phi);}
 
 template <typename scalar_t>
-__device__ scalar_t pt_(scalar_t* _px, scalar_t* _py){return _sqrt((*_px) * (*_px) + (*_py) * (*_py));}
+__device__ scalar_t pz_(scalar_t _eta, scalar_t _e){return _e * tanh(_eta);}
 
 template <typename scalar_t>
-__device__ scalar_t eta_(scalar_t* _px, scalar_t* _py, scalar_t* _pz){
-    scalar_t xt = (*_px) * (*_px) + (*_py) + (*_py); 
-    return (xt) ? asinh(*_pz / sqrt(xt)) : 0; 
-}
+__device__ scalar_t p2t_(scalar_t _p2x, scalar_t _p2y){return _sqrt(_p2x + _p2y);}
 
 template <typename scalar_t>
-__device__ scalar_t eta_(scalar_t* _pt, scalar_t* _pz){return (*_pt) ? asinh(*_pz / *_pt) : 0;}
+__device__ scalar_t pt_(scalar_t _px, scalar_t _py){return _sqrt(_px * _px + _py * _py);}
 
 template <typename scalar_t>
-__device__ scalar_t phi_(scalar_t* _px, scalar_t* _py){return (*_px) ? atan2(*_py, *_px) : 0;}
+__device__ scalar_t phi_(scalar_t _px, scalar_t _py){return atan2(_py, _px);}
+
+template <typename scalar_t>
+__device__ scalar_t eta_(scalar_t _pz, scalar_t _e){return 0.5 * std::log( (_e + _pz) / (_e - _pz) );}
+
+
+
 
 template <typename scalar_t>
 __device__ scalar_t _rx(scalar_t* _a, const unsigned int _idy, const unsigned int _idz){

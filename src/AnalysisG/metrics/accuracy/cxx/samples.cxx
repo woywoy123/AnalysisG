@@ -1,6 +1,7 @@
 #include <metrics/samples.h>
 #include <tools/tools.h>
 #include <unordered_map>
+#include <map>
 
 process_t process_sample(std::string* name, int* dsids_){
     size_t start_pos = name -> find("mc16");
@@ -106,48 +107,47 @@ process_t process_sample(std::string* name, int* dsids_){
     return process_t::invalid;
 } 
 
-
-//std::string mapping(std::string name, collector* cl){
-//    if (tools::has_string(&name, "_singletop_" )){return "$t$"                      ;}
-//    if (tools::has_string(&name, "_tchan_"     )){return "$t$"                      ;}
-//    if (tools::has_string(&name, "_ttbarHT1k_" )){return "$t\\bar{t}$"              ;}
-//    if (tools::has_string(&name, "_ttbar_"     )){return "$t\\bar{t}$"              ;}
-//    if (tools::has_string(&name, "_ttbarHT1k5_")){return "$t\\bar{t}$"              ;}
-//    if (tools::has_string(&name, "_ttbarHT6c_" )){return "$t\\bar{t}$"              ;}
-//    if (tools::has_string(&name, "_tt_"        )){return "$t\\bar{t}$"              ;}
-//    if (tools::has_string(&name, "_ttee."      )){return "$t\\bar{t}\\ell\\ell$"    ;}
-//    if (tools::has_string(&name, "_ttmumu."    )){return "$t\\bar{t}\\ell\\ell$"    ;}
-//    if (tools::has_string(&name, "_tttautau."  )){return "$t\\bar{t}\\ell\\ell$"    ;}
-//    if (tools::has_string(&name, "_ttW."       )){return "$t\\bar{t}V$"             ;}
-//    if (tools::has_string(&name, "_ttZnunu."   )){return "$t\\bar{t}V$"             ;}
-//    if (tools::has_string(&name, "_ttZqq."     )){return "$t\\bar{t}V$"             ;}
-//    if (tools::has_string(&name, "_ttH125_"    )){return "$t\\bar{t}H$"             ;}
-//    if (tools::has_string(&name, "_Wt_"        )){return "$Wt$"                     ;}
-//    if (tools::has_string(&name, "_tW."        )){return "$tV$"                     ;}
-//    if (tools::has_string(&name, "_tW_"        )){return "$tV$"                     ;}
-//    if (tools::has_string(&name, "_tZ."        )){return "$tV$"                     ;}
-//    if (tools::has_string(&name, "_SM4topsNLO" )){return "$t\\bar{t}t\\bar{t}$"     ;}
-//    if (tools::has_string(&name, "_WlvZqq"     )){return "$WZ$"                     ;}
-//    if (tools::has_string(&name, "_WqqZll"     )){return "$WZ$"                     ;}
-//    if (tools::has_string(&name, "_WqqZvv"     )){return "$WZ$"                     ;}
-//    if (tools::has_string(&name, "_WplvWmqq"   )){return "$WW$"                     ;}
-//    if (tools::has_string(&name, "_WpqqWmlv"   )){return "$WW$"                     ;}
-//    if (tools::has_string(&name, "_ZqqZll"     )){return "$ZZ$"                     ;}
-//    if (tools::has_string(&name, "_ZqqZvv"     )){return "$ZZ$"                     ;}
-//    if (tools::has_string(&name, "_WH125."     )){return "$VH$"                     ;}
-//    if (tools::has_string(&name, "_ZH125_"     )){return "$VH$"                     ;}
-//    if (tools::has_string(&name, "_WH125_"     )){return "$VH$"                     ;}
-//    if (tools::has_string(&name, "_Wenu_"      )){return "$V\\ell\\nu$"             ;}
-//    if (tools::has_string(&name, "_Wmunu_"     )){return "$V\\ell\\nu$"             ;}
-//    if (tools::has_string(&name, "_Wtaunu_"    )){return "$V\\ell\\nu$"             ;}
-//    if (tools::has_string(&name, "_Zee_"       )){return "$V\\ell\\ell$"            ;}
-//    if (tools::has_string(&name, "_Zmumu_"     )){return "$V\\ell\\ell$"            ;}
-//    if (tools::has_string(&name, "_Ztautau_"   )){return "$V\\ell\\ell$"            ;}
-//    if (tools::has_string(&name, "_llll"       )){return "$\\ell\\ell\\ell\\ell$"   ;}
-//    if (tools::has_string(&name, "_lllv"       )){return "$\\ell\\ell\\ell\\nu$"    ;}
-//    if (tools::has_string(&name, "_llvv"       )){return "$\\ell\\ell\\nu\\nu$"     ;}
-//    if (tools::has_string(&name, "_lvvv"       )){return "$\\ell\\nu\\nu\\nu$"      ;}
-//    return "undef"; 
-//}
+std::string process_string(std::string* name){
+    if (tools::has_string(name, "_singletop_" )){return "$t$"                      ;}
+    if (tools::has_string(name, "_tchan_"     )){return "$t$"                      ;}
+    if (tools::has_string(name, "_ttbarHT1k_" )){return "$t\\bar{t}$"              ;}
+    if (tools::has_string(name, "_ttbar_"     )){return "$t\\bar{t}$"              ;}
+    if (tools::has_string(name, "_ttbarHT1k5_")){return "$t\\bar{t}$"              ;}
+    if (tools::has_string(name, "_ttbarHT6c_" )){return "$t\\bar{t}$"              ;}
+    if (tools::has_string(name, "_tt_"        )){return "$t\\bar{t}$"              ;}
+    if (tools::has_string(name, "_ttee."      )){return "$t\\bar{t}\\ell\\ell$"    ;}
+    if (tools::has_string(name, "_ttmumu."    )){return "$t\\bar{t}\\ell\\ell$"    ;}
+    if (tools::has_string(name, "_tttautau."  )){return "$t\\bar{t}\\ell\\ell$"    ;}
+    if (tools::has_string(name, "_ttW."       )){return "$t\\bar{t}V$"             ;}
+    if (tools::has_string(name, "_ttZnunu."   )){return "$t\\bar{t}V$"             ;}
+    if (tools::has_string(name, "_ttZqq."     )){return "$t\\bar{t}V$"             ;}
+    if (tools::has_string(name, "_ttH125_"    )){return "$t\\bar{t}H$"             ;}
+    if (tools::has_string(name, "_Wt_"        )){return "$Wt$"                     ;}
+    if (tools::has_string(name, "_tW."        )){return "$tV$"                     ;}
+    if (tools::has_string(name, "_tW_"        )){return "$tV$"                     ;}
+    if (tools::has_string(name, "_tZ."        )){return "$tV$"                     ;}
+    if (tools::has_string(name, "_SM4topsNLO" )){return "$t\\bar{t}t\\bar{t}$"     ;}
+    if (tools::has_string(name, "_WlvZqq"     )){return "$WZ$"                     ;}
+    if (tools::has_string(name, "_WqqZll"     )){return "$WZ$"                     ;}
+    if (tools::has_string(name, "_WqqZvv"     )){return "$WZ$"                     ;}
+    if (tools::has_string(name, "_WplvWmqq"   )){return "$WW$"                     ;}
+    if (tools::has_string(name, "_WpqqWmlv"   )){return "$WW$"                     ;}
+    if (tools::has_string(name, "_ZqqZll"     )){return "$ZZ$"                     ;}
+    if (tools::has_string(name, "_ZqqZvv"     )){return "$ZZ$"                     ;}
+    if (tools::has_string(name, "_WH125."     )){return "$VH$"                     ;}
+    if (tools::has_string(name, "_ZH125_"     )){return "$VH$"                     ;}
+    if (tools::has_string(name, "_WH125_"     )){return "$VH$"                     ;}
+    if (tools::has_string(name, "_Wenu_"      )){return "$V\\ell\\nu$"             ;}
+    if (tools::has_string(name, "_Wmunu_"     )){return "$V\\ell\\nu$"             ;}
+    if (tools::has_string(name, "_Wtaunu_"    )){return "$V\\ell\\nu$"             ;}
+    if (tools::has_string(name, "_Zee_"       )){return "$V\\ell\\ell$"            ;}
+    if (tools::has_string(name, "_Zmumu_"     )){return "$V\\ell\\ell$"            ;}
+    if (tools::has_string(name, "_Ztautau_"   )){return "$V\\ell\\ell$"            ;}
+    if (tools::has_string(name, "_llll"       )){return "$\\ell\\ell\\ell\\ell$"   ;}
+    if (tools::has_string(name, "_lllv"       )){return "$\\ell\\ell\\ell\\nu$"    ;}
+    if (tools::has_string(name, "_llvv"       )){return "$\\ell\\ell\\nu\\nu$"     ;}
+    if (tools::has_string(name, "_lvvv"       )){return "$\\ell\\nu\\nu\\nu$"      ;}
+    return "undef"; 
+}
 
 

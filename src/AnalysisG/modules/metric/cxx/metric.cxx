@@ -88,12 +88,7 @@ std::string metric_t::mode(){return model_mode(this -> _mode);}
 
 bool metric_t::next(){
     if (!this -> batch_graphs   ){return false;}
-    if (this -> nx >= this -> ny){
-        #if _server
-        c10::cuda::CUDACachingAllocator::emptyCache();
-        #endif
-        return false;
-    }
+    if (this -> nx >= this -> ny){return false;}
     this -> gr_i        =  this -> batch_graphs -> at(this -> nx);
     this -> batch_files = &this -> gr_i -> batched_filenames; 
 

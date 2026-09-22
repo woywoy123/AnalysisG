@@ -79,7 +79,7 @@ std::vector<neutrino*> construct_particle(torch::Tensor* inpt, torch::Tensor* ln
     for (size_t x(0); x < dst -> size(); ++x){o += (*dst)[x] != 0;}
     if (!o){return {};}
 
-    std::vector<neutrino*> out(o, nullptr); o = 0; 
+    std::vector<neutrino*> out(pmc.size(), nullptr); 
     for (size_t x(0); x < pmc.size(); ++x){
         if (!(*dst)[x]){continue;}
         if (!(pmc[x][0]*pmc[x][1]*pmc[x][2])){continue;}
@@ -88,7 +88,7 @@ std::vector<neutrino*> construct_particle(torch::Tensor* inpt, torch::Tensor* ln
         nx -> index = x / 6; 
         nx -> b_idx = (bn) ? _b[x / 6][0] : x / 6;
         nx -> l_idx = (ln) ? _l[x / 6][0] : x / 6;
-        out[o] = nx; ++o; 
+        out[x] = nx; 
     }
     return out; 
 }
@@ -120,6 +120,7 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::NuNu(
 
     torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met_, phi_), pyc::transform::separate::Py(met_, phi_)}, {-1}); 
     torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::NuNu(b1, b2, l1, l2, metxy, null, m1, m2, step, tolerance, timeout);     
+    if (!nus.contains("nu1")){return {};}
     torch::Tensor nu1 = nus.at("nu1").view({-1, 3}); 
     torch::Tensor nu2 = nus.at("nu2").view({-1, 3}); 
     torch::Tensor dis = nus.at("distances").view({-1}); 
@@ -130,7 +131,12 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::NuNu(
     std::vector<std::pair<neutrino*, neutrino*>> out; 
     std::vector<neutrino*> nu1_ = construct_particle(&nu1, nullptr, nullptr, &dist);  
     std::vector<neutrino*> nu2_ = construct_particle(&nu2, nullptr, nullptr, &dist); 
-    for (size_t x(0); x < nu1_.size(); ++x){out.push_back({nu1_[x], nu2_[x]});}
+    for (size_t x(0); x < nu1_.size(); ++x){
+        bool inb = (!nu1_[x] || !nu2_[x]); 
+        if (inb && nu1_[x]){delete nu1_[x]; nu1_[x] = nullptr;}
+        if (inb && nu2_[x]){delete nu2_[x]; nu2_[x] = nullptr;}
+        if (!inb){out.push_back({nu1_[x], nu2_[x]});}
+    }
     return out; 
 }
 
@@ -205,17 +211,26 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
         if (inb && nu1_[x]){delete nu1_[x]; nu1_[x] = nullptr;}
         if (inb && nu2_[x]){delete nu2_[x]; nu2_[x] = nullptr;}
         if (!inb){out.push_back({nu1_[x], nu2_[x]});}
-
-        for (size_t y(0); y < nu1alt.size(); ++y){
-            bool inx = (!nu1alt[y] || !nu2alt[y] || inb);  
-            if (!inx && size_t(nu1_[x] -> index) != x){continue;} 
-            if (inx && nu1alt[y]){delete nu1alt[y]; nu1alt[y] = nullptr;}
-            if (inx && nu2alt[y]){delete nu2alt[y]; nu2alt[y] = nullptr;}
-            if (inx){continue;}
-            nu1_[x] -> alternatives.push_back(nu1alt[y]); 
-            nu2_[x] -> alternatives.push_back(nu2alt[y]); 
-        }
     } 
+
+    for (size_t y(0); y < nu1alt.size(); ++y) {
+        if (!nu1alt[y] && !nu2alt[y]) continue; 
+        
+        size_t parent_idx = y / 6;
+        bool attach = false;
+        if (parent_idx < nu1_.size() && nu1_[parent_idx] && nu2_[parent_idx]) {
+            if (nu1alt[y] && nu2alt[y]) {
+                nu1_[parent_idx]->alternatives.push_back(nu1alt[y]);
+                nu2_[parent_idx]->alternatives.push_back(nu2alt[y]);
+                attach = true;
+            }
+        }
+        
+        if (!attach) {
+            if (nu1alt[y]) { delete nu1alt[y]; nu1alt[y] = nullptr; }
+            if (nu2alt[y]) { delete nu2alt[y]; nu2alt[y] = nullptr; }
+        }
+    }
     return out; 
 }
 

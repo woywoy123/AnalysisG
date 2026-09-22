@@ -1,40 +1,17 @@
 #ifndef AVERAGE_METRIC_MAP_H
 #define AVERAGE_METRIC_MAP_H
 #include <tools/tools.h>
-#include <iostream>
 #include <string>
-#include <vector>
-#include <map>
 
 enum process_t : int {
-    t_tchan, 
-    t_schan, 
-    tW,
-    ttbar, 
-    tt_l, 
-    tt_ll, 
+    t_tchan, t_schan, tW, 
+    ttbar, tt_l, tt_ll, 
+    ttH, ttW, ttZ_qq, ttZ_vv,
     tttt_SM, 
-    tttt_m400, 
-    tttt_m500, 
-    tttt_m600, 
-    tttt_m700,
-    tttt_m800, 
-    tttt_m900, 
-    tttt_m1000,
-    Z_ll, 
-    W_lv,
-    ZZ_qqll, 
-    WZ_qqll,
-    ttH, 
-    ttZ_qq,
-    ttZ_vv, 
-    ttW, 
-    ZH, 
-    WH,
-    llll, 
-    lllv, 
-    llvv, 
-    lvvv,
+    tttt_m400, tttt_m500, tttt_m600, tttt_m700,
+    tttt_m800, tttt_m900, tttt_m1000,
+    Z_ll, W_lv, ZZ_qqll, WZ_qqll, ZH, WH,
+    llll, lllv, llvv, lvvv,
     invalid
 };
 
@@ -89,42 +66,7 @@ namespace processtype {
     constexpr process_t lvvv = process_t::lvvv; 
 }
 
-struct cdata_t {
-    int kfold = -1;
-    std::vector<int> ntops_truth = {}; 
-    std::vector<std::vector<double>> ntop_score = {};
-    std::map<int, std::vector<double>> ntop_edge_accuracy = {};
-    std::map<int, std::map<int, std::vector<double>>> ntru_npred_matrix = {}; 
-}; 
-
-struct cmodel_t {
-    std::map<int, std::map<int, cdata_t>> evaluation_kfold_data = {}; 
-    std::map<int, std::map<int, cdata_t>> validation_kfold_data = {}; 
-    std::map<int, std::map<int, cdata_t>> training_kfold_data   = {}; 
-}; 
-
-
-class collector: public tools 
-{
-    public:
-        collector(); 
-        ~collector();
-
-        cdata_t* get_mode(std::string model, std::string mode, int epoch, int kfold); 
-        void add_ntop_truth(std::string mode, std::string model, int epoch, int kfold, int data);
-        void add_ntop_edge_accuracy(std::string mode, std::string model, int epoch, int kfold, int ntops, double data);
-        void add_ntop_scores(std::string mode, std::string model, int epoch, int kfold, std::vector<double>* data);
-        void add_ntru_ntop_scores(std::string mode, std::string model, int epoch, int kfold, int ntru, int ntop, double data);
-        std::map<std::string, std::vector<cdata_t*>> get_plts(); 
-        std::vector<std::string> model_names = {}; 
-        std::vector<std::string> modes = {}; 
-        std::vector<int> epochs = {}; 
-        std::vector<int> kfolds = {}; 
-
-        std::map<std::string, cmodel_t> model_data = {}; 
-};
-
-process_t process_sample(std::string* name, int* dsids = nullptr);
-process_t process_sample(process_t prc);
+process_t   process_sample(std::string* name, int* dsids);
+std::string process_string(std::string* name);
 
 #endif

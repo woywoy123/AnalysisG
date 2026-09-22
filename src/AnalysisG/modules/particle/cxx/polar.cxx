@@ -40,9 +40,9 @@ void particle_template::to_polar(){
     p -> pt  = std::pow(p -> px, 2); 
     p -> pt += std::pow(p -> py, 2);
     p -> pt  = std::sqrt(p -> pt); 
-
+    
     // Rapidity 
-    p -> eta = std::asinh(p -> pz / p -> pt); 
+    p -> eta = 0.5L * std::log( (p -> e + p -> pz) / (p -> e - p -> pz) ); 
     p -> phi = std::atan2(p -> py, p -> px);  
     p -> polar = false; 
 }

@@ -12,9 +12,6 @@
 #include <cstdlib>
 #include <cmath>
 
-class event_template; 
-class selection_template; 
-
 class particle_template : public tools
 {
     public:

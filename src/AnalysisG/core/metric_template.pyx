@@ -65,7 +65,7 @@ cdef class MetricTemplate:
 
     def Postprocessing(self): pass
 
-    def InterpretROOT(self, str path, list epochs = [], list kfolds = [], str prefix = "kfold-", str model_name = "model-"):
+    def InterpretROOT(self, str path, list epochs = [], list kfolds = [], str prefix = "kfold-", list model_names = ["model-"], list exclude = []):
         if not len(self.root_leaves) or not len(self.root_fx):
             self.mtx.failure(b"Failed to interpret!")
             self.mtx.failure(b"Please set the attributes:")
@@ -80,44 +80,43 @@ cdef class MetricTemplate:
         cdef int kfold, epoch
 
         cdef str k, l, kx
-
         cdef string key, kl
 
         cdef data_t* dt = NULL
         cdef data_t* lxk = NULL
 
-        cdef bool unpause, keep_going
-
+        cdef bool unpause, keep_going, nskp
         cdef list leaves = []
 
         cdef map[string, long] idx_map
         cdef map[string, bool] endx, pause
 
-        cdef vector[string] lsx
+        cdef vector[string] tmp
         cdef vector[vector[string]] mxf 
-        cdef vector[string] epochs_, kfolds_ 
 
         cdef map[string, vector[string ]] mapfx
         cdef map[string, vector[data_t*]] mapdx
-
         cdef map[string, map[string, long]] mapx
 
         cdef dict itx = {}
         cdef dict meta = {}
 
         cdef tools tl
-        cdef vector[string] tmp, lxp
         cdef string prefx = enc(prefix)
-        cdef string modl_name = enc(model_name)
-
-        cdef int xk = 0
-        epochs_ = [enc(str(epoch)) for epoch in epochs]
-        kfolds_ = [enc(str(kfold)) for kfold in kfolds]
-        lsx = self.ptr.ls(enc(path), b".root")
+        cdef vector[string] modl_names = enc_list(model_names)
+        cdef vector[string] exclude_   = enc_list(exclude)
+        cdef vector[string] epochs_    = [enc(str(epoch)) for epoch in epochs]
+        cdef vector[string] kfolds_    = [enc(str(kfold)) for kfold in kfolds]
+        cdef vector[string] lsx        = tl.ls(enc(path), b".root")
 
         for ix in prange(lsx.size(), nogil = True, num_threads = 12):
-            if not finder(&lsx[ix], &kfolds_, &epochs_, &prefx): continue
-            idx_map[lsx[ix]];
+            nskp = False
+            kl   = lsx[ix]
+            for key in modl_names: nskp = nskp + tl.has_string(&kl, key) == True
+            for key in exclude_:   nskp = nskp * tl.has_string(&kl, key) == False
+            if not nskp: continue
+            if not finder(&kl, &kfolds_, &epochs_, &prefx): continue
+            idx_map[kl];
 
         if   epochs_.size() + kfolds_.size() and idx_map.size(): pass
         elif epochs_.size() + kfolds_.size() == 0: pass
@@ -138,6 +137,7 @@ cdef class MetricTemplate:
                 else: continue 
                 leaves += [l]
 
+
         cdef IO iox = IO(path if not lsx.size() else env_vec(&lsx))
         iox.Trees  = list(self.root_leaves)
         iox.Leaves = list(set(leaves))
@@ -147,18 +147,19 @@ cdef class MetricTemplate:
         cdef map[string, data_t*] dmp = deref(iox.data_ops)
         cdef vector[string] dmi = [itr.first for itr in dmp]
 
-        leaves = []
         kl = b""
+        leaves = []
         idx_map.clear()
         mapx = iox.ptr.tree_entries
+
         cdef pair[string, vector[string]] itm
         for itr in dmp: 
             pause[itr.first] = False
             for itm in mapfx:
                 leaves.append([itr.second.tree_name, itr.first, itm.first])
-                if self.ptr.has_string(&itr.first, itm.first + b"."): 
+                if tl.has_string(&itr.first, itm.first + b"."): 
                     for ix in range(itm.second.size()):
-                        if not self.ptr.ends_with(&itr.first, b"." + itm.second[ix]): continue
+                        if not tl.ends_with(&itr.first, b"." + itm.second[ix]): continue
                         mapdx[itm.first][ix] = itr.second
                         break
                 if itr.first == itm.first: mapdx[itm.first][0] = itr.second
@@ -186,11 +187,16 @@ cdef class MetricTemplate:
                 keep_going += not endx[dt.path]
 
             if not ix:
-                tmp   = tl.split(deref(lxk.fname), b"/")
-                kfold = int(to_format(&tmp, prefx))
-                epoch = int(to_format(&tmp, b"epoch-"))
-                key   =     to_format(&tmp, modl_name)
-                meta = {b"filename" : deref(lxk.fname), b"epoch" : epoch, b"kfold" : kfold, b"model_name" : key}
+                meta = {}
+                tmp  = tl.split(deref(lxk.fname), b"/")
+                for key in modl_names: 
+                    if not tl.has_string(lxk.fname, key): continue
+                    meta = {
+                        b"filename"   : deref(lxk.fname), 
+                        b"epoch"      : int(to_format(&tmp, b"epoch-")), 
+                        b"kfold"      : int(to_format(&tmp, prefx)), 
+                        b"model_name" : key
+                    }
                 iox.prg.set_description("/".join(env(kl).split("/")[-4:]))
                 iox.prg.refresh()
             
@@ -200,7 +206,6 @@ cdef class MetricTemplate:
 
             for ix in prange(mxf.size(), nogil = True, num_threads = mxf.size()):
                 pause[mxf[ix][1]] = mapx[kl][mxf[ix][0]] == (dmp[mxf[ix][1]].index+1)
-     
             unpause = True  
             for ix in prange(mxf.size(), nogil = True): unpause *= pause[mxf[ix][1]]
             if unpause: pause.clear(); idx_map.clear(); kl = b""

@@ -17,10 +17,11 @@ struct event_idx {
 
     int n_tops_truth = -1; 
     int n_tops_pred  = -1; 
-    int process_ix = -1; 
+    int process_ix   = -1; 
+
     std::string* file = nullptr;
-    
     std::vector<particle_template*> ptx; 
+
     std::vector<particle_template*> reco_tops_pr; 
     std::vector<float> reco_scores_pr; 
 
@@ -31,7 +32,6 @@ struct event_idx {
     std::vector<float> reco_scores_nom; 
 
     std::vector<particle_template*> truth_tops; 
-
 }; 
 
 float edge_f1(std::vector<int>* pred, std::vector<int>* truth); 

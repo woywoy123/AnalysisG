@@ -19,9 +19,6 @@ cdef extern from "<templates/metric_template.h>" nogil:
         string name
 
 
-
-
-
 cdef inline bool finder(string* fname, vector[string]* kfolds, vector[string]* epochs, string* prefx) nogil:
     cdef tools tl
     cdef string ix
