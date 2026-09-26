@@ -624,6 +624,7 @@ cdef class TH1F(BasePlotting):
         if self.set_ymax: y_max = self.ptr.y_max
 
         cdef TH1F h
+        cdef list handl = []
         cdef dict histpl = self.factory()
         if self.Histogram is not None:
             if not len(labels): self.Histogram.xMin  = self.xMin
@@ -740,8 +741,12 @@ cdef class TH1F(BasePlotting):
             else: yl = "$\\frac{\\text{" + self.Histogram.Title + "}}{\\text{" + self.Histograms[0].Title + "}}$"
 
             for i in range(1, len(histpl["H"])):
-                try: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], yl, self.Density, histpl["yerr"], self.Histograms[i-1])
-                except: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], self.Histograms[i-1])
+                try: cpy = self.fx(
+                            histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], yl, 
+                            self.Density, histpl["yerr"], self.Histograms[i-1])
+                except: cpy = self.fx(
+                            histpl["H"][0].copy(), histpl["H"][i].copy(), 
+                            self._ax[1], self.Histograms[i-1])
                 cpy["color"] = histpl["color"][i]
                 if "label" not in cpy: cpy["label"] = histpl["label"][i]
                 if "add" in cpy: cpy["label"] += " " + cpy["add"]; del cpy["add"]
@@ -761,13 +766,12 @@ cdef class TH1F(BasePlotting):
             hep.histplot(**histpl)
 
             ix = 0
-            hdl = []
             for i in range(len(error)):
                 if not len(error[i]): continue
                 hd = self.__get_error_seg__(error[i], histpl["label"][ix] + " (Uncertainty)", histpl["color"][ix])
-                hdl.append(hd)
+                handl.append(hd)
                 ix+=1
-            #self._ax.legend(handles = hdl, ncol = 2)
+            self._ax.legend(handles = handl, ncol = 2)
 
         elif self.ErrorBars:
             histpl["H"] = [self.__build__()]
@@ -782,16 +786,20 @@ cdef class TH1F(BasePlotting):
             error = hep.histplot(**hts)
             hep.histplot(**histpl)
             self.__get_error_seg__(error[0])
-        else: hep.histplot(**histpl)
+        else: handl.append(hep.histplot(**histpl))
 
         if not len(labels):
             self._ax.set_xlim(x_min, x_max, auto = True)
             self._ax.set_ylim(y_min, y_max, auto = True)
-        self._ax.legend(loc = "upper right", ncol = 2 * (1 - 0.5*(not self.ErrorBars)))
+
+        if self.ErrorBars: self._ax.legend(loc = "upper right", ncol = 2)
+        else: self._ax.legend(loc = "upper right", ncol = int(len(self.Histograms) / 13)+1)
         return {}
 
 cdef class TH2F(BasePlotting):
+
     def __cinit__(self): self.ptr.prefix = b"TH2F"
+
     def __init__(self, inpt = None, **kwargs):
         self.Color = "plasma"
         if len(kwargs): inpt = {"data" : dict(kwargs)}

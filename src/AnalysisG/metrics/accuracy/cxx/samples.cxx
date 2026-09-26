@@ -4,17 +4,21 @@
 #include <map>
 
 process_t process_sample(std::string* name, int* dsids_){
-    size_t start_pos = name -> find("mc16");
-    if (start_pos != std::string::npos){start_pos = name -> find('.', start_pos) + 1;}
-    else {start_pos = 0;}
-    
-    size_t end_pos = name -> find('.', start_pos);
-    if (end_pos == std::string::npos || start_pos >= name -> length()){return process_t::invalid;}
-
     int dsid = -1;
-    try {dsid = std::stoi(name -> substr(start_pos, end_pos - start_pos));} 
-    catch (...) {return process_t::invalid;}
-    if (dsids_){*dsids_ = dsid;}
+    if (name){
+        size_t start_pos = name -> find("mc16");
+        if (start_pos != std::string::npos){start_pos = name -> find('.', start_pos) + 1;}
+        else {start_pos = 0;}
+        
+        size_t end_pos = name -> find('.', start_pos);
+        if (end_pos == std::string::npos || start_pos >= name -> length()){return process_t::invalid;}
+
+        try {dsid = std::stoi(name -> substr(start_pos, end_pos - start_pos));} 
+        catch (...) {return process_t::invalid;}
+        if (dsids_){*dsids_ = dsid;}
+    }
+    else if (dsids_){dsid = *dsids_;}
+    else {return process_t::invalid;}
 
     static const std::unordered_map<int, process_t> dsid_map = {
         // --- 4 Tops ---
@@ -76,12 +80,24 @@ process_t process_sample(std::string* name, int* dsids_){
         {410157, processtype::ttZ::qq},
 
         // --- Top Pairs (Specific Decays) ---
-        {410218, processtype::ttbar::ll}, {410219, processtype::ttbar::ll}, {410220, processtype::ttbar::ll},
-        {410464, processtype::ttbar::l},  {410465, processtype::ttbar::ll}, {410472, processtype::ttbar::ll},
-        {410480, processtype::ttbar::l},  {410482, processtype::ttbar::ll}, {410557, processtype::ttbar::l},
-        {410558, processtype::ttbar::ll}, {411076, processtype::ttbar::ll}, {411077, processtype::ttbar::ll},
-        {411078, processtype::ttbar::ll}, {411085, processtype::ttbar::ll}, {411086, processtype::ttbar::ll},
-        {411087, processtype::ttbar::ll}, {412069, processtype::ttbar::ll}, {412070, processtype::ttbar::ll},
+        {410218, processtype::ttbar::ll}, 
+        {410219, processtype::ttbar::ll}, 
+        {410220, processtype::ttbar::ll},
+        {410464, processtype::ttbar::l},  
+        {410465, processtype::ttbar::ll}, 
+        {410472, processtype::ttbar::ll},
+        {410480, processtype::ttbar::l},  
+        {410482, processtype::ttbar::ll}, 
+        {410557, processtype::ttbar::l},
+        {410558, processtype::ttbar::ll}, 
+        {411076, processtype::ttbar::ll}, 
+        {411077, processtype::ttbar::ll},
+        {411078, processtype::ttbar::ll}, 
+        {411085, processtype::ttbar::ll}, 
+        {411086, processtype::ttbar::ll},
+        {411087, processtype::ttbar::ll}, 
+        {412069, processtype::ttbar::ll}, 
+        {412070, processtype::ttbar::ll},
         {412071, processtype::ttbar::ll},
 
         // --- Single Top (tchan, schan, tW) ---
@@ -107,47 +123,39 @@ process_t process_sample(std::string* name, int* dsids_){
     return process_t::invalid;
 } 
 
-std::string process_string(std::string* name){
-    if (tools::has_string(name, "_singletop_" )){return "$t$"                      ;}
-    if (tools::has_string(name, "_tchan_"     )){return "$t$"                      ;}
-    if (tools::has_string(name, "_ttbarHT1k_" )){return "$t\\bar{t}$"              ;}
-    if (tools::has_string(name, "_ttbar_"     )){return "$t\\bar{t}$"              ;}
-    if (tools::has_string(name, "_ttbarHT1k5_")){return "$t\\bar{t}$"              ;}
-    if (tools::has_string(name, "_ttbarHT6c_" )){return "$t\\bar{t}$"              ;}
-    if (tools::has_string(name, "_tt_"        )){return "$t\\bar{t}$"              ;}
-    if (tools::has_string(name, "_ttee."      )){return "$t\\bar{t}\\ell\\ell$"    ;}
-    if (tools::has_string(name, "_ttmumu."    )){return "$t\\bar{t}\\ell\\ell$"    ;}
-    if (tools::has_string(name, "_tttautau."  )){return "$t\\bar{t}\\ell\\ell$"    ;}
-    if (tools::has_string(name, "_ttW."       )){return "$t\\bar{t}V$"             ;}
-    if (tools::has_string(name, "_ttZnunu."   )){return "$t\\bar{t}V$"             ;}
-    if (tools::has_string(name, "_ttZqq."     )){return "$t\\bar{t}V$"             ;}
-    if (tools::has_string(name, "_ttH125_"    )){return "$t\\bar{t}H$"             ;}
-    if (tools::has_string(name, "_Wt_"        )){return "$Wt$"                     ;}
-    if (tools::has_string(name, "_tW."        )){return "$tV$"                     ;}
-    if (tools::has_string(name, "_tW_"        )){return "$tV$"                     ;}
-    if (tools::has_string(name, "_tZ."        )){return "$tV$"                     ;}
-    if (tools::has_string(name, "_SM4topsNLO" )){return "$t\\bar{t}t\\bar{t}$"     ;}
-    if (tools::has_string(name, "_WlvZqq"     )){return "$WZ$"                     ;}
-    if (tools::has_string(name, "_WqqZll"     )){return "$WZ$"                     ;}
-    if (tools::has_string(name, "_WqqZvv"     )){return "$WZ$"                     ;}
-    if (tools::has_string(name, "_WplvWmqq"   )){return "$WW$"                     ;}
-    if (tools::has_string(name, "_WpqqWmlv"   )){return "$WW$"                     ;}
-    if (tools::has_string(name, "_ZqqZll"     )){return "$ZZ$"                     ;}
-    if (tools::has_string(name, "_ZqqZvv"     )){return "$ZZ$"                     ;}
-    if (tools::has_string(name, "_WH125."     )){return "$VH$"                     ;}
-    if (tools::has_string(name, "_ZH125_"     )){return "$VH$"                     ;}
-    if (tools::has_string(name, "_WH125_"     )){return "$VH$"                     ;}
-    if (tools::has_string(name, "_Wenu_"      )){return "$V\\ell\\nu$"             ;}
-    if (tools::has_string(name, "_Wmunu_"     )){return "$V\\ell\\nu$"             ;}
-    if (tools::has_string(name, "_Wtaunu_"    )){return "$V\\ell\\nu$"             ;}
-    if (tools::has_string(name, "_Zee_"       )){return "$V\\ell\\ell$"            ;}
-    if (tools::has_string(name, "_Zmumu_"     )){return "$V\\ell\\ell$"            ;}
-    if (tools::has_string(name, "_Ztautau_"   )){return "$V\\ell\\ell$"            ;}
-    if (tools::has_string(name, "_llll"       )){return "$\\ell\\ell\\ell\\ell$"   ;}
-    if (tools::has_string(name, "_lllv"       )){return "$\\ell\\ell\\ell\\nu$"    ;}
-    if (tools::has_string(name, "_llvv"       )){return "$\\ell\\ell\\nu\\nu$"     ;}
-    if (tools::has_string(name, "_lvvv"       )){return "$\\ell\\nu\\nu\\nu$"      ;}
-    return "undef"; 
+std::string process_string(process_t name){
+    switch (name){
+        case process_t::t_tchan:    return "$t_{\\text{t-channel}}$"; 
+        case process_t::t_schan:    return "$t_{\\text{s-channel}}$"; 
+        case process_t::tW:         return "$tW$";  
+        case process_t::ttbar:      return "$t\\bar{t}$";  
+        case process_t::tt_l:       return "$t\\bar{t} \\rightarrow \\ell$";  
+        case process_t::tt_ll:      return "$t\\bar{t} \\rightarrow \\ell \\bar{\\ell}$";  
+        case process_t::ttH:        return "$t\\bar{t}H$";  
+        case process_t::ttW:        return "$t\\bar{t}W$";  
+        case process_t::ttZ_qq:     return "$t\\bar{t}Z \\rightarrow q \\bar{q} $";  
+        case process_t::ttZ_vv:     return "$t\\bar{t}Z \\rightarrow \\nu \\bar{\\nu}$"; 
+        case process_t::tttt_SM:    return "$t\\bar{t}t\\bar{t}$ (SM)";  
+        case process_t::tttt_m400:  return "$t\\bar{t}t\\bar{t}$ (400)";  
+        case process_t::tttt_m500:  return "$t\\bar{t}t\\bar{t}$ (500)";   
+        case process_t::tttt_m600:  return "$t\\bar{t}t\\bar{t}$ (600)";  
+        case process_t::tttt_m700:  return "$t\\bar{t}t\\bar{t}$ (700)";  
+        case process_t::tttt_m800:  return "$t\\bar{t}t\\bar{t}$ (800)";  
+        case process_t::tttt_m900:  return "$t\\bar{t}t\\bar{t}$ (900)";  
+        case process_t::tttt_m1000: return "$t\\bar{t}t\\bar{t}$ (1000)";  
+        case process_t::Z_ll:       return "$Z \\rightarrow \\ell \\bar{\\ell}$"; 
+        case process_t::W_lv:       return "$W \\rightarrow \\ell \\bar{\\nu}$";  
+        case process_t::ZZ_qqll:    return "$ZZ$";  
+        case process_t::WZ_qqll:    return "$WZ$";  
+        case process_t::ZH:         return "$ZH$";  
+        case process_t::WH:         return "$WH$"; 
+        case process_t::llll:       return "$\\ell\\ell\\ell\\ell$";  
+        case process_t::lllv:       return "$\\ell\\ell\\ell\\nu$" ; 
+        case process_t::llvv:       return "$\\ell\\ell\\nu\\nu$"  ; 
+        case process_t::lvvv:       return "$\\ell\\nu\\nu\\nu$"   ; 
+        default:                    return "unknown"; 
+    }
+    return "undefined"; 
 }
 
 

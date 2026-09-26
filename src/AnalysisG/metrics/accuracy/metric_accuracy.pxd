@@ -48,18 +48,83 @@ cdef extern from "<metrics/transfer.h>":
         int epoch
 
 cdef extern from "<metrics/collector.h>":
+
+    cdef struct evn_t:
+
+        vector[double] weight
+        vector[double] masses
+        vector[double] error
+
+        vector[int] ntops
+        vector[int] ntrus
+
+        vector[vector[double]] mlp
+        map[int, map[int, int]] matrix
+
+    cdef struct pairs_t:
+
+        evn_t raw
+        evn_t adj
+
+    cdef struct performance_t:
+
+        map[string, pairs_t] truth
+        map[string, pairs_t] nominal
+        map[string, pairs_t] unmasked
+        map[string, pairs_t] masked
+
+    cdef cppclass performance:
+
+        performance(string mrk_, string mode_) except+
+        map[int, map[int, performance_t*]] metric
+        string name 
+        string mode
+
     cdef cppclass collector:
+
         collector() except+
         void inlet(edata* data) except+
- 
 
+        map[string, performance*] training
+        map[string, performance*] validation
+        map[string, performance*] evaluation
+
+        bool release
+
+cdef class Performance:
+
+    cdef performance_t* ptx
+    cdef void compile(self)
+
+    cdef bool trig
+
+    cdef string model 
+    cdef string mode
+    
+    cdef map[string, evn_t]* raw_truth
+    cdef map[string, evn_t]* raw_nominal
+    cdef map[string, evn_t]* raw_unmasked
+    cdef map[string, evn_t]* raw_masked
+
+    cdef map[string, evn_t]* adj_truth
+    cdef map[string, evn_t]* adj_nominal
+    cdef map[string, evn_t]* adj_unmasked
+    cdef map[string, evn_t]* adj_masked
+
+    cdef int epoch
+    cdef int kfold 
 
 cdef class AccuracyMetric(MetricTemplate):
+
     cdef accuracy_metric* mtr
     cdef collector* mcl
+
     cdef map[string, map[string, map[string, string]]] str_cache
     cdef public default_plt
 
+    cdef public dict training 
+    cdef public dict validation
+    cdef public dict evaluation
 
 cdef inline string m_key(string type_, string mode_, string var_, AccuracyMetric mdl):
     cdef string* val = &mdl.str_cache[type_][mode_][var_]
@@ -114,39 +179,39 @@ cdef inline double dget_val(dict data, string type_, string var_, AccuracyMetric
     except KeyError: pass
     return 0
 
-cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
-    cdef edata* edx = new edata(); 
-    edx.kfold = meta[b'kfold'] 
-    edx.epoch = meta[b'epoch']
-    edx.mrk   = meta[b'model_name']
+cdef inline map[string, evn_t]* to_raw(map[string, pairs_t]* ipt):
+    cdef map[string, evn_t]* rc = new map[string, evn_t]()
+    cdef pair[string, pairs_t] itx
+    for itx in deref(ipt): deref(rc)[itx.first] = itx.second.raw
+    return rc
 
-    edx.ntop_score = vget_val(data, b"ntops"  , b"scores", vl)
-    edx.ntop_tru   = iget_val(data, b"ntops"  , b"tru"   , vl)
-    edx.ntop_prd   = iget_val(data, b"ntops"  , b"prd"   , vl)
-    edx.acc_edge   = dget_val(data, b"average", b"edge"  , vl)
-    edx.dsid       = iget_val(data, b""       , b"dsid"  , vl)
-    edx.prc_idx    = iget_val(data, b"process", b"idx"   , vl)
+cdef inline map[string, evn_t]* to_adj(map[string, pairs_t]* ipt):
+    cdef map[string, evn_t]* rc = new map[string, evn_t]()
+    cdef pair[string, pairs_t] itx
+    for itx in deref(ipt): deref(rc)[itx.first] = itx.second.raw
+    return rc
 
-    edx.training.push_back(make_pdata(data, b"particle"  , b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_truth", b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_nom"  , b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_upr"  , b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_pr"   , b"training", vl))
-    
-    edx.validation.push_back(make_pdata(data, b"particle"  , b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_truth", b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_nom"  , b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_upr"  , b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_pr"   , b"validation", vl))
+cdef inline dict make_prf(map[string, performance*]* tx, string mode):
+    cdef string mdln
+    cdef Performance prf
+    cdef pair[string, performance*] itr 
 
-    edx.evaluation.push_back(make_pdata(data, b"particle"  , b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_truth", b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_nom"  , b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_upr"  , b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_pr"   , b"evaluation", vl))
-    vl.mcl.inlet(edx)
+    cdef pair[int, performance_t*] itk
+    cdef pair[int, map[int, performance_t*]] ite
 
-    try: assert len(data) == 0; return
-    except AssertionError: pass
-    print(data)
-    exit()
+    cdef dict output = {}
+    for itr in deref(tx):
+        mdln = itr.first
+        for ite in itr.second.metric:
+            for itk in ite.second:
+
+                prf = Performance()
+                prf.model = mdln
+                prf.mode  = mode
+                prf.epoch = ite.first
+                prf.kfold = itk.first
+                prf.ptx   = itk.second
+               
+                try: output[prf.model].append(prf)
+                except KeyError: output[prf.model] = [prf]
+    return output

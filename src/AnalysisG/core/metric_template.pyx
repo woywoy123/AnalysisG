@@ -162,6 +162,7 @@ cdef class MetricTemplate:
                         if not tl.ends_with(&itr.first, b"." + itm.second[ix]): continue
                         mapdx[itm.first][ix] = itr.second
                         break
+
                 if itr.first == itm.first: mapdx[itm.first][0] = itr.second
                 if lxk != NULL: continue
                 lxk = itr.second
@@ -173,6 +174,7 @@ cdef class MetricTemplate:
                 itx[key] = {}
                 unpause = False
                 for dt in mapdx[key]: 
+                    if dt == NULL: continue
                     if endx[dt.path]: break
                     if pause[dt.path]: break
                     itx[key] |= switch_board(dt)
@@ -181,10 +183,12 @@ cdef class MetricTemplate:
 
             keep_going = False
             for il in prange(dmp.size(), nogil = True, num_threads = dmp.size()): 
-                dt = dmp[dmi[il]]; ix = dt.index
+                dt = dmp[dmi[il]]; 
+                if dt == NULL: continue
                 if pause[dt.path] or endx[dt.path]: continue
+                ix = dt.index
                 endx[dt.path] += dt.next() 
-                keep_going += not endx[dt.path]
+                keep_going    += not endx[dt.path]
 
             if not ix:
                 meta = {}
@@ -210,7 +214,8 @@ cdef class MetricTemplate:
             for ix in prange(mxf.size(), nogil = True): unpause *= pause[mxf[ix][1]]
             if unpause: pause.clear(); idx_map.clear(); kl = b""
             iox.prg.update(1)
-            if not keep_going: break
+            if keep_going: continue
+            break
 
         self.Postprocessing()
         return self

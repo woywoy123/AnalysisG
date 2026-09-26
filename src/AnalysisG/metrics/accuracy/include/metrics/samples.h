@@ -67,6 +67,6 @@ namespace processtype {
 }
 
 process_t   process_sample(std::string* name, int* dsids);
-std::string process_string(std::string* name);
+std::string process_string(process_t prc);
 
 #endif

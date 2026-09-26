@@ -3,14 +3,10 @@ from AnalysisG import *
 from AnalysisG.core import Analysis
 from AnalysisG.models  import Grift
 from AnalysisG.metrics import AccuracyMetric
-
+from AnalysisG.core import TH1F
 from AnalysisG.graphs.bsm_4tops import *
 from AnalysisG.events.bsm_4tops import *
-
 from atomics import *
-
-base_dir   = "/CERN/thesis-data/gnn-model/"
-base_model = "Grift"
 
 rn = Runtime(base_dir)
 rn.training.path  = "training/base/GraphDetectorLep/"
@@ -73,8 +69,7 @@ for i in params:
     cfg.batch_size  = 50
 
 out = ""
-for i in rn.stats.kfolds:
-    out += str(rn.stats.kfolds[i]) + "\n"
+for i in rn.stats.kfolds: out += str(rn.stats.kfolds[i]) + "\n"
 open("sets.txt", "w").write(out)
-#rn.SampleParams()
-#rn.ModelTasks()
+rn.SampleParams()
+rn.ModelTasks()

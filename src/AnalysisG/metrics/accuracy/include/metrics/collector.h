@@ -3,39 +3,31 @@
 #include <metrics/transfer.h>
 #include <metrics/particle.h>
 
-struct edata_t {
-    int ntru; 
-    int npre; 
-    std::vector<double> pred; 
-    process_t prc; 
-
-    double acc_edges; 
-
-    std::vector<rectop> truth;
-    std::vector<rectop> nominal;
-    std::vector<rectop> umasked;
-    std::vector<rectop> masked; 
-
-}; 
-
 class performance {
     
     public:
         performance(std::string mrk_, std::string mode_);
         ~performance(); 
 
+        void compiler(); 
+        performance_t* filter(std::vector<edata_t>* dfc); 
+
+        std::map<int, std::map<int, std::vector<edata_t>>> epoch; 
+        std::map<int, std::map<int, performance_t*>>       metric; 
+
         std::string name = ""; 
         std::string mode = ""; 
-        std::map<int, std::map<int, std::vector<edata_t>>> epoch; 
+
 }; 
 
-class collector 
+class collector : public tools
 {
     public:
         collector(); 
         ~collector(); 
 
         void inlet(edata* data);
+        void expand(edata_t* ev, pdata* px);
         std::string label(std::vector<pdata*>* vl, std::string mox);  
 
         // models
@@ -43,6 +35,9 @@ class collector
         std::map<std::string, performance*> validation; 
         std::map<std::string, performance*> evaluation; 
 
+        int epoch = -1; 
+        int kfold = -1; 
+        bool release = false; 
 }; 
 
 

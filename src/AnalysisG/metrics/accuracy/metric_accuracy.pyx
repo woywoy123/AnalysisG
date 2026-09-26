@@ -1,6 +1,139 @@
 # distutils: language=c++
 # cython: language_level=3
-from AnalysisG.core.roc cimport *
+
+from cython.operator cimport dereference as deref
+from AnalysisG.core.tools cimport enc, env
+
+cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
+
+    cdef edata edx = edata(); 
+    edx.kfold = meta[b'kfold'] 
+    edx.epoch = meta[b'epoch']
+    edx.mrk   = meta[b'model_name']
+
+    edx.ntop_score = vget_val(data, b"ntops"  , b"scores", vl)
+    edx.ntop_tru   = iget_val(data, b"ntops"  , b"tru"   , vl)
+    edx.ntop_prd   = iget_val(data, b"ntops"  , b"prd"   , vl)
+    edx.acc_edge   = dget_val(data, b"average", b"edge"  , vl)
+    edx.dsid       = iget_val(data, b""       , b"dsid"  , vl)
+    edx.prc_idx    = iget_val(data, b"process", b"idx"   , vl)
+
+    edx.training.push_back(make_pdata(data, b"particle"  , b"training", vl))
+    edx.training.push_back(make_pdata(data, b"tops_truth", b"training", vl))
+    edx.training.push_back(make_pdata(data, b"tops_nom"  , b"training", vl))
+    edx.training.push_back(make_pdata(data, b"tops_upr"  , b"training", vl))
+    edx.training.push_back(make_pdata(data, b"tops_pr"   , b"training", vl))
+    
+    edx.validation.push_back(make_pdata(data, b"particle"  , b"validation", vl))
+    edx.validation.push_back(make_pdata(data, b"tops_truth", b"validation", vl))
+    edx.validation.push_back(make_pdata(data, b"tops_nom"  , b"validation", vl))
+    edx.validation.push_back(make_pdata(data, b"tops_upr"  , b"validation", vl))
+    edx.validation.push_back(make_pdata(data, b"tops_pr"   , b"validation", vl))
+
+    edx.evaluation.push_back(make_pdata(data, b"particle"  , b"evaluation", vl))
+    edx.evaluation.push_back(make_pdata(data, b"tops_truth", b"evaluation", vl))
+    edx.evaluation.push_back(make_pdata(data, b"tops_nom"  , b"evaluation", vl))
+    edx.evaluation.push_back(make_pdata(data, b"tops_upr"  , b"evaluation", vl))
+    edx.evaluation.push_back(make_pdata(data, b"tops_pr"   , b"evaluation", vl))
+    vl.mcl.inlet(&edx)
+
+    if not vl.mcl.release: return
+    vl.mcl.release = False
+    cdef dict tr = make_prf(&vl.mcl.training  , b"training")
+    for i in tr: 
+        try: vl.training[i] += tr[i]
+        except KeyError: vl.training[i] = tr[i]
+ 
+    cdef dict va = make_prf(&vl.mcl.validation, b"validation")
+    for i in va: 
+        try: vl.validation[i] += va[i]
+        except KeyError: vl.validation[i] = va[i]
+ 
+    cdef dict ev = make_prf(&vl.mcl.evaluation, b"evaluation")
+    for i in ev: 
+        try: vl.evaluation[i] += ev[i]
+        except KeyError: vl.evaluation[i] = ev[i]
+    
+    vl.Postprocessing()
+    try: assert len(data) == 0; return
+    except AssertionError: pass
+    print(data)
+    exit()
+
+
+cdef class Performance:
+    def __cinit__(self): pass
+    def __init__(self): self.trig = False
+    def __dealloc__(self):
+        if self.raw_truth    != NULL: del self.raw_truth   
+        if self.adj_truth    != NULL: del self.adj_truth   
+
+        if self.raw_nominal  != NULL: del self.raw_nominal 
+        if self.adj_nominal  != NULL: del self.adj_nominal 
+
+        if self.raw_unmasked != NULL: del self.raw_unmasked
+        if self.adj_unmasked != NULL: del self.adj_unmasked
+
+        if self.raw_masked   != NULL: del self.raw_masked  
+        if self.adj_masked   != NULL: del self.adj_masked  
+
+    def __hash__(self):
+        cdef str cfg = env(self.model)
+        cfg += env(self.mode)
+        cfg += str(self.epoch)
+        cfg += str(self.kfold)
+        return hash(cfg)
+
+    def __eq__(self, obj):
+        return hash(obj) == hash(self)
+
+    cdef void compile(self):
+        if self.trig: return
+        self.trig = True
+        self.raw_truth    = to_raw(&self.ptx.truth)
+        self.adj_truth    = to_adj(&self.ptx.truth)
+
+        self.raw_nominal  = to_raw(&self.ptx.nominal)
+        self.adj_nominal  = to_adj(&self.ptx.nominal)
+
+        self.raw_unmasked = to_raw(&self.ptx.unmasked)
+        self.adj_unmasked = to_adj(&self.ptx.unmasked)
+
+        self.raw_masked   = to_raw(&self.ptx.masked)
+        self.adj_masked   = to_adj(&self.ptx.masked)
+
+
+    @property
+    def ModelName(self): return env(self.model)
+    @property
+    def ModeName(self): return env(self.mode)
+
+    @property
+    def kFold(self): return self.kfold
+    @property
+    def Epoch(self): return self.epoch
+
+    @property
+    def RawTruth(self): self.compile(); return deref(self.raw_truth)
+    @property
+    def AdjTruth(self): self.compile(); return deref(self.adj_truth)
+
+    @property
+    def RawNominal(self): self.compile(); return deref(self.raw_nominal)
+    @property
+    def AdjNominal(self): self.compile(); return deref(self.adj_nominal)
+
+    @property
+    def RawUnmasked(self): self.compile(); return deref(self.raw_unmasked)
+    @property
+    def AdjUnmasked(self): self.compile(); return deref(self.adj_unmasked)
+
+    @property
+    def RawMasked(self): self.compile(); return deref(self.raw_masked)
+    @property
+    def AdjMasked(self): self.compile(); return deref(self.adj_masked)
+
+
 
 cdef class AccuracyMetric(MetricTemplate):
     def __cinit__(self):
@@ -12,18 +145,25 @@ cdef class AccuracyMetric(MetricTemplate):
         cdef list evnt_dt = ["process_idx", "average_edge", "ntops_scores", "dsid", "ntops_tru", "ntops_prd"]
 
         self.root_leaves = {
-            "accuracy_training" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
-            #            "accuracy_validation;1" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru,
+                "accuracy_training"   : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
+                "accuracy_validation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
+                "accuracy_evaluation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
         }
 
         self.root_fx = {
-            "accuracy_training" : get_data,
-            #            "accuracy_validation;1" : get_data,
+                "accuracy_training"   : get_data,
+                "accuracy_validation" : get_data,
+                "accuracy_evaluation" : get_data
         }
 
         self.mtx = new accuracy_metric()
         self.mtr = <accuracy_metric*>(self.mtx)
         self.mcl = new collector() 
+        
+        self.training   = {}
+        self.validation = {}
+        self.evaluation = {}
+
         self.default_plt = None
 
     def __delloc__(self):
@@ -33,91 +173,3 @@ cdef class AccuracyMetric(MetricTemplate):
 
     def Postprocessing(self):
         pass
-
-#        cdef ROC rc
-#        cdef cdata_t* px
-#        self.cl.get_plts()
-#
-#        cdef vector[string] model_names = self.cl.model_names
-#        cdef vector[string] modes_names = self.cl.modes
-#        cdef vector[int]    epochs      = self.cl.epochs
-#        cdef vector[int]    kfolds      = self.cl.kfolds
-#
-#        cdef TLine tl, tm
-#        cdef str name_, mode_
-#        cdef string name, mode
-#        cdef int ep, kf
-#
-#        cdef dict colx = {}
-#        cdef dict lines = {}
-#
-#        tm = TLine()
-#        for ep in epochs:
-#            for name in model_names:
-#                name_ = env(name)
-#                if name_ not in colx:
-#                    colx[name_] = tm.Color
-#                    tm.Color = ""
-#                rc = ROC()
-#                rc.xBins = 100
-#                rc.default_plt = self.default_plt
-#                rc.OutputDirectory = "./figures/epoch-" + str(ep) + "/" + env(name)
-#                rc.Title = "Top Multiplicity Classification: (" + env(name) + " @ Epoch-" + str(ep) +")"
-#                rc.Filename = "ntops"
-#                for kf in kfolds:
-#                    for mode in modes_names:
-#                        px = self.cl.get_mode(name, mode, ep, kf)
-#                        if px == NULL: continue
-#                        rc.rx.build_ROC(mode, kf, &px.ntops_truth, &px.ntop_score)
-#                rc.__compile__()
-#                if name_ not in self.auc: self.auc[name_] = {}
-#                self.auc[name_][ep] = rc.auc
-#
-#                for mode_ in rc.auc:
-#                    for cls_ in rc.auc[mode_]:
-#                        if "::" not in str(cls_): continue
-#                        clx = "cls::" + cls_.split("::")[1]
-#                        if clx not in lines: lines[clx] = {}
-#                        if name_ not in lines[clx]: lines[clx][name_] = {}
-#                        if mode_ not in lines[clx][name_]: lines[clx][name_][mode_] = {}
-#                        if ep in lines[clx][name_][mode_]: continue
-#                        lines[clx][name_][mode_][ep] = [rc.auc[mode_][clx + "::avg"], rc.auc[mode_][clx + "::stdev"]]
-#  
-#        cdef dict cols = {"training" : "-", "validation" : "--", "evaluation" : ":"}
-#        for cls_ in lines:
-#            tm = TLine()
-#            linex = []
-#            for name_ in lines[cls_]:
-#                for mode_ in lines[cls_][name_]:
-#                    epx = sorted(lines[cls_][name_][mode_])
-#                    dax = lines[cls_][name_][mode_]
-#                    tl = TLine()
-#                    tl.LineStyle = cols[mode_] 
-#                    tl.Color = colx[name_]; tl.Alpha = 1.0
-#                    tl.Title = name_ + " (" + mode_ + ")"
-#
-#                    tl.xData     = epx
-#                    tl.yData     = [dax[ep][0] for ep in epx]
-#                    tl.yDataDown = [dax[ep][0] - dax[ep][1] for ep in epx]
-#                    tl.yDataUp   = [dax[ep][0] + dax[ep][1] for ep in epx]
-#                    tl.ErrorShade = True; tl.ErrorBars = True
-#                    if self.default_plt is None: pass
-#                    else: self.default_plt(tl)
-#                    linex.append(tl)
-#
-#            if self.default_plt is None: pass
-#            else: self.default_plt(tm)
-#            tm.Title = "Model Performance Top Multiplicity (n-Top: " + cls_.split("::")[1] + ")"
-#            tm.xTitle = "Epochs"
-#            tm.yTitle = "AUC"
-#            tm.Lines = linex
-#            tm.xMin = 0; tm.xMax = max(epochs)+1
-#            tm.yMin = 0; tm.yMax = 1
-#            tm.OutputDirectory = "./figures/summary"
-#            tm.Filename = "ntop-" + cls_.split("::")[1]
-#            tm.SaveFigure() 
-#
-#        f = open("./figures/summary/roc.txt", "w")
-#        f.write(str(self.roc))
-#        f.close()
-#
