@@ -287,7 +287,7 @@ void dataloader::safe_delete(std::vector<graph_t*>* data){
     tools::vflush(data);
     delete data; 
     #if _server
-    c10::cuda::CUDACachingAllocator::emptyCache();
+//    c10::cuda::CUDACachingAllocator::emptyCache();
     #endif
 }
 
@@ -344,8 +344,8 @@ void dataloader::cuda_memory_server(){
             bool inx = itx -> second;
             if (!inx){continue;}
             if (!cuda_memory(dev)){continue;}
-            trig = true; 
             if (gr -> in_use == 1){break;}
+            trig = true; 
             check_m(&gr -> dev_data_graph  , true, dev); 
             check_m(&gr -> dev_data_node   , true, dev); 
             check_m(&gr -> dev_data_edge   , true, dev); 
