@@ -25,11 +25,11 @@ bool rectop::valid(){return this -> idn == object_e::valid;}
 
 
 collector::collector(){}
-collector::~collector(){
+collector::~collector(){}
+void collector::flush(){
     this -> mflush(&this -> training); 
     this -> mflush(&this -> validation);
     this -> mflush(&this -> evaluation); 
-
 }
 
 std::string collector::label(std::vector<pdata*>* vl, std::string mox){

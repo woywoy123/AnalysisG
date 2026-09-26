@@ -24,7 +24,8 @@ class Data:
         pth += "/" + self.ModeName  
         pth += "/epoch-" + str(self.Epoch)
         pathlib.Path(pth).mkdir(parents = True, exist_ok = True)
-        pickle.dump(self, open(pth + "/" + str(self.kFold) + ".pkl", "wb"))
+        pickle.dump(self, open(pth + "/kfold-" + str(self.kFold) + ".pkl", "wb"))
+        print("+>", pth + "/kfold-" + str(self.kFold) + ".pkl")
 
     def __hash__(self):
         cfg = self.ModelName
@@ -40,15 +41,18 @@ class Data:
 #base_dir   = "/CERN/thesis-data/gnn-model/"
 #base_model = "Grift"
 
-#br = "/home/tnom6927/scratch/"
-br = "/run/media/tnom6927/1.44.1-64570"
+br = "/home/tnom6927/scratch/"
+#br = "/run/media/tnom6927/1.44.1-64570"
 
 class Metric(AccuracyMetric):
     def __init__(self): AccuracyMetric.__init__(self)
     def Postprocessing(self):
-        for i in self.training:   Data(self.training[i][0])
-        for i in self.validation: Data(self.validation[i][0])
-        for i in self.evaluation: Data(self.evaluation[i][0])
+        for i in self.training:   
+            for k in self.training[i]: Data(k)
+        for i in self.validation:   
+            for k in self.validation[i]: Data(k)
+        for i in self.evaluation:   
+            for k in self.evaluation[i]: Data(k)
         self.training   = {} 
         self.validation = {}
         self.evaluation = {}

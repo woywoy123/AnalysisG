@@ -53,8 +53,9 @@ cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
     for i in ev: 
         try: vl.evaluation[i] += ev[i]
         except KeyError: vl.evaluation[i] = ev[i]
-    
+   
     vl.Postprocessing()
+    vl.mcl.flush()
     try: assert len(data) == 0; return
     except AssertionError: pass
     print(data)
@@ -62,7 +63,7 @@ cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
 
 
 cdef class Performance:
-    def __cinit__(self): pass
+    def __cinit__(self): self.ptx = NULL
     def __init__(self): self.trig = False
     def __dealloc__(self):
         if self.raw_truth    != NULL: del self.raw_truth   
@@ -75,7 +76,7 @@ cdef class Performance:
         if self.adj_unmasked != NULL: del self.adj_unmasked
 
         if self.raw_masked   != NULL: del self.raw_masked  
-        if self.adj_masked   != NULL: del self.adj_masked  
+        if self.adj_masked   != NULL: del self.adj_masked 
 
     def __hash__(self):
         cdef str cfg = env(self.model)
@@ -92,16 +93,19 @@ cdef class Performance:
         self.trig = True
         self.raw_truth    = to_raw(&self.ptx.truth)
         self.adj_truth    = to_adj(&self.ptx.truth)
+        self.ptx.truth.clear()
 
         self.raw_nominal  = to_raw(&self.ptx.nominal)
         self.adj_nominal  = to_adj(&self.ptx.nominal)
+        self.ptx.nominal.clear()
 
         self.raw_unmasked = to_raw(&self.ptx.unmasked)
         self.adj_unmasked = to_adj(&self.ptx.unmasked)
+        self.ptx.unmasked.clear()
 
         self.raw_masked   = to_raw(&self.ptx.masked)
         self.adj_masked   = to_adj(&self.ptx.masked)
-
+        self.ptx.masked.clear()
 
     @property
     def ModelName(self): return env(self.model)
@@ -114,24 +118,24 @@ cdef class Performance:
     def Epoch(self): return self.epoch
 
     @property
-    def RawTruth(self): self.compile(); return deref(self.raw_truth)
+    def RawTruth(self): return deref(self.raw_truth)
     @property
-    def AdjTruth(self): self.compile(); return deref(self.adj_truth)
+    def AdjTruth(self): return deref(self.adj_truth)
 
     @property
-    def RawNominal(self): self.compile(); return deref(self.raw_nominal)
+    def RawNominal(self): return deref(self.raw_nominal)
     @property
-    def AdjNominal(self): self.compile(); return deref(self.adj_nominal)
+    def AdjNominal(self): return deref(self.adj_nominal)
 
     @property
-    def RawUnmasked(self): self.compile(); return deref(self.raw_unmasked)
+    def RawUnmasked(self): return deref(self.raw_unmasked)
     @property
-    def AdjUnmasked(self): self.compile(); return deref(self.adj_unmasked)
+    def AdjUnmasked(self): return deref(self.adj_unmasked)
 
     @property
-    def RawMasked(self): self.compile(); return deref(self.raw_masked)
+    def RawMasked(self): return deref(self.raw_masked)
     @property
-    def AdjMasked(self): self.compile(); return deref(self.adj_masked)
+    def AdjMasked(self): return deref(self.adj_masked)
 
 
 

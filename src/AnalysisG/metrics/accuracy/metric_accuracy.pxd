@@ -66,8 +66,8 @@ cdef extern from "<metrics/collector.h>":
         evn_t raw
         evn_t adj
 
-    cdef struct performance_t:
-
+    cdef cppclass performance_t:
+         
         map[string, pairs_t] truth
         map[string, pairs_t] nominal
         map[string, pairs_t] unmasked
@@ -84,6 +84,7 @@ cdef extern from "<metrics/collector.h>":
 
         collector() except+
         void inlet(edata* data) except+
+        void flush() except+
 
         map[string, performance*] training
         map[string, performance*] validation
@@ -204,6 +205,7 @@ cdef inline dict make_prf(map[string, performance*]* tx, string mode):
         mdln = itr.first
         for ite in itr.second.metric:
             for itk in ite.second:
+                if itk.second == NULL: continue
 
                 prf = Performance()
                 prf.model = mdln
@@ -211,6 +213,8 @@ cdef inline dict make_prf(map[string, performance*]* tx, string mode):
                 prf.epoch = ite.first
                 prf.kfold = itk.first
                 prf.ptx   = itk.second
+                prf.compile()
+                itk.second = NULL
                
                 try: output[prf.model].append(prf)
                 except KeyError: output[prf.model] = [prf]
