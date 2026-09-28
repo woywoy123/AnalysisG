@@ -16,9 +16,14 @@ void rectop::decode(int _chn){
     this -> composition[content_e::other]  = n;
     this -> composition[content_e::lepton] = l;
     this -> composition[content_e::bquark] = b;
+
+
+    if (l >= 1 && l < 3 && b == 1 && p == 2){p = 2;} // l == 2 due to neutrino
+    else {p = 0;}
+
     this -> idn = (p == 2) ? object_e::valid : object_e::failed;
-    if (_chn < 0 && p / 2){this -> chn = channel_e::hadronic;}
-    if (_chn > 0 && p / 2){this -> chn = channel_e::leptonic;}
+    if (_chn < 0 && int(p / 2)){this -> chn = channel_e::hadronic;}
+    if (_chn > 0 && int(p / 2)){this -> chn = channel_e::leptonic;}
 }
 
 bool rectop::valid(){return this -> idn == object_e::valid;}

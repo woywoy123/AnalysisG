@@ -189,7 +189,7 @@ cdef inline map[string, evn_t]* to_raw(map[string, pairs_t]* ipt):
 cdef inline map[string, evn_t]* to_adj(map[string, pairs_t]* ipt):
     cdef map[string, evn_t]* rc = new map[string, evn_t]()
     cdef pair[string, pairs_t] itx
-    for itx in deref(ipt): deref(rc)[itx.first] = itx.second.raw
+    for itx in deref(ipt): deref(rc)[itx.first] = itx.second.adj
     return rc
 
 cdef inline dict make_prf(map[string, performance*]* tx, string mode):

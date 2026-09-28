@@ -150,14 +150,14 @@ cdef class AccuracyMetric(MetricTemplate):
 
         self.root_leaves = {
                 "accuracy_training"   : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
-                "accuracy_validation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
-                "accuracy_evaluation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
+                #"accuracy_validation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
+                #"accuracy_evaluation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
         }
 
         self.root_fx = {
                 "accuracy_training"   : get_data,
-                "accuracy_validation" : get_data,
-                "accuracy_evaluation" : get_data
+                #"accuracy_validation" : get_data,
+                #"accuracy_evaluation" : get_data
         }
 
         self.mtx = new accuracy_metric()
