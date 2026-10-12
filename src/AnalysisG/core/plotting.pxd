@@ -2,13 +2,13 @@
 # cython: language_level = 3
 
 from AnalysisG.core.notification cimport notification
+from cython.operator cimport dereference as deref
+from libcpp.unordered_map cimport unordered_map
 from AnalysisG.core.tools cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.unordered_map cimport unordered_map
 from libcpp.map cimport map
 from libcpp cimport bool, float
-from cython.operator cimport dereference as deref
 
 cdef extern from "<plotting/plotting.h>" nogil:
 
@@ -21,6 +21,7 @@ cdef extern from "<plotting/plotting.h>" nogil:
         float  min(vector[float]*) except+ nogil
         double min(vector[double]*) except+ nogil
         void build_error() except+ nogil
+        void add_data(vector[float]* inpt, vector[float]* data) except+ nogil
 
         string filename
         string extension

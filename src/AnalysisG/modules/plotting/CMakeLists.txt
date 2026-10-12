@@ -4,5 +4,7 @@ set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/plotting.cxx)
 add_library(cplotting STATIC ${SOURCE_FILES})
 target_include_directories(cplotting PRIVATE include/plotting)
 target_include_directories(cplotting PUBLIC include)
-target_link_libraries(cplotting PUBLIC ctools cstructs cnotification ${ROOT_LIBRARIES})
+target_link_libraries(cplotting 
+    PUBLIC ctools cstructs cnotification ctypecasting ${ROOT_LIBRARIES}
+)
 target_compile_options(cplotting PRIVATE -fPIC -Wshadow)

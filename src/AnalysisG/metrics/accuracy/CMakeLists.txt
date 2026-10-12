@@ -2,9 +2,10 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/accuracy.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/pagerank.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/samples.cxx
-    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/utils.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/performance.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/collector.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/atomics.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/utils.cxx
 )
 add_library(cmetric_accuracy STATIC ${SOURCE_FILES})
 target_include_directories(cmetric_accuracy PRIVATE include/metrics)

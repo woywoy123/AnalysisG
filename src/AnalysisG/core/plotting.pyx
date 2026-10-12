@@ -11,10 +11,11 @@ from scipy.stats import ks_2samp
 import matplotlib.pyplot as plt
 import boost_histogram as bh
 import mplhep as hep
-import numpy
-import random
+
 import pathlib
+import random
 import pickle
+import numpy
 
 
 def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False, this_hist = None):
@@ -424,7 +425,9 @@ cdef class TH1F(BasePlotting):
     @property
     def xData(self): return self.ptr.x_data;
     @xData.setter
-    def xData(self, list val): self.ptr.x_data = <vector[float]>(val)
+    def xData(self, list val): 
+        cdef vector[float] xt = <vector[float]>(val)
+        self.ptr.add_data(&xt, &self.ptr.x_data)
 
     @property
     def xBins(self):
@@ -555,21 +558,13 @@ cdef class TH1F(BasePlotting):
     cdef float scale_f(self): return self.CrossSection * self.IntegratedLuminosity
 
     cdef dict factory(self):
-        cdef dict histpl = {}
-        histpl["histtype"] = self.HistFill
-        histpl["yerr"] = self.ErrorBars
-        histpl["stack"] = self.Stacked
+        cdef dict histpl = {
+                "histtype"  : self.HistFill, "yerr" : self.ErrorBars, "stack" : self.Stacked, 
+                "linewidth" : self.LineWidth, "edgecolor" : "black", "density" : self.Density,
+                "flow" : self.Overflow, "binticks" : True, "edges" : True,
+                "alpha" :  [], "label" : [], "H" : [], "color" : []
+        }
         histpl["hatch"] = [] if not len(self.Hatch) else [self.Hatch]
-        histpl["linewidth"] = self.LineWidth
-        histpl["edgecolor"] = "black"
-        histpl["alpha"] =  []
-        histpl["binticks"] = True
-        histpl["edges"] = True
-        histpl["density"] = self.Density
-        histpl["flow"] = self.Overflow
-        histpl["label"] = []
-        histpl["H"] = []
-        histpl["color"] = []
         if self.ptr.x_data.size(): histpl["color"] += [self.Color]
         return histpl
 
@@ -680,18 +675,15 @@ cdef class TH1F(BasePlotting):
         elif self.Histogram is not None and len(self.Histograms) and self.Stacked:
             self.__figure__({
                 "nrows" : 2, "ncols" : 1, "sharex" : True,
-                "gridspec_kw" : {
-                    "height_ratios" : [4, 1], "hspace" : 0.05
-                }
+                "gridspec_kw" : {"height_ratios" : [4, 1], "hspace" : 0.05}
             })
 
-            cpy = {}
-            cpy["linewidth"] = 0
-            cpy["histtype"]  = "step"
-            cpy["yerr"]      = True
-            cpy["ax"]        = self._ax[0]
-            cpy["H"]         = sum(histpl["H"][1:])
-            error            = hep.histplot(**cpy)
+            cpy = {
+                    "linewidth" : 0, "histtype"  : "step", 
+                    "yerr" : True, "ax" : self._ax[0], 
+                    "H"  : sum(histpl["H"][1:])
+            }
+            error     = hep.histplot(**cpy)
 
             cpy = {}
             cpy["color"]      = "black"
@@ -727,9 +719,7 @@ cdef class TH1F(BasePlotting):
         elif self.Histogram is not None and len(self.Histograms) and not self.Stacked:
             self.__figure__({
                 "nrows" : 2, "ncols" : 1, "sharex" : True,
-                "gridspec_kw" : {
-                    "height_ratios" : [4, 1], "hspace" : 0.03
-                }
+                "gridspec_kw" : {"height_ratios" : [4, 1], "hspace" : 0.03}
             })
 
             histpl["ax"] = self._ax[0]
@@ -950,13 +940,17 @@ cdef class TLine(BasePlotting):
     def xData(self): return self.ptr.x_data;
 
     @xData.setter
-    def xData(self, list val): self.ptr.x_data = <vector[float]>(val)
+    def xData(self, list val): 
+        cdef vector[float] xt = <vector[float]>(val)
+        self.ptr.add_data(&xt, &self.ptr.x_data)
 
     @property
     def yData(self): return self.ptr.y_data;
 
     @yData.setter
-    def yData(self, list val): self.ptr.y_data = <vector[float]>(val)
+    def yData(self, list val): 
+        cdef vector[float] xt = <vector[float]>(val)
+        self.ptr.add_data(&xt, &self.ptr.y_data)
 
     @property
     def Marker(self): return env(self.ptr.marker)

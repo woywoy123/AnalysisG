@@ -27,12 +27,12 @@ float plotting::get_min(std::string dim){
 }
 
 float plotting::sum_of_weights(){
-    float out = 0; 
-    for (size_t x(0); x < this -> weights.size(); ++x){
-        out += this -> weights.at(x); 
-    }
-    if (!out){return 1;}
-    return out;
+    return this -> tools::sum(&this -> weights);
+}
+
+void plotting::add_data(std::vector<float>* inpt, std::vector<float>* data){
+    if (inpt -> size() == 0){data -> clear();}
+    merge_data(data, inpt); 
 }
 
 std::tuple<float, float> plotting::mean_stdev(std::vector<float>* data){

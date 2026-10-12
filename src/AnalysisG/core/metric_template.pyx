@@ -72,6 +72,7 @@ cdef class MetricTemplate:
             self.mtx.failure(b"-> dictionary {<tree> : [<leaves>]} : 'root_leaves'")
             self.mtx.failure(b"-> dictionary {<tree> : <fx(class, data, meta)>} or {<tree>.<leaves> : <fx(class, data, meta)>}: 'root_fx'")
             return self
+
         if   path.endswith("/"): path += "*"
         elif path.endswith(".root"): pass
         else: path += "*"
@@ -137,7 +138,7 @@ cdef class MetricTemplate:
                 else: continue 
                 leaves += [l]
 
-
+        lsx = [key for key in lsx if self.ptr.is_file(key)]
         cdef IO iox = IO(path if not lsx.size() else env_vec(&lsx))
         iox.Trees  = list(self.root_leaves)
         iox.Leaves = list(set(leaves))

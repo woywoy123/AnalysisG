@@ -1,12 +1,14 @@
 # distutils: language=c++
 # cython: language_level=3
-from libcpp cimport bool, int
-from libcpp.map cimport map, pair
-from libcpp.string cimport string
-from libcpp.vector cimport vector
-
-from cython.operator cimport dereference as dref
+from cython.operator      cimport dereference as dref
 from libcpp.unordered_map cimport unordered_map
+from libcpp               cimport bool, int
+from libcpp.map           cimport map, pair
+from libcpp.string        cimport string
+from libcpp.vector        cimport vector
+import pathlib
+import pickle 
+
 
 cdef string enc(str val): return val.encode("utf-8")
 cdef str env(string val): return val.decode("utf-8")
@@ -138,5 +140,22 @@ cdef class Tools:
             vi = <vector[int]>(data)
             return self.ptr.discretize(&vi, lx)
         return []
+
+    def get_pkl(self, str paths, bool write = False, val = None): 
+        if self.ends_with(paths, ".pkl"): name = paths.split("/")[-1]
+        else: name = paths.split("/")[-1]  + ".pkl"
+        paths = "/".join( paths.split("/")[:-1] )
+        if write: return [True, self.save_pkl(val, paths, name)]  
+        if not self.is_file(paths + "/" + name): return [False, None]
+        return [True, self.load_pkl(paths, name)]
+
+    def save_pkl(self, val, str paths, str name):
+        self.create_path(paths)
+        if not self.ends_with(name , ".pkl"): name += ".pkl"
+        pickle.dump(val, open(paths + "/" + name, "wb"))
+
+    def load_pkl(self, str paths, str name):
+        if not self.ends_with(name , ".pkl"): name += ".pkl"
+        return pickle.load(open(paths + "/" + name, "rb"))
 
 

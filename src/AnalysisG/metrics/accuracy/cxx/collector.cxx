@@ -17,8 +17,7 @@ void rectop::decode(int _chn){
     this -> composition[content_e::lepton] = l;
     this -> composition[content_e::bquark] = b;
 
-
-    if (l >= 1 && l < 3 && b == 1 && p == 2){p = 2;} // l == 2 due to neutrino
+    if (l >= 1 && l < 3 && b == 1 && p == 2){p = 2;} 
     else {p = 0;}
 
     this -> idn = (p == 2) ? object_e::valid : object_e::failed;

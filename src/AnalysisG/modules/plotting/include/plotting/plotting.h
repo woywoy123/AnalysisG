@@ -2,6 +2,7 @@
 #define PLOTTING_H
 
 #include <notification/notification.h>
+#include <tools/merge_cast.h>
 #include <structs/property.h>
 #include <tools/tools.h>
 #include <map>
@@ -15,7 +16,9 @@ class plotting:
         ~plotting(); 
         std::string build_path(); 
         float get_max(std::string dim); 
-        float get_min(std::string dim); 
+        float get_min(std::string dim);
+        void  add_data(std::vector<float>* inpt, std::vector<float>* data);
+
         float sum_of_weights(); 
         void build_error(); 
         std::tuple<float, float> mean_stdev(std::vector<float>* data);

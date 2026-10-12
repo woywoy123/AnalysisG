@@ -1,22 +1,26 @@
 # distuils: language=c++
 # cython: language_level=3
 
-from AnalysisG.core.metric_template cimport *
 from cython.operator cimport dereference as deref
+from AnalysisG.core.metric_template cimport *
 from AnalysisG.core.tools cimport *
+
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.map    cimport map
+from libcpp.map    cimport map, pair
+
+
+cdef extern from "<metrics/samples.h>":
+    cdef string mapping(string* fname) except+
 
 cdef extern from "<metrics/accuracy.h>":
     cdef cppclass accuracy_metric(metric_template):
         accuracy_metric() except+
 
-cdef extern from "<metrics/samples.h>":
-    cdef string mapping(string* fname) except+
-
 cdef extern from "<metrics/transfer.h>":
+
     cdef cppclass pdata:
+
         pdata() except+
         vector[double] pt
         vector[double] eta 
@@ -29,6 +33,7 @@ cdef extern from "<metrics/transfer.h>":
         string mode 
 
     cdef cppclass edata:
+
         edata() except+
 
         vector[pdata*] training    
@@ -48,6 +53,18 @@ cdef extern from "<metrics/transfer.h>":
         int epoch
 
 cdef extern from "<metrics/collector.h>":
+
+    cdef cppclass collector:
+
+        collector() except+
+        void inlet(edata* data) except+
+        void flush() except+
+
+        map[string, performance*] training
+        map[string, performance*] validation
+        map[string, performance*] evaluation
+
+        bool release
 
     cdef struct evn_t:
 
@@ -79,18 +96,6 @@ cdef extern from "<metrics/collector.h>":
         map[int, map[int, performance_t*]] metric
         string name 
         string mode
-
-    cdef cppclass collector:
-
-        collector() except+
-        void inlet(edata* data) except+
-        void flush() except+
-
-        map[string, performance*] training
-        map[string, performance*] validation
-        map[string, performance*] evaluation
-
-        bool release
 
 cdef class Performance:
 
@@ -127,6 +132,20 @@ cdef class AccuracyMetric(MetricTemplate):
     cdef public dict validation
     cdef public dict evaluation
 
+
+
+cdef inline vector[double]* dcast(list v):
+    return  new vector[double](<vector[double]>(v))
+
+cdef inline vector[vector[double]]* ddcast(list v):
+    return  new vector[vector[double]](<vector[vector[double]]>(v))
+
+cdef inline vector[int]* icast(list v):
+    return new vector[int](<vector[int]>(v))
+
+cdef inline string* scast(str v):
+    return new string(enc(v))
+
 cdef inline string m_key(string type_, string mode_, string var_, AccuracyMetric mdl):
     cdef string* val = &mdl.str_cache[type_][mode_][var_]
     if val.size(): return deref(val)
@@ -134,88 +153,131 @@ cdef inline string m_key(string type_, string mode_, string var_, AccuracyMetric
     mdl.str_cache[type_][mode_][var_] = b"accuracy_" + mode_ + b"." + kx + b"." + kx 
     return m_key(type_, mode_, var_, mdl)
 
-cdef inline pdata* make_pdata(dict data, string type_, string mode_, AccuracyMetric mdl):
-    cdef pdata* px = new pdata();
-    try: px.pt   = data.pop(m_key(type_, mode_, b"pt", mdl))
-    except KeyError: del px; return NULL
-    px.eta  = data.pop(m_key(type_, mode_, b"eta", mdl))
-    px.phi  = data.pop(m_key(type_, mode_, b"phi", mdl))
-    try: px.mass   = data.pop(m_key(type_, mode_, b"mass", mdl))
-    except KeyError: pass
-    try: px.energy = data.pop(m_key(type_, mode_, b"energy", mdl))
-    except KeyError: pass
-    try: px.score = data.pop(m_key(type_, mode_, b"score", mdl))
-    except KeyError: pass
-    try: px.chn   = data.pop(m_key(type_, mode_, b"chn", mdl))
-    except KeyError: pass
-    px.type = type_
-    px.mode = mode_
-    return px
+cdef inline bool TVec(dict data, string mode_, string type_, string var_, AccuracyMetric mdl, vector[double]* F):
+    try: F[0] = data.pop(m_key(type_, mode_, var_, mdl))
+    except KeyError: return False
+    return True
 
+cdef inline bool IVec(dict data, string mode_, string type_, string var_, AccuracyMetric mdl, vector[int]* F):
+    try: F[0] = data.pop(m_key(type_, mode_, var_, mdl))
+    except KeyError: return False
+    return True
+
+cdef inline bool Tint(dict data, string mode_, string type_, string var_, AccuracyMetric mdl, int* F):
+    try: F[0] = data.pop(m_key(type_, mode_, var_, mdl))
+    except KeyError: return False
+    return True
+
+cdef inline double Tdbl(dict data, string mode_, string type_, string var_, AccuracyMetric mdl, double* F):
+    try: F[0] = data.pop(m_key(type_, mode_, var_, mdl))
+    except KeyError: return False
+    return True
 
 cdef inline vector[double] vget_val(dict data, string type_, string var_, AccuracyMetric mdl):
-    try: return data.pop(m_key(type_, b"training"  , var_, mdl))
-    except KeyError: pass
-    try: return data.pop(m_key(type_, b"validation", var_, mdl))
-    except KeyError: pass
-    try: return data.pop(m_key(type_, b"evaluation", var_, mdl))
-    except KeyError: pass
+    cdef vector[double] o
+    if TVec(data, b"training"  , type_, var_, mdl, &o): return o
+    if TVec(data, b"validation", type_, var_, mdl, &o): return o
+    if TVec(data, b"evaluation", type_, var_, mdl, &o): return o
     return []
 
 cdef inline int iget_val(dict data, string type_, string var_, AccuracyMetric mdl):
-    try: return data.pop(m_key(type_, b"training"  , var_, mdl))
-    except KeyError: pass
-    try: return data.pop(m_key(type_, b"validation", var_, mdl))
-    except KeyError: pass
-    try: return data.pop(m_key(type_, b"evaluation", var_, mdl))
-    except KeyError: pass
+    cdef int o
+    if Tint(data, b"training"  , type_, var_, mdl, &o): return o
+    if Tint(data, b"validation", type_, var_, mdl, &o): return o
+    if Tint(data, b"evaluation", type_, var_, mdl, &o): return o
     return 0
 
 cdef inline double dget_val(dict data, string type_, string var_, AccuracyMetric mdl):
-    try: return data.pop(m_key(type_, b"training"  , var_, mdl))
-    except KeyError: pass
-    try: return data.pop(m_key(type_, b"validation", var_, mdl))
-    except KeyError: pass
-    try: return data.pop(m_key(type_, b"evaluation", var_, mdl))
-    except KeyError: pass
+    cdef double o
+    if Tdbl(data, b"training"  , type_, var_, mdl, &o): return o
+    if Tdbl(data, b"validation", type_, var_, mdl, &o): return o
+    if Tdbl(data, b"evaluation", type_, var_, mdl, &o): return o
     return 0
 
 cdef inline map[string, evn_t]* to_raw(map[string, pairs_t]* ipt):
-    cdef map[string, evn_t]* rc = new map[string, evn_t]()
     cdef pair[string, pairs_t] itx
+    cdef map[string, evn_t]* rc = new map[string, evn_t]()
     for itx in deref(ipt): deref(rc)[itx.first] = itx.second.raw
     return rc
 
 cdef inline map[string, evn_t]* to_adj(map[string, pairs_t]* ipt):
-    cdef map[string, evn_t]* rc = new map[string, evn_t]()
     cdef pair[string, pairs_t] itx
+    cdef map[string, evn_t]* rc = new map[string, evn_t]()
     for itx in deref(ipt): deref(rc)[itx.first] = itx.second.adj
     return rc
 
-cdef inline dict make_prf(map[string, performance*]* tx, string mode):
-    cdef string mdln
-    cdef Performance prf
-    cdef pair[string, performance*] itr 
+cdef extern from "<metrics/atomics.h>":
 
-    cdef pair[int, performance_t*] itk
-    cdef pair[int, map[int, performance_t*]] ite
+    cdef cppclass pdax_t(tools):
+        
+        pdax_t()               except+
+        void dmake(pdax_t* vl) except+
 
-    cdef dict output = {}
-    for itr in deref(tx):
-        mdln = itr.first
-        for ite in itr.second.metric:
-            for itk in ite.second:
-                if itk.second == NULL: continue
+        vector[vector[double]]* mlp
+        vector[double]* weight 
+        vector[double]* masses
+        vector[long]* index
 
-                prf = Performance()
-                prf.model = mdln
-                prf.mode  = mode
-                prf.epoch = ite.first
-                prf.kfold = itk.first
-                prf.ptx   = itk.second
-                prf.compile()
-                itk.second = NULL
-               
-                try: output[prf.model].append(prf)
-                except KeyError: output[prf.model] = [prf]
-    return output
+        vector[int]* ntops
+        vector[int]* ntrus
+
+        string mode 
+        string prc  
+        string kfold
+        string epoch
+        string model
+
+    cdef cppclass atomic_t(tools) nogil:
+
+        atomic_t() except+
+
+        long add_truth(double m) except+
+        long add_value(double m) except+
+
+        vector[double] truth
+        vector[double] masses
+        vector[double] weight
+        
+        string* prc
+        string* mode 
+        string* kfold
+        string* epoch
+        string* model
+
+        long index 
+
+
+cdef class Atomic_t:
+
+    cdef atomic_t* ptr
+   
+cdef class EvenT:
+
+    cdef pdax_t* data
+    cdef vector[pdax_t*] vdata
+    cdef vector[atomic_t*] evnts
+    cdef long idx
+
+    cpdef list expand(self, EvenT cx)
+
+
+cdef class PDax(Tools):
+    
+    cdef pdax_t* make(self, dict am, string prc)
+    cpdef void Dcx(self, dict ar, dict ax, string prc, string raw, string adj)
+    cpdef bool load(self, str a1, str a2)
+    cpdef list data(self)
+
+    cdef pdax_t* ptx
+    cdef map[string, vector[pdax_t*]] adj
+    cdef map[string, vector[pdax_t*]] raw
+
+    cdef public dict cache
+    cdef public int idx
+    cdef public int jdx
+    
+    cdef public bool is_av
+    
+    
+
+

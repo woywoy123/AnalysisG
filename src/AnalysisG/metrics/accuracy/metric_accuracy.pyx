@@ -1,8 +1,59 @@
-# distutils: language=c++
-# cython: language_level=3
+# cython: language = c++
+# cython: language_level = 3
+
+from AnalysisG.core.tools cimport *
+from libcpp cimport bool, int
+
+from libcpp.string cimport string
+from libcpp.vector cimport vector
+from libcpp.map    cimport pair, map
 
 from cython.operator cimport dereference as deref
-from AnalysisG.core.tools cimport enc, env
+from cython.parallel cimport prange
+
+cdef inline dict make_prf(map[string, performance*]* tx, string mode):
+    cdef string mdln
+    cdef Performance prf
+    cdef pair[string, performance*] itr 
+
+    cdef pair[int, performance_t*] itk
+    cdef pair[int, map[int, performance_t*]] ite
+
+    cdef dict output = {}
+    for itr in deref(tx):
+        mdln = itr.first
+        for ite in itr.second.metric:
+            for itk in ite.second:
+                if itk.second == NULL: continue
+
+                prf = Performance()
+                prf.model = mdln
+                prf.mode  = mode
+                prf.epoch = ite.first
+                prf.kfold = itk.first
+                prf.ptx   = itk.second
+                prf.compile()
+                itk.second = NULL
+               
+                try: output[prf.model].append(prf)
+                except KeyError: output[prf.model] = [prf]
+    return output
+
+cdef inline pdata* make_pdata(dict data, string type_, string mode_, AccuracyMetric mdl):
+    cdef pdata* px = new pdata();
+    cdef bool v = TVec(data, mode_, type_, b"pt", mdl, &px.pt)
+    if not v: del px; return NULL
+
+    px.eta  = data.pop(m_key(type_, mode_, b"eta", mdl))
+    px.phi  = data.pop(m_key(type_, mode_, b"phi", mdl))
+    TVec(data, mode_, type_, b"mass"  , mdl, &px.mass  )
+    TVec(data, mode_, type_, b"energy", mdl, &px.energy)
+    TVec(data, mode_, type_, b"score" , mdl, &px.score )
+    IVec(data, mode_, type_, b"chn"   , mdl, &px.chn   )
+    px.type = type_
+    px.mode = mode_
+    return px
+
 
 cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
 
@@ -66,6 +117,7 @@ cdef class Performance:
     def __cinit__(self): self.ptx = NULL
     def __init__(self): self.trig = False
     def __dealloc__(self):
+
         if self.raw_truth    != NULL: del self.raw_truth   
         if self.adj_truth    != NULL: del self.adj_truth   
 
@@ -139,36 +191,293 @@ cdef class Performance:
 
 
 
+cdef class Atomic_t:
+
+    def __cinit__(self): self.ptr = NULL
+
+    def __dealloc__(self): del self.ptr
+
+    def __init__(self): pass
+
+    @property
+    def truth(self): return self.ptr.truth
+
+    @property
+    def masses(self): return self.ptr.masses
+
+    @property
+    def weight(self): return self.ptr.weight
+
+    @property
+    def index(self): return self.ptr.index
+
+    @property
+    def prc(self): return env(deref(self.ptr.prc))
+
+    @property 
+    def mode(self): return env(deref(self.ptr.mode))
+
+    @property 
+    def kfold(self): return env(deref(self.ptr.kfold))
+
+    @property 
+    def epoch(self): return env(deref(self.ptr.epoch))
+
+    @property 
+    def model(self): return env(deref(self.ptr.model))
+
+
+
+
+
+
+
+
+cdef class EvenT:
+
+    def __init__(self): pass
+
+    def __cinit__(self): pass
+
+    def __dealloc__(self): pass
+
+    cpdef list expand(self, EvenT cx):
+
+        cdef long tx = 0
+        cdef long ty = 0
+        cdef long py = 0
+
+        cdef long ntops = 0
+        cdef long ntrus = 0
+
+
+        cdef long vdx = 0
+        cdef int l, k, i
+        
+        cdef pdax_t* dt
+        cdef pdax_t* dc
+        cdef atomic_t* da 
+        cdef vector[long]* itp
+        cdef vector[double]* src
+        cdef vector[atomic_t*] dxt
+        
+        for i in range(self.vdata.size()):
+
+            dc = cx.vdata[i]
+            dt = self.vdata[i]
+
+            tx = 0; ty = 0; vdx = 0; 
+            for vdx in range(dt.ntrus.size()): 
+                ntrus = dc.ntrus.at(vdx)
+                ntops = dt.ntops.at(vdx)
+
+                da = new atomic_t()
+
+                da.index = dxt.size()
+                da.prc   = &dc.prc
+                da.mode  = &dc.mode
+                da.kfold = &dc.kfold
+                da.epoch = &dc.epoch
+                da.model = &dc.model
+
+                for l in range(ntrus):
+                    if dc.masses.size() > tx:
+                        tx += da.add_truth(dc.masses.at(tx))
+
+                    if dt.masses.size() > ty:
+                        ty += da.add_value(dt.masses.at(ty))
+                dxt.push_back(da)
+
+        cdef Atomic_t ax
+        cdef list out = []
+        for i in range(dxt.size()): 
+            ax = Atomic_t()
+            ax.ptr = dxt.at(i)
+            out.append(ax)
+        return out
+
+    def __iter__(self):
+        self.idx = 0
+        self.data = self.vdata.at(0)
+        return self
+
+    def __next__(self): 
+        if self.idx >= self.vdata.size(): raise StopIteration 
+        self.data = self.vdata.at(self.idx)
+        self.idx+=1
+        return self
+
+    def __len__(self): return self.vdata.size()
+
+    @property
+    def mlp(self): return deref(self.data.mlp)
+
+    @property
+    def weight(self): return deref(self.data.weight)
+
+    @property
+    def masses(self): return deref(self.data.masses)
+
+    @property
+    def ntops(self): return deref(self.data.ntops)
+
+    @property
+    def ntrus(self): return deref(self.data.ntrus)
+
+    @property 
+    def mode(self): return env(self.data.mode)
+
+    @property 
+    def prc(self):  return env(self.data.prc)
+
+    @property 
+    def kfold(self): return env(self.data.kfold)
+
+    @property 
+    def epoch(self): return env(self.data.epoch)
+
+    @property 
+    def model(self): return env(self.data.model)
+
+
+
+
+
+cdef class PDax(Tools):
+
+    def __dealloc__(self): 
+        del self.ptx
+ 
+    def __cinit__(self):
+        self.ptx = new pdax_t()
+
+    def __init__(self, pkl, fdx): 
+        self.cache = {}
+        for i in pkl: self.cache[i.replace(".pkl", "")] = {}
+        self.idx = fdx; self.jdx = 0 
+  
+    cdef pdax_t* make(self, dict am, string prc):
+        cdef pdax_t* ix = new pdax_t()
+        ix.mlp    = ddcast(am.pop("mlp"))
+        ix.weight = dcast(am.pop("weight"))
+        ix.masses = dcast(am.pop("masses"))
+        ix.ntops  = icast(am.pop("ntops"))
+        ix.ntrus  = icast(am.pop("ntrus"))
+
+        ix.prc    = prc 
+        ix.mode   = self.ptx.mode
+        ix.epoch  = self.ptx.epoch
+        ix.kfold  = self.ptx.kfold
+        ix.model  = self.ptx.model
+        return ix
+
+    cpdef void Dcx(
+        self, dict ax, dict ay, string prc, 
+        string raw, string adj
+    ):
+        cdef pdax_t* ix = self.make(ax, prc); 
+        cdef pdax_t* iy = self.make(ay, prc); 
+        ix.dmake(iy); 
+
+        self.raw[raw].push_back(ix); 
+        self.adj[adj].push_back(iy); 
+
+    cpdef bool load(self, str ax, str ay):
+        cdef string raw = enc(ax.replace("Raw", ""))
+        cdef string adj = enc(ay.replace("Adj", ""))
+        cdef string k 
+        cdef list prcs, fxc
+        cdef dict _ax, _ay
+
+        for l in self.cache:
+            if not self.is_file(l + ".pkl"): continue
+            a = l.split("/")
+            self.kfold = a[-1]; self.mode  = a[-3]
+            self.epoch = a[-2]; self.model = a[-4]
+            fxc = self.get_pkl(l)
+            if not fxc[0]: continue
+            if not len(self.cache[l]): self.cache[l] = fxc[1].__dict__ 
+            _ax, _ay = self.cache[l].pop(ax), self.cache[l].pop(ay)
+            prcs = list( set( list(_ax) + list(_ay) ))
+            for k in prcs: self.Dcx(_ax.pop(k), _ay.pop(k), k, raw, adj)
+
+        return True
+
+    cpdef list data(self):
+        cdef pair[string, vector[pdax_t*]] itr
+        cdef dict dx = {env(itr.first) : {} for itr in self.adj}
+        if not len(dx): return []
+        cdef EvenT idx
+        for itr in self.adj:
+            idx = EvenT()
+            idx.idx = 0
+            idx.vdata = itr.second
+            dx[env(itr.first)]["adj"] = idx 
+            if idx.idx > 0: continue
+            idx.data = itr.second.at(0)
+
+        for itr in self.raw:
+            idx = EvenT()
+            idx.idx = 0
+            idx.vdata = itr.second
+            dx[env(itr.first)]["raw"] = idx
+            if idx.idx > 0: continue
+            idx.data = itr.second.at(0)
+        return [dx]
+
+    @property
+    def mode(self): return env(self.ptx.mode)
+    @mode.setter
+    def mode(self, str val): self.ptx.mode = enc(val)
+
+    @property
+    def epoch(self): return env(self.ptx.epoch)
+    @epoch.setter
+    def epoch(self, str val): self.ptx.epoch = enc(val)
+
+    @property
+    def kfold(self): return env(self.ptx.kfold)
+    @kfold.setter
+    def kfold(self, str val): self.ptx.kfold = enc(val)
+
+    @property
+    def model(self): return env(self.ptx.model)
+    @model.setter
+    def model(self, str val): self.ptx.model = enc(val)
+
+
+
+
+
 cdef class AccuracyMetric(MetricTemplate):
     def __cinit__(self):
+        self.mtx = new accuracy_metric()
+        self.mtr = <accuracy_metric*>(self.mtx)
+        self.mcl = new collector() 
+        self.root_leaves = {}
+        self.root_fx = {}
+        self.training = {}
+        self.validation = {}
+        self.evaluation = {}
+        self.default_plt = None
+
+    def __init__(self, training, validation, evaluation):
         cdef list ev_ptr  = ["particle_"   + i for i in ["pt", "eta", "phi", "energy", "chn"]]
         cdef list tps_tru = ["tops_truth_" + i for i in ["pt", "eta", "phi", "mass"  , "chn"]]
         cdef list tps_npr = ["tops_pr_"    + i for i in ["pt", "eta", "phi", "mass"  , "chn", "score"]]
         cdef list tps_upr = ["tops_upr_"   + i for i in ["pt", "eta", "phi", "mass"  , "chn", "score"]]
         cdef list tps_nom = ["tops_nom_"   + i for i in ["pt", "eta", "phi", "mass"  , "chn", "score"]]
         cdef list evnt_dt = ["process_idx", "average_edge", "ntops_scores", "dsid", "ntops_tru", "ntops_prd"]
-
-        self.root_leaves = {
-                "accuracy_training"   : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
-                #"accuracy_validation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt,
-                #"accuracy_evaluation" : ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
-        }
-
-        self.root_fx = {
-                "accuracy_training"   : get_data,
-                #"accuracy_validation" : get_data,
-                #"accuracy_evaluation" : get_data
-        }
-
-        self.mtx = new accuracy_metric()
-        self.mtr = <accuracy_metric*>(self.mtx)
-        self.mcl = new collector() 
         
-        self.training   = {}
-        self.validation = {}
-        self.evaluation = {}
-
-        self.default_plt = None
+        if training:
+            self.root_leaves["accuracy_training"]   = ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
+            self.root_fx["accuracy_training"]   = get_data
+        if validation: 
+            self.root_leaves["accuracy_validation"] = ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
+            self.root_fx["accuracy_validation"] = get_data
+        if evaluation: 
+            self.root_leaves["accuracy_evaluation"] = ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
+            self.root_fx["accuracy_evaluation"] = get_data
 
     def __delloc__(self):
         self.mtx = NULL; 
@@ -177,3 +486,5 @@ cdef class AccuracyMetric(MetricTemplate):
 
     def Postprocessing(self):
         pass
+
+
