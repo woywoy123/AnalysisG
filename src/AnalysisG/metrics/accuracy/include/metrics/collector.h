@@ -27,8 +27,8 @@ class collector : public tools
         ~collector(); 
 
         void flush(); 
-        void inlet(edata* data);
-        void expand(edata_t* ev, pdata* px);
+        int inlet(edata* data);
+        void expand(edata_t* ev, pdata* px, long index);
         std::string label(std::vector<pdata*>* vl, std::string mox);  
 
         // models

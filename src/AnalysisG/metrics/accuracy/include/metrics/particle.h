@@ -19,6 +19,7 @@ class rectop {
         double phi   = 0; 
         double mass  = 0; 
         double score = -1.0; 
+        long index   = -1; 
 
         object_e   idn =  object_e::undefined; 
         object_e   idt =  object_e::undefined; 

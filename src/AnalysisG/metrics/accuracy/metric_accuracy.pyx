@@ -18,10 +18,11 @@ cdef inline dict make_prf(map[string, performance*]* tx, string mode):
 
     cdef pair[int, performance_t*] itk
     cdef pair[int, map[int, performance_t*]] ite
-
+    
     cdef dict output = {}
     for itr in deref(tx):
         mdln = itr.first
+        itr.second.compiler()
         for ite in itr.second.metric:
             for itk in ite.second:
                 if itk.second == NULL: continue
@@ -41,15 +42,14 @@ cdef inline dict make_prf(map[string, performance*]* tx, string mode):
 
 cdef inline pdata* make_pdata(dict data, string type_, string mode_, AccuracyMetric mdl):
     cdef pdata* px = new pdata();
-    cdef bool v = TVec(data, mode_, type_, b"pt", mdl, &px.pt)
-    if not v: del px; return NULL
-
-    px.eta  = data.pop(m_key(type_, mode_, b"eta", mdl))
-    px.phi  = data.pop(m_key(type_, mode_, b"phi", mdl))
+    TVec(data, mode_, type_, b"pt"    , mdl, &px.pt    )
+    TVec(data, mode_, type_, b"eta"   , mdl, &px.eta   )
+    TVec(data, mode_, type_, b"phi"   , mdl, &px.phi   )
     TVec(data, mode_, type_, b"mass"  , mdl, &px.mass  )
     TVec(data, mode_, type_, b"energy", mdl, &px.energy)
     TVec(data, mode_, type_, b"score" , mdl, &px.score )
     IVec(data, mode_, type_, b"chn"   , mdl, &px.chn   )
+    if px.chn.size() == 0: del px; return NULL 
     px.type = type_
     px.mode = mode_
     return px
@@ -60,6 +60,7 @@ cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
     cdef edata edx = edata(); 
     edx.kfold = meta[b'kfold'] 
     edx.epoch = meta[b'epoch']
+    edx.index = meta[b"index"]
     edx.mrk   = meta[b'model_name']
 
     edx.ntop_score = vget_val(data, b"ntops"  , b"scores", vl)
@@ -69,42 +70,50 @@ cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
     edx.dsid       = iget_val(data, b""       , b"dsid"  , vl)
     edx.prc_idx    = iget_val(data, b"process", b"idx"   , vl)
 
-    edx.training.push_back(make_pdata(data, b"particle"  , b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_truth", b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_nom"  , b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_upr"  , b"training", vl))
-    edx.training.push_back(make_pdata(data, b"tops_pr"   , b"training", vl))
-    
-    edx.validation.push_back(make_pdata(data, b"particle"  , b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_truth", b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_nom"  , b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_upr"  , b"validation", vl))
-    edx.validation.push_back(make_pdata(data, b"tops_pr"   , b"validation", vl))
+    cdef int idx = -1
+    cdef pdata* nl = make_pdata(data, b"particle", b"training", vl)
+    if nl != NULL: 
+        edx.training.push_back(nl)
+        edx.training.push_back(make_pdata(data, b"tops_truth", b"training", vl))
+        edx.training.push_back(make_pdata(data, b"tops_nom"  , b"training", vl))
+        edx.training.push_back(make_pdata(data, b"tops_upr"  , b"training", vl))
+        edx.training.push_back(make_pdata(data, b"tops_pr"   , b"training", vl))
+        idx = meta[b"last_index"][b"accuracy_training"]
+ 
+    nl = make_pdata(data, b"particle", b"validation", vl)
+    if nl != NULL:
+        edx.validation.push_back(nl)
+        edx.validation.push_back(make_pdata(data, b"tops_truth", b"validation", vl))
+        edx.validation.push_back(make_pdata(data, b"tops_nom"  , b"validation", vl))
+        edx.validation.push_back(make_pdata(data, b"tops_upr"  , b"validation", vl))
+        edx.validation.push_back(make_pdata(data, b"tops_pr"   , b"validation", vl))
+        idx = meta[b"last_index"][b"accuracy_validation"]
 
-    edx.evaluation.push_back(make_pdata(data, b"particle"  , b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_truth", b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_nom"  , b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_upr"  , b"evaluation", vl))
-    edx.evaluation.push_back(make_pdata(data, b"tops_pr"   , b"evaluation", vl))
-    vl.mcl.inlet(&edx)
+    nl = make_pdata(data, b"particle", b"evaluation", vl)
+    if nl != NULL: 
+        edx.evaluation.push_back(nl)
+        edx.evaluation.push_back(make_pdata(data, b"tops_truth", b"evaluation", vl))
+        edx.evaluation.push_back(make_pdata(data, b"tops_nom"  , b"evaluation", vl))
+        edx.evaluation.push_back(make_pdata(data, b"tops_upr"  , b"evaluation", vl))
+        edx.evaluation.push_back(make_pdata(data, b"tops_pr"   , b"evaluation", vl))
+        idx = meta[b"last_index"][b"accuracy_evaluation"]
 
-    if not vl.mcl.release: return
-    vl.mcl.release = False
-    cdef dict tr = make_prf(&vl.mcl.training  , b"training")
+    if vl.mcl.inlet(&edx) < idx: return
+    cdef dict tr = make_prf(&vl.mcl.training  , b"training"  )
+    cdef dict va = make_prf(&vl.mcl.validation, b"validation")
+    cdef dict ev = make_prf(&vl.mcl.evaluation, b"evaluation")
     for i in tr: 
         try: vl.training[i] += tr[i]
         except KeyError: vl.training[i] = tr[i]
- 
-    cdef dict va = make_prf(&vl.mcl.validation, b"validation")
+
     for i in va: 
         try: vl.validation[i] += va[i]
         except KeyError: vl.validation[i] = va[i]
- 
-    cdef dict ev = make_prf(&vl.mcl.evaluation, b"evaluation")
+
     for i in ev: 
         try: vl.evaluation[i] += ev[i]
         except KeyError: vl.evaluation[i] = ev[i]
-   
+
     vl.Postprocessing()
     vl.mcl.flush()
     try: assert len(data) == 0; return
@@ -114,8 +123,12 @@ cdef inline void get_data(AccuracyMetric vl, dict data, dict meta):
 
 
 cdef class Performance:
-    def __cinit__(self): self.ptx = NULL
-    def __init__(self): self.trig = False
+    def __cinit__(self): 
+        self.ptx = NULL
+
+    def __init__(self): 
+        self.trig = False
+
     def __dealloc__(self):
 
         if self.raw_truth    != NULL: del self.raw_truth   
@@ -197,7 +210,8 @@ cdef class Atomic_t:
 
     def __dealloc__(self): del self.ptr
 
-    def __init__(self): pass
+    def __init__(self): 
+        self.scoring = ""
 
     @property
     def truth(self): return self.ptr.truth
@@ -227,19 +241,14 @@ cdef class Atomic_t:
     def model(self): return env(deref(self.ptr.model))
 
 
-
-
-
-
-
-
 cdef class EvenT:
 
     def __init__(self): pass
 
     def __cinit__(self): pass
 
-    def __dealloc__(self): pass
+    def __dealloc__(self):
+        del self.data
 
     cpdef list expand(self, EvenT cx):
 
@@ -252,48 +261,67 @@ cdef class EvenT:
 
 
         cdef long vdx = 0
-        cdef int l, k, i
+        cdef int l, i
         
         cdef pdax_t* dt
         cdef pdax_t* dc
         cdef atomic_t* da 
         cdef vector[long]* itp
         cdef vector[double]* src
-        cdef vector[atomic_t*] dxt
-        
+        cdef map[int, map[long, atomic_t*]] dxt 
+
         for i in range(self.vdata.size()):
-
             dc = cx.vdata[i]
+            if   dc.mode == b"training":   l = 0
+            elif dc.mode == b"validation": l = 1
+            else: l = 2
+
+            for vdx in range(dc.index.size()):
+                tx = dc.index.at(vdx)
+                
+                if not dxt[l].count(tx):
+                    da       = new atomic_t()
+                    da.prc   = &dc.prc
+                    da.mode  = &dc.mode
+                    da.kfold = &dc.kfold
+                    da.epoch = &dc.epoch
+                    da.model = &dc.model
+                    da.index = tx
+                    dxt[l][tx] = da
+
+                if dc.masses.size() > vdx: 
+                    dxt[l][tx].add_truth(dc.masses.at(vdx))
+
             dt = self.vdata[i]
+            for vdx in range(dt.index.size()):
+                tx = dt.index.at(vdx)
+                if not dxt[l].count(tx): 
+                    da       = new atomic_t()
+                    da.prc   = &dt.prc
+                    da.mode  = &dt.mode
+                    da.kfold = &dt.kfold
+                    da.epoch = &dt.epoch
+                    da.model = &dt.model
+                    da.index = tx 
+                    dxt[l][tx] = da
+                 
+                da = dxt[l][tx]
+                if dt.masses.size() > vdx: 
+                    da.add_value(dt.masses.at(vdx))
+                if dt.weight.size() > vdx: 
+                    da.add_weight(dt.weight.at(vdx))
 
-            tx = 0; ty = 0; vdx = 0; 
-            for vdx in range(dt.ntrus.size()): 
-                ntrus = dc.ntrus.at(vdx)
-                ntops = dt.ntops.at(vdx)
-
-                da = new atomic_t()
-
-                da.index = dxt.size()
-                da.prc   = &dc.prc
-                da.mode  = &dc.mode
-                da.kfold = &dc.kfold
-                da.epoch = &dc.epoch
-                da.model = &dc.model
-
-                for l in range(ntrus):
-                    if dc.masses.size() > tx:
-                        tx += da.add_truth(dc.masses.at(tx))
-
-                    if dt.masses.size() > ty:
-                        ty += da.add_value(dt.masses.at(ty))
-                dxt.push_back(da)
-
+        vlx = 0
         cdef Atomic_t ax
         cdef list out = []
-        for i in range(dxt.size()): 
-            ax = Atomic_t()
-            ax.ptr = dxt.at(i)
-            out.append(ax)
+        cdef pair[long, atomic_t*] itr
+        for l in range(3):
+            for itr in dxt[l]:
+                ax     = Atomic_t()
+                ax.ptr = itr.second
+                itr.second.index = vlx
+                out.append(ax)
+                vlx += 1
         return out
 
     def __iter__(self):
@@ -363,6 +391,7 @@ cdef class PDax(Tools):
         ix.masses = dcast(am.pop("masses"))
         ix.ntops  = icast(am.pop("ntops"))
         ix.ntrus  = icast(am.pop("ntrus"))
+        ix.index  = lcast(am.pop("index"))
 
         ix.prc    = prc 
         ix.mode   = self.ptx.mode

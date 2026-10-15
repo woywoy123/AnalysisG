@@ -9,13 +9,30 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map    cimport map, pair
 
-
 cdef extern from "<metrics/samples.h>":
     cdef string mapping(string* fname) except+
 
 cdef extern from "<metrics/accuracy.h>":
     cdef cppclass accuracy_metric(metric_template):
         accuracy_metric() except+
+
+
+cdef inline vector[double]* dcast(list v):
+    return  new vector[double](<vector[double]>(v))
+
+cdef inline vector[vector[double]]* ddcast(list v):
+    return  new vector[vector[double]](<vector[vector[double]]>(v))
+
+cdef inline vector[int]* icast(list v):
+    return new vector[int](<vector[int]>(v))
+
+cdef inline vector[long]* lcast(list v):
+    return new vector[long](<vector[long]>(v))
+
+
+
+cdef inline string* scast(str v):
+    return new string(enc(v))
 
 cdef extern from "<metrics/transfer.h>":
 
@@ -28,6 +45,7 @@ cdef extern from "<metrics/transfer.h>":
         vector[double] energy
         vector[double] mass
         vector[double] score
+        vector[long] index
         vector[int] chn
         string type 
         string mode 
@@ -42,6 +60,7 @@ cdef extern from "<metrics/transfer.h>":
         vector[double] ntop_score  
 
         double acc_edge 
+        long index
 
         int prc_idx
         int ntop_tru 
@@ -54,10 +73,20 @@ cdef extern from "<metrics/transfer.h>":
 
 cdef extern from "<metrics/collector.h>":
 
+    cdef cppclass performance:
+
+        performance(string mrk_, string mode_) except+
+
+        void compiler() except+
+
+        map[int, map[int, performance_t*]] metric
+        string name 
+        string mode
+
     cdef cppclass collector:
 
         collector() except+
-        void inlet(edata* data) except+
+        int inlet(edata* data) except+
         void flush() except+
 
         map[string, performance*] training
@@ -71,6 +100,7 @@ cdef extern from "<metrics/collector.h>":
         vector[double] weight
         vector[double] masses
         vector[double] error
+        vector[long]   index 
 
         vector[int] ntops
         vector[int] ntrus
@@ -89,13 +119,6 @@ cdef extern from "<metrics/collector.h>":
         map[string, pairs_t] nominal
         map[string, pairs_t] unmasked
         map[string, pairs_t] masked
-
-    cdef cppclass performance:
-
-        performance(string mrk_, string mode_) except+
-        map[int, map[int, performance_t*]] metric
-        string name 
-        string mode
 
 cdef class Performance:
 
@@ -117,8 +140,8 @@ cdef class Performance:
     cdef map[string, evn_t]* adj_unmasked
     cdef map[string, evn_t]* adj_masked
 
-    cdef int epoch
-    cdef int kfold 
+    cdef public long epoch
+    cdef public long kfold 
 
 cdef class AccuracyMetric(MetricTemplate):
 
@@ -133,18 +156,6 @@ cdef class AccuracyMetric(MetricTemplate):
     cdef public dict evaluation
 
 
-
-cdef inline vector[double]* dcast(list v):
-    return  new vector[double](<vector[double]>(v))
-
-cdef inline vector[vector[double]]* ddcast(list v):
-    return  new vector[vector[double]](<vector[vector[double]]>(v))
-
-cdef inline vector[int]* icast(list v):
-    return new vector[int](<vector[int]>(v))
-
-cdef inline string* scast(str v):
-    return new string(enc(v))
 
 cdef inline string m_key(string type_, string mode_, string var_, AccuracyMetric mdl):
     cdef string* val = &mdl.str_cache[type_][mode_][var_]
@@ -233,6 +244,7 @@ cdef extern from "<metrics/atomics.h>":
 
         long add_truth(double m) except+
         long add_value(double m) except+
+        long add_weight(double m) except+
 
         vector[double] truth
         vector[double] masses
@@ -250,6 +262,7 @@ cdef extern from "<metrics/atomics.h>":
 cdef class Atomic_t:
 
     cdef atomic_t* ptr
+    cdef public scoring
    
 cdef class EvenT:
 

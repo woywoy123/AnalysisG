@@ -15,6 +15,13 @@ long atomic_t::add_value(double m){
     return 1; 
 }
 
+long atomic_t::add_weight(double m){
+    this -> weight.push_back(m); 
+    return 1; 
+}
+
+
+
 pdax_t::pdax_t(){}
 
 pdax_t::~pdax_t(){
@@ -23,22 +30,7 @@ pdax_t::~pdax_t(){
     this -> pflush(&this -> masses); 
     this -> pflush(&this -> ntrus); 
     this -> pflush(&this -> ntops);
-}
-
-int copx(long index, std::vector<double>* d_i,  std::vector<double>* d_o){
-    if (!d_i){return -1;}
-    if (d_o && long(d_i -> size()) <= index){return -1;}
-    if (!d_o){return d_i -> at(index);}
-    d_o -> push_back(d_i -> at(index));
-    return -1; 
-}
-
-int copx(long index, std::vector<int>* d_i,  std::vector<int>* d_o){
-    if (!d_i){return -1;}
-    if (d_o && long(d_i -> size()) <= index){return -1;}
-    if (!d_o){return d_i -> at(index);}
-    d_o -> push_back(d_i -> at(index));
-    return -1; 
+    this -> pflush(&this -> index); 
 }
 
 void pdax_t::dmake(pdax_t* ptr){
@@ -66,6 +58,6 @@ void pdax_t::dmake(pdax_t* ptr){
         dy += (!sl); kx += sl;
     }
 
-    Sj -> clear(); 
-    for (size_t x(0); x < mx; ++x){Sj -> push_back(dSo[x]);}
+//    Sj -> clear(); 
+//    for (size_t x(0); x < mx; ++x){Sj -> push_back(dSo[x]);}
 }

@@ -7,7 +7,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.io cimport *
-from cython.parallel import prange
+from cython.parallel cimport prange
 from cython.operator cimport dereference as deref
 
 cdef extern from "<templates/metric_template.h>" nogil:

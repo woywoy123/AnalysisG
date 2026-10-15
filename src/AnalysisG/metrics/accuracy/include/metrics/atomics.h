@@ -13,6 +13,7 @@ class atomic_t : public tools {
         
         long add_truth(double m); 
         long add_value(double m); 
+        long add_weight(double m); 
 
         std::vector<double> truth; 
         std::vector<double> masses; 

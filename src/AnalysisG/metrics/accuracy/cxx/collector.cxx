@@ -45,24 +45,17 @@ std::string collector::label(std::vector<pdata*>* vl, std::string mox){
 }
 
 
-void collector::expand(edata_t* ev, pdata* px){
+void collector::expand(edata_t* ev, pdata* px, long index){
     if (!px){return;} 
-    for (size_t x(0); x < px -> pt.size(); ++x){
-        if (px -> type == "particle"){
-            ev -> nbjets += (100 == px -> chn[x]); 
-            ev -> nleps  += (10  == px -> chn[x]); 
-
-            ev -> njets += (100 == px -> chn[x]); 
-            ev -> njets += (0   == px -> chn[x]); 
-            continue;
-        }
-
+    for (size_t x(0); x < px -> mass.size(); ++x){
+        
         rectop rtx; 
         rtx.decode(px -> chn[x]);
-        rtx.mass = px -> mass[x] * 0.001;
-        rtx.pt  = px -> pt[x]    * 0.001; 
-        rtx.eta = px -> eta[x]; 
-        rtx.phi = px -> phi[x];
+        rtx.mass  = px -> mass[x] * 0.001;
+        rtx.pt    = px -> pt[x]   * 0.001; 
+        rtx.eta   = px -> eta[x]; 
+        rtx.phi   = px -> phi[x];
+        rtx.index = index; 
 
         if (px -> type == "tops_truth"){
             rtx.idt = object_e::truth;
@@ -71,36 +64,38 @@ void collector::expand(edata_t* ev, pdata* px){
         }
 
         rtx.score = px -> score[x]; 
-        if (px -> type == "tops_nom"  ){ev -> nominal.push_back(rtx);}
-        if (px -> type == "tops_upr"  ){ev -> umasked.push_back(rtx);}
-        if (px -> type == "tops_pr"   ){ev -> masked.push_back(rtx);}
+        if (px -> type == "tops_nom"){ev -> nominal.push_back(rtx); continue;}
+        if (px -> type == "tops_upr"){ev -> umasked.push_back(rtx); continue;}
+        if (px -> type == "tops_pr" ){ev -> masked.push_back(rtx);  continue;}
     }
 }
 
-void collector::inlet(edata* data){
+int collector::inlet(edata* data){
+
     std::string mode = ""; 
     mode += this -> label(&data -> training  , "training"  ); 
     mode += this -> label(&data -> validation, "validation"); 
     mode += this -> label(&data -> evaluation, "evaluation"); 
   
     std::map<std::string, performance*>* prf = nullptr;  
-    if (mode == "training"  ){prf = &this -> training;  }
-    if (mode == "validation"){prf = &this -> validation;}
-    if (mode == "evaluation"){prf = &this -> evaluation;}
+    if      (mode == "training"  ){prf = &this -> training;  }
+    else if (mode == "validation"){prf = &this -> validation;}
+    else if (mode == "evaluation"){prf = &this -> evaluation;}
+    else {abort();}
 
     std::string key = data -> mrk; 
-    if (!prf -> count(key)){(*prf)[key] = new performance(data -> mrk, mode);}
-
+    if (!prf -> count(key)){(*prf)[key] = new performance(key, mode);}
+    
     edata_t ev = edata_t();
     ev.ntru = data -> ntop_tru;
     ev.npre = data -> ntop_prd;
     ev.pred = data -> ntop_score; 
+
     ev.acc_edges = data -> acc_edge;
     ev.prc = process_sample(nullptr, &data -> dsid); 
-    for (size_t x(0); x < data -> training.size();   ++x){expand(&ev, data -> training[x]);}
-    for (size_t x(0); x < data -> validation.size(); ++x){expand(&ev, data -> validation[x]);}
-    for (size_t x(0); x < data -> evaluation.size(); ++x){expand(&ev, data -> evaluation[x]);}
-    
+    for (size_t x(0); x < data -> training.size();   ++x){expand(&ev, data -> training[x]  , data -> index);}
+    for (size_t x(0); x < data -> validation.size(); ++x){expand(&ev, data -> validation[x], data -> index);}
+    for (size_t x(0); x < data -> evaluation.size(); ++x){expand(&ev, data -> evaluation[x], data -> index);}
     int _epc = data -> epoch;
     int _epk = data -> kfold;  
 
@@ -108,6 +103,7 @@ void collector::inlet(edata* data){
     ev.nominal.shrink_to_fit();
     ev.umasked.shrink_to_fit();
     ev.masked.shrink_to_fit(); 
+
     performance* pr = (*prf)[key];
     if (this -> epoch < 0){this -> epoch = _epc;}
     if (this -> kfold < 0){this -> kfold = _epk;}
@@ -116,7 +112,7 @@ void collector::inlet(edata* data){
     bool kpx = this -> kfold != _epk;
     if (epx){this -> epoch = _epc;}
     if (kpx){this -> kfold = _epk;}
-    if (epx || kpx){pr -> compiler(); this -> release = true;}
     pr -> epoch[_epc][_epk].push_back(std::move(ev)); 
+    return pr -> epoch[_epc][_epk].size(); 
 }
 

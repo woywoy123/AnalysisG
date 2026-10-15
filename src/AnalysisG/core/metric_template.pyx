@@ -8,7 +8,7 @@ from libcpp.vector cimport vector
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport *
 from AnalysisG.core.structs cimport *
-from cython.parallel import prange
+from cython.parallel cimport prange
 from cython.operator cimport dereference as deref
 
 cdef class MetricTemplate:
@@ -200,7 +200,8 @@ cdef class MetricTemplate:
                         b"filename"   : deref(lxk.fname), 
                         b"epoch"      : int(to_format(&tmp, b"epoch-")), 
                         b"kfold"      : int(to_format(&tmp, prefx)), 
-                        b"model_name" : key
+                        b"last_index" : mapx[deref(lxk.fname)], 
+                        b"model_name" : key, 
                     }
                 iox.prg.set_description("/".join(env(kl).split("/")[-4:]))
                 iox.prg.refresh()

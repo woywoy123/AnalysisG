@@ -1,0 +1,597 @@
+=================[Training]=================
+kfold-1  :  $t\bar{t}H$ : 36598, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204814, 
+ $t\bar{t}t\bar{t}$ (SM) : 10813, 
+ $t\bar{t}t\bar{t}$ (700) : 847, 
+ $t\bar{t}$ : 13133, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 228, 
+ $t_{\text{t-channel}}$ : 2489, 
+ $t\bar{t}W$ : 2230, 
+ $t\bar{t}t\bar{t}$ (500) : 763, 
+ $tW$ : 1003, 
+ $t\bar{t}t\bar{t}$ (900) : 901, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1048, 
+ $t\bar{t}t\bar{t}$ (800) : 959, 
+ $t\bar{t}t\bar{t}$ (400) : 733, 
+ $t\bar{t}t\bar{t}$ (1000) : 935, 
+ $t\bar{t}t\bar{t}$ (600) : 802, 
+ $t\bar{t} \rightarrow \ell$ : 16, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-2  :  $t\bar{t}H$ : 36617, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204670, 
+ $t\bar{t}t\bar{t}$ (700) : 834, 
+ $t\bar{t}t\bar{t}$ (SM) : 10933, 
+ $t\bar{t}$ : 13073, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 216, 
+ $t_{\text{t-channel}}$ : 2500, 
+ $t\bar{t}W$ : 2229, 
+ $t\bar{t}t\bar{t}$ (500) : 763, 
+ $tW$ : 1000, 
+ $t\bar{t}t\bar{t}$ (900) : 899, 
+ $t\bar{t}t\bar{t}$ (400) : 735, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1074, 
+ $t\bar{t}t\bar{t}$ (800) : 968, 
+ $t\bar{t}t\bar{t}$ (1000) : 926, 
+ $t\bar{t}t\bar{t}$ (600) : 820, 
+ $t\bar{t} \rightarrow \ell$ : 18, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-3  :  $t\bar{t}H$ : 36552, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204746, 
+ $t\bar{t}t\bar{t}$ (SM) : 10900, 
+ $tW$ : 1008, 
+ $t\bar{t}$ : 13056, 
+ $t_{\text{t-channel}}$ : 2512, 
+ $t\bar{t}W$ : 2242, 
+ $t\bar{t}t\bar{t}$ (400) : 733, 
+ $t\bar{t}t\bar{t}$ (800) : 957, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 228, 
+ $t\bar{t}t\bar{t}$ (500) : 765, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1065, 
+ $t\bar{t}t\bar{t}$ (600) : 817, 
+ $t\bar{t}t\bar{t}$ (900) : 893, 
+ $t\bar{t}t\bar{t}$ (1000) : 927, 
+ $t\bar{t}t\bar{t}$ (700) : 838, 
+ $t\bar{t} \rightarrow \ell$ : 17, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-4  :  $t\bar{t}t\bar{t}$ (SM) : 10883, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204940, 
+ $t\bar{t}$ : 13024, 
+ $t\bar{t}H$ : 36436, 
+ $t\bar{t}t\bar{t}$ (400) : 729, 
+ $tW$ : 996, 
+ $t\bar{t}t\bar{t}$ (900) : 890, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1062, 
+ $t\bar{t}t\bar{t}$ (600) : 810, 
+ $t\bar{t}W$ : 2238, 
+ $t_{\text{t-channel}}$ : 2516, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 221, 
+ $t\bar{t}t\bar{t}$ (800) : 977, 
+ $t\bar{t}t\bar{t}$ (500) : 772, 
+ $t\bar{t}t\bar{t}$ (700) : 826, 
+ $t\bar{t}t\bar{t}$ (1000) : 933, 
+ $t\bar{t} \rightarrow \ell$ : 15, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-5  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204642, 
+ $t\bar{t}t\bar{t}$ (500) : 766, 
+ $t\bar{t}H$ : 36646, 
+ $tW$ : 992, 
+ $t\bar{t}$ : 13154, 
+ $t\bar{t}t\bar{t}$ (900) : 894, 
+ $t\bar{t}t\bar{t}$ (1000) : 927, 
+ $t\bar{t}t\bar{t}$ (SM) : 10860, 
+ $t\bar{t}W$ : 2239, 
+ $t_{\text{t-channel}}$ : 2511, 
+ $t\bar{t}t\bar{t}$ (700) : 846, 
+ $t\bar{t}t\bar{t}$ (800) : 969, 
+ $t\bar{t}t\bar{t}$ (400) : 742, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1070, 
+ $t\bar{t}t\bar{t}$ (600) : 810, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 224, 
+ $t\bar{t} \rightarrow \ell$ : 18, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-6  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204781, 
+ $t\bar{t}$ : 13072, 
+ $t\bar{t}t\bar{t}$ (800) : 959, 
+ $t\bar{t}H$ : 36567, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1069, 
+ $t\bar{t}t\bar{t}$ (SM) : 10875, 
+ $t\bar{t}t\bar{t}$ (900) : 878, 
+ $t_{\text{t-channel}}$ : 2538, 
+ $t\bar{t}t\bar{t}$ (600) : 798, 
+ $t\bar{t}t\bar{t}$ (700) : 825, 
+ $t\bar{t}t\bar{t}$ (500) : 771, 
+ $t\bar{t}W$ : 2221, 
+ $t\bar{t}t\bar{t}$ (400) : 741, 
+ $t\bar{t}t\bar{t}$ (1000) : 901, 
+ $tW$ : 1021, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 231, 
+ $t\bar{t} \rightarrow \ell$ : 18, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-7  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204733, 
+ $t\bar{t}H$ : 36591, 
+ $t\bar{t}$ : 13116, 
+ $t\bar{t}t\bar{t}$ (1000) : 922, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1054, 
+ $tW$ : 998, 
+ $t\bar{t}t\bar{t}$ (SM) : 10867, 
+ $t_{\text{t-channel}}$ : 2511, 
+ $t\bar{t}t\bar{t}$ (700) : 842, 
+ $t\bar{t}t\bar{t}$ (900) : 896, 
+ $t\bar{t}W$ : 2217, 
+ $t\bar{t}t\bar{t}$ (600) : 808, 
+ $t\bar{t}t\bar{t}$ (800) : 975, 
+ $t\bar{t}t\bar{t}$ (500) : 761, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 228, 
+ $t\bar{t}t\bar{t}$ (400) : 736, 
+ $t\bar{t} \rightarrow \ell$ : 16, 
+
+kfold-8  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204712, 
+ $t_{\text{t-channel}}$ : 2527, 
+ $t\bar{t}$ : 13115, 
+ $t\bar{t}t\bar{t}$ (700) : 839, 
+ $t\bar{t}t\bar{t}$ (1000) : 926, 
+ $t\bar{t}H$ : 36626, 
+ $tW$ : 1002, 
+ $t\bar{t}t\bar{t}$ (900) : 893, 
+ $t\bar{t}t\bar{t}$ (SM) : 10803, 
+ $t\bar{t}t\bar{t}$ (800) : 964, 
+ $t\bar{t}W$ : 2232, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1082, 
+ $t\bar{t}t\bar{t}$ (600) : 809, 
+ $t\bar{t}t\bar{t}$ (400) : 728, 
+ $t\bar{t}t\bar{t}$ (500) : 773, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 225, 
+ $t_{\text{s-channel}}$ : 1, 
+ $t\bar{t} \rightarrow \ell$ : 18, 
+
+kfold-9  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204875, 
+ $t\bar{t}H$ : 36624, 
+ $t\bar{t}W$ : 2199, 
+ $t\bar{t}t\bar{t}$ (SM) : 10871, 
+ $t\bar{t}$ : 13033, 
+ $t_{\text{t-channel}}$ : 2519, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1059, 
+ $t\bar{t}t\bar{t}$ (1000) : 912, 
+ $t\bar{t}t\bar{t}$ (400) : 737, 
+ $t\bar{t}t\bar{t}$ (800) : 959, 
+ $tW$ : 1018, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 221, 
+ $t\bar{t}t\bar{t}$ (900) : 893, 
+ $t\bar{t}t\bar{t}$ (600) : 792, 
+ $t\bar{t}t\bar{t}$ (500) : 755, 
+ $t\bar{t}t\bar{t}$ (700) : 842, 
+ $t\bar{t} \rightarrow \ell$ : 19, 
+ $t_{\text{s-channel}}$ : 1, 
+
+kfold-10  :  $t\bar{t}H$ : 36483, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 204918, 
+ $t_{\text{t-channel}}$ : 2478, 
+ $t\bar{t}$ : 13064, 
+ $t\bar{t}t\bar{t}$ (SM) : 10856, 
+ $t\bar{t}t\bar{t}$ (1000) : 932, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 1065, 
+ $t\bar{t}t\bar{t}$ (400) : 736, 
+ $tW$ : 1003, 
+ $t\bar{t}t\bar{t}$ (900) : 887, 
+ $t\bar{t}W$ : 2243, 
+ $t\bar{t}t\bar{t}$ (800) : 954, 
+ $t\bar{t}t\bar{t}$ (700) : 854, 
+ $t\bar{t}t\bar{t}$ (500) : 753, 
+ $t\bar{t}t\bar{t}$ (600) : 811, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 226, 
+ $t\bar{t} \rightarrow \ell$ : 18, 
+ $t_{\text{s-channel}}$ : 1, 
+
+
+=================[Validation]===============
+kfold-1  :  $t_{\text{t-channel}}$ : 273, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20473, 
+ $t\bar{t}$ : 1257, 
+ $t\bar{t}H$ : 3613, 
+ $t\bar{t}t\bar{t}$ (SM) : 1138, 
+ $t\bar{t}W$ : 218, 
+ $t\bar{t}t\bar{t}$ (800) : 101, 
+ $t\bar{t}t\bar{t}$ (700) : 78, 
+ $t\bar{t}t\bar{t}$ (900) : 81, 
+ $t\bar{t}t\bar{t}$ (500) : 78, 
+ $t\bar{t}t\bar{t}$ (1000) : 80, 
+ $tW$ : 103, 
+ $t\bar{t}t\bar{t}$ (400) : 74, 
+ $t\bar{t}t\bar{t}$ (600) : 89, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 125, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 19, 
+ $t\bar{t} \rightarrow \ell$ : 3, 
+
+kfold-2  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20617, 
+ $tW$ : 106, 
+ $t\bar{t}H$ : 3594, 
+ $t\bar{t}t\bar{t}$ (SM) : 1018, 
+ $t\bar{t}$ : 1317, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 99, 
+ $t\bar{t}t\bar{t}$ (1000) : 89, 
+ $t\bar{t}t\bar{t}$ (700) : 91, 
+ $t\bar{t}W$ : 219, 
+ $t_{\text{t-channel}}$ : 262, 
+ $t\bar{t}t\bar{t}$ (900) : 83, 
+ $t\bar{t}t\bar{t}$ (800) : 92, 
+ $t\bar{t}t\bar{t}$ (600) : 71, 
+ $t\bar{t}t\bar{t}$ (500) : 78, 
+ $t\bar{t}t\bar{t}$ (400) : 72, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 31, 
+ $t\bar{t} \rightarrow \ell$ : 1, 
+
+kfold-3  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20541, 
+ $t\bar{t}$ : 1334, 
+ $t\bar{t}H$ : 3659, 
+ $t\bar{t}t\bar{t}$ (600) : 74, 
+ $t\bar{t}t\bar{t}$ (1000) : 88, 
+ $t\bar{t}t\bar{t}$ (SM) : 1051, 
+ $t\bar{t}t\bar{t}$ (800) : 103, 
+ $t\bar{t}t\bar{t}$ (900) : 89, 
+ $t_{\text{t-channel}}$ : 250, 
+ $t\bar{t}W$ : 206, 
+ $t\bar{t}t\bar{t}$ (700) : 87, 
+ $t\bar{t}t\bar{t}$ (500) : 76, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 108, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 19, 
+ $tW$ : 98, 
+ $t\bar{t}t\bar{t}$ (400) : 74, 
+ $t\bar{t} \rightarrow \ell$ : 2, 
+
+kfold-5  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20645, 
+ $t\bar{t}H$ : 3565, 
+ $t_{\text{t-channel}}$ : 251, 
+ $t\bar{t}t\bar{t}$ (SM) : 1091, 
+ $t\bar{t}$ : 1236, 
+ $t\bar{t}W$ : 209, 
+ $t\bar{t}t\bar{t}$ (600) : 81, 
+ $t\bar{t}t\bar{t}$ (900) : 88, 
+ $t\bar{t}t\bar{t}$ (800) : 91, 
+ $t\bar{t}t\bar{t}$ (500) : 75, 
+ $t\bar{t}t\bar{t}$ (1000) : 88, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 103, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 23, 
+ $t\bar{t}t\bar{t}$ (700) : 79, 
+ $tW$ : 114, 
+ $t\bar{t}t\bar{t}$ (400) : 65, 
+ $t\bar{t} \rightarrow \ell$ : 1, 
+
+kfold-6  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20506, 
+ $t\bar{t}H$ : 3644, 
+ $t\bar{t}t\bar{t}$ (SM) : 1076, 
+ $t\bar{t}$ : 1318, 
+ $t\bar{t}t\bar{t}$ (400) : 66, 
+ $tW$ : 85, 
+ $t\bar{t}t\bar{t}$ (800) : 101, 
+ $t_{\text{t-channel}}$ : 224, 
+ $t\bar{t}t\bar{t}$ (900) : 104, 
+ $t\bar{t}W$ : 227, 
+ $t\bar{t}t\bar{t}$ (500) : 70, 
+ $t\bar{t}t\bar{t}$ (1000) : 114, 
+ $t\bar{t}t\bar{t}$ (700) : 100, 
+ $t\bar{t}t\bar{t}$ (600) : 93, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 104, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 16, 
+ $t\bar{t} \rightarrow \ell$ : 1, 
+
+kfold-7  :  $t\bar{t}H$ : 3620, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20554, 
+ $t\bar{t}t\bar{t}$ (SM) : 1084, 
+ $t\bar{t}t\bar{t}$ (800) : 85, 
+ $t_{\text{t-channel}}$ : 251, 
+ $tW$ : 108, 
+ $t\bar{t}t\bar{t}$ (1000) : 93, 
+ $t\bar{t}t\bar{t}$ (700) : 83, 
+ $t\bar{t}$ : 1274, 
+ $t\bar{t}t\bar{t}$ (900) : 86, 
+ $t\bar{t}t\bar{t}$ (600) : 83, 
+ $t\bar{t}t\bar{t}$ (500) : 80, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 119, 
+ $t\bar{t}W$ : 231, 
+ $t\bar{t}t\bar{t}$ (400) : 71, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 19, 
+ $t_{\text{s-channel}}$ : 1, 
+ $t\bar{t} \rightarrow \ell$ : 3, 
+
+kfold-8  :  $t\bar{t}H$ : 3585, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20575, 
+ $t\bar{t}t\bar{t}$ (SM) : 1148, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 91, 
+ $t\bar{t}$ : 1275, 
+ $t\bar{t}t\bar{t}$ (600) : 82, 
+ $t\bar{t}t\bar{t}$ (800) : 96, 
+ $t\bar{t}W$ : 216, 
+ $t\bar{t}t\bar{t}$ (400) : 79, 
+ $tW$ : 104, 
+ $t_{\text{t-channel}}$ : 235, 
+ $t\bar{t}t\bar{t}$ (700) : 86, 
+ $t\bar{t}t\bar{t}$ (500) : 68, 
+ $t\bar{t}t\bar{t}$ (900) : 89, 
+ $t\bar{t}t\bar{t}$ (1000) : 89, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 22, 
+ $t\bar{t} \rightarrow \ell$ : 1, 
+
+kfold-9  :  $t\bar{t}H$ : 3587, 
+ $t\bar{t}t\bar{t}$ (800) : 101, 
+ $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20412, 
+ $t\bar{t}W$ : 249, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 114, 
+ $t\bar{t}$ : 1357, 
+ $t\bar{t}t\bar{t}$ (SM) : 1080, 
+ $t\bar{t}t\bar{t}$ (1000) : 103, 
+ $t\bar{t}t\bar{t}$ (700) : 83, 
+ $t_{\text{t-channel}}$ : 243, 
+ $t\bar{t}t\bar{t}$ (500) : 86, 
+ $tW$ : 88, 
+ $t\bar{t}t\bar{t}$ (600) : 99, 
+ $t\bar{t}t\bar{t}$ (900) : 89, 
+ $t\bar{t}t\bar{t}$ (400) : 70, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 26, 
+
+kfold-10  :  $t\bar{t} \rightarrow \ell \bar{\ell}$ : 20369, 
+ $t\bar{t}H$ : 3728, 
+ $t\bar{t}W$ : 205, 
+ $t\bar{t}$ : 1326, 
+ $t_{\text{t-channel}}$ : 284, 
+ $t\bar{t}t\bar{t}$ (SM) : 1095, 
+ $t\bar{t}t\bar{t}$ (500) : 88, 
+ $t\bar{t}t\bar{t}$ (700) : 71, 
+ $t\bar{t}t\bar{t}$ (600) : 80, 
+ $t\bar{t}t\bar{t}$ (800) : 106, 
+ $t\bar{t}t\bar{t}$ (1000) : 83, 
+ $tW$ : 103, 
+ $t\bar{t}Z \rightarrow q \bar{q} $ : 108, 
+ $t\bar{t}t\bar{t}$ (900) : 95, 
+ $t\bar{t}Z \rightarrow \nu \bar{\nu}$ : 21, 
+ $t\bar{t}t\bar{t}$ (400) : 71, 
+ $t\bar{t} \rightarrow \ell$ : 1, 
+
+
+
+
+=================== [kfold-1] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        2|  1 :     1659|  2 :   406158|  3 :    28125|  4 :       11|  5 :        4| }<:t\bar{t}:>
+{ 0 :        0|  1 :       70|  2 :    77191|  3 :     2860|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       75|  4 :     1138|  5 :      575| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        2|  3 :       81|  4 :      637|  5 :      588| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       47|  4 :      788|  5 :      576| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       50|  4 :      920|  5 :      544| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       72|  4 :      957|  5 :      572| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       68|  4 :     1196|  5 :      532| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       57|  4 :     1099|  5 :      550| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        6|  3 :      910|  4 :    11030|  5 :     7903| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        2|  1 :     6973|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :      175|  2 :    40378|  3 :     2875|  4 :        1|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        6|  2 :     7749|  3 :      282|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :      106|  5 :       47| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        7|  4 :       61|  5 :       64| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        7|  4 :       82|  5 :       66| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        8|  4 :       98|  5 :       52| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        6|  4 :       83|  5 :       48| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        8|  4 :      124|  5 :       68| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :      107|  5 :       56| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       82|  4 :     1106|  5 :      841| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      763|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-10] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      832|  2 :   203098|  3 :    14059|  4 :        6|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       36|  2 :    38558|  3 :     1423|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      572|  5 :      285| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       39|  4 :      318|  5 :      297| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       24|  4 :      391|  5 :      287| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      460|  5 :      274| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      482|  5 :      285| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       32|  4 :      602|  5 :      262| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       27|  4 :      550|  5 :      269| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        3|  3 :      452|  4 :     5484|  5 :     3997| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3481|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       85|  2 :    20170|  3 :     1441|  4 :        0|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        2|  2 :     3912|  3 :      148|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       50|  5 :       26| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       31|  5 :       29| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       44|  5 :       34| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       49|  5 :       24| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       38|  5 :       25| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        6|  4 :       58|  5 :       38| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        4|  4 :       53|  5 :       34| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       44|  4 :      584|  5 :      375| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      387|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-2] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      841|  2 :   202760|  3 :    14150|  4 :        5|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       36|  2 :    38655|  3 :     1445|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       35|  4 :      568|  5 :      282| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       37|  4 :      326|  5 :      293| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       24|  4 :      399|  5 :      286| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       28|  4 :      475|  5 :      268| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      469|  5 :      276| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       33|  4 :      605|  5 :      271| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      557|  5 :      279| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        3|  3 :      459|  4 :     5548|  5 :     3996| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3500|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       76|  2 :    20508|  3 :     1350|  4 :        1|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        2|  2 :     3815|  3 :      126|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       54|  5 :       29| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        7|  4 :       23|  5 :       33| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       36|  5 :       35| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        1|  4 :       34|  5 :       30| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       51|  5 :       34| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       55|  5 :       29| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       46|  5 :       24| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      520|  5 :      376| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      368|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-3] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      835|  2 :   202834|  3 :    14140|  4 :        6|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       38|  2 :    38645|  3 :     1404|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       38|  4 :      570|  5 :      282| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       42|  4 :      319|  5 :      293| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       23|  4 :      396|  5 :      292| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      459|  5 :      281| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      466|  5 :      283| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       35|  4 :      587|  5 :      278| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       28|  4 :      548|  5 :      275| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        2|  3 :      456|  4 :     5531|  5 :     3983| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :     3521|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       82|  2 :    20434|  3 :     1360|  4 :        0|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        0|  2 :     3825|  3 :      167|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       52|  5 :       29| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       30|  5 :       33| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        4|  4 :       39|  5 :       29| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       50|  5 :       17| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       54|  5 :       27| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       73|  5 :       22| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       55|  5 :       28| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       40|  4 :      537|  5 :      389| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :      347|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-4] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      832|  2 :   203019|  3 :    14117|  4 :        6|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       32|  2 :    38505|  3 :     1420|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       36|  4 :      565|  5 :      292| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       38|  4 :      318|  5 :      299| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      397|  5 :      297| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       25|  4 :      465|  5 :      269| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      458|  5 :      285| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       36|  4 :      602|  5 :      280| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       28|  4 :      546|  5 :      273| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        3|  3 :      442|  4 :     5511|  5 :     4017| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3512|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+=================== [kfold-5] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      823|  2 :   202940|  3 :    14041|  4 :        6|  5 :        1| }<:t\bar{t}:>
+{ 0 :        0|  1 :       34|  2 :    38710|  3 :     1435|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       35|  4 :      574|  5 :      280| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       39|  4 :      320|  5 :      300| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       25|  4 :      394|  5 :      297| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       28|  4 :      461|  5 :      277| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       31|  4 :      482|  5 :      280| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       34|  4 :      602|  5 :      279| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       29|  4 :      548|  5 :      275| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        3|  3 :      444|  4 :     5512|  5 :     3972| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3503|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       94|  2 :    20328|  3 :     1459|  4 :        0|  5 :        1| }<:t\bar{t}:>
+{ 0 :        0|  1 :        4|  2 :     3760|  3 :      136|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       48|  5 :       31| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       29|  5 :       26| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       41|  5 :       24| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        1|  4 :       48|  5 :       21| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        8|  4 :       38|  5 :       30| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        4|  4 :       58|  5 :       21| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       55|  5 :       28| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       52|  4 :      556|  5 :      400| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      365|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-6] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      836|  2 :   202876|  3 :    14151|  4 :        5|  5 :        1| }<:t\bar{t}:>
+{ 0 :        0|  1 :       36|  2 :    38620|  3 :     1432|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      545|  5 :      280| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       41|  4 :      320|  5 :      300| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      397|  5 :      297| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       27|  4 :      451|  5 :      268| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       33|  4 :      473|  5 :      266| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       32|  4 :      605|  5 :      270| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       29|  4 :      541|  5 :      272| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        3|  3 :      449|  4 :     5506|  5 :     3996| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3559|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       81|  2 :    20392|  3 :     1349|  4 :        1|  5 :        1| }<:t\bar{t}:>
+{ 0 :        0|  1 :        2|  2 :     3850|  3 :      139|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       77|  5 :       31| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       29|  5 :       26| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        1|  4 :       38|  5 :       24| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       58|  5 :       30| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        6|  4 :       47|  5 :       44| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        6|  4 :       55|  5 :       30| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       62|  5 :       31| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       47|  4 :      562|  5 :      376| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      309|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-7] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      841|  2 :   202930|  3 :    14084|  4 :        5|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       34|  2 :    38620|  3 :     1436|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       38|  4 :      571|  5 :      278| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       41|  4 :      322|  5 :      292| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       25|  4 :      393|  5 :      291| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       27|  4 :      467|  5 :      267| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       36|  4 :      476|  5 :      277| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       36|  4 :      604|  5 :      276| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       30|  4 :      548|  5 :      277| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        2|  3 :      445|  4 :     5518|  5 :     3975| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3508|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       76|  2 :    20338|  3 :     1416|  4 :        1|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        4|  2 :     3850|  3 :      135|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       51|  5 :       33| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :        3|  4 :       27|  5 :       34| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       42|  5 :       30| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       42|  5 :       31| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       44|  5 :       33| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       56|  5 :       24| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        1|  4 :       55|  5 :       26| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       51|  4 :      550|  5 :      397| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      360|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-8] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        0|  1 :      823|  2 :   202967|  3 :    14046|  4 :        5|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       34|  2 :    38705|  3 :     1426|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       36|  4 :      569|  5 :      283| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       41|  4 :      309|  5 :      298| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       24|  4 :      400|  5 :      295| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      463|  5 :      270| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       34|  4 :      467|  5 :      285| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       36|  4 :      605|  5 :      268| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      548|  5 :      276| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        3|  3 :      452|  4 :     5482|  5 :     3951| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3529|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        1|  1 :       94|  2 :    20301|  3 :     1454|  4 :        1|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        4|  2 :     3765|  3 :      145|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        4|  4 :       53|  5 :       28| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       40|  5 :       28| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       35|  5 :       26| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       46|  5 :       28| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       53|  5 :       25| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       55|  5 :       32| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        5|  4 :       55|  5 :       27| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       44|  4 :      586|  5 :      421| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      339|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================== [kfold-9] ===================
+=================[Training]=================> Training<:{ntops:nevents}
+{ 0 :        1|  1 :      831|  2 :   203028|  3 :    14058|  4 :        5|  5 :        2| }<:t\bar{t}:>
+{ 0 :        0|  1 :       30|  2 :    38645|  3 :     1428|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       34|  4 :      563|  5 :      277| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       40|  4 :      313|  5 :      301| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       24|  4 :      393|  5 :      285| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       26|  4 :      452|  5 :      262| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       37|  4 :      474|  5 :      283| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       35|  4 :      600|  5 :      268| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :       29|  4 :      549|  5 :      275| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        2|  3 :      462|  4 :     5511|  5 :     3976| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        1|  1 :     3537|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+=================[Validation]===============> Validation<:{ntops:nevents}
+{ 0 :        0|  1 :       86|  2 :    20240|  3 :     1442|  4 :        1|  5 :        0| }<:t\bar{t}:>
+{ 0 :        0|  1 :        8|  2 :     3825|  3 :      143|  4 :        0|  5 :        0| }<:t\bar{t}V/t\bar{t}H:>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        6|  4 :       59|  5 :       34| }<:t\bar{t}t\bar{t}(1000GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        4|  4 :       36|  5 :       25| }<:t\bar{t}t\bar{t}(400GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       42|  5 :       36| }<:t\bar{t}t\bar{t}(500GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       57|  5 :       36| }<:t\bar{t}t\bar{t}(600GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       46|  5 :       27| }<:t\bar{t}t\bar{t}(700GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        3|  4 :       60|  5 :       32| }<:t\bar{t}t\bar{t}(800GeV):>
+{ 0 :        0|  1 :        0|  2 :        0|  3 :        2|  4 :       54|  5 :       28| }<:t\bar{t}t\bar{t}(900GeV):>
+{ 0 :        0|  1 :        0|  2 :        1|  3 :       34|  4 :      557|  5 :      396| }<:t\bar{t}t\bar{t}(SM):>
+{ 0 :        0|  1 :      331|  2 :        0|  3 :        0|  4 :        0|  5 :        0| }<:SingleTop:>
+

@@ -15,6 +15,7 @@ class pdata {
         std::vector<double> energy; 
         std::vector<double> mass; 
         std::vector<double> score; 
+        std::vector<long> index; 
         std::vector<int> chn;
 
         std::string type = ""; 
@@ -37,11 +38,13 @@ class edata : public tools
         int ntop_prd = 0; 
         int dsid     = 0; 
         int prc_idx  = 0; 
-
+        
+        long index = -1;  
         double acc_edge  = 0; 
 
         int kfold = 0;
         int epoch = 0;
+        
         std::string mrk = ""; 
 }; 
 
@@ -73,7 +76,7 @@ struct edata_t {
 struct evn_t {
     evn_t();
 
-    void mass(double w); 
+    void mass(rectop* w); 
     void assign(int tru, int pred); 
 
     void weights(double w);
@@ -83,6 +86,7 @@ struct evn_t {
     std::vector<double> weight; 
     std::vector<double> masses; 
     std::vector<double> error; 
+    std::vector<long>   index; 
 
     std::vector<int> ntops; 
     std::vector<int> ntrus; 
@@ -92,6 +96,7 @@ struct evn_t {
 }; 
 
 struct pairs_t {
+
     pairs_t() = default;
     evn_t raw; 
     evn_t adj; 

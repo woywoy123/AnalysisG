@@ -31,10 +31,10 @@ performance_t* performance::filter(std::vector<edata_t>* dfc){
         pairs_t* pdx = &pf -> truth[prc]; 
         for (size_t y(0); y < dt -> truth.size(); ++y){
             rectop* dp = &dt -> truth[y]; 
-            pdx -> raw.mass(dp -> mass);
+            pdx -> raw.mass(dp);
 
             if (!dp -> valid()){continue;}
-            pdx -> adj.mass(dp -> mass); 
+            pdx -> adj.mass(dp); 
             ntr++; 
         }
 
@@ -49,11 +49,11 @@ performance_t* performance::filter(std::vector<edata_t>* dfc){
         pdx = &pf -> nominal[prc]; 
         for (size_t y(0); y < dt -> nominal.size(); ++y){
             rectop* dp = &dt -> nominal[y]; 
-            pdx -> raw.mass(dp -> mass);
+            pdx -> raw.mass(dp);
             pdx -> raw.weights(dp -> score);
 
             if (!dp -> valid()){continue;}
-            pdx -> adj.mass(dp -> mass); 
+            pdx -> adj.mass(dp); 
             pdx -> adj.weights(dp -> score);
             npa++; 
         }
@@ -67,11 +67,11 @@ performance_t* performance::filter(std::vector<edata_t>* dfc){
         pdx = &pf -> unmasked[prc]; 
         for (size_t y(0); y < dt -> umasked.size(); ++y){
             rectop* dp = &dt -> umasked[y]; 
-            pdx -> raw.mass(dp -> mass);
+            pdx -> raw.mass(dp);
             pdx -> raw.weights(dp -> score);
 
             if (!dp -> valid()){continue;}
-            pdx -> adj.mass(dp -> mass); 
+            pdx -> adj.mass(dp); 
             pdx -> adj.weights(dp -> score);
             npa++; 
         }
@@ -85,11 +85,11 @@ performance_t* performance::filter(std::vector<edata_t>* dfc){
         pdx = &pf -> masked[prc]; 
         for (size_t y(0); y < dt -> masked.size(); ++y){
             rectop* dp = &dt -> masked[y]; 
-            pdx -> raw.mass(dp -> mass);
+            pdx -> raw.mass(dp);
             pdx -> raw.weights(dp -> score);
 
             if (!dp -> valid()){continue;}
-            pdx -> adj.mass(dp -> mass); 
+            pdx -> adj.mass(dp); 
             pdx -> adj.weights(dp -> score);
             npa++; 
         }
@@ -122,7 +122,12 @@ void evn_t::assign(int tru, int pred){
     this -> ntrus.push_back(tru); 
 }
 
-void evn_t::mass(double vl){this -> masses.push_back(vl);}
+void evn_t::mass(rectop* vl){
+    this -> masses.push_back(vl -> mass);
+    this -> index.push_back(vl -> index);
+
+}
+
 void evn_t::weights(double w){this -> weight.push_back(w);}
 
 void evn_t::weights(std::vector<double>* vec){
