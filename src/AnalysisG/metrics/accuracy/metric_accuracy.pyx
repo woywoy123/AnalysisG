@@ -248,7 +248,12 @@ cdef class EvenT:
     def __cinit__(self): pass
 
     def __dealloc__(self):
-        del self.data
+        cdef size_t i
+        for i in range(self.vdata.size()):
+            if self.vdata[i] != NULL:
+                del self.vdata[i]
+        self.vdata.clear()
+        self.data = NULL
 
     cpdef list expand(self, EvenT cx):
 
@@ -306,10 +311,8 @@ cdef class EvenT:
                     dxt[l][tx] = da
                  
                 da = dxt[l][tx]
-                if dt.masses.size() > vdx: 
-                    da.add_value(dt.masses.at(vdx))
-                if dt.weight.size() > vdx: 
-                    da.add_weight(dt.weight.at(vdx))
+                if dt.masses.size() > vdx: da.add_value(dt.masses.at(vdx))
+                if dt.weight.size() > vdx: da.add_weight(dt.weight.at(vdx))
 
         vlx = 0
         cdef Atomic_t ax
@@ -373,9 +376,21 @@ cdef class EvenT:
 
 cdef class PDax(Tools):
 
-    def __dealloc__(self): 
+    def __dealloc__(self):
         del self.ptx
- 
+        cdef pair[string, vector[pdax_t*]] itr
+        cdef size_t i
+        for itr in self.raw:
+            for i in range(itr.second.size()):
+                if itr.second[i] == NULL: continue
+                del itr.second[i]
+        for itr in self.adj:
+            for i in range(itr.second.size()):
+                if itr.second[i] == NULL: continue
+                del itr.second[i]
+        self.raw.clear()
+        self.adj.clear()
+
     def __cinit__(self):
         self.ptx = new pdax_t()
 
@@ -436,6 +451,7 @@ cdef class PDax(Tools):
         cdef pair[string, vector[pdax_t*]] itr
         cdef dict dx = {env(itr.first) : {} for itr in self.adj}
         if not len(dx): return []
+
         cdef EvenT idx
         for itr in self.adj:
             idx = EvenT()
@@ -452,6 +468,8 @@ cdef class PDax(Tools):
             dx[env(itr.first)]["raw"] = idx
             if idx.idx > 0: continue
             idx.data = itr.second.at(0)
+        self.adj.clear()
+        self.raw.clear()
         return [dx]
 
     @property
@@ -508,7 +526,7 @@ cdef class AccuracyMetric(MetricTemplate):
             self.root_leaves["accuracy_evaluation"] = ev_ptr + tps_npr + tps_upr + tps_nom + tps_tru + evnt_dt
             self.root_fx["accuracy_evaluation"] = get_data
 
-    def __delloc__(self):
+    def __dealloc__(self):
         self.mtx = NULL; 
         del self.mtr
         del self.mcl

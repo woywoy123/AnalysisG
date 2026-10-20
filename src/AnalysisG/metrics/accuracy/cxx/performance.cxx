@@ -100,7 +100,18 @@ performance_t* performance::filter(std::vector<edata_t>* dfc){
     return pf; 
 }
 
-performance::~performance(){}
+performance::~performance(){
+    std::map<int, std::map<int, performance_t*>>::iterator itx = this -> metric.begin();
+    for (; itx != this -> metric.end(); ++itx){
+        std::map<int, performance_t*>::iterator ity = itx -> second.begin();
+        for (; ity != itx -> second.end(); ++ity){
+            if (ity -> second){
+                delete ity -> second;
+                ity -> second = nullptr;
+            }
+        }
+    }
+}
 
 
 edata::edata(){}

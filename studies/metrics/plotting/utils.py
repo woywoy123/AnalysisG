@@ -190,7 +190,8 @@ def summary_top(data, kfld):
         if kfld not in name: continue 
         name, prc = get_type(prc)
         for i in range(len(data[px])):
-            ntop = str(len(data[px][i]))
+            val = data[px][i]
+            ntop = str(len(val)) if isinstance(val, (list, tuple)) else str(val)
             if prc not in skx: skx[prc] = {}
             try:    skx[prc][ntop] += 1 
             except: skx[prc][ntop]  = 1
@@ -202,8 +203,15 @@ def cuts(dt, fx = None):
     return [i for i in dt if fx(i)] 
 
 def average(lst):
-    av = sum(lst) / float(len(lst))
-    dv = sum([(av - i)**2 for i in lst]) / float(len(lst))
+    if hasattr(lst, "av") and hasattr(lst, "s2"):
+        return {"av": lst.av, "s2": lst.s2}
+    if isinstance(lst, dict) and "av" in lst and "s2" in lst:
+        return lst
+    if not lst:
+        return {"av": 0.0, "s2": 0.0}
+    vals = [i.qual if hasattr(i, "qual") else i for i in lst]
+    av = sum(vals) / float(len(vals))
+    dv = sum([(av - i)**2 for i in vals]) / float(len(vals))
     return {"av" : av, "s2" : dv}
 
 def get_mass(j):

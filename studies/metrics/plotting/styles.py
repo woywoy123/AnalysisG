@@ -5,12 +5,13 @@ from filter import *
 from utils import *
 from plots import *
 import asyncio
+import gc
+import ctypes
 
 def make_truth(dt):
     stats = stats_t()
     for nxt in dt:
         tru_r, tru_a = nxt["Truth"]["raw"], nxt["Truth"]["adj"]
-        print(tru_r.kfold)
         for k in tru_a.expand(tru_r): stats.add(k)
            
     raw = stats.TopSummary(None, stats.rtop_train, stats.rtop_valid)
@@ -98,11 +99,12 @@ def make_reco(dt):
 
         make_sequence(nom_R, "raw_nominal", name, 12.0)
         make_sequence(nom_A, "adj_nominal", name, 12.0)
+
+        del j, tru_r, tru_a, msk_r, msk_a, usk_r, usk_a, 
+        del nom_r, nom_a, msk_R, msk_A, 
+        del usk_R, usk_A, nom_R, nom_A
+        gc.collect()
         continue
-
-        exit()
-
-
 
         gm, gw = prc["gm"], prc["gw"]
         th = basic_th2f("", gm, gw)
@@ -127,6 +129,7 @@ def make_reco(dt):
 
 def make_perf(dt):
 
+    x = 0
     prf_r = performance_t()
     for j in dt:
         tru_r, tru_a = j["Truth"]["raw"]   , j["Truth"]["adj"]
@@ -144,6 +147,11 @@ def make_perf(dt):
         prf_r.evaluate(nom_a, tru_a, "(Adj.) NOMINAL" )
         print("=================================")
         print("---->", tru_r.epoch, tru_r.kfold, tru_r.model)
+        del j, tru_r, tru_a, msk_r, msk_a, usk_r, usk_a, nom_r, nom_a
+        gc.collect()
+        if x % 10 == 9: prf_r.summary()
+        
+
     prf_r.summary()
     prf_r.save()
     return prf_r
@@ -151,7 +159,7 @@ def make_perf(dt):
 
 def entry(mdl, kfold, epoch, base_dir):
     #make_truth(Dataloader(["MRK-1"], kfold, ["epoch-1"], base_dir))
-#    make_reco(Dataloader(mdl, ["kfold-1"], epoch, base_dir))
+#    make_reco(Dataloader(mdl, kfold, epoch, base_dir))
     sm = make_perf(Dataloader(mdl, kfold, epoch, base_dir))
  
 

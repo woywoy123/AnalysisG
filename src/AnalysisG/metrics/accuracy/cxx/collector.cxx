@@ -29,7 +29,9 @@ bool rectop::valid(){return this -> idn == object_e::valid;}
 
 
 collector::collector(){}
-collector::~collector(){}
+collector::~collector(){
+    this -> flush(); 
+}
 void collector::flush(){
     this -> mflush(&this -> training); 
     this -> mflush(&this -> validation);

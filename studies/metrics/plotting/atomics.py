@@ -29,11 +29,11 @@ class Dataloader:
         self.lsts = sms_lst([pth_fm(i, kfold) for i in lsts])
 
     def __iter__(self):
-        self.fdx  = [Atomic(self.lsts[i], i) for i in range(len(self.lsts))]
-        self.itx = iter(self.fdx)
+        self.itx = iter([i for i in range(len(self.lsts))])
         return self
 
     def __next__(self):
-        self.chx = next(self.itx).loader()
-        if len(self.chx): return self.chx[0]
+        chx = next(self.itx)
+        chx = Atomic(self.lsts[chx], chx).loader()
+        if len(chx): return chx[0]
         raise StopIteration

@@ -32,13 +32,49 @@ def filtering(r):
         lr, lt = len(r_), len(t_)
 
 
+class pairs:
+
+    def __init__(self, ms = None, qlt = None):
+        if isinstance(qlt, (float, int)) and isinstance(ms, (list, tuple)):
+            self.mass = ms
+            self.qual = qlt
+        elif isinstance(ms, (float, int)) and isinstance(qlt, (list, tuple)):
+            self.mass = qlt
+            self.qual = ms
+        else:
+            self.mass = ms
+            self.qual = qlt
+
+    def __repr__(self):
+        return f"pairs(mass={self.mass}, qual={self.qual})"
+
+    def __getitem__(self, idx):
+        if idx == 0: return self.mass
+        if idx == 1: return self.qual
+        raise IndexError(idx)
+
+    def __iter__(self):
+        yield self.mass
+        yield self.qual
+
+    def __len__(self):
+        return 2
+
+    @property
+    def pred(self):
+        return self.mass
+
+    def __float__(self):
+        return float(self.qual) if self.qual is not None else 0.0
+
+
 class summary_t:
 
     def __init__(self, tru, msk):
-        self.epoch     = tru.epoch
-        self.model     = tru.model
-        self.kfold     = tru.kfold
-        self.masked    = msk
+        self.epoch     = str(tru.epoch)
+        self.model     = str(tru.model)
+        self.kfold     = str(tru.kfold)
+        self.masked    = str(msk)
 
         self.predicted = {}
         self.pagerank  = {}
@@ -46,6 +82,9 @@ class summary_t:
         self.truth     = {}
         self.matrix    = {i : {j : 0 for j in range(8)} for i in range(8)}
         self.nevents   = 0
+
+    def __str__(self):
+        return self.masked + "_" + self.model + "_" + self.epoch + "_" + self.kfold
 
 class performance_t:
 
@@ -59,6 +98,7 @@ class performance_t:
         for r in mdl.expand(tru): 
             r.scoring = msk
             self.loop(r, smy)
+        svpkl(smy, "cache/" + str(smy) + ".pkl") 
 
     def __check__(self, a, b, v):
         if a not in b: b[a] = []
@@ -69,16 +109,14 @@ class performance_t:
         truth = r.truth
         out = filtering(r)
         pred, prg, qual = out[0], out[1], out[2]
-        self.__check__(r.prc, smy.predicted, pred)
-        self.__check__(r.prc, smy.pagerank , prg)
-        self.__check__(r.prc, smy.quality  , qual)
-        self.__check__(r.prc, smy.truth    , truth)
+        prc = r.prc
+        if prc not in smy.quality: smy.quality[prc] = []
+        if len(pred):
+            smy.quality[prc].append(pairs(pred, qual))
         pred  = len(pred)  if len(pred)  < 5 else 5
         truth = len(truth) if len(truth) < 5 else 5
         smy.matrix[pred][truth] += 1
         smy.nevents += 1
-
-    def save(self): svpkl(self.methods, "state") 
 
     def summary(self):
         def head(i): return "\n ======= [EPOCH: " + i.epoch + ", kFOLD: " + i.kfold + "] ======= \n"
@@ -120,14 +158,14 @@ class stats_t:
     def add(self, dt):
         px = dt.kfold + " | " + dt.prc
         
-        if dt.mode == "training":   self.adding(self.train, px, dt)
-        if dt.mode == "validation": self.adding(self.valid, px, dt)
+        if dt.mode == "training":   self.adding(self.train, px, 1)
+        if dt.mode == "validation": self.adding(self.valid, px, 1)
 
-        if dt.mode == "training":   self.adding(self.rtop_train, px, dt.truth)
-        if dt.mode == "training":   self.adding(self.atop_train, px, dt.masses)
+        if dt.mode == "training":   self.adding(self.rtop_train, px, len(dt.truth))
+        if dt.mode == "training":   self.adding(self.atop_train, px, len(dt.masses))
 
-        if dt.mode == "validation": self.adding(self.rtop_valid, px, dt.truth)
-        if dt.mode == "validation": self.adding(self.atop_valid, px, dt.masses)
+        if dt.mode == "validation": self.adding(self.rtop_valid, px, len(dt.truth))
+        if dt.mode == "validation": self.adding(self.atop_valid, px, len(dt.masses))
 
 
     def __str__(self):
